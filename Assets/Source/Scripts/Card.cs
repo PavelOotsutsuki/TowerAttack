@@ -1,21 +1,74 @@
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-[CreateAssetMenu(fileName = "New card", menuName = "Create card", order = 51)]
-public class Card : ScriptableObject
+public class Card : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler, IDragHandler, IBeginDragHandler
 {
-   // [SerializeField] private CardCharacter _cardCharacter;
-    [SerializeField] private Sprite _number;
-    [SerializeField] private Sprite _icon;
-    [SerializeField] private string _description;
-    [SerializeField] private AudioClip _awakeSound;
-    [SerializeField] private string _feature;
-    [SerializeField] private string _name;
+    private const float SmallWidth = 2.5f;
+    private const float SmallHeight = 3.5f;
+    private const float BigWidth = 5f;
+    private const float BigHeight = 7f;
 
-    //public CardCharacter CardCharacter => _cardCharacter;
-    public Sprite Number => _number;
-    public Sprite Icon => _icon;
-    public string Description => _description;
-    public AudioClip AwakeSound => _awakeSound;
-    public string Feature => _feature;
-    public string Name => _name;
+    [SerializeField] private RectTransform _rectTransform;
+    [SerializeField] private CardSO _cardSO;
+    [SerializeField] private Image _icon;
+    [SerializeField] private TMP_Text _number;
+    [SerializeField] private TMP_Text _name;
+    [SerializeField] private TMP_Text _feature;
+    [SerializeField] private AudioSource _audioSource;
+
+    private Camera _mainCamera;
+    private CardDescription _cardDescription;
+    private CardView _cardView;
+    private CardBehavior _cardBehavior;
+
+    public void Init(CardDescription cardDescription, Camera mainCamera)
+    {
+        _cardDescription = cardDescription;
+        _mainCamera = mainCamera;
+
+        _cardView = new CardView(_cardSO, _icon, _number, _name, _feature, _audioSource);
+        _cardBehavior = new CardBehavior(_audioSource);
+
+        DefineSmallCard();
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+       // _audioSource.Play();
+        _cardDescription.Show(_cardSO.Description);
+        DefineBigCard();
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        _cardDescription.Hide();
+        DefineSmallCard();
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        _rectTransform.SetParent(_mainCamera.transform);
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        Debug.Log(Input.mousePosition);
+        Debug.Log(eventData.position);
+        _rectTransform.position = eventData.position;
+        //_rectTransform.position = _mainCamera.ViewportToWorldPoint(Input.mousePosition);
+    }
+
+    private void DefineSmallCard()
+    {
+        _rectTransform.sizeDelta = new Vector2(SmallWidth, SmallHeight);
+    }
+
+    private void DefineBigCard()
+    {
+        _rectTransform.sizeDelta = new Vector2(BigWidth, BigHeight);
+    }
 }
