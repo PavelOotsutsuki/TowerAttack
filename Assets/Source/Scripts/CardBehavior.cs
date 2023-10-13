@@ -1,20 +1,53 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CardBehavior : IPointerEnterHandler
+public class CardBehavior : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler, IDragHandler, IBeginDragHandler
 {
-    private AudioSource _audioSource;
+    [SerializeField] private CardReview _cardReview;
 
-    public CardBehavior(AudioSource audioSource)
+    private string _description;
+    private CardDescription _cardDescription;
+    private RectTransform _cardSourceTransform;
+
+    public void Init(string description, CardDescription cardDescription, RectTransform siblingTransform, RectTransform cardSourceTransform)
     {
-        _audioSource = audioSource;
+        _cardSourceTransform = cardSourceTransform;
+        _description = description;
+        _cardDescription = cardDescription;
+        _cardReview.Init(_cardSourceTransform, siblingTransform); 
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("ok");
-        _audioSource.Play();
+        _cardDescription.Show(_description);
+        _cardReview.DefineBigCard();
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        _cardDescription.Hide();
+        _cardReview.DefineSmallCard();
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        _cardSourceTransform.position = eventData.position;
+    }
+
+    [ContextMenu(nameof(DefineAllComponents))]
+    private void DefineAllComponents()
+    {
+        DefineCardReview();
+    }
+
+    [ContextMenu(nameof(DefineCardReview))]
+    private void DefineCardReview()
+    {
+        AutomaticFillComponents.DefineComponent(this, ref _cardReview, ComponentLocationTypes.InThis);
     }
 }

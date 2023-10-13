@@ -1,64 +1,51 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class CardDescription : MonoBehaviour
 {
-    private const float FadeOutDuration = 1.5f;
-    private const float FadeUpDuration = 1.5f;
-    private const float StartAlpha = 0f;
     private const string StartText = "";
-    private const float MaxAlpha = 1f;
-    private const float MinAlpha = 0f;
 
     [SerializeField] private TMP_Text _text;
-    [SerializeField] private Image _image;
+    [SerializeField] private CanvasGroup _canvasGroup;
+    [SerializeField] private float _maxAlpha = 1f;
+    [SerializeField] private float _minAlpha = 0f;
+    [SerializeField] private float _fadeOutDuration = 1.5f;
+    [SerializeField] private float _fadeUpDuration = 1.5f;
+    [SerializeField] private float _startAlpha = 0f;
 
     private Coroutine _fadeInWork;
 
     public void Init()
     {
-        _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, StartAlpha);
         _text.text = StartText;
-        _text.color = new Color(_text.color.r, _text.color.g, _text.color.b, StartAlpha);
+        _canvasGroup.alpha = _startAlpha;
     }
 
     public void Show(string description)
     {
-        IEnumerator startCoroutine = FadeIn(FadeUpDuration, MaxAlpha);
-
-        StartCoroutine(ref _fadeInWork, startCoroutine);
+        StartFading(_fadeUpDuration, _maxAlpha);
         _text.text = description;
     }
 
     public void Hide()
     {
-        IEnumerator startCoroutine = FadeIn(FadeOutDuration, MinAlpha);
-
-        StartCoroutine(ref _fadeInWork, startCoroutine);
+        StartFading(_fadeOutDuration, _minAlpha);
     }
 
-    private void StartCoroutine(ref Coroutine container, IEnumerator startCoroutine)
+    private void StartFading(float duration, float targetAlpha)
     {
-        TryStopCoroutine(container);
-
-        container = StartCoroutine(startCoroutine);
-    }
-
-    private void TryStopCoroutine(Coroutine coroutine)
-    {
-        if (coroutine != null)
+        if (_fadeInWork != null)
         {
-            StopCoroutine(coroutine);
+            StopCoroutine(_fadeInWork);
         }
+
+        _fadeInWork = StartCoroutine(FadeIn(duration, targetAlpha));
     }
 
     private IEnumerator FadeIn(float duration, float targetAlpha)
     {
-        float startAlpha = _image.color.a;
+        float startAlpha = _canvasGroup.alpha;
         float timeInWork = 0f;
         float newAlpha;
 
@@ -72,8 +59,7 @@ public class CardDescription : MonoBehaviour
             }
 
             newAlpha = Mathf.Lerp(startAlpha, targetAlpha, timeInWork / duration);
-            _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, newAlpha);
-            _text.color = new Color(_text.color.r, _text.color.g, _text.color.b, newAlpha);
+            _canvasGroup.alpha = newAlpha;
 
             yield return true;
         }
@@ -83,18 +69,18 @@ public class CardDescription : MonoBehaviour
     private void DefineAllComponents()
     {
         DefineText();
-        DefineImage();
+        DefineCanvasGroup();
     }
 
     [ContextMenu("DefineText")]
     private void DefineText()
     {
-        _text = GetComponentInChildren<TMP_Text>();
+        AutomaticFillComponents.DefineComponent(this, ref _text, ComponentLocationTypes.InChildren);
     }
 
-    [ContextMenu("DefineImage")]
-    private void DefineImage()
+    [ContextMenu("DefineCanvasGroup")]
+    private void DefineCanvasGroup()
     {
-        _image = GetComponent<Image>();
+        AutomaticFillComponents.DefineComponent(this, ref _canvasGroup, ComponentLocationTypes.InThis);
     }
 }

@@ -2,14 +2,35 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class CardView
+[RequireComponent(typeof(AudioSource))]
+public class CardView: MonoBehaviour
 {
-    public CardView(CardSO cardSO, Image icon, TMP_Text number, TMP_Text name, TMP_Text feature, AudioSource audioSource)
+    [SerializeField] private Image _icon;
+    [SerializeField] private TMP_Text _number;
+    [SerializeField] private TMP_Text _name;
+    [SerializeField] private TMP_Text _feature;
+    [SerializeField] private AudioSource _audioSource;
+
+    public AudioSource AudioSource => _audioSource;
+
+    public void Init(CardSO cardSO)
     {
-        icon.sprite = cardSO.Icon;
-        number.text = cardSO.Number.ToString();
-        name.text = cardSO.Name;
-        feature.text = cardSO.Feature;
-        audioSource.clip = cardSO.AwakeSound;
+        _icon.sprite = cardSO.Icon;
+        _number.text = cardSO.Number.ToString();
+        _name.text = cardSO.Name;
+        _feature.text = cardSO.Feature;
+        _audioSource.clip = cardSO.AwakeSound;
+    }
+
+    [ContextMenu("DefineAllComponents")]
+    private void DefineAllComponents()
+    {
+        DefineAudioSource();
+    }
+
+    [ContextMenu("DefineAudioSource")]
+    private void DefineAudioSource()
+    {
+        AutomaticFillComponents.DefineComponent(this, ref _audioSource, ComponentLocationTypes.InThis);
     }
 }

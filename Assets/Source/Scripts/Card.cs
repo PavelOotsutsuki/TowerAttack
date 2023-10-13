@@ -1,74 +1,41 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
-public class Card : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler, IDragHandler, IBeginDragHandler
+public class Card : MonoBehaviour
 {
-    private const float SmallWidth = 2.5f;
-    private const float SmallHeight = 3.5f;
-    private const float BigWidth = 5f;
-    private const float BigHeight = 7f;
-
-    [SerializeField] private RectTransform _rectTransform;
     [SerializeField] private CardSO _cardSO;
-    [SerializeField] private Image _icon;
-    [SerializeField] private TMP_Text _number;
-    [SerializeField] private TMP_Text _name;
-    [SerializeField] private TMP_Text _feature;
-    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private CardTrigger _cardTrigger;
+    [SerializeField] private CardSource _cardSource;
+    [SerializeField] private RectTransform _rectTransform;
 
-    private Camera _mainCamera;
-    private CardDescription _cardDescription;
-    private CardView _cardView;
-    private CardBehavior _cardBehavior;
-
-    public void Init(CardDescription cardDescription, Camera mainCamera)
+    public void Init(CardDescription cardDescription)
     {
-        _cardDescription = cardDescription;
-        _mainCamera = mainCamera;
-
-        _cardView = new CardView(_cardSO, _icon, _number, _name, _feature, _audioSource);
-        _cardBehavior = new CardBehavior(_audioSource);
-
-        DefineSmallCard();
+        _cardSource.Init(_cardSO);
+        _cardTrigger.Init(_cardSO.Description, cardDescription, _rectTransform, _cardSource.RectTransform);
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+    [ContextMenu(nameof(DefineAllComponents))]
+    private void DefineAllComponents()
     {
-       // _audioSource.Play();
-        _cardDescription.Show(_cardSO.Description);
-        DefineBigCard();
+        DefineCardTrigger();
+        DefineCardSource();
+        DefineRectTransform();
     }
 
-    public void OnPointerExit(PointerEventData eventData)
+    [ContextMenu(nameof(DefineCardTrigger))]
+    private void DefineCardTrigger()
     {
-        _cardDescription.Hide();
-        DefineSmallCard();
+        AutomaticFillComponents.DefineComponent(this, ref _cardTrigger, ComponentLocationTypes.InChildren);
     }
 
-    public void OnBeginDrag(PointerEventData eventData)
+    [ContextMenu(nameof(DefineCardSource))]
+    private void DefineCardSource()
     {
-        _rectTransform.SetParent(_mainCamera.transform);
+        AutomaticFillComponents.DefineComponent(this, ref _cardSource, ComponentLocationTypes.InChildren);
     }
 
-    public void OnDrag(PointerEventData eventData)
+    [ContextMenu(nameof(DefineRectTransform))]
+    private void DefineRectTransform()
     {
-        Debug.Log(Input.mousePosition);
-        Debug.Log(eventData.position);
-        _rectTransform.position = eventData.position;
-        //_rectTransform.position = _mainCamera.ViewportToWorldPoint(Input.mousePosition);
-    }
-
-    private void DefineSmallCard()
-    {
-        _rectTransform.sizeDelta = new Vector2(SmallWidth, SmallHeight);
-    }
-
-    private void DefineBigCard()
-    {
-        _rectTransform.sizeDelta = new Vector2(BigWidth, BigHeight);
+        AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
     }
 }
