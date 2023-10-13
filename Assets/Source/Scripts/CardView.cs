@@ -1,36 +1,36 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class CardView : MonoBehaviour
+[RequireComponent(typeof(AudioSource))]
+public class CardView: MonoBehaviour
 {
-    [SerializeField] private Card _card;
     [SerializeField] private Image _icon;
-    [SerializeField] private Image _number;
+    [SerializeField] private TMP_Text _number;
     [SerializeField] private TMP_Text _name;
     [SerializeField] private TMP_Text _feature;
+    [SerializeField] private AudioSource _audioSource;
 
-    private void Start()
+    public AudioSource AudioSource => _audioSource;
+
+    public void Init(CardSO cardSO)
     {
-        _icon.sprite = _card.Icon;
-        _number.sprite = _card.Number;
-        _name.text = _card.Name;
-        _feature.text = _card.Feature;
+        _icon.sprite = cardSO.Icon;
+        _number.text = cardSO.Number.ToString();
+        _name.text = cardSO.Name;
+        _feature.text = cardSO.Feature;
+        _audioSource.clip = cardSO.AwakeSound;
     }
 
-    //[SerializeField] private Canvas _canvas;
+    [ContextMenu("DefineAllComponents")]
+    private void DefineAllComponents()
+    {
+        DefineAudioSource();
+    }
 
-    //private Camera _mainCamera;
-
-    //private void Awake()
-    //{
-    //    _mainCamera = Camera.main;
-    //}
-
-    //private void OnEnable()
-    //{
-
-    //}
+    [ContextMenu("DefineAudioSource")]
+    private void DefineAudioSource()
+    {
+        AutomaticFillComponents.DefineComponent(this, ref _audioSource, ComponentLocationTypes.InThis);
+    }
 }
