@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardCharacter : MonoBehaviour
+public class BigCardView : MonoBehaviour
 {
-    public void Init()
+    public void Init(CardSource cardSource)
     {
-
+        
     }
 }

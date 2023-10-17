@@ -7,10 +7,10 @@ public class Card : MonoBehaviour
     [SerializeField] private CardSource _cardSource;
     [SerializeField] private RectTransform _rectTransform;
 
-    public void Init(CardDescription cardDescription)
+    public void Init(CardDescription cardDescription, Table table)
     {
         _cardSource.Init(_cardSO);
-        _cardTrigger.Init(_cardSO.Description, cardDescription, _rectTransform, _cardSource.RectTransform);
+        _cardTrigger.Init(_cardSO.Description, cardDescription, _rectTransform, _cardSource.RectTransform, table, this, _cardSO.CardCharacter);
     }
 
     [ContextMenu(nameof(DefineAllComponents))]

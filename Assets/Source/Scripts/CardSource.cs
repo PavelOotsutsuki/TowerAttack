@@ -4,10 +4,8 @@ public class CardSource : MonoBehaviour
 {
     [SerializeField] private RectTransform _rectTransform;
     [SerializeField] private CardView _cardView;
-    //[SerializeField] private CardReview _cardReview;
 
     public RectTransform RectTransform => _rectTransform;
-    //public CardReview CardReview => _cardReview;
 
     public void Init(CardSO cardSO)
     {
@@ -18,7 +16,6 @@ public class CardSource : MonoBehaviour
     private void DefineAllComponents()
     {
         DefineCardView();
-        //DefineCardReview();
         DefineRectTransform();
     }
 
@@ -27,12 +24,6 @@ public class CardSource : MonoBehaviour
     {
         AutomaticFillComponents.DefineComponent(this, ref _cardView, ComponentLocationTypes.InThis);
     }
-
-    //[ContextMenu(nameof(DefineCardReview))]
-    //private void DefineCardReview()
-    //{
-    //    AutomaticFillComponents.DefineComponent(this, ref _cardReview, ComponentLocationTypes.InThis);
-    //}
 
     [ContextMenu(nameof(DefineRectTransform))]
     private void DefineRectTransform()
