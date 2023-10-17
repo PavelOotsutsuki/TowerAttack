@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7465c289317d843598acc156c84e4215, type: 3}
   m_Name: Zhyzha_1
   m_EditorClassIdentifier: 
+  _cardCharacter: {fileID: 7233767571375303125, guid: ef63134ca2cff467589c5e301a67a745, type: 3}
   _number: 1
   _icon: {fileID: 21300000, guid: 4a4a49433aeb343c48a2b52359dfc40b, type: 3}
   _description: "\u0424\u0443, \u043A\u0430\u043A\u0430\u044F \u043B\u0438\u043F\u043A\u0430\u044F."

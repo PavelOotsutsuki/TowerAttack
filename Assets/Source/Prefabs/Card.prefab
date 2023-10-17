@@ -611,7 +611,7 @@ GameObject:
   - component: {fileID: 5764815386848260012}
   - component: {fileID: 7371312390750658584}
   - component: {fileID: 6780491911784304541}
-  - component: {fileID: 5232389957273785515}
+  - component: {fileID: 2954218342292777055}
   m_Layer: 5
   m_Name: Card
   m_TagString: Untagged
@@ -751,6 +751,7 @@ MonoBehaviour:
   _cardSO: {fileID: 0}
   _cardBehavior: {fileID: 7371312390750658584}
   _cardView: {fileID: 6780491911784304541}
+  _rectTransform: {fileID: 5981172514607463790}
 --- !u!114 &7371312390750658584
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -763,8 +764,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df5d4bd620aee461aafaed4fbef27125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rectTransform: {fileID: 5981172514607463790}
-  _cardReview: {fileID: 5232389957273785515}
 --- !u!114 &6780491911784304541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -777,25 +776,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72ee4ae7eee34437c87cae073b145bdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _width: 150
+  _height: 210
   _icon: {fileID: 8716167333932041648}
   _number: {fileID: 3153675632313984003}
   _name: {fileID: 4555420983906713522}
   _feature: {fileID: 3775016478990405592}
-  _audioSource: {fileID: 6323790266667448610}
---- !u!114 &5232389957273785515
-MonoBehaviour:
+  _canvasGroup: {fileID: 2954218342292777055}
+--- !u!225 &2954218342292777055
+CanvasGroup:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4147016789588735738}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5664e71ca0d9420fa42124eee99735e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _scaleFactor: 2
-  _reviewOffset: 100
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &4515328360127290746
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,34 +3,39 @@ using UnityEngine;
 public class Card : MonoBehaviour
 {
     [SerializeField] private CardSO _cardSO;
-    [SerializeField] private CardTrigger _cardTrigger;
-    [SerializeField] private CardSource _cardSource;
+    [SerializeField] private CardBehavior _cardBehavior;
+    [SerializeField] private CardView _cardView;
     [SerializeField] private RectTransform _rectTransform;
 
-    public void Init(CardDescription cardDescription)
+    public void Init(CardDescription cardDescription, BigCard bigCard, Table table)
     {
-        _cardSource.Init(_cardSO);
-        _cardTrigger.Init(_cardSO.Description, cardDescription, _rectTransform, _cardSource.RectTransform);
+        _cardView.Init(_cardSO, _rectTransform);
+        _cardBehavior.Init(_cardSO.Description, cardDescription, table, this, _cardSO.CardCharacter, bigCard, _cardView);
+    }
+
+    public void Destroy()
+    {
+        Destroy(gameObject);
     }
 
     [ContextMenu(nameof(DefineAllComponents))]
     private void DefineAllComponents()
     {
-        DefineCardTrigger();
-        DefineCardSource();
+        DefineCardBehavior();
+        DefineCardView();
         DefineRectTransform();
     }
 
-    [ContextMenu(nameof(DefineCardTrigger))]
-    private void DefineCardTrigger()
+    [ContextMenu(nameof(DefineCardBehavior))]
+    private void DefineCardBehavior()
     {
-        AutomaticFillComponents.DefineComponent(this, ref _cardTrigger, ComponentLocationTypes.InChildren);
+        AutomaticFillComponents.DefineComponent(this, ref _cardBehavior, ComponentLocationTypes.InThis);
     }
 
-    [ContextMenu(nameof(DefineCardSource))]
-    private void DefineCardSource()
+    [ContextMenu(nameof(DefineCardView))]
+    private void DefineCardView()
     {
-        AutomaticFillComponents.DefineComponent(this, ref _cardSource, ComponentLocationTypes.InChildren);
+        AutomaticFillComponents.DefineComponent(this, ref _cardView, ComponentLocationTypes.InThis);
     }
 
     [ContextMenu(nameof(DefineRectTransform))]
