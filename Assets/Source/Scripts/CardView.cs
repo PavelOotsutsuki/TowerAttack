@@ -1,9 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(CanvasGroup))]
-public class CardView: MonoBehaviour
+public class CardView: MonoBehaviour, IPointerExitHandler, IPointerEnterHandler
 {
     [SerializeField] private float _width = 150f;
     [SerializeField] private float _height = 210f;
@@ -15,37 +16,85 @@ public class CardView: MonoBehaviour
     [SerializeField] private CanvasGroup _canvasGroup;
 
     private RectTransform _cardRectTransform;
+    private CardDescription _cardDescription;
+    private BigCard _bigCard;
+    private CardSize _cardSize;
+    private CardSO _cardSO;
+    private bool _isBlock;
 
-    public CardSize CardSize { get; private set; }
-    public CardSO CardSO { get; private set; }
-
-    public void Init(CardSO cardSO, RectTransform cartRectTransform)
+    public void Init(CardSO cardSO, RectTransform cartRectTransform, CardDescription cardDescription, BigCard bigCard)
     {
-        CardSize = new CardSize(_width, _height);
+        _isBlock = false;
+        _cardSize = new CardSize(_width, _height);
         _cardRectTransform = cartRectTransform;
-        CardSO = cardSO;
+        _cardDescription = cardDescription;
+        _bigCard = bigCard;
+        _cardSO = cardSO;
 
-        _icon.sprite = cardSO.Icon;
-        _number.text = cardSO.Number.ToString();
-        _name.text = cardSO.Name;
-        _feature.text = cardSO.Feature;
-
+        DefineViewCharacters();
         DefineSmallSize();
     }
 
-    public void Hide()
+    public void OnPointerEnter(PointerEventData eventData)
     {
-        _canvasGroup.alpha = 0;
+        if (_isBlock)
+        {
+            return;
+        }
+
+        _cardDescription.Show(_cardSO.Description);
+        DefineBigCard();
     }
 
-    public void Show()
+    public void OnPointerExit(PointerEventData eventData)
     {
-        _canvasGroup.alpha = 1;
+        _cardDescription.Hide();
+        DefineSmallCard();
+    }
+
+    public void Block()
+    {
+        _isBlock = true;
+    }
+
+    public void Unblock()
+    {
+        _isBlock = false;
+    }
+
+    private void DefineBigCard()
+    {
+        _bigCard.Show(_cardSize, _cardRectTransform.position.x, _cardSO);
+        Hide();
+    }
+
+    private void DefineSmallCard()
+    {
+        _bigCard.Hide();
+        Show();
     }
 
     private void DefineSmallSize()
     {
-        _cardRectTransform.sizeDelta = new Vector2(CardSize.Width, CardSize.Height);
+        _cardRectTransform.sizeDelta = new Vector2(_cardSize.Width, _cardSize.Height);
+    }
+
+    private void Hide()
+    {
+        _canvasGroup.alpha = 0;
+    }
+
+    private void Show()
+    {
+        _canvasGroup.alpha = 1;
+    }
+
+    private void DefineViewCharacters()
+    {
+        _icon.sprite = _cardSO.Icon;
+        _number.text = _cardSO.Number.ToString();
+        _name.text = _cardSO.Name;
+        _feature.text = _cardSO.Feature;
     }
 
     [ContextMenu(nameof(DefineAllComponents))]

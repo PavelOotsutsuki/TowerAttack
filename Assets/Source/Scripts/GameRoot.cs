@@ -42,7 +42,7 @@ public class GameRoot : MonoBehaviour
     {
         foreach(Card card in _cards)
         {
-            card.Init(_cardDescription, _bigCard, _table);
+            card.Init(_cardDescription, _bigCard);
         }
     }
 
