@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Table : MonoBehaviour
 {
@@ -40,8 +41,13 @@ public class Table : MonoBehaviour
 
         for (int i = 0; i < countSeats; i++)
         {
-            _cardSeatsSortIndices[i] = (countSeats + 1) / 2 + (i + 1)  / 2 * ((i + 1) % 2 * 2 - 1) - 1;
+            _cardSeatsSortIndices[i] = GetSortIndex(i, countSeats);
         }
+    }
+
+    private int GetSortIndex(int inputIndex, int countSeats)
+    {
+        return (countSeats + 1) / 2 + (inputIndex + 1) / 2 * ((inputIndex + 1) % 2 * 2 - 1) - 1;
     }
 
     [ContextMenu(nameof(DefineAllComponents))]

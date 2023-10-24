@@ -204,12 +204,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 30
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 0
-  m_fontSizeMax: 72
+  m_fontSizeMax: 30
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -377,6 +377,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 112430299}
     m_Modifications:
+    - target: {fileID: 2954218342292777055, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4147016789588735738, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
       propertyPath: m_Name
       value: Card (1)
@@ -600,6 +604,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 112430299}
     m_Modifications:
+    - target: {fileID: 2954218342292777055, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4147016789588735738, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
       propertyPath: m_Name
       value: Card (4)
@@ -1092,6 +1100,10 @@ PrefabInstance:
       propertyPath: _rectTransform
       value: 
       objectReference: {fileID: 522941817}
+    - target: {fileID: 5764815386848260012, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
+      propertyPath: _cardDragAndDrop
+      value: 
+      objectReference: {fileID: 522941822}
     - target: {fileID: 5938433907663109600, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0.14001465
@@ -1470,6 +1482,17 @@ AudioSource:
   m_CorrespondingSourceObject: {fileID: 6323790266667448610, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
   m_PrefabInstance: {fileID: 383420880}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &522941822 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7371312390750658584, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
+  m_PrefabInstance: {fileID: 383420880}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df5d4bd620aee461aafaed4fbef27125, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &651684147
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1878,7 +1901,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.18164584, y: 0.26200002}
   m_AnchorMax: {x: 0.8355834, y: 0.48144445}
-  m_AnchoredPosition: {x: 0.5239868, y: -2.972107}
+  m_AnchoredPosition: {x: 0.5239258, y: -2.972107}
   m_SizeDelta: {x: 0.4857788, y: 4.9366}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &867188510
@@ -2679,9 +2702,9 @@ Transform:
   - {fileID: 435797831}
   - {fileID: 2204800948712965223}
   - {fileID: 1799514447}
-  - {fileID: 200841573}
   - {fileID: 1072365143}
   - {fileID: 2053596823}
+  - {fileID: 200841573}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1381302546
@@ -3271,6 +3294,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Card (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 4147016789588735738, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5764815386848260012, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
       propertyPath: _cardSO
       value: 
@@ -3744,12 +3771,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96

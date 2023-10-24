@@ -3,14 +3,14 @@ using UnityEngine;
 public class Card : MonoBehaviour
 {
     [SerializeField] private CardSO _cardSO;
-    [SerializeField] private CardBehavior _cardBehavior;
+    [SerializeField] private CardDragAndDrop _cardDragAndDrop;
     [SerializeField] private CardView _cardView;
     [SerializeField] private RectTransform _rectTransform;
 
-    public void Init(CardDescription cardDescription, BigCard bigCard, Table table)
+    public void Init(CardDescription cardDescription, BigCard bigCard)
     {
-        _cardView.Init(_cardSO, _rectTransform);
-        _cardBehavior.Init(_cardSO.Description, cardDescription, table, this, _cardSO.CardCharacter, bigCard, _cardView);
+        _cardView.Init(_cardSO, _rectTransform, cardDescription, bigCard);
+        _cardDragAndDrop.Init(_rectTransform, _cardView);
     }
 
     public void Destroy()
@@ -21,15 +21,15 @@ public class Card : MonoBehaviour
     [ContextMenu(nameof(DefineAllComponents))]
     private void DefineAllComponents()
     {
-        DefineCardBehavior();
+        DefineCardDragAndDrop();
         DefineCardView();
         DefineRectTransform();
     }
 
-    [ContextMenu(nameof(DefineCardBehavior))]
-    private void DefineCardBehavior()
+    [ContextMenu(nameof(DefineCardDragAndDrop))]
+    private void DefineCardDragAndDrop()
     {
-        AutomaticFillComponents.DefineComponent(this, ref _cardBehavior, ComponentLocationTypes.InThis);
+        AutomaticFillComponents.DefineComponent(this, ref _cardDragAndDrop, ComponentLocationTypes.InThis);
     }
 
     [ContextMenu(nameof(DefineCardView))]

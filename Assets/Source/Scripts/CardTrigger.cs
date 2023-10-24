@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(CardBehavior))]
+[RequireComponent(typeof(CardDragAndDrop))]
 public class CardTrigger : MonoBehaviour
 {
     //[SerializeField] private CardBehavior _cardBehavior;
