@@ -5,21 +5,28 @@ namespace Cards
 {
     public class Card : MonoBehaviour, IDragAndDropable, ICardProtectable
     {
+        [SerializeField] private CardFront _cardFront;
         [SerializeField] private CardSO _cardSO;
         [SerializeField] private CardDragAndDrop _cardDragAndDrop;
         [SerializeField] private CardView _cardView;
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private CardMovement _cardMovement;
-        [SerializeField] private float _translateSpeed;
 
+        private DrawCardAnimation _drawCardAnimation;
+        
         internal void Init(CardDescription cardDescription, BigCard bigCard, bool isBackView = true)
         {
             _cardMovement.Init(_rectTransform, this);
             _cardSO.CardCharacter.Init(_cardSO.AwakeSound);
-            _cardView.Init(_cardSO, _rectTransform, cardDescription, bigCard, _cardMovement, this, isBackView);
+            _cardFront.Init(_cardSO, _rectTransform, cardDescription, bigCard);
+            _cardView.Init(_cardFront, isBackView);
 
-            CardDragAndDropActions cardDragAndDropActions = new CardDragAndDropActions(_cardView.CardFront, _cardMovement);
+            CardDragAndDropActions cardDragAndDropActions = new(_cardView.CardFront, _cardMovement);
             _cardDragAndDrop.Init(_rectTransform, cardDragAndDropActions);
+
+            _drawCardAnimation = new DrawCardAnimation(_cardView, _rectTransform, _cardMovement);
+            
+            ActivateDragAndDrop(isBackView == false);
         }
 
         public void AddToTable(out CardCharacter cardCharacter)
@@ -28,15 +35,24 @@ namespace Cards
             Destroy();
         }
 
-        public void TranslateLocalInto(Vector2 positon, Vector3 rotation, float duration)
+        public void TranslateLocalInto(Vector2 position, Vector3 rotation, float duration)
         {
-            _cardMovement.TranslateLocalSmoothly(positon, rotation, duration);
+            _cardMovement.TranslateLocalSmoothly(position, rotation, duration);
         }
 
         public void PlayDrawnCardAnimation(float cardBackDuration, float cardBackRotation, float cardBackScaleFactor, float cardFrontDuration, float indent)
         {
             Block();
-            StartCoroutine(_cardView.PlayDrawnCardAnimation(cardBackDuration, cardBackRotation, cardBackScaleFactor, cardFrontDuration, indent));
+            
+            StartCoroutine(_drawCardAnimation.Play(cardBackDuration, cardBackRotation, cardBackScaleFactor, cardFrontDuration, indent));
+            _drawCardAnimation.Finish += OnDrawCardAnimationFinish;
+        }
+
+        private void OnDrawCardAnimationFinish()
+        {
+            _drawCardAnimation.Finish -= OnDrawCardAnimationFinish;
+            
+            Unblock();
         }
 
         public void ActivateDragAndDrop(bool isActivate)
@@ -47,7 +63,7 @@ namespace Cards
         public void Block()
         {
             _cardDragAndDrop.enabled = false;
-            _cardView.CardFront.Block();
+            _cardFront.Block();
             Debug.Log("Block");
         }
 
@@ -62,7 +78,7 @@ namespace Cards
         {
             Destroy(gameObject);
         }
-
+        
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {

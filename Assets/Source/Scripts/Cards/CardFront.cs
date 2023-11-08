@@ -3,8 +3,6 @@ using Tools;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using DG.Tweening;
-using UnityEngine.Rendering.VirtualTexturing;
 
 namespace Cards
 {
@@ -74,22 +72,6 @@ namespace Cards
             EndReview();
         }
 
-        //internal void TranslateInto(Vector2 positon, Vector3 rotation, float duration)
-        //{
-        //    _cardRectTransform.DOMove(positon, duration);
-        //    _cardRectTransform.DORotate(rotation, duration);
-        //}
-
-        internal void DisableRaycasts()
-        {
-            _canvasGroup.blocksRaycasts = false;
-        }
-
-        internal void EnableRaycasts()
-        {
-            _canvasGroup.blocksRaycasts = true;
-        }
-
         internal void Block()
         {
             _isBlock = true;
@@ -108,8 +90,8 @@ namespace Cards
             //    }
             //}
 
-            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            var components = Physics2D.RaycastAll(Input.mousePosition, transform.position);
+            Vector3 ray = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D[] components = Physics2D.RaycastAll(ray, Vector3.forward);
 
             Debug.Log(components.Length);
             foreach (RaycastHit2D raycastHit in components)

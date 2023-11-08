@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections;
+using Tools;
 
 namespace Cards
 {
@@ -34,7 +35,7 @@ namespace Cards
                 return;
             }
 
-            _cardDragAndDropActions.EndReview();
+            _cardDragAndDropActions.StartDrag();
 
             ActivateStartDragOptions();
 
@@ -60,7 +61,6 @@ namespace Cards
                 return;
             }
 
-            _cardDragAndDropActions.DisableRaycasts();
             _cardTransform.SetSiblingIndex(_siblingIndex);
 
             if (_viewCardAfterDropInWork != null)
@@ -70,19 +70,12 @@ namespace Cards
 
             _viewCardAfterDropInWork = StartCoroutine(ViewCardAfterDrop(_returnInHandSpeed, eventData));
             _cardDragAndDropActions.ReturnInHand(_dragPosition, _dragRotation, _returnInHandSpeed);
-            _cardDragAndDropActions.EnableRaycasts();
         }
 
         private void ActivateStartDragOptions()
         {
             _isDrag = true;
             _cardDragAndDropActions.BlockReview();
-        }
-
-        private void ActivateEndDragOptions()
-        {
-            _isDrag = false;
-            _cardDragAndDropActions.UnblockReview();
         }
 
         private IEnumerator ViewCardAfterDrop(float endDuration, PointerEventData eventData)
@@ -92,18 +85,11 @@ namespace Cards
                 yield return true;
             }
 
-            ActivateEndDragOptions();
+            _isDrag = false;
 
-            if (eventData.pointerEnter != null)
-            {
-                if (eventData.pointerEnter.TryGetComponent(out CardDragAndDrop cardDragAndDrop))
-                {
-                    if (cardDragAndDrop == this)
-                    {
-                        _cardDragAndDropActions.StartReview();
-                    }
-                }
-            }
+            EventSystem.current.TryGetComponentInRaycasts(eventData, out CardDragAndDrop cardDragAndDrop);
+            
+            _cardDragAndDropActions.FinishDrag(cardDragAndDrop == this);
         }
 
         private void DefineDragTransformValues()

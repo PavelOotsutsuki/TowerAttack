@@ -775,7 +775,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -2.2592163, y: -0.7296753}
+  m_AnchoredPosition: {x: -2.2592773, y: -0.7297363}
   m_SizeDelta: {x: 250, y: 350}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5764815386848260012
@@ -790,12 +790,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5aac0c557266f4746a62198e7061fee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _cardFront: {fileID: 2805773735245598067}
   _cardSO: {fileID: 11400000, guid: 8add2b29cad544cf2b038cb9022a123f, type: 2}
   _cardDragAndDrop: {fileID: 7802601998824976280}
   _cardView: {fileID: 6780491911784304541}
   _rectTransform: {fileID: 5981172514607463790}
   _cardMovement: {fileID: 8458134809051548175}
-  _translateSpeed: 0.5
 --- !u!114 &6780491911784304541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -808,7 +808,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72ee4ae7eee34437c87cae073b145bdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cardFront: {fileID: 2805773735245598067}
   _cardBack: {fileID: 7343953678776589404}
 --- !u!114 &7802601998824976280
 MonoBehaviour:

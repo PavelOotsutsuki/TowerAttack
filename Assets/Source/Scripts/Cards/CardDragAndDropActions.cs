@@ -13,11 +13,23 @@ namespace Cards
             _cardMovement = cardMovement;
         }
 
-        internal void EndReview()
+        internal void StartDrag()
         {
             if (_cardFront.IsBlock == false)
             {
                 _cardFront.EndReview();
+            }
+        }
+
+        internal void FinishDrag(bool isPointerOnCard)
+        {
+            _cardFront.Unblock();
+            
+            UnblockReview();
+
+            if (isPointerOnCard)
+            {
+                StartReview();
             }
         }
 
@@ -37,16 +49,6 @@ namespace Cards
         internal void UnblockReview()
         {
             _cardFront.Unblock();
-        }
-
-        internal void DisableRaycasts()
-        {
-            _cardFront.DisableRaycasts();
-        }
-
-        internal void EnableRaycasts()
-        {
-            _cardFront.EnableRaycasts();
         }
 
         internal void ReturnInHand(Vector2 positon, Vector3 rotation, float duration)
