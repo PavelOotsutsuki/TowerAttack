@@ -2,7 +2,7 @@ using Cards;
 
 namespace GameFields
 {
-    public interface IDrawCardHandler
+    public interface IDrawCardManager
     {
         public void DrawCard();
     }

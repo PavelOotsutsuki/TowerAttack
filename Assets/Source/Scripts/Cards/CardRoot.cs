@@ -1,4 +1,3 @@
-using System;
 using Tools;
 using UnityEngine;
 
@@ -9,7 +8,6 @@ namespace Cards
         [SerializeField] private CardDescription _cardDescription;
         [SerializeField] private BigCard _bigCard;
         [SerializeField] private Card[] _cards;
-        //[SerializeField] private CardBack _cardBack;
 
         public Card[] Cards => _cards;
 
@@ -23,14 +21,7 @@ namespace Cards
             InitCardDescription();
             InitBigCard();
             InitCards();
-            //InitDeckCard();
         }
-
-        //private void InitDeckCard()
-        //{
-        //    _cardBack.Init();
-        //    _cardBack.TakeCard();
-        //}
 
         private void InitCardDescription()
         {
@@ -56,7 +47,6 @@ namespace Cards
             DefineAllCards();
             DefineCardDescription();
             DefineBigCard();
-            //DefineDeckCard();
         }
 
         [ContextMenu(nameof(DefineAllCards))]
@@ -76,11 +66,5 @@ namespace Cards
         {
             AutomaticFillComponents.DefineComponent(this, ref _bigCard, ComponentLocationTypes.InChildren);
         }
-
-        //[ContextMenu(nameof(DefineDeckCard))]
-        //private void DefineDeckCard()
-        //{
-        //    AutomaticFillComponents.DefineComponent(this, ref _deckCard, ComponentLocationTypes.InChildren);
-        //}
     }
 }

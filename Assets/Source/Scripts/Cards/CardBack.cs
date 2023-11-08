@@ -1,52 +1,46 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
-using Tools;
 
 namespace Cards
 {
     public class CardBack : MonoBehaviour
     {
-        private const float MaxRotation = 90f;
+        //[SerializeField] private float _maxRotation = 90f;
 
-        [SerializeField] private RectTransform _rectTransform;
-        [SerializeField] private float _invertDuration = 1f;
+        //private RectTransform _cardRectTransform;
+        //private CardMovement _cardMovement;
+        //private Vector3 _maxRotationVector;
+        //private Vector3 _scaleVector;
 
-        private Vector3 _downWay;
-        private Vector3 _maxRotationVector;
-        private Vector3 _scaleVector;
+        //public void Init(CardMovement cardMovement, RectTransform cardRectTransform)
+        //{
+        //    _cardRectTransform = cardRectTransform;
+        //    _cardMovement = cardMovement;
+        //    _maxRotationVector = new Vector3(_maxRotation, 0f, 0f);
+        //    _scaleVector = _cardRectTransform.localScale * 2;
+        //}
 
-        public void Init()
-        {
-            _maxRotationVector = new Vector3(MaxRotation, 0f, 0f);
-            _downWay = new Vector3(_rectTransform.position.x, _rectTransform.position.y - _rectTransform.rect.height, _rectTransform.position.z);
-            _scaleVector = _rectTransform.localScale * 2;
-        }
-
-        public void TakeCard()
-        {
-            _rectTransform.DOMove(_downWay, _invertDuration).SetEase(Ease.Linear);
-            _rectTransform.DORotate(_maxRotationVector, _invertDuration).SetEase(Ease.Linear);
-            _rectTransform.DOScale(_scaleVector, _invertDuration).SetEase(Ease.Linear);
-        }
+        //public void InvertCard(float invertDuration)
+        //{
+        //    Vector3 downWay = new Vector3(_cardRectTransform.position.x, _cardRectTransform.position.y - _cardRectTransform.rect.height, _cardRectTransform.position.z);
+        //    _cardMovement.InvertCardLinear(downWay, _maxRotationVector, _scaleVector, invertDuration);
+        //}
 
         //private IEnumerator TakeCardProcess()
         //{
             
         //}
 
-        [ContextMenu(nameof(DefineAllComponents))]
-        private void DefineAllComponents()
-        {
-            DefineRectTransform();
-        }
+        //[ContextMenu(nameof(DefineAllComponents))]
+        //private void DefineAllComponents()
+        //{
+        //    DefineRectTransform();
+        //}
 
-        [ContextMenu(nameof(DefineRectTransform))]
-        private void DefineRectTransform()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
-        }
+        //[ContextMenu(nameof(DefineRectTransform))]
+        //private void DefineRectTransform()
+        //{
+        //    AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
+        //}
     }
 }
 

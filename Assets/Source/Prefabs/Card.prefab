@@ -746,6 +746,8 @@ GameObject:
   - component: {fileID: 5981172514607463790}
   - component: {fileID: 5764815386848260012}
   - component: {fileID: 6780491911784304541}
+  - component: {fileID: 7802601998824976280}
+  - component: {fileID: 8458134809051548175}
   - component: {fileID: 4651403304053808188}
   - component: {fileID: 731392281858233219}
   m_Layer: 5
@@ -789,8 +791,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cardSO: {fileID: 11400000, guid: 8add2b29cad544cf2b038cb9022a123f, type: 2}
+  _cardDragAndDrop: {fileID: 7802601998824976280}
   _cardView: {fileID: 6780491911784304541}
   _rectTransform: {fileID: 5981172514607463790}
+  _cardMovement: {fileID: 8458134809051548175}
   _translateSpeed: 0.5
 --- !u!114 &6780491911784304541
 MonoBehaviour:
@@ -806,7 +810,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cardFront: {fileID: 2805773735245598067}
   _cardBack: {fileID: 7343953678776589404}
-  _cardDragAndDrop: {fileID: 3247459225994979278}
+--- !u!114 &7802601998824976280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4147016789588735738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df5d4bd620aee461aafaed4fbef27125, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _returnInHandSpeed: 0.5
+--- !u!114 &8458134809051548175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4147016789588735738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4093f20f7bfc84506b09fc9973c7570e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!222 &4651403304053808188
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -947,8 +975,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 894c86c0e79f7454ea71fddb4ec936a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rectTransform: {fileID: 8502844890379667406}
-  _invertDuration: 1
 --- !u!1 &4730135370658826164
 GameObject:
   m_ObjectHideFlags: 0
@@ -1037,7 +1063,6 @@ GameObject:
   - component: {fileID: 8272421689657916081}
   - component: {fileID: 5823099822882136473}
   - component: {fileID: 2805773735245598067}
-  - component: {fileID: 3247459225994979278}
   m_Layer: 5
   m_Name: CardFront
   m_TagString: Untagged
@@ -1135,19 +1160,6 @@ MonoBehaviour:
   _name: {fileID: 4539111807913271712}
   _feature: {fileID: 3336148435952527685}
   _canvasGroup: {fileID: 5823099822882136473}
---- !u!114 &3247459225994979278
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5098279979532357430}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df5d4bd620aee461aafaed4fbef27125, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _returnInHandSpeed: 0.5
 --- !u!1 &5210918133022376145
 GameObject:
   m_ObjectHideFlags: 0

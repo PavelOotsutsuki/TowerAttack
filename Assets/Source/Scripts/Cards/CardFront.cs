@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using DG.Tweening;
+using UnityEngine.Rendering.VirtualTexturing;
 
 namespace Cards
 {
@@ -26,6 +27,8 @@ namespace Cards
         private CardSO _cardSO;
         private bool _isBlock;
 
+        public bool IsBlock => _isBlock;
+
         internal void Init(CardSO cardSO, RectTransform cartRectTransform, CardDescription cardDescription, BigCard bigCard)
         {
             _isBlock = false;
@@ -39,6 +42,18 @@ namespace Cards
             DefineSmallSize();
         }
 
+        internal void StartReview()
+        {
+            _cardDescription.Show(_cardSO.Description);
+            DefineBigCard();
+        }
+
+        internal void EndReview()
+        {
+            _cardDescription.Hide();
+            DefineSmallCard();
+        }
+
         public void OnPointerEnter(PointerEventData eventData)
         {
             if (_isBlock)
@@ -46,8 +61,7 @@ namespace Cards
                 return;
             }
 
-            _cardDescription.Show(_cardSO.Description);
-            DefineBigCard();
+            StartReview();
         }
 
         public void OnPointerExit(PointerEventData eventData)
@@ -57,15 +71,14 @@ namespace Cards
                 return;
             }
 
-            _cardDescription.Hide();
-            DefineSmallCard();
+            EndReview();
         }
 
-        internal void TranslateInto(Vector2 positon, Vector3 rotation, float duration)
-        {
-            _cardRectTransform.DOMove(positon, duration);
-            _cardRectTransform.DORotate(rotation, duration);
-        }
+        //internal void TranslateInto(Vector2 positon, Vector3 rotation, float duration)
+        //{
+        //    _cardRectTransform.DOMove(positon, duration);
+        //    _cardRectTransform.DORotate(rotation, duration);
+        //}
 
         internal void DisableRaycasts()
         {
@@ -85,6 +98,31 @@ namespace Cards
         internal void Unblock()
         {
             _isBlock = false;
+
+            //PointerEventData eventData = new PointerEventData(EventSystem.current);
+            //if (EventSystem.current.TryGetComponentInRaycasts(eventData, out CardFront cardFront))
+            //{
+            //    if (cardFront == this)
+            //    {
+            //        StartReview();
+            //    }
+            //}
+
+            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            var components = Physics2D.RaycastAll(Input.mousePosition, transform.position);
+
+            Debug.Log(components.Length);
+            foreach (RaycastHit2D raycastHit in components)
+            {
+                if (raycastHit.collider.gameObject.TryGetComponent(out CardFront cardFront))
+                {
+                    if (cardFront == this)
+                    {
+                        Debug.Log("УРа");
+                        StartReview();
+                    }
+                }
+            }
         }
 
         private void DefineBigCard()

@@ -5,12 +5,13 @@ using UnityEngine;
 
 namespace GameFields
 {
-    public class GameField : MonoBehaviour, ICardFromHandIntoTableLayable, IDrawCardHandler
+    public class GameField : MonoBehaviour, IPlayCardManager, IDrawCardManager
     {
         [SerializeField] private Table _table;
         [SerializeField] private Hand _hand;
         [SerializeField] private Deck _deck;
         [SerializeField] private EndTurnButton _endTurnButton;
+        [SerializeField] private DrawCardAnimator _drawCardAnimator;
 
         public void Init(Card[] cardsInDeck, Card[] cardsInHand = null)
         {
@@ -20,7 +21,7 @@ namespace GameFields
             InitEndTurnButton();
         }
 
-        public void LayInTableFromHand(Card card)
+        public void PlayCard(Card card)
         {
             _hand.RemoveCard(card);
         }
@@ -29,9 +30,20 @@ namespace GameFields
         {
             if (_deck.TryTakeCard(out Card drawnCard))
             {
-                _hand.AddCard(drawnCard);
+                _drawCardAnimator.Init(_hand, drawnCard);
             }
         }
+
+        //private IEnumerator DrawnCardBehaviour(Card drawnCard)
+        //{
+        //    drawnCard.transform.SetParent(transform);
+        //    drawnCard.transform.SetAsLastSibling();
+        //    drawnCard.PlayDrawnCardAnimation();
+
+        //    yield return new WaitForSeconds(2f);
+
+        //    _hand.AddCard(drawnCard);
+        //}
 
         private void InitHand(Card[] cards)
         {
@@ -60,6 +72,7 @@ namespace GameFields
             DefineHand();
             DefineDeck();
             DefineEndTurnButton();
+            DefineDrawCardAnimator();
         }
 
         [ContextMenu(nameof(DefineTable))]
@@ -84,6 +97,12 @@ namespace GameFields
         private void DefineEndTurnButton()
         {
             AutomaticFillComponents.DefineComponent(this, ref _endTurnButton, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineDrawCardAnimator))]
+        private void DefineDrawCardAnimator()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _drawCardAnimator, ComponentLocationTypes.InThis);
         }
     }
 }

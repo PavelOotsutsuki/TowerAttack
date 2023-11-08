@@ -8,22 +8,22 @@ namespace Cards
     {
         [SerializeField] private float _returnInHandSpeed;
 
-        private Transform _cardTransform;
-        private CardFront _cardFront;
-        private Vector2 _dragPosition;
-        private Vector3 _dragRotation;
-        private int _siblingIndex;
         private Coroutine _viewCardAfterDropInWork;
         private bool _isDrag;
         private bool _isAlreadyDrag;
+        private Vector2 _dragPosition;
+        private Vector3 _dragRotation;
+        private int _siblingIndex;
+        private Transform _cardTransform;
 
-        internal void Init(RectTransform cardTransform, CardFront cardFront)
+        private CardDragAndDropActions _cardDragAndDropActions;
+
+        internal void Init(Transform cardTransform, CardDragAndDropActions cardDragAndDropActions)
         {
+            _cardTransform = cardTransform;
+            _cardDragAndDropActions = cardDragAndDropActions;
             _isDrag = false;
             _isAlreadyDrag = false;
-            _cardFront = cardFront;
-
-            _cardTransform = cardTransform;
         }
 
         public void OnBeginDrag(PointerEventData eventData)
@@ -34,7 +34,8 @@ namespace Cards
                 return;
             }
 
-            _cardFront.OnPointerExit(eventData);
+            _cardDragAndDropActions.EndReview();
+
             ActivateStartDragOptions();
 
             DefineDragTransformValues();
@@ -59,7 +60,7 @@ namespace Cards
                 return;
             }
 
-            _cardFront.DisableRaycasts();
+            _cardDragAndDropActions.DisableRaycasts();
             _cardTransform.SetSiblingIndex(_siblingIndex);
 
             if (_viewCardAfterDropInWork != null)
@@ -68,20 +69,20 @@ namespace Cards
             }
 
             _viewCardAfterDropInWork = StartCoroutine(ViewCardAfterDrop(_returnInHandSpeed, eventData));
-            _cardFront.TranslateInto(_dragPosition, _dragRotation, _returnInHandSpeed);
-            _cardFront.EnableRaycasts();
+            _cardDragAndDropActions.ReturnInHand(_dragPosition, _dragRotation, _returnInHandSpeed);
+            _cardDragAndDropActions.EnableRaycasts();
         }
 
         private void ActivateStartDragOptions()
         {
             _isDrag = true;
-            _cardFront.Block();
+            _cardDragAndDropActions.BlockReview();
         }
 
         private void ActivateEndDragOptions()
         {
             _isDrag = false;
-            _cardFront.Unblock();
+            _cardDragAndDropActions.UnblockReview();
         }
 
         private IEnumerator ViewCardAfterDrop(float endDuration, PointerEventData eventData)
@@ -99,16 +100,10 @@ namespace Cards
                 {
                     if (cardDragAndDrop == this)
                     {
-                        _cardFront.OnPointerEnter(eventData);
+                        _cardDragAndDropActions.StartReview();
                     }
                 }
             }
-        }
-
-        private void DefineDragSiblingIndex()
-        {
-            _siblingIndex = _cardTransform.GetSiblingIndex();
-            _cardTransform.SetAsLastSibling();
         }
 
         private void DefineDragTransformValues()
@@ -116,6 +111,12 @@ namespace Cards
             _dragPosition = _cardTransform.position;
             _dragRotation = _cardTransform.rotation.eulerAngles;
             _cardTransform.rotation = Quaternion.identity;
+        }
+
+        private void DefineDragSiblingIndex()
+        {
+            _siblingIndex = _cardTransform.GetSiblingIndex();
+            _cardTransform.SetAsLastSibling();
         }
     }
 }

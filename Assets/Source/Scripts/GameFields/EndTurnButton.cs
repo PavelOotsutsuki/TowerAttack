@@ -5,9 +5,9 @@ namespace GameFields
 {
     public class EndTurnButton : MonoBehaviour, IPointerClickHandler
     {
-        private IDrawCardHandler _drawHandler;
+        private IDrawCardManager _drawHandler;
 
-        public void Init(IDrawCardHandler drawHandler)
+        public void Init(IDrawCardManager drawHandler)
         {
             _drawHandler = drawHandler;
         }

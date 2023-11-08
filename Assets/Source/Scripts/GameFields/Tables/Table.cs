@@ -10,11 +10,11 @@ namespace GameFields.Tables
         [SerializeField] private CardSeat[] _cardSeats;
 
         private int[] _cardSeatsSortIndices;
-        private ICardFromHandIntoTableLayable _cardLayable;
+        private IPlayCardManager _playCardManager;
 
-        public void Init(ICardFromHandIntoTableLayable cardlayable)
+        public void Init(IPlayCardManager playCardManager)
         {
-            _cardLayable = cardlayable;
+            _playCardManager = playCardManager;
             SetCardSeatsIndices();
         }
 
@@ -26,7 +26,7 @@ namespace GameFields.Tables
                 //{
                     if (TryFindCardSeat(out CardSeat freeCardSeat))
                     {
-                        _cardLayable.LayInTableFromHand(card);
+                        _playCardManager.PlayCard(card);
                         card.AddToTable(out CardCharacter cardCharacter);
                         freeCardSeat.SetCardCharacter(cardCharacter);
                     }
