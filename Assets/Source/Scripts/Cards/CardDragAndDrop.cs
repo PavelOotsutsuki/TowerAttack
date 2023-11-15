@@ -35,9 +35,11 @@ namespace Cards
                 return;
             }
 
+            _isDrag = true;
+
             _cardDragAndDropActions.StartDrag();
 
-            ActivateStartDragOptions();
+            //ActivateStartDragOptions();
 
             DefineDragTransformValues();
             DefineDragSiblingIndex();
@@ -61,6 +63,7 @@ namespace Cards
                 return;
             }
 
+            //_cardDragAndDropActions.DisableRaycasts();
             _cardTransform.SetSiblingIndex(_siblingIndex);
 
             if (_viewCardAfterDropInWork != null)
@@ -70,13 +73,20 @@ namespace Cards
 
             _viewCardAfterDropInWork = StartCoroutine(ViewCardAfterDrop(_returnInHandSpeed, eventData));
             _cardDragAndDropActions.ReturnInHand(_dragPosition, _dragRotation, _returnInHandSpeed);
+            //_cardDragAndDropActions.EnableRaycasts();
         }
 
-        private void ActivateStartDragOptions()
-        {
-            _isDrag = true;
-            _cardDragAndDropActions.BlockReview();
-        }
+        //private void ActivateStartDragOptions()
+        //{
+        //    _isDrag = true;
+        //    _cardDragAndDropActions.BlockReview();
+        //}
+
+        //private void ActivateEndDragOptions()
+        //{
+        //    _isDrag = false;
+        //    _cardDragAndDropActions.UnblockReview();
+        //}
 
         private IEnumerator ViewCardAfterDrop(float endDuration, PointerEventData eventData)
         {
@@ -85,11 +95,23 @@ namespace Cards
                 yield return true;
             }
 
+            //ActivateEndDragOptions();
             _isDrag = false;
+            //_cardDragAndDropActions.UnblockReview();
 
+            //if (eventData.pointerEnter != null)
+            //{
+            //    if (eventData.pointerEnter.TryGetComponent(out CardDragAndDrop cardDragAndDrop))
+            //    {
+            //        if (cardDragAndDrop == this)
+            //        {
+            //            _cardDragAndDropActions.StartReview();
+            //        }
+            //    }
+            //}
             EventSystem.current.TryGetComponentInRaycasts(eventData, out CardDragAndDrop cardDragAndDrop);
-            
-            _cardDragAndDropActions.FinishDrag(cardDragAndDrop == this);
+
+            _cardDragAndDropActions.EndDrag(cardDragAndDrop == this);
         }
 
         private void DefineDragTransformValues()

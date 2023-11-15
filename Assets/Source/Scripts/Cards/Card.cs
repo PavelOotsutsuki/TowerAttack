@@ -3,29 +3,31 @@ using Tools;
 
 namespace Cards
 {
-    public class Card : MonoBehaviour, IDragAndDropable, ICardProtectable
+    public class Card : MonoBehaviour, ICardProtectable
     {
+        [SerializeField] private CardBack _cardBack;
         [SerializeField] private CardFront _cardFront;
         [SerializeField] private CardSO _cardSO;
         [SerializeField] private CardDragAndDrop _cardDragAndDrop;
         [SerializeField] private CardView _cardView;
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private CardMovement _cardMovement;
+        [SerializeField] private Vector3 _defaultScaleVector;
 
         private DrawCardAnimation _drawCardAnimation;
-        
+
         internal void Init(CardDescription cardDescription, BigCard bigCard, bool isBackView = true)
         {
-            _cardMovement.Init(_rectTransform, this);
+            _rectTransform.localScale = _defaultScaleVector;
+            _cardMovement = new CardMovement(_rectTransform);
             _cardSO.CardCharacter.Init(_cardSO.AwakeSound);
             _cardFront.Init(_cardSO, _rectTransform, cardDescription, bigCard);
-            _cardView.Init(_cardFront, isBackView);
+            _cardView = new CardView(_cardFront, _cardBack, isBackView);
 
-            CardDragAndDropActions cardDragAndDropActions = new(_cardView.CardFront, _cardMovement);
+            CardDragAndDropActions cardDragAndDropActions = new CardDragAndDropActions(_cardFront, _cardMovement);
             _cardDragAndDrop.Init(_rectTransform, cardDragAndDropActions);
+            _drawCardAnimation = new DrawCardAnimation(_rectTransform, _cardView, _cardMovement, this);
 
-            _drawCardAnimation = new DrawCardAnimation(_cardView, _rectTransform, _cardMovement);
-            
             ActivateDragAndDrop(isBackView == false);
         }
 
@@ -35,24 +37,15 @@ namespace Cards
             Destroy();
         }
 
-        public void TranslateLocalInto(Vector2 position, Vector3 rotation, float duration)
+        public void TranslateLocalInto(Vector2 positon, Vector3 rotation, float duration)
         {
-            _cardMovement.TranslateLocalSmoothly(position, rotation, duration);
+            _cardMovement.TranslateLocalSmoothly(positon, rotation, duration, _defaultScaleVector);
         }
 
         public void PlayDrawnCardAnimation(float cardBackDuration, float cardBackRotation, float cardBackScaleFactor, float cardFrontDuration, float indent)
         {
             Block();
-            
-            StartCoroutine(_drawCardAnimation.Play(cardBackDuration, cardBackRotation, cardBackScaleFactor, cardFrontDuration, indent));
-            _drawCardAnimation.Finish += OnDrawCardAnimationFinish;
-        }
-
-        private void OnDrawCardAnimationFinish()
-        {
-            _drawCardAnimation.Finish -= OnDrawCardAnimationFinish;
-            
-            Unblock();
+            StartCoroutine(_drawCardAnimation.PlayDrawnCardAnimation(cardBackDuration, cardBackRotation, cardBackScaleFactor, cardFrontDuration, indent));
         }
 
         public void ActivateDragAndDrop(bool isActivate)
@@ -70,7 +63,7 @@ namespace Cards
         public void Unblock()
         {
             _cardDragAndDrop.enabled = true;
-            _cardView.CardFront.Unblock();
+            _cardFront.Unblock();
             Debug.Log("Unblock");
         }
 
@@ -78,12 +71,13 @@ namespace Cards
         {
             Destroy(gameObject);
         }
-        
+
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
+            DefineCardBack();
+            DefineCardFront();
             DefineCardDragAndDrop();
-            DefineCardView();
             DefineRectTransform();
             DefineCardMovement();
         }
@@ -92,12 +86,6 @@ namespace Cards
         private void DefineCardDragAndDrop()
         {
             AutomaticFillComponents.DefineComponent(this, ref _cardDragAndDrop, ComponentLocationTypes.InThis);
-        }
-
-        [ContextMenu(nameof(DefineCardView))]
-        private void DefineCardView()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _cardView, ComponentLocationTypes.InThis);
         }
 
         [ContextMenu(nameof(DefineRectTransform))]
@@ -112,5 +100,16 @@ namespace Cards
             AutomaticFillComponents.DefineComponent(this, ref _cardMovement, ComponentLocationTypes.InThis);
         }
 
+        [ContextMenu(nameof(DefineCardBack))]
+        private void DefineCardBack()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _cardBack, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineCardFront))]
+        private void DefineCardFront()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _cardFront, ComponentLocationTypes.InChildren);
+        }
     }
 }

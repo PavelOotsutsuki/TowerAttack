@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3192724666699789365}
   - component: {fileID: 4985668235104159847}
   - component: {fileID: 7201395340910037951}
-  - component: {fileID: 3341361697672250718}
   - component: {fileID: 6863181765437150808}
   m_Layer: 5
   m_Name: CardTrigger
@@ -77,18 +76,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3341361697672250718
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4263455756476522294}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a8fcc0c91e4447d39d9a1f41f6a25e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6863181765437150808
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101,6 +88,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df5d4bd620aee461aafaed4fbef27125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _returnInHandSpeed: 0
 --- !u!1 &4803760147892148026
 GameObject:
   m_ObjectHideFlags: 0
@@ -252,7 +240,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6576012667737333510, guid: 82bda2a3b300f47a689e7e99f712a9eb, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

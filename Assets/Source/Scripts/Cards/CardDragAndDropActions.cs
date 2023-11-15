@@ -13,47 +13,57 @@ namespace Cards
             _cardMovement = cardMovement;
         }
 
+        //internal void EndReview()
+        //{
+        //    if (_cardFront.IsBlock == false)
+        //    {
+        //        _cardFront.EndReview();
+        //    }
+        //}
+
         internal void StartDrag()
         {
+            //_cardFront.Block();
+
             if (_cardFront.IsBlock == false)
             {
                 _cardFront.EndReview();
             }
-        }
 
-        internal void FinishDrag(bool isPointerOnCard)
-        {
-            _cardFront.Unblock();
-            
-            UnblockReview();
-
-            if (isPointerOnCard)
-            {
-                StartReview();
-            }
-        }
-
-        internal void StartReview()
-        {
-            if (_cardFront.IsBlock == false)
-            {
-                _cardFront.StartReview();
-            }
-        }
-
-        internal void BlockReview()
-        {
             _cardFront.Block();
         }
 
-        internal void UnblockReview()
+        internal void EndDrag(bool isPointerOnCard)
         {
             _cardFront.Unblock();
+
+            if (isPointerOnCard)
+            {
+                if (_cardFront.IsBlock == false)
+                {
+                    _cardFront.StartReview();
+                }
+            }
         }
+
+        //internal void BlockReview()
+        //{
+        //    _cardFront.Block();
+        //}
+        //internal void DisableRaycasts()
+        //{
+        //    _cardFront.DisableRaycasts();
+        //}
+
+        //internal void EnableRaycasts()
+        //{
+        //    _cardFront.EnableRaycasts();
+        //}
 
         internal void ReturnInHand(Vector2 positon, Vector3 rotation, float duration)
         {
-            _cardMovement.TranslateSmoothly(positon, rotation, duration);
+            Vector3 scaleVector = new Vector3(1f, 1f, 1f);
+            _cardMovement.TranslateSmoothly(positon, rotation, duration, scaleVector);
         }
     }
 }

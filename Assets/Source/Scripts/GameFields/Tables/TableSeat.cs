@@ -4,7 +4,7 @@ using Tools;
 
 namespace GameFields.Tables
 {
-    internal class CardSeat : MonoBehaviour
+    internal class TableSeat : MonoBehaviour
     {
         [SerializeField] private RectTransform _rectTransform;
 

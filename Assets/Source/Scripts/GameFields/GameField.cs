@@ -1,5 +1,6 @@
 using Cards;
 using GameFields.Tables;
+using GameFields.Hands;
 using Tools;
 using UnityEngine;
 
@@ -16,8 +17,8 @@ namespace GameFields
         public void Init(Card[] cardsInDeck, Card[] cardsInHand = null)
         {
             InitTable();
-            InitHand(cardsInHand);
             InitDeck(cardsInDeck);
+            InitHand(cardsInHand);
             InitEndTurnButton();
         }
 

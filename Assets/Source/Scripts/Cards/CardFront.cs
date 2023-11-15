@@ -72,6 +72,22 @@ namespace Cards
             EndReview();
         }
 
+        //internal void TranslateInto(Vector2 positon, Vector3 rotation, float duration)
+        //{
+        //    _cardRectTransform.DOMove(positon, duration);
+        //    _cardRectTransform.DORotate(rotation, duration);
+        //}
+
+        //internal void DisableRaycasts()
+        //{
+        //    _canvasGroup.blocksRaycasts = false;
+        //}
+
+        //internal void EnableRaycasts()
+        //{
+        //    _canvasGroup.blocksRaycasts = true;
+        //}
+
         internal void Block()
         {
             _isBlock = true;
@@ -90,10 +106,10 @@ namespace Cards
             //    }
             //}
 
+
             Vector3 ray = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D[] components = Physics2D.RaycastAll(ray, Vector3.forward);
 
-            Debug.Log(components.Length);
             foreach (RaycastHit2D raycastHit in components)
             {
                 if (raycastHit.collider.gameObject.TryGetComponent(out CardFront cardFront))

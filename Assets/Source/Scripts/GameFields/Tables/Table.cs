@@ -7,7 +7,7 @@ namespace GameFields.Tables
 {
     internal class Table : MonoBehaviour, IDropHandler
     {
-        [SerializeField] private CardSeat[] _cardSeats;
+        [SerializeField] private TableSeat[] _cardSeats;
 
         private int[] _cardSeatsSortIndices;
         private IPlayCardManager _playCardManager;
@@ -24,7 +24,7 @@ namespace GameFields.Tables
             {
                 //if (eventData.pointerDrag.TryGetComponent(out Card card))
                 //{
-                    if (TryFindCardSeat(out CardSeat freeCardSeat))
+                    if (TryFindCardSeat(out TableSeat freeCardSeat))
                     {
                         _playCardManager.PlayCard(card);
                         card.AddToTable(out CardCharacter cardCharacter);
@@ -34,7 +34,7 @@ namespace GameFields.Tables
             }
         }
 
-        private bool TryFindCardSeat(out CardSeat cardSeat)
+        private bool TryFindCardSeat(out TableSeat cardSeat)
         {
             cardSeat = null;
 

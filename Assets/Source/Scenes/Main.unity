@@ -270,7 +270,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.18636595, y: 0.21831547}
   m_AnchorMax: {x: 0.83977556, y: 0.83500004}
-  m_AnchoredPosition: {x: 2.8272705, y: -0.65148926}
+  m_AnchoredPosition: {x: 2.827301, y: -0.65148926}
   m_SizeDelta: {x: -4.515106, y: 1.8361969}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &112430298
@@ -285,6 +285,7 @@ GameObject:
   - component: {fileID: 112430301}
   - component: {fileID: 112430300}
   - component: {fileID: 112430302}
+  - component: {fileID: 112430303}
   m_Layer: 0
   m_Name: HandPanel
   m_TagString: Untagged
@@ -361,12 +362,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bf3cf3dff2dd437d82de218fbf5b97b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startCardTranslateSpeed: 1
+  _startCardTranslateSpeed: 0.5
   _startPositionX: 600
   _startPositionY: 90
-  _rectTransform: {fileID: 112430299}
   _offsetX: 162.5
+  _rectTransform: {fileID: 112430299}
+  _handSeatPool: {fileID: 112430303}
   _handLength: 1175
+--- !u!114 &112430303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112430298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50868694d3a704e2482ed342e179db3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _container: {fileID: 112430298}
+  _countObjects: 100
+  _template: {fileID: 517147549691505847, guid: 8208b4381673849c1a76ded5f6fdb2da, type: 3}
 --- !u!224 &129168446 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6930783577251702081, guid: 6b7a804513ec445a78547370ed67ac8d, type: 3}
@@ -956,7 +973,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.026, y: 0.027777778}
   m_AnchorMax: {x: 0.15720834, y: 0.12581483}
-  m_AnchoredPosition: {x: -1, y: 0.43896484}
+  m_AnchoredPosition: {x: -1.0002441, y: 0.43896484}
   m_SizeDelta: {x: -1.3383789, y: -3.0563965}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &363521649
@@ -1965,7 +1982,7 @@ PrefabInstance:
     - target: {fileID: 5764815386848260012, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
       propertyPath: _cardView
       value: 
-      objectReference: {fileID: 1886997468}
+      objectReference: {fileID: 0}
     - target: {fileID: 5764815386848260012, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
       propertyPath: _cardBehavior
       value: 
@@ -2469,7 +2486,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.18164584, y: 0.26200002}
   m_AnchorMax: {x: 0.8355834, y: 0.48144445}
-  m_AnchoredPosition: {x: 0.5239258, y: -2.972168}
+  m_AnchoredPosition: {x: 0.5239258, y: -2.972107}
   m_SizeDelta: {x: 0.4857788, y: 4.9366}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &867188510
@@ -2693,7 +2710,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2364322257046438053, guid: 6b7a804513ec445a78547370ed67ac8d, type: 3}
       propertyPath: m_Name
-      value: CardSeat (3)
+      value: TableSeat (3)
       objectReference: {fileID: 0}
     - target: {fileID: 2364322257046438053, guid: 6b7a804513ec445a78547370ed67ac8d, type: 3}
       propertyPath: m_IsActive
@@ -3586,20 +3603,20 @@ MonoBehaviour:
   _cardDescription: {fileID: 715708116}
   _bigCard: {fileID: 737011729}
   _cards:
-  - {fileID: 522941827}
-  - {fileID: 1004745437}
-  - {fileID: 1904796923}
-  - {fileID: 1600276777}
-  - {fileID: 594442490}
-  - {fileID: 1480557409}
-  - {fileID: 896453489}
-  - {fileID: 2144232805}
-  - {fileID: 954995646}
-  - {fileID: 487138122}
-  - {fileID: 1509560559}
-  - {fileID: 1249909272}
-  - {fileID: 2064114441}
   - {fileID: 732412006}
+  - {fileID: 2064114441}
+  - {fileID: 1249909272}
+  - {fileID: 1509560559}
+  - {fileID: 487138122}
+  - {fileID: 954995646}
+  - {fileID: 2144232805}
+  - {fileID: 896453489}
+  - {fileID: 1480557409}
+  - {fileID: 594442490}
+  - {fileID: 1600276777}
+  - {fileID: 1904796923}
+  - {fileID: 1004745437}
+  - {fileID: 522941827}
   - {fileID: 1584787387}
 --- !u!114 &1272924796
 MonoBehaviour:
@@ -3805,7 +3822,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2364322257046438053, guid: 6b7a804513ec445a78547370ed67ac8d, type: 3}
       propertyPath: m_Name
-      value: CardSeat
+      value: TableSeat
       objectReference: {fileID: 0}
     - target: {fileID: 6930783577251702081, guid: 6b7a804513ec445a78547370ed67ac8d, type: 3}
       propertyPath: m_Pivot.x
@@ -4078,7 +4095,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2364322257046438053, guid: 6b7a804513ec445a78547370ed67ac8d, type: 3}
       propertyPath: m_Name
-      value: CardSeat (2)
+      value: TableSeat (2)
       objectReference: {fileID: 0}
     - target: {fileID: 2364322257046438053, guid: 6b7a804513ec445a78547370ed67ac8d, type: 3}
       propertyPath: m_IsActive
@@ -4263,7 +4280,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2364322257046438053, guid: 6b7a804513ec445a78547370ed67ac8d, type: 3}
       propertyPath: m_Name
-      value: CardSeat (4)
+      value: TableSeat (4)
       objectReference: {fileID: 0}
     - target: {fileID: 2364322257046438053, guid: 6b7a804513ec445a78547370ed67ac8d, type: 3}
       propertyPath: m_IsActive
@@ -4515,7 +4532,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2364322257046438053, guid: 6b7a804513ec445a78547370ed67ac8d, type: 3}
       propertyPath: m_Name
-      value: CardSeat (1)
+      value: TableSeat (1)
       objectReference: {fileID: 0}
     - target: {fileID: 2364322257046438053, guid: 6b7a804513ec445a78547370ed67ac8d, type: 3}
       propertyPath: m_IsActive
@@ -5546,17 +5563,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5981172514607463790, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
   m_PrefabInstance: {fileID: 651684147}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1886997468 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6780491911784304541, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
-  m_PrefabInstance: {fileID: 651684147}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72ee4ae7eee34437c87cae073b145bdd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1904796923 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5764815386848260012, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1367405981585438605}
   - component: {fileID: 661748089504289381}
   m_Layer: 6
-  m_Name: CardSeat
+  m_Name: TableSeat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -4,7 +4,7 @@ using UnityEngine;
 using Cards;
 using Tools;
 
-namespace GameFields
+namespace GameFields.Hands
 {
     internal class Hand : MonoBehaviour
     {
@@ -13,9 +13,9 @@ namespace GameFields
         [SerializeField] private float _startCardTranslateSpeed = 0.5f;
         [SerializeField] private float _startPositionX = 600f;
         [SerializeField] private float _startPositionY = 90f;
-        [SerializeField] private RectTransform _rectTransform;
-
         [SerializeField, Min(0f)] private float _offsetX = 60f;
+        [SerializeField] private RectTransform _rectTransform;
+        [SerializeField] private HandSeatPool _handSeatPool;
         //[SerializeField, Min(0f)] private float _offsetLeftY = 2f;
         //[SerializeField, Min(0f)] private float _offsetRightY = 11f;
         //[SerializeField, Min(0f)] private float _offsetRotation = 10f;
@@ -26,10 +26,13 @@ namespace GameFields
         [SerializeField] private float _handLength = 1175f;
 
         private List<Card> _cards;
+        private List<HandSeat> _handSeats;
 
         public void Init(List<Card> startCards)
         {
             _cards = new List<Card>();
+            _handSeats = new List<HandSeat>();
+            _handSeatPool.Init();
 
             if (startCards == null)
             {
@@ -37,12 +40,15 @@ namespace GameFields
             }
 
             _cards = startCards;
-            SortCards();
+
+            SortHandSeats();
         }
 
         public void Init(Card[] startCards)
         {
             _cards = new List<Card>();
+            _handSeats = new List<HandSeat>();
+            _handSeatPool.Init();
 
             if (startCards == null)
             {
@@ -54,25 +60,42 @@ namespace GameFields
                 _cards.Add(card);
             }
 
-            SortCards();
+            SortHandSeats();
         }
 
         public void Init()
         {
             _cards = new List<Card>();
+            _handSeats = new List<HandSeat>();
+
+            _handSeatPool.Init();
         }
 
         public void AddCard(Card card)
         {
-            card.transform.SetParent(transform);
             _cards.Add(card);
-            SortCards();
+
+            if (_handSeatPool.TryGetHandSeat(out HandSeat handSeat))
+            {
+                Debug.Log("Add process");
+                _handSeats.Add(handSeat);
+                handSeat.SetCard(card, _startCardTranslateSpeed);
+            }
+
+            SortHandSeats();
         }
 
         public void RemoveCard(Card card)
         {
             _cards.Remove(card);
-            SortCards();
+
+            if (TryFindHandSeat(out HandSeat handSeat, card))
+            {
+                _handSeats.Remove(handSeat);
+                _handSeatPool.ReturnObjectInPool(handSeat.gameObject);
+            }
+
+            SortHandSeats();
         }
 
 
@@ -123,9 +146,9 @@ namespace GameFields
         //    }
         //}
 
-        private void SortCards()
+        private void SortHandSeats()
         {
-            if (_cards.Count <= 0)
+            if (_handSeats.Count <= 0)
             {
                 return;
             }
@@ -133,24 +156,69 @@ namespace GameFields
             float offsetX;
             float positionX;
 
-            if (_cards.Count * _offsetX < _handLength / 2)
+            if (_handSeats.Count * _offsetX < _handLength / 2)
             {
                 offsetX = _offsetX;
             }
             else
             {
-                float xFactor = _offsetX * _cards.Count;
+                float xFactor = _offsetX * _handSeats.Count;
                 float fullOffsetX = _handLength * xFactor / (xFactor + _handLength / 2);
 
-                offsetX = fullOffsetX / _cards.Count;
+                offsetX = fullOffsetX / _handSeats.Count;
             }
 
-            for (int i = 0; i < _cards.Count; i++)
+            for (int i = 0; i < _handSeats.Count; i++)
             {
-                positionX = _startPositionX + ((_cards.Count - 1) / 2f - i) * offsetX * -1;
-                _cards[i].TranslateLocalInto(new Vector2(positionX + _rectTransform.rect.xMin, _startPositionY + _rectTransform.rect.yMin), new Vector3(0f, 0f, StartRotation), _startCardTranslateSpeed);
+                positionX = _startPositionX + ((_handSeats.Count - 1) / 2f - i) * offsetX * -1;
+                _handSeats[i].SetLocalPositionValues(new Vector2(positionX + _rectTransform.rect.xMin, _startPositionY + _rectTransform.rect.yMin), new Vector3(0f, 0f, StartRotation));
+                //_cards[i].TranslateLocalInto(new Vector2(positionX + _rectTransform.rect.xMin, _startPositionY + _rectTransform.rect.yMin), new Vector3(0f, 0f, StartRotation), _startCardTranslateSpeed);
             }
         }
+
+        private bool TryFindHandSeat(out HandSeat findedHandSeat, Card card)
+        {
+            foreach (HandSeat handSeat in _handSeats)
+            {
+                if (handSeat.Card == card)
+                {
+                    findedHandSeat = handSeat;
+                    return true;
+                }
+            }
+
+            findedHandSeat = null;
+            return false;
+        }
+
+        //private void SortCards()
+        //{
+        //    if (_cards.Count <= 0)
+        //    {
+        //        return;
+        //    }
+
+        //    float offsetX;
+        //    float positionX;
+
+        //    if (_cards.Count * _offsetX < _handLength / 2)
+        //    {
+        //        offsetX = _offsetX;
+        //    }
+        //    else
+        //    {
+        //        float xFactor = _offsetX * _cards.Count;
+        //        float fullOffsetX = _handLength * xFactor / (xFactor + _handLength / 2);
+
+        //        offsetX = fullOffsetX / _cards.Count;
+        //    }
+
+        //    for (int i = 0; i < _cards.Count; i++)
+        //    {
+        //        positionX = _startPositionX + ((_cards.Count - 1) / 2f - i) * offsetX * -1;
+        //        _cards[i].TranslateLocalInto(new Vector2(positionX + _rectTransform.rect.xMin, _startPositionY + _rectTransform.rect.yMin), new Vector3(0f, 0f, StartRotation), _startCardTranslateSpeed);
+        //    }
+        //}
 
         //private void SortFewCards()
         //{
@@ -253,12 +321,19 @@ namespace GameFields
         private void DefineAllComponents()
         {
             DefineRectTransform();
+            DefineHandSeatPool();
         }
 
         [ContextMenu(nameof(DefineRectTransform))]
         private void DefineRectTransform()
         {
             AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
+        }
+
+        [ContextMenu(nameof(DefineHandSeatPool))]
+        private void DefineHandSeatPool()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _handSeatPool, ComponentLocationTypes.InThis);
         }
     }
 }

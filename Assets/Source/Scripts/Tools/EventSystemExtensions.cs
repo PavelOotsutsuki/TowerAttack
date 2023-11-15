@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Tools
@@ -13,7 +12,6 @@ namespace Tools
             system.RaycastAll(eventData, raycastResults);
             findedComponent = null;
 
-            Debug.Log(raycastResults.Count);
             foreach (RaycastResult raycastResult in raycastResults)
             {
                 if (raycastResult.gameObject.TryGetComponent(out T component))
