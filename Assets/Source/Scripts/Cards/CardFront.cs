@@ -78,15 +78,15 @@ namespace Cards
         //    _cardRectTransform.DORotate(rotation, duration);
         //}
 
-        //internal void DisableRaycasts()
-        //{
-        //    _canvasGroup.blocksRaycasts = false;
-        //}
+        internal void DisableRaycasts()
+        {
+            _canvasGroup.blocksRaycasts = false;
+        }
 
-        //internal void EnableRaycasts()
-        //{
-        //    _canvasGroup.blocksRaycasts = true;
-        //}
+        internal void EnableRaycasts()
+        {
+            _canvasGroup.blocksRaycasts = true;
+        }
 
         internal void Block()
         {

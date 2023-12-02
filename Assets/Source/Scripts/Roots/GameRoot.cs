@@ -2,6 +2,7 @@ using UnityEngine;
 using Cards;
 using GameFields;
 using Tools;
+using Persons;
 
 namespace Roots
 {
@@ -9,6 +10,8 @@ namespace Roots
     {
         [SerializeField] private CardRoot _cardRoot;
         [SerializeField] private GameFieldRoot _gameFieldRoot;
+        [SerializeField] private Player _player;
+        [SerializeField] private EnemyAI _enemyAI;
 
         private void Start()
         {
@@ -18,12 +21,9 @@ namespace Roots
         private void InitAll()
         {
             InitCardRoot();
+            InitPlayer();
+            InitEnemyAI();
             InitGameFieldRoot(_cardRoot.Cards);
-        }
-
-        private void InitGameFieldRoot(Card[] cards)
-        {
-            _gameFieldRoot.Init(cards);
         }
 
         private void InitCardRoot()
@@ -31,11 +31,28 @@ namespace Roots
             _cardRoot.Init();
         }
 
+        private void InitPlayer()
+        {
+            _player.Init();
+        }
+
+        private void InitEnemyAI()
+        {
+            _enemyAI.Init();
+        }
+
+        private void InitGameFieldRoot(Card[] cards)
+        {
+            _gameFieldRoot.Init(cards, _player, _enemyAI);
+        }
+
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
             DefineCardRoot();
             DefineGameFieldRoot();
+            DefinePlayer();
+            DefineEnemyAI();
         }
 
         [ContextMenu(nameof(DefineCardRoot))]
@@ -48,6 +65,18 @@ namespace Roots
         private void DefineGameFieldRoot()
         {
             AutomaticFillComponents.DefineComponent(this, ref _gameFieldRoot, ComponentLocationTypes.InThis);
+        }
+
+        [ContextMenu(nameof(DefinePlayer))]
+        private void DefinePlayer()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _player, ComponentLocationTypes.InThis);
+        }
+
+        [ContextMenu(nameof(DefineEnemyAI))]
+        private void DefineEnemyAI()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _enemyAI, ComponentLocationTypes.InThis);
         }
     }
 }

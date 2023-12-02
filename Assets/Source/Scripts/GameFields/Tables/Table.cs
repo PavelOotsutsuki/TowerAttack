@@ -5,9 +5,10 @@ using Tools;
 
 namespace GameFields.Tables
 {
-    internal class Table : MonoBehaviour, IDropHandler
+    public class Table : MonoBehaviour, IDropHandler
     {
         [SerializeField] private TableSeat[] _cardSeats;
+        [SerializeField] private CanvasGroup _canvasGroup;
 
         private int[] _cardSeatsSortIndices;
         private IPlayCardManager _playCardManager;
@@ -16,22 +17,34 @@ namespace GameFields.Tables
         {
             _playCardManager = playCardManager;
             SetCardSeatsIndices();
+
+            Deactivate();
         }
 
         public void OnDrop(PointerEventData eventData)
         {
-            if (EventSystem.current.TryGetComponentInRaycasts(eventData, out Card card))
-            {
-                //if (eventData.pointerDrag.TryGetComponent(out Card card))
-                //{
+            //if (EventSystem.current.TryGetComponentInRaycasts(eventData, out Card card))
+            //{
+                if (eventData.pointerDrag.TryGetComponent(out Card card))
+                {
                     if (TryFindCardSeat(out TableSeat freeCardSeat))
                     {
                         _playCardManager.PlayCard(card);
-                        card.AddToTable(out CardCharacter cardCharacter);
+                        card.Play(out CardCharacter cardCharacter);
                         freeCardSeat.SetCardCharacter(cardCharacter);
                     }
-                //}
-            }
+                }
+            //}
+        }
+
+        public void Activate()
+        {
+            _canvasGroup.blocksRaycasts = true;
+        }
+
+        public void Deactivate()
+        {
+            _canvasGroup.blocksRaycasts = false;
         }
 
         private bool TryFindCardSeat(out TableSeat cardSeat)
@@ -71,12 +84,20 @@ namespace GameFields.Tables
         private void DefineAllComponents()
         {
             DefineAllCardSeats();
+            DefineCanvasGroup();
         }
 
         [ContextMenu(nameof(DefineAllCardSeats))]
         private void DefineAllCardSeats()
         {
             AutomaticFillComponents.DefineComponent(this, ref _cardSeats);
+        }
+
+
+        [ContextMenu(nameof(DefineCanvasGroup))]
+        private void DefineCanvasGroup()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _canvasGroup, ComponentLocationTypes.InThis);
         }
 
     }

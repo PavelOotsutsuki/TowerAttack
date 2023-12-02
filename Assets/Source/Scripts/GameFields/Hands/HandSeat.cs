@@ -1,6 +1,7 @@
 using UnityEngine;
 using Cards;
 using Tools;
+using DG.Tweening;
 
 namespace GameFields.Hands
 {
@@ -8,27 +9,40 @@ namespace GameFields.Hands
     {
         [SerializeField] private Transform _transform;
 
-        public Card Card { get; private set; }
+        private Card _card;
+        //public Card Card { get; private set; }
 
         public void Init()
         {
-            Card = null;
+            //Card = null;
         }
 
         public void SetCard(Card card, float duration)
         {
-            Card = card;
-            Debug.Log(Card == null);
-            Vector2 cardLocalPosition = new Vector2(0, 0);
-            Card.transform.SetParent(_transform);
+            _card = card;
+            _card.BindSeat(_transform, duration);
             //Card.transform.localPosition = cardLocalPosition;
-            Card.TranslateLocalInto(cardLocalPosition, Quaternion.identity.eulerAngles, duration);
         }
 
-        public void SetLocalPositionValues(Vector3 position, Vector3 rotation)
+        public bool IsCardEqual(Card card)
         {
-            _transform.localPosition = position;
-            _transform.rotation = Quaternion.Euler(rotation);
+            return _card == card;
+        }
+
+        public void Activate()
+        {
+            gameObject.SetActive(true);
+        }
+
+        public void Disactivate()
+        {
+            gameObject.SetActive(false);
+        }
+
+        public void SetLocalPositionValues(Vector3 position, Vector3 rotation, float duration)
+        {
+            _transform.DOLocalMove(position, duration);
+            _transform.DORotate(rotation, duration);
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

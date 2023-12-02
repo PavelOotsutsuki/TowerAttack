@@ -3,44 +3,59 @@ using Tools;
 
 namespace Cards
 {
-    public class Card : MonoBehaviour, ICardProtectable
+    public class Card : MonoBehaviour
     {
         [SerializeField] private CardBack _cardBack;
         [SerializeField] private CardFront _cardFront;
         [SerializeField] private CardSO _cardSO;
         [SerializeField] private CardDragAndDrop _cardDragAndDrop;
-        [SerializeField] private CardView _cardView;
         [SerializeField] private RectTransform _rectTransform;
-        [SerializeField] private CardMovement _cardMovement;
         [SerializeField] private Vector3 _defaultScaleVector;
 
         private DrawCardAnimation _drawCardAnimation;
+        private CardDragAndDropActions _cardDragAndDropActions;
+        private CardMovement _cardMovement;
+        private CardSideFlipper _cardSideFlipper;
 
-        internal void Init(CardDescription cardDescription, BigCard bigCard, bool isBackView = true)
+        internal void Init(CardDescription cardDescription, BigCard bigCard, Transform dragContainer)
         {
+            //bool isBackView = true;
             _rectTransform.localScale = _defaultScaleVector;
             _cardMovement = new CardMovement(_rectTransform);
-            _cardSO.CardCharacter.Init(_cardSO.AwakeSound);
             _cardFront.Init(_cardSO, _rectTransform, cardDescription, bigCard);
-            _cardView = new CardView(_cardFront, _cardBack, isBackView);
+            _cardSideFlipper = new CardSideFlipper(_cardFront.gameObject, _cardBack.gameObject);
+            _cardSideFlipper.SetBackSide();
 
-            CardDragAndDropActions cardDragAndDropActions = new CardDragAndDropActions(_cardFront, _cardMovement);
-            _cardDragAndDrop.Init(_rectTransform, cardDragAndDropActions);
-            _drawCardAnimation = new DrawCardAnimation(_rectTransform, _cardView, _cardMovement, this);
+            _cardDragAndDropActions = new CardDragAndDropActions(_cardFront, _cardMovement, this);
+            _cardDragAndDrop.Init(_rectTransform, _cardDragAndDropActions, dragContainer);
+            _drawCardAnimation = new DrawCardAnimation(_rectTransform, _cardMovement, _cardSideFlipper);
 
-            ActivateDragAndDrop(isBackView == false);
+            Block();
         }
 
-        public void AddToTable(out CardCharacter cardCharacter)
+        public void BindSeat(Transform transform, float duration)
         {
-            cardCharacter = _cardSO.CardCharacter;
+            _rectTransform.SetParent(transform);
+            _cardMovement.TranslateLocalSmoothly(Vector2.zero, Quaternion.identity.eulerAngles, duration, _defaultScaleVector);
+            Unblock();
+        }
+
+        public void AddToHand(ICardDragListener cardDragListener)
+        {
+            _cardDragAndDropActions.SetListener(cardDragListener);
+        }
+
+        public void Play(out CardCharacter cardCharacter)
+        {
+            cardCharacter = Instantiate(_cardSO.CardCharacter);
+            cardCharacter.Init(_cardSO.AwakeSound);
             Destroy();
         }
 
-        public void TranslateLocalInto(Vector2 positon, Vector3 rotation, float duration)
-        {
-            _cardMovement.TranslateLocalSmoothly(positon, rotation, duration, _defaultScaleVector);
-        }
+        //public void TranslateLocalInto(Vector2 positon, Vector3 rotation, float duration)
+        //{
+        //    _cardMovement.TranslateLocalSmoothly(positon, rotation, duration, _defaultScaleVector);
+        //}
 
         public void PlayDrawnCardAnimation(float cardBackDuration, float cardBackRotation, float cardBackScaleFactor, float cardFrontDuration, float indent)
         {
@@ -48,23 +63,21 @@ namespace Cards
             StartCoroutine(_drawCardAnimation.PlayDrawnCardAnimation(cardBackDuration, cardBackRotation, cardBackScaleFactor, cardFrontDuration, indent));
         }
 
-        public void ActivateDragAndDrop(bool isActivate)
-        {
-            _cardDragAndDrop.enabled = isActivate;
-        }
+        //public void ActivateDragAndDrop(bool isActivate)
+        //{
+        //    _cardDragAndDrop.enabled = isActivate;
+        //}
 
-        public void Block()
+        private void Block()
         {
             _cardDragAndDrop.enabled = false;
             _cardFront.Block();
-            Debug.Log("Block");
         }
 
-        public void Unblock()
+        private void Unblock()
         {
             _cardDragAndDrop.enabled = true;
             _cardFront.Unblock();
-            Debug.Log("Unblock");
         }
 
         private void Destroy()
@@ -79,7 +92,6 @@ namespace Cards
             DefineCardFront();
             DefineCardDragAndDrop();
             DefineRectTransform();
-            DefineCardMovement();
         }
 
         [ContextMenu(nameof(DefineCardDragAndDrop))]
@@ -92,12 +104,6 @@ namespace Cards
         private void DefineRectTransform()
         {
             AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
-        }
-
-        [ContextMenu(nameof(DefineCardMovement))]
-        private void DefineCardMovement()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _cardMovement, ComponentLocationTypes.InThis);
         }
 
         [ContextMenu(nameof(DefineCardBack))]

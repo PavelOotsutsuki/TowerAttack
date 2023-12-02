@@ -6,34 +6,25 @@ namespace Cards
     internal class DrawCardAnimation
     {
         private RectTransform _cardRectTransform;
-        private CardView _cardView;
         private CardMovement _cardMovement;
-        private ICardProtectable _cardProtectable;
+        private CardSideFlipper _sideFlipper;
 
-        public DrawCardAnimation(RectTransform cardRectTransform, CardView cardView, CardMovement cardMovement, ICardProtectable cardProtectable)
+        public DrawCardAnimation(RectTransform cardRectTransform, CardMovement cardMovement, CardSideFlipper sideFlipper)
         {
             _cardRectTransform = cardRectTransform;
-            _cardView = cardView;
+            _sideFlipper = sideFlipper;
             _cardMovement = cardMovement;
-            _cardProtectable = cardProtectable;
         }
 
         public IEnumerator PlayDrawnCardAnimation(float cardBackDuration, float cardBackRotation, float cardBackScaleFactor, float cardFrontDuration, float indent)
         {
-            //_dragAndDropable.ActivateDragAndDrop(false);
-            //_cardFront.Block();
-
             InvertCardBack(cardBackDuration, cardBackRotation, cardBackScaleFactor, indent);
             yield return new WaitForSeconds(cardBackDuration);
 
-            _cardView.SetFrontSide();
+            _sideFlipper.SetFrontSide();
 
             InvertCardFront(cardFrontDuration, cardBackScaleFactor, indent);
             yield return new WaitForSeconds(cardFrontDuration);
-
-            _cardProtectable.Unblock();
-            //_dragAndDropable.ActivateDragAndDrop(true);
-            //_cardFront.Unblock();
         }
 
         private void InvertCardBack(float cardBackDuration, float cardBackRotation, float cardBackScaleFactor, float indent)

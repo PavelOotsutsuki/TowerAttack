@@ -6,34 +6,34 @@ namespace Cards
     {
         private CardFront _cardFront;
         private CardMovement _cardMovement;
+        private Card _card;
+        private ICardDragListener _cardDragListener;
 
-        internal CardDragAndDropActions(CardFront cardFront, CardMovement cardMovement)
+        internal CardDragAndDropActions(CardFront cardFront, CardMovement cardMovement, Card card)
         {
             _cardFront = cardFront;
             _cardMovement = cardMovement;
+            _card = card;
         }
 
-        //internal void EndReview()
-        //{
-        //    if (_cardFront.IsBlock == false)
-        //    {
-        //        _cardFront.EndReview();
-        //    }
-        //}
+        internal void SetListener(ICardDragListener cardDragListener)
+        {
+            _cardDragListener = cardDragListener;
+        }
 
         internal void StartDrag()
         {
-            //_cardFront.Block();
-
             if (_cardFront.IsBlock == false)
             {
                 _cardFront.EndReview();
             }
 
+            _cardDragListener.OnCardDrag(_card);
+
             _cardFront.Block();
         }
 
-        internal void EndDrag(bool isPointerOnCard)
+        internal void OnReturnInHand(bool isPointerOnCard)
         {
             _cardFront.Unblock();
 
@@ -46,24 +46,15 @@ namespace Cards
             }
         }
 
-        //internal void BlockReview()
-        //{
-        //    _cardFront.Block();
-        //}
-        //internal void DisableRaycasts()
-        //{
-        //    _cardFront.DisableRaycasts();
-        //}
-
-        //internal void EnableRaycasts()
-        //{
-        //    _cardFront.EnableRaycasts();
-        //}
+        internal void EndDrag()
+        {
+            _cardDragListener.OnCardDrop();
+        }
 
         internal void ReturnInHand(Vector2 positon, Vector3 rotation, float duration)
         {
             Vector3 scaleVector = new Vector3(1f, 1f, 1f);
-            _cardMovement.TranslateSmoothly(positon, rotation, duration, scaleVector);
+            _cardMovement.TranslateLocalSmoothly(positon, rotation, duration, scaleVector);
         }
     }
 }

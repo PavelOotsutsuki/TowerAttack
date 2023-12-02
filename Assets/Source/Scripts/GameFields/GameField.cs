@@ -1,59 +1,59 @@
 using Cards;
 using GameFields.Tables;
 using GameFields.Hands;
+using GameFields.FightProcess;
 using Tools;
 using UnityEngine;
+using Persons;
 
 namespace GameFields
 {
-    public class GameField : MonoBehaviour, IPlayCardManager, IDrawCardManager
+    public class GameField : MonoBehaviour//, IPlayCardManager//, IEndTurnHandler
     {
-        [SerializeField] private Table _table;
-        [SerializeField] private Hand _hand;
+        [SerializeField] private TablePlayer _tablePlayer;
+        [SerializeField] private TableAI _tableAI;
+        [SerializeField] private HandPlayer _handPlayer;
+        [SerializeField] private HandAI _handAI;
         [SerializeField] private Deck _deck;
         [SerializeField] private EndTurnButton _endTurnButton;
         [SerializeField] private DrawCardAnimator _drawCardAnimator;
 
-        public void Init(Card[] cardsInDeck, Card[] cardsInHand = null)
+        private Fight _fight;
+
+        public void Init(Card[] cardsInDeck, Player player, EnemyAI enemyAI)
         {
-            InitTable();
+            _fight = new Fight(player, enemyAI, _handPlayer, _handAI, _tablePlayer, _tableAI, _deck, _drawCardAnimator);
+
+            InitTables();
             InitDeck(cardsInDeck);
-            InitHand(cardsInHand);
+            InitHands();
             InitEndTurnButton();
         }
 
-        public void PlayCard(Card card)
-        {
-            _hand.RemoveCard(card);
-        }
-
-        public void DrawCard()
-        {
-            if (_deck.TryTakeCard(out Card drawnCard))
-            {
-                _drawCardAnimator.Init(_hand, drawnCard);
-            }
-        }
-
-        //private IEnumerator DrawnCardBehaviour(Card drawnCard)
+        //public void PlayCard(Card card)
         //{
-        //    drawnCard.transform.SetParent(transform);
-        //    drawnCard.transform.SetAsLastSibling();
-        //    drawnCard.PlayDrawnCardAnimation();
-
-        //    yield return new WaitForSeconds(2f);
-
-        //    _hand.AddCard(drawnCard);
+        //    _handPlayer.RemoveCard(card);
         //}
 
-        private void InitHand(Card[] cards)
+        //public void OnEndTurn()
+        //{
+        //    if (_deck.TryTakeCard(out Card drawnCard))
+        //    {
+        //        drawnCard.AddToHand(_handPlayer);
+        //        _drawCardAnimator.Init(_handPlayer, drawnCard);
+        //    }
+        //}
+
+        private void InitHands()
         {
-            _hand.Init(cards);
+            _handPlayer.Init();
+            _handAI.Init();
         }
 
-        private void InitTable()
+        private void InitTables()
         {
-            _table.Init(this);
+            _tablePlayer.Init(_fight);
+            _tableAI.Init(_fight);
         }
 
         private void InitDeck(Card[] cards)
@@ -63,29 +63,43 @@ namespace GameFields
 
         private void InitEndTurnButton()
         {
-            _endTurnButton.Init(this);
+            _endTurnButton.Init(_fight);
         }
 
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
-            DefineTable();
-            DefineHand();
+            DefineTablePlayer();
+            DefineHandPlayer();
+            DefineTableAI();
+            DefineHandAI();
             DefineDeck();
             DefineEndTurnButton();
             DefineDrawCardAnimator();
         }
 
-        [ContextMenu(nameof(DefineTable))]
-        private void DefineTable()
+        [ContextMenu(nameof(DefineTablePlayer))]
+        private void DefineTablePlayer()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _table, ComponentLocationTypes.InChildren);
+            AutomaticFillComponents.DefineComponent(this, ref _tablePlayer, ComponentLocationTypes.InChildren);
         }
 
-        [ContextMenu(nameof(DefineHand))]
-        private void DefineHand()
+        [ContextMenu(nameof(DefineHandPlayer))]
+        private void DefineHandPlayer()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _hand, ComponentLocationTypes.InChildren);
+            AutomaticFillComponents.DefineComponent(this, ref _handPlayer, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineTableAI))]
+        private void DefineTableAI()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _tableAI, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineHandAI))]
+        private void DefineHandAI()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _handAI, ComponentLocationTypes.InChildren);
         }
 
         [ContextMenu(nameof(DefineDeck))]

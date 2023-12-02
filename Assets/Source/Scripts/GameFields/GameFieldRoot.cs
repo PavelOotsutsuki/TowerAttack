@@ -1,34 +1,34 @@
 using Cards;
 using Tools;
 using UnityEngine;
+using Persons;
 
 namespace GameFields
 {
     public class GameFieldRoot : MonoBehaviour
     {
-        [SerializeField] private GameFieldPlayer _gameFieldPlayer;
-        //[SerializeField] private GameFieldEnemy _gameFieldEnemy;
+        [SerializeField] private GameFieldPVE _gameFieldPVE;
 
-        public void Init(Card[] cards)
+        public void Init(Card[] cards, Player player, EnemyAI enemyAI)
         {
-            InitGameFieldPlayer(cards);
+            InitGameFieldPVE(cards, player, enemyAI);
         }
 
-        private void InitGameFieldPlayer(Card[] cards)
+        private void InitGameFieldPVE(Card[] cards, Player player, EnemyAI enemyAI)
         {
-            _gameFieldPlayer.Init(cards);
+            _gameFieldPVE.Init(cards, player, enemyAI);
         }
 
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
-            DefineGameFieldPlayer();
+            DefineGameFieldPVE();
         }
 
-        [ContextMenu(nameof(DefineGameFieldPlayer))]
-        private void DefineGameFieldPlayer()
+        [ContextMenu(nameof(DefineGameFieldPVE))]
+        private void DefineGameFieldPVE()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _gameFieldPlayer, ComponentLocationTypes.InChildren);
+            AutomaticFillComponents.DefineComponent(this, ref _gameFieldPVE, ComponentLocationTypes.InChildren);
         }
     }
 }

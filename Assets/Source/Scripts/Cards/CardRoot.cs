@@ -8,6 +8,7 @@ namespace Cards
         [SerializeField] private CardDescription _cardDescription;
         [SerializeField] private BigCard _bigCard;
         [SerializeField] private Card[] _cards;
+        [SerializeField] private Transform _dragContainer;
 
         public Card[] Cards => _cards;
 
@@ -37,7 +38,7 @@ namespace Cards
         {
             foreach (Card card in _cards)
             {
-                card.Init(_cardDescription, _bigCard, true);
+                card.Init(_cardDescription, _bigCard, _dragContainer);
             }
         }
 
