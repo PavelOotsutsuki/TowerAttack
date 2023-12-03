@@ -37,6 +37,7 @@ namespace Cards
         {
             _rectTransform.SetParent(transform);
             _cardMovement.TranslateLocalSmoothly(Vector2.zero, Quaternion.identity.eulerAngles, duration, _defaultScaleVector);
+            //_cardMovement.TranslateLocalSmoothly(Vector2.zero, Vector3.zero, duration, _defaultScaleVector);
             Unblock();
         }
 
@@ -66,6 +67,11 @@ namespace Cards
         //public void ActivateDragAndDrop(bool isActivate)
         //{
         //    _cardDragAndDrop.enabled = isActivate;
+        //}
+
+        //public void BlockDragAndDrop()
+        //{
+
         //}
 
         private void Block()

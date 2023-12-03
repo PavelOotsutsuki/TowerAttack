@@ -390,9 +390,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e660a199669a3474c96e96b401be9d8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OffsetX: 162.5
-  HandLength: 1175
-  StartPositionX: 600
+  _offsetX: 162.5
+  _handLength: 1175
+  _startPositionX: 600
   StartPositionY: 90
   StartCardTranslateSpeed: 0.5
   RectTransform: {fileID: 112430299}
@@ -426,13 +426,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 120989067}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 200841573}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 17.064026, y: 401.2}
@@ -515,9 +515,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a86d889d762e43889e85f38e880170f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OffsetX: 162.5
-  HandLength: 1175
-  StartPositionX: 600
+  _offsetX: 162.5
+  _handLength: 1175
+  _startPositionX: 600
   StartPositionY: 90
   StartCardTranslateSpeed: 0.5
   RectTransform: {fileID: 120989068}

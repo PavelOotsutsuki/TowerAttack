@@ -5,28 +5,29 @@ using Tools;
 
 namespace GameFields.Hands
 {
-    public abstract class Hand : MonoBehaviour, ICardDragListener
+    public class Hand : MonoBehaviour, ICardDragListener
     {
-        protected const float StartRotation = 0f;
+        private const float StartRotation = 0;
 
-        [SerializeField, Min(0f)] protected float OffsetX = 162.5f;
-        [SerializeField] protected float HandLength = 1175f;
-        [SerializeField] protected float StartPositionX = 600f;
-        [SerializeField] protected float StartPositionY = 90f;
-        [SerializeField] protected float StartCardTranslateSpeed = 0.5f;
-        [SerializeField] protected RectTransform RectTransform;
-
+        [SerializeField, Min(0f)] private float _offsetX = 162.5f;
+        [SerializeField] private float _handLength = 1175f;
+        [SerializeField] private float _startPositionX = 600f;
+        [SerializeField] private float _startPositionY = 90f;
+        [SerializeField] private float _startCardTranslateSpeed = 0.5f;
+        [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private HandSeatPool _handSeatPool;
         [SerializeField] private CanvasGroup _canvasGroup;
 
-        protected List<HandSeat> HandSeats;
-
+        private List<HandSeat> _handSeats;
         private HandSeat _dragCardHandSeat;
         private int _handSeatIndex;
+        private float _sortDirection;
 
-        public void Init()
+        public void Init(HandOwner handOwner)
         {
-            HandSeats = new List<HandSeat>();
+            SetSortDirection(handOwner);
+
+            _handSeats = new List<HandSeat>();
             _handSeatIndex = -1;
 
             _handSeatPool.Init();
@@ -39,15 +40,15 @@ namespace GameFields.Hands
                 _dragCardHandSeat = handSeat;
 
                 _canvasGroup.blocksRaycasts = false;
-                _handSeatIndex = HandSeats.IndexOf(_dragCardHandSeat);
-                HandSeats.Remove(_dragCardHandSeat);
+                _handSeatIndex = _handSeats.IndexOf(_dragCardHandSeat);
+                _handSeats.Remove(_dragCardHandSeat);
                 SortHandSeats();
             }
         }
 
         public void OnCardDrop()
         {
-            HandSeats.Insert(_handSeatIndex, _dragCardHandSeat);
+            _handSeats.Insert(_handSeatIndex, _dragCardHandSeat);
             OnEndCardDrag();
             SortHandSeats();
         }
@@ -56,8 +57,8 @@ namespace GameFields.Hands
         {
             if (_handSeatPool.TryGetHandSeat(out HandSeat handSeat))
             {
-                HandSeats.Add(handSeat);
-                handSeat.SetCard(card, StartCardTranslateSpeed);
+                _handSeats.Add(handSeat);
+                handSeat.SetCard(card, _startCardTranslateSpeed);
             }
 
             SortHandSeats();
@@ -71,38 +72,50 @@ namespace GameFields.Hands
             SortHandSeats();
         }
 
-        protected abstract void SortHandSeats();
+        private void SetSortDirection(HandOwner handOwner)
+        {
+            _sortDirection = handOwner switch
+            {
+                HandOwner.Player => 1,
+                HandOwner.Enemy => -1,
+                _ => throw new System.NotImplementedException()
+            };
+        }
+            
+        //protected abstract void SortHandSeats();
 
-        //private void SortHandSeats()
-        //{
-        //    if (_handSeats.Count <= 0)
-        //    {
-        //        return;
-        //    }
+        private void SortHandSeats()
+        {
+            if (_handSeats.Count <= 0)
+            {
+                return;
+            }
 
-        //    float offsetX;
-        //    float positionX;
+            float offsetX;
+            float positionX;
 
-        //    if (_handSeats.Count * _offsetX < _handLength / 2)
-        //    {
-        //        offsetX = _offsetX;
-        //    }
-        //    else
-        //    {
-        //        float xFactor = _offsetX * _handSeats.Count;
-        //        float fullOffsetX = _handLength * xFactor / (xFactor + _handLength / 2);
+            if (_handSeats.Count * _offsetX < _handLength / 2)
+            {
+                offsetX = _offsetX;
+            }
+            else
+            {
+                float xFactor = _offsetX * _handSeats.Count;
+                float fullOffsetX = _handLength * xFactor / (xFactor + _handLength / 2);
 
-        //        offsetX = fullOffsetX / _handSeats.Count;
-        //    }
+                offsetX = fullOffsetX / _handSeats.Count;
+            }
 
-        //    for (int i = 0; i < _handSeats.Count; i++)
-        //    {
-        //        positionX = _startPositionX + ((_handSeats.Count - 1) / 2f - i) * offsetX * -1;
-        //        Vector3 positon = new Vector2(positionX + _rectTransform.rect.xMin, _startPositionY + _rectTransform.rect.yMin);
-        //        Vector3 rotation = new Vector3(0f, 0f, StartRotation);
-        //        _handSeats[i].SetLocalPositionValues(positon, rotation, _startCardTranslateSpeed);
-        //    }
-        //}
+            offsetX *= -1 * _sortDirection;
+
+            for (int i = 0; i < _handSeats.Count; i++)
+            {
+                positionX = _startPositionX + ((_handSeats.Count - 1) / 2f - i) * offsetX;
+                Vector3 positon = new Vector2(positionX + _rectTransform.rect.xMin, _startPositionY + _rectTransform.rect.yMin);
+                Vector3 rotation = new Vector3(0f, 0f, StartRotation);
+                _handSeats[i].SetLocalPositionValues(positon, rotation, _startCardTranslateSpeed);
+            }
+        }
 
         private void OnEndCardDrag()
         {
@@ -113,7 +126,7 @@ namespace GameFields.Hands
 
         private bool TryFindHandSeat(out HandSeat findedHandSeat, Card card)
         {
-            foreach (HandSeat handSeat in HandSeats)
+            foreach (HandSeat handSeat in _handSeats)
             {
                 if (handSeat.IsCardEqual(card))
                 {
@@ -137,7 +150,7 @@ namespace GameFields.Hands
         [ContextMenu(nameof(DefineRectTransform))]
         private void DefineRectTransform()
         {
-            AutomaticFillComponents.DefineComponent(this, ref RectTransform, ComponentLocationTypes.InThis);
+            AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
         }
 
         [ContextMenu(nameof(DefineHandSeatPool))]

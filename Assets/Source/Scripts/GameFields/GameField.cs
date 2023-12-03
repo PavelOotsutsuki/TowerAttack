@@ -46,8 +46,8 @@ namespace GameFields
 
         private void InitHands()
         {
-            _handPlayer.Init();
-            _handAI.Init();
+            _handPlayer.Init(HandOwner.Player);
+            _handAI.Init(HandOwner.Enemy);
         }
 
         private void InitTables()

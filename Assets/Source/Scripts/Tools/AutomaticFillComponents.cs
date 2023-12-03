@@ -71,10 +71,4 @@ namespace Tools
             Debug.Log($"{type} successfully found !");
         }
     }
-
-    public enum ComponentLocationTypes
-    {
-        InChildren,
-        InThis
-    }
 }

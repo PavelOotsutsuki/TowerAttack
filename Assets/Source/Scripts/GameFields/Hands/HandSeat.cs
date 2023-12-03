@@ -42,7 +42,7 @@ namespace GameFields.Hands
         public void SetLocalPositionValues(Vector3 position, Vector3 rotation, float duration)
         {
             _transform.DOLocalMove(position, duration);
-            _transform.DORotate(rotation, duration);
+            _transform.DOLocalRotate(rotation, duration);
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

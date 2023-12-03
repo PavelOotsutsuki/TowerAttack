@@ -16,7 +16,14 @@ namespace GameFields
 
         internal void Init(Hand hand, Card drawnCard)
         {
-            StartCoroutine(DrawnCardBehaviour(hand, drawnCard));
+            if (hand is HandPlayer)
+            {
+                StartCoroutine(DrawnCardBehaviour(hand, drawnCard));
+            }
+            else if (hand is HandAI)
+            {
+                hand.AddCard(drawnCard);
+            }
         }
 
         private IEnumerator DrawnCardBehaviour(Hand hand, Card drawnCard)

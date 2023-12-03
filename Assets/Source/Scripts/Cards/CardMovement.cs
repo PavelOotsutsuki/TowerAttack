@@ -18,7 +18,7 @@ namespace Cards
         {
             _currentMovement = DOTween.Sequence()
                 .Join(_cardRectTransform.DOLocalMove(positon, duration))
-                .Join(_cardRectTransform.DORotate(rotation, duration))
+                .Join(_cardRectTransform.DOLocalRotate(rotation, duration))
                 .Join(_cardRectTransform.DOScale(scaleVector, duration));
         }
 
