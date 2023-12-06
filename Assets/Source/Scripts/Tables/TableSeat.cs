@@ -2,7 +2,7 @@ using UnityEngine;
 using Cards;
 using Tools;
 
-namespace GameFields.Tables
+namespace Tables
 {
     internal class TableSeat : MonoBehaviour
     {

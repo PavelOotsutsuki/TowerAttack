@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 using Cards;
 using Tools;
 
-namespace GameFields.Tables
+namespace Tables
 {
     public class Table : MonoBehaviour, IDropHandler
     {

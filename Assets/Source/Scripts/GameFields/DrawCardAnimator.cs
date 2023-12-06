@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using Cards;
-using GameFields.Hands;
+using Hands;
 
 namespace GameFields
 {

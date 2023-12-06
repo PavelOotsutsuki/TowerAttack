@@ -3,7 +3,7 @@ using Pools;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GameFields.Hands
+namespace Hands
 {
     public class HandSeatPool : ObjectPool
     {

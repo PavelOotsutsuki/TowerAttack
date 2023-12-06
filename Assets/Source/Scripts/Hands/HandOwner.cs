@@ -1,4 +1,4 @@
-﻿namespace GameFields.Hands
+﻿namespace Hands
 {
     public enum HandOwner
     {

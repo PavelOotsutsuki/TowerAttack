@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Persons;
-using GameFields.Hands;
-using GameFields.Tables;
+using Hands;
+using Tables;
 using Cards;
 
 namespace GameFields.FightProcess

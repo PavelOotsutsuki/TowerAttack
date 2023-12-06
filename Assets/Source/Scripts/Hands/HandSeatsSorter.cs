@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GameFields.Hands
+namespace Hands
 {
     public abstract class HandSeatsSorter
     {

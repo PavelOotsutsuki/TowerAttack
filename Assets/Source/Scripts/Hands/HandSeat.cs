@@ -3,7 +3,7 @@ using Cards;
 using Tools;
 using DG.Tweening;
 
-namespace GameFields.Hands
+namespace Hands
 {
     public class HandSeat : MonoBehaviour
     {

@@ -1,6 +1,6 @@
 using Cards;
-using GameFields.Tables;
-using GameFields.Hands;
+using Tables;
+using Hands;
 using GameFields.FightProcess;
 using Tools;
 using UnityEngine;

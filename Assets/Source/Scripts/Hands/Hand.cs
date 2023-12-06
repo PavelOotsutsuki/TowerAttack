@@ -3,7 +3,7 @@ using UnityEngine;
 using Cards;
 using Tools;
 
-namespace GameFields.Hands
+namespace Hands
 {
     public class Hand : MonoBehaviour, ICardDragListener
     {
