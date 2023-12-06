@@ -13,6 +13,8 @@ namespace Cards
             _back = back;
         }
 
+        public bool IsFrontSide { get; private set; }
+
         public void SetBackSide()
         {
             SetSide(true);
@@ -27,6 +29,7 @@ namespace Cards
         {
             _front.SetActive(isBackSide == false);
             _back.SetActive(isBackSide);
+            IsFrontSide = isBackSide == false;
         }
     }
 }

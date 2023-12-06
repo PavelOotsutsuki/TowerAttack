@@ -22,10 +22,13 @@ namespace GameFields.Hands
         private HandSeat _dragCardHandSeat;
         private int _handSeatIndex;
         private float _sortDirection;
+        private HandOwner _handOwner;
 
         public void Init(HandOwner handOwner)
         {
-            SetSortDirection(handOwner);
+            _handOwner = handOwner;
+
+            SetSortDirection();
 
             _handSeats = new List<HandSeat>();
             _handSeatIndex = -1;
@@ -72,9 +75,9 @@ namespace GameFields.Hands
             SortHandSeats();
         }
 
-        private void SetSortDirection(HandOwner handOwner)
+        private void SetSortDirection()
         {
-            _sortDirection = handOwner switch
+            _sortDirection = _handOwner switch
             {
                 HandOwner.Player => 1,
                 HandOwner.Enemy => -1,

@@ -76,14 +76,22 @@ namespace Cards
 
         private void Block()
         {
+            if (_cardSideFlipper.IsFrontSide)
+            {
+                return;
+            }
+
             _cardDragAndDrop.enabled = false;
             _cardFront.Block();
         }
 
         private void Unblock()
         {
-            _cardDragAndDrop.enabled = true;
-            _cardFront.Unblock();
+            if (_cardSideFlipper.IsFrontSide)
+            {
+                _cardDragAndDrop.enabled = true;
+                _cardFront.Unblock();
+            }
         }
 
         private void Destroy()
