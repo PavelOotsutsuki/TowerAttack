@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Persons;
-using Hands;
 using Tables;
 using Cards;
 
@@ -10,36 +6,24 @@ namespace GameFields.FightProcess
 {
     internal class Fight : IPlayCardManager, IEndTurnHandler
     {
-        private Player _player;
-        private EnemyAI _enemy;
-        private HandPlayer _handPlayer;
-        private HandAI _handAI;
-        private TablePlayer _tablePlayer;
-        private TableAI _tableAI;
+        private Person _player;
+        private Person _enemy;
         private Deck _deck;
-        private DrawCardAnimator _drawCardAnimator;
 
         private Person _activePerson;
-        private Hand _activeHand;
-        private Table _activeTable;
 
-        public Fight(Player player, EnemyAI enemy, HandPlayer handPlayer, HandAI handAI, TablePlayer tablePlayer, TableAI tableAI, Deck deck, DrawCardAnimator drawCardAnimator)
+        public Fight(Person player, Person enemy, Deck deck)
         {
             _player = player;
             _enemy = enemy;
-            _handPlayer = handPlayer;
-            _handAI = handAI;
-            _tablePlayer = tablePlayer;
-            _tableAI = tableAI;
             _deck = deck;
-            _drawCardAnimator = drawCardAnimator;
 
             SetPlayerTurn();
         }
 
         public void PlayCard(Card card)
         {
-            _activeHand.RemoveCard(card);
+            _activePerson.RemoveCard(card);
         }
 
         public void OnEndTurn()
@@ -59,21 +43,17 @@ namespace GameFields.FightProcess
                 SetPlayerTurn();
             }
 
-            ActivateTable(_activeTable);
+            ActivateTable();
         }
 
         private void SetPlayerTurn()
         {
             _activePerson = _player;
-            _activeHand = _handPlayer;
-            _activeTable = _tablePlayer;
         }
 
         private void SetEnemyTurn()
         {
             _activePerson = _enemy;
-            _activeHand = _handAI;
-            _activeTable = _tableAI;
         }
 
         private void StartTurn()
@@ -84,25 +64,24 @@ namespace GameFields.FightProcess
             }
         }
 
-        private void ActivateTable(Table activeTable)
+        private void ActivateTable()
         {
             DeactivateTables();
 
-            activeTable.Activate();
+            _activePerson.ActivateTable();
         }
 
         private void DeactivateTables()
         {
-            _tablePlayer.Deactivate();
-            _tableAI.Deactivate();
+            _player.DeactivateTable();
+            _enemy.DeactivateTable();
         }
 
         private void DrawCards()
         {
             if (_deck.TryTakeCard(out Card drawnCard))
             {
-                drawnCard.AddToHand(_activeHand);
-                _drawCardAnimator.Init(_activeHand, drawnCard);
+                _activePerson.DrawCard(drawnCard);
             }
         }
     }

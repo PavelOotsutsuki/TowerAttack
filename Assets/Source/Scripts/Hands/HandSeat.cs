@@ -10,18 +10,15 @@ namespace Hands
         [SerializeField] private Transform _transform;
 
         private Card _card;
-        //public Card Card { get; private set; }
 
         public void Init()
         {
-            //Card = null;
         }
 
         public void SetCard(Card card, float duration)
         {
             _card = card;
             _card.BindSeat(_transform, duration);
-            //Card.transform.localPosition = cardLocalPosition;
         }
 
         public bool IsCardEqual(Card card)

@@ -41,7 +41,7 @@ namespace Cards
             Unblock();
         }
 
-        public void AddToHand(ICardDragListener cardDragListener)
+        public void SetEndDragListener(ICardDragListener cardDragListener)
         {
             _cardDragAndDropActions.SetListener(cardDragListener);
         }

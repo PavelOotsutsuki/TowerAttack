@@ -8,18 +8,15 @@ namespace Tables
     {
         [SerializeField] private RectTransform _rectTransform;
 
-        //internal CardCharacter CardCharacter { get; private set; }
         private CardCharacter _cardCharacter;
 
         internal void Init()
         {
-            _cardCharacter = null;
         }
 
         internal void SetCardCharacter(CardCharacter cardCharacter)
         {
             Vector2 cardCharacterPosition = new Vector2(0, 0);
-            //CardCharacter = Instantiate(cardCharacter, _rectTransform);
             _cardCharacter = cardCharacter;
             _cardCharacter.transform.SetParent(_rectTransform);
             _cardCharacter.transform.localPosition = cardCharacterPosition;

@@ -9,14 +9,14 @@ namespace GameFields
     {
         [SerializeField] private GameFieldPVE _gameFieldPVE;
 
-        public void Init(Card[] cards, Player player, EnemyAI enemyAI)
+        public void Init(Card[] cards)
         {
-            InitGameFieldPVE(cards, player, enemyAI);
+            InitGameFieldPVE(cards);
         }
 
-        private void InitGameFieldPVE(Card[] cards, Player player, EnemyAI enemyAI)
+        private void InitGameFieldPVE(Card[] cards)
         {
-            _gameFieldPVE.Init(cards, player, enemyAI);
+            _gameFieldPVE.Init(cards);
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

@@ -3,7 +3,7 @@ using UnityEngine;
 using Cards;
 using Hands;
 
-namespace GameFields
+namespace Persons
 {
     internal class DrawCardAnimator : MonoBehaviour
     {
@@ -16,14 +16,7 @@ namespace GameFields
 
         internal void Init(Hand hand, Card drawnCard)
         {
-            if (hand is HandPlayer)
-            {
-                StartCoroutine(DrawnCardBehaviour(hand, drawnCard));
-            }
-            else if (hand is HandAI)
-            {
-                hand.AddCard(drawnCard);
-            }
+            StartCoroutine(DrawnCardBehaviour(hand, drawnCard));
         }
 
         private IEnumerator DrawnCardBehaviour(Hand hand, Card drawnCard)

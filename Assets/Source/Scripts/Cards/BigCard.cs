@@ -9,7 +9,6 @@ namespace Cards
     internal class BigCard : MonoBehaviour
     {
         [SerializeField, Min(1f)] private float _scaleFactor = 2f;
-        [SerializeField] private float _reviewOffsetFactor = 2f;
 
         [SerializeField] private Image _icon;
         [SerializeField] private TMP_Text _number;
@@ -17,10 +16,18 @@ namespace Cards
         [SerializeField] private TMP_Text _feature;
         [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private RectTransform _rectTransform;
+        [SerializeField] private CanvasScaler _canvasScaler;
+
+        private float _bigHeight;
+        private float _bigWidth;
+        private float _sizeFactor;
+        private float _canvasHeight;
+        private float _screenFactor;
 
         internal void Init()
         {
             _rectTransform.rotation = Quaternion.identity;
+            _canvasHeight = _canvasScaler.referenceResolution.y;
 
             Hide();
         }
@@ -36,8 +43,12 @@ namespace Cards
             _number.text = cardSO.Number.ToString();
             _name.text = cardSO.Name;
             _feature.text = cardSO.Feature;
-            _rectTransform.position = new Vector2(positionX, cardSize.Height / _reviewOffsetFactor + cardSize.Height);
-            _rectTransform.sizeDelta = new Vector2(cardSize.Width * _scaleFactor, cardSize.Height * _scaleFactor);
+            _sizeFactor = cardSize.Width / cardSize.Height;
+            _bigHeight = _canvasHeight / _scaleFactor;
+            _bigWidth = _bigHeight * _sizeFactor;
+            _screenFactor = Screen.height / _canvasHeight;
+            _rectTransform.position = new Vector2(positionX, (_bigHeight / 2f + _canvasHeight / 10f) * _screenFactor);
+            _rectTransform.sizeDelta = new Vector2(_bigWidth, _bigHeight);
             _canvasGroup.alpha = 1;
         }
 
