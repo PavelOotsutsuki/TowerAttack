@@ -2822,14 +2822,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 033fbb3bd7dbe4fef9b2758d52dd0fe0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scaleFactor: 3
-  _reviewOffsetFactor: 2
+  _scaleFactor: 2
   _icon: {fileID: 1979937778173387508}
   _number: {fileID: 4397869607858203462}
   _name: {fileID: 5836341445237938294}
   _feature: {fileID: 3660269446861639844}
   _canvasGroup: {fileID: 5763220878910184078}
   _rectTransform: {fileID: 7326404107217165916}
+  _canvasScaler: {fileID: 2053596825}
 --- !u!224 &748106858 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5981172514607463790, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
@@ -6504,6 +6504,7 @@ MonoBehaviour:
   _hand: {fileID: 112430305}
   _table: {fileID: 867188514}
   _drawCardAnimator: {fileID: 1905208564}
+  _canvasScaler: {fileID: 200841575}
 --- !u!114 &1905208564
 MonoBehaviour:
   m_ObjectHideFlags: 0
