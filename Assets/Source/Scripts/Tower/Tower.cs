@@ -1,18 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
+using Tools;
 using UnityEngine;
 
-public class Tower : MonoBehaviour
+namespace Towers
 {
-    // Start is called before the first frame update
-    void Start()
+    public class Tower : MonoBehaviour
     {
-        
-    }
+        [SerializeField] private TowerSeat _towerSeat;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public void Init(IPlayCardManager playCardManager)
+        {
+            _towerSeat.Init();
+        }
+
+        [ContextMenu(nameof(DefineAllComponents))]
+        private void DefineAllComponents()
+        {
+            DefineTowerSeat();
+        }
+
+        [ContextMenu(nameof(DefineTowerSeat))]
+        private void DefineTowerSeat()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _towerSeat, ComponentLocationTypes.InChildren);
+        }
     }
 }

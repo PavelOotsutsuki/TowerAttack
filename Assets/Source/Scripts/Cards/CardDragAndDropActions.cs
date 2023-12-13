@@ -46,6 +46,11 @@ namespace Cards
             }
         }
 
+        internal void Drop(ICardDropPlace cardDropPlace)
+        {
+            cardDropPlace.GetCard(_card);
+        }
+
         internal void EndDrag()
         {
             _cardDragListener.OnCardDrop();

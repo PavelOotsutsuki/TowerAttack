@@ -5,7 +5,7 @@ using Tools;
 
 namespace Tables
 {
-    public class Table : MonoBehaviour, IDropHandler
+    public class Table : MonoBehaviour, ICardDropPlace
     {
         [SerializeField] private TableSeat[] _cardSeats;
         [SerializeField] private CanvasGroup _canvasGroup;
@@ -21,20 +21,30 @@ namespace Tables
             Deactivate();
         }
 
-        public void OnDrop(PointerEventData eventData)
+        //public void OnDrop(PointerEventData eventData)
+        //{
+        //    //if (EventSystem.current.TryGetComponentInRaycasts(eventData, out Card card))
+        //    //{
+        //        if (eventData.pointerDrag.TryGetComponent(out Card card))
+        //        {
+        //            if (TryFindCardSeat(out TableSeat freeCardSeat))
+        //            {
+        //                _playCardManager.PlayCard(card);
+        //                card.Play(out CardCharacter cardCharacter);
+        //                freeCardSeat.SetCardCharacter(cardCharacter);
+        //            }
+        //        }
+        //    //}
+        //}
+
+        public void GetCard(Card card)
         {
-            //if (EventSystem.current.TryGetComponentInRaycasts(eventData, out Card card))
-            //{
-                if (eventData.pointerDrag.TryGetComponent(out Card card))
-                {
-                    if (TryFindCardSeat(out TableSeat freeCardSeat))
-                    {
-                        _playCardManager.PlayCard(card);
-                        card.Play(out CardCharacter cardCharacter);
-                        freeCardSeat.SetCardCharacter(cardCharacter);
-                    }
-                }
-            //}
+            if (TryFindCardSeat(out TableSeat freeCardSeat))
+            {
+                _playCardManager.PlayCard(card);
+                card.Play(out CardCharacter cardCharacter);
+                freeCardSeat.SetCardCharacter(cardCharacter);
+            }
         }
 
         public void Activate()
@@ -99,6 +109,5 @@ namespace Tables
         {
             AutomaticFillComponents.DefineComponent(this, ref _canvasGroup, ComponentLocationTypes.InThis);
         }
-
     }
 }

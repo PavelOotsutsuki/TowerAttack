@@ -60,6 +60,13 @@ namespace Cards
                 return;
             }
 
+            if (EventSystem.current.TryGetComponentInRaycasts(eventData, out ICardDropPlace cardDropPlace))
+            {
+                _cardDragAndDropActions.Drop(cardDropPlace);
+                _isDrag = false;
+                return;
+            }
+
             _cardDragAndDropActions.EndDrag();
             _cardTransform.SetParent(_defaultParent);
 

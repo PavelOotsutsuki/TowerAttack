@@ -1,6 +1,4 @@
 using Cards;
-using Tables;
-using Hands;
 using GameFields.FightProcess;
 using Tools;
 using UnityEngine;
@@ -28,8 +26,8 @@ namespace GameFields
 
         private void InitPersons()
         {
-            _player.Init(_fight);
-            _enemyAI.Init(_fight);
+            _player.Init();
+            _enemyAI.Init();
         }
 
         private void InitDeck(Card[] cards)

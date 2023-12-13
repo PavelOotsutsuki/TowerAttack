@@ -36,6 +36,7 @@ namespace Cards
         public void BindSeat(Transform transform, float duration)
         {
             _rectTransform.SetParent(transform);
+            Debug.Log("задал parent");
             _cardMovement.TranslateLocalSmoothly(Vector2.zero, Quaternion.identity.eulerAngles, duration, _defaultScaleVector);
             //_cardMovement.TranslateLocalSmoothly(Vector2.zero, Vector3.zero, duration, _defaultScaleVector);
             Unblock();

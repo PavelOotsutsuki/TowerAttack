@@ -4,7 +4,7 @@ using Cards;
 
 namespace GameFields.FightProcess
 {
-    internal class Fight : IPlayCardManager, IEndTurnHandler
+    internal class Fight : IEndTurnHandler
     {
         private Person _player;
         private Person _enemy;
@@ -21,10 +21,10 @@ namespace GameFields.FightProcess
             SetPlayerTurn();
         }
 
-        public void PlayCard(Card card)
-        {
-            _activePerson.RemoveCard(card);
-        }
+        //public void PlayCard(Card card)
+        //{
+        //    _activePerson.RemoveCard(card);
+        //}
 
         public void OnEndTurn()
         {
