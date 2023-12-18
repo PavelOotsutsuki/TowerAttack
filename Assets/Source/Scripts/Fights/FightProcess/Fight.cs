@@ -1,6 +1,7 @@
-using Persons;
-using Tables;
+using Fights.Persons;
+using Fights.Persons.Tables;
 using Cards;
+
 
 namespace Fights.FightProcess
 {

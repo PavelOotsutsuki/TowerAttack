@@ -2,7 +2,7 @@ using UnityEngine;
 using Cards;
 using Tools;
 
-namespace Tables
+namespace Fights.Persons.Tables
 {
     internal class TableSeat : MonoBehaviour
     {

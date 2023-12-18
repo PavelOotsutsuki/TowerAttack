@@ -2,7 +2,7 @@ using Cards;
 using Fights.FightProcess;
 using Tools;
 using UnityEngine;
-using Persons;
+using Fights.Persons;
 
 namespace Fights
 {

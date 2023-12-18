@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Hands;
-using Tables;
+using Fights.Persons.Tables;
 using Cards;
 using Tools;
-using Towers;
+using Fights.Persons.Towers;
 
 namespace Fights.Persons
 {

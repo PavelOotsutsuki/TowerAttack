@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Tools;
 using UnityEngine;
 
-namespace Towers
+namespace Fights.Persons.Towers
 {
     public class Tower : MonoBehaviour
     {

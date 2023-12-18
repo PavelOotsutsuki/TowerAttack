@@ -5,7 +5,7 @@ using Cards;
 using Tools;
 using UnityEngine.EventSystems;
 
-namespace Towers
+namespace Fights.Persons.Towers
 {
     internal class TowerSeat : MonoBehaviour, ICardDropPlace
     {

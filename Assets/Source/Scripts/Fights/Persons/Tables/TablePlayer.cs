@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Tables
+namespace Fights.Persons.Tables
 {
     public class TablePlayer : Table
     {

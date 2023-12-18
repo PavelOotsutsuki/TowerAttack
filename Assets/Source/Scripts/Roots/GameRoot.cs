@@ -1,15 +1,14 @@
 using UnityEngine;
 using Cards;
-using GameFields;
+using Fights;
 using Tools;
-using Persons;
 
 namespace Roots
 {
     public class GameRoot : MonoBehaviour
     {
         [SerializeField] private CardRoot _cardRoot;
-        [SerializeField] private GameFieldRoot _gameFieldRoot;
+        [SerializeField] private FightRoot _fightRoot;
 
         private void Start()
         {
@@ -29,7 +28,7 @@ namespace Roots
 
         private void InitGameFieldRoot(Card[] cards)
         {
-            _gameFieldRoot.Init(cards);
+            _fightRoot.Init(cards);
         }
 
         [ContextMenu(nameof(DefineAllComponents))]
@@ -48,7 +47,7 @@ namespace Roots
         [ContextMenu(nameof(DefineGameFieldRoot))]
         private void DefineGameFieldRoot()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _gameFieldRoot, ComponentLocationTypes.InThis);
+            AutomaticFillComponents.DefineComponent(this, ref _fightRoot, ComponentLocationTypes.InThis);
         }
     }
 }

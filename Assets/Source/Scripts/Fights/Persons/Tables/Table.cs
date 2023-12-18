@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 using Cards;
 using Tools;
 
-namespace Tables
+namespace Fights.Persons.Tables
 {
     public class Table : MonoBehaviour, ICardDropPlace
     {
