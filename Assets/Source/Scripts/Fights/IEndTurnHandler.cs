@@ -1,4 +1,4 @@
-namespace GameFields
+namespace Fights
 {
     public interface IEndTurnHandler
     {

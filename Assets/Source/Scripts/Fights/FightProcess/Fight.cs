@@ -2,7 +2,7 @@ using Persons;
 using Tables;
 using Cards;
 
-namespace GameFields.FightProcess
+namespace Fights.FightProcess
 {
     internal class Fight : IEndTurnHandler
     {

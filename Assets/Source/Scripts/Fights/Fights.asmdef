@@ -1,6 +1,6 @@
 {
-    "name": "GameFields",
-    "rootNamespace": "GameFields",
+    "name": "Fights",
+    "rootNamespace": "Fights",
     "references": [
         "GUID:bca3f2b6fb8db41aaa2c56cb32d6060e",
         "GUID:802f65728030c443591527c69c93fe23",

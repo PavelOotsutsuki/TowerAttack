@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cards;
 
-namespace GameFields
+namespace Fights
 {
     public class Deck : MonoBehaviour
     {

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace GameFields
+namespace Fights
 {
     public class EndTurnButton : MonoBehaviour, IPointerClickHandler
     {

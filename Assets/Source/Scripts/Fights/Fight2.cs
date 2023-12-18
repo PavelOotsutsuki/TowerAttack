@@ -1,12 +1,12 @@
 using Cards;
-using GameFields.FightProcess;
+using Fights.FightProcess;
 using Tools;
 using UnityEngine;
 using Persons;
 
-namespace GameFields
+namespace Fights
 {
-    public class GameField : MonoBehaviour
+    public class Fight2 : MonoBehaviour
     {
         [SerializeField] private Deck _deck;
         [SerializeField] private EndTurnButton _endTurnButton;
