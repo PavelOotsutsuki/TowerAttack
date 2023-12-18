@@ -4,7 +4,7 @@ using Cards;
 using Hands;
 using UnityEngine;
 
-namespace Persons
+namespace Fights.Persons
 {
     public class EnemyAI : Person
     {

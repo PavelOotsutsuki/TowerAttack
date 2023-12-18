@@ -7,7 +7,7 @@ using Cards;
 using Tools;
 using Towers;
 
-namespace Persons
+namespace Fights.Persons
 {
     public abstract class Person : MonoBehaviour, IPlayCardManager
     {

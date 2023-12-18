@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using Cards;
 using Hands;
 
-namespace Persons
+namespace Fights.Persons
 {
     internal class DrawCardAnimator : MonoBehaviour
     {

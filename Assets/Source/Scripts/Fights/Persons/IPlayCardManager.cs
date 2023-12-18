@@ -1,6 +1,6 @@
 using Cards;
 
-namespace Tables  
+namespace Fights.Persons
 {
     public interface IPlayCardManager
     {

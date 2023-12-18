@@ -4,7 +4,7 @@ using Tools;
 using Cards;
 using Hands;
 
-namespace Persons
+namespace Fights.Persons
 {
     public class Player : Person
     {
