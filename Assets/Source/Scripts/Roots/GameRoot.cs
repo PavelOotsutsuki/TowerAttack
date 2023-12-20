@@ -18,7 +18,7 @@ namespace Roots
         private void InitAll()
         {
             InitCardRoot();
-            InitGameFieldRoot(_cardRoot.Cards);
+            InitFightRoot(_cardRoot.Cards);
         }
 
         private void InitCardRoot()
@@ -26,7 +26,7 @@ namespace Roots
             _cardRoot.Init();
         }
 
-        private void InitGameFieldRoot(Card[] cards)
+        private void InitFightRoot(Card[] cards)
         {
             _fightRoot.Init(cards);
         }
@@ -35,7 +35,7 @@ namespace Roots
         private void DefineAllComponents()
         {
             DefineCardRoot();
-            DefineGameFieldRoot();
+            DefineFightRoot();
         }
 
         [ContextMenu(nameof(DefineCardRoot))]
@@ -44,8 +44,8 @@ namespace Roots
             AutomaticFillComponents.DefineComponent(this, ref _cardRoot, ComponentLocationTypes.InThis);
         }
 
-        [ContextMenu(nameof(DefineGameFieldRoot))]
-        private void DefineGameFieldRoot()
+        [ContextMenu(nameof(DefineFightRoot))]
+        private void DefineFightRoot()
         {
             AutomaticFillComponents.DefineComponent(this, ref _fightRoot, ComponentLocationTypes.InThis);
         }
