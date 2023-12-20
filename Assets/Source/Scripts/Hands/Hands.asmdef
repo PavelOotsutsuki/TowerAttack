@@ -1,0 +1,18 @@
+{
+    "name": "Hands",
+    "rootNamespace": "Hands",
+    "references": [
+        "GUID:802f65728030c443591527c69c93fe23",
+        "GUID:bca3f2b6fb8db41aaa2c56cb32d6060e",
+        "GUID:f7055e27b1123473494e44f901ea1580"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
