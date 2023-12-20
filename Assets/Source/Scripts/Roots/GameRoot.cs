@@ -1,6 +1,6 @@
 using UnityEngine;
 using Cards;
-using Fights;
+using GameFields;
 using Tools;
 
 namespace Roots
@@ -8,7 +8,7 @@ namespace Roots
     public class GameRoot : MonoBehaviour
     {
         [SerializeField] private CardRoot _cardRoot;
-        [SerializeField] private FightRoot _fightRoot;
+        [SerializeField] private GameFieldRoot _gameFieldRoot;
 
         private void Start()
         {
@@ -18,7 +18,7 @@ namespace Roots
         private void InitAll()
         {
             InitCardRoot();
-            InitFightRoot(_cardRoot.Cards);
+            InitGameFieldRoot(_cardRoot.Cards);
         }
 
         private void InitCardRoot()
@@ -26,16 +26,16 @@ namespace Roots
             _cardRoot.Init();
         }
 
-        private void InitFightRoot(Card[] cards)
+        private void InitGameFieldRoot(Card[] cards)
         {
-            _fightRoot.Init(cards);
+            _gameFieldRoot.Init(cards);
         }
 
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
             DefineCardRoot();
-            DefineFightRoot();
+            DefineGameFieldRoot();
         }
 
         [ContextMenu(nameof(DefineCardRoot))]
@@ -44,10 +44,10 @@ namespace Roots
             AutomaticFillComponents.DefineComponent(this, ref _cardRoot, ComponentLocationTypes.InThis);
         }
 
-        [ContextMenu(nameof(DefineFightRoot))]
-        private void DefineFightRoot()
+        [ContextMenu(nameof(DefineGameFieldRoot))]
+        private void DefineGameFieldRoot()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _fightRoot, ComponentLocationTypes.InThis);
+            AutomaticFillComponents.DefineComponent(this, ref _gameFieldRoot, ComponentLocationTypes.InThis);
         }
     }
 }

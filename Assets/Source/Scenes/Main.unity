@@ -471,7 +471,7 @@ GameObject:
   - component: {fileID: 200841574}
   - component: {fileID: 200841577}
   m_Layer: 0
-  m_Name: Game
+  m_Name: GameField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4137,7 +4137,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cardRoot: {fileID: 1272924795}
-  _fightRoot: {fileID: 1272924796}
+  _gameFieldRoot: {fileID: 1272924796}
 --- !u!114 &1272924795
 MonoBehaviour:
   m_ObjectHideFlags: 0
