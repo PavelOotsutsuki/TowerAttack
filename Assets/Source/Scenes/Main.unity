@@ -5734,6 +5734,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1502786294}
     m_Modifications:
+    - target: {fileID: 1384258668175446551, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
+      propertyPath: _template
+      value: 
+      objectReference: {fileID: 3369557581075150207, guid: 8208b4381673849c1a76ded5f6fdb2da, type: 3}
+    - target: {fileID: 1384258668175446551, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
+      propertyPath: _container
+      value: 
+      objectReference: {fileID: 1620354838}
     - target: {fileID: 7433901876954992459, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
       propertyPath: m_Name
       value: HandPanelEnemy
@@ -7958,6 +7966,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1905208562}
     m_Modifications:
+    - target: {fileID: 1384258668175446551, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
+      propertyPath: _template
+      value: 
+      objectReference: {fileID: 3369557581075150207, guid: 8208b4381673849c1a76ded5f6fdb2da, type: 3}
+    - target: {fileID: 1384258668175446551, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
+      propertyPath: _container
+      value: 
+      objectReference: {fileID: 112430299}
     - target: {fileID: 7433901876954992459, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
       propertyPath: m_Name
       value: HandPanelPlayer

@@ -10,6 +10,7 @@ namespace GameFields.Persons.Hands
         [SerializeField] private HandSeat _template;
 
         private Queue<HandSeat> _remainingPool = new Queue<HandSeat>();
+        private List<HandSeat> _usedPool = new List<HandSeat>();
 
         public void Init()
         {
@@ -28,26 +29,34 @@ namespace GameFields.Persons.Hands
             }
 
             result = _remainingPool.Dequeue();
+            result.gameObject.SetActive(true);
+            _usedPool.Add(result);
             return true;
         }
 
         public void ReturnInPool(HandSeat handSeat)
         {
-            _remainingPool.Enqueue(handSeat);
-            handSeat.gameObject.SetActive(true);
+            if (_usedPool.Contains(handSeat))
+            {
+                _usedPool.Remove(handSeat);
+                _remainingPool.Enqueue(handSeat);
+                handSeat.gameObject.SetActive(false);
+            }
+            else
+            {
+                Debug.LogError("No contain on pool");
+            }
         }
 
         public void ResetPool()
         {
-            foreach (HandSeat handSeat in _remainingPool)
+            foreach (HandSeat handSeat in _usedPool)
             {
+                _remainingPool.Enqueue(handSeat);
                 handSeat.gameObject.SetActive(false);
             }
 
-            while (_remainingPool.Count < _countObjects)
-            {
-                CreateObject();
-            }
+            _usedPool.Clear();
         }
 
         private void CreateObject()

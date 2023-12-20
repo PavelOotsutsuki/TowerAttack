@@ -1,5 +1,4 @@
 using GameFields.Persons;
-using GameFields.Persons.Tables;
 using Cards;
 
 
