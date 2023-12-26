@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 namespace GameFields.Persons.Towers
 {
-    internal class TowerSeat : MonoBehaviour, ICardDropPlace
+    internal class TowerSeat : MonoBehaviour
     {
         [SerializeField] private Transform _transform;
         [SerializeField] private CanvasGroup _canvasGroup;
