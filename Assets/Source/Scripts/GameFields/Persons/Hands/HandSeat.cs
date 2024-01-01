@@ -15,10 +15,10 @@ namespace GameFields.Persons.Hands
         {
         }
 
-        public void SetCard(Card card, float duration)
+        public void SetCard(Card card, bool isFrontCardSide, float duration)
         {
             _card = card;
-            _card.BindSeat(_transform, duration);
+            _card.BindSeat(_transform, isFrontCardSide, duration);
         }
 
         public bool IsCardEqual(Card card)

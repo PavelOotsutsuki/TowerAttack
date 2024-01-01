@@ -22,6 +22,7 @@ namespace Cards
             yield return new WaitForSeconds(cardBackDuration);
 
             _sideFlipper.SetFrontSide();
+            _sideFlipper.Block();
 
             InvertCardFront(cardFrontDuration, cardBackScaleFactor, indent, screenFactor);
             yield return new WaitForSeconds(cardFrontDuration);

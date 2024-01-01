@@ -19,27 +19,32 @@ namespace Cards
 
         internal void Init(CardDescription cardDescription, BigCard bigCard, Transform dragContainer)
         {
-            //bool isBackView = true;
             _rectTransform.localScale = _defaultScaleVector;
             _cardMovement = new CardMovement(_rectTransform);
             _cardFront.Init(_cardSO, _rectTransform, cardDescription, bigCard);
-            _cardSideFlipper = new CardSideFlipper(_cardFront.gameObject, _cardBack.gameObject);
-            _cardSideFlipper.SetBackSide();
 
             _cardDragAndDropActions = new CardDragAndDropActions(_cardFront, _cardMovement, this);
             _cardDragAndDrop.Init(_rectTransform, _cardDragAndDropActions, dragContainer);
             _drawCardAnimation = new DrawCardAnimation(_rectTransform, _cardMovement, _cardSideFlipper);
 
-            Block();
+            _cardSideFlipper = new CardSideFlipper(_cardFront, _cardBack, _cardDragAndDrop);
+            _cardSideFlipper.SetBackSide();
         }
 
-        public void BindSeat(Transform transform, float duration)
+        public void BindSeat(Transform transform, bool isFrontSide, float duration = 0f)
         {
             _rectTransform.SetParent(transform);
-            Debug.Log("задал parent");
             _cardMovement.TranslateLocalSmoothly(Vector2.zero, Quaternion.identity.eulerAngles, duration, _defaultScaleVector);
             //_cardMovement.TranslateLocalSmoothly(Vector2.zero, Vector3.zero, duration, _defaultScaleVector);
-            Unblock();
+
+            if (isFrontSide)
+            {
+                _cardSideFlipper.SetFrontSide();
+            }
+            else
+            {
+                _cardSideFlipper.SetBackSide();
+            }
         }
 
         public void SetEndDragListener(ICardDragListener cardDragListener)
@@ -54,46 +59,33 @@ namespace Cards
             Destroy();
         }
 
-        //public void TranslateLocalInto(Vector2 positon, Vector3 rotation, float duration)
-        //{
-        //    _cardMovement.TranslateLocalSmoothly(positon, rotation, duration, _defaultScaleVector);
-        //}
-
         public void PlayDrawnCardAnimation(float cardBackDuration, float cardBackRotation, float cardBackScaleFactor, float cardFrontDuration, float indent, float screenFactor)
         {
-            Block();
+            //Block();
             StartCoroutine(_drawCardAnimation.PlayDrawnCardAnimation(cardBackDuration, cardBackRotation, cardBackScaleFactor, cardFrontDuration, indent, screenFactor));
         }
 
-        //public void ActivateDragAndDrop(bool isActivate)
+        //private void Block()
         //{
-        //    _cardDragAndDrop.enabled = isActivate;
+        //    if (_cardSideFlipper.IsFrontSide)
+        //    {
+        //        return;
+        //    }
+
+        //    _cardDragAndDrop.enabled = false;
+        //    _cardFront.Block();
         //}
 
-        //public void BlockDragAndDrop()
+        //private void Unblock()
         //{
+        //    if (_cardSideFlipper.IsFrontSide == false)
+        //    {
+        //        return;
+        //    }
 
+        //    _cardDragAndDrop.enabled = true;
+        //    _cardFront.Unblock();
         //}
-
-        private void Block()
-        {
-            if (_cardSideFlipper.IsFrontSide)
-            {
-                return;
-            }
-
-            _cardDragAndDrop.enabled = false;
-            _cardFront.Block();
-        }
-
-        private void Unblock()
-        {
-            if (_cardSideFlipper.IsFrontSide)
-            {
-                _cardDragAndDrop.enabled = true;
-                _cardFront.Unblock();
-            }
-        }
 
         private void Destroy()
         {

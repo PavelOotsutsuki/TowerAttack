@@ -14,6 +14,12 @@ namespace Cards
             _cardRectTransform = cardRectTransform;
         }
 
+        public void TranslateLocalInstantly(Vector2 positon, Vector3 rotation)
+        {
+            _cardRectTransform.Translate(positon);
+            _cardRectTransform.Rotate(rotation);
+        }
+
         public void TranslateLocalSmoothly(Vector2 positon, Vector3 rotation, float duration, Vector3 scaleVector)
         {
             _currentMovement = DOTween.Sequence()
