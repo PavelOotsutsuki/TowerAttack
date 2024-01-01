@@ -1,6 +1,6 @@
 using GameFields.Persons;
 using Cards;
-
+using UnityEngine;
 
 namespace GameFields.FightProcess
 {
@@ -50,16 +50,16 @@ namespace GameFields.FightProcess
 
         private void SwitchPerson()
         {
-            if (_activePerson == _player)
+            if (_activePerson == (Person_2)_player)
             {
                 SetEnemyTurn();
+                Debug.Log("Enemy turn");
             }
             else
             {
                 SetPlayerTurn();
+                Debug.Log("Player turn");
             }
-
-            ActivateTable();
         }
 
         private void SetPlayerTurn()
@@ -78,6 +78,8 @@ namespace GameFields.FightProcess
 
         private void StartTurn()
         {
+            Debug.Log(_activePerson.CountDrawCards);
+
             for (int i = 0; i < _activePerson.CountDrawCards; i++)
             {
                 DrawCards();

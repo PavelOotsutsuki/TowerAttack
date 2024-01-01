@@ -13,7 +13,7 @@ namespace GameFields.Persons
 
         protected override void DrawCard(Card drawnCard, Hand hand)
         {
-            _drawCardAnimator.Init(hand, drawnCard, _canvasScaler);
+            //_drawCardAnimator.Init(hand, drawnCard, _canvasScaler);
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

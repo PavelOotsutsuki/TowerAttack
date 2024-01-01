@@ -25,10 +25,11 @@ namespace Cards
 
             _cardDragAndDropActions = new CardDragAndDropActions(_cardFront, _cardMovement, this);
             _cardDragAndDrop.Init(_rectTransform, _cardDragAndDropActions, dragContainer);
-            _drawCardAnimation = new DrawCardAnimation(_rectTransform, _cardMovement, _cardSideFlipper);
 
             _cardSideFlipper = new CardSideFlipper(_cardFront, _cardBack, _cardDragAndDrop);
             _cardSideFlipper.SetBackSide();
+
+            _drawCardAnimation = new DrawCardAnimation(_rectTransform, _cardMovement, _cardSideFlipper);
         }
 
         public void BindSeat(Transform transform, bool isFrontSide, float duration = 0f)

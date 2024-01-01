@@ -19,9 +19,9 @@ namespace Cards
 
         public void SetBackSide()
         {
-            SetSide(true);
-
             Block();
+
+            SetSide(true);
         }
 
         public void SetFrontSide()

@@ -6,6 +6,7 @@ using GameFields.Persons.Tables;
 using GameFields.Persons.Towers;
 using Tools;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace GameFields.Persons
 {
@@ -15,6 +16,8 @@ namespace GameFields.Persons
         [SerializeField] private HandPlayer_2 _hand;
         [SerializeField] private TablePlayer_2 _table;
         [SerializeField] private TowerPlayer_2 _tower;
+        [SerializeField] private DrawCardAnimator _drawCardAnimator;
+        [SerializeField] private CanvasScaler _canvasScaler;
 
         //private PersonFightActions _personFightActions;
         public int CountDrawCards => _countDrawCards;
@@ -44,6 +47,7 @@ namespace GameFields.Persons
         public void DrawCard(Card card)
         {
             card.SetEndDragListener(_hand);
+            _drawCardAnimator.Init(_hand, card, _canvasScaler);
         }
 
         //public void RemoveCard(Card card)
@@ -58,6 +62,7 @@ namespace GameFields.Persons
             DefineHand();
             DefineTable();
             DefineTower();
+            DefineDrawCardAnimator();
         }
 
         [ContextMenu(nameof(DefineHand))]
@@ -76,6 +81,12 @@ namespace GameFields.Persons
         private void DefineTower()
         {
             AutomaticFillComponents.DefineComponent(this, ref _tower, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineDrawCardAnimator))]
+        private void DefineDrawCardAnimator()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _drawCardAnimator, ComponentLocationTypes.InThis);
         }
     }
 }

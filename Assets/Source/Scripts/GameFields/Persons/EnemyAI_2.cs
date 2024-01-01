@@ -20,13 +20,17 @@ namespace GameFields.Persons
             _hand = hand;
             _table = table;
             _tower = tower;
+
+            _hand.Init();
+            _table.Init(this);
+            _tower.Init(this);
         }
 
         public int CountDrawCards { get; private set; }
 
         public void DrawCard(Card card)
         {
-            
+            _hand.AddCard(card);
         }
 
         public void PlayCard(Card card)

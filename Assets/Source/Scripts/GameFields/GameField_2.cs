@@ -24,11 +24,12 @@ namespace GameFields
 
         public void Init(Card[] cardsInDeck)
         {
+            InitDeck(cardsInDeck);
+            InitPersons();
+
             _fight = new Fight_2(_player, _enemyAI, _deck);
 
-            InitDeck(cardsInDeck);
             InitEndTurnButton();
-            InitPersons();
         }
 
         private void InitPersons()
