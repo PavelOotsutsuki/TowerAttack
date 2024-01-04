@@ -1,6 +1,6 @@
 namespace GameFields.Persons
 {
-    public interface Person_2 : IPlayCardManager, IDrawCardManager
+    public interface IPerson : IPlayCardManager, IDrawCardManager
     {
         public int CountDrawCards { get; }
     }

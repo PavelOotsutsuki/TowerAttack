@@ -1,41 +1,44 @@
-using System.Collections;
-using System.Collections.Generic;
-using Cards;
 using Tools;
 using UnityEngine;
 
 namespace GameFields.Persons.Towers
 {
-    public class Tower : MonoBehaviour, ICardDropPlace
+    public abstract class Tower : MonoBehaviour
     {
-        [SerializeField] private TowerSeat _towerSeat;
+        [SerializeField] protected TowerSeat TowerSeat;
+        [SerializeField] protected CanvasGroup CanvasGroup;
 
-        private IPlayCardManager _playCardManager;
+        protected IPlayCardManager PlayCardManager;
 
-        public void Init(IPlayCardManager playCardManager)
+        public virtual void Init(IPlayCardManager playCardManager)
         {
-            _playCardManager = playCardManager;
+            PlayCardManager = playCardManager;
 
-            _towerSeat.Init();
+            TowerSeat.Init();
         }
 
-        public void GetCard(Card card)
+        protected void Deactivate()
         {
-            _playCardManager.PlayCard(card);
-
-            _towerSeat.GetCard(card);
+            CanvasGroup.blocksRaycasts = false;
         }
 
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
             DefineTowerSeat();
+            DefineCanvasGroup();
         }
 
         [ContextMenu(nameof(DefineTowerSeat))]
         private void DefineTowerSeat()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _towerSeat, ComponentLocationTypes.InChildren);
+            AutomaticFillComponents.DefineComponent(this, ref TowerSeat, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineCanvasGroup))]
+        private void DefineCanvasGroup()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref CanvasGroup, ComponentLocationTypes.InThis);
         }
     }
 }

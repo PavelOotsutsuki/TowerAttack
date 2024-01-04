@@ -1,63 +1,23 @@
-using UnityEngine;
-using UnityEngine.EventSystems;
-using Cards;
 using Tools;
+using UnityEngine;
 
 namespace GameFields.Persons.Tables
 {
-    public class Table : MonoBehaviour, ICardDropPlace
+    internal abstract class Table : MonoBehaviour
     {
+        [SerializeField] protected CanvasGroup CanvasGroup;
         [SerializeField] private TableSeat[] _cardSeats;
-        [SerializeField] private CanvasGroup _canvasGroup;
 
+        protected IPlayCardManager PlayCardManager;
         private int[] _cardSeatsSortIndices;
-        private IPlayCardManager _playCardManager;
 
-        public void Init(IPlayCardManager playCardManager)
+        public virtual void Init(IPlayCardManager playCardManager)
         {
-            _playCardManager = playCardManager;
+            PlayCardManager = playCardManager;
             SetCardSeatsIndices();
-
-            Deactivate();
         }
 
-        //public void OnDrop(PointerEventData eventData)
-        //{
-        //    //if (EventSystem.current.TryGetComponentInRaycasts(eventData, out Card card))
-        //    //{
-        //        if (eventData.pointerDrag.TryGetComponent(out Card card))
-        //        {
-        //            if (TryFindCardSeat(out TableSeat freeCardSeat))
-        //            {
-        //                _playCardManager.PlayCard(card);
-        //                card.Play(out CardCharacter cardCharacter);
-        //                freeCardSeat.SetCardCharacter(cardCharacter);
-        //            }
-        //        }
-        //    //}
-        //}
-
-        public void GetCard(Card card)
-        {
-            if (TryFindCardSeat(out TableSeat freeCardSeat))
-            {
-                _playCardManager.PlayCard(card);
-                card.Play(out CardCharacter cardCharacter);
-                freeCardSeat.SetCardCharacter(cardCharacter);
-            }
-        }
-
-        public void Activate()
-        {
-            _canvasGroup.blocksRaycasts = true;
-        }
-
-        public void Deactivate()
-        {
-            _canvasGroup.blocksRaycasts = false;
-        }
-
-        private bool TryFindCardSeat(out TableSeat cardSeat)
+        protected bool TryFindCardSeat(out TableSeat cardSeat)
         {
             cardSeat = null;
 
@@ -103,11 +63,10 @@ namespace GameFields.Persons.Tables
             AutomaticFillComponents.DefineComponent(this, ref _cardSeats);
         }
 
-
         [ContextMenu(nameof(DefineCanvasGroup))]
         private void DefineCanvasGroup()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _canvasGroup, ComponentLocationTypes.InThis);
+            AutomaticFillComponents.DefineComponent(this, ref CanvasGroup, ComponentLocationTypes.InThis);
         }
     }
 }

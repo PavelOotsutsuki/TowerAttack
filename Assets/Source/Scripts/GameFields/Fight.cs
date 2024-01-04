@@ -1,21 +1,20 @@
 using GameFields.Persons;
 using Cards;
-using UnityEngine;
 
-namespace GameFields.FightProcess
+namespace GameFields
 {
-    internal class Fight_2 : IEndTurnHandler
+    internal class Fight : IEndTurnHandler
     {
         private readonly int _maxTurns = 100;
 
-        private Player_2 _player;
-        private EnemyAI_2 _enemy;
+        private Player _player;
+        private EnemyAI _enemy;
         private Deck _deck;
 
-        private Person_2 _activePerson;
+        private IPerson _activePerson;
         private int _turnNumber;
 
-        public Fight_2(Player_2 player, EnemyAI_2 enemy, Deck deck)
+        public Fight(Player player, EnemyAI enemy, Deck deck)
         {
             _turnNumber = 1;
 
@@ -25,11 +24,6 @@ namespace GameFields.FightProcess
 
             SetPlayerTurn();
         }
-
-        //public void PlayCard(Card card)
-        //{
-        //    _activePerson.RemoveCard(card);
-        //}
 
         public void OnEndTurn()
         {
@@ -50,15 +44,13 @@ namespace GameFields.FightProcess
 
         private void SwitchPerson()
         {
-            if (_activePerson == (Person_2)_player)
+            if (_activePerson == (IPerson)_player)
             {
                 SetEnemyTurn();
-                Debug.Log("Enemy turn");
             }
             else
             {
                 SetPlayerTurn();
-                Debug.Log("Player turn");
             }
         }
 
@@ -78,8 +70,6 @@ namespace GameFields.FightProcess
 
         private void StartTurn()
         {
-            Debug.Log(_activePerson.CountDrawCards);
-
             for (int i = 0; i < _activePerson.CountDrawCards; i++)
             {
                 DrawCards();

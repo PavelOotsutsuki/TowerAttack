@@ -1,13 +1,15 @@
 using System.Collections.Generic;
-using UnityEngine;
 using Cards;
 using Tools;
+using UnityEngine;
 
 namespace GameFields.Persons.Hands
 {
-    public class Hand : MonoBehaviour, ICardDragListener
+    public abstract class Hand : MonoBehaviour
     {
         private const float StartRotation = 0;
+
+        [SerializeField] protected CanvasGroup CanvasGroup;
 
         [SerializeField, Min(0f)] private float _offsetX = 162.5f;
         [SerializeField] private float _handLength = 1175f;
@@ -16,44 +18,24 @@ namespace GameFields.Persons.Hands
         [SerializeField] private float _startCardTranslateSpeed = 0.5f;
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private HandSeatPool _handSeatPool;
-        [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private bool _isFrontCardSide;
 
-        private List<HandSeat> _handSeats;
-        private HandSeat _dragCardHandSeat;
-        private int _handSeatIndex;
-        private float _sortDirection;
-        private HandOwner _handOwner;
+        protected List<HandSeat> HandSeats;
+        protected HandSeat DragCardHandSeat;
+        protected int HandSeatIndex;
 
-        public void Init(HandOwner handOwner)
+        public virtual void Init()
         {
-            _handOwner = handOwner;
-
-            SetSortDirection();
-
-            _handSeats = new List<HandSeat>();
-            _handSeatIndex = -1;
+            HandSeats = new List<HandSeat>();
+            HandSeatIndex = -1;
 
             _handSeatPool.Init();
         }
 
-        public void OnCardDrag(Card card)
+        public virtual void RemoveCard(Card card) // Тут что-то явно надо поменять
         {
-            if (TryFindHandSeat(out HandSeat handSeat, card))
-            {
-                _dragCardHandSeat = handSeat;
+            _handSeatPool.ReturnInPool(DragCardHandSeat);
 
-                _canvasGroup.blocksRaycasts = false;
-                _handSeatIndex = _handSeats.IndexOf(_dragCardHandSeat);
-                _handSeats.Remove(_dragCardHandSeat);
-                SortHandSeats();
-            }
-        }
-
-        public void OnCardDrop()
-        {
-            _handSeats.Insert(_handSeatIndex, _dragCardHandSeat);
-            OnEndCardDrag();
             SortHandSeats();
         }
 
@@ -61,34 +43,16 @@ namespace GameFields.Persons.Hands
         {
             if (_handSeatPool.TryGetHandSeat(out HandSeat handSeat))
             {
-                _handSeats.Add(handSeat);
+                HandSeats.Add(handSeat);
                 handSeat.SetCard(card, _isFrontCardSide, _startCardTranslateSpeed);
             }
 
             SortHandSeats();
         }
 
-        public void RemoveCard(Card card)
+        protected void SortHandSeats()
         {
-            _handSeatPool.ReturnInPool(_dragCardHandSeat);
-            OnEndCardDrag();
-
-            SortHandSeats();
-        }
-
-        private void SetSortDirection()
-        {
-            _sortDirection = _handOwner switch
-            {
-                HandOwner.Player => 1,
-                HandOwner.Enemy => -1,
-                _ => throw new System.NotImplementedException()
-            };
-        }
-            
-        private void SortHandSeats()
-        {
-            if (_handSeats.Count <= 0)
+            if (HandSeats.Count <= 0)
             {
                 return;
             }
@@ -96,39 +60,32 @@ namespace GameFields.Persons.Hands
             float offsetX;
             float positionX;
 
-            if (_handSeats.Count * _offsetX < _handLength / 2)
+            if (HandSeats.Count * _offsetX < _handLength / 2)
             {
                 offsetX = _offsetX;
             }
             else
             {
-                float xFactor = _offsetX * _handSeats.Count;
+                float xFactor = _offsetX * HandSeats.Count;
                 float fullOffsetX = _handLength * xFactor / (xFactor + _handLength / 2);
 
-                offsetX = fullOffsetX / _handSeats.Count;
+                offsetX = fullOffsetX / HandSeats.Count;
             }
 
-            offsetX *= -1 * _sortDirection;
+            offsetX *= -1 * GetSortDirection();
 
-            for (int i = 0; i < _handSeats.Count; i++)
+            for (int i = 0; i < HandSeats.Count; i++)
             {
-                positionX = _startPositionX + ((_handSeats.Count - 1) / 2f - i) * offsetX;
+                positionX = _startPositionX + ((HandSeats.Count - 1) / 2f - i) * offsetX;
                 Vector3 positon = new Vector2(positionX + _rectTransform.rect.xMin, _startPositionY + _rectTransform.rect.yMin);
                 Vector3 rotation = new Vector3(0f, 0f, StartRotation);
-                _handSeats[i].SetLocalPositionValues(positon, rotation, _startCardTranslateSpeed);
+                HandSeats[i].SetLocalPositionValues(positon, rotation, _startCardTranslateSpeed);
             }
         }
 
-        private void OnEndCardDrag()
+        protected bool TryFindHandSeat(out HandSeat findedHandSeat, Card card)
         {
-            _canvasGroup.blocksRaycasts = true;
-            _handSeatIndex = -1;
-            _dragCardHandSeat = null;
-        }
-
-        private bool TryFindHandSeat(out HandSeat findedHandSeat, Card card)
-        {
-            foreach (HandSeat handSeat in _handSeats)
+            foreach (HandSeat handSeat in HandSeats)
             {
                 if (handSeat.IsCardEqual(card))
                 {
@@ -140,6 +97,8 @@ namespace GameFields.Persons.Hands
             findedHandSeat = null;
             return false;
         }
+
+        protected abstract float GetSortDirection();
 
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
@@ -164,8 +123,7 @@ namespace GameFields.Persons.Hands
         [ContextMenu(nameof(DefineCanvasGroup))]
         private void DefineCanvasGroup()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _canvasGroup, ComponentLocationTypes.InThis);
+            AutomaticFillComponents.DefineComponent(this, ref CanvasGroup, ComponentLocationTypes.InThis);
         }
     }
 }
-

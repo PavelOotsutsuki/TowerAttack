@@ -1,14 +1,12 @@
 using Cards;
 using Tools;
 using UnityEngine;
-using GameFields.Persons;
 
 namespace GameFields
 {
     public class GameFieldRoot : MonoBehaviour
     {
-        //[SerializeField] private GameFieldPVE _fightPVE;
-        [SerializeField] private GameField_2 _fightPVE;
+        [SerializeField] private GameFieldPVE _fightPVE;
 
         public void Init(Card[] cards)
         {

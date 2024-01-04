@@ -1,42 +1,48 @@
-using System.Collections;
-using System.Collections.Generic;
+using Cards;
 using UnityEngine;
 
 namespace GameFields.Persons.Hands
 {
-    public class HandPlayer : Hand
+    public class HandPlayer : Hand, ICardDragListener
     {
-        //protected override float StartRotation => 0f;
+        private const float SortDirection = 1;
 
-        //protected override void SortHandSeats()
-        //{
-        //    if (HandSeats.Count <= 0)
-        //    {
-        //        return;
-        //    }
+        public void OnCardDrag(Card card)
+        {
+            if (TryFindHandSeat(out HandSeat handSeat, card))
+            {
+                DragCardHandSeat = handSeat;
 
-        //    float offsetX;
-        //    float positionX;
+                CanvasGroup.blocksRaycasts = false;
+                HandSeatIndex = HandSeats.IndexOf(DragCardHandSeat);
+                HandSeats.Remove(DragCardHandSeat);
+                SortHandSeats();
+            }
+        }
 
-        //    if (HandSeats.Count * _offsetX < _handLength / 2)
-        //    {
-        //        offsetX = _offsetX;
-        //    }
-        //    else
-        //    {
-        //        float xFactor = _offsetX * HandSeats.Count;
-        //        float fullOffsetX = _handLength * xFactor / (xFactor + _handLength / 2);
+        public void OnCardDrop()
+        {
+            HandSeats.Insert(HandSeatIndex, DragCardHandSeat);
+            OnEndCardDrag();
+            SortHandSeats();
+        }
 
-        //        offsetX = fullOffsetX / HandSeats.Count;
-        //    }
+        public override void RemoveCard(Card card)
+        {
+            base.RemoveCard(card);
+            OnEndCardDrag();
+        }
 
-        //    for (int i = 0; i < HandSeats.Count; i++)
-        //    {
-        //        positionX = _startPositionX + ((HandSeats.Count - 1) / 2f - i) * offsetX * -1;
-        //        Vector3 positon = new Vector2(positionX + RectTransform.rect.xMin, StartPositionY + RectTransform.rect.yMin);
-        //        Vector3 rotation = new Vector3(0f, 0f, StartRotation);
-        //        HandSeats[i].SetLocalPositionValues(positon, rotation, StartCardTranslateSpeed);
-        //    }
-        //}
+        private void OnEndCardDrag()
+        {
+            CanvasGroup.blocksRaycasts = true;
+            HandSeatIndex = -1;
+            DragCardHandSeat = null;
+        }
+
+        protected override float GetSortDirection()
+        {
+            return SortDirection;
+        }
     }
 }

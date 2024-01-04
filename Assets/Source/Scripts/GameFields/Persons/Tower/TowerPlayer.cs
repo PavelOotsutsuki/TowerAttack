@@ -1,12 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using Cards;
-using Tools;
 using UnityEngine;
 
 namespace GameFields.Persons.Towers
 {
-    public class TowerPlayer_2 : Tower_2, ICardDropPlace
+    public class TowerPlayer : Tower, ICardDropPlace
     {
         public override void Init(IPlayCardManager playCardManager)
         {
