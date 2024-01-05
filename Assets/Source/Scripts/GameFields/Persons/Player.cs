@@ -2,9 +2,9 @@ using Cards;
 using GameFields.Persons.Hands;
 using GameFields.Persons.Tables;
 using GameFields.Persons.Towers;
+using GameFields.Persons.PersonAnimators;
 using Tools;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace GameFields.Persons
 {
@@ -14,8 +14,7 @@ namespace GameFields.Persons
         [SerializeField] private HandPlayer _hand;
         [SerializeField] private TablePlayer _table;
         [SerializeField] private TowerPlayer _tower;
-        [SerializeField] private DrawCardAnimator _drawCardAnimator;
-        [SerializeField] private CanvasScaler _canvasScaler;
+        [SerializeField] private PlayerAnimator _playerAnimator;
 
         public int CountDrawCards => _countDrawCards;
 
@@ -24,6 +23,7 @@ namespace GameFields.Persons
             _hand.Init();
             _table.Init(this);
             _tower.Init(this);
+            _playerAnimator.Init(_hand);
         }
 
         public void PlayCard(Card card)
@@ -44,7 +44,7 @@ namespace GameFields.Persons
         public void DrawCard(Card card)
         {
             card.SetEndDragListener(_hand);
-            _drawCardAnimator.Init(_hand, card, _canvasScaler);
+            _playerAnimator.StartDrawCardAnimation(card);
         }
 
         [ContextMenu(nameof(DefineAllComponents))]
@@ -53,7 +53,7 @@ namespace GameFields.Persons
             DefineHand();
             DefineTable();
             DefineTower();
-            DefineDrawCardAnimator();
+            DefinePlayerAnimator();
         }
 
         [ContextMenu(nameof(DefineHand))]
@@ -74,10 +74,10 @@ namespace GameFields.Persons
             AutomaticFillComponents.DefineComponent(this, ref _tower, ComponentLocationTypes.InChildren);
         }
 
-        [ContextMenu(nameof(DefineDrawCardAnimator))]
-        private void DefineDrawCardAnimator()
+        [ContextMenu(nameof(DefinePlayerAnimator))]
+        private void DefinePlayerAnimator()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _drawCardAnimator, ComponentLocationTypes.InThis);
+            AutomaticFillComponents.DefineComponent(this, ref _playerAnimator, ComponentLocationTypes.InThis);
         }
     }
 }

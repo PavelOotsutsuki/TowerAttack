@@ -4,9 +4,9 @@ using UnityEngine.UI;
 using Cards;
 using GameFields.Persons.Hands;
 
-namespace GameFields.Persons
+namespace GameFields.Persons.PersonAnimators
 {
-    internal class DrawCardAnimator : MonoBehaviour
+    internal class PlayerDrawCardAnimator : MonoBehaviour
     {
         [SerializeField] private float _invertCardFrontDuration = 1f;
         [SerializeField] private float _invertCardBackDuration = 1f;
@@ -15,15 +15,24 @@ namespace GameFields.Persons
         [SerializeField] private float _invertCardBackScaleFactor = 1.8f;
         [SerializeField] private float _indent = 15f;
 
-        internal void Init(Hand hand, Card drawnCard, CanvasScaler canvasScaler)
+        private Hand _hand;
+        private CanvasScaler _canvasScaler;
+
+        internal void Init(Hand hand, CanvasScaler canvasScaler)
         {
-            StartCoroutine(DrawnCardBehaviour(hand, drawnCard, canvasScaler));
+            _hand = hand;
+            _canvasScaler = canvasScaler;
         }
 
-        private IEnumerator DrawnCardBehaviour(Hand hand, Card drawnCard, CanvasScaler canvasScaler)
+        internal void StartDrawCardAnimation(Card drawnCard)
+        {
+            StartCoroutine(DrawnCardBehaviour(drawnCard));
+        }
+
+        private IEnumerator DrawnCardBehaviour(Card drawnCard)
         {
             float fullDelay = _invertCardBackDuration + _invertCardFrontDuration + _delay;
-            float screenFactor = Screen.height / canvasScaler.referenceResolution.y;
+            float screenFactor = Screen.height / _canvasScaler.referenceResolution.y;
 
             drawnCard.transform.SetParent(transform);
             drawnCard.transform.SetAsLastSibling();
@@ -31,7 +40,7 @@ namespace GameFields.Persons
 
             yield return new WaitForSeconds(fullDelay);
 
-            hand.AddCard(drawnCard);
+            _hand.AddCard(drawnCard);
         }
     }
 }

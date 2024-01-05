@@ -50,7 +50,7 @@ namespace Cards
 
         public void SetEndDragListener(ICardDragListener cardDragListener)
         {
-            _cardDragAndDropActions.SetListener(cardDragListener);
+            _cardDragAndDropActions.SetDragAndDropListener(cardDragListener);
         }
 
         public void Play(out CardCharacter cardCharacter)

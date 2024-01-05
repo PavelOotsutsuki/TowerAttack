@@ -17,16 +17,18 @@ namespace GameFields
         [SerializeField] private TableAI _enemyTable;
         [SerializeField] private TowerAI _enemyTower;
         [SerializeField] private int _countDrawCardsEnemy = 1;
+        [SerializeField] private Fight _fight;
 
         private EnemyAI _enemyAI;
-        private Fight _fight;
+        //private Fight _fight;
 
         public void Init(Card[] cardsInDeck)
         {
             InitDeck(cardsInDeck);
             InitPersons();
 
-            _fight = new Fight(_player, _enemyAI, _deck);
+            //_fight = new Fight(_player, _enemyAI, _deck);
+            _fight.Init(_player, _enemyAI, _deck);
 
             InitEndTurnButton();
         }
@@ -55,6 +57,7 @@ namespace GameFields
             DefineHandAI();
             DefineTableAI();
             DefineTowerAI();
+            DefineFight();
         }
 
         [ContextMenu(nameof(DefineDeck))]
@@ -85,6 +88,12 @@ namespace GameFields
         private void DefineTowerAI()
         {
             AutomaticFillComponents.DefineComponent(this, ref _enemyTower, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineFight))]
+        private void DefineFight()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _fight, ComponentLocationTypes.InChildren);
         }
     }
 }

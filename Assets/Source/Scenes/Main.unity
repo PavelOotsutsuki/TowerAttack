@@ -471,6 +471,7 @@ GameObject:
   - component: {fileID: 200841575}
   - component: {fileID: 200841574}
   - component: {fileID: 200841577}
+  - component: {fileID: 200841578}
   m_Layer: 0
   m_Name: GameField
   m_TagString: Untagged
@@ -583,6 +584,19 @@ MonoBehaviour:
   _enemyTable: {fileID: 704143077}
   _enemyTower: {fileID: 1939013310}
   _countDrawCardsEnemy: 2
+  _fight: {fileID: 200841578}
+--- !u!114 &200841578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 200841572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8ea36857a740452cb0a545f3d05f5e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &250433508
 GameObject:
   m_ObjectHideFlags: 0
@@ -6526,6 +6540,7 @@ GameObject:
   - component: {fileID: 1905208562}
   - component: {fileID: 1905208563}
   - component: {fileID: 1905208564}
+  - component: {fileID: 1905208565}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -6571,8 +6586,7 @@ MonoBehaviour:
   _hand: {fileID: 112430305}
   _table: {fileID: 867188514}
   _tower: {fileID: 1018812819545794878}
-  _drawCardAnimator: {fileID: 1905208564}
-  _canvasScaler: {fileID: 200841575}
+  _playerAnimator: {fileID: 1905208565}
 --- !u!114 &1905208564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6591,6 +6605,20 @@ MonoBehaviour:
   _invertCardBackRotation: 90
   _invertCardBackScaleFactor: 1.8
   _indent: 15
+--- !u!114 &1905208565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1905208561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3782920d858474877a43536af929f182, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _drawCardAnimator: {fileID: 1905208564}
+  _canvasScaler: {fileID: 200841575}
 --- !u!1 &1915389997
 GameObject:
   m_ObjectHideFlags: 0

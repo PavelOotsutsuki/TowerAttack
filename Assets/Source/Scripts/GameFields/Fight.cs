@@ -1,11 +1,14 @@
 using GameFields.Persons;
 using Cards;
+using System.Collections;
+using UnityEngine;
 
 namespace GameFields
 {
-    internal class Fight : IEndTurnHandler
+    internal class Fight : MonoBehaviour, IEndTurnHandler
     {
         private readonly int _maxTurns = 100;
+        private readonly float _drawCardsDelay = 1.4f;
 
         private Player _player;
         private EnemyAI _enemy;
@@ -14,7 +17,18 @@ namespace GameFields
         private IPerson _activePerson;
         private int _turnNumber;
 
-        public Fight(Player player, EnemyAI enemy, Deck deck)
+        //public Fight(Player player, EnemyAI enemy, Deck deck)
+        //{
+        //    _turnNumber = 1;
+
+        //    _player = player;
+        //    _enemy = enemy;
+        //    _deck = deck;
+
+        //    SetPlayerTurn();
+        //}
+
+        public void Init(Player player, EnemyAI enemy, Deck deck)
         {
             _turnNumber = 1;
 
@@ -70,10 +84,7 @@ namespace GameFields
 
         private void StartTurn()
         {
-            for (int i = 0; i < _activePerson.CountDrawCards; i++)
-            {
-                DrawCards();
-            }
+            StartCoroutine(DrawningCards());
         }
 
         private void ActivateTable()
@@ -98,5 +109,17 @@ namespace GameFields
                 _activePerson.DrawCard(drawnCard);
             }
         }
+
+        private IEnumerator DrawningCards()
+        {
+            WaitForSeconds delay = new WaitForSeconds(_drawCardsDelay);
+
+            for (int i = 0; i < _activePerson.CountDrawCards; i++)
+            {
+                DrawCards();
+                yield return delay;
+            }
+        }
+
     }
 }

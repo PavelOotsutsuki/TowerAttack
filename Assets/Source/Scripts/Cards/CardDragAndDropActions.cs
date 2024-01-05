@@ -16,7 +16,7 @@ namespace Cards
             _card = card;
         }
 
-        internal void SetListener(ICardDragListener cardDragListener)
+        internal void SetDragAndDropListener(ICardDragListener cardDragListener)
         {
             _cardDragListener = cardDragListener;
         }
