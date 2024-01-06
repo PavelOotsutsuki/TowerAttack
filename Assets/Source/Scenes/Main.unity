@@ -584,6 +584,7 @@ MonoBehaviour:
   _enemyTable: {fileID: 704143077}
   _enemyTower: {fileID: 1939013310}
   _countDrawCardsEnemy: 2
+  _drawCardsDelayEnemy: 0.3
   _fight: {fileID: 200841578}
 --- !u!114 &200841578
 MonoBehaviour:
@@ -6583,6 +6584,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _countDrawCards: 2
+  _drawCardsDelay: 2
   _hand: {fileID: 112430305}
   _table: {fileID: 867188514}
   _tower: {fileID: 1018812819545794878}

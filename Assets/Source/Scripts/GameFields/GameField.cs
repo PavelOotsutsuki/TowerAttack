@@ -17,6 +17,7 @@ namespace GameFields
         [SerializeField] private TableAI _enemyTable;
         [SerializeField] private TowerAI _enemyTower;
         [SerializeField] private int _countDrawCardsEnemy = 1;
+        [SerializeField] private float _drawCardsDelayEnemy = 0.5f;
         [SerializeField] private Fight _fight;
 
         private EnemyAI _enemyAI;
@@ -36,7 +37,7 @@ namespace GameFields
         private void InitPersons()
         {
             _player.Init();
-            _enemyAI = new EnemyAI(_enemyHand, _enemyTable, _enemyTower, _countDrawCardsEnemy);
+            _enemyAI = new EnemyAI(_enemyHand, _enemyTable, _enemyTower, _countDrawCardsEnemy, _drawCardsDelayEnemy);
         }
 
         private void InitDeck(Card[] cards)

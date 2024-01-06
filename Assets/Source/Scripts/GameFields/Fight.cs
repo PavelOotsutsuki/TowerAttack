@@ -8,7 +8,6 @@ namespace GameFields
     internal class Fight : MonoBehaviour, IEndTurnHandler
     {
         private readonly int _maxTurns = 100;
-        private readonly float _drawCardsDelay = 1.4f;
 
         private Player _player;
         private EnemyAI _enemy;
@@ -112,7 +111,7 @@ namespace GameFields
 
         private IEnumerator DrawningCards()
         {
-            WaitForSeconds delay = new WaitForSeconds(_drawCardsDelay);
+            WaitForSeconds delay = new WaitForSeconds(_activePerson.DrawCardsDelay);
 
             for (int i = 0; i < _activePerson.CountDrawCards; i++)
             {

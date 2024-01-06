@@ -11,9 +11,10 @@ namespace GameFields.Persons
         private TableAI _table;
         private TowerAI _tower;
 
-        public EnemyAI(HandAI hand, TableAI table, TowerAI tower, int countDrawCards)
+        public EnemyAI(HandAI hand, TableAI table, TowerAI tower, int countDrawCards, float drawCardsDelay)
         {
             CountDrawCards = countDrawCards;
+            DrawCardsDelay = drawCardsDelay;
             _hand = hand;
             _table = table;
             _tower = tower;
@@ -23,6 +24,7 @@ namespace GameFields.Persons
             _tower.Init(this);
         }
 
+        public float DrawCardsDelay { get; private set; }
         public int CountDrawCards { get; private set; }
 
         public void DrawCard(Card card)
