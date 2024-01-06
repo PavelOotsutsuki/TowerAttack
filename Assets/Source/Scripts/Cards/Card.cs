@@ -48,9 +48,9 @@ namespace Cards
             }
         }
 
-        public void SetEndDragListener(ICardDragListener cardDragListener)
+        public void SetDragAndDropListener(ICardDragListener cardDragAndDropListener)
         {
-            _cardDragAndDropActions.SetDragAndDropListener(cardDragListener);
+            _cardDragAndDropActions.SetListener(cardDragAndDropListener);
         }
 
         public void Play(out CardCharacter cardCharacter)

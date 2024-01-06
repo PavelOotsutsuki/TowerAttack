@@ -586,6 +586,8 @@ MonoBehaviour:
   _countDrawCardsEnemy: 2
   _drawCardsDelayEnemy: 0.3
   _fight: {fileID: 200841578}
+  _enemyAI:
+    _hand: {fileID: 0}
 --- !u!114 &200841578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6603,7 +6605,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _invertCardFrontDuration: 1
   _invertCardBackDuration: 1
-  _delay: 0.5
+  _delay: 2
   _invertCardBackRotation: 90
   _invertCardBackScaleFactor: 1.8
   _indent: 15

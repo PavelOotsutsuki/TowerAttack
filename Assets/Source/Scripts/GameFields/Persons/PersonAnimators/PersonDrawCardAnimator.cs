@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.PersonAnimators
 {
-    public class EnemyDrawCardAnimator : PersonDrawCardAnimator
+    public abstract class PersonDrawCardAnimator : MonoBehaviour
     {
 
     }

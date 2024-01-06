@@ -45,7 +45,7 @@ namespace GameFields.Persons
 
         public void DrawCard(Card card)
         {
-            card.SetEndDragListener(_hand);
+            card.SetDragAndDropListener(_hand);
             _playerAnimator.StartDrawCardAnimation(card);
         }
 

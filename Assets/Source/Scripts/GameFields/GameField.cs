@@ -20,7 +20,7 @@ namespace GameFields
         [SerializeField] private float _drawCardsDelayEnemy = 0.5f;
         [SerializeField] private Fight _fight;
 
-        private EnemyAI _enemyAI;
+        [SerializeField] private EnemyAI _enemyAI;
         //private Fight _fight;
 
         public void Init(Card[] cardsInDeck)

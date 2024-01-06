@@ -6,7 +6,7 @@ using GameFields.Persons.Hands;
 
 namespace GameFields.Persons.PersonAnimators
 {
-    internal class PlayerDrawCardAnimator : MonoBehaviour
+    internal class PlayerDrawCardAnimator : PersonDrawCardAnimator
     {
         [SerializeField] private float _invertCardFrontDuration = 1f;
         [SerializeField] private float _invertCardBackDuration = 1f;

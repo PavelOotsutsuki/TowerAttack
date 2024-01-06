@@ -2,12 +2,15 @@ using Cards;
 using GameFields.Persons.Hands;
 using GameFields.Persons.Tables;
 using GameFields.Persons.Towers;
+using System;
+using UnityEngine;
 
 namespace GameFields.Persons
 {
+    [Serializable]
     internal class EnemyAI : IPerson
     {
-        private HandAI _hand;
+        [SerializeField] private HandAI _hand;
         private TableAI _table;
         private TowerAI _tower;
 
