@@ -5,6 +5,7 @@ using GameFields.Persons.Towers;
 using GameFields.Persons.PersonAnimators;
 using Tools;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace GameFields.Persons
 {
@@ -20,12 +21,12 @@ namespace GameFields.Persons
         public int CountDrawCards => _countDrawCards;
         public float DrawCardsDelay => _drawCardsDelay;
 
-        public void Init()
+        public void Init(CanvasScaler canvasScaler)
         {
             _hand.Init();
             _table.Init(this);
             _tower.Init(this);
-            _playerAnimator.Init(_hand);
+            _playerAnimator.Init(_hand, canvasScaler);
         }
 
         public void PlayCard(Card card)

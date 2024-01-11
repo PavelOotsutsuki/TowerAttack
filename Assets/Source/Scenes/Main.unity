@@ -311,28 +311,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e660a199669a3474c96e96b401be9d8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _handSeatList: {fileID: 112430308}
+  _handSeatList: {fileID: 3027492178399830141}
   _canvasGroup: {fileID: 112430304}
---- !u!114 &112430308
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 112430298}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a83ff3e0f932a4000b4fd7e4915b9c59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _offsetX: 162.5
-  _handLength: 1175
-  _startPositionX: 600
-  _startPositionY: 90
-  _startCardTranslateSpeed: 0.5
-  _rectTransform: {fileID: 112430299}
-  _handSeatPool: {fileID: 112430303}
-  _isFrontCardSide: 1
 --- !u!224 &129168446 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6930783577251702081, guid: 6b7a804513ec445a78547370ed67ac8d, type: 3}
@@ -594,6 +574,7 @@ MonoBehaviour:
   _endTurnButton: {fileID: 363521652}
   _player: {fileID: 1905208563}
   _fight: {fileID: 200841578}
+  _canvasScaler: {fileID: 200841575}
   _enemyAI:
     _hand: {fileID: 1620354845}
     _table: {fileID: 704143077}
@@ -5720,6 +5701,14 @@ PrefabInstance:
       propertyPath: _container
       value: 
       objectReference: {fileID: 1620354838}
+    - target: {fileID: 3330152501390823795, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
+      propertyPath: _handSeatPool
+      value: 
+      objectReference: {fileID: 1620354840}
+    - target: {fileID: 3330152501390823795, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
+      propertyPath: _rectTransform
+      value: 
+      objectReference: {fileID: 1620354838}
     - target: {fileID: 7433901876954992459, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
       propertyPath: m_Name
       value: HandPanelEnemy
@@ -5811,9 +5800,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7433901876954992459, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1620354845}
-    - targetCorrespondingSourceObject: {fileID: 7433901876954992459, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1620354848}
   m_SourcePrefab: {fileID: 100100000, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
 --- !u!224 &1620354838 stripped
 RectTransform:
@@ -5841,6 +5827,17 @@ CanvasGroup:
   m_CorrespondingSourceObject: {fileID: 35988541827660383, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
   m_PrefabInstance: {fileID: 1620354837}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1620354842 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3330152501390823795, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
+  m_PrefabInstance: {fileID: 1620354837}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1620354839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a83ff3e0f932a4000b4fd7e4915b9c59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1620354845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5853,28 +5850,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a86d889d762e43889e85f38e880170f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _handSeatList: {fileID: 1620354848}
+  _handSeatList: {fileID: 1620354842}
   _canvasGroup: {fileID: 1620354841}
---- !u!114 &1620354848
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1620354839}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a83ff3e0f932a4000b4fd7e4915b9c59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _offsetX: 162.5
-  _handLength: 1175
-  _startPositionX: 600
-  _startPositionY: 90
-  _startCardTranslateSpeed: 0.5
-  _rectTransform: {fileID: 1620354838}
-  _handSeatPool: {fileID: 1620354840}
-  _isFrontCardSide: 0
 --- !u!1 &1622567480
 GameObject:
   m_ObjectHideFlags: 0
@@ -6650,7 +6627,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _drawCardAnimator: {fileID: 1905208564}
-  _canvasScaler: {fileID: 200841575}
 --- !u!1 &1915389997
 GameObject:
   m_ObjectHideFlags: 0
@@ -8074,6 +8050,18 @@ PrefabInstance:
       propertyPath: _container
       value: 
       objectReference: {fileID: 112430299}
+    - target: {fileID: 3330152501390823795, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
+      propertyPath: _handSeatPool
+      value: 
+      objectReference: {fileID: 112430303}
+    - target: {fileID: 3330152501390823795, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
+      propertyPath: _rectTransform
+      value: 
+      objectReference: {fileID: 112430299}
+    - target: {fileID: 3330152501390823795, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
+      propertyPath: _isFrontCardSide
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7433901876954992459, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
       propertyPath: m_Name
       value: HandPanelPlayer
@@ -8165,10 +8153,18 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7433901876954992459, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 112430305}
-    - targetCorrespondingSourceObject: {fileID: 7433901876954992459, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 112430308}
   m_SourcePrefab: {fileID: 100100000, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
+--- !u!114 &3027492178399830141 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3330152501390823795, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
+  m_PrefabInstance: {fileID: 3027492178399830140}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112430298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a83ff3e0f932a4000b4fd7e4915b9c59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3159617471654381307
 MonoBehaviour:
   m_ObjectHideFlags: 0
