@@ -6,14 +6,17 @@ using UnityEngine;
 
 namespace GameFields.Persons.Hands
 {
-    public class HandAI : Hand
+    public class HandAI : MonoBehaviour, IHand
     {
+        [SerializeField] private HandSeatList _handSeatList;
+        [SerializeField] private CanvasGroup _canvasGroup;
+
         private const float SortDirection = -1;
 
-        public override void Init()
+        public void Init()
         {
-            base.Init();
-            CanvasGroup.blocksRaycasts = true;
+            _handSeatList.Init(SortDirection);
+            _canvasGroup.blocksRaycasts = true;
         }
 
         public void CardDragAnimation()
@@ -32,9 +35,33 @@ namespace GameFields.Persons.Hands
             // ну или в отдельном классе
         }
 
-        protected override float GetSortDirection()
+        public void RemoveCard(Card card)
         {
-            return SortDirection;
+            _handSeatList.RemoveCard();
+        }
+
+        public void AddCard(Card card)
+        {
+            _handSeatList.AddCard(card);
+        }
+
+        [ContextMenu(nameof(DefineAllComponents))]
+        private void DefineAllComponents()
+        {
+            DefineHandSeatList();
+            DefineCanvasGroup();
+        }
+
+        [ContextMenu(nameof(DefineHandSeatList))]
+        private void DefineHandSeatList()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _handSeatList, ComponentLocationTypes.InThis);
+        }
+
+        [ContextMenu(nameof(DefineCanvasGroup))]
+        private void DefineCanvasGroup()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _canvasGroup, ComponentLocationTypes.InThis);
         }
     }
 }

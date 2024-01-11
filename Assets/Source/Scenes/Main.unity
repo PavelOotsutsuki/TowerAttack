@@ -311,7 +311,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e660a199669a3474c96e96b401be9d8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CanvasGroup: {fileID: 112430304}
+  _handSeatList: {fileID: 112430308}
+  _canvasGroup: {fileID: 112430304}
+--- !u!114 &112430308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112430298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a83ff3e0f932a4000b4fd7e4915b9c59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   _offsetX: 162.5
   _handLength: 1175
   _startPositionX: 600
@@ -580,14 +593,13 @@ MonoBehaviour:
   _deck: {fileID: 250433512}
   _endTurnButton: {fileID: 363521652}
   _player: {fileID: 1905208563}
-  _enemyHand: {fileID: 1620354845}
-  _enemyTable: {fileID: 704143077}
-  _enemyTower: {fileID: 1939013310}
-  _countDrawCardsEnemy: 2
-  _drawCardsDelayEnemy: 0.3
   _fight: {fileID: 200841578}
   _enemyAI:
-    _hand: {fileID: 0}
+    _hand: {fileID: 1620354845}
+    _table: {fileID: 704143077}
+    _tower: {fileID: 1939013310}
+    _countDrawCardsEnemy: 3
+    _drawCardsDelayEnemy: 0.5
 --- !u!114 &200841578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5799,6 +5811,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7433901876954992459, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1620354845}
+    - targetCorrespondingSourceObject: {fileID: 7433901876954992459, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1620354848}
   m_SourcePrefab: {fileID: 100100000, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
 --- !u!224 &1620354838 stripped
 RectTransform:
@@ -5838,7 +5853,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a86d889d762e43889e85f38e880170f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CanvasGroup: {fileID: 1620354841}
+  _handSeatList: {fileID: 1620354848}
+  _canvasGroup: {fileID: 1620354841}
+--- !u!114 &1620354848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1620354839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a83ff3e0f932a4000b4fd7e4915b9c59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   _offsetX: 162.5
   _handLength: 1175
   _startPositionX: 600
@@ -6585,7 +6613,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85b373b3257ed48ae98cdfc12bcd2f2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _countDrawCards: 2
+  _countDrawCards: 3
   _drawCardsDelay: 2
   _hand: {fileID: 112430305}
   _table: {fileID: 867188514}
@@ -6605,7 +6633,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _invertCardFrontDuration: 1
   _invertCardBackDuration: 1
-  _delay: 2
+  _delay: 0.5
   _invertCardBackRotation: 90
   _invertCardBackScaleFactor: 1.8
   _indent: 15
@@ -8137,6 +8165,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7433901876954992459, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 112430305}
+    - targetCorrespondingSourceObject: {fileID: 7433901876954992459, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 112430308}
   m_SourcePrefab: {fileID: 100100000, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
 --- !u!114 &3159617471654381307
 MonoBehaviour:

@@ -15,10 +15,10 @@ namespace GameFields.Persons.PersonAnimators
         [SerializeField] private float _invertCardBackScaleFactor = 1.8f;
         [SerializeField] private float _indent = 15f;
 
-        private Hand _hand;
+        private IHand _hand;
         private CanvasScaler _canvasScaler;
 
-        internal void Init(Hand hand, CanvasScaler canvasScaler)
+        internal void Init(IHand hand, CanvasScaler canvasScaler)
         {
             _hand = hand;
             _canvasScaler = canvasScaler;

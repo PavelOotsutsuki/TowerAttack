@@ -1,48 +1,61 @@
 using Cards;
+using Tools;
 using UnityEngine;
 
 namespace GameFields.Persons.Hands
 {
-    public class HandPlayer : Hand, ICardDragListener
+    public class HandPlayer : MonoBehaviour, IHand, ICardDragListener
     {
         private const float SortDirection = 1;
 
+        [SerializeField] private HandSeatList _handSeatList;
+        [SerializeField] private CanvasGroup _canvasGroup;
+
+        public void Init()
+        {
+            _handSeatList.Init(SortDirection);
+        }
+
         public void OnCardDrag(Card card)
         {
-            if (TryFindHandSeat(out HandSeat handSeat, card))
-            {
-                DragCardHandSeat = handSeat;
-
-                CanvasGroup.blocksRaycasts = false;
-                HandSeatIndex = HandSeats.IndexOf(DragCardHandSeat);
-                HandSeats.Remove(DragCardHandSeat);
-                SortHandSeats();
-            }
+            _handSeatList.DragCard(card);
+            _canvasGroup.blocksRaycasts = false;
         }
 
         public void OnCardDrop()
         {
-            HandSeats.Insert(HandSeatIndex, DragCardHandSeat);
-            OnEndCardDrag();
-            SortHandSeats();
+            _handSeatList.EndDragCard();
+            _canvasGroup.blocksRaycasts = true;
         }
 
-        public override void RemoveCard(Card card)
+        public void RemoveCard(Card card)
         {
-            base.RemoveCard(card);
-            OnEndCardDrag();
+            _handSeatList.RemoveCard();
+            _canvasGroup.blocksRaycasts = true;
         }
 
-        private void OnEndCardDrag()
+        public void AddCard(Card card)
         {
-            CanvasGroup.blocksRaycasts = true;
-            HandSeatIndex = -1;
-            DragCardHandSeat = null;
+            _handSeatList.AddCard(card);
         }
 
-        protected override float GetSortDirection()
+        [ContextMenu(nameof(DefineAllComponents))]
+        private void DefineAllComponents()
         {
-            return SortDirection;
+            DefineHandSeatList();
+            DefineCanvasGroup();
+        }
+
+        [ContextMenu(nameof(DefineHandSeatList))]
+        private void DefineHandSeatList()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _handSeatList, ComponentLocationTypes.InThis);
+        }
+
+        [ContextMenu(nameof(DefineCanvasGroup))]
+        private void DefineCanvasGroup()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _canvasGroup, ComponentLocationTypes.InThis);
         }
     }
 }

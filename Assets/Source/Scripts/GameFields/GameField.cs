@@ -2,9 +2,6 @@ using Cards;
 using Tools;
 using UnityEngine;
 using GameFields.Persons;
-using GameFields.Persons.Tables;
-using GameFields.Persons.Hands;
-using GameFields.Persons.Towers;
 
 namespace GameFields
 {
@@ -13,11 +10,6 @@ namespace GameFields
         [SerializeField] private Deck _deck;
         [SerializeField] private EndTurnButton _endTurnButton;
         [SerializeField] private Player _player;
-        [SerializeField] private HandAI _enemyHand;
-        [SerializeField] private TableAI _enemyTable;
-        [SerializeField] private TowerAI _enemyTower;
-        [SerializeField] private int _countDrawCardsEnemy = 1;
-        [SerializeField] private float _drawCardsDelayEnemy = 0.5f;
         [SerializeField] private Fight _fight;
 
         [SerializeField] private EnemyAI _enemyAI;
@@ -37,7 +29,7 @@ namespace GameFields
         private void InitPersons()
         {
             _player.Init();
-            _enemyAI = new EnemyAI(_enemyHand, _enemyTable, _enemyTower, _countDrawCardsEnemy, _drawCardsDelayEnemy);
+            _enemyAI.Init();
         }
 
         private void InitDeck(Card[] cards)
@@ -55,9 +47,6 @@ namespace GameFields
         {
             DefineDeck();
             DefineEndTurnButton();
-            DefineHandAI();
-            DefineTableAI();
-            DefineTowerAI();
             DefineFight();
         }
 
@@ -73,28 +62,10 @@ namespace GameFields
             AutomaticFillComponents.DefineComponent(this, ref _endTurnButton, ComponentLocationTypes.InChildren);
         }
 
-        [ContextMenu(nameof(DefineHandAI))]
-        private void DefineHandAI()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _enemyHand, ComponentLocationTypes.InChildren);
-        }
-
-        [ContextMenu(nameof(DefineTableAI))]
-        private void DefineTableAI()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _enemyTable, ComponentLocationTypes.InChildren);
-        }
-
-        [ContextMenu(nameof(DefineTowerAI))]
-        private void DefineTowerAI()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _enemyTower, ComponentLocationTypes.InChildren);
-        }
-
         [ContextMenu(nameof(DefineFight))]
         private void DefineFight()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _fight, ComponentLocationTypes.InChildren);
+            AutomaticFillComponents.DefineComponent(this, ref _fight, ComponentLocationTypes.InThis);
         }
     }
 }
