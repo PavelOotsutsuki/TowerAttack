@@ -9,10 +9,11 @@ namespace Cards
         [SerializeField] private CardFront _cardFront;
         [SerializeField] private CardSO _cardSO;
         [SerializeField] private CardDragAndDrop _cardDragAndDrop;
+        [SerializeField] private CardAnimator _cardAnimator;
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private Vector3 _defaultScaleVector;
 
-        private DrawCardAnimation _drawCardAnimation;
+        //private DrawCardAnimation _drawCardAnimation;
         private CardDragAndDropActions _cardDragAndDropActions;
         private CardMovement _cardMovement;
         private CardSideFlipper _cardSideFlipper;
@@ -29,7 +30,8 @@ namespace Cards
             _cardSideFlipper = new CardSideFlipper(_cardFront, _cardBack, _cardDragAndDrop);
             _cardSideFlipper.SetBackSide();
 
-            _drawCardAnimation = new DrawCardAnimation(_rectTransform, _cardMovement, _cardSideFlipper);
+            _cardAnimator.Init(_rectTransform, _cardMovement, _cardSideFlipper);
+            //_drawCardAnimation = new DrawCardAnimation(_rectTransform, _cardMovement, _cardSideFlipper);
         }
 
         public void BindSeat(Transform transform, bool isFrontSide, float duration = 0f)
@@ -63,7 +65,7 @@ namespace Cards
         public void PlayDrawnCardAnimation(float cardBackDuration, float cardBackRotation, float cardBackScaleFactor, float cardFrontDuration, float indent, float screenFactor)
         {
             //Block();
-            StartCoroutine(_drawCardAnimation.PlayDrawnCardAnimation(cardBackDuration, cardBackRotation, cardBackScaleFactor, cardFrontDuration, indent, screenFactor));
+            _cardAnimator.PlayDrawnCardAnimation(cardBackDuration, cardBackRotation, cardBackScaleFactor, cardFrontDuration, indent, screenFactor);
         }
 
         //private void Block()
@@ -100,6 +102,7 @@ namespace Cards
             DefineCardFront();
             DefineCardDragAndDrop();
             DefineRectTransform();
+            DefineCardAnimator();
         }
 
         [ContextMenu(nameof(DefineCardDragAndDrop))]
@@ -124,6 +127,12 @@ namespace Cards
         private void DefineCardFront()
         {
             AutomaticFillComponents.DefineComponent(this, ref _cardFront, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineCardAnimator))]
+        private void DefineCardAnimator()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _cardAnimator, ComponentLocationTypes.InThis);
         }
     }
 }

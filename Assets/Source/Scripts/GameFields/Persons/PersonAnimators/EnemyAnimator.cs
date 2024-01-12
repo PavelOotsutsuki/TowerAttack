@@ -1,21 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using GameFields.Persons.PersonAnimators;
 using UnityEngine;
 
 namespace GameFields
 {
     public class EnemyAnimator : MonoBehaviour
     {
-        // Start is called before the first frame update
-        void Start()
-        {
-        
-        }
+        [SerializeField] private EnemyDragAndDropAnimator _enemyDragAndDropAnimator;
 
-        // Update is called once per frame
-        void Update()
-        {
-        
-        }
+
     }
 }
