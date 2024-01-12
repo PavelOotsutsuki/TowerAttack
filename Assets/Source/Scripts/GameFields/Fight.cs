@@ -12,6 +12,7 @@ namespace GameFields
         private Player _player;
         private EnemyAI _enemy;
         private Deck _deck;
+        private EndTurnButton _endTurnButton;
 
         private IPerson _activePerson;
         private int _turnNumber;
@@ -27,13 +28,14 @@ namespace GameFields
         //    SetPlayerTurn();
         //}
 
-        public void Init(Player player, EnemyAI enemy, Deck deck)
+        public void Init(Player player, EnemyAI enemy, Deck deck, EndTurnButton endTurnButton)
         {
             _turnNumber = 1;
 
             _player = player;
             _enemy = enemy;
             _deck = deck;
+            _endTurnButton = endTurnButton;
 
             SetPlayerTurn();
         }
@@ -72,6 +74,7 @@ namespace GameFields
             _activePerson = _player;
 
             ActivateTable();
+            DeactivateEndTurnButton(true);
         }
 
         private void SetEnemyTurn()
@@ -79,6 +82,12 @@ namespace GameFields
             _activePerson = _enemy;
 
             DeactivateTable();
+            DeactivateEndTurnButton(false);
+        }
+
+        private void DeactivateEndTurnButton(bool isActive)
+        {
+            _endTurnButton.gameObject.SetActive(isActive);
         }
 
         private void StartTurn()
@@ -128,7 +137,7 @@ namespace GameFields
                 }
 
                 yield return new WaitForSeconds(2f);
-                SwitchPerson();
+                OnEndTurn();
             }
         }
 

@@ -23,7 +23,7 @@ namespace GameFields
             InitPersons();
 
             //_fight = new Fight(_player, _enemyAI, _deck);
-            _fight.Init(_player, _enemyAI, _deck);
+            _fight.Init(_player, _enemyAI, _deck, _endTurnButton);
 
             InitEndTurnButton();
         }
