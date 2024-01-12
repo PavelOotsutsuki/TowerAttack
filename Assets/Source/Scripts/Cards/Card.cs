@@ -68,6 +68,21 @@ namespace Cards
             _cardAnimator.PlayDrawnCardAnimation(cardBackDuration, cardBackRotation, cardBackScaleFactor, cardFrontDuration, indent, screenFactor);
         }
 
+        public void PlaySelectCardAnimation(float screenFactor, float duration)
+        {
+            _cardAnimator.PlaySelectCardAnimation(screenFactor, duration);
+        }
+
+        public void PlayUnselectCardAnimation(float screenFactor, float duration)
+        {
+            _cardAnimator.PlayUnselectCardAnimation(screenFactor, duration);
+        }
+
+        public void PlayCardAnimation()
+        {
+            _cardAnimator.PlayCardAnimation();
+        }
+
         //private void Block()
         //{
         //    if (_cardSideFlipper.IsFrontSide)

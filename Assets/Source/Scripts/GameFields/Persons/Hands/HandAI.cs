@@ -35,6 +35,16 @@ namespace GameFields.Persons.Hands
             // ну или в отдельном классе
         }
 
+        public bool TryGetCard(out Card card)
+        {
+            if (_handSeatList.TryGetCard(out card))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public void RemoveCard(Card card)
         {
             _handSeatList.RemoveCard();

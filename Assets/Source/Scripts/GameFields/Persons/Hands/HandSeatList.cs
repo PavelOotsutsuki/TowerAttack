@@ -35,6 +35,11 @@ namespace GameFields.Persons.Hands
             _handSeatPool.Init();
         }
 
+        public bool TryGetCard(out Card card)
+        {
+            return TryGetRandomCard(out card);
+        }
+
         public void DragCard(Card card)
         {
             if (TryFindHandSeat(out HandSeat handSeat, card))
@@ -72,6 +77,22 @@ namespace GameFields.Persons.Hands
 
             SortHandSeats();
             ResetDragOptions();
+        }
+
+        private bool TryGetRandomCard(out Card card)
+        {
+            card = null;
+
+            if (_handSeats.Count <= 0)
+            {
+                return false;
+            }
+
+            int randomIndex = Random.Range(0, _handSeats.Count - 1);
+
+            card = _handSeats[randomIndex].GetCard();
+
+            return true;
         }
 
         private void ResetDragOptions()

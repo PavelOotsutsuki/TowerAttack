@@ -9,10 +9,15 @@ namespace GameFields.Persons.Hands
     {
         [SerializeField] private Transform _transform;
 
-        private Card _card;
+        Card _card;
 
         public void Init()
         {
+        }
+
+        public Card GetCard()
+        {
+            return _card;
         }
 
         public void SetCard(Card card, bool isFrontCardSide, float duration)

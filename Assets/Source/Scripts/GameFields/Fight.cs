@@ -118,6 +118,18 @@ namespace GameFields
                 DrawCards();
                 yield return delay;
             }
+
+            if (_activePerson is EnemyAI)
+            {
+                if (_enemy.TryGetHandCard(out Card card))
+                {
+                    _enemy.PlayCard(card);
+                    yield return new WaitForSeconds(20f);
+                }
+
+                yield return new WaitForSeconds(2f);
+                SwitchPerson();
+            }
         }
 
     }

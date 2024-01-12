@@ -659,6 +659,7 @@ GameObject:
   - component: {fileID: 7802601998824976280}
   - component: {fileID: 4651403304053808188}
   - component: {fileID: 731392281858233219}
+  - component: {fileID: -8303613484633462084}
   m_Layer: 5
   m_Name: Card
   m_TagString: Untagged
@@ -703,6 +704,7 @@ MonoBehaviour:
   _cardFront: {fileID: 2805773735245598067}
   _cardSO: {fileID: 11400000, guid: 8add2b29cad544cf2b038cb9022a123f, type: 2}
   _cardDragAndDrop: {fileID: 7802601998824976280}
+  _cardAnimator: {fileID: -8303613484633462084}
   _rectTransform: {fileID: 5981172514607463790}
   _defaultScaleVector: {x: 1, y: 1, z: 1}
 --- !u!114 &7802601998824976280
@@ -756,6 +758,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &-8303613484633462084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4147016789588735738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96d6de7b41dc041f8a4e6c8d6e2018be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4603742727300818215
 GameObject:
   m_ObjectHideFlags: 0

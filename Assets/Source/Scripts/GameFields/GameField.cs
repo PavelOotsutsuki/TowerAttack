@@ -31,7 +31,7 @@ namespace GameFields
         private void InitPersons()
         {
             _player.Init(_canvasScaler);
-            _enemyAI.Init();
+            _enemyAI.Init(_canvasScaler);
         }
 
         private void InitDeck(Card[] cards)

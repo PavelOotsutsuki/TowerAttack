@@ -1,21 +1,46 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Cards
 {
-    public class DragAndDropAnimation : MonoBehaviour
+    internal class DragAndDropAnimation
     {
-        // Start is called before the first frame update
-        void Start()
+        private RectTransform _cardRectTransform;
+        private CardMovement _cardMovement;
+
+        public DragAndDropAnimation(RectTransform cardRectTransform, CardMovement cardMovement)
         {
-        
+            _cardRectTransform = cardRectTransform;
+            _cardMovement = cardMovement;
         }
 
-        // Update is called once per frame
-        void Update()
+        public void PlaySelectCardAnimation(float screenFactor, float duration)
         {
-        
+            Vector3 rotation = _cardRectTransform.rotation.eulerAngles;
+            Vector3 scaleVector = _cardRectTransform.localScale;
+            Vector3 downWay = _cardRectTransform.position;
+
+            downWay.y += _cardRectTransform.rect.height / 2 * screenFactor;
+
+            _cardMovement.TranslateLocalSmoothly(downWay, rotation, duration, scaleVector);
+        }
+
+        public void PlayUnselectCardAnimation(float screenFactor, float duration)
+        {
+            Vector3 rotation = _cardRectTransform.rotation.eulerAngles;
+            Vector3 scaleVector = _cardRectTransform.localScale;
+            Vector3 downWay = _cardRectTransform.position;
+
+            downWay.y -= _cardRectTransform.rect.height / 2 * screenFactor;
+
+            _cardMovement.TranslateLocalSmoothly(downWay, rotation, duration, scaleVector);
+        }
+
+        public void PlayCardAnimation()
+        {
+
         }
     }
 }
