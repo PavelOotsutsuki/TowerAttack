@@ -50,7 +50,9 @@ namespace GameFields
                 return false;
             }
 
-            TakeCardBehaviour(ref card);
+            card = _cards[_cards.Count - 1];
+
+            _cards.Remove(card);
 
             return true;
         }
@@ -86,16 +88,5 @@ namespace GameFields
             card.transform.SetParent(transform);
             card.transform.localPosition = _cardAddPosition;
         }
-
-        private void TakeCardBehaviour(ref Card card)
-        {
-            card = _cards[_cards.Count - 1];
-
-            _cards.Remove(card);
-        }
-
-
-
-
     }
 }
