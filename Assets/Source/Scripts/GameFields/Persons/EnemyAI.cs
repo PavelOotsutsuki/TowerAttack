@@ -29,7 +29,7 @@ namespace GameFields.Persons
             _hand.Init();
             _table.Init(this);
             _tower.Init(this);
-            _enemyAnimator.Init(_table, _endTurnHandler, canvasScaler);
+            _enemyAnimator.Init(_table, _endTurnHandler, _hand, canvasScaler);
         }
 
         public float DrawCardsDelay { get; private set; }
@@ -40,7 +40,7 @@ namespace GameFields.Persons
             if (TryGetHandCard(out Card card))
             {
                 Debug.Log("Анимация");
-                _enemyAnimator.StartDragAndDropAnimation(card, _hand);
+                _enemyAnimator.StartDragAndDropAnimation(card);
             }
             else
             {

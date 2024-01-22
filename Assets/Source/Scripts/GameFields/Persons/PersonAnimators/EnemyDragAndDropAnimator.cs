@@ -25,16 +25,12 @@ namespace GameFields.Persons.PersonAnimators
         private CanvasScaler _canvasScaler;
         private ICardDragImitationListener _cardDragImitationListener;
 
-        internal void Init(ICardDropPlaceImitation cardDropPlaceImitation, IEndTurnHandler endTurnHandler, CanvasScaler canvasScaler)
+        internal void Init(ICardDropPlaceImitation cardDropPlaceImitation, IEndTurnHandler endTurnHandler, ICardDragImitationListener cardDragImitationListener, CanvasScaler canvasScaler)
         {
+            _cardDragImitationListener = cardDragImitationListener;
             _cardDropPlaceImitation = cardDropPlaceImitation;
             _endTurnHandler = endTurnHandler;
             _canvasScaler = canvasScaler;
-        }
-
-        internal void SetListener(ICardDragImitationListener cardDragImitationListener)
-        {
-            _cardDragImitationListener = cardDragImitationListener;
         }
 
         internal void StartDragAndDropAnimation(Card card)
@@ -78,7 +74,6 @@ namespace GameFields.Persons.PersonAnimators
 
             yield return new WaitForSeconds(_endTurnDelay);
 
-            Debug.Log("On end turn вызвался");
             _endTurnHandler.OnEndTurn();
         }
     }
