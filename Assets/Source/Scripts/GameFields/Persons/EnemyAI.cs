@@ -18,28 +18,35 @@ namespace GameFields.Persons
         [SerializeField] private int _countDrawCardsEnemy = 1;
         [SerializeField] private float _drawCardsDelayEnemy = 0.5f;
 
-        public void Init(CanvasScaler canvasScaler)
+        private IEndTurnHandler _endTurnHandler;
+
+        public void Init(IEndTurnHandler endTurnHandler, CanvasScaler canvasScaler)
         {
             CountDrawCards = _countDrawCardsEnemy;
             DrawCardsDelay = _drawCardsDelayEnemy;
+            _endTurnHandler = endTurnHandler;
 
             _hand.Init();
             _table.Init(this);
             _tower.Init(this);
-            _enemyAnimator.Init(_table, canvasScaler);
+            _enemyAnimator.Init(_table, _endTurnHandler, canvasScaler);
         }
 
         public float DrawCardsDelay { get; private set; }
         public int CountDrawCards { get; private set; }
 
-        public bool TryGetHandCard(out Card card)
+        public void PlayDragAndDropImitation()
         {
-            if (_hand.TryGetCard(out card))
+            if (TryGetHandCard(out Card card))
             {
-                return true;
+                Debug.Log("Анимация");
+                _enemyAnimator.StartDragAndDropAnimation(card, _hand);
             }
-
-            return false;
+            else
+            {
+                Debug.Log("Конец без анимации");
+                _endTurnHandler.OnEndTurn();
+            }
         }
 
         public void DrawCard(Card card)
@@ -49,7 +56,17 @@ namespace GameFields.Persons
 
         public void PlayCard(Card card)
         {
-            _enemyAnimator.StartDragAndDropAnimation(card);
+            _hand.RemoveCard(card);
+        }
+
+        private bool TryGetHandCard(out Card card)
+        {
+            if (_hand.TryGetCard(out card))
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

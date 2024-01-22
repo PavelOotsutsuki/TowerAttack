@@ -1,4 +1,5 @@
 using Cards;
+using UnityEngine;
 
 namespace GameFields.Persons.Towers
 {
@@ -16,6 +17,11 @@ namespace GameFields.Persons.Towers
             PlayCardManager.PlayCard(card);
 
             TowerSeat.GetCard(card);
+        }
+
+        public Vector3 GetCentralСoordinates()
+        {
+            return transform.position;
         }
     }
 }

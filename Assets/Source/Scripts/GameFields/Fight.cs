@@ -130,14 +130,8 @@ namespace GameFields
 
             if (_activePerson is EnemyAI)
             {
-                if (_enemy.TryGetHandCard(out Card card))
-                {
-                    _enemy.PlayCard(card);
-                    yield return new WaitForSeconds(20f);
-                }
-
-                yield return new WaitForSeconds(2f);
-                OnEndTurn();
+                Debug.Log("Ход enemy");
+                _enemy.PlayDragAndDropImitation();
             }
         }
 

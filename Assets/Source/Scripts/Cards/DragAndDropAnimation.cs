@@ -18,9 +18,9 @@ namespace Cards
 
         public void PlaySelectCardAnimation(float screenFactor, float duration)
         {
-            Vector3 rotation = _cardRectTransform.rotation.eulerAngles;
+            Vector3 rotation = _cardRectTransform.localRotation.eulerAngles;
             Vector3 scaleVector = _cardRectTransform.localScale;
-            Vector3 downWay = _cardRectTransform.position;
+            Vector3 downWay = _cardRectTransform.localPosition;
 
             downWay.y += _cardRectTransform.rect.height / 2 * screenFactor;
 
@@ -29,18 +29,22 @@ namespace Cards
 
         public void PlayUnselectCardAnimation(float screenFactor, float duration)
         {
-            Vector3 rotation = _cardRectTransform.rotation.eulerAngles;
+            Vector3 rotation = _cardRectTransform.localRotation.eulerAngles;
             Vector3 scaleVector = _cardRectTransform.localScale;
-            Vector3 downWay = _cardRectTransform.position;
+            Vector3 downWay = _cardRectTransform.localPosition;
 
             downWay.y -= _cardRectTransform.rect.height / 2 * screenFactor;
 
             _cardMovement.TranslateLocalSmoothly(downWay, rotation, duration, scaleVector);
         }
 
-        public void PlayCardAnimation()
+        public void PlayCardAnimation(Vector3 center, float duration)
         {
+            Vector3 rotation = _cardRectTransform.rotation.eulerAngles;
+            Vector3 scaleVector = _cardRectTransform.localScale;
+            Vector3 downWay = center;
 
+            _cardMovement.TranslateLinear(downWay, rotation, duration, scaleVector);
         }
     }
 }

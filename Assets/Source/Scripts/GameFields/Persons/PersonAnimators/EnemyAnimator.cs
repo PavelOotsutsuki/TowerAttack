@@ -11,13 +11,14 @@ namespace GameFields
     {
         [SerializeField] private EnemyDragAndDropAnimator _enemyDragAndDropAnimator;
 
-        public void Init(ICardDropPlaceImitation cardDropPlaceImitation, CanvasScaler canvasScaler)
+        public void Init(ICardDropPlaceImitation cardDropPlaceImitation, IEndTurnHandler endTurnHandler, CanvasScaler canvasScaler)
         {
-            _enemyDragAndDropAnimator.Init(cardDropPlaceImitation, canvasScaler);
+            _enemyDragAndDropAnimator.Init(cardDropPlaceImitation, endTurnHandler, canvasScaler);
         }
 
-        public void StartDragAndDropAnimation(Card card)
+        public void StartDragAndDropAnimation(Card card, ICardDragImitationListener cardDragImitationListener)
         {
+            _enemyDragAndDropAnimator.SetListener(cardDragImitationListener);
             _enemyDragAndDropAnimator.StartDragAndDropAnimation(card);
         }
     }

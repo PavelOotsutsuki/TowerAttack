@@ -78,9 +78,9 @@ namespace Cards
             _cardAnimator.PlayUnselectCardAnimation(screenFactor, duration);
         }
 
-        public void PlayCardAnimation()
+        public void PlayCardAnimation(Vector3 center, float duration)
         {
-            _cardAnimator.PlayCardAnimation();
+            _cardAnimator.PlayCardAnimation(center, duration);
         }
 
         //private void Block()

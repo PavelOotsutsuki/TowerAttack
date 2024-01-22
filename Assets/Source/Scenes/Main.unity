@@ -5219,10 +5219,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startDelayMin: 1
   _startDelayMax: 2
-  _cardViewTime: 0.5
+  _cardViewTime: 1
   _cardViewDelayMin: 2
   _cardViewDelayMax: 4
   _cardTranslateTime: 0.5
+  _endTurnDelay: 2
+  _maxCountRepeat: 2
 --- !u!114 &1502786296
 MonoBehaviour:
   m_ObjectHideFlags: 0

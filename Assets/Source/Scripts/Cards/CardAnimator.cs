@@ -31,9 +31,9 @@ namespace Cards
             _dragAndDropAnimation.PlayUnselectCardAnimation(screenFactor, duration);
         }
 
-        public void PlayCardAnimation()
+        public void PlayCardAnimation(Vector3 center, float duration)
         {
-            _dragAndDropAnimation.PlayCardAnimation();
+            _dragAndDropAnimation.PlayCardAnimation(center, duration);
         }
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Hands
 {
-    public class HandAI : MonoBehaviour, IHand
+    public class HandAI : MonoBehaviour, IHand, ICardDragImitationListener
     {
         [SerializeField] private HandSeatList _handSeatList;
         [SerializeField] private CanvasGroup _canvasGroup;
@@ -19,20 +19,30 @@ namespace GameFields.Persons.Hands
             _canvasGroup.blocksRaycasts = true;
         }
 
-        public void CardDragAnimation()
+        //public void CardDragAnimation()
+        //{
+        //    // NEW!
+        //    // тут типо будет анимация лже-драга
+        //    // замена метода OnCardDrag
+        //    // ну или в отдельном классе
+        //}
+
+        //public void CardDropAnimation()
+        //{
+        //    // NEW!
+        //    // тут типо будет анимация лже-дропа после драга
+        //    // замена метода OnCardDrop
+        //    // ну или в отдельном классе
+        //}
+
+        public void OnCardDrag(Card card)
         {
-            // NEW!
-            // тут типо будет анимация лже-драга
-            // замена метода OnCardDrag
-            // ну или в отдельном классе
+            _handSeatList.DragCard(card);
         }
 
-        public void CardDropAnimation()
+        public void OnCardDrop()
         {
-            // NEW!
-            // тут типо будет анимация лже-дропа после драга
-            // замена метода OnCardDrop
-            // ну или в отдельном классе
+            _handSeatList.EndDragCard();
         }
 
         public bool TryGetCard(out Card card)

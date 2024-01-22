@@ -13,23 +13,33 @@ namespace GameFields.Persons.PersonAnimators
 
         [SerializeField] private float _startDelayMin = 1f;
         [SerializeField] private float _startDelayMax = 2f;
-        [SerializeField] private float _cardViewTime = 0.5f;
+        [SerializeField] private float _cardViewTime = 1f;
         [SerializeField] private float _cardViewDelayMin = 2f;
         [SerializeField] private float _cardViewDelayMax = 4f;
         [SerializeField] private float _cardTranslateTime = 0.5f;
+        [SerializeField] private float _endTurnDelay = 2f;
+        [SerializeField] private int _maxCountRepeat = 1;
 
         private ICardDropPlaceImitation _cardDropPlaceImitation;
+        private IEndTurnHandler _endTurnHandler;
         private CanvasScaler _canvasScaler;
+        private ICardDragImitationListener _cardDragImitationListener;
 
-        internal void Init(ICardDropPlaceImitation cardDropPlaceImitation, CanvasScaler canvasScaler)
+        internal void Init(ICardDropPlaceImitation cardDropPlaceImitation, IEndTurnHandler endTurnHandler, CanvasScaler canvasScaler)
         {
             _cardDropPlaceImitation = cardDropPlaceImitation;
+            _endTurnHandler = endTurnHandler;
             _canvasScaler = canvasScaler;
+        }
+
+        internal void SetListener(ICardDragImitationListener cardDragImitationListener)
+        {
+            _cardDragImitationListener = cardDragImitationListener;
         }
 
         internal void StartDragAndDropAnimation(Card card)
         {
-            int logicNumber = Random.Range(1, CountLogics);
+            int logicNumber = Random.Range(1, CountLogics + 1);
 
             if (logicNumber == 1)
             {
@@ -42,34 +52,34 @@ namespace GameFields.Persons.PersonAnimators
             float screenFactor = Screen.height / _canvasScaler.referenceResolution.y;
 
             float startDelay = Random.Range(_startDelayMin, _startDelayMax);
-            bool isWithRepeat = System.Convert.ToBoolean(Random.Range(0, 1));
-            float cardViewDelay = Random.Range(_cardViewDelayMin, _cardViewDelayMax);
+            float countRepeat = Random.Range(0, _maxCountRepeat + 1);
 
             yield return new WaitForSeconds(startDelay);
 
-            card.PlaySelectCardAnimation(screenFactor, _cardViewTime);
-
-            yield return new WaitForSeconds(_cardViewTime + cardViewDelay);
-
-            if (isWithRepeat)
+            for (int i = 0; i < countRepeat + 1; i++)
             {
-                float cardViewDelay2 = Random.Range(_cardViewDelayMin, _cardViewDelayMax);
-
-                card.PlayUnselectCardAnimation(screenFactor, _cardViewTime);
-
-                yield return new WaitForSeconds(_cardViewTime);
+                float cardViewDelay = Random.Range(_cardViewDelayMin, _cardViewDelayMax);
 
                 card.PlaySelectCardAnimation(screenFactor, _cardViewTime);
+                yield return new WaitForSeconds(_cardViewTime + cardViewDelay);
 
-                yield return new WaitForSeconds(_cardViewTime + cardViewDelay2);
+                if (i != countRepeat)
+                {
+                    card.PlayUnselectCardAnimation(screenFactor, _cardViewTime);
+                    yield return new WaitForSeconds(_cardViewTime);
+                }
             }
 
-            card.PlayCardAnimation();
-
+            card.PlayCardAnimation(_cardDropPlaceImitation.GetCentralСoordinates(), _cardTranslateTime);
+            _cardDragImitationListener.OnCardDrag(card);
             yield return new WaitForSeconds(_cardTranslateTime);
 
-
             _cardDropPlaceImitation.GetCard(card);
+
+            yield return new WaitForSeconds(_endTurnDelay);
+
+            Debug.Log("On end turn вызвался");
+            _endTurnHandler.OnEndTurn();
         }
     }
 }

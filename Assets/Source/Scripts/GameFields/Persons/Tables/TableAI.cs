@@ -22,6 +22,11 @@ namespace GameFields.Persons.Tables
             }
         }
 
+        public Vector3 GetCentralСoordinates()
+        {
+            return transform.position;
+        }
+
         private void Deactivate()
         {
             CanvasGroup.blocksRaycasts = false;
