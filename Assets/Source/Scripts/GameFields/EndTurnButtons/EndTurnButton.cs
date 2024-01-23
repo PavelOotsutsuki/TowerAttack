@@ -9,6 +9,7 @@ namespace GameFields.EndTurnButtons
     {
         [SerializeField] private ActiveView _activeView;
         [SerializeField] private DeactiveView _deactiveView;
+        [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private float _activeViewInvertDuration = 0.2f;
         [SerializeField] private float _deactiveViewInvertDuration = 0.2f;
 
@@ -18,7 +19,7 @@ namespace GameFields.EndTurnButtons
         public void Init(IEndTurnHandler drawHandler)
         {
             _drawHandler = drawHandler;
-            _changeSideAnimator = new ChangeSideAnimator(_activeView, _deactiveView);
+            _changeSideAnimator = new ChangeSideAnimator(_activeView, _deactiveView, _rectTransform);
         }
 
         public void OnPointerClick(PointerEventData eventData)
@@ -34,7 +35,7 @@ namespace GameFields.EndTurnButtons
 
         private void SetDeactiveSide()
         {
-            StartCoroutine(_changeSideAnimator.LockButton());
+            StartCoroutine(_changeSideAnimator.PlayLockButtonAnimation());
         }
 
         [ContextMenu(nameof(DefineAllComponents))]
@@ -42,6 +43,7 @@ namespace GameFields.EndTurnButtons
         {
             DefineActiveView();
             DefineDeactiveView();
+            DefineRectTransform();
         }
 
         [ContextMenu(nameof(DefineActiveView))]
@@ -54,6 +56,12 @@ namespace GameFields.EndTurnButtons
         private void DefineDeactiveView()
         {
             AutomaticFillComponents.DefineComponent(this, ref _deactiveView, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineRectTransform))]
+        private void DefineRectTransform()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
         }
     }
 }

@@ -8,19 +8,21 @@ namespace GameFields.EndTurnButtons
     {
         private ActiveView _activeView;
         private DeactiveView _deactiveView;
+        private RectTransform _buttonTransform;
 
-        public ChangeSideAnimator(ActiveView activeView, DeactiveView deactiveView)
+        public ChangeSideAnimator(ActiveView activeView, DeactiveView deactiveView, RectTransform buttonTransform)
         {
             _activeView = activeView;
             _deactiveView = deactiveView;
+            _buttonTransform = buttonTransform;
         }
 
-        public IEnumerator LockButton()
+        public IEnumerator PlayLockButtonAnimation(float activeViewInvertDuration, float deactiveViewInvertDuration)
         {
-
+            
         }
 
-        public IEnumerator UnlockButton()
+        public IEnumerator PlayUnlockButtonAnimation()
         {
 
         }
