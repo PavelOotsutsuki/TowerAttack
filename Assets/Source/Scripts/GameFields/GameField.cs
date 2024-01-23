@@ -3,6 +3,7 @@ using Tools;
 using UnityEngine;
 using GameFields.Persons;
 using UnityEngine.UI;
+using GameFields.EndTurnButtons;
 
 namespace GameFields
 {
