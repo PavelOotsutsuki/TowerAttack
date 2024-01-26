@@ -1,7 +1,5 @@
 using UnityEngine;
 using Tools;
-using static UnityEditor.FilePathAttribute;
-using UnityEngine.UIElements;
 
 namespace Cards
 {
@@ -15,7 +13,6 @@ namespace Cards
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private Vector3 _defaultScaleVector;
 
-        //private DrawCardAnimation _drawCardAnimation;
         private CardDragAndDropActions _cardDragAndDropActions;
         private CardMovement _cardMovement;
         private CardSideFlipper _cardSideFlipper;
@@ -33,14 +30,12 @@ namespace Cards
             _cardSideFlipper.SetBackSide();
 
             _cardAnimator.Init(_rectTransform, _cardMovement, _cardSideFlipper);
-            //_drawCardAnimation = new DrawCardAnimation(_rectTransform, _cardMovement, _cardSideFlipper);
         }
 
         public void BindSeat(Transform transform, bool isFrontSide, float duration = 0f)
         {
             _rectTransform.SetParent(transform);
             _cardMovement.TranslateLocalSmoothly(Vector2.zero, Quaternion.identity.eulerAngles, duration, _defaultScaleVector);
-            //_cardMovement.TranslateLocalSmoothly(Vector2.zero, Vector3.zero, duration, _defaultScaleVector);
 
             if (isFrontSide)
             {

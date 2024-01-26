@@ -16,7 +16,8 @@ namespace GameFields.Persons.PersonAnimators
         [SerializeField] private float _cardViewTime = 1f;
         [SerializeField] private float _cardViewDelayMin = 2f;
         [SerializeField] private float _cardViewDelayMax = 4f;
-        [SerializeField] private float _cardTranslateTime = 0.5f;
+        [SerializeField] private float _cardTranslateInDropPlaceTime = 0.5f;
+        [SerializeField] private float _cardReturnInHandTime = 0.5f;
         [SerializeField] private float _endTurnDelay = 2f;
         [SerializeField] private int _maxCountRepeat = 1;
 
@@ -66,14 +67,15 @@ namespace GameFields.Persons.PersonAnimators
                 }
             }
 
-            card.PlayCardAnimation(_cardDropPlaceImitation.GetCentralСoordinates(), _cardTranslateTime);
+            card.PlayCardAnimation(_cardDropPlaceImitation.GetCentralСoordinates(), _cardTranslateInDropPlaceTime);
             _cardDragImitationListener.OnCardDrag(card);
-            yield return new WaitForSeconds(_cardTranslateTime);
+            yield return new WaitForSeconds(_cardTranslateInDropPlaceTime);
 
             if (_cardDropPlaceImitation.TryGetCard(card) == false)
             {
                 _cardDragImitationListener.OnCardDrop();
-                yield return new WaitForSeconds(_cardTranslateTime);
+                card.PlayReturnInHandAnimation(_cardReturnInHandTime);
+                yield return new WaitForSeconds(_cardReturnInHandTime);
             }
 
             yield return new WaitForSeconds(_endTurnDelay);
