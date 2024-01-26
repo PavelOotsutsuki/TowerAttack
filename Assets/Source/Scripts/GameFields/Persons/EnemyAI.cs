@@ -39,12 +39,10 @@ namespace GameFields.Persons
         {
             if (TryGetHandCard(out Card card))
             {
-                Debug.Log("Анимация");
                 _enemyAnimator.StartDragAndDropAnimation(card);
             }
             else
             {
-                Debug.Log("Конец без анимации");
                 _endTurnHandler.OnEndTurn();
             }
         }

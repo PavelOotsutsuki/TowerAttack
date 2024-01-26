@@ -12,11 +12,16 @@ namespace GameFields.Persons.Towers
             Deactivate();
         }
 
-        public void GetCard(Card card)
+        public bool TryGetCard(Card card)
         {
-            PlayCardManager.PlayCard(card);
+            if (TowerSeat.TryGetCard(card))
+            {
+                PlayCardManager.PlayCard(card);
 
-            TowerSeat.GetCard(card);
+                return true;
+            }
+
+            return false;
         }
 
         public Vector3 GetCentralСoordinates()

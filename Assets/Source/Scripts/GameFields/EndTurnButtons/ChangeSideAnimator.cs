@@ -17,14 +17,14 @@ namespace GameFields.EndTurnButtons
             _buttonTransform = buttonTransform;
         }
 
-        public IEnumerator PlayLockButtonAnimation(float activeViewInvertDuration, float deactiveViewInvertDuration)
-        {
+        //public IEnumerator PlayLockButtonAnimation(float activeViewInvertDuration, float deactiveViewInvertDuration)
+        //{
             
-        }
+        //}
 
-        public IEnumerator PlayUnlockButtonAnimation()
-        {
+        //public IEnumerator PlayUnlockButtonAnimation()
+        //{
 
-        }
+        //}
     }
 }

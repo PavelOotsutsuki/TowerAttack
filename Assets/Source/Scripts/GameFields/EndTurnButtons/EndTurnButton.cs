@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 namespace GameFields.EndTurnButtons
 {
-    public class EndTurnButton : MonoBehaviour, IPointerClickHandler
+    public class EndTurnButton : MonoBehaviour
     {
         [SerializeField] private ActiveView _activeView;
         [SerializeField] private DeactiveView _deactiveView;
@@ -22,8 +22,21 @@ namespace GameFields.EndTurnButtons
             _changeSideAnimator = new ChangeSideAnimator(_activeView, _deactiveView, _rectTransform);
         }
 
-        public void OnPointerClick(PointerEventData eventData)
+        private void OnEnable()
         {
+            Debug.Log("OnEnable");
+            _activeView.AddOnClickListener(OnClick);
+        }
+
+        private void OnDisable()
+        {
+            Debug.Log("OnDisable");
+            _activeView.RemoveOnClickListener(OnClick);
+        }
+
+        public void OnClick()
+        {
+            Debug.Log("OnClick");
             SetDeactiveSide();
             _drawHandler.OnEndTurn();
         }
@@ -35,7 +48,7 @@ namespace GameFields.EndTurnButtons
 
         private void SetDeactiveSide()
         {
-            StartCoroutine(_changeSideAnimator.PlayLockButtonAnimation());
+            //StartCoroutine(_changeSideAnimator.PlayLockButtonAnimation());
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

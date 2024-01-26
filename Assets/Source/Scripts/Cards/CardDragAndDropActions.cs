@@ -46,9 +46,14 @@ namespace Cards
             }
         }
 
-        internal void Drop(ICardDropPlace cardDropPlace)
+        internal bool TryDrop(ICardDropPlace cardDropPlace)
         {
-            cardDropPlace.GetCard(_card);
+            if (cardDropPlace.TryGetCard(_card))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         internal void EndDrag()

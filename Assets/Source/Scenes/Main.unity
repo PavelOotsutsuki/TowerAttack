@@ -571,7 +571,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _deck: {fileID: 250433512}
-  _endTurnButton: {fileID: 363521652}
+  _endTurnButton: {fileID: 601274534}
   _player: {fileID: 1905208563}
   _fight: {fileID: 200841578}
   _canvasScaler: {fileID: 200841575}
@@ -1114,9 +1114,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 363521647}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05aad99bce339451d98db19bcc8f60fb, type: 3}
+  m_Script: {fileID: 11500000, guid: fa697d65214be44db80d39531dad2672, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _button: {fileID: 363521649}
 --- !u!1 &364304748
 GameObject:
   m_ObjectHideFlags: 0
@@ -2091,6 +2092,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 601274533}
+  - component: {fileID: 601274534}
   m_Layer: 0
   m_Name: EndTurnButton
   m_TagString: Untagged
@@ -2119,6 +2121,23 @@ RectTransform:
   m_AnchoredPosition: {x: 795, y: 220}
   m_SizeDelta: {x: -1676.1, y: -981.7729}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &601274534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 601274532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05aad99bce339451d98db19bcc8f60fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _activeView: {fileID: 363521652}
+  _deactiveView: {fileID: 1842023254}
+  _rectTransform: {fileID: 601274533}
+  _activeViewInvertDuration: 0.2
+  _deactiveViewInvertDuration: 0.2
 --- !u!1001 &651684147
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6488,13 +6507,14 @@ GameObject:
   - component: {fileID: 1842023251}
   - component: {fileID: 1842023253}
   - component: {fileID: 1842023252}
+  - component: {fileID: 1842023254}
   m_Layer: 0
   m_Name: DeactiveView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1842023251
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6552,6 +6572,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1842023250}
   m_CullTransparentMesh: 1
+--- !u!114 &1842023254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1842023250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14293f0970d614e439b4505eb9886e10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1882122190
 PrefabInstance:
   m_ObjectHideFlags: 0

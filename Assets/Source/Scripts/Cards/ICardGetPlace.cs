@@ -2,6 +2,6 @@ namespace Cards
 {
     public interface ICardGetPlace
     {
-        public void GetCard(Card card);
+        public bool TryGetCard(Card card);
     }
 }

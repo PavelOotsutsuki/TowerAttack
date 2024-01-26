@@ -12,6 +12,7 @@ namespace GameFields.Persons.Hands
         [SerializeField] private CanvasGroup _canvasGroup;
 
         private const float SortDirection = -1;
+        private Transform _dragingCardTransform;
 
         public void Init()
         {
@@ -37,11 +38,14 @@ namespace GameFields.Persons.Hands
 
         public void OnCardDrag(Card card)
         {
+            _dragingCardTransform = card.transform;
             _handSeatList.DragCard(card);
         }
 
         public void OnCardDrop()
         {
+            _dragingCardTransform.localPosition = Vector3.zero;
+            _dragingCardTransform = null;
             _handSeatList.EndDragCard();
         }
 

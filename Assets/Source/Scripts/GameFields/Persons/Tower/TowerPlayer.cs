@@ -12,13 +12,18 @@ namespace GameFields.Persons.Towers
             Activate();
         }
 
-        public void GetCard(Card card)
+        public bool TryGetCard(Card card)
         {
-            PlayCardManager.PlayCard(card);
+            if (TowerSeat.TryGetCard(card))
+            {
+                PlayCardManager.PlayCard(card);
 
-            TowerSeat.GetCard(card);
+                Deactivate();
 
-            Deactivate();
+                return true;
+            }
+
+            return false;
         }
 
         private void Activate()

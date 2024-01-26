@@ -70,7 +70,11 @@ namespace GameFields.Persons.PersonAnimators
             _cardDragImitationListener.OnCardDrag(card);
             yield return new WaitForSeconds(_cardTranslateTime);
 
-            _cardDropPlaceImitation.GetCard(card);
+            if (_cardDropPlaceImitation.TryGetCard(card) == false)
+            {
+                _cardDragImitationListener.OnCardDrop();
+                yield return new WaitForSeconds(_cardTranslateTime);
+            }
 
             yield return new WaitForSeconds(_endTurnDelay);
 

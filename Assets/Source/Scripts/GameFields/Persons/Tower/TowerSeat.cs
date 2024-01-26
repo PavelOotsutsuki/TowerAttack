@@ -23,9 +23,16 @@ namespace GameFields.Persons.Towers
             _card = null;
         }
 
-        public void GetCard(Card card)
+        public bool TryGetCard(Card card)
         {
+            if (_card != null)
+            {
+                return false;
+            }
+
             SetCard(card, _duration);
+
+            return true;
         }
 
         public void SetCard(Card card, float duration)

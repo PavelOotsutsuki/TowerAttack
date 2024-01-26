@@ -62,9 +62,11 @@ namespace Cards
 
             if (EventSystem.current.TryGetComponentInRaycasts(eventData, out ICardDropPlace cardDropPlace))
             {
-                _cardDragAndDropActions.Drop(cardDropPlace);
-                _isDrag = false;
-                return;
+                if (_cardDragAndDropActions.TryDrop(cardDropPlace))
+                {
+                    _isDrag = false;
+                    return;
+                }
             }
 
             _cardDragAndDropActions.EndDrag();

@@ -111,22 +111,17 @@ namespace GameFields
 
         }
 
-        private void DrawCards()
-        {
-            if (_deck.TryTakeCard(out Card drawnCard))
-            {
-                _activePerson.DrawCard(drawnCard);
-            }
-        }
-
         private IEnumerator DrawningCards()
         {
             WaitForSeconds delay = new WaitForSeconds(_activePerson.DrawCardsDelay);
 
             for (int i = 0; i < _activePerson.CountDrawCards; i++)
             {
-                DrawCards();
-                yield return delay;
+                if (_deck.TryTakeCard(out Card drawnCard))
+                {
+                    _activePerson.DrawCard(drawnCard);
+                    yield return delay;
+                }
             }
 
             if (_activePerson is EnemyAI)
