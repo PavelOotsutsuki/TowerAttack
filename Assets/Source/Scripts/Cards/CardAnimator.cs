@@ -35,5 +35,10 @@ namespace Cards
         {
             _dragAndDropAnimation.PlayCardAnimation(center, duration);
         }
+
+        public void PlayReturnInHandAnimation(float duration)
+        {
+            _dragAndDropAnimation.PlayReturnInHandAnimation(duration);
+        }
     }
 }

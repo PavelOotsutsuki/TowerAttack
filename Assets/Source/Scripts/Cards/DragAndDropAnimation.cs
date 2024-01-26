@@ -46,5 +46,14 @@ namespace Cards
 
             _cardMovement.TranslateLinear(downWay, rotation, duration, scaleVector);
         }
+
+        public void PlayReturnInHandAnimation(float duration)
+        {
+            Vector3 scaleVector = new Vector3(1f, 1f, 1f);
+            Vector3 localPosition = new Vector3(0f, 0f, 0f);
+            Vector3 rotation = Vector3.zero;
+
+            _cardMovement.TranslateLocalSmoothly(localPosition, rotation, duration, scaleVector);
+        }
     }
 }

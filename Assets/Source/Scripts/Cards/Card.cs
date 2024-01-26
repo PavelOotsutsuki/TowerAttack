@@ -1,5 +1,7 @@
 using UnityEngine;
 using Tools;
+using static UnityEditor.FilePathAttribute;
+using UnityEngine.UIElements;
 
 namespace Cards
 {
@@ -24,7 +26,7 @@ namespace Cards
             _cardMovement = new CardMovement(_rectTransform);
             _cardFront.Init(_cardSO, _rectTransform, cardDescription, bigCard);
 
-            _cardDragAndDropActions = new CardDragAndDropActions(_cardFront, _cardMovement, this);
+            _cardDragAndDropActions = new CardDragAndDropActions(_cardFront, this);
             _cardDragAndDrop.Init(_rectTransform, _cardDragAndDropActions, dragContainer);
 
             _cardSideFlipper = new CardSideFlipper(_cardFront, _cardBack, _cardDragAndDrop);
@@ -81,6 +83,11 @@ namespace Cards
         public void PlayCardAnimation(Vector3 center, float duration)
         {
             _cardAnimator.PlayCardAnimation(center, duration);
+        }
+
+        public void PlayReturnInHandAnimation(float duration)
+        {
+            _cardAnimator.PlayReturnInHandAnimation(duration);
         }
 
         //private void Block()

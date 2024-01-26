@@ -78,7 +78,7 @@ namespace Cards
             }
 
             _viewCardAfterDropInWork = StartCoroutine(ViewCardAfterDrop(_returnInHandSpeed, eventData));
-            _cardDragAndDropActions.ReturnInHand(Vector2.zero, Vector3.zero, _returnInHandSpeed);
+            _cardDragAndDropActions.ReturnInHand(_returnInHandSpeed);
         }
 
         private IEnumerator ViewCardAfterDrop(float endDuration, PointerEventData eventData)
