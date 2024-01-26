@@ -19,36 +19,33 @@ namespace GameFields.EndTurnButtons
         public void Init(IEndTurnHandler drawHandler)
         {
             _drawHandler = drawHandler;
-            _changeSideAnimator = new ChangeSideAnimator(_activeView, _deactiveView, _rectTransform);
+            _changeSideAnimator = new ChangeSideAnimator(_activeView.gameObject, _deactiveView.gameObject, _rectTransform, _activeViewInvertDuration, _deactiveViewInvertDuration);
+        }
+
+        public void OnClick()
+        {
+            SetDeactiveSide();
+            _drawHandler.OnEndTurn();
+        }
+
+        public void SetActiveSide()
+        {
+            StartCoroutine(_changeSideAnimator.PlayUnlockButtonAnimation());
         }
 
         private void OnEnable()
         {
-            Debug.Log("OnEnable");
             _activeView.AddOnClickListener(OnClick);
         }
 
         private void OnDisable()
         {
-            Debug.Log("OnDisable");
             _activeView.RemoveOnClickListener(OnClick);
-        }
-
-        public void OnClick()
-        {
-            Debug.Log("OnClick");
-            SetDeactiveSide();
-            _drawHandler.OnEndTurn();
-        }
-
-        private void SetActiveSide()
-        {
-
         }
 
         private void SetDeactiveSide()
         {
-            //StartCoroutine(_changeSideAnimator.PlayLockButtonAnimation());
+            StartCoroutine(_changeSideAnimator.PlayLockButtonAnimation());
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

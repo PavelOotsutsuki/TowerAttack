@@ -75,7 +75,7 @@ namespace GameFields
             _activePerson = _player;
 
             ActivateDropPlaces();
-            DeactivateEndTurnButton(true);
+            _endTurnButton.SetActiveSide();
         }
 
         private void SetEnemyTurn()
@@ -83,12 +83,6 @@ namespace GameFields
             _activePerson = _enemy;
 
             DeativateDropPlaces();
-            DeactivateEndTurnButton(false);
-        }
-
-        private void DeactivateEndTurnButton(bool isActive)
-        {
-            _endTurnButton.gameObject.SetActive(isActive);
         }
 
         private void ActivateDropPlaces()

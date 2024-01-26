@@ -1,4 +1,5 @@
 using System;
+using Tools;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -33,6 +34,18 @@ namespace GameFields.EndTurnButtons
         public void RemoveOnClickListener(UnityAction action)
         {
             _button.onClick.RemoveListener(action);
+        }
+
+        [ContextMenu(nameof(DefineAllComponents))]
+        private void DefineAllComponents()
+        {
+            DefineButton();
+        }
+
+        [ContextMenu(nameof(DefineButton))]
+        private void DefineButton()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _button, ComponentLocationTypes.InThis);
         }
     }
 }
