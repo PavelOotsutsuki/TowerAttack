@@ -44,6 +44,16 @@ namespace GameFields.Persons
             _table.Activate();
         }
 
+        public void DeactivateTower()
+        {
+            _tower.Deactivate();
+        }
+
+        public void ActivateTower()
+        {
+            _tower.Activate();
+        }
+
         public void DrawCard(Card card)
         {
             card.SetDragAndDropListener(_hand);

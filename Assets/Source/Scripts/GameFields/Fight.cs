@@ -74,7 +74,7 @@ namespace GameFields
         {
             _activePerson = _player;
 
-            ActivateTable();
+            ActivateDropPlaces();
             DeactivateEndTurnButton(true);
         }
 
@@ -82,13 +82,25 @@ namespace GameFields
         {
             _activePerson = _enemy;
 
-            DeactivateTable();
+            DeativateDropPlaces();
             DeactivateEndTurnButton(false);
         }
 
         private void DeactivateEndTurnButton(bool isActive)
         {
             _endTurnButton.gameObject.SetActive(isActive);
+        }
+
+        private void ActivateDropPlaces()
+        {
+            ActivateTable();
+            ActivateTower();
+        }
+
+        private void DeativateDropPlaces()
+        {
+            DeactivateTable();
+            DeactivateTower();
         }
 
         private void StartTurn()
@@ -104,6 +116,16 @@ namespace GameFields
         private void DeactivateTable()
         {
             _player.DeactivateTable();
+        }
+
+        private void ActivateTower()
+        {
+            _player.ActivateTower();
+        }
+
+        private void DeactivateTower()
+        {
+            _player.DeactivateTower();
         }
 
         private void EndFight()

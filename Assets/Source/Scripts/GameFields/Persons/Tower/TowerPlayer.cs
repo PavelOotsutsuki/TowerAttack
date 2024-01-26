@@ -26,9 +26,12 @@ namespace GameFields.Persons.Towers
             return false;
         }
 
-        private void Activate()
+        public void Activate()
         {
-            CanvasGroup.blocksRaycasts = true;
+            if (TowerSeat.IsVoid())
+            {
+                CanvasGroup.blocksRaycasts = true;
+            }
         }
     }
 }

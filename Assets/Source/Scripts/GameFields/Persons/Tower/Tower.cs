@@ -17,7 +17,7 @@ namespace GameFields.Persons.Towers
             TowerSeat.Init();
         }
 
-        protected void Deactivate()
+        public void Deactivate()
         {
             CanvasGroup.blocksRaycasts = false;
         }

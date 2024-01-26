@@ -46,6 +46,11 @@ namespace GameFields.Persons.Towers
             return _card == card;
         }
 
+        public bool IsVoid()
+        {
+            return _card == null;
+        }
+
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
