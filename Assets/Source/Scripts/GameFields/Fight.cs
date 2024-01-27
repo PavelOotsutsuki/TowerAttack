@@ -3,6 +3,8 @@ using Cards;
 using System.Collections;
 using UnityEngine;
 using GameFields.EndTurnButtons;
+using GameFields.DiscardPiles;
+using Tools;
 
 namespace GameFields
 {
@@ -10,10 +12,13 @@ namespace GameFields
     {
         private readonly int _maxTurns = 100;
 
+        [SerializeField] private DiscardCardAnimator _discardCardAnimator;
+
         private Player _player;
         private EnemyAI _enemy;
         private Deck _deck;
         private EndTurnButton _endTurnButton;
+        private DiscardPile _discardPile;
 
         private IPerson _activePerson;
         private int _turnNumber;
@@ -29,14 +34,17 @@ namespace GameFields
         //    SetPlayerTurn();
         //}
 
-        public void Init(Player player, EnemyAI enemy, Deck deck, EndTurnButton endTurnButton)
+        public void Init(Player player, EnemyAI enemy, Deck deck, DiscardPile discardPile, EndTurnButton endTurnButton)
         {
             _turnNumber = 1;
 
             _player = player;
             _enemy = enemy;
             _deck = deck;
+            _discardPile = discardPile;
             _endTurnButton = endTurnButton;
+
+            _discardCardAnimator.Init(_discardPile);
 
             SetPlayerTurn();
         }
@@ -60,7 +68,7 @@ namespace GameFields
 
         private void SwitchPerson()
         {
-            if (_activePerson == (IPerson)_player)
+            if (_activePerson is Player)
             {
                 SetEnemyTurn();
             }
@@ -148,6 +156,18 @@ namespace GameFields
                 _endTurnButton.SetActiveSide();
 
             }
+        }
+
+        [ContextMenu(nameof(DefineAllComponents))]
+        private void DefineAllComponents()
+        {
+            DefineDiscardCardAnimator();
+        }
+
+        [ContextMenu(nameof(DefineDiscardCardAnimator))]
+        private void DefineDiscardCardAnimator()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _discardCardAnimator, ComponentLocationTypes.InThis);
         }
 
     }

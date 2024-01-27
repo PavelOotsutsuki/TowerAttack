@@ -4,6 +4,7 @@ using UnityEngine;
 using GameFields.Persons;
 using UnityEngine.UI;
 using GameFields.EndTurnButtons;
+using GameFields.DiscardPiles;
 
 namespace GameFields
 {
@@ -13,6 +14,7 @@ namespace GameFields
         [SerializeField] private EndTurnButton _endTurnButton;
         [SerializeField] private Player _player;
         [SerializeField] private Fight _fight;
+        [SerializeField] private DiscardPile _discardPile;
         [SerializeField] private CanvasScaler _canvasScaler;
 
         [SerializeField] private EnemyAI _enemyAI;
@@ -21,12 +23,13 @@ namespace GameFields
         public void Init(Card[] cardsInDeck)
         {
             InitDeck(cardsInDeck);
+            InitDiscardPile();
             InitPersons();
 
             //_fight = new Fight(_player, _enemyAI, _deck);
             InitEndTurnButton();
 
-            _fight.Init(_player, _enemyAI, _deck, _endTurnButton);
+            _fight.Init(_player, _enemyAI, _deck, _discardPile, _endTurnButton);
         }
 
         private void InitPersons()
@@ -38,6 +41,11 @@ namespace GameFields
         private void InitDeck(Card[] cards)
         {
             _deck.Init(cards);
+        }
+
+        private void InitDiscardPile()
+        {
+            _discardPile.Init();
         }
 
         private void InitEndTurnButton()
@@ -53,6 +61,7 @@ namespace GameFields
             DefinePlayer();
             DefineFight();
             DefineCanvasScaler();
+            DefineDiscardPile();
         }
 
         [ContextMenu(nameof(DefineDeck))]
@@ -85,5 +94,10 @@ namespace GameFields
             AutomaticFillComponents.DefineComponent(this, ref _canvasScaler, ComponentLocationTypes.InThis);
         }
 
+        [ContextMenu(nameof(DefineDiscardPile))]
+        private void DefineDiscardPile()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _discardPile, ComponentLocationTypes.InChildren);
+        }
     }
 }
