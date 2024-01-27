@@ -9,8 +9,8 @@ namespace GameFields.EndTurnButtons
 {
     public class ChangeSideAnimator
     {
-        private readonly float _lockRotation = -90f;
-        private readonly float _unlockRotation = 90f;
+        private readonly float _activeSideRotation = 90f;
+        private readonly float _deactiveSideRotation = 0f;
 
         private GameObject _activeView;
         private GameObject _deactiveView;
@@ -37,12 +37,12 @@ namespace GameFields.EndTurnButtons
         {
             if (_activeView.activeSelf == true)
             {
-                InvertActiveSide(_activeViewInvertDuration, _lockRotation);
+                InvertActiveSide(_activeViewInvertDuration, _activeSideRotation);
                 yield return _activeViewInvertDelay;
 
                 SetLockSide();
 
-                InvertDeactiveSide(_deactiveViewInvertDuration, _lockRotation);
+                InvertDeactiveSide(_deactiveViewInvertDuration, _deactiveSideRotation);
                 yield return _deactiveViewInvertDelay;
             }
         }
@@ -51,20 +51,19 @@ namespace GameFields.EndTurnButtons
         {
             if (_activeView.activeSelf == false)
             {
-                InvertActiveSide(_activeViewInvertDuration, _unlockRotation);
+                InvertActiveSide(_activeViewInvertDuration, _activeSideRotation);
                 yield return _activeViewInvertDelay;
 
                 SetUnlockSide();
 
-                InvertDeactiveSide(_deactiveViewInvertDuration, _unlockRotation);
+                InvertDeactiveSide(_deactiveViewInvertDuration, _deactiveSideRotation);
                 yield return _deactiveViewInvertDelay;
             }
         }
 
         private void InvertActiveSide(float duration, float rotation)
         {
-            Debug.Log("x = " + _buttonTransform.localRotation.eulerAngles.x + ". rotation = " + rotation);
-            Vector3 endRotationVector = new Vector3(_buttonTransform.localRotation.eulerAngles.x + rotation, 0f, 0f);
+            Vector3 endRotationVector = new Vector3(rotation, 0f, 0f);
             Vector3 scaleVector = _buttonTransform.localScale;
             Vector3 downWay = _buttonTransform.position;
 
@@ -73,8 +72,7 @@ namespace GameFields.EndTurnButtons
 
         private void InvertDeactiveSide(float duration, float rotation)
         {
-            Debug.Log("x = " + _buttonTransform.localRotation.eulerAngles.x + ". rotation = " + rotation);
-            Vector3 endRotationVector = new Vector3(_buttonTransform.localRotation.eulerAngles.x + rotation, 0f, 0f);
+            Vector3 endRotationVector = new Vector3(rotation, 0f, 0f);
             Vector3 scaleVector = _buttonTransform.localScale;
             Vector3 downWay = _buttonTransform.position;
 
