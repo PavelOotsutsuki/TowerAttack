@@ -1,7 +1,5 @@
-using Cards;
 using Tools;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace GameFields.EndTurnButtons
 {

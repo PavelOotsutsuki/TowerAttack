@@ -7,16 +7,26 @@ namespace Cards
 {
     public class CardCharacter : MonoBehaviour
     {
-        [SerializeField] private AudioSource _audioSource; 
+        [SerializeField] private AudioSource _audioSource;
 
-        public void Init(AudioClip awakeSound)
+        private Card _me;
+
+        public void Init(AudioClip awakeSound, Card card)
         {
             _audioSource.clip = awakeSound;
+            _me = card;
+            gameObject.SetActive(false);
         }
 
         public void Activate()
         {
+            gameObject.SetActive(true);
             _audioSource.Play();
+        }
+
+        public void DiscardCard()
+        {
+            
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

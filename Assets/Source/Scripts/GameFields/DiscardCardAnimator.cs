@@ -16,11 +16,12 @@ namespace GameFields
             _discardPile = discardPile;
         }
 
-        public void DiscardCards(List<Card> discardCards)
+        public void DiscardCards(List<CardCharacter> discardCards)
         {
-            foreach (Card card in discardCards)
+            foreach (CardCharacter cardCharacter in discardCards)
             {
-                StartDiscardAnimation(card);
+                //cardCharacter.GetCard();
+                //StartDiscardAnimation(card);
             }
         }
 

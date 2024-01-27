@@ -16,6 +16,7 @@ namespace Cards
         private CardDragAndDropActions _cardDragAndDropActions;
         private CardMovement _cardMovement;
         private CardSideFlipper _cardSideFlipper;
+        private CardCharacter _cardCharacter;
 
         internal void Init(CardDescription cardDescription, BigCard bigCard, Transform dragContainer)
         {
@@ -28,6 +29,9 @@ namespace Cards
 
             _cardSideFlipper = new CardSideFlipper(_cardFront, _cardBack, _cardDragAndDrop);
             _cardSideFlipper.SetBackSide();
+
+            _cardCharacter = Instantiate(_cardSO.CardCharacter);
+            _cardCharacter.Init(_cardSO.AwakeSound, this);
 
             _cardAnimator.Init(_rectTransform, _cardMovement, _cardSideFlipper);
         }
@@ -54,8 +58,7 @@ namespace Cards
 
         public void Play(out CardCharacter cardCharacter)
         {
-            cardCharacter = Instantiate(_cardSO.CardCharacter);
-            cardCharacter.Init(_cardSO.AwakeSound);
+            cardCharacter = _cardCharacter;
             Destroy();
         }
 
@@ -107,9 +110,14 @@ namespace Cards
         //    _cardFront.Unblock();
         //}
 
+        public void Activate()
+        {
+            gameObject.SetActive(true);
+        }
+
         private void Destroy()
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
 
         [ContextMenu(nameof(DefineAllComponents))]
