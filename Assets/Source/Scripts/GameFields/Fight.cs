@@ -75,7 +75,6 @@ namespace GameFields
             _activePerson = _player;
 
             ActivateDropPlaces();
-            _endTurnButton.SetActiveSide();
         }
 
         private void SetEnemyTurn()
@@ -142,8 +141,12 @@ namespace GameFields
 
             if (_activePerson is EnemyAI)
             {
-                Debug.Log("Ход enemy");
                 _enemy.PlayDragAndDropImitation();
+            }
+            else
+            {
+                _endTurnButton.SetActiveSide();
+
             }
         }
 
