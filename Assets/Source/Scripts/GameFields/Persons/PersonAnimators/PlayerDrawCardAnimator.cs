@@ -36,7 +36,7 @@ namespace GameFields.Persons.PersonAnimators
 
             drawnCard.transform.SetParent(transform);
             drawnCard.transform.SetAsLastSibling();
-            drawnCard.PlayDrawnCardAnimation(_invertCardBackDuration, _invertCardBackRotation, _invertCardBackScaleFactor, _invertCardFrontDuration, _indent, screenFactor);
+            drawnCard.Drawn(_invertCardBackDuration, _invertCardBackRotation, _invertCardBackScaleFactor, _invertCardFrontDuration, _indent, screenFactor);
 
             yield return new WaitForSeconds(fullDelay);
 

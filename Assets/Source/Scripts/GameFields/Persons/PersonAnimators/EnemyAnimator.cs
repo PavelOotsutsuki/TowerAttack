@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using Cards;
+using GameFields.Persons;
 using GameFields.Persons.PersonAnimators;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,9 +15,9 @@ namespace GameFields
             _enemyDragAndDropAnimator.Init(cardDropPlaceImitation, endTurnHandler, cardDragImitationListener, canvasScaler);
         }
 
-        public void StartDragAndDropAnimation(Card card)
+        public void StartDragAndDropAnimation(CardImitationActions cardImitationActions)
         {
-            _enemyDragAndDropAnimator.StartDragAndDropAnimation(card);
+            _enemyDragAndDropAnimator.StartDragAndDropAnimation(cardImitationActions);
         }
     }
 }

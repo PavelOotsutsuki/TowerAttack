@@ -24,27 +24,25 @@ namespace GameFields.Persons.PersonAnimators
         private ICardDropPlaceImitation _cardDropPlaceImitation;
         private IEndTurnHandler _endTurnHandler;
         private CanvasScaler _canvasScaler;
-        private ICardDragImitationListener _cardDragImitationListener;
 
         internal void Init(ICardDropPlaceImitation cardDropPlaceImitation, IEndTurnHandler endTurnHandler, ICardDragImitationListener cardDragImitationListener, CanvasScaler canvasScaler)
         {
-            _cardDragImitationListener = cardDragImitationListener;
             _cardDropPlaceImitation = cardDropPlaceImitation;
             _endTurnHandler = endTurnHandler;
             _canvasScaler = canvasScaler;
         }
 
-        internal void StartDragAndDropAnimation(Card card)
+        internal void StartDragAndDropAnimation(CardImitationActions cardImitationActions)
         {
             int logicNumber = Random.Range(1, CountLogics + 1);
 
             if (logicNumber == 1)
             {
-                StartCoroutine(DragAndDropBehaviour1(card));
+                StartCoroutine(DragAndDropBehaviour1(cardImitationActions));
             }
         }
 
-        private IEnumerator DragAndDropBehaviour1(Card card)
+        private IEnumerator DragAndDropBehaviour1(CardImitationActions cardImitationActions)
         {
             float screenFactor = Screen.height / _canvasScaler.referenceResolution.y;
 
@@ -57,24 +55,24 @@ namespace GameFields.Persons.PersonAnimators
             {
                 float cardViewDelay = Random.Range(_cardViewDelayMin, _cardViewDelayMax);
 
-                card.PlaySelectCardAnimation(screenFactor, _cardViewTime);
+                cardImitationActions.PlaySelectCardAnimation(screenFactor, _cardViewTime);
                 yield return new WaitForSeconds(_cardViewTime + cardViewDelay);
-
+                
                 if (i != countRepeat)
                 {
-                    card.PlayUnselectCardAnimation(screenFactor, _cardViewTime);
+                    cardImitationActions.PlayUnselectCardAnimation(screenFactor, _cardViewTime);
                     yield return new WaitForSeconds(_cardViewTime);
                 }
             }
 
-            card.PlayCardAnimation(_cardDropPlaceImitation.GetCentralСoordinates(), _cardTranslateInDropPlaceTime);
-            _cardDragImitationListener.OnCardDrag(card);
+            cardImitationActions.PlayCardAnimation(_cardDropPlaceImitation.GetCentralСoordinates(), _cardTranslateInDropPlaceTime);
+            cardImitationActions.DragCard();
             yield return new WaitForSeconds(_cardTranslateInDropPlaceTime);
 
-            if (_cardDropPlaceImitation.TryGetCard(card) == false)
+            if (cardImitationActions.TryGetCard() == false)
             {
-                _cardDragImitationListener.OnCardDrop();
-                card.PlayReturnInHandAnimation(_cardReturnInHandTime);
+                cardImitationActions.DropCard();
+                cardImitationActions.PlayReturnInHandAnimation(_cardReturnInHandTime);
                 yield return new WaitForSeconds(_cardReturnInHandTime);
             }
 

@@ -61,7 +61,7 @@ namespace Cards
 
         internal void ReturnInHand(float duration)
         {
-            _card.PlayReturnInHandAnimation( duration);
+            _card.ReturnToHand( duration);
         }
     }
 }

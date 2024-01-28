@@ -20,6 +20,7 @@ namespace GameFields.Persons
         [SerializeField] private float _drawCardsDelayEnemy = 0.5f;
 
         private IEndTurnHandler _endTurnHandler;
+        private CardImitationActions _cardImitationActions;
 
         public void Init(IEndTurnHandler endTurnHandler, CanvasScaler canvasScaler)
         {
@@ -38,9 +39,11 @@ namespace GameFields.Persons
 
         public void PlayDragAndDropImitation()
         {
-            if (TryGetHandCard(out Card card))
+            if (_hand.TryGetCard(out Card card))
             {
-                _enemyAnimator.StartDragAndDropAnimation(card);
+                _cardImitationActions.SetCard(card);
+                new EnemyCardAnimations((RectTransform)card.transform);
+                _enemyAnimator.StartDragAndDropAnimation(_cardImitationActions);
             }
             else
             {
@@ -62,15 +65,17 @@ namespace GameFields.Persons
         {
             return _table.GetAllCardCharacters();
         }
+    }
 
-        private bool TryGetHandCard(out Card card)
+    public class EnemyCardAnimations
+    {
+        private RectTransform _card;
+
+        public EnemyCardAnimations(RectTransform card)
         {
-            if (_hand.TryGetCard(out card))
-            {
-                return true;
-            }
-
-            return false;
+            _card = card;
         }
+        
+        ////////////
     }
 }

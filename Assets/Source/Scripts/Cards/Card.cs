@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Tools;
 
@@ -62,53 +63,15 @@ namespace Cards
             Destroy();
         }
 
-        public void PlayDrawnCardAnimation(float cardBackDuration, float cardBackRotation, float cardBackScaleFactor, float cardFrontDuration, float indent, float screenFactor)
+        public void Drawn(float cardBackDuration, float cardBackRotation, float cardBackScaleFactor, float cardFrontDuration, float indent, float screenFactor)
         {
-            //Block();
             _cardAnimator.PlayDrawnCardAnimation(cardBackDuration, cardBackRotation, cardBackScaleFactor, cardFrontDuration, indent, screenFactor);
         }
 
-        public void PlaySelectCardAnimation(float screenFactor, float duration)
-        {
-            _cardAnimator.PlaySelectCardAnimation(screenFactor, duration);
-        }
-
-        public void PlayUnselectCardAnimation(float screenFactor, float duration)
-        {
-            _cardAnimator.PlayUnselectCardAnimation(screenFactor, duration);
-        }
-
-        public void PlayCardAnimation(Vector3 center, float duration)
-        {
-            _cardAnimator.PlayCardAnimation(center, duration);
-        }
-
-        public void PlayReturnInHandAnimation(float duration)
+        public void ReturnToHand(float duration)
         {
             _cardAnimator.PlayReturnInHandAnimation(duration);
         }
-
-        //private void Block()
-        //{
-        //    if (_cardSideFlipper.IsFrontSide)
-        //    {
-        //        return;
-        //    }
-
-        //    _cardDragAndDrop.enabled = false;
-        //    _cardFront.Block();
-        //}
-
-        //private void Unblock()
-        //{
-        //    if (_cardSideFlipper.IsFrontSide == false)
-        //    {
-        //        return;
-        //    }
-
-        //    _cardDragAndDrop.enabled = true;
-        //    _cardFront.Unblock();
-        //}
 
         public void Activate()
         {
@@ -119,6 +82,8 @@ namespace Cards
         {
             gameObject.SetActive(false);
         }
+
+        #region MyRegion
 
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
@@ -159,5 +124,7 @@ namespace Cards
         {
             AutomaticFillComponents.DefineComponent(this, ref _cardAnimator, ComponentLocationTypes.InThis);
         }
+
+        #endregion
     }
 }
