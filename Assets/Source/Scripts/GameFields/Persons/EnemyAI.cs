@@ -3,6 +3,7 @@ using GameFields.Persons.Hands;
 using GameFields.Persons.Tables;
 using GameFields.Persons.Towers;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -55,6 +56,11 @@ namespace GameFields.Persons
         public void PlayCard(Card card)
         {
             _hand.RemoveCard(card);
+        }
+
+        public List<CardCharacter> GetDiscardCards()
+        {
+            return _table.GetAllCardCharacters();
         }
 
         private bool TryGetHandCard(out Card card)

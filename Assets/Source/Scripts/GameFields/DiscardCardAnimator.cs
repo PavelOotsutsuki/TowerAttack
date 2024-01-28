@@ -20,7 +20,7 @@ namespace GameFields
         {
             foreach (CardCharacter cardCharacter in discardCards)
             {
-                //cardCharacter.GetCard();
+                cardCharacter.DiscardCard();
                 //StartDiscardAnimation(card);
             }
         }

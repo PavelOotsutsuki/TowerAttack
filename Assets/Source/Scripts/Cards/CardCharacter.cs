@@ -26,7 +26,8 @@ namespace Cards
 
         public void DiscardCard()
         {
-            
+            _me.Activate();
+            gameObject.SetActive(false);
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

@@ -6,6 +6,7 @@ using GameFields.Persons.PersonAnimators;
 using Tools;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 namespace GameFields.Persons
 {
@@ -58,6 +59,11 @@ namespace GameFields.Persons
         {
             card.SetDragAndDropListener(_hand);
             _playerAnimator.StartDrawCardAnimation(card);
+        }
+
+        public List<CardCharacter> GetDiscardCards()
+        {
+            return _table.GetAllCardCharacters();
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

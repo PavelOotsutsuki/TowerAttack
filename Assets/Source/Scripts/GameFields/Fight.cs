@@ -53,9 +53,15 @@ namespace GameFields
         {
             _turnNumber++;
 
+            DiscardCards();
             CheckEndFight();
             SwitchPerson();
             StartTurn();
+        }
+
+        private void DiscardCards()
+        {
+            _discardCardAnimator.DiscardCards(_activePerson.GetDiscardCards());
         }
 
         private void CheckEndFight()
@@ -154,7 +160,6 @@ namespace GameFields
             else
             {
                 _endTurnButton.SetActiveSide();
-
             }
         }
 

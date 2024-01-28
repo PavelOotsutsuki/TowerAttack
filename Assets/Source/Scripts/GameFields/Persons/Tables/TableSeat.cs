@@ -23,6 +23,20 @@ namespace GameFields.Persons.Tables
             _cardCharacter.Activate();
         }
 
+        internal bool TryDiscardCardCharacter(out CardCharacter cardCharacter)
+        {
+            cardCharacter = null;
+
+            if (IsEmpty())
+            {
+                return false;
+            }
+
+            cardCharacter = _cardCharacter;
+            _cardCharacter = null;
+            return true;
+        }
+
         internal bool IsEmpty()
         {
             return _cardCharacter == null;

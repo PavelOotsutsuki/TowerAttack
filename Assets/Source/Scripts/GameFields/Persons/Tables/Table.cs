@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Cards;
 using Tools;
 using UnityEngine;
 
@@ -15,6 +17,21 @@ namespace GameFields.Persons.Tables
         {
             PlayCardManager = playCardManager;
             SetCardSeatsIndices();
+        }
+
+        public List<CardCharacter> GetAllCardCharacters()
+        {
+            List<CardCharacter> discardCards = new List<CardCharacter>();
+
+            foreach (TableSeat tableSeat in _cardSeats)
+            {
+                if (tableSeat.TryDiscardCardCharacter(out CardCharacter cardCharacter))
+                {
+                    discardCards.Add(cardCharacter);
+                }
+            }
+
+            return discardCards;
         }
 
         protected bool TryFindCardSeat(out TableSeat cardSeat)
