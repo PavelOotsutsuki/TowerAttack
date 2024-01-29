@@ -137,7 +137,7 @@ namespace GameFields
 
         private void EndFight()
         {
-
+            Debug.Log("БОЙ ОКОНЧЕН! НИЧЬЯ!");
         }
 
         private IEnumerator DrawningCards()

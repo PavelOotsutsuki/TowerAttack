@@ -11,19 +11,16 @@ namespace GameFields.EndTurnButtons
         [SerializeField] private float _activeViewInvertDuration = 0.2f;
         [SerializeField] private float _deactiveViewInvertDuration = 0.2f;
 
-        private IEndTurnHandler _drawHandler;
         private ChangeSideAnimator _changeSideAnimator;
 
         public void Init(IEndTurnHandler drawHandler)
         {
-            _drawHandler = drawHandler;
-            _changeSideAnimator = new ChangeSideAnimator(_activeView.gameObject, _deactiveView.gameObject, _rectTransform, _activeViewInvertDuration, _deactiveViewInvertDuration);
+            _changeSideAnimator = new ChangeSideAnimator(_activeView.gameObject, _deactiveView.gameObject, _rectTransform, _activeViewInvertDuration, _deactiveViewInvertDuration, drawHandler);
         }
 
         public void OnClick()
         {
             SetDeactiveSide();
-            _drawHandler.OnEndTurn();
         }
 
         public void SetActiveSide()

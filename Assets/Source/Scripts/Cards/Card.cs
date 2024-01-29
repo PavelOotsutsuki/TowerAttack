@@ -31,7 +31,7 @@ namespace Cards
             _cardSideFlipper.SetBackSide();
 
             _cardCharacter = Instantiate(_cardSO.CardCharacter);
-            _cardCharacter.Init(_cardSO.AwakeSound, this);
+            _cardCharacter.Init(_cardSO.AwakeSound, Activate);
 
             _cardAnimator.Init(_rectTransform, _cardMovement, _cardSideFlipper);
         }
@@ -110,7 +110,7 @@ namespace Cards
         //    _cardFront.Unblock();
         //}
 
-        public void Activate()
+        private void Activate()
         {
             gameObject.SetActive(true);
         }

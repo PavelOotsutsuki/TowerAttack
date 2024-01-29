@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Tools;
+using System;
 
 namespace Cards
 {
@@ -9,12 +10,12 @@ namespace Cards
     {
         [SerializeField] private AudioSource _audioSource;
 
-        private Card _me;
+        private Action _cardActive;
 
-        public void Init(AudioClip awakeSound, Card card)
+        public void Init(AudioClip awakeSound, Action cardActive)
         {
             _audioSource.clip = awakeSound;
-            _me = card;
+            _cardActive = cardActive;
             gameObject.SetActive(false);
         }
 
@@ -26,7 +27,7 @@ namespace Cards
 
         public void DiscardCard()
         {
-            _me.Activate();
+            _cardActive.Invoke();
             gameObject.SetActive(false);
         }
 
