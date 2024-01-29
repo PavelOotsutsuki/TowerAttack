@@ -8,35 +8,35 @@ namespace GameFields.Persons.Hands
     {
         private const float SortDirection = 1;
 
-        [SerializeField] private HandSeatList _handSeatList;
+        [SerializeField] private HandActions _handActions;
         [SerializeField] private CanvasGroup _canvasGroup;
 
         public void Init()
         {
-            _handSeatList.Init(SortDirection);
+            _handActions.Init(SortDirection);
         }
 
         public void OnCardDrag(Card card)
         {
-            _handSeatList.DragCard(card);
+            _handActions.DragCard(card);
             _canvasGroup.blocksRaycasts = false;
         }
 
         public void OnCardDrop()
         {
-            _handSeatList.EndDragCard();
+            _handActions.EndDragCard();
             _canvasGroup.blocksRaycasts = true;
         }
 
         public void RemoveCard(Card card)
         {
-            _handSeatList.RemoveCard();
+            _handActions.RemoveCard();
             _canvasGroup.blocksRaycasts = true;
         }
 
         public void AddCard(Card card)
         {
-            _handSeatList.AddCard(card);
+            _handActions.AddCard(card);
         }
 
         [ContextMenu(nameof(DefineAllComponents))]
@@ -49,7 +49,7 @@ namespace GameFields.Persons.Hands
         [ContextMenu(nameof(DefineHandSeatList))]
         private void DefineHandSeatList()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _handSeatList, ComponentLocationTypes.InThis);
+            AutomaticFillComponents.DefineComponent(this, ref _handActions, ComponentLocationTypes.InThis);
         }
 
         [ContextMenu(nameof(DefineCanvasGroup))]

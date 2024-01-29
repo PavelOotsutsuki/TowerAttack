@@ -876,14 +876,14 @@ MonoBehaviour:
   _endTurnButton: {fileID: 601274534}
   _player: {fileID: 1905208563}
   _fight: {fileID: 200841578}
-  _discardPile: {fileID: 0}
+  _discardPile: {fileID: 1000203021}
   _canvasScaler: {fileID: 200841575}
   _enemyAI:
     _hand: {fileID: 1620354845}
     _table: {fileID: 704143077}
     _tower: {fileID: 1939013310}
     _enemyAnimator: {fileID: 1502786296}
-    _countDrawCardsEnemy: 3
+    _countDrawCardsEnemy: 1
     _drawCardsDelayEnemy: 0.5
 --- !u!114 &200841578
 MonoBehaviour:
@@ -897,7 +897,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8ea36857a740452cb0a545f3d05f5e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _discardCardAnimator: {fileID: 0}
+  _discardCardAnimator: {fileID: 200841579}
 --- !u!114 &200841579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4633,7 +4633,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9c6e2249fb604b4d82f97a33ef93ef5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rectTransform: {fileID: 0}
+  _rectTransform: {fileID: 1000203020}
   _cardRotationOffset: 45
 --- !u!224 &1004745431 stripped
 RectTransform:

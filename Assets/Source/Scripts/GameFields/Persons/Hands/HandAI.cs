@@ -8,14 +8,14 @@ namespace GameFields.Persons.Hands
 {
     public class HandAI : MonoBehaviour, IHand, ICardDragImitationListener
     {
-        [SerializeField] private HandSeatList _handSeatList;
+        [SerializeField] private HandActions _handActions;
         [SerializeField] private CanvasGroup _canvasGroup;
 
         private const float SortDirection = -1;
 
         public void Init()
         {
-            _handSeatList.Init(SortDirection);
+            _handActions.Init(SortDirection);
             _canvasGroup.blocksRaycasts = true;
         }
 
@@ -37,17 +37,17 @@ namespace GameFields.Persons.Hands
 
         public void OnCardDrag(Card card)
         {
-            _handSeatList.DragCard(card);
+            _handActions.DragCard(card);
         }
 
         public void OnCardDrop()
         {
-            _handSeatList.EndDragCard();
+            _handActions.EndDragCard();
         }
 
         public bool TryGetCard(out Card card)
         {
-            if (_handSeatList.TryGetCard(out card))
+            if (_handActions.TryGetCard(out card))
             {
                 return true;
             }
@@ -57,12 +57,12 @@ namespace GameFields.Persons.Hands
 
         public void RemoveCard(Card card)
         {
-            _handSeatList.RemoveCard();
+            _handActions.RemoveCard();
         }
 
         public void AddCard(Card card)
         {
-            _handSeatList.AddCard(card);
+            _handActions.AddCard(card);
         }
 
         [ContextMenu(nameof(DefineAllComponents))]
@@ -75,7 +75,7 @@ namespace GameFields.Persons.Hands
         [ContextMenu(nameof(DefineHandSeatList))]
         private void DefineHandSeatList()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _handSeatList, ComponentLocationTypes.InThis);
+            AutomaticFillComponents.DefineComponent(this, ref _handActions, ComponentLocationTypes.InThis);
         }
 
         [ContextMenu(nameof(DefineCanvasGroup))]

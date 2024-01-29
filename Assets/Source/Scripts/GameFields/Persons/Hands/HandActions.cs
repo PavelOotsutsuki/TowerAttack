@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using Cards;
 using Tools;
@@ -6,7 +5,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Hands
 {
-    public class HandSeatList : MonoBehaviour
+    public class HandActions : MonoBehaviour
     {
         private const float StartRotation = 0;
 
