@@ -47,12 +47,7 @@ namespace GameFields.Persons.Hands
 
         public bool TryGetCard(out Card card)
         {
-            if (_handActions.TryGetCard(out card))
-            {
-                return true;
-            }
-
-            return false;
+            return _handActions.TryGetCard(out card);
         }
 
         public void RemoveCard(Card card)

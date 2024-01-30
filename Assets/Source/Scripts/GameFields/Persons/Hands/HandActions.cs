@@ -54,8 +54,8 @@ namespace GameFields.Persons.Hands
         public void EndDragCard()
         {
             _handSeats.Insert(_handSeatIndex, _dragCardHandSeat);
-            SortHandSeats();
 
+            SortHandSeats();
             ResetDragOptions();
         }
 

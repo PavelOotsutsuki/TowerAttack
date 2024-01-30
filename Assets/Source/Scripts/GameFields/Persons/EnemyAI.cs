@@ -38,7 +38,7 @@ namespace GameFields.Persons
 
         public void PlayDragAndDropImitation()
         {
-            if (TryGetHandCard(out Card card))
+            if (_hand.TryGetCard(out Card card))
             {
                 _enemyAnimator.StartDragAndDropAnimation(card);
             }
@@ -61,16 +61,6 @@ namespace GameFields.Persons
         public List<CardCharacter> GetDiscardCards()
         {
             return _table.GetAllCardCharacters();
-        }
-
-        private bool TryGetHandCard(out Card card)
-        {
-            if (_hand.TryGetCard(out card))
-            {
-                return true;
-            }
-
-            return false;
         }
     }
 }
