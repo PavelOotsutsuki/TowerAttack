@@ -30,9 +30,6 @@ namespace Cards
             _cardSideFlipper = new CardSideFlipper(_cardFront, _cardBack, _cardDragAndDrop);
             _cardSideFlipper.SetBackSide();
 
-            _cardCharacter = Instantiate(_cardSO.CardCharacter);
-            _cardCharacter.Init(_cardSO.AwakeSound, Activate);
-
             _cardAnimator.Init(_rectTransform, _cardMovement, _cardSideFlipper);
         }
 
@@ -58,6 +55,11 @@ namespace Cards
 
         public void Play(out CardCharacter cardCharacter)
         {
+            if (_cardCharacter == null)
+            {
+                CreateCardCharacter();
+            }
+
             cardCharacter = _cardCharacter;
             Destroy();
         }
@@ -109,6 +111,11 @@ namespace Cards
         //    _cardDragAndDrop.enabled = true;
         //    _cardFront.Unblock();
         //}
+        private void CreateCardCharacter()
+        {
+            _cardCharacter = Instantiate(_cardSO.CardCharacter);
+            _cardCharacter.Init(_cardSO.AwakeSound, Activate);
+        }
 
         private void Activate()
         {
