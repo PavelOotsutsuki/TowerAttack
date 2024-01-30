@@ -1,5 +1,5 @@
 using System.Collections;
-using DG.Tweening;
+using Tools;
 using UnityEngine;
 
 namespace GameFields.EndTurnButtons
@@ -18,6 +18,7 @@ namespace GameFields.EndTurnButtons
         private WaitForSeconds _activeViewInvertDelay;
         private WaitForSeconds _deactiveViewInvertDelay;
         private IEndTurnHandler _endTurnHandler;
+        private TransformPositionChanger _endTurnButtonMovement;
 
         public ChangeSideAnimator(GameObject activeView, GameObject deactiveView, RectTransform buttonTransform, float activeViewInvertDuration, float deactiveViewInvertDuration, IEndTurnHandler endTurnHandler)
         {
@@ -25,6 +26,7 @@ namespace GameFields.EndTurnButtons
             _deactiveView = deactiveView;
             _buttonTransform = buttonTransform;
             _endTurnHandler = endTurnHandler;
+            _endTurnButtonMovement = new TransformPositionChanger(_buttonTransform);
 
             _activeViewInvertDuration = activeViewInvertDuration;
             _deactiveViewInvertDuration = deactiveViewInvertDuration;
@@ -68,7 +70,7 @@ namespace GameFields.EndTurnButtons
             Vector3 scaleVector = _buttonTransform.localScale;
             Vector3 downWay = _buttonTransform.position;
 
-            TranslateLinear(downWay, endRotationVector, duration, scaleVector);
+            _endTurnButtonMovement.TranslateLinear(downWay, endRotationVector, duration, scaleVector);
         }
 
         private void InvertDeactiveSide(float duration, float rotation)
@@ -77,7 +79,7 @@ namespace GameFields.EndTurnButtons
             Vector3 scaleVector = _buttonTransform.localScale;
             Vector3 downWay = _buttonTransform.position;
 
-            TranslateSmoothly(downWay, endRotationVector, duration, scaleVector);
+            _endTurnButtonMovement.TranslateSmoothly(downWay, endRotationVector, duration, scaleVector);
         }
 
         private void SetLockSide()
@@ -90,20 +92,6 @@ namespace GameFields.EndTurnButtons
         {
             _activeView.SetActive(true);
             _deactiveView.SetActive(false);
-        }
-
-        private void TranslateLinear(Vector3 downWay, Vector3 maxRotationVector, float duration, Vector3 scaleVector)
-        {
-            _buttonTransform.DOMove(downWay, duration).SetEase(Ease.Linear);
-            _buttonTransform.DORotate(maxRotationVector, duration).SetEase(Ease.Linear);
-            _buttonTransform.DOScale(scaleVector, duration).SetEase(Ease.Linear);
-        }
-
-        private void TranslateSmoothly(Vector2 positon, Vector3 rotation, float duration, Vector3 scaleVector)
-        {
-            _buttonTransform.DOMove(positon, duration);
-            _buttonTransform.DORotate(rotation, duration);
-            _buttonTransform.DOScale(scaleVector, duration);
         }
     }
 }

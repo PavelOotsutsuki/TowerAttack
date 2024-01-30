@@ -1,4 +1,5 @@
 using System.Collections;
+using Tools;
 using UnityEngine;
 
 namespace Cards
@@ -6,10 +7,10 @@ namespace Cards
     internal class DrawCardAnimation
     {
         private RectTransform _cardRectTransform;
-        private CardMovement _cardMovement;
+        private TransformPositionChanger _cardMovement;
         private CardSideFlipper _sideFlipper;
 
-        public DrawCardAnimation(RectTransform cardRectTransform, CardMovement cardMovement, CardSideFlipper sideFlipper)
+        public DrawCardAnimation(RectTransform cardRectTransform, TransformPositionChanger cardMovement, CardSideFlipper sideFlipper)
         {
             _cardRectTransform = cardRectTransform;
             _sideFlipper = sideFlipper;

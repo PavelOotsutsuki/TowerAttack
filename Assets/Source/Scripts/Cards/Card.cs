@@ -14,14 +14,14 @@ namespace Cards
         [SerializeField] private Vector3 _defaultScaleVector;
 
         private CardDragAndDropActions _cardDragAndDropActions;
-        private CardMovement _cardMovement;
+        private TransformPositionChanger _cardMovement;
         private CardSideFlipper _cardSideFlipper;
         private CardCharacter _cardCharacter;
 
         internal void Init(CardDescription cardDescription, BigCard bigCard, Transform dragContainer)
         {
             _rectTransform.localScale = _defaultScaleVector;
-            _cardMovement = new CardMovement(_rectTransform);
+            _cardMovement = new TransformPositionChanger(_rectTransform);
             _cardFront.Init(_cardSO, _rectTransform, cardDescription, bigCard);
 
             _cardDragAndDropActions = new CardDragAndDropActions(_cardFront, this);
@@ -36,6 +36,7 @@ namespace Cards
         public void BindSeat(Transform transform, bool isFrontSide, float duration = 0f)
         {
             _rectTransform.SetParent(transform);
+            Debug.Log("BindSeat");
             _cardMovement.TranslateLocalSmoothly(Vector2.zero, Quaternion.identity.eulerAngles, duration, _defaultScaleVector);
 
             if (isFrontSide)

@@ -62,6 +62,7 @@ namespace GameFields.Persons.Hands
         private void CreateObject()
         {
             HandSeat spawned = Instantiate(_template, _container);
+            spawned.Init();
             spawned.gameObject.SetActive(false);
 
             _remainingPool.Enqueue(spawned);

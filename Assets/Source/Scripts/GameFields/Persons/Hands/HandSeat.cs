@@ -1,7 +1,6 @@
 using UnityEngine;
 using Cards;
 using Tools;
-using DG.Tweening;
 
 namespace GameFields.Persons.Hands
 {
@@ -9,10 +8,12 @@ namespace GameFields.Persons.Hands
     {
         [SerializeField] private Transform _transform;
 
-        Card _card;
+        private Card _card;
+        private TransformPositionChanger _handSeatMovement;
 
         public void Init()
         {
+            _handSeatMovement = new TransformPositionChanger(_transform);
         }
 
         public Card GetCard()
@@ -43,8 +44,7 @@ namespace GameFields.Persons.Hands
 
         public void SetLocalPositionValues(Vector3 position, Vector3 rotation, float duration)
         {
-            _transform.DOLocalMove(position, duration);
-            _transform.DOLocalRotate(rotation, duration);
+            _handSeatMovement.TranslateLocalSmoothly(position, rotation, duration);
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

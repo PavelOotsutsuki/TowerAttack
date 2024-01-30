@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Tools;
 using UnityEngine;
 
 namespace Cards
@@ -10,7 +11,7 @@ namespace Cards
         private DrawCardAnimation _drawCardAnimation;
         private DragAndDropAnimation _dragAndDropAnimation;
 
-        public void Init(RectTransform cardRectTransform, CardMovement cardMovement, CardSideFlipper sideFlipper)
+        public void Init(RectTransform cardRectTransform, TransformPositionChanger cardMovement, CardSideFlipper sideFlipper)
         {
             _drawCardAnimation = new DrawCardAnimation(cardRectTransform, cardMovement, sideFlipper);
             _dragAndDropAnimation = new DragAndDropAnimation(cardRectTransform, cardMovement);
