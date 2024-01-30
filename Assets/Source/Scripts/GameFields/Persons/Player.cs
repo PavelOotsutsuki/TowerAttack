@@ -35,24 +35,16 @@ namespace GameFields.Persons
             _hand.RemoveCard(card);
         }
 
-        public void DeactivateTable()
-        {
-            _table.Deactivate();
-        }
-
-        public void ActivateTable()
+        public void ActivateDropPlaces()
         {
             _table.Activate();
-        }
-
-        public void DeactivateTower()
-        {
-            _tower.Deactivate();
-        }
-
-        public void ActivateTower()
-        {
             _tower.Activate();
+        }
+
+        public void DeativateDropPlaces()
+        {
+            _table.Deactivate();
+            _tower.Deactivate();
         }
 
         public void DrawCard(Card card)

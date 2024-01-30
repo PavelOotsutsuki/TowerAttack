@@ -88,51 +88,19 @@ namespace GameFields
         {
             _activePerson = _player;
 
-            ActivateDropPlaces();
+            _player.ActivateDropPlaces();
         }
 
         private void SetEnemyTurn()
         {
             _activePerson = _enemy;
 
-            DeativateDropPlaces();
-        }
-
-        private void ActivateDropPlaces()
-        {
-            ActivateTable();
-            ActivateTower();
-        }
-
-        private void DeativateDropPlaces()
-        {
-            DeactivateTable();
-            DeactivateTower();
+            _player.DeativateDropPlaces();
         }
 
         private void StartTurn()
         {
             StartCoroutine(DrawningCards());
-        }
-
-        private void ActivateTable()
-        {
-            _player.ActivateTable();
-        }
-
-        private void DeactivateTable()
-        {
-            _player.DeactivateTable();
-        }
-
-        private void ActivateTower()
-        {
-            _player.ActivateTower();
-        }
-
-        private void DeactivateTower()
-        {
-            _player.DeactivateTower();
         }
 
         private void EndFight()

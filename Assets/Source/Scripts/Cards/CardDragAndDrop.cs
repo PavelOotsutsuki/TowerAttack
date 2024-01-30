@@ -49,14 +49,11 @@ namespace Cards
                 return;
             }
 
-            Debug.Log("OnDrag: _isDrag = " + _isDrag + ", _isAlreadyDrag = " + _isAlreadyDrag);
             _cardTransform.position = eventData.position;
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            Debug.Log("OnEndDrag: _isDrag = " + _isDrag + ", _isAlreadyDrag = " + _isAlreadyDrag);
-
             if (_isAlreadyDrag)
             {
                 _isAlreadyDrag = false;
