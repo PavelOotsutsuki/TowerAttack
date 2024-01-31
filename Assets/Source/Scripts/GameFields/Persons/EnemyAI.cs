@@ -4,6 +4,7 @@ using GameFields.Persons.Tables;
 using GameFields.Persons.Towers;
 using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,7 +19,7 @@ namespace GameFields.Persons
         [SerializeField] private EnemyAnimator _enemyAnimator;
         [SerializeField] private int _countDrawCardsEnemy = 1;
         [SerializeField] private float _drawCardsDelayEnemy = 0.5f;
-
+        
         private IEndTurnHandler _endTurnHandler;
         private CardImitationActions _cardImitationActions;
 

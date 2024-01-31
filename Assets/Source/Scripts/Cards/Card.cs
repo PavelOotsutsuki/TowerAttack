@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using Tools;
 
@@ -63,15 +62,43 @@ namespace Cards
             Destroy();
         }
 
-        public void Drawn(float cardBackDuration, float cardBackRotation, float cardBackScaleFactor, float cardFrontDuration, float indent, float screenFactor)
+        public void PlayDrawnCardAnimation(float cardBackDuration, float cardBackRotation, float cardBackScaleFactor, float cardFrontDuration, float indent, float screenFactor)
         {
+            //Block();
             _cardAnimator.PlayDrawnCardAnimation(cardBackDuration, cardBackRotation, cardBackScaleFactor, cardFrontDuration, indent, screenFactor);
         }
 
-        public void ReturnToHand(float duration)
+        public void PlayReturnInHandAnimation(float duration)
         {
-            _cardAnimator.PlayReturnInHandAnimation(duration);
+            _cardMovement.TranslateLocalSmoothly(Vector2.zero, Vector3.zero, duration, transform.localScale);
         }
+
+        public void MoveLocalTo(Vector3 position, float duration)
+        {
+            _cardMovement.TranslateLocalSmoothly(position, Vector3.zero, duration, transform.localScale);
+        }
+        
+        //private void Block()
+        //{
+        //    if (_cardSideFlipper.IsFrontSide)
+        //    {
+        //        return;
+        //    }
+
+        //    _cardDragAndDrop.enabled = false;
+        //    _cardFront.Block();
+        //}
+
+        //private void Unblock()
+        //{
+        //    if (_cardSideFlipper.IsFrontSide == false)
+        //    {
+        //        return;
+        //    }
+
+        //    _cardDragAndDrop.enabled = true;
+        //    _cardFront.Unblock();
+        //}
 
         public void Activate()
         {
@@ -82,8 +109,6 @@ namespace Cards
         {
             gameObject.SetActive(false);
         }
-
-        #region MyRegion
 
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
@@ -124,7 +149,5 @@ namespace Cards
         {
             AutomaticFillComponents.DefineComponent(this, ref _cardAnimator, ComponentLocationTypes.InThis);
         }
-
-        #endregion
     }
 }

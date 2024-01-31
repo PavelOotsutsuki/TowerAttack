@@ -1,13 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
 using Cards;
-using GameFields.Persons.Hands;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace GameFields.Persons.PersonAnimators
 {
-    public class EnemyDragAndDropAnimator : MonoBehaviour
+    public class EnemyDragAndDropImitation : MonoBehaviour
     {
         private const int CountLogics = 1;
 
@@ -23,27 +21,30 @@ namespace GameFields.Persons.PersonAnimators
 
         private ICardDropPlaceImitation _cardDropPlaceImitation;
         private IEndTurnHandler _endTurnHandler;
+        private ICardDragImitationListener _cardDragImitationListener;
         private CanvasScaler _canvasScaler;
 
         internal void Init(ICardDropPlaceImitation cardDropPlaceImitation, IEndTurnHandler endTurnHandler, ICardDragImitationListener cardDragImitationListener, CanvasScaler canvasScaler)
         {
+            _cardDragImitationListener = cardDragImitationListener;
             _cardDropPlaceImitation = cardDropPlaceImitation;
             _endTurnHandler = endTurnHandler;
             _canvasScaler = canvasScaler;
         }
 
-        internal void StartDragAndDropAnimation(CardImitationActions cardImitationActions)
+        internal void StartDragAndDropAnimation(Card card)
         {
             int logicNumber = Random.Range(1, CountLogics + 1);
 
             if (logicNumber == 1)
             {
-                StartCoroutine(DragAndDropBehaviour1(cardImitationActions));
+                StartCoroutine(DragAndDropBehaviour1(card));
             }
         }
 
-        private IEnumerator DragAndDropBehaviour1(CardImitationActions cardImitationActions)
+        private IEnumerator DragAndDropBehaviour1(Card card)
         {
+            RectTransform cardRect = (RectTransform)card.transform;
             float screenFactor = Screen.height / _canvasScaler.referenceResolution.y;
 
             float startDelay = Random.Range(_startDelayMin, _startDelayMax);
@@ -51,28 +52,36 @@ namespace GameFields.Persons.PersonAnimators
 
             yield return new WaitForSeconds(startDelay);
 
+            Vector3 cardTargetPosition;
+            
             for (int i = 0; i < countRepeat + 1; i++)
             {
                 float cardViewDelay = Random.Range(_cardViewDelayMin, _cardViewDelayMax);
 
-                cardImitationActions.PlaySelectCardAnimation(screenFactor, _cardViewTime);
-                yield return new WaitForSeconds(_cardViewTime + cardViewDelay);
+                cardTargetPosition = cardRect.localPosition;
+                cardTargetPosition.y += cardRect.rect.height / 2 * screenFactor;
                 
+                card.MoveLocalTo(cardTargetPosition, _cardViewTime);
+                yield return new WaitForSeconds(_cardViewTime + cardViewDelay);
+
                 if (i != countRepeat)
                 {
-                    cardImitationActions.PlayUnselectCardAnimation(screenFactor, _cardViewTime);
+                    cardTargetPosition = cardRect.localPosition;
+                    cardTargetPosition.y -= cardRect.rect.height / 2 * screenFactor;
+                
+                    card.MoveLocalTo(cardTargetPosition, _cardViewTime);
                     yield return new WaitForSeconds(_cardViewTime);
                 }
             }
 
-            cardImitationActions.PlayCardAnimation(_cardDropPlaceImitation.GetCentralСoordinates(), _cardTranslateInDropPlaceTime);
-            cardImitationActions.DragCard();
+            card.MoveLocalTo(_cardDropPlaceImitation.GetCentralСoordinates(), _cardTranslateInDropPlaceTime);
+            _cardDragImitationListener.OnCardDrag(card);
             yield return new WaitForSeconds(_cardTranslateInDropPlaceTime);
 
-            if (cardImitationActions.TryGetCard() == false)
+            if (_cardDropPlaceImitation.TryGetCard(card) == false)
             {
-                cardImitationActions.DropCard();
-                cardImitationActions.PlayReturnInHandAnimation(_cardReturnInHandTime);
+                _cardDragImitationListener.OnCardDrop();
+                card.PlayReturnInHandAnimation(_cardReturnInHandTime);
                 yield return new WaitForSeconds(_cardReturnInHandTime);
             }
 
@@ -80,5 +89,7 @@ namespace GameFields.Persons.PersonAnimators
 
             _endTurnHandler.OnEndTurn();
         }
+        
+        
     }
 }
