@@ -36,7 +36,6 @@ namespace Cards
         public void BindSeat(Transform transform, bool isFrontSide, float duration = 0f)
         {
             _rectTransform.SetParent(transform);
-            Debug.Log("BindSeat");
             _cardMovement.TranslateLocalSmoothly(Vector2.zero, Quaternion.identity.eulerAngles, duration, _defaultScaleVector);
 
             if (isFrontSide)

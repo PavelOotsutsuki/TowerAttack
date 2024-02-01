@@ -10,12 +10,12 @@ namespace Cards
     {
         [SerializeField] private AudioSource _audioSource;
 
-        private Action _cardActive;
+        private Action _discardCallback;
 
         public void Init(AudioClip awakeSound, Action cardActive)
         {
             _audioSource.clip = awakeSound;
-            _cardActive = cardActive;
+            _discardCallback = cardActive;
             gameObject.SetActive(false);
         }
 
@@ -27,7 +27,7 @@ namespace Cards
 
         public void DiscardCard()
         {
-            _cardActive.Invoke();
+            _discardCallback.Invoke();
             gameObject.SetActive(false);
         }
 
