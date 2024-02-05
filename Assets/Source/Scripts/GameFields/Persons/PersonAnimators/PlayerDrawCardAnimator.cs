@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Cards;
 using GameFields.Persons.Hands;
+using Cysharp.Threading.Tasks;
 
 namespace GameFields.Persons.PersonAnimators
 {
@@ -26,7 +27,7 @@ namespace GameFields.Persons.PersonAnimators
 
         internal void StartDrawCardAnimation(Card drawnCard)
         {
-            StartCoroutine(DrawnCardBehaviour(drawnCard));
+            DrawnCardBehaviour(drawnCard).ToUniTask();
         }
 
         private IEnumerator DrawnCardBehaviour(Card drawnCard)

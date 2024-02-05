@@ -1,5 +1,6 @@
 using Tools;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 namespace GameFields.EndTurnButtons
 {
@@ -25,7 +26,7 @@ namespace GameFields.EndTurnButtons
 
         public void SetActiveSide()
         {
-            StartCoroutine(_changeSideAnimator.PlayUnlockButtonAnimation());
+            _changeSideAnimator.PlayUnlockButtonAnimation().ToUniTask();
         }
 
         private void OnEnable()
@@ -40,7 +41,7 @@ namespace GameFields.EndTurnButtons
 
         private void SetDeactiveSide()
         {
-            StartCoroutine(_changeSideAnimator.PlayLockButtonAnimation());
+            _changeSideAnimator.PlayLockButtonAnimation().ToUniTask();
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

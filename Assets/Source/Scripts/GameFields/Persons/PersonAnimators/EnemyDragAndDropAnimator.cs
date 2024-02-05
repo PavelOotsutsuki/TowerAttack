@@ -4,6 +4,7 @@ using Cards;
 using GameFields.Persons.Hands;
 using UnityEngine;
 using UnityEngine.UI;
+using Cysharp.Threading.Tasks;
 
 namespace GameFields.Persons.PersonAnimators
 {
@@ -40,7 +41,7 @@ namespace GameFields.Persons.PersonAnimators
 
             if (logicNumber == 1)
             {
-                StartCoroutine(DragAndDropBehaviour1(card));
+                DragAndDropBehaviour1(card).ToUniTask();
             }
         }
 

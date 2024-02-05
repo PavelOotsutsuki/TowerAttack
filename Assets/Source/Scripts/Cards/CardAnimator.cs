@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Tools;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 namespace Cards
 {
@@ -19,7 +20,7 @@ namespace Cards
 
         public void PlayDrawnCardAnimation(float cardBackDuration, float cardBackRotation, float cardBackScaleFactor, float cardFrontDuration, float indent, float screenFactor)
         {
-            StartCoroutine(_drawCardAnimation.PlayDrawnCardAnimation(cardBackDuration, cardBackRotation, cardBackScaleFactor, cardFrontDuration, indent, screenFactor));
+            _drawCardAnimation.PlayDrawnCardAnimation(cardBackDuration, cardBackRotation, cardBackScaleFactor, cardFrontDuration, indent, screenFactor).ToUniTask();
         }
 
         public void PlaySelectCardAnimation(float screenFactor, float duration)

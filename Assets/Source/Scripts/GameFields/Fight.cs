@@ -5,6 +5,7 @@ using UnityEngine;
 using GameFields.EndTurnButtons;
 using GameFields.DiscardPiles;
 using Tools;
+using Cysharp.Threading.Tasks;
 
 namespace GameFields
 {
@@ -100,7 +101,8 @@ namespace GameFields
 
         private void StartTurn()
         {
-            StartCoroutine(DrawningCards());
+            //StartCoroutine(DrawningCards());
+            DrawningCards().ToUniTask();
         }
 
         private void EndFight()
