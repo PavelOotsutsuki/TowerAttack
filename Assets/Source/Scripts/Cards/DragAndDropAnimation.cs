@@ -9,9 +9,9 @@ namespace Cards
     internal class DragAndDropAnimation
     {
         private RectTransform _cardRectTransform;
-        private TransformPositionChanger _cardMovement;
+        private CardMovement _cardMovement;
 
-        public DragAndDropAnimation(RectTransform cardRectTransform, TransformPositionChanger cardMovement)
+        public DragAndDropAnimation(RectTransform cardRectTransform, CardMovement cardMovement)
         {
             _cardRectTransform = cardRectTransform;
             _cardMovement = cardMovement;
@@ -24,7 +24,7 @@ namespace Cards
 
             downWay.y += _cardRectTransform.rect.height / 2 * screenFactor;
 
-            _cardMovement.TranslateLocalSmoothly(downWay, rotation, duration);
+            _cardMovement.MoveLocalSmoothly(downWay, rotation, duration);
         }
 
         public void PlayUnselectCardAnimation(float screenFactor, float duration)
@@ -34,7 +34,7 @@ namespace Cards
 
             downWay.y -= _cardRectTransform.rect.height / 2 * screenFactor;
 
-            _cardMovement.TranslateLocalSmoothly(downWay, rotation, duration);
+            _cardMovement.MoveLocalSmoothly(downWay, rotation, duration);
         }
 
         public void PlayCardAnimation(Vector3 center, float duration)
@@ -42,7 +42,7 @@ namespace Cards
             Vector3 rotation = _cardRectTransform.rotation.eulerAngles;
             Vector3 downWay = center;
 
-            _cardMovement.TranslateLinear(downWay, rotation, duration);
+            _cardMovement.MoveLinear(downWay, rotation, duration);
         }
 
         public void PlayReturnInHandAnimation(float duration)
@@ -51,7 +51,7 @@ namespace Cards
             Vector3 localPosition = new Vector3(0f, 0f, 0f);
             Vector3 rotation = Vector3.zero;
 
-            _cardMovement.TranslateLocalSmoothly(localPosition, rotation, duration, scaleVector);
+            _cardMovement.MoveLocalSmoothly(localPosition, rotation, duration, scaleVector);
         }
     }
 }

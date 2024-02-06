@@ -7,10 +7,10 @@ namespace Cards
     internal class DrawCardAnimation
     {
         private RectTransform _cardRectTransform;
-        private TransformPositionChanger _cardMovement;
+        private CardMovement _cardMovement;
         private CardSideFlipper _sideFlipper;
 
-        public DrawCardAnimation(RectTransform cardRectTransform, TransformPositionChanger cardMovement, CardSideFlipper sideFlipper)
+        public DrawCardAnimation(RectTransform cardRectTransform, CardMovement cardMovement, CardSideFlipper sideFlipper)
         {
             _cardRectTransform = cardRectTransform;
             _sideFlipper = sideFlipper;
@@ -37,7 +37,7 @@ namespace Cards
             Vector3 downWay = _cardRectTransform.position;
             downWay.y -= (downWay.y - indent - _cardRectTransform.rect.height) / 2;
 
-            _cardMovement.TranslateLinear(downWay, endRotationVector, cardBackDuration, scaleVector);
+            _cardMovement.MoveLinear(downWay, endRotationVector, cardBackDuration, scaleVector);
         }
 
         private void InvertCardFront(float duration, float scaleFactor, float indent, float screenfactor)
@@ -46,7 +46,7 @@ namespace Cards
             Vector3 downWay = _cardRectTransform.position;
             downWay.y = (_cardRectTransform.rect.height / 2f * scaleFactor + indent) * screenfactor; 
 
-            _cardMovement.TranslateSmoothly(downWay, endRotationVector, duration, _cardRectTransform.localScale);
+            _cardMovement.MoveSmoothly(downWay, endRotationVector, duration, _cardRectTransform.localScale);
         }
 
     }

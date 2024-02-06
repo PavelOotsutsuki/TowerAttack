@@ -18,7 +18,7 @@ namespace GameFields.EndTurnButtons
         private WaitForSeconds _activeViewInvertDelay;
         private WaitForSeconds _deactiveViewInvertDelay;
         private IEndTurnHandler _endTurnHandler;
-        private TransformPositionChanger _endTurnButtonMovement;
+        private Movement _endTurnButtonMovement;
 
         public ChangeSideAnimator(GameObject activeView, GameObject deactiveView, RectTransform buttonTransform, float activeViewInvertDuration, float deactiveViewInvertDuration, IEndTurnHandler endTurnHandler)
         {
@@ -26,7 +26,7 @@ namespace GameFields.EndTurnButtons
             _deactiveView = deactiveView;
             _buttonTransform = buttonTransform;
             _endTurnHandler = endTurnHandler;
-            _endTurnButtonMovement = new TransformPositionChanger(_buttonTransform);
+            _endTurnButtonMovement = new Movement(_buttonTransform);
 
             _activeViewInvertDuration = activeViewInvertDuration;
             _deactiveViewInvertDuration = deactiveViewInvertDuration;
@@ -70,7 +70,7 @@ namespace GameFields.EndTurnButtons
             Vector3 scaleVector = _buttonTransform.localScale;
             Vector3 downWay = _buttonTransform.position;
 
-            _endTurnButtonMovement.TranslateLinear(downWay, endRotationVector, duration, scaleVector);
+            _endTurnButtonMovement.MoveLinear(downWay, endRotationVector, duration, scaleVector);
         }
 
         private void InvertDeactiveSide(float duration, float rotation)
@@ -79,7 +79,7 @@ namespace GameFields.EndTurnButtons
             Vector3 scaleVector = _buttonTransform.localScale;
             Vector3 downWay = _buttonTransform.position;
 
-            _endTurnButtonMovement.TranslateSmoothly(downWay, endRotationVector, duration, scaleVector);
+            _endTurnButtonMovement.MoveSmoothly(downWay, endRotationVector, duration, scaleVector);
         }
 
         private void SetLockSide()

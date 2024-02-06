@@ -9,11 +9,11 @@ namespace GameFields.Persons.Hands
         [SerializeField] private Transform _transform;
 
         private Card _card;
-        private TransformPositionChanger _handSeatMovement;
+        private Movement _handSeatMovement;
 
         public void Init()
         {
-            _handSeatMovement = new TransformPositionChanger(_transform);
+            _handSeatMovement = new Movement(_transform);
         }
 
         public Card GetCard()
@@ -44,7 +44,7 @@ namespace GameFields.Persons.Hands
 
         public void SetLocalPositionValues(Vector3 position, Vector3 rotation, float duration)
         {
-            _handSeatMovement.TranslateLocalSmoothly(position, rotation, duration);
+            _handSeatMovement.MoveLocalSmoothly(position, rotation, duration);
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

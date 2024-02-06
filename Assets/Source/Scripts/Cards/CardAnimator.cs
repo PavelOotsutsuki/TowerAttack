@@ -7,12 +7,12 @@ using Cysharp.Threading.Tasks;
 
 namespace Cards
 {
-    internal class CardAnimator : MonoBehaviour
+    internal class CardAnimator
     {
         private DrawCardAnimation _drawCardAnimation;
         private DragAndDropAnimation _dragAndDropAnimation;
 
-        public void Init(RectTransform cardRectTransform, TransformPositionChanger cardMovement, CardSideFlipper sideFlipper)
+        public CardAnimator (RectTransform cardRectTransform, CardMovement cardMovement, CardSideFlipper sideFlipper)
         {
             _drawCardAnimation = new DrawCardAnimation(cardRectTransform, cardMovement, sideFlipper);
             _dragAndDropAnimation = new DragAndDropAnimation(cardRectTransform, cardMovement);

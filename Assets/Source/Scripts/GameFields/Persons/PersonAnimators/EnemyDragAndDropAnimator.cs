@@ -75,7 +75,7 @@ namespace GameFields.Persons.PersonAnimators
             if (_cardDropPlaceImitation.TryGetCard(card) == false)
             {
                 _cardDragImitationListener.OnCardDrop();
-                card.PlayReturnInHandAnimation(_cardReturnInHandTime);
+                card.ReturnInHand(_cardReturnInHandTime);
                 yield return new WaitForSeconds(_cardReturnInHandTime);
             }
 

@@ -1,47 +1,60 @@
 using UnityEngine;
 using DG.Tweening;
+using Tools;
 
 namespace Cards
 {
     public class CardMovement
     {
-        private RectTransform _cardRectTransform;
+        private Vector3 _defaultScaleVector;
+        private Transform _cardTransform;
+        private Movement _movement;
 
-        private Sequence _currentMovement;
-
-        public CardMovement(RectTransform cardRectTransform)
+        public CardMovement(Transform transform, Vector3 defaultScaleVector)
         {
-            _cardRectTransform = cardRectTransform;
+            _defaultScaleVector = defaultScaleVector;
+            _cardTransform = transform;
+            _movement = new Movement(_cardTransform);
         }
 
-        public void TranslateLocalInstantly(Vector2 positon, Vector3 rotation)
+        public void MoveReturnInHand(float duration)
         {
-            _cardRectTransform.Translate(positon);
-            _cardRectTransform.Rotate(rotation);
+            _movement.MoveLocalSmoothly(Vector2.zero, Vector3.zero, duration, _defaultScaleVector);
         }
 
-        public void TranslateLocalSmoothly(Vector2 positon, Vector3 rotation, float duration, Vector3 scaleVector)
+        public void ViewCardMovement(Vector3 position, float duration)
         {
-            _currentMovement = DOTween.Sequence()
-                .Join(_cardRectTransform.DOLocalMove(positon, duration))
-                .Join(_cardRectTransform.DOLocalRotate(rotation, duration))
-                .Join(_cardRectTransform.DOScale(scaleVector, duration));
+            _movement.MoveLocalSmoothly(position, Vector3.zero, duration, _defaultScaleVector);
         }
 
-        public void TranslateSmoothly(Vector2 positon, Vector3 rotation, float duration, Vector3 scaleVector)
+        public void BindSeatMovement(float duration)
         {
-            _currentMovement = DOTween.Sequence()
-                .Join(_cardRectTransform.DOMove(positon, duration))
-                .Join(_cardRectTransform.DORotate(rotation, duration))
-                .Join(_cardRectTransform.DOScale(scaleVector, duration));
+            _movement.MoveLocalSmoothly(Vector2.zero, Quaternion.identity.eulerAngles, duration, _defaultScaleVector);
         }
 
-        public void TranslateLinear(Vector3 downWay, Vector3 maxRotationVector, float duration, Vector3 scaleVector)
+        //public void MoveLocalSmoothly(Vector2 positon, Vector3 rotation, float duration, Vector3 scaleVector)
+        //{
+        //    _movement.MoveLocalSmoothly(positon, rotation, duration, scaleVector);
+        //}
+
+        //public void MoveLocalSmoothly(Vector2 positon, Vector3 rotation, float duration)
+        //{
+        //    _movement.MoveLocalSmoothly(positon, rotation, duration);
+        //}
+
+        public void MoveSmoothly(Vector2 positon, Vector3 rotation, float duration, Vector3 scaleVector)
         {
-            _currentMovement = DOTween.Sequence()
-                .Join(_cardRectTransform.DOMove(downWay, duration).SetEase(Ease.Linear))
-                .Join(_cardRectTransform.DORotate(maxRotationVector, duration).SetEase(Ease.Linear))
-                .Join(_cardRectTransform.DOScale(scaleVector, duration).SetEase(Ease.Linear));
+            _movement.MoveSmoothly(positon, rotation, duration, scaleVector);
         }
+
+        public void MoveLinear(Vector3 downWay, Vector3 maxRotationVector, float duration, Vector3 scaleVector)
+        {
+            _movement.MoveLinear(downWay, maxRotationVector, duration, scaleVector);
+        }
+
+        //public void MoveLinear(Vector3 downWay, Vector3 maxRotationVector, float duration)
+        //{
+        //    _movement.MoveLinear(downWay, maxRotationVector, duration);
+        //}
     }
 }
