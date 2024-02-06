@@ -20,6 +20,7 @@ namespace GameFields.Persons
         [SerializeField] private float _drawCardsDelayEnemy = 0.5f;
 
         private IEndTurnHandler _endTurnHandler;
+        private CardImitationActions _cardImitationActions;
 
         public void Init(IEndTurnHandler endTurnHandler, CanvasScaler canvasScaler)
         {

@@ -92,9 +92,9 @@ namespace Cards
         //    _cardAnimator.PlayReturnInHandAnimation(duration);
         //}
 
-        public void ReturnInHand(float duration)
+        public void ReturnToHand(float duration)
         {
-            _cardMovement.MoveReturnInHand(duration);
+            _cardMovement.MoveReturnToHand(duration);
         }
 
         public void ViewCard(Vector3 position, float duration)

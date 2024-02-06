@@ -17,7 +17,7 @@ namespace Cards
             _movement = new Movement(_cardTransform);
         }
 
-        public void MoveReturnInHand(float duration)
+        public void MoveReturnToHand(float duration)
         {
             _movement.MoveLocalSmoothly(Vector2.zero, Vector3.zero, duration, _defaultScaleVector);
         }
