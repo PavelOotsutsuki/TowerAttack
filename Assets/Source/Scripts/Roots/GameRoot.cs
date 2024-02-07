@@ -9,26 +9,13 @@ namespace Roots
     {
         [SerializeField] private CardRoot _cardRoot;
         [SerializeField] private GameFieldRoot _gameFieldRoot;
+        [SerializeField] private ScreenRoot _screenRoot;
 
         private void Start()
         {
-            InitAll();
-        }
-
-        private void InitAll()
-        {
-            InitCardRoot();
-            InitGameFieldRoot(_cardRoot.Cards);
-        }
-
-        private void InitCardRoot()
-        {
+            _screenRoot.Init();
             _cardRoot.Init();
-        }
-
-        private void InitGameFieldRoot(Card[] cards)
-        {
-            _gameFieldRoot.Init(cards);
+            _gameFieldRoot.Init(_cardRoot.Cards);
         }
 
         [ContextMenu(nameof(DefineAllComponents))]
@@ -36,6 +23,7 @@ namespace Roots
         {
             DefineCardRoot();
             DefineGameFieldRoot();
+            DefineScreenRoot();
         }
 
         [ContextMenu(nameof(DefineCardRoot))]
@@ -48,6 +36,12 @@ namespace Roots
         private void DefineGameFieldRoot()
         {
             AutomaticFillComponents.DefineComponent(this, ref _gameFieldRoot, ComponentLocationTypes.InThis);
+        }
+
+        [ContextMenu(nameof(DefineScreenRoot))]
+        private void DefineScreenRoot()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _screenRoot, ComponentLocationTypes.InThis);
         }
     }
 }

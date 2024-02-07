@@ -22,12 +22,12 @@ namespace GameFields.Persons
         public int CountDrawCards => _countDrawCards;
         public float DrawCardsDelay => _drawCardsDelay;
 
-        public void Init(CanvasScaler canvasScaler)
+        public void Init()
         {
             _hand.Init();
             _table.Init(this);
             _tower.Init(this);
-            _playerAnimator.Init(_hand, canvasScaler);
+            _playerAnimator.Init(_hand);
         }
 
         public void PlayCard(Card card)

@@ -23,7 +23,7 @@ namespace GameFields.Persons
         private IEndTurnHandler _endTurnHandler;
         private CardImitationActions _cardImitationActions;
 
-        public void Init(IEndTurnHandler endTurnHandler, CanvasScaler canvasScaler)
+        public void Init(IEndTurnHandler endTurnHandler)
         {
             CountDrawCards = _countDrawCardsEnemy;
             DrawCardsDelay = _drawCardsDelayEnemy;
@@ -32,7 +32,7 @@ namespace GameFields.Persons
             _hand.Init();
             _table.Init(this);
             _tower.Init(this);
-            _enemyAnimator.Init(_table, _endTurnHandler, _hand, canvasScaler);
+            _enemyAnimator.Init(_table, _endTurnHandler, _hand);
         }
 
         public float DrawCardsDelay { get; private set; }

@@ -15,7 +15,6 @@ namespace GameFields
         [SerializeField] private Player _player;
         [SerializeField] private Fight _fight;
         [SerializeField] private DiscardPile _discardPile;
-        [SerializeField] private CanvasScaler _canvasScaler;
 
         [SerializeField] private EnemyAI _enemyAI;
         //private Fight _fight;
@@ -34,8 +33,8 @@ namespace GameFields
 
         private void InitPersons()
         {
-            _player.Init(_canvasScaler);
-            _enemyAI.Init(_fight, _canvasScaler);
+            _player.Init();
+            _enemyAI.Init(_fight);
         }
 
         private void InitDeck(Card[] cards)
@@ -60,7 +59,6 @@ namespace GameFields
             DefineEndTurnButton();
             DefinePlayer();
             DefineFight();
-            DefineCanvasScaler();
             DefineDiscardPile();
         }
 
@@ -86,12 +84,6 @@ namespace GameFields
         private void DefineFight()
         {
             AutomaticFillComponents.DefineComponent(this, ref _fight, ComponentLocationTypes.InThis);
-        }
-
-        [ContextMenu(nameof(DefineCanvasScaler))]
-        private void DefineCanvasScaler()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _canvasScaler, ComponentLocationTypes.InThis);
         }
 
         [ContextMenu(nameof(DefineDiscardPile))]

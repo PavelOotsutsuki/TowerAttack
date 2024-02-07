@@ -17,7 +17,7 @@ namespace Cards
             _cardMovement = cardMovement;
         }
 
-        public IEnumerator PlayDrawnCardAnimation(float cardBackDuration, float cardBackRotation, float cardBackScaleFactor, float cardFrontDuration, float indent, float screenFactor)
+        public IEnumerator PlayDrawnCardAnimation(float cardBackDuration, float cardBackRotation, float cardBackScaleFactor, float cardFrontDuration, float indent)
         {
             InvertCardBack(cardBackDuration, cardBackRotation, cardBackScaleFactor, indent);
             yield return new WaitForSeconds(cardBackDuration);
@@ -25,7 +25,7 @@ namespace Cards
             _sideFlipper.SetFrontSide();
             _sideFlipper.Block();
 
-            InvertCardFront(cardFrontDuration, cardBackScaleFactor, indent, screenFactor);
+            InvertCardFront(cardFrontDuration, cardBackScaleFactor, indent);
             yield return new WaitForSeconds(cardFrontDuration);
         }
 
@@ -40,10 +40,12 @@ namespace Cards
             _cardMovement.MoveLinear(downWay, endRotationVector, cardBackDuration, scaleVector);
         }
 
-        private void InvertCardFront(float duration, float scaleFactor, float indent, float screenfactor)
+        private void InvertCardFront(float duration, float scaleFactor, float indent)
         {
             Vector3 endRotationVector = new Vector3(0f, 0f, 0f);
             Vector3 downWay = _cardRectTransform.position;
+            float screenfactor = ScreenView.GetFactorY();
+
             downWay.y = (_cardRectTransform.rect.height / 2f * scaleFactor + indent) * screenfactor; 
 
             _cardMovement.MoveSmoothly(downWay, endRotationVector, duration, _cardRectTransform.localScale);

@@ -12,15 +12,13 @@ namespace GameFields.Persons.PersonAnimators
     {
         [SerializeField] private PlayerDrawCardAnimator _drawCardAnimator;
 
-        private CanvasScaler _canvasScaler;
         private IHand _hand;
 
-        public void Init(IHand hand, CanvasScaler canvasScaler)
+        public void Init(IHand hand)
         {
-            _canvasScaler = canvasScaler;
             _hand = hand;
 
-            _drawCardAnimator.Init(_hand, _canvasScaler);
+            _drawCardAnimator.Init(_hand);
         }
 
         public void StartDrawCardAnimation(Card drawnCard)

@@ -7,10 +7,10 @@ namespace Cards
     public class CardMovement
     {
         private Vector3 _defaultScaleVector;
-        private Transform _cardTransform;
+        private RectTransform _cardTransform;
         private Movement _movement;
 
-        public CardMovement(Transform transform, Vector3 defaultScaleVector)
+        public CardMovement(RectTransform transform, Vector3 defaultScaleVector)
         {
             _defaultScaleVector = defaultScaleVector;
             _cardTransform = transform;
@@ -22,8 +22,12 @@ namespace Cards
             _movement.MoveLocalSmoothly(Vector2.zero, Vector3.zero, duration, _defaultScaleVector);
         }
 
-        public void ViewCardMovement(Vector3 position, float duration)
+        public void ViewCardMovement(ViewType viewType, float duration)
         {
+            Vector3 position = _cardTransform.localPosition;
+            float screenFactor = ScreenView.GetFactorY();
+            position.y += _cardTransform.rect.height / 2 * screenFactor;
+
             _movement.MoveLocalSmoothly(position, Vector3.zero, duration, _defaultScaleVector);
         }
 

@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using Cards;
 using GameFields.Persons.Hands;
 using Cysharp.Threading.Tasks;
+using Tools;
 
 namespace GameFields.Persons.PersonAnimators
 {
@@ -17,12 +18,10 @@ namespace GameFields.Persons.PersonAnimators
         [SerializeField] private float _indent = 15f;
 
         private IHand _hand;
-        private CanvasScaler _canvasScaler;
 
-        internal void Init(IHand hand, CanvasScaler canvasScaler)
+        internal void Init(IHand hand)
         {
             _hand = hand;
-            _canvasScaler = canvasScaler;
         }
 
         internal void StartDrawCardAnimation(Card drawnCard)
@@ -33,11 +32,10 @@ namespace GameFields.Persons.PersonAnimators
         private IEnumerator DrawnCardBehaviour(Card drawnCard)
         {
             float fullDelay = _invertCardBackDuration + _invertCardFrontDuration + _delay;
-            float screenFactor = Screen.height / _canvasScaler.referenceResolution.y;
 
             drawnCard.transform.SetParent(transform);
             drawnCard.transform.SetAsLastSibling();
-            drawnCard.Drawn(_invertCardBackDuration, _invertCardBackRotation, _invertCardBackScaleFactor, _invertCardFrontDuration, _indent, screenFactor);
+            drawnCard.Drawn(_invertCardBackDuration, _invertCardBackRotation, _invertCardBackScaleFactor, _invertCardFrontDuration, _indent);
 
             yield return new WaitForSeconds(fullDelay);
 
