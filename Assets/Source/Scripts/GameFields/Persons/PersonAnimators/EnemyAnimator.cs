@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using Cards;
 using GameFields.Persons;
 using GameFields.Persons.PersonAnimators;
+using Tools;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace GameFields
 {
@@ -20,6 +17,18 @@ namespace GameFields
         public void StartDragAndDropAnimation()
         {
             _enemyDragAndDropImitation.StartDragAndDropAnimation();
+        }
+
+        [ContextMenu(nameof(DefineAllComponents))]
+        private void DefineAllComponents()
+        {
+            DefineEnemyDragAndDropImitation();
+        }
+
+        [ContextMenu(nameof(DefineEnemyDragAndDropImitation))]
+        private void DefineEnemyDragAndDropImitation()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _enemyDragAndDropImitation, ComponentLocationTypes.InThis);
         }
     }
 }

@@ -536,7 +536,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e660a199669a3474c96e96b401be9d8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _handSeatList: {fileID: 3027492178399830141}
+  _handActions: {fileID: 3027492178399830141}
   _canvasGroup: {fileID: 112430304}
 --- !u!1 &128113886
 GameObject:
@@ -877,13 +877,12 @@ MonoBehaviour:
   _player: {fileID: 1905208563}
   _fight: {fileID: 200841578}
   _discardPile: {fileID: 1000203021}
-  _canvasScaler: {fileID: 200841575}
   _enemyAI:
     _hand: {fileID: 1620354845}
     _table: {fileID: 704143077}
     _tower: {fileID: 1939013310}
     _enemyAnimator: {fileID: 1502786296}
-    _countDrawCardsEnemy: 1
+    _countDrawCardsEnemy: 3
     _drawCardsDelayEnemy: 0.5
 --- !u!114 &200841578
 MonoBehaviour:
@@ -6002,6 +6001,7 @@ GameObject:
   - component: {fileID: 1272924794}
   - component: {fileID: 1272924796}
   - component: {fileID: 1272924795}
+  - component: {fileID: 1272924797}
   m_Layer: 0
   m_Name: _gameRoot
   m_TagString: Untagged
@@ -6048,6 +6048,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cardRoot: {fileID: 1272924795}
   _gameFieldRoot: {fileID: 1272924796}
+  _screenRoot: {fileID: 1272924797}
 --- !u!114 &1272924795
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6092,6 +6093,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fightPVE: {fileID: 200841577}
+--- !u!114 &1272924797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1272924791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f17f46bd52cf2468ab71241ca0d97d4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _allCanvasScalers:
+  - {fileID: 1799514449}
+  - {fileID: 2053596825}
+  - {fileID: 200841575}
+  _defaultReferenceResolution: {x: 1920, y: 1080}
 --- !u!114 &1284709492 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5764815386848260012, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
@@ -7386,7 +7404,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69da580313a27481e81dc36a81a9a693, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyDragAndDropAnimator: {fileID: 1502786295}
+  _enemyDragAndDropImitation: {fileID: 1502786295}
 --- !u!1001 &1520164573
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8110,7 +8128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a86d889d762e43889e85f38e880170f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _handSeatList: {fileID: 1620354842}
+  _handActions: {fileID: 1620354842}
   _canvasGroup: {fileID: 1620354841}
 --- !u!1 &1621334838
 GameObject:

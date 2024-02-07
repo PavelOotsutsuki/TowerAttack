@@ -87,7 +87,7 @@ namespace GameFields.Persons.Hands
                 return false;
             }
 
-            int randomIndex = Random.Range(0, _handSeats.Count - 1);
+            int randomIndex = Random.Range(0, _handSeats.Count);
 
             card = _handSeats[randomIndex].GetCard();
 

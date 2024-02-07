@@ -1,11 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
-using Cards;
-using GameFields.Persons.Hands;
 using UnityEngine;
-using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
-using Tools;
 
 namespace GameFields.Persons.PersonAnimators
 {
@@ -53,12 +48,12 @@ namespace GameFields.Persons.PersonAnimators
             {
                 float cardViewDelay = Random.Range(_cardViewDelayMin, _cardViewDelayMax);
 
-                _cardImitationActions.ViewCard(ViewType.SelectCard, _cardViewTime);
+                _cardImitationActions.ViewCard(_cardViewTime);
                 yield return new WaitForSeconds(_cardViewTime + cardViewDelay);
 
                 if (i != countRepeat)
                 {
-                    _cardImitationActions.ViewCard(ViewType.UnselectCard, _cardViewTime);
+                    _cardImitationActions.ViewCard(_cardViewTime);
                     yield return new WaitForSeconds(_cardViewTime);
                 }
             }
@@ -66,9 +61,8 @@ namespace GameFields.Persons.PersonAnimators
             _cardImitationActions.PlayOnPlace(_cardTranslateInDropPlaceTime);
             yield return new WaitForSeconds(_cardTranslateInDropPlaceTime);
 
-            if (_cardImitationActions.TryGetCard() == false)
+            if (_cardImitationActions.TryReturnToHand(_cardReturnInHandTime))
             {
-                _cardImitationActions.ReturnToHand(_cardReturnInHandTime);
                 yield return new WaitForSeconds(_cardReturnInHandTime);
             }
 

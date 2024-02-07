@@ -17,6 +17,7 @@ namespace Cards
         private CardMovement _cardMovement;
         private CardSideFlipper _cardSideFlipper;
         private CardCharacter _cardCharacter;
+        private ViewType _viewType;
 
         internal void Init(CardDescription cardDescription, BigCard bigCard, Transform dragContainer)
         {
@@ -33,6 +34,7 @@ namespace Cards
             _cardSideFlipper.SetBackSide();
 
             _cardAnimator = new CardAnimator(_rectTransform, _cardMovement, _cardSideFlipper);
+            _viewType = ViewType.Unselect;
         }
 
         public void BindSeat(Transform transform, bool isFrontSide, float duration = 0f)
@@ -102,9 +104,11 @@ namespace Cards
             _cardMovement.MoveReturnToHand(duration);
         }
 
-        public void ViewCard(ViewType viewType, float duration)
+        public void ViewCard(float duration)
         {
-            _cardMovement.ViewCardMovement(viewType, duration);
+            ChangeViewType();
+
+            _cardMovement.ViewCardMovement(_viewType, duration);
         }
 
         private void CreateCardCharacter()
@@ -121,6 +125,22 @@ namespace Cards
         private void Destroy()
         {
             gameObject.SetActive(false);
+        }
+
+        private void ChangeViewType()
+        {
+            switch (_viewType)
+            {
+                case ViewType.Select:
+                    _viewType = ViewType.Unselect;
+                    break;
+                case ViewType.Unselect:
+                    _viewType = ViewType.Select;
+                    break;
+                default:
+                    Debug.LogError("Unknown ViewType");
+                    break;
+            }
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

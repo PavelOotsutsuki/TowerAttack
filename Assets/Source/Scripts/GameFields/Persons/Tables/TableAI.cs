@@ -12,7 +12,7 @@ namespace GameFields.Persons.Tables
             Deactivate();
         }
 
-        public bool TryGetCard(Card card)
+        public bool TrySeatCard(Card card)
         {
             if (TryFindCardSeat(out TableSeat freeCardSeat))
             {

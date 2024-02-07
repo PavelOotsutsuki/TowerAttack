@@ -1,5 +1,4 @@
 using Cards;
-using UnityEngine;
 
 namespace GameFields.Persons
 {
@@ -21,14 +20,9 @@ namespace GameFields.Persons
             _activeCard = card;
         }
 
-        internal void Reset()
+        public void ViewCard(float duration)
         {
-            _activeCard = null;
-        }
-
-        public void ViewCard(ViewType viewType, float duration)
-        {
-            _activeCard.ViewCard(viewType, duration);
+            _activeCard.ViewCard(duration);
         }
 
         public void PlayOnPlace(float duration)
@@ -37,15 +31,17 @@ namespace GameFields.Persons
             _cardDragImitationListener.OnCardDrag(_activeCard);
         }
 
-        public bool TryGetCard()
+        public bool TryReturnToHand(float returnToHandDuration)
         {
-            return _cardDropPlaceImitation.TryGetCard(_activeCard);
-        }
+            if (_cardDropPlaceImitation.TrySeatCard(_activeCard) == false)
+            {
+                _cardDragImitationListener.OnCardDrop();
+                _activeCard.ReturnToHand(returnToHandDuration);
 
-        public void ReturnToHand(float returnToHandDuration)
-        {
-            _cardDragImitationListener.OnCardDrop();
-            _activeCard.ReturnToHand(returnToHandDuration);
+                return true;
+            }
+
+            return false;
         }
     }
 }

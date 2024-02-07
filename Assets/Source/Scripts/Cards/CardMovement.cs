@@ -1,5 +1,4 @@
 using UnityEngine;
-using DG.Tweening;
 using Tools;
 
 namespace Cards
@@ -25,15 +24,14 @@ namespace Cards
         public void ViewCardMovement(ViewType viewType, float duration)
         {
             Vector3 position = _cardTransform.localPosition;
-            float screenFactor = ScreenView.GetFactorY();
 
             switch (viewType)
             {
-                case ViewType.SelectCard:
-                    position.y += _cardTransform.rect.height / 2 * screenFactor;
+                case ViewType.Select:
+                    position.y += _cardTransform.rect.height / 2;
                     break;
-                case ViewType.UnselectCard:
-                    position.y -= _cardTransform.rect.height / 2 * screenFactor;
+                case ViewType.Unselect:
+                    position.y -= _cardTransform.rect.height / 2;
                     break;
                 default:
                     Debug.LogError("Unknown ViewType");

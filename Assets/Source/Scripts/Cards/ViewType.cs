@@ -2,7 +2,7 @@
 {
     public enum ViewType
     {
-        SelectCard,
-        UnselectCard
+        Select,
+        Unselect
     }
 }

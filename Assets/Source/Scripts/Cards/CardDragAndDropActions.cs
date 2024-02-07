@@ -46,7 +46,7 @@ namespace Cards
 
         internal bool TryDrop(ICardDropPlace cardDropPlace)
         {
-            if (cardDropPlace.TryGetCard(_card))
+            if (cardDropPlace.TrySeatCard(_card))
             {
                 return true;
             }

@@ -12,7 +12,7 @@ namespace GameFields.Persons.Towers
             Deactivate();
         }
 
-        public bool TryGetCard(Card card)
+        public bool TrySeatCard(Card card)
         {
             if (TowerSeat.TryGetCard(card))
             {
