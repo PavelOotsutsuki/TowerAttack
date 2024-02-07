@@ -3,6 +3,6 @@
     public enum ViewType
     {
         SelectCard,
-        UnSelectCard
+        UnselectCard
     }
 }

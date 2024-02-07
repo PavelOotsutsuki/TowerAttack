@@ -9,11 +9,11 @@ namespace GameFields.Persons
 
         private ICardDragImitationListener _cardDragImitationListener;
         private ICardDropPlaceImitation _cardDropPlaceImitation;
-        private float _returnToHandDuration;
 
-        public CardImitationActions(float returnToHandDuration)
+        public CardImitationActions(ICardDragImitationListener cardDragImitationListener, ICardDropPlaceImitation cardDropPlaceImitation)
         {
-            _returnToHandDuration = returnToHandDuration;
+            _cardDragImitationListener = cardDragImitationListener;
+            _cardDropPlaceImitation = cardDropPlaceImitation;
         }
 
         internal void SetCard(Card card)
@@ -26,14 +26,15 @@ namespace GameFields.Persons
             _activeCard = null;
         }
 
-        public void DragCard()
+        public void ViewCard(ViewType viewType, float duration)
         {
-            _cardDragImitationListener.OnCardDrag(_activeCard);
+            _activeCard.ViewCard(viewType, duration);
         }
 
-        public void DropCard()
+        public void PlayOnPlace(float duration)
         {
-            _cardDragImitationListener.OnCardDrop();
+            _activeCard.PlayOnPlace(_cardDropPlaceImitation.GetCentralСoordinates(), duration);
+            _cardDragImitationListener.OnCardDrag(_activeCard);
         }
 
         public bool TryGetCard()
@@ -41,9 +42,10 @@ namespace GameFields.Persons
             return _cardDropPlaceImitation.TryGetCard(_activeCard);
         }
 
-        public void ReturnToHand()
+        public void ReturnToHand(float returnToHandDuration)
         {
-            _activeCard.ReturnToHand(_returnToHandDuration);
+            _cardDragImitationListener.OnCardDrop();
+            _activeCard.ReturnToHand(returnToHandDuration);
         }
     }
 }

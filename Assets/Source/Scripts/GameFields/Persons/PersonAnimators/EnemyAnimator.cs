@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cards;
+using GameFields.Persons;
 using GameFields.Persons.PersonAnimators;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,14 +12,14 @@ namespace GameFields
     {
         [SerializeField] private EnemyDragAndDropImitation _enemyDragAndDropImitation;
 
-        public void Init(ICardDropPlaceImitation cardDropPlaceImitation, IEndTurnHandler endTurnHandler, ICardDragImitationListener cardDragImitationListener)
+        public void Init(IEndTurnHandler endTurnHandler, CardImitationActions cardImitationActions)
         {
-            _enemyDragAndDropImitation.Init(cardDropPlaceImitation, endTurnHandler, cardDragImitationListener);
+            _enemyDragAndDropImitation.Init(endTurnHandler, cardImitationActions);
         }
 
-        public void StartDragAndDropAnimation(Card card)
+        public void StartDragAndDropAnimation()
         {
-            _enemyDragAndDropImitation.StartDragAndDropAnimation(card);
+            _enemyDragAndDropImitation.StartDragAndDropAnimation();
         }
     }
 }

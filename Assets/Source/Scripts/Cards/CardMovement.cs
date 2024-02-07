@@ -26,7 +26,19 @@ namespace Cards
         {
             Vector3 position = _cardTransform.localPosition;
             float screenFactor = ScreenView.GetFactorY();
-            position.y += _cardTransform.rect.height / 2 * screenFactor;
+
+            switch (viewType)
+            {
+                case ViewType.SelectCard:
+                    position.y += _cardTransform.rect.height / 2 * screenFactor;
+                    break;
+                case ViewType.UnselectCard:
+                    position.y -= _cardTransform.rect.height / 2 * screenFactor;
+                    break;
+                default:
+                    Debug.LogError("Unknown ViewType");
+                    break;
+            }
 
             _movement.MoveLocalSmoothly(position, Vector3.zero, duration, _defaultScaleVector);
         }
@@ -34,6 +46,14 @@ namespace Cards
         public void BindSeatMovement(float duration)
         {
             _movement.MoveLocalSmoothly(Vector2.zero, Quaternion.identity.eulerAngles, duration, _defaultScaleVector);
+        }
+
+        public void MoveOnPlace(Vector3 position, float duration)
+        {
+            Vector3 rotation = _cardTransform.rotation.eulerAngles;
+            Vector3 downWay = position;
+
+            _movement.MoveLinear(downWay, rotation, duration);
         }
 
         //public void MoveLocalSmoothly(Vector2 positon, Vector3 rotation, float duration, Vector3 scaleVector)

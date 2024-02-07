@@ -5,7 +5,6 @@ using GameFields.Persons.Towers;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace GameFields.Persons
 {
@@ -18,7 +17,6 @@ namespace GameFields.Persons
         [SerializeField] private EnemyAnimator _enemyAnimator;
         [SerializeField] private int _countDrawCardsEnemy = 1;
         [SerializeField] private float _drawCardsDelayEnemy = 0.5f;
-        [SerializeField] private float _returnToHandDuration = 0.5f;
 
         private IEndTurnHandler _endTurnHandler;
         private CardImitationActions _cardImitationActions;
@@ -32,7 +30,8 @@ namespace GameFields.Persons
             _hand.Init();
             _table.Init(this);
             _tower.Init(this);
-            _enemyAnimator.Init(_table, _endTurnHandler, _hand);
+            _cardImitationActions = new CardImitationActions(_hand, _table);
+            _enemyAnimator.Init(_endTurnHandler, _cardImitationActions);
         }
 
         public float DrawCardsDelay { get; private set; }
@@ -42,7 +41,8 @@ namespace GameFields.Persons
         {
             if (_hand.TryGetCard(out Card card))
             {
-                _enemyAnimator.StartDragAndDropAnimation(card);
+                _cardImitationActions.SetCard(card);
+                _enemyAnimator.StartDragAndDropAnimation();
             }
             else
             {

@@ -92,6 +92,11 @@ namespace Cards
         //    _cardAnimator.PlayReturnInHandAnimation(duration);
         //}
 
+        public void PlayOnPlace(Vector3 center, float duration)
+        {
+            _cardMovement.MoveOnPlace(center, duration);
+        }
+
         public void ReturnToHand(float duration)
         {
             _cardMovement.MoveReturnToHand(duration);
