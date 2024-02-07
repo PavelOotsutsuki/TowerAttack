@@ -66,7 +66,7 @@ namespace Cards
             Destroy();
         }
 
-        public void PlayDrawnCardAnimation(float cardBackDuration, float cardBackRotation, float cardBackScaleFactor, float cardFrontDuration, float indent, float screenFactor)
+        public void Drawn(float cardBackDuration, float cardBackRotation, float cardBackScaleFactor, float cardFrontDuration, float indent, float screenFactor)
         {
             //Block();
             _cardAnimator.PlayDrawnCardAnimation(cardBackDuration, cardBackRotation, cardBackScaleFactor, cardFrontDuration, indent, screenFactor);
@@ -97,9 +97,9 @@ namespace Cards
             _cardMovement.MoveReturnToHand(duration);
         }
 
-        public void ViewCard(Vector3 position, float duration)
+        public void ViewCard(ViewType viewType, float duration)
         {
-            _cardMovement.ViewCardMovement(position, duration);
+            _cardMovement.ViewCardMovement(viewType, duration);
         }
 
         private void CreateCardCharacter()

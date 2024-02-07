@@ -8,7 +8,7 @@ using Cysharp.Threading.Tasks;
 
 namespace GameFields.Persons.PersonAnimators
 {
-    public class EnemyDragAndDropAnimator : MonoBehaviour
+    public class EnemyDragAndDropImitation : MonoBehaviour
     {
         private const int CountLogics = 1;
 

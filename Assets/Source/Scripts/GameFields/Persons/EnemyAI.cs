@@ -18,6 +18,7 @@ namespace GameFields.Persons
         [SerializeField] private EnemyAnimator _enemyAnimator;
         [SerializeField] private int _countDrawCardsEnemy = 1;
         [SerializeField] private float _drawCardsDelayEnemy = 0.5f;
+        [SerializeField] private float _returnToHandDuration = 0.5f;
 
         private IEndTurnHandler _endTurnHandler;
         private CardImitationActions _cardImitationActions;

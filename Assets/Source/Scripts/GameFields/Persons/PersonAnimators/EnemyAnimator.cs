@@ -9,16 +9,16 @@ namespace GameFields
 {
     public class EnemyAnimator : MonoBehaviour
     {
-        [SerializeField] private EnemyDragAndDropAnimator _enemyDragAndDropAnimator;
+        [SerializeField] private EnemyDragAndDropImitation _enemyDragAndDropImitation;
 
         public void Init(ICardDropPlaceImitation cardDropPlaceImitation, IEndTurnHandler endTurnHandler, ICardDragImitationListener cardDragImitationListener, CanvasScaler canvasScaler)
         {
-            _enemyDragAndDropAnimator.Init(cardDropPlaceImitation, endTurnHandler, cardDragImitationListener, canvasScaler);
+            _enemyDragAndDropImitation.Init(cardDropPlaceImitation, endTurnHandler, cardDragImitationListener, canvasScaler);
         }
 
         public void StartDragAndDropAnimation(Card card)
         {
-            _enemyDragAndDropAnimator.StartDragAndDropAnimation(card);
+            _enemyDragAndDropImitation.StartDragAndDropAnimation(card);
         }
     }
 }

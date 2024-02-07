@@ -1,4 +1,5 @@
 using Cards;
+using UnityEngine;
 
 namespace GameFields.Persons
 {
@@ -8,6 +9,12 @@ namespace GameFields.Persons
 
         private ICardDragImitationListener _cardDragImitationListener;
         private ICardDropPlaceImitation _cardDropPlaceImitation;
+        private float _returnToHandDuration;
+
+        public CardImitationActions(float returnToHandDuration)
+        {
+            _returnToHandDuration = returnToHandDuration;
+        }
 
         internal void SetCard(Card card)
         {
@@ -36,7 +43,7 @@ namespace GameFields.Persons
 
         public void ReturnToHand()
         {
-            _activeCard.ReturnToHand();
+            _activeCard.ReturnToHand(_returnToHandDuration);
         }
     }
 }
