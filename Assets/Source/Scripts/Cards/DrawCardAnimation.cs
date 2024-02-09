@@ -6,50 +6,25 @@ namespace Cards
 {
     internal class DrawCardAnimation
     {
-        private RectTransform _cardRectTransform;
         private CardMovement _cardMovement;
         private CardSideFlipper _sideFlipper;
 
-        public DrawCardAnimation(RectTransform cardRectTransform, CardMovement cardMovement, CardSideFlipper sideFlipper)
+        public DrawCardAnimation(CardMovement cardMovement, CardSideFlipper sideFlipper)
         {
-            _cardRectTransform = cardRectTransform;
             _sideFlipper = sideFlipper;
             _cardMovement = cardMovement;
         }
 
         public IEnumerator PlayDrawnCardAnimation(float cardBackDuration, float cardBackRotation, float cardBackScaleFactor, float cardFrontDuration, float indent)
         {
-            InvertCardBack(cardBackDuration, cardBackRotation, cardBackScaleFactor, indent);
+            _cardMovement.InvertCardBackOnDraw(cardBackDuration, cardBackRotation, cardBackScaleFactor, indent);
             yield return new WaitForSeconds(cardBackDuration);
 
             _sideFlipper.SetFrontSide();
             _sideFlipper.Block();
 
-            InvertCardFront(cardFrontDuration, cardBackScaleFactor, indent);
+            _cardMovement.InvertCardFrontOnDraw(cardFrontDuration, cardBackScaleFactor, indent);
             yield return new WaitForSeconds(cardFrontDuration);
         }
-
-        private void InvertCardBack(float cardBackDuration, float cardBackRotation, float cardBackScaleFactor, float indent)
-        {
-            Vector3 endRotationVector = new Vector3(cardBackRotation, 0f, 0f);
-            Vector3 scaleVector = _cardRectTransform.localScale * cardBackScaleFactor;
-
-            Vector3 downWay = _cardRectTransform.position;
-            downWay.y -= (downWay.y - indent - _cardRectTransform.rect.height) / 2;
-
-            _cardMovement.MoveLinear(downWay, endRotationVector, cardBackDuration, scaleVector);
-        }
-
-        private void InvertCardFront(float duration, float scaleFactor, float indent)
-        {
-            Vector3 endRotationVector = new Vector3(0f, 0f, 0f);
-            Vector3 downWay = _cardRectTransform.position;
-            float screenfactor = ScreenView.GetFactorY();
-
-            downWay.y = (_cardRectTransform.rect.height / 2f * scaleFactor + indent) * screenfactor; 
-
-            _cardMovement.MoveSmoothly(downWay, endRotationVector, duration, _cardRectTransform.localScale);
-        }
-
     }
 }

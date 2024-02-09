@@ -1,5 +1,6 @@
 using UnityEngine;
 using Tools;
+using System;
 
 namespace Cards
 {
@@ -14,6 +15,28 @@ namespace Cards
             _defaultScaleVector = defaultScaleVector;
             _cardTransform = transform;
             _movement = new Movement(_cardTransform);
+        }
+
+        public void InvertCardFrontOnDiscard(Vector3 rotation, float duration)
+        {
+            Vector3 scaleVector = _defaultScaleVector;
+            Vector3 position = _cardTransform.position;
+
+            _movement.MoveLinear(position, rotation, duration, scaleVector);
+        }
+
+        public void InvertCardBackOnDiscard(float duration)
+        {
+            Vector3 endRotationVector = Vector3.zero;
+            Vector3 position = _cardTransform.position;
+
+            _movement.MoveSmoothly(position, endRotationVector, duration, _cardTransform.localScale);
+        }
+
+        public void IncreaseCard(Vector3 startPosition, Vector3 startRotation, Vector3 startScaleVector, float cardIncreaseDuration)
+        {
+            _movement.MoveInstantly(startPosition, startRotation, startScaleVector);
+            _movement.MoveLocalSmoothly(_cardTransform.position, _cardTransform.rotation.eulerAngles, cardIncreaseDuration, _defaultScaleVector);
         }
 
         public void MoveReturnToHand(float duration)
@@ -54,29 +77,26 @@ namespace Cards
             _movement.MoveLinear(downWay, rotation, duration);
         }
 
-        //public void MoveLocalSmoothly(Vector2 positon, Vector3 rotation, float duration, Vector3 scaleVector)
-        //{
-        //    _movement.MoveLocalSmoothly(positon, rotation, duration, scaleVector);
-        //}
-
-        //public void MoveLocalSmoothly(Vector2 positon, Vector3 rotation, float duration)
-        //{
-        //    _movement.MoveLocalSmoothly(positon, rotation, duration);
-        //}
-
-        public void MoveSmoothly(Vector2 positon, Vector3 rotation, float duration, Vector3 scaleVector)
+        public void InvertCardBackOnDraw(float cardBackDuration, float cardBackRotation, float cardBackScaleFactor, float indent)
         {
-            _movement.MoveSmoothly(positon, rotation, duration, scaleVector);
+            Vector3 endRotationVector = new Vector3(cardBackRotation, 0f, 0f);
+            Vector3 scaleVector = _cardTransform.localScale * cardBackScaleFactor;
+
+            Vector3 downWay = _cardTransform.position;
+            downWay.y -= (downWay.y - indent - _cardTransform.rect.height) / 2;
+
+            _movement.MoveLinear(downWay, endRotationVector, cardBackDuration, scaleVector);
         }
 
-        public void MoveLinear(Vector3 downWay, Vector3 maxRotationVector, float duration, Vector3 scaleVector)
+        public void InvertCardFrontOnDraw(float duration, float scaleFactor, float indent)
         {
-            _movement.MoveLinear(downWay, maxRotationVector, duration, scaleVector);
-        }
+            Vector3 endRotationVector = new Vector3(0f, 0f, 0f);
+            Vector3 downWay = _cardTransform.position;
+            float screenfactor = ScreenView.GetFactorY();
 
-        //public void MoveLinear(Vector3 downWay, Vector3 maxRotationVector, float duration)
-        //{
-        //    _movement.MoveLinear(downWay, maxRotationVector, duration);
-        //}
+            downWay.y = (_cardTransform.rect.height / 2f * scaleFactor + indent) * screenfactor;
+
+            _movement.MoveSmoothly(downWay, endRotationVector, duration, _cardTransform.localScale);
+        }
     }
 }

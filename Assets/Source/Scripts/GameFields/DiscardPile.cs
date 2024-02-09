@@ -23,7 +23,7 @@ namespace GameFields.DiscardPiles
             _maxCoordinateY = _rectTransform.rect.height;
         }
 
-        private Vector3 FindCardPosition()
+        public Vector3 FindCardPosition()
         {
             float xCoordinate = Random.Range(MinCoordinateX, _maxCoordinateX);
             float yCoordinate = Random.Range(MinCoordinateY, _maxCoordinateY);
@@ -31,7 +31,7 @@ namespace GameFields.DiscardPiles
             return new Vector3(xCoordinate, yCoordinate, 0f);
         }
 
-        private Vector3 FindCardRotation()
+        public Vector3 FindCardRotation()
         {
             float zRotation = Random.Range(CenterRotation - _cardRotationOffset, CenterRotation + _cardRotationOffset);
 

@@ -114,7 +114,12 @@ namespace Cards
         private void CreateCardCharacter()
         {
             _cardCharacter = Instantiate(_cardSO.CardCharacter);
-            _cardCharacter.Init(_cardSO.AwakeSound, Activate);
+            _cardCharacter.Init(_cardSO.AwakeSound, DiscardCard);
+        }
+
+        private void DiscardCard(Vector3 finishPosition, Vector3 finishRotation, Vector3 startPosition)
+        {
+
         }
 
         private void Activate()

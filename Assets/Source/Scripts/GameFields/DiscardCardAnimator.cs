@@ -18,16 +18,20 @@ namespace GameFields
 
         public void DiscardCards(List<CardCharacter> discardCards)
         {
+            Vector3 position;
+            Vector3 rotation;
+
             foreach (CardCharacter cardCharacter in discardCards)
             {
-                cardCharacter.DiscardCard();
-                //StartDiscardAnimation(card);
+                position = _discardPile.FindCardPosition();
+                rotation = _discardPile.FindCardRotation();
+                cardCharacter.DiscardCard(position, rotation);
             }
         }
 
-        private void StartDiscardAnimation(Card card)
-        {
+        //private IEnumerator StartDiscardAnimation(Card card)
+        //{
 
-        }
+        //}
     }
 }

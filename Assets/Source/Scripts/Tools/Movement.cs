@@ -5,11 +5,11 @@ namespace Tools
 {
     public class Movement
     {
-        private Transform _transfrom;
+        private Transform _transform;
 
         public Movement(Transform transform)
         {
-            _transfrom = transform;
+            _transform = transform;
         }
 
         //public void TranslateLocalInstantly(Vector2 positon, Vector3 rotation)
@@ -17,38 +17,44 @@ namespace Tools
         //    _transfrom.Translate(positon);
         //    _transfrom.Rotate(rotation);
         //}
+        public void MoveInstantly(Vector2 positon, Vector3 rotation, Vector3 scaleVector)
+        {
+            _transform.position = positon;
+            _transform.rotation = Quaternion.Euler(rotation);
+            _transform.localScale = scaleVector;
+        }
 
         public void MoveLocalSmoothly(Vector2 positon, Vector3 rotation, float duration, Vector3 scaleVector)
         {
-            _transfrom.DOLocalMove(positon, duration);
-            _transfrom.DOLocalRotate(rotation, duration);
-            _transfrom.DOScale(scaleVector, duration);
+            _transform.DOLocalMove(positon, duration);
+            _transform.DOLocalRotate(rotation, duration);
+            _transform.DOScale(scaleVector, duration);
         }
 
         public void MoveLocalSmoothly(Vector2 positon, Vector3 rotation, float duration)
         {
-            _transfrom.DOLocalMove(positon, duration);
-            _transfrom.DOLocalRotate(rotation, duration);
+            _transform.DOLocalMove(positon, duration);
+            _transform.DOLocalRotate(rotation, duration);
         }
 
         public void MoveSmoothly(Vector2 positon, Vector3 rotation, float duration, Vector3 scaleVector)
         {
-            _transfrom.DOMove(positon, duration);
-            _transfrom.DORotate(rotation, duration);
-            _transfrom.DOScale(scaleVector, duration);
+            _transform.DOMove(positon, duration);
+            _transform.DORotate(rotation, duration);
+            _transform.DOScale(scaleVector, duration);
         }
 
         public void MoveLinear(Vector3 downWay, Vector3 maxRotationVector, float duration, Vector3 scaleVector)
         {
-            _transfrom.DOMove(downWay, duration).SetEase(Ease.Linear);
-            _transfrom.DORotate(maxRotationVector, duration).SetEase(Ease.Linear);
-            _transfrom.DOScale(scaleVector, duration).SetEase(Ease.Linear);
+            _transform.DOMove(downWay, duration).SetEase(Ease.Linear);
+            _transform.DORotate(maxRotationVector, duration).SetEase(Ease.Linear);
+            _transform.DOScale(scaleVector, duration).SetEase(Ease.Linear);
         }
 
         public void MoveLinear(Vector3 downWay, Vector3 maxRotationVector, float duration)
         {
-            _transfrom.DOMove(downWay, duration).SetEase(Ease.Linear);
-            _transfrom.DORotate(maxRotationVector, duration).SetEase(Ease.Linear);
+            _transform.DOMove(downWay, duration).SetEase(Ease.Linear);
+            _transform.DORotate(maxRotationVector, duration).SetEase(Ease.Linear);
         }
     }
 }
