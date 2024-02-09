@@ -26,7 +26,9 @@ namespace Cards
 
         public Card DiscardCard()
         {
-            Vector3 startPosition = Vector3.zero;
+            //Vector3 startPosition = Vector3.zero;
+            Vector3 startPosition = new Vector2(_rectTransform.position.x - 960f, _rectTransform.position.y - 540f);
+            Debug.Log("World position: " + startPosition);
 
             _me.DiscardCard(startPosition);
             gameObject.SetActive(false);
