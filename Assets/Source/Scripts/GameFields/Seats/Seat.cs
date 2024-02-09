@@ -4,7 +4,7 @@ using Tools;
 
 namespace GameFields.Seats
 {
-    public abstract class Seat : MonoBehaviour
+    public class Seat : MonoBehaviour
     {
         [SerializeField] private Transform _transform;
 

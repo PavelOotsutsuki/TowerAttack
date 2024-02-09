@@ -62,7 +62,7 @@ namespace GameFields
 
         private void DiscardCards()
         {
-            _discardCardAnimator.DiscardCards(_activePerson.GetDiscardCards());
+            _discardCardAnimator.DiscardCards(_activePerson.GetDiscardCards()).ToUniTask();
         }
 
         private void CheckEndFight()

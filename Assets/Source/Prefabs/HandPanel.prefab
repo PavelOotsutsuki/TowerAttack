@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 578567091502269608}
   - component: {fileID: 35988541827660383}
   - component: {fileID: 7563285690380695025}
-  - component: {fileID: 1384258668175446551}
+  - component: {fileID: 1993486227659136881}
   - component: {fileID: 3330152501390823795}
   m_Layer: 0
   m_Name: HandPanel
@@ -90,7 +90,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1384258668175446551
+--- !u!114 &1993486227659136881
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -99,12 +99,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 7433901876954992459}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50868694d3a704e2482ed342e179db3f, type: 3}
+  m_Script: {fileID: 11500000, guid: 49490f695e8374e31bc8f56d338682e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _container: {fileID: 7724948398136886009}
   _countObjects: 100
-  _template: {fileID: 3369557581075150207, guid: 8208b4381673849c1a76ded5f6fdb2da, type: 3}
+  _template: {fileID: 3897465270784551387, guid: 8208b4381673849c1a76ded5f6fdb2da, type: 3}
 --- !u!114 &3330152501390823795
 MonoBehaviour:
   m_ObjectHideFlags: 0

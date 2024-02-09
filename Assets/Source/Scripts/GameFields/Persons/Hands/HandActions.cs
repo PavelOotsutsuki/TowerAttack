@@ -16,11 +16,11 @@ namespace GameFields.Persons.Hands
         [SerializeField] private float _startPositionY = 90f;
         [SerializeField] private float _startCardTranslateSpeed = 0.5f;
         [SerializeField] private RectTransform _rectTransform;
-        [SerializeField] private SeatPool<HandSeat> _handSeatPool;
+        [SerializeField] private SeatPool _handSeatPool;
         [SerializeField] private bool _isFrontCardSide;
 
-        private List<HandSeat> _handSeats;
-        private HandSeat _dragCardHandSeat;
+        private List<Seat> _handSeats;
+        private Seat _dragCardHandSeat;
         private int _handSeatIndex;
 
         private float _sortDirection;
@@ -29,7 +29,7 @@ namespace GameFields.Persons.Hands
         {
             _sortDirection = sortDirection;
 
-            _handSeats = new List<HandSeat>();
+            _handSeats = new List<Seat>();
             _handSeatIndex = -1;
 
             _handSeatPool.Init();
@@ -42,7 +42,7 @@ namespace GameFields.Persons.Hands
 
         public void DragCard(Card card)
         {
-            if (TryFindHandSeat(out HandSeat handSeat, card))
+            if (TryFindHandSeat(out Seat handSeat, card))
             {
                 _dragCardHandSeat = handSeat;
 
@@ -62,7 +62,7 @@ namespace GameFields.Persons.Hands
 
         public void AddCard(Card card)
         {
-            if (_handSeatPool.TryGetHandSeat(out HandSeat handSeat))
+            if (_handSeatPool.TryGetHandSeat(out Seat handSeat))
             {
                 _handSeats.Add(handSeat);
                 handSeat.SetCard(card, _isFrontCardSide, _startCardTranslateSpeed);
@@ -134,9 +134,9 @@ namespace GameFields.Persons.Hands
             }
         }
 
-        private bool TryFindHandSeat(out HandSeat findedHandSeat, Card card)
+        private bool TryFindHandSeat(out Seat findedHandSeat, Card card)
         {
-            foreach (HandSeat handSeat in _handSeats)
+            foreach (Seat handSeat in _handSeats)
             {
                 if (handSeat.IsCardEqual(card))
                 {

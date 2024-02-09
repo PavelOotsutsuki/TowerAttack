@@ -10,33 +10,36 @@ namespace GameFields.DiscardPiles
 {
     public class DiscardPile : MonoBehaviour
     {
-        private const float MinCoordinateX = 0f;
-        private const float MinCoordinateY = 0f;
-        private const float CenterRotation = 90f;
+        private const float CenterRotation = 0f;
 
         [SerializeField] private RectTransform _rectTransform;
-        [SerializeField] private SeatPool<DiscardPileSeat> _discardPileSeatPool;
+        [SerializeField] private SeatPool _discardPileSeatPool;
         [SerializeField] private bool _isFrontCardSide;
-        [SerializeField] private float _cardRotationOffset = 45f;
+        [SerializeField] private float _cardRotationOffset = 20f;
         [SerializeField] private float _startCardTranslateSpeed = 0.5f;
 
         private float _maxCoordinateX;
         private float _maxCoordinateY;
-        private List<DiscardPileSeat> _seats;
+        private float _minCoordinateX;
+        private float _minCoordinateY;
+        private List<Seat> _seats;
 
         public void Init()
         {
-            _maxCoordinateX = _rectTransform.rect.width;
-            _maxCoordinateY = _rectTransform.rect.height;
-            _seats = new List<DiscardPileSeat>();
+            _maxCoordinateX = _rectTransform.rect.width / 2f;
+            _maxCoordinateY = _rectTransform.rect.height / 2f;
+            _minCoordinateX = _maxCoordinateX * -1;
+            _minCoordinateY = _maxCoordinateY * -1;
+            _seats = new List<Seat>();
             _discardPileSeatPool.Init();
         }
 
         public void AddCard(Card card)
         {
-            if (_discardPileSeatPool.TryGetHandSeat(out DiscardPileSeat discardPileSeat))
+            if (_discardPileSeatPool.TryGetHandSeat(out Seat discardPileSeat))
             {
                 _seats.Add(discardPileSeat);
+                discardPileSeat.SetLocalPositionValues(FindCardSeatPosition(), FindCardSeatRotation(), 0f);
                 discardPileSeat.SetCard(card, _isFrontCardSide, _startCardTranslateSpeed);
             }
         }
@@ -51,8 +54,8 @@ namespace GameFields.DiscardPiles
 
         private Vector3 FindCardSeatPosition()
         {
-            float xCoordinate = Random.Range(MinCoordinateX, _maxCoordinateX);
-            float yCoordinate = Random.Range(MinCoordinateY, _maxCoordinateY);
+            float xCoordinate = Random.Range(_minCoordinateX, _maxCoordinateX);
+            float yCoordinate = Random.Range(_minCoordinateY, _maxCoordinateY);
 
             return new Vector3(xCoordinate, yCoordinate, 0f);
         }
@@ -68,7 +71,7 @@ namespace GameFields.DiscardPiles
         private void DefineAllComponents()
         {
             DefineRectTransform();
-            DefineDiscardPileSeatPool();
+            DefineSeatPool();
         }
 
         [ContextMenu(nameof(DefineRectTransform))]
@@ -77,8 +80,8 @@ namespace GameFields.DiscardPiles
             AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
         }
 
-        [ContextMenu(nameof(DefineDiscardPileSeatPool))]
-        private void DefineDiscardPileSeatPool()
+        [ContextMenu(nameof(DefineSeatPool))]
+        private void DefineSeatPool()
         {
             AutomaticFillComponents.DefineComponent(this, ref _discardPileSeatPool, ComponentLocationTypes.InThis);
         }

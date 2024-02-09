@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Towers
 {
-    public class TowerPlayer : Tower, ICardDropPlace
+    internal class TowerPlayer : Tower, ICardDropPlace
     {
         public override void Init(IPlayCardManager playCardManager)
         {

@@ -24,12 +24,14 @@ namespace Cards
             _audioSource.Play();
         }
 
-        public void DiscardCard()
+        public Card DiscardCard()
         {
-            Vector3 startPosition = _rectTransform.position;
+            Vector3 startPosition = Vector3.zero;
 
             _me.DiscardCard(startPosition);
             gameObject.SetActive(false);
+
+            return _me;
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

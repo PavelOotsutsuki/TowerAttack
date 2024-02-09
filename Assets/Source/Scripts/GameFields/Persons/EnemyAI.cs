@@ -1,5 +1,6 @@
 using Cards;
 using GameFields.Persons.Hands;
+using GameFields.Persons.PersonAnimators;
 using GameFields.Persons.Tables;
 using GameFields.Persons.Towers;
 using System;

@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace GameFields.Seats
 {
-    public class SeatPool<T> : MonoBehaviour where T: Seat
+    public class SeatPool: MonoBehaviour
     {
         [SerializeField] private Transform _container;
         [SerializeField] private int _countObjects;
-        [SerializeField] private T _template;
+        [SerializeField] private Seat _template;
 
-        private Queue<T> _remainingPool = new Queue<T>();
-        private List<T> _usedPool = new List<T>();
+        private Queue<Seat> _remainingPool = new Queue<Seat>();
+        private List<Seat> _usedPool = new List<Seat>();
 
         public void Init()
         {
@@ -20,7 +20,7 @@ namespace GameFields.Seats
             }
         }
 
-        public bool TryGetHandSeat(out T result)
+        public bool TryGetHandSeat(out Seat result)
         {
             if (_remainingPool.Count <= 0)
             {
@@ -34,7 +34,7 @@ namespace GameFields.Seats
             return true;
         }
 
-        public void ReturnInPool(T handSeat)
+        public void ReturnInPool(Seat handSeat)
         {
             if (_usedPool.Contains(handSeat))
             {
@@ -50,7 +50,7 @@ namespace GameFields.Seats
 
         public void ResetPool()
         {
-            foreach (T handSeat in _usedPool)
+            foreach (Seat handSeat in _usedPool)
             {
                 _remainingPool.Enqueue(handSeat);
                 handSeat.gameObject.SetActive(false);
@@ -61,7 +61,7 @@ namespace GameFields.Seats
 
         private void CreateObject()
         {
-            T spawned = Instantiate(_template, _container);
+            Seat spawned = Instantiate(_template, _container);
             spawned.Init();
             spawned.gameObject.SetActive(false);
 

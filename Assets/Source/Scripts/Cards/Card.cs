@@ -1,5 +1,6 @@
 using UnityEngine;
 using Tools;
+using System;
 
 namespace Cards
 {
@@ -113,6 +114,7 @@ namespace Cards
 
         public void DiscardCard(Vector3 startPosition)
         {
+            Activate();
             _cardAnimator.PlayDiscardCardAnimation(startPosition);
         }
 

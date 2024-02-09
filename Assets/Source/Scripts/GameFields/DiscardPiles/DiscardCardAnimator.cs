@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Cards;
 using UnityEngine;
@@ -13,16 +14,16 @@ namespace GameFields.DiscardPiles
             _discardPile = discardPile;
         }
 
-        public void DiscardCards(List<CardCharacter> discardCards)
+        public IEnumerator DiscardCards(List<CardCharacter> discardCards)
         {
-            Vector3 position;
-            Vector3 rotation;
-
             foreach (CardCharacter cardCharacter in discardCards)
             {
-                position = _discardPile.FindCardPosition();
-                rotation = _discardPile.FindCardRotation();
-                cardCharacter.DiscardCard(position, rotation);
+                float fullDelay = 0f + 0f + 0f +2.5f;
+                Card card = cardCharacter.DiscardCard();
+
+                yield return new WaitForSeconds(fullDelay);
+
+                _discardPile.AddCard(card);
             }
         }
 
