@@ -1,16 +1,16 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace GameFields.Persons.Hands
+namespace GameFields.Seats
 {
-    public class HandSeatPool : MonoBehaviour
+    public class SeatPool<T> : MonoBehaviour where T: Seat
     {
         [SerializeField] private Transform _container;
         [SerializeField] private int _countObjects;
-        [SerializeField] private HandSeat _template;
+        [SerializeField] private T _template;
 
-        private Queue<HandSeat> _remainingPool = new Queue<HandSeat>();
-        private List<HandSeat> _usedPool = new List<HandSeat>();
+        private Queue<T> _remainingPool = new Queue<T>();
+        private List<T> _usedPool = new List<T>();
 
         public void Init()
         {
@@ -20,7 +20,7 @@ namespace GameFields.Persons.Hands
             }
         }
 
-        public bool TryGetHandSeat(out HandSeat result)
+        public bool TryGetHandSeat(out T result)
         {
             if (_remainingPool.Count <= 0)
             {
@@ -34,7 +34,7 @@ namespace GameFields.Persons.Hands
             return true;
         }
 
-        public void ReturnInPool(HandSeat handSeat)
+        public void ReturnInPool(T handSeat)
         {
             if (_usedPool.Contains(handSeat))
             {
@@ -50,7 +50,7 @@ namespace GameFields.Persons.Hands
 
         public void ResetPool()
         {
-            foreach (HandSeat handSeat in _usedPool)
+            foreach (T handSeat in _usedPool)
             {
                 _remainingPool.Enqueue(handSeat);
                 handSeat.gameObject.SetActive(false);
@@ -61,7 +61,7 @@ namespace GameFields.Persons.Hands
 
         private void CreateObject()
         {
-            HandSeat spawned = Instantiate(_template, _container);
+            T spawned = Instantiate(_template, _container);
             spawned.Init();
             spawned.gameObject.SetActive(false);
 

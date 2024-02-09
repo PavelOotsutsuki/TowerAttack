@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Cards;
+using GameFields.Seats;
 using Tools;
 using UnityEngine;
 
@@ -15,7 +16,7 @@ namespace GameFields.Persons.Hands
         [SerializeField] private float _startPositionY = 90f;
         [SerializeField] private float _startCardTranslateSpeed = 0.5f;
         [SerializeField] private RectTransform _rectTransform;
-        [SerializeField] private HandSeatPool _handSeatPool;
+        [SerializeField] private SeatPool<HandSeat> _handSeatPool;
         [SerializeField] private bool _isFrontCardSide;
 
         private List<HandSeat> _handSeats;

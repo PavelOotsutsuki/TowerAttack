@@ -1,11 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using Cards;
-using GameFields.DiscardPiles;
-using GameFields.Persons.Tables;
 using UnityEngine;
 
-namespace GameFields
+namespace GameFields.DiscardPiles
 {
     public class DiscardCardAnimator: MonoBehaviour
     {

@@ -1,9 +1,7 @@
-using GameFields.Persons;
-using GameFields.Persons.PersonAnimators;
 using Tools;
 using UnityEngine;
 
-namespace GameFields
+namespace GameFields.Persons.PersonAnimators
 {
     public class EnemyAnimator : MonoBehaviour
     {

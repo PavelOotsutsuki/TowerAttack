@@ -9,12 +9,12 @@ namespace Cards
         [SerializeField] private AudioSource _audioSource;
         [SerializeField] private RectTransform _rectTransform;
 
-        private Action<Vector3, Vector3, Vector3> _discardCallback;
+        private Card _me;
 
-        public void Init(AudioClip awakeSound, Action<Vector3, Vector3, Vector3> cardActive)
+        public void Init(AudioClip awakeSound, Card card)
         {
             _audioSource.clip = awakeSound;
-            _discardCallback = cardActive;
+            _me = card;
             gameObject.SetActive(false);
         }
 
@@ -24,11 +24,11 @@ namespace Cards
             _audioSource.Play();
         }
 
-        public void DiscardCard(Vector3 positionDiscard, Vector3 rotationDiscard)
+        public void DiscardCard()
         {
             Vector3 startPosition = _rectTransform.position;
 
-            _discardCallback.Invoke(positionDiscard, rotationDiscard, startPosition);
+            _me.DiscardCard(startPosition);
             gameObject.SetActive(false);
         }
 

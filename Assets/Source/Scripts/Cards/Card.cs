@@ -111,15 +111,15 @@ namespace Cards
             _cardMovement.ViewCardMovement(_viewType, duration);
         }
 
+        public void DiscardCard(Vector3 startPosition)
+        {
+            _cardAnimator.PlayDiscardCardAnimation(startPosition);
+        }
+
         private void CreateCardCharacter()
         {
             _cardCharacter = Instantiate(_cardSO.CardCharacter);
-            _cardCharacter.Init(_cardSO.AwakeSound, DiscardCard);
-        }
-
-        private void DiscardCard(Vector3 finishPosition, Vector3 finishRotation, Vector3 startPosition)
-        {
-
+            _cardCharacter.Init(_cardSO.AwakeSound, this);
         }
 
         private void Activate()
