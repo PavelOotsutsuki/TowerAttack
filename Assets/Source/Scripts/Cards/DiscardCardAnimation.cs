@@ -29,6 +29,7 @@ namespace Cards
             float invertCardBackDuration = 0.5f;
             float delayAfterInvert = 0.5f;
 
+            _cardSideFlipper.SetFrontSide();
             _cardSideFlipper.Block();
 
             _cardMovement.IncreaseCard(startPosition, startRotation, startScaleVector, cardIncreaseDuration);

@@ -10,7 +10,7 @@ namespace GameFields.DiscardPiles
 {
     public class DiscardPile : MonoBehaviour
     {
-        private const float CenterRotation = 0f;
+        private const float CenterRotation = 90f;
 
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private SeatPool _discardPileSeatPool;
@@ -39,7 +39,7 @@ namespace GameFields.DiscardPiles
             if (_discardPileSeatPool.TryGetHandSeat(out Seat discardPileSeat))
             {
                 _seats.Add(discardPileSeat);
-                discardPileSeat.SetLocalPositionValues(FindCardSeatPosition(), FindCardSeatRotation(), 0f);
+                discardPileSeat.SetLocalPositionValues(FindCardSeatPosition(), FindCardSeatRotation());
                 discardPileSeat.SetCard(card, _isFrontCardSide, _startCardTranslateSpeed);
             }
         }

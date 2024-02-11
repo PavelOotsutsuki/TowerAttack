@@ -36,7 +36,7 @@ namespace Cards
         public void IncreaseCard(Vector3 startPosition, Vector3 startRotation, Vector3 startScaleVector, float cardIncreaseDuration)
         {
             _movement.MoveInstantly(startPosition, startRotation, startScaleVector);
-            _movement.MoveLocalSmoothly(_cardTransform.position, _cardTransform.rotation.eulerAngles, cardIncreaseDuration, _defaultScaleVector);
+            _movement.MoveSmoothly(_cardTransform.position, _cardTransform.rotation.eulerAngles, cardIncreaseDuration, _defaultScaleVector);
         }
 
         public void MoveReturnToHand(float duration)

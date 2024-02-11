@@ -11912,7 +11912,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5666874303116025444, guid: 153252a73c8744978a5b02cb032bcfa1, type: 3}
       propertyPath: _cardRotationOffset
-      value: 0
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 5666874303116025444, guid: 153252a73c8744978a5b02cb032bcfa1, type: 3}
       propertyPath: _startCardTranslateSpeed

@@ -42,9 +42,16 @@ namespace GameFields.Seats
             gameObject.SetActive(false);
         }
 
-        public void SetLocalPositionValues(Vector3 position, Vector3 rotation, float duration)
+        public void SetLocalPositionValues(Vector3 position, Vector3 rotation, float duration = 0f)
         {
-            _handSeatMovement.MoveLocalSmoothly(position, rotation, duration);
+            if (duration <= 0f)
+            {
+                _handSeatMovement.MoveLocalInstantly(position, rotation);
+            }
+            else
+            {
+                _handSeatMovement.MoveLocalSmoothly(position, rotation, duration);
+            }
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

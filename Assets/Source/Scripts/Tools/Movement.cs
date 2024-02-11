@@ -17,6 +17,12 @@ namespace Tools
         //    _transfrom.Translate(positon);
         //    _transfrom.Rotate(rotation);
         //}
+        public void MoveLocalInstantly(Vector2 position, Vector3 rotation)
+        {
+            _transform.localPosition = position;
+            _transform.localRotation = Quaternion.Euler(rotation);
+        }
+
         public void MoveInstantly(Vector2 position, Vector3 rotation, Vector3 scaleVector)
         {
             //_transform.position = position;

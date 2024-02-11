@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cards;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 namespace GameFields.DiscardPiles
 {
@@ -20,19 +21,20 @@ namespace GameFields.DiscardPiles
         {
             foreach (CardCharacter cardCharacter in discardCards)
             {
-                float fullDelay = 0f + 0f + 0f +2.5f;
-                Card card = cardCharacter.DiscardCard();
-                card.transform.SetParent(_container);
-
-                yield return new WaitForSeconds(fullDelay);
-
-                _discardPile.AddCard(card);
+                StartDiscardAnimation(cardCharacter).ToUniTask();
+                yield return new WaitForSeconds(0.5f);
             }
         }
 
-        //private IEnumerator StartDiscardAnimation(Card card)
-        //{
+        private IEnumerator StartDiscardAnimation(CardCharacter cardCharacter)
+        {
+            float fullDelay = 0f + 0f + 0f + 2.5f;
+            Card card = cardCharacter.DiscardCard();
+            card.transform.SetParent(_container);
 
-        //}
+            yield return new WaitForSeconds(fullDelay);
+
+            _discardPile.AddCard(card);
+        }
     }
 }

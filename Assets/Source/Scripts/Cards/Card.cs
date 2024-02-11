@@ -1,6 +1,5 @@
 using UnityEngine;
 using Tools;
-using System;
 
 namespace Cards
 {
