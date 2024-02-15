@@ -11,7 +11,7 @@ using GameFields.FirstTurns;
 
 namespace GameFields
 {
-    internal class Fight : IEndTurnHandler
+    internal class Fight : IEndTurnHandler, IStartFightListener
     {
         private readonly int _maxTurns = 100;
 
@@ -38,9 +38,7 @@ namespace GameFields
             _fightAnimator = fightAnimator;
             _firstTurn = firstTurn;
 
-            SetPlayerTurn();
-
-            _firstTurn.Activate();
+            StartFirstTurn().ToUniTask();
         }
 
         //public void Init(Player player, EnemyAI enemy, Deck deck, DiscardPile discardPile, EndTurnButton endTurnButton, FightAnimator fightAnimator)
@@ -65,6 +63,27 @@ namespace GameFields
             CheckEndFight();
             SwitchPerson();
             StartTurn();
+        }
+
+        public void StartFight()
+        {
+            _firstTurn.Deactivate().ToUniTask();
+
+            SetPlayerTurn();
+        }
+
+        private IEnumerator StartFirstTurn()
+        {
+            yield return _firstTurn.Activate();
+
+            for (int i = 0; i < 3; i++)
+            {
+                if (_deck.TryTakeCard(out Card drawnCard))
+                {
+                    _player.DrawCard(drawnCard);
+                    yield return new WaitForSeconds(_player.DrawCardsDelay);
+                }
+            }
         }
 
         private void DiscardCards()

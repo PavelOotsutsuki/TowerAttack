@@ -13,7 +13,7 @@ namespace GameFields
         private const float EndAlpha = 0f;
 
         [SerializeField] private TMP_Text _label;
-        [SerializeField] private float _startFontSize = 36f;
+        [SerializeField] private float _startFontSize = 0f;
         [SerializeField] private float _middleFontSize = 120f;
         [SerializeField] private float _endFontSize = 150f;
         [SerializeField] private float _middleDuration = 1f;
@@ -32,6 +32,8 @@ namespace GameFields
 
             yield return MiddleAnimation();
             yield return EndAnimation();
+
+            gameObject.SetActive(false);
         }
 
         private IEnumerator MiddleAnimation()

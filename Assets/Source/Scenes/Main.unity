@@ -5930,7 +5930,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _label: {fileID: 1226376329}
-  _startFontSize: 36
+  _startFontSize: 0
   _middleFontSize: 120
   _endFontSize: 150
   _middleDuration: 1

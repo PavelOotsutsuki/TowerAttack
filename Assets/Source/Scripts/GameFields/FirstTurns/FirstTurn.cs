@@ -20,10 +20,19 @@ namespace GameFields.FirstTurns
             _firstTurnLabel.Init();
         }
 
-        public void Activate()
+        public IEnumerator Activate()
         {
-            _firstTurnPanel.Activate().ToUniTask();
+            gameObject.SetActive(true);
+
+            yield return _firstTurnPanel.Activate();
             _firstTurnLabel.Activate().ToUniTask();
+        }
+
+        public IEnumerator Deactivate()
+        {
+            yield return _firstTurnPanel.Deactivate();
+
+            gameObject.SetActive(false);
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

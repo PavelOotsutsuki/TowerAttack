@@ -23,11 +23,11 @@ namespace GameFields.Persons
         public int CountDrawCards => _countDrawCards;
         public float DrawCardsDelay => _drawCardsDelay;
 
-        public void Init()
+        public void Init(IStartFightListener startFightListener)
         {
             _hand.Init();
             _table.Init(this);
-            _tower.Init(this);
+            InitTower(startFightListener);
             _playerAnimator.Init(_hand, _transform);
         }
 
@@ -57,6 +57,12 @@ namespace GameFields.Persons
         {
             card.SetDragAndDropListener(_hand);
             _playerAnimator.StartDrawCardAnimation(card).ToUniTask();
+        }
+
+        private void InitTower(IStartFightListener startFightListener)
+        {
+            _tower.Init(this);
+            _tower.SetStartFightListener(startFightListener);
         }
 
         [ContextMenu(nameof(DefineAllComponents))]
