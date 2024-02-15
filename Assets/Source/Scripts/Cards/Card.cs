@@ -1,5 +1,6 @@
 using UnityEngine;
 using Tools;
+using System;
 
 namespace Cards
 {
@@ -111,16 +112,17 @@ namespace Cards
             _cardMovement.ViewCardMovement(_viewType, duration);
         }
 
-        public void DiscardCard(Vector3 startPosition)
+        public void DiscardCard(DiscardCardAnimationData discardCardAnimationData)
         {
             Activate();
-            _cardAnimator.PlayDiscardCardAnimation(startPosition);
+            Vector3 startPosition = _cardCharacter.DiscardCard();
+            _cardAnimator.PlayDiscardCardAnimation(startPosition, discardCardAnimationData);
         }
 
         private void CreateCardCharacter()
         {
             _cardCharacter = Instantiate(_cardSO.CardCharacter);
-            _cardCharacter.Init(_cardSO.AwakeSound, this);
+            _cardCharacter.Init(_cardSO.AwakeSound);
         }
 
         private void Activate()

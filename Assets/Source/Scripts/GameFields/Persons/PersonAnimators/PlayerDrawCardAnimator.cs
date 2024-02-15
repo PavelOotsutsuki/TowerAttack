@@ -1,14 +1,11 @@
-using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 using Cards;
-using GameFields.Persons.Hands;
-using Cysharp.Threading.Tasks;
-using Tools;
+using System;
 
 namespace GameFields.Persons.PersonAnimators
 {
-    internal class PlayerDrawCardAnimator : PersonDrawCardAnimator
+    [Serializable]
+    internal class PlayerDrawCardAnimator
     {
         [SerializeField] private float _invertCardFrontDuration = 1f;
         [SerializeField] private float _invertCardBackDuration = 1f;
@@ -17,29 +14,28 @@ namespace GameFields.Persons.PersonAnimators
         [SerializeField] private float _invertCardBackScaleFactor = 1.8f;
         [SerializeField] private float _indent = 15f;
 
-        private IHand _hand;
+        private Transform _parent;
 
-        internal void Init(IHand hand)
+        internal PlayerDrawCardAnimator(Transform parent)
         {
-            _hand = hand;
+            _parent = parent;
+        }
+
+        internal float GetFullDelay()
+        {
+            return _invertCardBackDuration + _invertCardFrontDuration + _delay;
         }
 
         internal void StartDrawCardAnimation(Card drawnCard)
         {
-            DrawnCardBehaviour(drawnCard).ToUniTask();
+            DrawnCardBehaviour(drawnCard);
         }
 
-        private IEnumerator DrawnCardBehaviour(Card drawnCard)
+        private void DrawnCardBehaviour(Card drawnCard)
         {
-            float fullDelay = _invertCardBackDuration + _invertCardFrontDuration + _delay;
-
-            drawnCard.transform.SetParent(transform);
+            drawnCard.transform.SetParent(_parent);
             drawnCard.transform.SetAsLastSibling();
             drawnCard.Drawn(_invertCardBackDuration, _invertCardBackRotation, _invertCardBackScaleFactor, _invertCardFrontDuration, _indent);
-
-            yield return new WaitForSeconds(fullDelay);
-
-            _hand.AddCard(drawnCard);
         }
     }
 }

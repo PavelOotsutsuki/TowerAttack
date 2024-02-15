@@ -12,20 +12,6 @@ namespace GameFields.Persons.Tables
             Deactivate();
         }
 
-        public bool TrySeatCard(Card card)
-        {
-            if (TryFindCardSeat(out TableSeat freeCardSeat))
-            {
-                PlayCardManager.PlayCard(card);
-                card.Play(out CardCharacter cardCharacter);
-                freeCardSeat.SetCardCharacter(cardCharacter);
-
-                return true;
-            }
-
-            return false;
-        }
-
         public Vector3 GetCentralСoordinates()
         {
             return transform.position;

@@ -871,7 +871,7 @@ MonoBehaviour:
     _table: {fileID: 704143077}
     _tower: {fileID: 1939013310}
     _enemyAnimator: {fileID: 1502786296}
-    _countDrawCardsEnemy: 3
+    _countDrawCardsEnemy: 2
     _drawCardsDelayEnemy: 0.5
 --- !u!114 &200841578
 MonoBehaviour:
@@ -885,7 +885,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8ea36857a740452cb0a545f3d05f5e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _discardCardAnimator: {fileID: 200841579}
+  _fightAnimator: {fileID: 200841579}
 --- !u!114 &200841579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -895,10 +895,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 200841572}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 670ba4158fcf54a1ca76e94dd30ed3dc, type: 3}
+  m_Script: {fileID: 11500000, guid: 77dece232c58c4cdfa3d8215dde8bf62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _container: {fileID: 200841573}
+  _discardCardAnimator:
+    _container: {fileID: 200841573}
+    _discardCardAnimationData:
+      <StartScaleVector>k__BackingField: {x: 0.5, y: 0.5, z: 0.5}
+      <StartRotation>k__BackingField: {x: 0, y: 0, z: 0}
+      <InvertRotation>k__BackingField: {x: 0, y: -90, z: 0}
+      <CardIncreaseDuration>k__BackingField: 0.5
+      <DelayAfterIncrease>k__BackingField: 0.5
+      <InvertCardFrontDuration>k__BackingField: 0.5
+      <InvertCardBackDuration>k__BackingField: 0.5
+      <DelayAfterInvert>k__BackingField: 0.5
+  _discardCardDelay: 0.5
 --- !u!1 &212577682
 GameObject:
   m_ObjectHideFlags: 0
@@ -9473,7 +9484,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1905208562}
   - component: {fileID: 1905208563}
-  - component: {fileID: 1905208564}
   - component: {fileID: 1905208565}
   m_Layer: 0
   m_Name: Player
@@ -9516,30 +9526,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85b373b3257ed48ae98cdfc12bcd2f2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _countDrawCards: 3
+  _countDrawCards: 5
   _drawCardsDelay: 2
   _hand: {fileID: 112430305}
   _table: {fileID: 867188514}
   _tower: {fileID: 1018812819545794878}
   _playerAnimator: {fileID: 1905208565}
---- !u!114 &1905208564
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1905208561}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc8e1e55668eb481d9310edeb710d307, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _invertCardFrontDuration: 1
-  _invertCardBackDuration: 1
-  _delay: 0.5
-  _invertCardBackRotation: 90
-  _invertCardBackScaleFactor: 1.8
-  _indent: 15
+  _transform: {fileID: 1905208562}
 --- !u!114 &1905208565
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9552,7 +9545,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3782920d858474877a43536af929f182, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _drawCardAnimator: {fileID: 1905208564}
+  _drawCardAnimator:
+    _invertCardFrontDuration: 1
+    _invertCardBackDuration: 1
+    _delay: 0.5
+    _invertCardBackRotation: 90
+    _invertCardBackScaleFactor: 1.8
+    _indent: 15
 --- !u!1 &1915389997
 GameObject:
   m_ObjectHideFlags: 0

@@ -51,6 +51,12 @@ namespace Tools
             _transform.DOScale(scaleVector, duration);
         }
 
+        //public void MoveSmoothly(Vector2 positon, Vector3 rotation, float duration)
+        //{
+        //    _transform.DOMove(positon, duration);
+        //    _transform.DORotate(rotation, duration);
+        //}
+
         public void MoveLinear(Vector3 downWay, Vector3 maxRotationVector, float duration, Vector3 scaleVector)
         {
             _transform.DOMove(downWay, duration).SetEase(Ease.Linear);

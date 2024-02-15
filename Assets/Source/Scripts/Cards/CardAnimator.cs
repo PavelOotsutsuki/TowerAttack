@@ -25,9 +25,9 @@ namespace Cards
             _drawCardAnimation.PlayDrawnCardAnimation(cardBackDuration, cardBackRotation, cardBackScaleFactor, cardFrontDuration, indent).ToUniTask();
         }
 
-        public void PlayDiscardCardAnimation(Vector3 startPosition)
+        public void PlayDiscardCardAnimation(Vector3 startPosition, DiscardCardAnimationData discardCardAnimationData)
         {
-            _discardCardAnimation.PlayDiscardCardAnimation(startPosition).ToUniTask();
+            _discardCardAnimation.PlayDiscardCardAnimation(startPosition, discardCardAnimationData).ToUniTask();
         }
 
         //public void PlaySelectCardAnimation(float screenFactor, float duration)

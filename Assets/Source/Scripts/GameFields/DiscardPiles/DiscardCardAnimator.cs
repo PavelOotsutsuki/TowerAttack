@@ -1,40 +1,27 @@
 using System.Collections;
-using System.Collections.Generic;
 using Cards;
 using UnityEngine;
-using Cysharp.Threading.Tasks;
+using System;
 
-namespace GameFields.DiscardPiles
+namespace GameFields
 {
-    public class DiscardCardAnimator: MonoBehaviour
+    [Serializable]
+    public class DiscardCardAnimator
     {
         [SerializeField] private Transform _container;
+        [SerializeField] private DiscardCardAnimationData _discardCardAnimationData;
 
-        private DiscardPile _discardPile;
-
-        public void Init(DiscardPile discardPile)
+        public IEnumerator DiscardCards(Card card)
         {
-            _discardPile = discardPile;
-        }
-
-        public IEnumerator DiscardCards(List<CardCharacter> discardCards)
-        {
-            foreach (CardCharacter cardCharacter in discardCards)
-            {
-                StartDiscardAnimation(cardCharacter).ToUniTask();
-                yield return new WaitForSeconds(0.5f);
-            }
-        }
-
-        private IEnumerator StartDiscardAnimation(CardCharacter cardCharacter)
-        {
-            float fullDelay = 0f + 0f + 0f + 2.5f;
-            Card card = cardCharacter.DiscardCard();
             card.transform.SetParent(_container);
+            card.DiscardCard(_discardCardAnimationData);
 
-            yield return new WaitForSeconds(fullDelay);
+            yield return new WaitForSeconds(GetFullDelay());
+        }
 
-            _discardPile.AddCard(card);
+        public float GetFullDelay()
+        {
+            return _discardCardAnimationData.GetFullDelay();
         }
     }
 }

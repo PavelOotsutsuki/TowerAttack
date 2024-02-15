@@ -6,6 +6,7 @@ using GameFields.EndTurnButtons;
 using GameFields.DiscardPiles;
 using Tools;
 using Cysharp.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace GameFields
 {
@@ -13,7 +14,7 @@ namespace GameFields
     {
         private readonly int _maxTurns = 100;
 
-        [SerializeField] private DiscardCardAnimator _discardCardAnimator;
+        [SerializeField] private FightAnimator _fightAnimator;
 
         private Player _player;
         private EnemyAI _enemy;
@@ -45,7 +46,7 @@ namespace GameFields
             _discardPile = discardPile;
             _endTurnButton = endTurnButton;
 
-            _discardCardAnimator.Init(_discardPile);
+            _fightAnimator.Init(_discardPile);
 
             SetPlayerTurn();
         }
@@ -62,7 +63,7 @@ namespace GameFields
 
         private void DiscardCards()
         {
-            _discardCardAnimator.DiscardCards(_activePerson.GetDiscardCards()).ToUniTask();
+            _fightAnimator.DiscardCards(_activePerson.GetDiscardCards()).ToUniTask();
         }
 
         private void CheckEndFight()
@@ -136,13 +137,13 @@ namespace GameFields
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
-            DefineDiscardCardAnimator();
+            DefineFightAnimator();
         }
 
-        [ContextMenu(nameof(DefineDiscardCardAnimator))]
-        private void DefineDiscardCardAnimator()
+        [ContextMenu(nameof(DefineFightAnimator))]
+        private void DefineFightAnimator()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _discardCardAnimator, ComponentLocationTypes.InThis);
+            AutomaticFillComponents.DefineComponent(this, ref _fightAnimator, ComponentLocationTypes.InThis);
         }
 
     }

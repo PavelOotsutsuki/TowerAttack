@@ -8,6 +8,6 @@ namespace GameFields.Persons
         public float DrawCardsDelay { get; }
         public int CountDrawCards { get; }
 
-        public List<CardCharacter> GetDiscardCards();
+        public List<Card> GetDiscardCards();
     }
 }

@@ -5,7 +5,7 @@ using GameFields.Persons.Towers;
 using GameFields.Persons.PersonAnimators;
 using Tools;
 using UnityEngine;
-using UnityEngine.UI;
+using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 
 namespace GameFields.Persons
@@ -18,6 +18,7 @@ namespace GameFields.Persons
         [SerializeField] private TablePlayer _table;
         [SerializeField] private TowerPlayer _tower;
         [SerializeField] private PlayerAnimator _playerAnimator;
+        [SerializeField] private Transform _transform;
 
         public int CountDrawCards => _countDrawCards;
         public float DrawCardsDelay => _drawCardsDelay;
@@ -27,7 +28,12 @@ namespace GameFields.Persons
             _hand.Init();
             _table.Init(this);
             _tower.Init(this);
-            _playerAnimator.Init(_hand);
+            _playerAnimator.Init(_hand, _transform);
+        }
+
+        public List<Card> GetDiscardCards()
+        {
+            return _table.GetDiscardCards();
         }
 
         public void PlayCard(Card card)
@@ -50,12 +56,7 @@ namespace GameFields.Persons
         public void DrawCard(Card card)
         {
             card.SetDragAndDropListener(_hand);
-            _playerAnimator.StartDrawCardAnimation(card);
-        }
-
-        public List<CardCharacter> GetDiscardCards()
-        {
-            return _table.GetAllCardCharacters();
+            _playerAnimator.StartDrawCardAnimation(card).ToUniTask();
         }
 
         [ContextMenu(nameof(DefineAllComponents))]
@@ -65,6 +66,7 @@ namespace GameFields.Persons
             DefineTable();
             DefineTower();
             DefinePlayerAnimator();
+            DefineTransform();
         }
 
         [ContextMenu(nameof(DefineHand))]
@@ -89,6 +91,12 @@ namespace GameFields.Persons
         private void DefinePlayerAnimator()
         {
             AutomaticFillComponents.DefineComponent(this, ref _playerAnimator, ComponentLocationTypes.InThis);
+        }
+
+        [ContextMenu(nameof(DefineTransform))]
+        private void DefineTransform()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _transform, ComponentLocationTypes.InThis);
         }
     }
 }

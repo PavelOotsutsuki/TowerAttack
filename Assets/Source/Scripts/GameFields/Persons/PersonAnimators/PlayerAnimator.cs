@@ -8,22 +8,29 @@ using UnityEngine.UI;
 
 namespace GameFields.Persons.PersonAnimators
 {
-    public class PlayerAnimator : PersonAnimator
+    public class PlayerAnimator : MonoBehaviour
     {
         [SerializeField] private PlayerDrawCardAnimator _drawCardAnimator;
 
         private IHand _hand;
+        //private Transform _parent;
 
-        public void Init(IHand hand)
+        public void Init(IHand hand, Transform parent)
         {
             _hand = hand;
+            //_parent = parent;
 
-            _drawCardAnimator.Init(_hand);
+            _drawCardAnimator = new PlayerDrawCardAnimator(parent);
         }
 
-        public void StartDrawCardAnimation(Card drawnCard)
+        public IEnumerator StartDrawCardAnimation(Card drawnCard)
         {
+            float fullDelay = _drawCardAnimator.GetFullDelay();
             _drawCardAnimator.StartDrawCardAnimation(drawnCard);
+
+            yield return new WaitForSeconds(fullDelay);
+
+            _hand.AddCard(drawnCard);
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

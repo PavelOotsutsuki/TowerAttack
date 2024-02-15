@@ -5,29 +5,46 @@ using UnityEngine;
 
 namespace GameFields.Persons.Tables
 {
-    internal abstract class Table : MonoBehaviour
+    internal abstract class Table : MonoBehaviour, ICardSeatPlace
     {
         [SerializeField] protected CanvasGroup CanvasGroup;
         [SerializeField] private TableSeat[] _cardSeats;
 
-        protected IPlayCardManager PlayCardManager;
+        private IPlayCardManager _playCardManager;
         private int[] _cardSeatsSortIndices;
+        private PlayedCards _playedCards;
 
         public virtual void Init(IPlayCardManager playCardManager)
         {
-            PlayCardManager = playCardManager;
+            _playCardManager = playCardManager;
+            _playedCards = new PlayedCards();
             SetCardSeatsIndices();
         }
 
-        public List<CardCharacter> GetAllCardCharacters()
+        public bool TrySeatCard(Card card)
         {
-            List<CardCharacter> discardCards = new List<CardCharacter>();
+            if (TryFindCardSeat(out TableSeat freeCardSeat))
+            {
+                _playCardManager.PlayCard(card);
+                card.Play(out CardCharacter cardCharacter);
+                freeCardSeat.SetCardCharacter(cardCharacter);
+                _playedCards.Add(cardCharacter, card);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public List<Card> GetDiscardCards()
+        {
+            List<Card> discardCards = new List<Card>();
 
             foreach (TableSeat tableSeat in _cardSeats)
             {
                 if (tableSeat.TryDiscardCardCharacter(out CardCharacter cardCharacter))
                 {
-                    discardCards.Add(cardCharacter);
+                    discardCards.Add(_playedCards.GetCard(cardCharacter));
                 }
             }
 

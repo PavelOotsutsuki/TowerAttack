@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
+using System;
 
 namespace Cards
 {
@@ -18,16 +19,16 @@ namespace Cards
             _cardSideFlipper = sideFlipper;
         }
 
-        public IEnumerator PlayDiscardCardAnimation(Vector3 startPosition)
+        public IEnumerator PlayDiscardCardAnimation(Vector3 startPosition, DiscardCardAnimationData discardCardAnimationData)
         {
-            Vector3 startScaleVector = new Vector3(0.5f, 0.5f, 0.5f);
-            Vector3 startRotation = Vector3.zero;
-            Vector3 invertRotation = new Vector3(0f, -90f, 0f);
-            float cardIncreaseDuration = 0.5f;
-            float delayAfterIncrease = 0.5f;
-            float invertCardFrontDuration = 0.5f;
-            float invertCardBackDuration = 0.5f;
-            float delayAfterInvert = 0.5f;
+            Vector3 startScaleVector = discardCardAnimationData.StartScaleVector;
+            Vector3 startRotation = discardCardAnimationData.StartRotation;
+            Vector3 invertRotation = discardCardAnimationData.InvertRotation;
+            float cardIncreaseDuration = discardCardAnimationData.CardIncreaseDuration;
+            float delayAfterIncrease = discardCardAnimationData.DelayAfterIncrease;
+            float invertCardFrontDuration = discardCardAnimationData.InvertCardFrontDuration;
+            float invertCardBackDuration = discardCardAnimationData.InvertCardBackDuration;
+            float delayAfterInvert = discardCardAnimationData.DelayAfterInvert;
 
             _cardSideFlipper.SetFrontSide();
             _cardSideFlipper.Block();

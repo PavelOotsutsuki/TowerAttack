@@ -61,9 +61,9 @@ namespace GameFields.Persons
             _hand.RemoveCard(card);
         }
 
-        public List<CardCharacter> GetDiscardCards()
+        public List<Card> GetDiscardCards()
         {
-            return _table.GetAllCardCharacters();
+            return _table.GetDiscardCards();
         }
     }
 }
