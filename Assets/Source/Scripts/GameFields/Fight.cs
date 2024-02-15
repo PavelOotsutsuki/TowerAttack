@@ -10,33 +10,21 @@ using System.Collections.Generic;
 
 namespace GameFields
 {
-    internal class Fight : MonoBehaviour, IEndTurnHandler
+    internal class Fight : IEndTurnHandler
     {
         private readonly int _maxTurns = 100;
-
-        [SerializeField] private FightAnimator _fightAnimator;
 
         private Player _player;
         private EnemyAI _enemy;
         private Deck _deck;
         private EndTurnButton _endTurnButton;
         private DiscardPile _discardPile;
+        private FightAnimator _fightAnimator;
 
         private IPerson _activePerson;
         private int _turnNumber;
 
-        //public Fight(Player player, EnemyAI enemy, Deck deck)
-        //{
-        //    _turnNumber = 1;
-
-        //    _player = player;
-        //    _enemy = enemy;
-        //    _deck = deck;
-
-        //    SetPlayerTurn();
-        //}
-
-        public void Init(Player player, EnemyAI enemy, Deck deck, DiscardPile discardPile, EndTurnButton endTurnButton)
+        public Fight(Player player, EnemyAI enemy, Deck deck, DiscardPile discardPile, EndTurnButton endTurnButton, FightAnimator fightAnimator)
         {
             _turnNumber = 1;
 
@@ -45,11 +33,24 @@ namespace GameFields
             _deck = deck;
             _discardPile = discardPile;
             _endTurnButton = endTurnButton;
-
-            _fightAnimator.Init(_discardPile);
+            _fightAnimator = fightAnimator;
 
             SetPlayerTurn();
         }
+
+        //public void Init(Player player, EnemyAI enemy, Deck deck, DiscardPile discardPile, EndTurnButton endTurnButton, FightAnimator fightAnimator)
+        //{
+        //    _turnNumber = 1;
+
+        //    _player = player;
+        //    _enemy = enemy;
+        //    _deck = deck;
+        //    _discardPile = discardPile;
+        //    _endTurnButton = endTurnButton;
+        //    _fightAnimator = fightAnimator;
+
+        //    SetPlayerTurn();
+        //}
 
         public void OnEndTurn()
         {
@@ -133,18 +134,5 @@ namespace GameFields
                 _endTurnButton.SetActiveSide();
             }
         }
-
-        [ContextMenu(nameof(DefineAllComponents))]
-        private void DefineAllComponents()
-        {
-            DefineFightAnimator();
-        }
-
-        [ContextMenu(nameof(DefineFightAnimator))]
-        private void DefineFightAnimator()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _fightAnimator, ComponentLocationTypes.InThis);
-        }
-
     }
 }

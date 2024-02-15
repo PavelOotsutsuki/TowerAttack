@@ -753,7 +753,6 @@ GameObject:
   - component: {fileID: 200841575}
   - component: {fileID: 200841574}
   - component: {fileID: 200841577}
-  - component: {fileID: 200841578}
   - component: {fileID: 200841579}
   m_Layer: 0
   m_Name: GameField
@@ -864,8 +863,8 @@ MonoBehaviour:
   _deck: {fileID: 250433512}
   _endTurnButton: {fileID: 601274534}
   _player: {fileID: 1905208563}
-  _fight: {fileID: 200841578}
   _discardPile: {fileID: 1000203021}
+  _fightAnimator: {fileID: 200841579}
   _enemyAI:
     _hand: {fileID: 1620354845}
     _table: {fileID: 704143077}
@@ -873,19 +872,6 @@ MonoBehaviour:
     _enemyAnimator: {fileID: 1502786296}
     _countDrawCardsEnemy: 2
     _drawCardsDelayEnemy: 0.5
---- !u!114 &200841578
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 200841572}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8ea36857a740452cb0a545f3d05f5e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _fightAnimator: {fileID: 200841579}
 --- !u!114 &200841579
 MonoBehaviour:
   m_ObjectHideFlags: 0

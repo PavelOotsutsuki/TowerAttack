@@ -13,14 +13,17 @@ namespace GameFields
         [SerializeField] private Deck _deck;
         [SerializeField] private EndTurnButton _endTurnButton;
         [SerializeField] private Player _player;
-        [SerializeField] private Fight _fight;
         [SerializeField] private DiscardPile _discardPile;
+        [SerializeField] private FightAnimator _fightAnimator;
 
         [SerializeField] private EnemyAI _enemyAI;
-        //private Fight _fight;
+
+        private Fight _fight;
 
         public void Init(Card[] cardsInDeck)
         {
+            _fight = new Fight(_player, _enemyAI, _deck, _discardPile, _endTurnButton, _fightAnimator);
+
             InitDeck(cardsInDeck);
             InitDiscardPile();
             InitPersons();
@@ -28,7 +31,7 @@ namespace GameFields
             //_fight = new Fight(_player, _enemyAI, _deck);
             InitEndTurnButton();
 
-            _fight.Init(_player, _enemyAI, _deck, _discardPile, _endTurnButton);
+            _fightAnimator.Init(_discardPile);
         }
 
         private void InitPersons()
@@ -58,8 +61,8 @@ namespace GameFields
             DefineDeck();
             DefineEndTurnButton();
             DefinePlayer();
-            DefineFight();
             DefineDiscardPile();
+            DefineFightAnimator();
         }
 
         [ContextMenu(nameof(DefineDeck))]
@@ -80,16 +83,16 @@ namespace GameFields
             AutomaticFillComponents.DefineComponent(this, ref _player, ComponentLocationTypes.InChildren);
         }
 
-        [ContextMenu(nameof(DefineFight))]
-        private void DefineFight()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _fight, ComponentLocationTypes.InThis);
-        }
-
         [ContextMenu(nameof(DefineDiscardPile))]
         private void DefineDiscardPile()
         {
             AutomaticFillComponents.DefineComponent(this, ref _discardPile, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineFightAnimator))]
+        private void DefineFightAnimator()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _fightAnimator, ComponentLocationTypes.InThis);
         }
     }
 }
