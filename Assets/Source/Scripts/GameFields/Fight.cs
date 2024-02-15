@@ -7,6 +7,7 @@ using GameFields.DiscardPiles;
 using Tools;
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
+using GameFields.FirstTurns;
 
 namespace GameFields
 {
@@ -20,11 +21,12 @@ namespace GameFields
         private EndTurnButton _endTurnButton;
         private DiscardPile _discardPile;
         private FightAnimator _fightAnimator;
+        private FirstTurn _firstTurn;
 
         private IPerson _activePerson;
         private int _turnNumber;
 
-        public Fight(Player player, EnemyAI enemy, Deck deck, DiscardPile discardPile, EndTurnButton endTurnButton, FightAnimator fightAnimator)
+        public Fight(Player player, EnemyAI enemy, Deck deck, DiscardPile discardPile, EndTurnButton endTurnButton, FightAnimator fightAnimator, FirstTurn firstTurn)
         {
             _turnNumber = 1;
 
@@ -34,8 +36,11 @@ namespace GameFields
             _discardPile = discardPile;
             _endTurnButton = endTurnButton;
             _fightAnimator = fightAnimator;
+            _firstTurn = firstTurn;
 
             SetPlayerTurn();
+
+            _firstTurn.Activate();
         }
 
         //public void Init(Player player, EnemyAI enemy, Deck deck, DiscardPile discardPile, EndTurnButton endTurnButton, FightAnimator fightAnimator)
