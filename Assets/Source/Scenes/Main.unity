@@ -776,9 +776,9 @@ RectTransform:
   - {fileID: 250433509}
   - {fileID: 1000203020}
   - {fileID: 1502786294}
+  - {fileID: 1173604841}
   - {fileID: 1905208562}
   - {fileID: 601274533}
-  - {fileID: 1173604841}
   m_Father: {fileID: 1272924793}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -5267,6 +5267,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _panel: {fileID: 1112966542}
   _activateDuration: 1
+  _deactivateDuration: 1
 --- !u!1 &1127552738
 GameObject:
   m_ObjectHideFlags: 0

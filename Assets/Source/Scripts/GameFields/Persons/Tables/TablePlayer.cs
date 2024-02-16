@@ -9,17 +9,27 @@ namespace GameFields.Persons.Tables
         {
             base.Init(playCardManager);
 
-            Deactivate();
+            FirstTurnDeactivate();
         }
 
         public void Activate()
         {
+            if (gameObject.activeSelf == false)
+            {
+                gameObject.SetActive(true);
+            }
             CanvasGroup.blocksRaycasts = true;
         }
 
         public void Deactivate()
         {
             CanvasGroup.blocksRaycasts = false;
+        }
+
+        private void FirstTurnDeactivate()
+        {
+            gameObject.SetActive(false);
+            Deactivate();
         }
     }
 }
