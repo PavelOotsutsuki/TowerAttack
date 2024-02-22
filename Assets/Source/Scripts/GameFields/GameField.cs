@@ -23,7 +23,7 @@ namespace GameFields
 
         public void Init(Card[] cardsInDeck)
         {
-            _firstTurn.Init();
+            _firstTurn.Init(_player.CreateTowerSelector(), _enemyAI.CreateTowerSelector());
 
             _fight = new Fight(_player, _enemyAI, _deck, _discardPile, _endTurnButton, _fightAnimator, _firstTurn);
 

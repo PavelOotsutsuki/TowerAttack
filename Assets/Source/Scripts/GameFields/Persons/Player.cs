@@ -36,6 +36,11 @@ namespace GameFields.Persons
             return _table.GetDiscardCards();
         }
 
+        public TowerCardSelector CreateTowerSelector()
+        {
+            return new TowerCardSelector(_tower, _hand);
+        }
+
         public void PlayCard(Card card)
         {
             _hand.RemoveCard(card);
