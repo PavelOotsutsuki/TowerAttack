@@ -5,7 +5,7 @@ using TMPro;
 using DG.Tweening;
 using Tools;
 
-namespace GameFields
+namespace GameFields.FirstTurns
 {
     public class FirstTurnLabel : MonoBehaviour
     {

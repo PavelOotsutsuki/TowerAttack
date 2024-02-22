@@ -9,11 +9,11 @@ namespace GameFields.Seats
         [SerializeField] private Transform _transform;
 
         private Card _card;
-        private Movement _handSeatMovement;
+        private Movement _seatMovement;
 
         public void Init()
         {
-            _handSeatMovement = new Movement(_transform);
+            _seatMovement = new Movement(_transform);
         }
 
         public Card GetCard()
@@ -46,11 +46,11 @@ namespace GameFields.Seats
         {
             if (duration <= 0f)
             {
-                _handSeatMovement.MoveLocalInstantly(position, rotation);
+                _seatMovement.MoveLocalInstantly(position, rotation);
             }
             else
             {
-                _handSeatMovement.MoveLocalSmoothly(position, rotation, duration);
+                _seatMovement.MoveLocalSmoothly(position, rotation, duration);
             }
         }
 

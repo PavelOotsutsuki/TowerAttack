@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-namespace GameFields
+namespace GameFields.FirstTurns
 {
     public class FirstTurnPanel : MonoBehaviour
     {

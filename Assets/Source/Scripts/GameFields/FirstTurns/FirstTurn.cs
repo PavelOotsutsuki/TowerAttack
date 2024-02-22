@@ -6,6 +6,7 @@ using Tools;
 using UnityEngine;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
+using GameFields.Seats;
 
 namespace GameFields.FirstTurns
 {
@@ -13,6 +14,7 @@ namespace GameFields.FirstTurns
     {
         [SerializeField] private FirstTurnPanel _firstTurnPanel;
         [SerializeField] private FirstTurnLabel _firstTurnLabel;
+        [SerializeField] private Seat[] _seats;
 
         public void Init()
         {
@@ -40,6 +42,7 @@ namespace GameFields.FirstTurns
         {
             DefineFirstTurnPanel();
             DefineFirstTurnLabel();
+            DefineSeats();
         }
 
         [ContextMenu(nameof(DefineFirstTurnPanel))]
@@ -52,6 +55,12 @@ namespace GameFields.FirstTurns
         private void DefineFirstTurnLabel()
         {
             AutomaticFillComponents.DefineComponent(this, ref _firstTurnLabel, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineSeats))]
+        private void DefineSeats()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _seats);
         }
     }
 }

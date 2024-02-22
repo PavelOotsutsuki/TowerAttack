@@ -18,6 +18,7 @@ namespace GameFields.Persons.Tables
             {
                 gameObject.SetActive(true);
             }
+
             CanvasGroup.blocksRaycasts = true;
         }
 
