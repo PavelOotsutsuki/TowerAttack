@@ -24,7 +24,8 @@ namespace GameFields.Persons.Towers
             if (TowerSeat.TryGetCard(card))
             {
                 PlayCardManager.PlayCard(card);
-                _startFightListener.StartFight();
+
+                _startFightListener?.StartFight();
 
                 Deactivate();
 

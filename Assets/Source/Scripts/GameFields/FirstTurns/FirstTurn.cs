@@ -59,7 +59,7 @@ namespace GameFields.FirstTurns
         public void Deactivate()
         {
             //yield return _firstTurnPanel.Deactivate();
-            _firstTurnPanel.Deactivate(()=> gameObject.SetActive(false));
+            _firstTurnPanel.Deactivate(()=> Destroy(gameObject));
 
             //gameObject.SetActive(false);
         }
