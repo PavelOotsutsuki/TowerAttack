@@ -7,10 +7,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
 using GameFields.Seats;
+using Cards;
+using GameFields.Persons;
 
 namespace GameFields.FirstTurns
 {
-    public class FirstTurn : MonoBehaviour
+    public class FirstTurn : MonoBehaviour//, IPlayerFirstTurnManager, IEnemyFirstTurnManager
     {
         [SerializeField] private FirstTurnPanel _firstTurnPanel;
         [SerializeField] private FirstTurnLabel _firstTurnLabel;
@@ -20,21 +22,63 @@ namespace GameFields.FirstTurns
         {
             _firstTurnPanel.Init();
             _firstTurnLabel.Init();
+
+            InitSeats();
         }
 
-        public IEnumerator Activate()
+        public void Activate(Card[] playerCards, Card[] enemyCards, IPerson player, IPerson enemy)
         {
+            //float delay;
+
             gameObject.SetActive(true);
 
-            yield return _firstTurnPanel.Activate();
+            //yield return _firstTurnPanel.Activate();
+            _firstTurnPanel.Activate();
             _firstTurnLabel.Activate().ToUniTask();
+
+            //for (int i=0;i<cards.Length;i++)
+            //{
+            //    if (i % 2 == 0)
+            //    {
+            //        player.DrawCard(cards[i]);
+            //        delay = player.DrawCardsDelay - enemy.DrawCardsDelay;
+            //    }
+            //    else
+            //    {
+            //        enemy.DrawCard(cards[i]);
+            //        delay = enemy.DrawCardsDelay - enemy.DrawCardsDelay;
+            //    }
+
+            //    yield return new WaitForSeconds(delay);
+            //}
+
+            TakeCards(playerCards, player).ToUniTask();
+            TakeCards(enemyCards, enemy).ToUniTask();
         }
 
-        public IEnumerator Deactivate()
+        public void Deactivate()
         {
-            yield return _firstTurnPanel.Deactivate();
+            //yield return _firstTurnPanel.Deactivate();
+            _firstTurnPanel.Deactivate(()=> gameObject.SetActive(false));
 
-            gameObject.SetActive(false);
+            //gameObject.SetActive(false);
+        }
+
+        private IEnumerator TakeCards(Card[] cards, IPerson person)
+        {
+            foreach (Card card in cards)
+            {
+                person.DrawCard(card);
+                yield return new WaitForSeconds(person.DrawCardsDelay);
+            }
+        }
+
+        private void InitSeats()
+        {
+            foreach (Seat seat in _seats)
+            {
+                seat.Init();
+            }
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

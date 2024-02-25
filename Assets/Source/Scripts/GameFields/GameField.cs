@@ -24,15 +24,17 @@ namespace GameFields
         public void Init(Card[] cardsInDeck)
         {
             _firstTurn.Init();
+            _deck.Init(cardsInDeck);
+            _discardPile.Init();
+            _fightAnimator.Init(_discardPile);
 
             _fight = new Fight(_player, _enemyAI, _deck, _discardPile, _endTurnButton, _fightAnimator, _firstTurn);
 
-            _deck.Init(cardsInDeck);
-            _discardPile.Init();
             _player.Init(_fight);
             _enemyAI.Init(_fight);
             _endTurnButton.Init(_fight);
-            _fightAnimator.Init(_discardPile);
+
+            _fight.StartFirstTurn();
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

@@ -544,10 +544,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 3197406922889501352}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.21000001, y: 0.22500001}
-  m_AnchorMax: {x: 0.81100005, y: 0.7974951}
-  m_AnchoredPosition: {x: -0.5000191, y: -0.5000038}
-  m_SizeDelta: {x: -0.89299965, y: 0.37820053}
+  m_AnchorMin: {x: 0.177, y: 0.22500001}
+  m_AnchorMax: {x: 0.74500006, y: 0.7974951}
+  m_AnchoredPosition: {x: 0.12325, y: -0.31964}
+  m_SizeDelta: {x: -0.24651, y: -1.601}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &32030587121492744
 CanvasRenderer:
@@ -701,7 +701,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cardBack: {fileID: 7343953678776589404}
   _cardFront: {fileID: 2805773735245598067}
-  _cardSO: {fileID: 11400000, guid: 8add2b29cad544cf2b038cb9022a123f, type: 2}
+  _cardSO: {fileID: 0}
   _cardDragAndDrop: {fileID: 7802601998824976280}
   _rectTransform: {fileID: 5981172514607463790}
   _defaultScaleVector: {x: 1, y: 1, z: 1}
@@ -775,7 +775,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8502844890379667406
 RectTransform:
   m_ObjectHideFlags: 0
@@ -953,7 +953,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4393017931847745488
 RectTransform:
   m_ObjectHideFlags: 0

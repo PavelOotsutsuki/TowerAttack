@@ -4,6 +4,7 @@ using Tools;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using System;
 
 namespace GameFields.FirstTurns
 {
@@ -17,40 +18,70 @@ namespace GameFields.FirstTurns
         [SerializeField] private float _activateDuration = 1f;
         [SerializeField] private float _deactivateDuration = 1f;
 
+        Sequence _sequence;
+
         public void Init()
         {
             _panel.raycastTarget = false;
             _panel.color = new Color(_panel.color.r, _panel.color.g, _panel.color.b, DeactiveAlpha);
         }
 
-        public IEnumerator Activate()
+        //public IEnumerator Activate()
+        //{
+        //    _panel.raycastTarget = true;
+
+        //    //_panel.DOColor(new Color(_panel.color.r, _panel.color.g, _panel.color.b, ActiveAlpha), _activateDuration);
+
+        //    float startAlpha = _panel.color.a;
+        //    float alphaWay = (ActiveAlpha - startAlpha) / _activateDuration / MaxAlpha;
+
+        //    for (float time = 0f; time < _activateDuration; time += Time.deltaTime)
+        //    {
+        //        _panel.color = new Color(_panel.color.r, _panel.color.g, _panel.color.b, startAlpha + alphaWay * time);
+        //        yield return null;
+        //    }
+        //}
+
+        //public IEnumerator Deactivate()
+        //{
+        //    float startAlpha = _panel.color.a;
+        //    float alphaWay = (DeactiveAlpha - startAlpha) / _deactivateDuration;
+
+        //    for (float time = 0f; time < _deactivateDuration; time += Time.deltaTime)
+        //    {
+        //        _panel.color = new Color(_panel.color.r, _panel.color.g, _panel.color.b, startAlpha + alphaWay * time);
+        //        yield return null;
+        //    }
+
+        //    _panel.raycastTarget = false;
+        //}
+
+        public void Activate()
         {
             _panel.raycastTarget = true;
 
-            //_panel.DOColor(new Color(_panel.color.r, _panel.color.g, _panel.color.b, ActiveAlpha), _activateDuration);
-
-            float startAlpha = _panel.color.a;
-            float alphaWay = (ActiveAlpha - startAlpha) / _activateDuration / MaxAlpha;
-
-            for (float time = 0f; time < _activateDuration; time += Time.deltaTime)
-            {
-                _panel.color = new Color(_panel.color.r, _panel.color.g, _panel.color.b, startAlpha + alphaWay * time);
-                yield return null;
-            }
+            _panel.DOColor(new Color(_panel.color.r, _panel.color.g, _panel.color.b, ActiveAlpha / MaxAlpha), _activateDuration);
         }
 
-        public IEnumerator Deactivate()
+        public void Deactivate(Action activateCallback)
         {
-            float startAlpha = _panel.color.a;
-            float alphaWay = (DeactiveAlpha - startAlpha) / _deactivateDuration;
+            //float startAlpha = _panel.color.a;
+            //float alphaWay = (DeactiveAlpha - startAlpha) / _deactivateDuration;
 
-            for (float time = 0f; time < _deactivateDuration; time += Time.deltaTime)
+            //for (float time = 0f; time < _deactivateDuration; time += Time.deltaTime)
+            //{
+            //    _panel.color = new Color(_panel.color.r, _panel.color.g, _panel.color.b, startAlpha + alphaWay * time);
+            //    yield return null;
+            //}
+
+
+            _sequence = DOTween.Sequence();
+            _sequence.Append(_panel.DOColor(new Color(_panel.color.r, _panel.color.g, _panel.color.b, DeactiveAlpha / MaxAlpha), _deactivateDuration))
+            .AppendCallback(()=>
             {
-                _panel.color = new Color(_panel.color.r, _panel.color.g, _panel.color.b, startAlpha + alphaWay * time);
-                yield return null;
-            }
-
-            _panel.raycastTarget = false;
+                _panel.raycastTarget = false;
+                activateCallback.Invoke();
+            });
         }
 
         [ContextMenu(nameof(DefineAllComponents))]
