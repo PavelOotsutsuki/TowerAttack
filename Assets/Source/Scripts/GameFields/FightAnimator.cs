@@ -29,7 +29,12 @@ namespace GameFields
         //    }
         //}
 
-        public IEnumerator DiscardCards(List<Card> discardCards)
+        public void DiscardCards(List<Card> discardCards)
+        {
+            DiscardingCards(discardCards).ToUniTask();
+        }
+
+        private IEnumerator DiscardingCards(List<Card> discardCards)
         {
             foreach (Card card in discardCards)
             {
@@ -40,7 +45,7 @@ namespace GameFields
 
         private IEnumerator StartDiscardCardAnimation(Card card)
         {
-            _discardCardAnimator.DiscardCards(card).ToUniTask();
+            _discardCardAnimator.DiscardCard(card);
             yield return new WaitForSeconds(_discardCardAnimator.GetFullDelay());
 
             _discardPile.AddCard(card);

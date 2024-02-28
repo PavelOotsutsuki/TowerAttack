@@ -119,7 +119,7 @@ namespace GameFields
 
         private void DiscardCards()
         {
-            _fightAnimator.DiscardCards(_activePerson.GetDiscardCards()).ToUniTask();
+            _fightAnimator.DiscardCards(_activePerson.GetDiscardCards());
         }
 
         private void CheckEndFight()
@@ -153,12 +153,11 @@ namespace GameFields
         {
             _activePerson = _enemy;
 
-            _player.DeativateDropPlaces();
+            _player.DeactivateDropPlaces();
         }
 
         private void StartTurn()
         {
-            //StartCoroutine(DrawningCards());
             DrawningCards().ToUniTask();
         }
 

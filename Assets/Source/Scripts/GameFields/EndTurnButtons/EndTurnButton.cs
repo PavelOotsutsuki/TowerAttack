@@ -26,7 +26,7 @@ namespace GameFields.EndTurnButtons
 
         public void SetActiveSide()
         {
-            _changeSideAnimator.PlayUnlockButtonAnimation().ToUniTask();
+            _changeSideAnimator.PlayUnlockButtonAnimation();
         }
 
         private void OnEnable()
@@ -41,7 +41,7 @@ namespace GameFields.EndTurnButtons
 
         private void SetDeactiveSide()
         {
-            _changeSideAnimator.PlayLockButtonAnimation().ToUniTask();
+            _changeSideAnimator.PlayLockButtonAnimation();
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

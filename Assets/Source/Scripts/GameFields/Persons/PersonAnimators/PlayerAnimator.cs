@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cards;
+using Cysharp.Threading.Tasks;
 using GameFields.Persons.Hands;
 using Tools;
 using UnityEngine;
@@ -23,7 +24,12 @@ namespace GameFields.Persons.PersonAnimators
             _drawCardAnimator = new PlayerDrawCardAnimator(parent);
         }
 
-        public IEnumerator StartDrawCardAnimation(Card drawnCard)
+        public void StartDrawCardAnimation(Card drawnCard)
+        {
+            PlayingDrawCardAnimation(drawnCard).ToUniTask();
+        }
+
+        private IEnumerator PlayingDrawCardAnimation(Card drawnCard)
         {
             float fullDelay = _drawCardAnimator.GetFullDelay();
             _drawCardAnimator.StartDrawCardAnimation(drawnCard);

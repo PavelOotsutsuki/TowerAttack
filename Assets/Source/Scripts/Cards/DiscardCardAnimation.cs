@@ -19,7 +19,12 @@ namespace Cards
             _cardSideFlipper = sideFlipper;
         }
 
-        public IEnumerator PlayDiscardCardAnimation(Vector3 startPosition, DiscardCardAnimationData discardCardAnimationData)
+        public void PlayDiscardCardAnimation(Vector3 startPosition, DiscardCardAnimationData discardCardAnimationData)
+        {
+            PlayingDiscardCardAnimation(startPosition, discardCardAnimationData).ToUniTask();
+        }
+
+        private IEnumerator PlayingDiscardCardAnimation(Vector3 startPosition, DiscardCardAnimationData discardCardAnimationData)
         {
             Vector3 startScaleVector = discardCardAnimationData.StartScaleVector;
             Vector3 startRotation = discardCardAnimationData.StartRotation;

@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using DG.Tweening;
 using Tools;
+using Cysharp.Threading.Tasks;
 
 namespace GameFields.FirstTurns
 {
@@ -22,22 +23,22 @@ namespace GameFields.FirstTurns
         public void Init()
         {
             gameObject.SetActive(false);
-            _label.color = new Color(_label.color.r, _label.color.g, _label.color.b, LifeAlpha);
+
+            Color startColor = new Color(_label.color.r, _label.color.g, _label.color.b, LifeAlpha);
+
+            _label.color = startColor;
             _label.fontSize = _startFontSize;
         }
 
-        public IEnumerator Activate()
+        public void Activate()
+        {
+            Activating().ToUniTask();
+        }
+
+        private IEnumerator Activating()
         {
             gameObject.SetActive(true);
 
-            yield return MiddleAnimation();
-            yield return EndAnimation();
-
-            gameObject.SetActive(false);
-        }
-
-        private IEnumerator MiddleAnimation()
-        {
             float startFontSize = _label.fontSize;
             float fontSizeWay = (_middleFontSize - startFontSize) / _middleDuration;
 
@@ -46,23 +47,66 @@ namespace GameFields.FirstTurns
                 _label.fontSize = startFontSize + fontSizeWay * time;
                 yield return null;
             }
-        }
 
-        private IEnumerator EndAnimation()
-        {
-            float startFontSize = _label.fontSize;
-            float fontSizeWay = (_endFontSize - startFontSize) / _endDuration;
+            startFontSize = _label.fontSize;
+            fontSizeWay = (_endFontSize - startFontSize) / _endDuration;
 
             float startAlpha = _label.color.a;
             float alphaWay = (EndAlpha - startAlpha) / _endDuration;
 
+            Color color = new Color(_label.color.r, _label.color.g, _label.color.b, startAlpha);
+
             for (float time = 0f; time < _endDuration; time += Time.deltaTime)
             {
-                _label.color = new Color(_label.color.r, _label.color.g, _label.color.b, startAlpha + alphaWay * time);
+                color.a = startAlpha + alphaWay * time;
+                _label.color = color;
                 _label.fontSize = startFontSize + fontSizeWay * time;
                 yield return null;
             }
+
+            gameObject.SetActive(false);
         }
+
+        //public IEnumerator Activate()
+        //{
+        //    gameObject.SetActive(true);
+
+        //    yield return MiddleAnimation();
+        //    yield return EndAnimation();
+
+        //    gameObject.SetActive(false);
+        //}
+
+        //private IEnumerator MiddleAnimation()
+        //{
+        //    float startFontSize = _label.fontSize;
+        //    float fontSizeWay = (_middleFontSize - startFontSize) / _middleDuration;
+
+        //    for (float time = 0f; time < _middleDuration; time += Time.deltaTime)
+        //    {
+        //        _label.fontSize = startFontSize + fontSizeWay * time;
+        //        yield return null;
+        //    }
+        //}
+
+        //private IEnumerator EndAnimation()
+        //{
+        //    float startFontSize = _label.fontSize;
+        //    float fontSizeWay = (_endFontSize - startFontSize) / _endDuration;
+
+        //    float startAlpha = _label.color.a;
+        //    float alphaWay = (EndAlpha - startAlpha) / _endDuration;
+
+        //    Color color = new Color(_label.color.r, _label.color.g, _label.color.b, startAlpha);
+
+        //    for (float time = 0f; time < _endDuration; time += Time.deltaTime)
+        //    {
+        //        color.a = startAlpha + alphaWay * time;
+        //        _label.color = color;
+        //        _label.fontSize = startFontSize + fontSizeWay * time;
+        //        yield return null;
+        //    }
+        //}
 
 
         [ContextMenu(nameof(DefineAllComponents))]

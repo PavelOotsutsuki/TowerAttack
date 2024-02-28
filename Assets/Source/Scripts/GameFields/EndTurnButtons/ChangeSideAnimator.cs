@@ -1,4 +1,5 @@
 using System.Collections;
+using Cysharp.Threading.Tasks;
 using Tools;
 using UnityEngine;
 
@@ -34,7 +35,17 @@ namespace GameFields.EndTurnButtons
             _deactiveViewInvertDelay = new WaitForSeconds(_deactiveViewInvertDuration);
         }
 
-        public IEnumerator PlayLockButtonAnimation()
+        public void PlayLockButtonAnimation()
+        {
+            PlayingLockButtonAnimation().ToUniTask();
+        }
+
+        public void PlayUnlockButtonAnimation()
+        {
+            PlayingUnlockButtonAnimation().ToUniTask();
+        }
+
+        private IEnumerator PlayingLockButtonAnimation()
         {
             if (_activeView.activeInHierarchy == true)
             {
@@ -50,7 +61,7 @@ namespace GameFields.EndTurnButtons
             }
         }
 
-        public IEnumerator PlayUnlockButtonAnimation()
+        private IEnumerator PlayingUnlockButtonAnimation()
         {
             if (_activeView.activeInHierarchy == false)
             {

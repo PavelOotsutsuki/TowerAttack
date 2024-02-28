@@ -18,12 +18,13 @@ namespace GameFields.FirstTurns
         [SerializeField] private float _activateDuration = 1f;
         [SerializeField] private float _deactivateDuration = 1f;
 
-        Sequence _sequence;
-
         public void Init()
         {
             _panel.raycastTarget = false;
-            _panel.color = new Color(_panel.color.r, _panel.color.g, _panel.color.b, DeactiveAlpha);
+
+            Color startColor = new Color(_panel.color.r, _panel.color.g, _panel.color.b, DeactiveAlpha);
+
+            _panel.color = startColor;
         }
 
         //public IEnumerator Activate()
@@ -60,7 +61,9 @@ namespace GameFields.FirstTurns
         {
             _panel.raycastTarget = true;
 
-            _panel.DOColor(new Color(_panel.color.r, _panel.color.g, _panel.color.b, ActiveAlpha / MaxAlpha), _activateDuration);
+            Color activateColor = new Color(_panel.color.r, _panel.color.g, _panel.color.b, ActiveAlpha / MaxAlpha);
+
+            _panel.DOColor(activateColor, _activateDuration);
         }
 
         public void Deactivate(Action activateCallback)
@@ -73,11 +76,10 @@ namespace GameFields.FirstTurns
             //    _panel.color = new Color(_panel.color.r, _panel.color.g, _panel.color.b, startAlpha + alphaWay * time);
             //    yield return null;
             //}
+            Color deactivateColor = new Color(_panel.color.r, _panel.color.g, _panel.color.b, DeactiveAlpha / MaxAlpha);
 
-
-            _sequence = DOTween.Sequence();
-            _sequence.Append(_panel.DOColor(new Color(_panel.color.r, _panel.color.g, _panel.color.b, DeactiveAlpha / MaxAlpha), _deactivateDuration))
-            .AppendCallback(()=>
+            _panel.DOColor(deactivateColor, _deactivateDuration)
+            .OnComplete(()=>
             {
                 _panel.raycastTarget = false;
                 activateCallback.Invoke();

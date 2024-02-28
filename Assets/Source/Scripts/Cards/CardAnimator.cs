@@ -1,9 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Tools;
 using UnityEngine;
-using Cysharp.Threading.Tasks;
 
 namespace Cards
 {
@@ -22,12 +17,12 @@ namespace Cards
 
         public void PlayDrawnCardAnimation(float cardBackDuration, float cardBackRotation, float cardBackScaleFactor, float cardFrontDuration, float indent)
         {
-            _drawCardAnimation.PlayDrawnCardAnimation(cardBackDuration, cardBackRotation, cardBackScaleFactor, cardFrontDuration, indent).ToUniTask();
+            _drawCardAnimation.PlayDrawnCardAnimation(cardBackDuration, cardBackRotation, cardBackScaleFactor, cardFrontDuration, indent);
         }
 
         public void PlayDiscardCardAnimation(Vector3 startPosition, DiscardCardAnimationData discardCardAnimationData)
         {
-            _discardCardAnimation.PlayDiscardCardAnimation(startPosition, discardCardAnimationData).ToUniTask();
+            _discardCardAnimation.PlayDiscardCardAnimation(startPosition, discardCardAnimationData);
         }
 
         //public void PlaySelectCardAnimation(float screenFactor, float duration)

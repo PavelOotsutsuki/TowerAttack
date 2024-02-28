@@ -34,7 +34,7 @@ namespace GameFields.FirstTurns
 
             //yield return _firstTurnPanel.Activate();
             _firstTurnPanel.Activate();
-            _firstTurnLabel.Activate().ToUniTask();
+            _firstTurnLabel.Activate();
 
             //for (int i=0;i<cards.Length;i++)
             //{

@@ -50,9 +50,26 @@ namespace GameFields
                 return false;
             }
 
-            card = _cards[_cards.Count - 1];
+            card = TakeTopCard();
 
-            _cards.Remove(card);
+            return true;
+        }
+
+        public bool TryTakeCards(out Card[] cards, int count)
+        {
+            if (_cards.Count < count)
+            {
+                Debug.LogError("Недостаточно карт в колоде");
+                cards = null;
+                return false;
+            }
+
+            cards = new Card[count];
+
+            for (int i = 0; i < count; i++)
+            {
+                cards[i] = TakeTopCard();
+            }
 
             return true;
         }
@@ -64,6 +81,25 @@ namespace GameFields
             ShowCard(card);
 
             ShuffleCards();
+        }
+
+        private Card TakeTopCard()
+        {
+            return TakeCardByIndex(_cards.Count - 1);
+        }
+
+        private Card TakeCardByIndex(int index)
+        {
+            if (index >= _cards.Count || index < 0)
+            {
+                Debug.LogError("Invalid card index");
+            }
+
+            Card card = _cards[index];
+
+            _cards.Remove(card);
+
+            return card;
         }
 
         private void ShuffleCards()

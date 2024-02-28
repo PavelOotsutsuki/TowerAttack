@@ -5,7 +5,6 @@ using GameFields.Persons.Towers;
 using GameFields.Persons.PersonAnimators;
 using Tools;
 using UnityEngine;
-using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 
 namespace GameFields.Persons
@@ -47,7 +46,7 @@ namespace GameFields.Persons
             _tower.Activate();
         }
 
-        public void DeativateDropPlaces()
+        public void DeactivateDropPlaces()
         {
             _table.Deactivate();
             _tower.Deactivate();
@@ -56,7 +55,7 @@ namespace GameFields.Persons
         public void DrawCard(Card card)
         {
             card.SetDragAndDropListener(_hand);
-            _playerAnimator.StartDrawCardAnimation(card).ToUniTask();
+            _playerAnimator.StartDrawCardAnimation(card);
         }
 
         private void InitTower(IStartFightListener startFightListener)
