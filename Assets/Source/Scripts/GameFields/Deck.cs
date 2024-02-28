@@ -46,23 +46,6 @@ namespace GameFields
             return _cards.Count >= count;
         }
 
-        //public Card[] TakeCards(int count)
-        //{
-        //    //if (_cards.Count < count)
-        //    //{
-        //    //    throw new System.ArgumentOutOfRangeException("Недостаточно карт в колоде");
-        //    //}
-
-        //    Card[] cards = new Card[count];
-
-        //    for (int i = 0; i < count; i++)
-        //    {
-        //        cards[i] = TakeTopCard();
-        //    }
-
-        //    return cards;
-        //}
-
         public void AddCard(Card card)
         {
             int position = Random.Range(0, _cards.Count);

@@ -1,10 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
-using GameFields.DiscardPiles;
-using GameFields.EndTurnButtons;
 using Tools;
 using UnityEngine;
-using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
 using GameFields.Seats;
 using Cards;
@@ -30,7 +26,6 @@ namespace GameFields.FirstTurns
 
         public void Activate(IDrawCardManager player, IDrawCardManager enemy, Deck deck)
         {
-            //float delay;
             if (deck.IsHasCards(_firstTurnCardsCount * 2) == false)
             {
                 throw new ArgumentOutOfRangeException("Недостаточно карт в колоде");
@@ -38,25 +33,8 @@ namespace GameFields.FirstTurns
 
             gameObject.SetActive(true);
 
-            //yield return _firstTurnPanel.Activate();
             _firstTurnPanel.Activate();
             _firstTurnLabel.Activate();
-
-            //for (int i=0;i<cards.Length;i++)
-            //{
-            //    if (i % 2 == 0)
-            //    {
-            //        player.DrawCard(cards[i]);
-            //        delay = player.DrawCardsDelay - enemy.DrawCardsDelay;
-            //    }
-            //    else
-            //    {
-            //        enemy.DrawCard(cards[i]);
-            //        delay = enemy.DrawCardsDelay - enemy.DrawCardsDelay;
-            //    }
-
-            //    yield return new WaitForSeconds(delay);
-            //}
 
             TakeCards(deck, player).ToUniTask();
             TakeCards(deck, enemy).ToUniTask();
