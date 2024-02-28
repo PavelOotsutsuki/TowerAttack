@@ -69,11 +69,12 @@ namespace GameFields.FirstTurns
 
         private IEnumerator TakeCards(Deck deck, IDrawCardManager person)
         {
-            Card[] cards = deck.TakeCards(_firstTurnCardsCount);
+            Card takenCard;
 
-            foreach (Card card in cards)
+            for (int i = 0; i < _firstTurnCardsCount; i++)
             {
-                person.DrawCard(card);
+                takenCard = deck.TakeTopCard();
+                person.DrawCard(takenCard);
                 yield return new WaitForSeconds(person.DrawCardsDelay);
             }
         }

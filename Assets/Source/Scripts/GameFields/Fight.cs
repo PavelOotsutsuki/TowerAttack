@@ -166,7 +166,7 @@ namespace GameFields
 
         private void StartTurn()
         {
-            DrawningCards().ToUniTask();
+            DrawningCard().ToUniTask();
         }
 
         private void EndFight()
@@ -174,14 +174,16 @@ namespace GameFields
             Debug.Log("БОЙ ОКОНЧЕН! НИЧЬЯ!");
         }
 
-        private IEnumerator DrawningCards()
+        private IEnumerator DrawningCard()
         {
             WaitForSeconds delay = new WaitForSeconds(_activePerson.DrawCardsDelay);
+            Card drawnCard;
 
             for (int i = 0; i < _activePerson.CountDrawCards; i++)
             {
-                if (_deck.TryTakeCard(out Card drawnCard))
+                if (_deck.IsHasCards(1))
                 {
+                    drawnCard = _deck.TakeTopCard();
                     _activePerson.DrawCard(drawnCard);
                     yield return delay;
                 }

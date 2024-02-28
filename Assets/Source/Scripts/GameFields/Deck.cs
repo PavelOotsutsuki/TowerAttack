@@ -41,41 +41,27 @@ namespace GameFields
             ShuffleCards();
         }
 
-        public bool TryTakeCard(out Card card)
-        {
-            card = null;
-
-            if (_cards.Count <= 0)
-            {
-                return false;
-            }
-
-            card = TakeTopCard();
-
-            return true;
-        }
-
         public bool IsHasCards(int count)
         {
             return _cards.Count >= count;
         }
 
-        public Card[] TakeCards(int count)
-        {
-            //if (_cards.Count < count)
-            //{
-            //    throw new System.ArgumentOutOfRangeException("Недостаточно карт в колоде");
-            //}
+        //public Card[] TakeCards(int count)
+        //{
+        //    //if (_cards.Count < count)
+        //    //{
+        //    //    throw new System.ArgumentOutOfRangeException("Недостаточно карт в колоде");
+        //    //}
 
-            Card[] cards = new Card[count];
+        //    Card[] cards = new Card[count];
 
-            for (int i = 0; i < count; i++)
-            {
-                cards[i] = TakeTopCard();
-            }
+        //    for (int i = 0; i < count; i++)
+        //    {
+        //        cards[i] = TakeTopCard();
+        //    }
 
-            return cards;
-        }
+        //    return cards;
+        //}
 
         public void AddCard(Card card)
         {
@@ -86,7 +72,7 @@ namespace GameFields
             ShuffleCards();
         }
 
-        private Card TakeTopCard()
+        public Card TakeTopCard()
         {
             return TakeCardByIndex(_cards.Count - 1);
         }
