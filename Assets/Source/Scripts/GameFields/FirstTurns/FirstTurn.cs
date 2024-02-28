@@ -9,14 +9,16 @@ using Cysharp.Threading.Tasks;
 using GameFields.Seats;
 using Cards;
 using GameFields.Persons;
+using System;
 
 namespace GameFields.FirstTurns
 {
-    public class FirstTurn : MonoBehaviour//, IPlayerFirstTurnManager, IEnemyFirstTurnManager
+    public class FirstTurn : MonoBehaviour
     {
         [SerializeField] private FirstTurnPanel _firstTurnPanel;
         [SerializeField] private FirstTurnLabel _firstTurnLabel;
         [SerializeField] private Seat[] _seats;
+        [SerializeField] private int _firstTurnCardsCount = 3;
 
         public void Init()
         {
@@ -26,9 +28,13 @@ namespace GameFields.FirstTurns
             InitSeats();
         }
 
-        public void Activate(Card[] playerCards, Card[] enemyCards, IPerson player, IPerson enemy)
+        public void Activate(IDrawCardManager player, IDrawCardManager enemy, Deck deck)
         {
             //float delay;
+            if (deck.IsHasCards(_firstTurnCardsCount * 2) == false)
+            {
+                throw new ArgumentOutOfRangeException("Недостаточно карт в колоде");
+            }
 
             gameObject.SetActive(true);
 
@@ -52,20 +58,19 @@ namespace GameFields.FirstTurns
             //    yield return new WaitForSeconds(delay);
             //}
 
-            TakeCards(playerCards, player).ToUniTask();
-            TakeCards(enemyCards, enemy).ToUniTask();
+            TakeCards(deck, player).ToUniTask();
+            TakeCards(deck, enemy).ToUniTask();
         }
 
         public void Deactivate()
         {
-            //yield return _firstTurnPanel.Deactivate();
             _firstTurnPanel.Deactivate(()=> Destroy(gameObject));
-
-            //gameObject.SetActive(false);
         }
 
-        private IEnumerator TakeCards(Card[] cards, IPerson person)
+        private IEnumerator TakeCards(Deck deck, IDrawCardManager person)
         {
+            Card[] cards = deck.TakeCards(_firstTurnCardsCount);
+
             foreach (Card card in cards)
             {
                 person.DrawCard(card);

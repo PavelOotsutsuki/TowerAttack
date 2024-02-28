@@ -55,23 +55,26 @@ namespace GameFields
             return true;
         }
 
-        public bool TryTakeCards(out Card[] cards, int count)
+        public bool IsHasCards(int count)
         {
-            if (_cards.Count < count)
-            {
-                Debug.LogError("Недостаточно карт в колоде");
-                cards = null;
-                return false;
-            }
+            return _cards.Count >= count;
+        }
 
-            cards = new Card[count];
+        public Card[] TakeCards(int count)
+        {
+            //if (_cards.Count < count)
+            //{
+            //    throw new System.ArgumentOutOfRangeException("Недостаточно карт в колоде");
+            //}
+
+            Card[] cards = new Card[count];
 
             for (int i = 0; i < count; i++)
             {
                 cards[i] = TakeTopCard();
             }
 
-            return true;
+            return cards;
         }
 
         public void AddCard(Card card)
@@ -90,11 +93,6 @@ namespace GameFields
 
         private Card TakeCardByIndex(int index)
         {
-            if (index >= _cards.Count || index < 0)
-            {
-                Debug.LogError("Invalid card index");
-            }
-
             Card card = _cards[index];
 
             _cards.Remove(card);

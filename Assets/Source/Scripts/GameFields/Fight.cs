@@ -8,12 +8,13 @@ using Tools;
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using GameFields.FirstTurns;
+using System;
+using UnityEngine.Events;
 
 namespace GameFields
 {
     internal class Fight : IEndTurnHandler, IStartFightListener
     {
-        private readonly int _firstTurnCardsCount = 3;
         private readonly int _maxTurns = 100;
 
         private Player _player;
@@ -91,30 +92,37 @@ namespace GameFields
             //        Debug.LogError("Недостаточно карт в колоде");
             //    }
             //}
-            Card[] playerCards = new Card[_firstTurnCardsCount];
-            Card[] enemyCards = new Card[_firstTurnCardsCount];
+            //if (_deck.IsHasCards(_firstTurnCardsCount * 2) == false)
+            //{
+            //    throw new ArgumentOutOfRangeException("Недостаточно карт в колоде");
+            //}
 
-            for (int i = 0; i < _firstTurnCardsCount * 2; i++)
-            {
-                if (_deck.TryTakeCard(out Card drawnCard))
-                {
-                    if(i % 2 == 0)
-                    {
-                        playerCards[i / 2] = drawnCard;
-                    }
-                    else
-                    {
-                        enemyCards[i / 2] = drawnCard;
-                    }
-                }
-                else
-                {
-                    Debug.LogError("Недостаточно карт в колоде");
-                }
-            }
+            //Func<int, Card[]> takeCardsAction = _deck.TakeCards;
 
-            //yield return _firstTurn.Activate(firstTurnCards);
-            _firstTurn.Activate(playerCards, enemyCards, _player, _enemy);
+            //Card[] playerCards = new Card[_firstTurnCardsCount];
+            //Card[] enemyCards = new Card[_firstTurnCardsCount];
+
+            //for (int i = 0; i < _firstTurnCardsCount * 2; i++)
+            //{
+            //    if (_deck.TryTakeCard(out Card drawnCard))
+            //    {
+            //        if(i % 2 == 0)
+            //        {
+            //            playerCards[i / 2] = drawnCard;
+            //        }
+            //        else
+            //        {
+            //            enemyCards[i / 2] = drawnCard;
+            //        }
+            //    }
+            //    else
+            //    {
+            //        Debug.LogError("Недостаточно карт в колоде");
+            //    }
+            //}
+
+            ////yield return _firstTurn.Activate(firstTurnCards);
+            _firstTurn.Activate(_player, _enemy, _deck);
         }
 
         private void DiscardCards()
