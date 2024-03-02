@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace GameFields.Persons
 {
-    public class Player : MonoBehaviour, IPerson
+    internal class Player : MonoBehaviour, IPerson
     {
         [SerializeField] private int _countDrawCards = 1;
         [SerializeField] private float _drawCardsDelay = 2.5f;
@@ -22,11 +22,13 @@ namespace GameFields.Persons
         public int CountDrawCards => _countDrawCards;
         public float DrawCardsDelay => _drawCardsDelay;
 
-        public void Init(IStartFightListener startFightListener)
+        public void Init(IStartFightListener startFightListener, CardEffects cardEffects)
         {
             _hand.Init();
-            _table.Init(this);
             InitTower(startFightListener);
+            _table.Init(this, cardEffects);
+            cardEffects.SetPlayerGameFieldElements(_table, _hand, _tower);
+
             _playerAnimator.Init(_hand, _transform);
         }
 

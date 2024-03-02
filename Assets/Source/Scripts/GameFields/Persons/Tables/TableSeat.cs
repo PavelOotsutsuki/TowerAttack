@@ -9,18 +9,24 @@ namespace GameFields.Persons.Tables
         [SerializeField] private RectTransform _rectTransform;
 
         private CardCharacter _cardCharacter;
+        private CardEffects _cardEffects;
 
-        internal void Init()
+        internal void Init(CardEffects cardEffects)
         {
+            _cardEffects = cardEffects;
         }
 
         internal void SetCardCharacter(CardCharacter cardCharacter)
         {
+            EffectType effectType;
             Vector2 cardCharacterPosition = new Vector2(0, 0);
+
             _cardCharacter = cardCharacter;
             _cardCharacter.transform.SetParent(_rectTransform);
             _cardCharacter.transform.localPosition = cardCharacterPosition;
-            _cardCharacter.Activate();
+            effectType = _cardCharacter.Activate();
+
+            _cardEffects.PlayEffect(effectType);
         }
 
         internal bool TryDiscardCardCharacter(out CardCharacter cardCharacter)

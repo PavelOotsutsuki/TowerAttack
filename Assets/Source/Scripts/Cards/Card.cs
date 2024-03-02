@@ -71,29 +71,8 @@ namespace Cards
 
         public void Drawn(float cardBackDuration, float cardBackRotation, float cardBackScaleFactor, float cardFrontDuration, float indent)
         {
-            //Block();
             _cardAnimator.PlayDrawnCardAnimation(cardBackDuration, cardBackRotation, cardBackScaleFactor, cardFrontDuration, indent);
         }
-
-        //public void PlaySelectCardAnimation(float screenFactor, float duration)
-        //{
-        //    _cardAnimator.PlaySelectCardAnimation(screenFactor, duration);
-        //}
-
-        //public void PlayUnselectCardAnimation(float screenFactor, float duration)
-        //{
-        //    _cardAnimator.PlayUnselectCardAnimation(screenFactor, duration);
-        //}
-
-        //public void PlayCardAnimation(Vector3 center, float duration)
-        //{
-        //    _cardAnimator.PlayCardAnimation(center, duration);
-        //}
-
-        //public void PlayReturnInHandAnimation(float duration)
-        //{
-        //    _cardAnimator.PlayReturnInHandAnimation(duration);
-        //}
 
         public void PlayOnPlace(Vector3 center, float duration)
         {
@@ -122,7 +101,7 @@ namespace Cards
         private void CreateCardCharacter()
         {
             _cardCharacter = Instantiate(_cardSO.CardCharacter);
-            _cardCharacter.Init(_cardSO.AwakeSound);
+            _cardCharacter.Init(_cardSO.AwakeSound, (EffectType)_cardSO.Number);
         }
 
         private void Activate()

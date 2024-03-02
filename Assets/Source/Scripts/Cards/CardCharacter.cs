@@ -9,16 +9,21 @@ namespace Cards
         [SerializeField] private AudioSource _audioSource;
         [SerializeField] private RectTransform _rectTransform;
 
-        public void Init(AudioClip awakeSound)
+        private EffectType _effectType;
+
+        public void Init(AudioClip awakeSound, EffectType effectType)
         {
             _audioSource.clip = awakeSound;
+            _effectType = effectType;
             gameObject.SetActive(false);
         }
 
-        public void Activate()
+        public EffectType Activate()
         {
             gameObject.SetActive(true);
             AudioSource.PlayClipAtPoint(_audioSource.clip, Vector3.zero);
+
+            return _effectType;
         }
 
         public Vector3 DiscardCard()

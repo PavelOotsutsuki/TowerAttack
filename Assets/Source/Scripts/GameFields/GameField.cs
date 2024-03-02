@@ -20,6 +20,7 @@ namespace GameFields
         [SerializeField] private EnemyAI _enemyAI;
 
         private Fight _fight;
+        private CardEffects _cardEffects;
 
         public void Init(Card[] cardsInDeck)
         {
@@ -28,10 +29,11 @@ namespace GameFields
             _discardPile.Init();
             _fightAnimator.Init(_discardPile);
 
+            _cardEffects = new CardEffects(_deck, _discardPile);
             _fight = new Fight(_player, _enemyAI, _deck, _discardPile, _endTurnButton, _fightAnimator, _firstTurn);
 
-            _player.Init(_fight);
-            _enemyAI.Init(_fight);
+            _player.Init(_fight, _cardEffects);
+            _enemyAI.Init(_fight, _cardEffects);
             _endTurnButton.Init(_fight);
 
             _fight.StartFirstTurn();

@@ -22,15 +22,17 @@ namespace GameFields.Persons
         private IEndTurnHandler _endTurnHandler;
         private CardImitationActions _cardImitationActions;
 
-        public void Init(IEndTurnHandler endTurnHandler)
+        public void Init(IEndTurnHandler endTurnHandler, CardEffects cardEffects)
         {
             CountDrawCards = _countDrawCardsEnemy;
             DrawCardsDelay = _drawCardsDelayEnemy;
             _endTurnHandler = endTurnHandler;
 
             _hand.Init();
-            _table.Init(this);
             _tower.Init(this);
+            _table.Init(this, cardEffects);
+            cardEffects.SetEnemyAIGameFieldElements(_table, _hand, _tower);
+
             _cardImitationActions = new CardImitationActions(_hand, _table);
             _enemyAnimator.Init(_endTurnHandler, _cardImitationActions);
         }

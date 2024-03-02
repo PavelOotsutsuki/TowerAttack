@@ -5,9 +5,9 @@ namespace GameFields.Persons.Tables
 {
     internal class TablePlayer : Table, ICardDropPlace
     {
-        public override void Init(IPlayCardManager playCardManager)
+        public override void Init(IPlayCardManager playCardManager, CardEffects cardEffects)
         {
-            base.Init(playCardManager);
+            base.Init(playCardManager, cardEffects);
 
             FirstTurnDeactivate();
         }
