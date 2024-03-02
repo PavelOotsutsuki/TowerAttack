@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Cards
 {
-    [CreateAssetMenu(fileName = "New card", menuName = "Create card", order = 51)]
+    [CreateAssetMenu(fileName = "New card", menuName = "SO/Create card", order = 51)]
     internal class CardSO : ScriptableObject
     {
         [SerializeField] private CardCharacter _cardCharacter;
