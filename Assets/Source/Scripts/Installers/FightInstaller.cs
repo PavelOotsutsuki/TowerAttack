@@ -7,6 +7,7 @@ using GameFields.Persons.Hands;
 using GameFields.Persons.Tables;
 using GameFields.Persons.Towers;
 using GameFields.Persons;
+using Tools;
 
 namespace Installers
 {
@@ -34,6 +35,74 @@ namespace Installers
             Container.Bind<TowerPlayer>().FromInstance(_towerPlayer).AsSingle();
             Container.Bind<EnemyAnimator>().FromInstance(_enemyAnimator).AsSingle();
             Container.Bind<EnemyAI>().AsSingle();
+        }
+
+        [ContextMenu(nameof(DefineAllComponents))]
+        private void DefineAllComponents()
+        {
+            DefineDeck();
+            DefineDiscardPile();
+            DefineTableAI();
+            DefineTablePlayer();
+            DefineHandAI();
+            DefineHandPlayer();
+            DefineTowerAI();
+            DefineTowerPlayer();
+            DefineEnemyAnimator();
+        }
+
+        [ContextMenu(nameof(DefineDeck))]
+        private void DefineDeck()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _deck, ComponentLocationTypes.InScene);
+        }
+
+        [ContextMenu(nameof(DefineDiscardPile))]
+        private void DefineDiscardPile()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _discardPile, ComponentLocationTypes.InScene);
+        }
+
+        [ContextMenu(nameof(DefineTableAI))]
+        private void DefineTableAI()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _tableAI, ComponentLocationTypes.InScene);
+        }
+
+        [ContextMenu(nameof(DefineTablePlayer))]
+        private void DefineTablePlayer()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _tablePlayer, ComponentLocationTypes.InScene);
+        }
+
+        [ContextMenu(nameof(DefineHandAI))]
+        private void DefineHandAI()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _handAI, ComponentLocationTypes.InScene);
+        }
+
+        [ContextMenu(nameof(DefineHandPlayer))]
+        private void DefineHandPlayer()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _handPlayer, ComponentLocationTypes.InScene);
+        }
+
+        [ContextMenu(nameof(DefineTowerAI))]
+        private void DefineTowerAI()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _towerAI, ComponentLocationTypes.InScene);
+        }
+
+        [ContextMenu(nameof(DefineTowerPlayer))]
+        private void DefineTowerPlayer()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _towerPlayer, ComponentLocationTypes.InScene);
+        }
+
+        [ContextMenu(nameof(DefineEnemyAnimator))]
+        private void DefineEnemyAnimator()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _enemyAnimator, ComponentLocationTypes.InScene);
         }
     }
 }

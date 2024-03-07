@@ -3,6 +3,7 @@
     public enum ComponentLocationTypes
     {
         InChildren,
-        InThis
+        InThis,
+        InScene
     }
 }
