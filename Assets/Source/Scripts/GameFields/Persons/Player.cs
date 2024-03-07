@@ -6,28 +6,36 @@ using GameFields.Persons.PersonAnimators;
 using Tools;
 using UnityEngine;
 using System.Collections.Generic;
+using Zenject;
 
 namespace GameFields.Persons
 {
     internal class Player : MonoBehaviour, IPerson
     {
-        [SerializeField] private int _countDrawCards = 1;
-        [SerializeField] private float _drawCardsDelay = 2.5f;
-        [SerializeField] private HandPlayer _hand;
-        [SerializeField] private TablePlayer _table;
-        [SerializeField] private TowerPlayer _tower;
         [SerializeField] private PlayerAnimator _playerAnimator;
         [SerializeField] private Transform _transform;
 
-        public int CountDrawCards => _countDrawCards;
-        public float DrawCardsDelay => _drawCardsDelay;
+        private HandPlayer _hand;
+        private TablePlayer _table;
+        private TowerPlayer _tower;
+
+        public int CountDrawCards => _playerAnimator.CountDrawCards;
+        public float DrawCardsDelay => _playerAnimator.DrawCardsDelay;
+
+        [Inject]
+        public void Construct(HandPlayer hand, TablePlayer table, TowerPlayer tower)
+        {
+            _hand = hand;
+            _table = table;
+            _tower = tower;
+        }
 
         public void Init(IStartFightListener startFightListener, CardEffects cardEffects)
         {
             _hand.Init();
             InitTower(startFightListener);
             _table.Init(this, cardEffects);
-            cardEffects.SetPlayerGameFieldElements(_table, _hand, _tower);
+//            cardEffects.SetPlayerGameFieldElements(_table, _hand, _tower);
 
             _playerAnimator.Init(_hand, _transform);
         }

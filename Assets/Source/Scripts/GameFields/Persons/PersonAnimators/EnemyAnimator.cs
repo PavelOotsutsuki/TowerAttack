@@ -6,6 +6,11 @@ namespace GameFields.Persons.PersonAnimators
     public class EnemyAnimator : MonoBehaviour
     {
         [SerializeField] private EnemyDragAndDropImitation _enemyDragAndDropImitation;
+        [SerializeField] private int _countDrawCards = 1;
+        [SerializeField] private float _drawCardsDelay = 0.5f;
+
+        public int CountDrawCards => _countDrawCards;
+        public float DrawCardsDelay => _drawCardsDelay;
 
         public void Init(IEndTurnHandler endTurnHandler, CardImitationActions cardImitationActions)
         {

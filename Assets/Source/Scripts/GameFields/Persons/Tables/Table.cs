@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Tables
 {
-    internal abstract class Table : MonoBehaviour, ICardSeatPlace
+    public abstract class Table : MonoBehaviour, ICardSeatPlace
     {
         [SerializeField] protected CanvasGroup CanvasGroup;
         [SerializeField] private TableSeat[] _cardSeats;
@@ -52,7 +52,7 @@ namespace GameFields.Persons.Tables
             return discardCards;
         }
 
-        protected bool TryFindCardSeat(out TableSeat cardSeat)
+        private bool TryFindCardSeat(out TableSeat cardSeat)
         {
             cardSeat = null;
 

@@ -5,40 +5,42 @@ using GameFields.Persons.Tables;
 using GameFields.Persons.Towers;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace GameFields.Persons
 {
     [Serializable]
-    internal class EnemyAI : IPerson
+    public class EnemyAI : IPerson
     {
-        [SerializeField] private HandAI _hand;
-        [SerializeField] private TableAI _table;
-        [SerializeField] private TowerAI _tower;
-        [SerializeField] private EnemyAnimator _enemyAnimator;
-        [SerializeField] private int _countDrawCardsEnemy = 1;
-        [SerializeField] private float _drawCardsDelayEnemy = 0.5f;
-
+        private EnemyAnimator _enemyAnimator;
+        private HandAI _hand;
+        private TableAI _table;
+        private TowerAI _tower;
         private IEndTurnHandler _endTurnHandler;
         private CardImitationActions _cardImitationActions;
 
+        public EnemyAI(EnemyAnimator enemyAnimator, HandAI hand, TableAI table, TowerAI tower)
+        {
+            _enemyAnimator = enemyAnimator;
+            _hand = hand;
+            _table = table;
+            _tower = tower;
+        }
+
+        public float DrawCardsDelay => _enemyAnimator.DrawCardsDelay;
+        public int CountDrawCards => _enemyAnimator.CountDrawCards;
+
         public void Init(IEndTurnHandler endTurnHandler, CardEffects cardEffects)
         {
-            CountDrawCards = _countDrawCardsEnemy;
-            DrawCardsDelay = _drawCardsDelayEnemy;
             _endTurnHandler = endTurnHandler;
 
             _hand.Init();
             _tower.Init(this);
             _table.Init(this, cardEffects);
-            cardEffects.SetEnemyAIGameFieldElements(_table, _hand, _tower);
+//            cardEffects.SetEnemyAIGameFieldElements(_table, _hand, _tower);
 
             _cardImitationActions = new CardImitationActions(_hand, _table);
             _enemyAnimator.Init(_endTurnHandler, _cardImitationActions);
         }
-
-        public float DrawCardsDelay { get; private set; }
-        public int CountDrawCards { get; private set; }
 
         public void PlayDragAndDropImitation()
         {

@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace GameFields
 {
-    internal class CardEffects
+    public class CardEffects
     {
         private Deck _deck;
         private DiscardPile _discardPile;
@@ -25,20 +25,6 @@ namespace GameFields
         {
             _deck = deck;
             _discardPile = discardPile;
-        }
-
-        public void SetPlayerGameFieldElements(TablePlayer tablePlayer, HandPlayer handPlayer, TowerPlayer towerPlayer)
-        {
-            _tablePlayer = tablePlayer;
-            _handPlayer = handPlayer;
-            _towerPlayer = towerPlayer;
-        }
-
-        public void SetEnemyAIGameFieldElements(TableAI tableAI, HandAI handAI, TowerAI towerAI)
-        {
-            _tableAI = tableAI;
-            _handAI = handAI;
-            _towerAI = towerAI;
         }
 
         public void PlayEffect(EffectType effectType)

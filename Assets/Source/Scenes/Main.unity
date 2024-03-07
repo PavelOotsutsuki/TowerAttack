@@ -861,19 +861,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8307ad8fd0bda4f2996d65372c7a3606, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _deck: {fileID: 250433512}
   _endTurnButton: {fileID: 601274534}
   _player: {fileID: 1905208563}
-  _discardPile: {fileID: 1000203021}
   _fightAnimator: {fileID: 200841579}
   _firstTurn: {fileID: 1173604842}
-  _enemyAI:
-    _hand: {fileID: 1620354845}
-    _table: {fileID: 704143077}
-    _tower: {fileID: 1939013310}
-    _enemyAnimator: {fileID: 1502786296}
-    _countDrawCardsEnemy: 2
-    _drawCardsDelayEnemy: 0.5
 --- !u!114 &200841579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6152,6 +6143,7 @@ MonoBehaviour:
   - {fileID: 2077551562}
   - {fileID: 1623808800}
   - {fileID: 462340200}
+  _firstTurnCardsCount: 3
 --- !u!1 &1185443094
 GameObject:
   m_ObjectHideFlags: 0
@@ -6792,6 +6784,92 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5aac0c557266f4746a62198e7061fee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1290281913
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1290281916}
+  - component: {fileID: 1290281915}
+  - component: {fileID: 1290281914}
+  m_Layer: 0
+  m_Name: SceneContext
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1290281914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1290281913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9634c7a79bdce4c28af51d138dd99cb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _deck: {fileID: 250433512}
+  _discardPile: {fileID: 1000203021}
+  _tableAI: {fileID: 704143077}
+  _tablePlayer: {fileID: 867188514}
+  _handAI: {fileID: 1620354845}
+  _handPlayer: {fileID: 112430305}
+  _towerAI: {fileID: 1939013310}
+  _towerPlayer: {fileID: 1018812819545794878}
+  _enemyAnimator: {fileID: 1502786296}
+--- !u!114 &1290281915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1290281913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89715ad69b973a14899afa2c6730b30b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scriptableObjectInstallers: []
+  _monoInstallers:
+  - {fileID: 1290281914}
+  _installerPrefabs: []
+  _autoRun: 1
+  OnPreInstall:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPostInstall:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPreResolve:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPostResolve:
+    m_PersistentCalls:
+      m_Calls: []
+  _parentNewObjectsUnderSceneContext: 0
+  _contractNames: []
+  _parentContractNames: []
+--- !u!4 &1290281916
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1290281913}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1296459754
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8173,6 +8251,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyDragAndDropImitation: {fileID: 1502786295}
+  _countDrawCards: 2
+  _drawCardsDelay: 0.5
 --- !u!1001 &1520164573
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10343,11 +10423,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85b373b3257ed48ae98cdfc12bcd2f2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _countDrawCards: 5
-  _drawCardsDelay: 2
-  _hand: {fileID: 112430305}
-  _table: {fileID: 867188514}
-  _tower: {fileID: 1018812819545794878}
   _playerAnimator: {fileID: 1905208565}
   _transform: {fileID: 1905208562}
 --- !u!114 &1905208565
@@ -10369,6 +10444,8 @@ MonoBehaviour:
     _invertCardBackRotation: 90
     _invertCardBackScaleFactor: 1.8
     _indent: 15
+  _countDrawCards: 5
+  _drawCardsDelay: 2
 --- !u!1 &1915389997
 GameObject:
   m_ObjectHideFlags: 0
@@ -13925,4 +14002,5 @@ RectTransform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 1290281916}
   - {fileID: 1272924793}

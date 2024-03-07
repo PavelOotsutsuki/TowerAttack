@@ -5,22 +5,30 @@ using GameFields.Persons;
 using GameFields.EndTurnButtons;
 using GameFields.DiscardPiles;
 using GameFields.FirstTurns;
+using Zenject;
 
 namespace GameFields
 {
     public class GameField : MonoBehaviour
     {
-        [SerializeField] private Deck _deck;
         [SerializeField] private EndTurnButton _endTurnButton;
         [SerializeField] private Player _player;
-        [SerializeField] private DiscardPile _discardPile;
         [SerializeField] private FightAnimator _fightAnimator;
         [SerializeField] private FirstTurn _firstTurn;
 
-        [SerializeField] private EnemyAI _enemyAI;
-
+        private Deck _deck;
+        private DiscardPile _discardPile;
+        private EnemyAI _enemyAI;
         private Fight _fight;
         private CardEffects _cardEffects;
+
+        [Inject]
+        private void Construct(EnemyAI enemyAI, Deck deck, DiscardPile discardPile)
+        {
+            _enemyAI = enemyAI;
+            _deck = deck;
+            _discardPile = discardPile;
+        }
 
         public void Init(Card[] cardsInDeck)
         {

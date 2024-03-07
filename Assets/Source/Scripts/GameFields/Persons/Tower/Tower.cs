@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Towers
 {
-    internal abstract class Tower : MonoBehaviour
+    public abstract class Tower : MonoBehaviour
     {
         [SerializeField] protected TowerSeat TowerSeat;
         [SerializeField] protected CanvasGroup CanvasGroup;

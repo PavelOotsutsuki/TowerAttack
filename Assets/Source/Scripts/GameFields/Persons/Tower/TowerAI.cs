@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Towers
 {
-    internal class TowerAI : Tower, ICardDropPlaceImitation
+    public class TowerAI : Tower, ICardDropPlaceImitation
     {
         public override void Init(IPlayCardManager playCardManager)
         {

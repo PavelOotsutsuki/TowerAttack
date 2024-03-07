@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Towers
 {
-    internal class TowerPlayer : Tower, ICardDropPlace
+    public class TowerPlayer : Tower, ICardDropPlace
     {
         private IStartFightListener _startFightListener;
 

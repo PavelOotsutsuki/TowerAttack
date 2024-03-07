@@ -12,9 +12,13 @@ namespace GameFields.Persons.PersonAnimators
     public class PlayerAnimator : MonoBehaviour
     {
         [SerializeField] private PlayerDrawCardAnimator _drawCardAnimator;
+        [SerializeField] private int _countDrawCards = 1;
+        [SerializeField] private float _drawCardsDelay = 2f;
 
         private IHand _hand;
         //private Transform _parent;
+        public int CountDrawCards => _countDrawCards;
+        public float DrawCardsDelay => _drawCardsDelay;
 
         public void Init(IHand hand, Transform parent)
         {

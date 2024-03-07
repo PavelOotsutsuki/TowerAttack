@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Tables
 {
-    internal class TableAI : Table, ICardDropPlaceImitation
+    public class TableAI : Table, ICardDropPlaceImitation
     {
         public override void Init(IPlayCardManager playCardManager, CardEffects cardEffects)
         {
