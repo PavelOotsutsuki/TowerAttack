@@ -12,22 +12,23 @@ namespace GameFields.Persons
 {
     internal class Player : MonoBehaviour, IPerson
     {
-        [SerializeField] private PlayerAnimator _playerAnimator;
         [SerializeField] private Transform _transform;
 
         private HandPlayer _hand;
         private TablePlayer _table;
         private TowerPlayer _tower;
+        private PlayerAnimator _playerAnimator;
 
         public int CountDrawCards => _playerAnimator.CountDrawCards;
         public float DrawCardsDelay => _playerAnimator.DrawCardsDelay;
 
         [Inject]
-        public void Construct(HandPlayer hand, TablePlayer table, TowerPlayer tower)
+        public void Construct(HandPlayer hand, TablePlayer table, TowerPlayer tower, PlayerAnimator playerAnimator)
         {
             _hand = hand;
             _table = table;
             _tower = tower;
+            _playerAnimator = playerAnimator;
         }
 
         public void Init(IStartFightListener startFightListener, CardEffects cardEffects)
@@ -77,35 +78,7 @@ namespace GameFields.Persons
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
-            DefineHand();
-            DefineTable();
-            DefineTower();
-            DefinePlayerAnimator();
             DefineTransform();
-        }
-
-        [ContextMenu(nameof(DefineHand))]
-        private void DefineHand()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _hand, ComponentLocationTypes.InChildren);
-        }
-
-        [ContextMenu(nameof(DefineTable))]
-        private void DefineTable()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _table, ComponentLocationTypes.InChildren);
-        }
-
-        [ContextMenu(nameof(DefineTower))]
-        private void DefineTower()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _tower, ComponentLocationTypes.InChildren);
-        }
-
-        [ContextMenu(nameof(DefinePlayerAnimator))]
-        private void DefinePlayerAnimator()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _playerAnimator, ComponentLocationTypes.InThis);
         }
 
         [ContextMenu(nameof(DefineTransform))]

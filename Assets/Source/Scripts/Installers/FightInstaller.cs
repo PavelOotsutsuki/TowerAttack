@@ -22,6 +22,7 @@ namespace Installers
         [SerializeField] private TowerAI _towerAI;
         [SerializeField] private TowerPlayer _towerPlayer;
         [SerializeField] private EnemyAnimator _enemyAnimator;
+        [SerializeField] private PlayerAnimator _playerAnimator;
 
         public override void InstallBindings()
         {
@@ -34,6 +35,7 @@ namespace Installers
             Container.Bind<TowerAI>().FromInstance(_towerAI).AsSingle();
             Container.Bind<TowerPlayer>().FromInstance(_towerPlayer).AsSingle();
             Container.Bind<EnemyAnimator>().FromInstance(_enemyAnimator).AsSingle();
+            Container.Bind<PlayerAnimator>().FromInstance(_playerAnimator).AsSingle();
             Container.Bind<EnemyAI>().AsSingle();
         }
 
@@ -49,6 +51,7 @@ namespace Installers
             DefineTowerAI();
             DefineTowerPlayer();
             DefineEnemyAnimator();
+            DefinePlayerAnimator();
         }
 
         [ContextMenu(nameof(DefineDeck))]
@@ -103,6 +106,12 @@ namespace Installers
         private void DefineEnemyAnimator()
         {
             AutomaticFillComponents.DefineComponent(this, ref _enemyAnimator, ComponentLocationTypes.InScene);
+        }
+
+        [ContextMenu(nameof(DefinePlayerAnimator))]
+        private void DefinePlayerAnimator()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _playerAnimator, ComponentLocationTypes.InScene);
         }
     }
 }

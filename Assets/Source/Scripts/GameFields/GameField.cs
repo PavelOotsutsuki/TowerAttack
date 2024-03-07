@@ -50,18 +50,10 @@ namespace GameFields
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
-            DefineDeck();
             DefineEndTurnButton();
             DefinePlayer();
-            DefineDiscardPile();
             DefineFightAnimator();
             DefineFirstTurn();
-        }
-
-        [ContextMenu(nameof(DefineDeck))]
-        private void DefineDeck()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _deck, ComponentLocationTypes.InChildren);
         }
 
         [ContextMenu(nameof(DefineEndTurnButton))]
@@ -74,12 +66,6 @@ namespace GameFields
         private void DefinePlayer()
         {
             AutomaticFillComponents.DefineComponent(this, ref _player, ComponentLocationTypes.InChildren);
-        }
-
-        [ContextMenu(nameof(DefineDiscardPile))]
-        private void DefineDiscardPile()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _discardPile, ComponentLocationTypes.InChildren);
         }
 
         [ContextMenu(nameof(DefineFightAnimator))]
