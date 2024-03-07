@@ -6,9 +6,9 @@ using UnityEngine.UI;
 using DG.Tweening;
 using System;
 
-namespace GameFields.FirstTurns
+namespace GameFields.StartTowerCardSelections
 {
-    public class FirstTurnPanel : MonoBehaviour
+    public class StartTowerCardSelectionPanel : MonoBehaviour
     {
         private const float MaxAlpha = 255f;
         private const float DeactiveAlpha = 0f;

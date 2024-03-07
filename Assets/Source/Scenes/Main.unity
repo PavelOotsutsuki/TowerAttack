@@ -864,7 +864,7 @@ MonoBehaviour:
   _endTurnButton: {fileID: 601274534}
   _player: {fileID: 1905208563}
   _fightAnimator: {fileID: 200841579}
-  _firstTurn: {fileID: 1173604842}
+  _startTowerCardSelection: {fileID: 1173604842}
 --- !u!114 &200841579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5577,7 +5577,7 @@ GameObject:
   - component: {fileID: 1112966542}
   - component: {fileID: 1112966544}
   m_Layer: 0
-  m_Name: FirstTurnPanel
+  m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6095,7 +6095,7 @@ GameObject:
   - component: {fileID: 1173604841}
   - component: {fileID: 1173604842}
   m_Layer: 0
-  m_Name: FirstTurn
+  m_Name: StartTowerCardSelection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6137,8 +6137,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf66b929317a14af8a36e2c3ca0aa2fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _firstTurnPanel: {fileID: 1112966544}
-  _firstTurnLabel: {fileID: 1226376328}
+  _startTowerCardSelectionPanel: {fileID: 1112966544}
+  _startTowerCardSelectionLabel: {fileID: 1226376328}
   _seats:
   - {fileID: 2077551562}
   - {fileID: 1623808800}
@@ -6323,7 +6323,7 @@ GameObject:
   - component: {fileID: 1226376329}
   - component: {fileID: 1226376328}
   m_Layer: 0
-  m_Name: FirstTurnLabel
+  m_Name: Label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

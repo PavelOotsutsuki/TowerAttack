@@ -6,9 +6,9 @@ using DG.Tweening;
 using Tools;
 using Cysharp.Threading.Tasks;
 
-namespace GameFields.FirstTurns
+namespace GameFields.StartTowerCardSelections
 {
-    public class FirstTurnLabel : MonoBehaviour
+    public class StartTowerCardSelectionLabel : MonoBehaviour
     {
         private const float LifeAlpha = 1f;
         private const float EndAlpha = 0f;

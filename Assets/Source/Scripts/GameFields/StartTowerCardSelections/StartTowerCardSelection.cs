@@ -7,19 +7,19 @@ using Cards;
 using GameFields.Persons;
 using System;
 
-namespace GameFields.FirstTurns
+namespace GameFields.StartTowerCardSelections
 {
-    public class FirstTurn : MonoBehaviour
+    public class StartTowerCardSelection : MonoBehaviour
     {
-        [SerializeField] private FirstTurnPanel _firstTurnPanel;
-        [SerializeField] private FirstTurnLabel _firstTurnLabel;
+        [SerializeField] private StartTowerCardSelectionPanel _startTowerCardSelectionPanel;
+        [SerializeField] private StartTowerCardSelectionLabel _startTowerCardSelectionLabel;
         [SerializeField] private Seat[] _seats;
         [SerializeField] private int _firstTurnCardsCount = 3;
 
         public void Init()
         {
-            _firstTurnPanel.Init();
-            _firstTurnLabel.Init();
+            _startTowerCardSelectionPanel.Init();
+            _startTowerCardSelectionLabel.Init();
 
             InitSeats();
         }
@@ -33,8 +33,8 @@ namespace GameFields.FirstTurns
 
             gameObject.SetActive(true);
 
-            _firstTurnPanel.Activate();
-            _firstTurnLabel.Activate();
+            _startTowerCardSelectionPanel.Activate();
+            _startTowerCardSelectionLabel.Activate();
 
             TakeCards(deck, player).ToUniTask();
             TakeCards(deck, enemy).ToUniTask();
@@ -42,7 +42,7 @@ namespace GameFields.FirstTurns
 
         public void Deactivate()
         {
-            _firstTurnPanel.Deactivate(()=> Destroy(gameObject));
+            _startTowerCardSelectionPanel.Deactivate(()=> Destroy(gameObject));
         }
 
         private IEnumerator TakeCards(Deck deck, IDrawCardManager person)
@@ -76,13 +76,13 @@ namespace GameFields.FirstTurns
         [ContextMenu(nameof(DefineFirstTurnPanel))]
         private void DefineFirstTurnPanel()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _firstTurnPanel, ComponentLocationTypes.InChildren);
+            AutomaticFillComponents.DefineComponent(this, ref _startTowerCardSelectionPanel, ComponentLocationTypes.InChildren);
         }
 
         [ContextMenu(nameof(DefineFirstTurnLabel))]
         private void DefineFirstTurnLabel()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _firstTurnLabel, ComponentLocationTypes.InChildren);
+            AutomaticFillComponents.DefineComponent(this, ref _startTowerCardSelectionLabel, ComponentLocationTypes.InChildren);
         }
 
         [ContextMenu(nameof(DefineSeats))]

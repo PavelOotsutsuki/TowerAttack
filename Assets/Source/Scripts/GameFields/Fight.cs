@@ -5,7 +5,7 @@ using UnityEngine;
 using GameFields.EndTurnButtons;
 using GameFields.DiscardPiles;
 using Cysharp.Threading.Tasks;
-using GameFields.FirstTurns;
+using GameFields.StartTowerCardSelections;
 
 namespace GameFields
 {
@@ -19,12 +19,12 @@ namespace GameFields
         private EndTurnButton _endTurnButton;
         private DiscardPile _discardPile;
         private FightAnimator _fightAnimator;
-        private FirstTurn _firstTurn;
+        private StartTowerCardSelection _startTowerCardSelection;
 
         private IPerson _activePerson;
         private int _turnNumber;
 
-        public Fight(Player player, EnemyAI enemy, Deck deck, DiscardPile discardPile, EndTurnButton endTurnButton, FightAnimator fightAnimator, FirstTurn firstTurn)
+        public Fight(Player player, EnemyAI enemy, Deck deck, DiscardPile discardPile, EndTurnButton endTurnButton, FightAnimator fightAnimator, StartTowerCardSelection startTowerCardSelection)
         {
             _turnNumber = 1;
 
@@ -34,7 +34,7 @@ namespace GameFields
             _discardPile = discardPile;
             _endTurnButton = endTurnButton;
             _fightAnimator = fightAnimator;
-            _firstTurn = firstTurn;
+            _startTowerCardSelection = startTowerCardSelection;
         }
 
         public void OnEndTurn()
@@ -49,14 +49,14 @@ namespace GameFields
 
         public void StartFight()
         {
-            _firstTurn.Deactivate();
+            _startTowerCardSelection.Deactivate();
 
             SetPlayerTurn();
         }
 
         public void StartFirstTurn()
         {
-            _firstTurn.Activate(_player, _enemy, _deck);
+            _startTowerCardSelection.Activate(_player, _enemy, _deck);
         }
 
         private void DiscardCards()
