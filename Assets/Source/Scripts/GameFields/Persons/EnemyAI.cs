@@ -18,7 +18,7 @@ namespace GameFields.Persons
         [SerializeField] private TowerAI _tower;
 
         private IEndTurnHandler _endTurnHandler;
-        private CardImitationActions _cardImitationActions;
+        private CardDragAndDropImitationActions _cardDragAndDropImitationActions;
 
         public float DrawCardsDelay => _enemyAnimator.DrawCardsDelay;
         public int CountDrawCards => _enemyAnimator.CountDrawCards;
@@ -32,15 +32,15 @@ namespace GameFields.Persons
             _table.Init(this);
 //            cardEffects.SetEnemyAIGameFieldElements(_table, _hand, _tower);
 
-            _cardImitationActions = new CardImitationActions(_hand, _table);
-            _enemyAnimator.Init(_endTurnHandler, _cardImitationActions);
+            _cardDragAndDropImitationActions = new CardDragAndDropImitationActions(_hand, _table);
+            _enemyAnimator.Init(_endTurnHandler, _cardDragAndDropImitationActions);
         }
 
         public void PlayDragAndDropImitation()
         {
             if (_hand.TryGetCard(out Card card))
             {
-                _cardImitationActions.SetCard(card);
+                _cardDragAndDropImitationActions.SetCard(card);
                 _enemyAnimator.StartDragAndDropAnimation();
             }
             else

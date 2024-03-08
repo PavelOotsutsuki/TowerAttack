@@ -101,7 +101,7 @@ namespace Cards
         private void CreateCardCharacter()
         {
             _cardCharacter = Instantiate(_cardSO.CardCharacter);
-            _cardCharacter.Init(_cardSO.AwakeSound);
+            _cardCharacter.Init(_cardSO.AwakeSound, _cardSO.Effect);
         }
 
         private void Activate()

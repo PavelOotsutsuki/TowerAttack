@@ -9,9 +9,12 @@ namespace Cards
         [SerializeField] private AudioSource _audioSource;
         [SerializeField] private RectTransform _rectTransform;
 
-        public void Init(AudioClip awakeSound)
+        private CardEffect _effect;
+
+        public void Init(AudioClip awakeSound, CardEffect effect)
         {
             _audioSource.clip = awakeSound;
+            _effect = effect;
             gameObject.SetActive(false);
         }
 
@@ -19,6 +22,7 @@ namespace Cards
         {
             gameObject.SetActive(true);
             AudioSource.PlayClipAtPoint(_audioSource.clip, Vector3.zero);
+            _effect.Play();
         }
 
         public Vector3 DiscardCard()

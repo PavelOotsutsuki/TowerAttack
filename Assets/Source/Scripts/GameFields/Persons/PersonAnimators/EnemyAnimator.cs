@@ -12,7 +12,7 @@ namespace GameFields.Persons.PersonAnimators
         public int CountDrawCards => _countDrawCards;
         public float DrawCardsDelay => _drawCardsDelay;
 
-        public void Init(IEndTurnHandler endTurnHandler, CardImitationActions cardImitationActions)
+        public void Init(IEndTurnHandler endTurnHandler, CardDragAndDropImitationActions cardImitationActions)
         {
             _enemyDragAndDropImitation.Init(endTurnHandler, cardImitationActions);
         }

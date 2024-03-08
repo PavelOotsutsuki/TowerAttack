@@ -4,22 +4,20 @@ using GameFields.Persons;
 
 namespace GameFields.Effects
 {
-    public class PatriarchCorallEffect : CardEffect
+    public class GreedyEffect : CardEffect
     {
-        private Deck _deck;
         private IPerson _activePerson;
         private IPerson _deactivePerson;
 
-        public void Init(Deck deck, IPerson activePerson, IPerson deactivePerson)
+        public void Init(IPerson activePerson, IPerson deactivePerson)
         {
-            _deck = deck;
             _activePerson = activePerson;
             _deactivePerson = deactivePerson;
         }
 
         public override void Play()
         {
-            Debug.Log("Эффект Патриарха Коралла");
+            Debug.Log("Эффект жадины");
         }
     }
 }

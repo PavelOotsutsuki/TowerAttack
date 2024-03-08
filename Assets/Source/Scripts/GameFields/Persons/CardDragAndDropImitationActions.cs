@@ -2,14 +2,14 @@ using Cards;
 
 namespace GameFields.Persons
 {
-    public class CardImitationActions
+    public class CardDragAndDropImitationActions
     {
         private Card _activeCard;
 
         private ICardDragImitationListener _cardDragImitationListener;
         private ICardDropPlaceImitation _cardDropPlaceImitation;
 
-        public CardImitationActions(ICardDragImitationListener cardDragImitationListener, ICardDropPlaceImitation cardDropPlaceImitation)
+        public CardDragAndDropImitationActions(ICardDragImitationListener cardDragImitationListener, ICardDropPlaceImitation cardDropPlaceImitation)
         {
             _cardDragImitationListener = cardDragImitationListener;
             _cardDropPlaceImitation = cardDropPlaceImitation;

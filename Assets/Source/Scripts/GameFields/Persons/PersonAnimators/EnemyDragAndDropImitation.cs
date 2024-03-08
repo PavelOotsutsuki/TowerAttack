@@ -19,9 +19,9 @@ namespace GameFields.Persons.PersonAnimators
         [SerializeField] private int _maxCountRepeat = 1;
 
         private IEndTurnHandler _endTurnHandler;
-        private CardImitationActions _cardImitationActions;
+        private CardDragAndDropImitationActions _cardImitationActions;
 
-        internal void Init(IEndTurnHandler endTurnHandler, CardImitationActions cardImitationActions)
+        internal void Init(IEndTurnHandler endTurnHandler, CardDragAndDropImitationActions cardImitationActions)
         {
             _endTurnHandler = endTurnHandler;
             _cardImitationActions = cardImitationActions;
