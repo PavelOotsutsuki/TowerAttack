@@ -6,36 +6,25 @@ using GameFields.Persons.PersonAnimators;
 using Tools;
 using UnityEngine;
 using System.Collections.Generic;
-using Zenject;
 
 namespace GameFields.Persons
 {
     internal class Player : MonoBehaviour, IPerson
     {
+        [SerializeField] private HandPlayer _hand;
+        [SerializeField] private TablePlayer _table;
+        [SerializeField] private TowerPlayer _tower;
+        [SerializeField] private PlayerAnimator _playerAnimator;
         [SerializeField] private Transform _transform;
-
-        private HandPlayer _hand;
-        private TablePlayer _table;
-        private TowerPlayer _tower;
-        private PlayerAnimator _playerAnimator;
 
         public int CountDrawCards => _playerAnimator.CountDrawCards;
         public float DrawCardsDelay => _playerAnimator.DrawCardsDelay;
 
-        [Inject]
-        public void Construct(HandPlayer hand, TablePlayer table, TowerPlayer tower, PlayerAnimator playerAnimator)
-        {
-            _hand = hand;
-            _table = table;
-            _tower = tower;
-            _playerAnimator = playerAnimator;
-        }
-
-        public void Init(IStartFightListener startFightListener, CardEffects cardEffects)
+        public void Init(IStartFightListener startFightListener)
         {
             _hand.Init();
             InitTower(startFightListener);
-            _table.Init(this, cardEffects);
+            _table.Init(this);
 //            cardEffects.SetPlayerGameFieldElements(_table, _hand, _tower);
 
             _playerAnimator.Init(_hand, _transform);
@@ -78,7 +67,35 @@ namespace GameFields.Persons
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
+            DefineHandPlayer();
+            DefineTablePlayer();
+            DefineTowerPlayer();
+            DefinePlayerAnimator();
             DefineTransform();
+        }
+
+        [ContextMenu(nameof(DefineHandPlayer))]
+        private void DefineHandPlayer()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _hand, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineTablePlayer))]
+        private void DefineTablePlayer()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _table, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineTowerPlayer))]
+        private void DefineTowerPlayer()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _tower, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefinePlayerAnimator))]
+        private void DefinePlayerAnimator()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _playerAnimator, ComponentLocationTypes.InThis);
         }
 
         [ContextMenu(nameof(DefineTransform))]

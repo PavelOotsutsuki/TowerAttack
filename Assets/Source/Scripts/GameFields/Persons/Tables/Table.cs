@@ -14,11 +14,11 @@ namespace GameFields.Persons.Tables
         private int[] _cardSeatsSortIndices;
         private PlayedCards _playedCards;
 
-        public virtual void Init(IPlayCardManager playCardManager, CardEffects cardEffects)
+        public virtual void Init(IPlayCardManager playCardManager)
         {
             _playCardManager = playCardManager;
             _playedCards = new PlayedCards();
-            InitTableSeats(cardEffects);
+            InitTableSeats();
             SetCardSeatsIndices();
         }
 
@@ -85,11 +85,11 @@ namespace GameFields.Persons.Tables
             return (countSeats + 1) / 2 + (inputIndex + 1) / 2 * ((inputIndex + 1) % 2 * 2 - 1) - 1;
         }
 
-        private void InitTableSeats(CardEffects cardEffects)
+        private void InitTableSeats()
         {
             foreach (TableSeat tableSeat in _cardSeats)
             {
-                tableSeat.Init(cardEffects);
+                tableSeat.Init();
             }
         }
 

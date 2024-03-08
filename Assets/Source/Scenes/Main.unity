@@ -830,6 +830,7 @@ RectTransform:
   - {fileID: 601274533}
   - {fileID: 1173604841}
   - {fileID: 1905208562}
+  - {fileID: 1293114447}
   m_Father: {fileID: 1272924793}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -912,10 +913,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8307ad8fd0bda4f2996d65372c7a3606, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _deck: {fileID: 250433512}
+  _discardPile: {fileID: 1000203021}
   _endTurnButton: {fileID: 601274534}
   _player: {fileID: 1905208563}
   _fightAnimator: {fileID: 200841579}
   _startTowerCardSelection: {fileID: 1173604842}
+  _effectRoot: {fileID: 1293114445}
+  _enemyAI:
+    _enemyAnimator: {fileID: 1502786296}
+    _hand: {fileID: 1620354845}
+    _table: {fileID: 704143077}
+    _tower: {fileID: 1939013310}
 --- !u!114 &200841579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6835,7 +6844,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5aac0c557266f4746a62198e7061fee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1290281913
+--- !u!1 &1293114444
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6843,84 +6852,60 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1290281916}
-  - component: {fileID: 1290281915}
-  - component: {fileID: 1290281914}
+  - component: {fileID: 1293114447}
+  - component: {fileID: 1293114445}
+  - component: {fileID: 1293114446}
   m_Layer: 0
-  m_Name: SceneContext
+  m_Name: EffectRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1290281914
+--- !u!114 &1293114445
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1290281913}
+  m_GameObject: {fileID: 1293114444}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9634c7a79bdce4c28af51d138dd99cb6, type: 3}
+  m_Script: {fileID: 11500000, guid: cd717adf05d124fd8877c46ae9a3761e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _deck: {fileID: 250433512}
-  _discardPile: {fileID: 1000203021}
-  _tableAI: {fileID: 704143077}
-  _tablePlayer: {fileID: 867188514}
-  _handAI: {fileID: 1620354845}
-  _handPlayer: {fileID: 112430305}
-  _towerAI: {fileID: 1939013310}
-  _towerPlayer: {fileID: 1018812819545794878}
-  _enemyAnimator: {fileID: 1502786296}
---- !u!114 &1290281915
+  _patriarchCorallEffect: {fileID: 1293114446}
+--- !u!114 &1293114446
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1290281913}
+  m_GameObject: {fileID: 1293114444}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89715ad69b973a14899afa2c6730b30b, type: 3}
+  m_Script: {fileID: 11500000, guid: 86f7cc69c87a6484c9fa0246bf86e13d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scriptableObjectInstallers: []
-  _monoInstallers:
-  - {fileID: 1290281914}
-  _installerPrefabs: []
-  _autoRun: 1
-  OnPreInstall:
-    m_PersistentCalls:
-      m_Calls: []
-  OnPostInstall:
-    m_PersistentCalls:
-      m_Calls: []
-  OnPreResolve:
-    m_PersistentCalls:
-      m_Calls: []
-  OnPostResolve:
-    m_PersistentCalls:
-      m_Calls: []
-  _parentNewObjectsUnderSceneContext: 0
-  _contractNames: []
-  _parentContractNames: []
---- !u!4 &1290281916
-Transform:
+--- !u!224 &1293114447
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1290281913}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_GameObject: {fileID: 1293114444}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 200841573}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1296459754
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10505,6 +10490,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85b373b3257ed48ae98cdfc12bcd2f2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _hand: {fileID: 112430305}
+  _table: {fileID: 867188514}
+  _tower: {fileID: 1018812819545794878}
   _playerAnimator: {fileID: 1905208565}
   _transform: {fileID: 1905208562}
 --- !u!114 &1905208565
@@ -14084,6 +14072,5 @@ RectTransform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 1290281916}
   - {fileID: 1272924793}
   - {fileID: 79042421}

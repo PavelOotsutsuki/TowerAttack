@@ -1,21 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cards;
+using Zenject;
+using GameFields.Persons;
 
-namespace GameFields
+namespace GameFields.Effects
 {
-    public class PatriarchCorallEffect : MonoBehaviour
+    public class PatriarchCorallEffect : MonoBehaviour, IEffect
     {
-        // Start is called before the first frame update
-        void Start()
+        private Deck _deck;
+        private IPerson _activePerson;
+        private IPerson _deactivePerson;
+
+        public void Init(Deck deck, IPerson activePerson, IPerson deactivePerson)
         {
-        
+            _deck = deck;
+            _activePerson = activePerson;
+            _deactivePerson = deactivePerson;
         }
 
-        // Update is called once per frame
-        void Update()
+        public void Play()
         {
-        
+            
         }
     }
 }

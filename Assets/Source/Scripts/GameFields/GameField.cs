@@ -4,31 +4,24 @@ using UnityEngine;
 using GameFields.Persons;
 using GameFields.EndTurnButtons;
 using GameFields.DiscardPiles;
-using Zenject;
 using GameFields.StartTowerCardSelections;
+using GameFields.Effects;
 
 namespace GameFields
 {
     public class GameField : MonoBehaviour
     {
+        [SerializeField] private Deck _deck;
+        [SerializeField] private DiscardPile _discardPile;
         [SerializeField] private EndTurnButton _endTurnButton;
         [SerializeField] private Player _player;
         [SerializeField] private FightAnimator _fightAnimator;
         [SerializeField] private StartTowerCardSelection _startTowerCardSelection;
+        [SerializeField] private EffectRoot _effectRoot;
 
-        private Deck _deck;
-        private DiscardPile _discardPile;
-        private EnemyAI _enemyAI;
+        [SerializeField] private EnemyAI _enemyAI;
+
         private Fight _fight;
-        private CardEffects _cardEffects;
-
-        [Inject]
-        private void Construct(EnemyAI enemyAI, Deck deck, DiscardPile discardPile)
-        {
-            _enemyAI = enemyAI;
-            _deck = deck;
-            _discardPile = discardPile;
-        }
 
         public void Init(Card[] cardsInDeck)
         {
@@ -37,11 +30,10 @@ namespace GameFields
             _discardPile.Init();
             _fightAnimator.Init(_discardPile);
 
-            _cardEffects = new CardEffects(_deck, _discardPile);
-            _fight = new Fight(_player, _enemyAI, _deck, _discardPile, _endTurnButton, _fightAnimator, _startTowerCardSelection);
+            _fight = new Fight(_player, _enemyAI, _deck, _discardPile, _endTurnButton, _fightAnimator, _startTowerCardSelection, _effectRoot);
 
-            _player.Init(_fight, _cardEffects);
-            _enemyAI.Init(_fight, _cardEffects);
+            _player.Init(_fight);
+            _enemyAI.Init(_fight);
             _endTurnButton.Init(_fight);
 
             _fight.StartFirstTurn();
@@ -50,10 +42,25 @@ namespace GameFields
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
+            DefineDeck();
+            DefineDiscardPile();
             DefineEndTurnButton();
             DefinePlayer();
             DefineFightAnimator();
             DefineFirstTurn();
+            DefineEffectRoot();
+        }
+
+        [ContextMenu(nameof(DefineDeck))]
+        private void DefineDeck()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _deck, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineDiscardPile))]
+        private void DefineDiscardPile()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _discardPile, ComponentLocationTypes.InChildren);
         }
 
         [ContextMenu(nameof(DefineEndTurnButton))]
@@ -78,6 +85,12 @@ namespace GameFields
         private void DefineFirstTurn()
         {
             AutomaticFillComponents.DefineComponent(this, ref _startTowerCardSelection, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineEffectRoot))]
+        private void DefineEffectRoot()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _effectRoot, ComponentLocationTypes.InChildren);
         }
     }
 }

@@ -6,6 +6,7 @@ using GameFields.EndTurnButtons;
 using GameFields.DiscardPiles;
 using Cysharp.Threading.Tasks;
 using GameFields.StartTowerCardSelections;
+using GameFields.Effects;
 
 namespace GameFields
 {
@@ -20,11 +21,13 @@ namespace GameFields
         private DiscardPile _discardPile;
         private FightAnimator _fightAnimator;
         private StartTowerCardSelection _startTowerCardSelection;
+        private EffectRoot _effectRoot;
 
         private IPerson _activePerson;
+        private IPerson _deactivePerson;
         private int _turnNumber;
 
-        public Fight(Player player, EnemyAI enemy, Deck deck, DiscardPile discardPile, EndTurnButton endTurnButton, FightAnimator fightAnimator, StartTowerCardSelection startTowerCardSelection)
+        public Fight(Player player, EnemyAI enemy, Deck deck, DiscardPile discardPile, EndTurnButton endTurnButton, FightAnimator fightAnimator, StartTowerCardSelection startTowerCardSelection, EffectRoot effectRoot)
         {
             _turnNumber = 1;
 
@@ -35,6 +38,9 @@ namespace GameFields
             _endTurnButton = endTurnButton;
             _fightAnimator = fightAnimator;
             _startTowerCardSelection = startTowerCardSelection;
+            _effectRoot = effectRoot;
+
+            _effectRoot.Init(_deck, _discardPile, _activePerson, _deactivePerson);
         }
 
         public void OnEndTurn()
@@ -87,6 +93,7 @@ namespace GameFields
         private void SetPlayerTurn()
         {
             _activePerson = _player;
+            _deactivePerson = _enemy;
 
             _player.ActivateDropPlaces();
         }
@@ -94,6 +101,7 @@ namespace GameFields
         private void SetEnemyTurn()
         {
             _activePerson = _enemy;
+            _deactivePerson = _player;
 
             _player.DeactivateDropPlaces();
         }
