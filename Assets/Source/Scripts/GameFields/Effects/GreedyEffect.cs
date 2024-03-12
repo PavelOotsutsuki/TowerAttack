@@ -4,6 +4,7 @@ using GameFields.Persons;
 
 namespace GameFields.Effects
 {
+    [CreateAssetMenu(fileName = "New GreedyEffect", menuName = "SO/Create effect/GreedyEffect", order = 51)]
     public class GreedyEffect : CardEffect
     {
         private IPerson _activePerson;

@@ -44,7 +44,7 @@ namespace GameFields.Seats
 
         public void SetLocalPositionValues(Vector3 position, Vector3 rotation, float duration = 0f)
         {
-            if (duration == 0f)
+            if (Mathf.Approximately(duration, 0f))
             {
                 _seatMovement.MoveLocalInstantly(position, rotation);
             }

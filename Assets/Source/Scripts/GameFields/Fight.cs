@@ -40,7 +40,7 @@ namespace GameFields
             _startTowerCardSelection = startTowerCardSelection;
             _effectRoot = effectRoot;
 
-            _effectRoot.Init(_deck, _discardPile, _activePerson, _deactivePerson);
+            //_effectRoot.Init(_deck, _discardPile, _activePerson, _deactivePerson);
         }
 
         public void OnEndTurn()
@@ -58,6 +58,8 @@ namespace GameFields
             _startTowerCardSelection.Deactivate();
 
             SetPlayerTurn();
+
+            _effectRoot.Init(_deck, _discardPile, _activePerson, _deactivePerson);
         }
 
         public void StartFirstTurn()
