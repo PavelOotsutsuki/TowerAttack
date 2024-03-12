@@ -1,13 +1,14 @@
 using Cards;
+using GameFields.Effects;
 using UnityEngine;
 
 namespace GameFields.Persons.Tables
 {
     public class TableAI : Table, ICardDropPlaceImitation
     {
-        public override void Init(IPlayCardManager playCardManager)
+        public override void Init(IPlayCardManager playCardManager, EffectRoot effectRoot)
         {
-            base.Init(playCardManager);
+            base.Init(playCardManager, effectRoot);
 
             Deactivate();
         }

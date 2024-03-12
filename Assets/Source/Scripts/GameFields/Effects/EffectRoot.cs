@@ -2,64 +2,40 @@ using GameFields.DiscardPiles;
 using GameFields.Persons;
 using Tools;
 using UnityEngine;
+using Cards;
 
 namespace GameFields.Effects
 {
-    public class EffectRoot : MonoBehaviour
+    public class EffectRoot
     {
-        //[SerializeField] Transform _transform;
+        private Deck _deck;
+        private DiscardPile _discardPile;
+        private IPersonSideListener _personSideListener;
 
-        [SerializeField] ZhyzhaEffect _zhyzhaEffect;
-        [SerializeField] GreedyEffect _greedyEffect;
-        [SerializeField] PatriarchCorallEffect _patriarchCorallEffect;
-
-        public void Init(Deck deck, DiscardPile discardPile, IPerson activePerson, IPerson deactivePerson)
+        public EffectRoot(Deck deck, DiscardPile discardPile, IPersonSideListener personSideListener)
         {
-            //InstantiateAllEffects();
-
-            _zhyzhaEffect.Init(deactivePerson);
-            _greedyEffect.Init(activePerson, deactivePerson);
-            _patriarchCorallEffect.Init(deck, activePerson, deactivePerson);
+            _deck = deck;
+            _discardPile = discardPile;
+            _personSideListener = personSideListener;
         }
 
-        //private void InstantiateAllEffects()
-        //{
-        //    Instantiate(_zhyzhaEffect, _transform);
-        //    Instantiate(_greedyEffect, _transform);
-        //    Instantiate(_patriarchCorallEffect, _transform);
-        //}
-
-        [ContextMenu(nameof(DefineAllComponents))]
-        private void DefineAllComponents()
+        public void PlayEffect(EffectType effectType)
         {
-            //DefineTransform();
-            DefineZhyzhaEffect();
-            DefineGreedyEffect();
-            DefinePatriarchCorallEffect();
-        }
-
-        //[ContextMenu(nameof(DefineTransform))]
-        //private void DefineTransform()
-        //{
-        //    AutomaticFillComponents.DefineComponent(this, ref _transform, ComponentLocationTypes.InThis);
-        //}
-
-        [ContextMenu(nameof(DefineZhyzhaEffect))]
-        private void DefineZhyzhaEffect()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _zhyzhaEffect, ComponentLocationTypes.InChildren);
-        }
-
-        [ContextMenu(nameof(DefineGreedyEffect))]
-        private void DefineGreedyEffect()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _greedyEffect, ComponentLocationTypes.InChildren);
-        }
-
-        [ContextMenu(nameof(DefinePatriarchCorallEffect))]
-        private void DefinePatriarchCorallEffect()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _patriarchCorallEffect, ComponentLocationTypes.InChildren);
+            switch (effectType)
+            {
+                case EffectType.ZhyzhaEffect:
+                    ZhyzhaEffect zhyzhaEffect = new ZhyzhaEffect(_personSideListener.DeactivePerson);
+                    break;
+                case EffectType.GreedyEffect:
+                    GreedyEffect greedyEffect = new GreedyEffect(_personSideListener.ActivePerson, _personSideListener.DeactivePerson);
+                    break;
+                case EffectType.PatriarchCorallEffect:
+                    PatriarchCorallEffect patriarchCorallEffect = new PatriarchCorallEffect(_deck, _personSideListener.ActivePerson, _personSideListener.DeactivePerson);
+                    break;
+                default:
+                    Debug.Log("Effect is not founded");
+                    break;
+            }
         }
     }
 }

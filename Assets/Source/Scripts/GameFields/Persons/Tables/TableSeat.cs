@@ -1,6 +1,7 @@
 using UnityEngine;
 using Cards;
 using Tools;
+using GameFields.Effects;
 
 namespace GameFields.Persons.Tables
 {
@@ -9,10 +10,11 @@ namespace GameFields.Persons.Tables
         [SerializeField] private RectTransform _rectTransform;
 
         private CardCharacter _cardCharacter;
+        private EffectRoot _effectRoot;
 
-        internal void Init()
+        internal void Init(EffectRoot effectRoot)
         {
-            
+            _effectRoot = effectRoot;
         }
 
         internal void SetCardCharacter(CardCharacter cardCharacter)
@@ -23,6 +25,7 @@ namespace GameFields.Persons.Tables
             _cardCharacter.transform.SetParent(_rectTransform);
             _cardCharacter.transform.localPosition = cardCharacterPosition;
             _cardCharacter.Activate();
+            _effectRoot.PlayEffect(_cardCharacter.Effect);
         }
 
         internal bool TryDiscardCardCharacter(out CardCharacter cardCharacter)

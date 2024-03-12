@@ -4,21 +4,22 @@ using GameFields.Persons;
 
 namespace GameFields.Effects
 {
-    [CreateAssetMenu(fileName = "New GreedyEffect", menuName = "SO/Create effect/GreedyEffect", order = 51)]
-    public class GreedyEffect : CardEffect
+    public class GreedyEffect
     {
         private IPerson _activePerson;
         private IPerson _deactivePerson;
 
-        public void Init(IPerson activePerson, IPerson deactivePerson)
+        public GreedyEffect(IPerson activePerson, IPerson deactivePerson)
         {
             _activePerson = activePerson;
             _deactivePerson = deactivePerson;
+
+            PlayEffect();
         }
 
-        public override void Play()
+        private void PlayEffect()
         {
-            Debug.Log("Эффект жадины");
+            Debug.Log("Эффект Жадины");
         }
     }
 }

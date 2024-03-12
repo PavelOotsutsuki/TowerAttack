@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Cards;
+using GameFields.Effects;
 using Tools;
 using UnityEngine;
 
@@ -14,11 +15,11 @@ namespace GameFields.Persons.Tables
         private int[] _cardSeatsSortIndices;
         private PlayedCards _playedCards;
 
-        public virtual void Init(IPlayCardManager playCardManager)
+        public virtual void Init(IPlayCardManager playCardManager, EffectRoot effectRoot)
         {
             _playCardManager = playCardManager;
             _playedCards = new PlayedCards();
-            InitTableSeats();
+            InitTableSeats(effectRoot);
             SetCardSeatsIndices();
         }
 
@@ -85,11 +86,11 @@ namespace GameFields.Persons.Tables
             return (countSeats + 1) / 2 + (inputIndex + 1) / 2 * ((inputIndex + 1) % 2 * 2 - 1) - 1;
         }
 
-        private void InitTableSeats()
+        private void InitTableSeats(EffectRoot effectRoot)
         {
             foreach (TableSeat tableSeat in _cardSeats)
             {
-                tableSeat.Init();
+                tableSeat.Init(effectRoot);
             }
         }
 

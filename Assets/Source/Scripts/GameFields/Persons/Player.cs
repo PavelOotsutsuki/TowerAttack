@@ -6,6 +6,7 @@ using GameFields.Persons.PersonAnimators;
 using Tools;
 using UnityEngine;
 using System.Collections.Generic;
+using GameFields.Effects;
 
 namespace GameFields.Persons
 {
@@ -20,11 +21,11 @@ namespace GameFields.Persons
         public int CountDrawCards => _playerAnimator.CountDrawCards;
         public float DrawCardsDelay => _playerAnimator.DrawCardsDelay;
 
-        public void Init(IStartFightListener startFightListener)
+        public void Init(IStartFightListener startFightListener, EffectRoot effectRoot)
         {
             _hand.Init();
             InitTower(startFightListener);
-            _table.Init(this);
+            _table.Init(this, effectRoot);
 //            cardEffects.SetPlayerGameFieldElements(_table, _hand, _tower);
 
             _playerAnimator.Init(_hand, _transform);

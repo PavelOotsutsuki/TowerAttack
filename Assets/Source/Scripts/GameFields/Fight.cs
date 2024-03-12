@@ -10,7 +10,7 @@ using GameFields.Effects;
 
 namespace GameFields
 {
-    internal class Fight : IEndTurnHandler, IStartFightListener
+    internal class Fight : IEndTurnHandler, IStartFightListener, IPersonSideListener
     {
         private readonly int _maxTurns = 100;
 
@@ -21,13 +21,13 @@ namespace GameFields
         private DiscardPile _discardPile;
         private FightAnimator _fightAnimator;
         private StartTowerCardSelection _startTowerCardSelection;
-        private EffectRoot _effectRoot;
 
+        private EffectRoot _effectRoot;
         private IPerson _activePerson;
         private IPerson _deactivePerson;
         private int _turnNumber;
 
-        public Fight(Player player, EnemyAI enemy, Deck deck, DiscardPile discardPile, EndTurnButton endTurnButton, FightAnimator fightAnimator, StartTowerCardSelection startTowerCardSelection, EffectRoot effectRoot)
+        public Fight(Player player, EnemyAI enemy, Deck deck, DiscardPile discardPile, EndTurnButton endTurnButton, FightAnimator fightAnimator, StartTowerCardSelection startTowerCardSelection)
         {
             _turnNumber = 1;
 
@@ -38,10 +38,16 @@ namespace GameFields
             _endTurnButton = endTurnButton;
             _fightAnimator = fightAnimator;
             _startTowerCardSelection = startTowerCardSelection;
-            _effectRoot = effectRoot;
 
+            _effectRoot = new EffectRoot(_deck, _discardPile, this);
+
+            _player.Init(this, _effectRoot);
+            _enemy.Init(this, _effectRoot);
             //_effectRoot.Init(_deck, _discardPile, _activePerson, _deactivePerson);
         }
+
+        public IPerson ActivePerson => _activePerson;
+        public IPerson DeactivePerson => _deactivePerson;
 
         public void OnEndTurn()
         {
@@ -58,8 +64,6 @@ namespace GameFields
             _startTowerCardSelection.Deactivate();
 
             SetPlayerTurn();
-
-            _effectRoot.Init(_deck, _discardPile, _activePerson, _deactivePerson);
         }
 
         public void StartFirstTurn()

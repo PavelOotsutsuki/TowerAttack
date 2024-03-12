@@ -1,6 +1,5 @@
 using UnityEngine;
 using Tools;
-using System;
 
 namespace Cards
 {
@@ -9,12 +8,12 @@ namespace Cards
         [SerializeField] private AudioSource _audioSource;
         [SerializeField] private RectTransform _rectTransform;
 
-        private CardEffect _effect;
+        public EffectType Effect { get; private set; }
 
-        public void Init(AudioClip awakeSound, CardEffect effect)
+        public void Init(AudioClip awakeSound, EffectType effect)
         {
             _audioSource.clip = awakeSound;
-            _effect = effect;
+            Effect = effect;
             gameObject.SetActive(false);
         }
 
@@ -22,7 +21,6 @@ namespace Cards
         {
             gameObject.SetActive(true);
             AudioSource.PlayClipAtPoint(_audioSource.clip, Vector3.zero);
-            _effect.Play();
         }
 
         public Vector3 DiscardCard()

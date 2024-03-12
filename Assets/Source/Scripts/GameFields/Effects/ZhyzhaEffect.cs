@@ -4,17 +4,18 @@ using GameFields.Persons;
 
 namespace GameFields.Effects
 {
-    [CreateAssetMenu(fileName = "New ZhyzhaEffect", menuName = "SO/Create effect/ZhyzhaEffect", order = 51)]
-    public class ZhyzhaEffect : CardEffect
+    public class ZhyzhaEffect
     {
         private IPerson _deactivePerson;
 
-        public void Init(IPerson deactivePerson)
+        public ZhyzhaEffect(IPerson deactivePerson)
         {
             _deactivePerson = deactivePerson;
+
+            PlayEffect();
         }
 
-        public override void Play()
+        private void PlayEffect()
         {
             Debug.Log("Эффект Жыжи");
         }

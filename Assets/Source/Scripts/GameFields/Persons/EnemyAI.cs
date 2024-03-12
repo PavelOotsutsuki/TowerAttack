@@ -1,4 +1,5 @@
 using Cards;
+using GameFields.Effects;
 using GameFields.Persons.Hands;
 using GameFields.Persons.PersonAnimators;
 using GameFields.Persons.Tables;
@@ -23,13 +24,13 @@ namespace GameFields.Persons
         public float DrawCardsDelay => _enemyAnimator.DrawCardsDelay;
         public int CountDrawCards => _enemyAnimator.CountDrawCards;
 
-        public void Init(IEndTurnHandler endTurnHandler)
+        public void Init(IEndTurnHandler endTurnHandler, EffectRoot effectRoot)
         {
             _endTurnHandler = endTurnHandler;
 
             _hand.Init();
             _tower.Init(this);
-            _table.Init(this);
+            _table.Init(this, effectRoot);
 //            cardEffects.SetEnemyAIGameFieldElements(_table, _hand, _tower);
 
             _cardDragAndDropImitationActions = new CardDragAndDropImitationActions(_hand, _table);

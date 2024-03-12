@@ -7,8 +7,7 @@ using System;
 
 namespace GameFields.Effects
 {
-    [CreateAssetMenu(fileName = "New PatriarchCorallEffect", menuName = "SO/Create effect/PatriarchCorallEffect", order = 51)]
-    public class PatriarchCorallEffect : CardEffect
+    public class PatriarchCorallEffect
     {
         private const int CountDrawCards = 3;
 
@@ -17,14 +16,16 @@ namespace GameFields.Effects
         private IPerson _deactivePerson;
         private Card[] _drawnCrads;
 
-        public void Init(Deck deck, IPerson activePerson, IPerson deactivePerson)
+        public PatriarchCorallEffect(Deck deck, IPerson activePerson, IPerson deactivePerson)
         {
             _deck = deck;
             _activePerson = activePerson;
             _deactivePerson = deactivePerson;
+
+            PlayEffect();
         }
 
-        public override void Play()
+        private void PlayEffect()
         {
             Playing().ToUniTask();
         }

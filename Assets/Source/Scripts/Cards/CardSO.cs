@@ -12,7 +12,7 @@ namespace Cards
         [SerializeField] private AudioClip _awakeSound;
         [SerializeField] private string _feature;
         [SerializeField] private string _name;
-        [SerializeField] private CardEffect _effect;
+        [SerializeField] private EffectType _effect;
 
         internal CardCharacter CardCharacter => _cardCharacter;
         internal int Number => _number;
@@ -21,6 +21,6 @@ namespace Cards
         internal AudioClip AwakeSound => _awakeSound;
         internal string Feature => _feature;
         internal string Name => _name;
-        internal CardEffect Effect => _effect;
+        internal EffectType Effect => _effect;
     }
 }

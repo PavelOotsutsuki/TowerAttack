@@ -13,7 +13,6 @@ namespace Cards
         [SerializeField] private CardAnimator _cardAnimator;
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private Vector3 _defaultScaleVector;
-        [SerializeField] private CardEffect _effect;
 
         private CardDragAndDropActions _cardDragAndDropActions;
         private CardMovement _cardMovement;
@@ -37,8 +36,6 @@ namespace Cards
 
             _cardAnimator = new CardAnimator(_rectTransform, _cardMovement, _cardSideFlipper);
             _viewType = ViewType.Unselect;
-
-            //_effect = new PatriarchCorallEffect();
         }
 
         public void BindSeat(Transform transform, bool isFrontSide, float duration = 0f)
@@ -104,7 +101,7 @@ namespace Cards
         private void CreateCardCharacter()
         {
             _cardCharacter = Instantiate(_cardSO.CardCharacter);
-            _cardCharacter.Init(_cardSO.AwakeSound,_cardSO.Effect);
+            _cardCharacter.Init(_cardSO.AwakeSound, _cardSO.Effect);
         }
 
         private void Activate()
