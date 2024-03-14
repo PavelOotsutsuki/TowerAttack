@@ -6,7 +6,7 @@ using GameFields.Seats;
 using Tools;
 using UnityEngine;
 
-namespace GameFields.DiscardPiles
+namespace GameFields
 {
     public class DiscardPile : MonoBehaviour
     {
@@ -15,7 +15,7 @@ namespace GameFields.DiscardPiles
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private SeatPool _discardPileSeatPool;
         [SerializeField] private bool _isFrontCardSide;
-        [SerializeField] private float _cardRotationOffset = 20f;
+        [SerializeField] private float _cardRotationOffset = 30f;
         [SerializeField] private float _startCardTranslateSpeed = 0.5f;
 
         private float _maxCoordinateX;

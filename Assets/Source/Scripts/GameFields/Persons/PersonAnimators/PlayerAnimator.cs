@@ -7,9 +7,9 @@ using Tools;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GameFields.Persons.PersonAnimators
+namespace GameFields.Persons.DrawCards
 {
-    public class PlayerAnimator : MonoBehaviour
+    public class PlayerAnimator
     {
         [SerializeField] private PlayerDrawCardAnimator _drawCardAnimator;
         [SerializeField] private int _countDrawCards = 1;

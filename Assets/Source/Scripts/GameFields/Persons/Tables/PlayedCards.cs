@@ -12,20 +12,6 @@ namespace GameFields.Persons.Tables
             _playedCardPairs = new List<PlayedCardPair>();
         }
 
-        //public bool TryGetPlayedCardPair(out PlayedCardPair playedCardPair)
-        //{
-        //    if (_playedCardPairs.Count > 0)
-        //    {
-        //        playedCardPair = _playedCardPairs[0];
-        //        _playedCardPairs.Remove(playedCardPair);
-
-        //        return true;
-        //    }
-
-        //    playedCardPair = null;
-        //    return false;
-        //}
-
         public Card GetCard(CardCharacter cardCharacter)
         {
             foreach (PlayedCardPair playedCardPair in _playedCardPairs)

@@ -7,6 +7,8 @@ using Tools;
 using UnityEngine;
 using System.Collections.Generic;
 using GameFields.Effects;
+using GameFields.Persons.Discovers;
+using GameFields.Persons.DrawCards;
 
 namespace GameFields.Persons
 {
@@ -15,11 +17,13 @@ namespace GameFields.Persons
         [SerializeField] private HandPlayer _hand;
         [SerializeField] private TablePlayer _table;
         [SerializeField] private TowerPlayer _tower;
-        [SerializeField] private PlayerAnimator _playerAnimator;
+        [SerializeField] private Discover _discover;
+        //[SerializeField] private PlayerAnimator _playerAnimator;
         [SerializeField] private Transform _transform;
 
-        public int CountDrawCards => _playerAnimator.CountDrawCards;
-        public float DrawCardsDelay => _playerAnimator.DrawCardsDelay;
+        private DrawCardRoot _drawCardRoot;
+        //public int CountDrawCards => _playerAnimator.CountDrawCards;
+        //public float DrawCardsDelay => _playerAnimator.DrawCardsDelay;
 
         public void Init(IStartFightListener startFightListener, EffectRoot effectRoot)
         {
@@ -59,6 +63,11 @@ namespace GameFields.Persons
             _playerAnimator.StartDrawCardAnimation(card);
         }
 
+        public void ActivateStartTowerCardSelection()
+        {
+            
+        }
+
         private void InitTower(IStartFightListener startFightListener)
         {
             _tower.Init(this);
@@ -71,6 +80,7 @@ namespace GameFields.Persons
             DefineHandPlayer();
             DefineTablePlayer();
             DefineTowerPlayer();
+            DefineDiscover();
             DefinePlayerAnimator();
             DefineTransform();
         }
@@ -91,6 +101,12 @@ namespace GameFields.Persons
         private void DefineTowerPlayer()
         {
             AutomaticFillComponents.DefineComponent(this, ref _tower, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineDiscover))]
+        private void DefineDiscover()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _discover, ComponentLocationTypes.InChildren);
         }
 
         [ContextMenu(nameof(DefinePlayerAnimator))]

@@ -14,7 +14,7 @@ namespace GameFields.Effects
         private Deck _deck;
         private IPerson _activePerson;
         private IPerson _deactivePerson;
-        private Card[] _drawnCrads;
+        private Card[] _drawnCards;
 
         public PatriarchCorallEffect(Deck deck, IPerson activePerson, IPerson deactivePerson)
         {
@@ -32,7 +32,7 @@ namespace GameFields.Effects
 
         private IEnumerator Playing()
         {
-            _drawnCrads = new Card[CountDrawCards];
+            _drawnCards = new Card[CountDrawCards];
 
             for (int i = 0; i < CountDrawCards; i++)
             {
@@ -50,7 +50,7 @@ namespace GameFields.Effects
             _activePerson.DrawCard(card);
             yield return new WaitForSeconds(_activePerson.DrawCardsDelay);
 
-            _drawnCrads[index] = card;
+            _drawnCards[index] = card;
         }
     }
 }

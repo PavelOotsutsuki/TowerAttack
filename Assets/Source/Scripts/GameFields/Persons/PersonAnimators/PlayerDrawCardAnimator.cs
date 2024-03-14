@@ -2,7 +2,7 @@ using UnityEngine;
 using Cards;
 using System;
 
-namespace GameFields.Persons.PersonAnimators
+namespace GameFields.Persons.DrawCards
 {
     [Serializable]
     internal class PlayerDrawCardAnimator

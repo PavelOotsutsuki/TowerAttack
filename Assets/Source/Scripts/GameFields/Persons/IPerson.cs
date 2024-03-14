@@ -8,5 +8,6 @@ namespace GameFields.Persons
         public int CountDrawCards { get; }
 
         public List<Card> GetDiscardCards();
+        public void ActivateStartTowerCardSelection();
     }
 }
