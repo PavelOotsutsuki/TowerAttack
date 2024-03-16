@@ -14,7 +14,7 @@ namespace GameFields.StartTowerCardSelections
         [SerializeField] private StartTowerCardSelectionPanel _startTowerCardSelectionPanel;
         [SerializeField] private StartTowerCardSelectionLabel _startTowerCardSelectionLabel;
         [SerializeField] private Seat[] _seats;
-        [SerializeField] private int _firstTurnCardsCount = 3;
+        //[SerializeField] private int _firstTurnCardsCount = 3;
 
         public void Init()
         {
@@ -24,20 +24,20 @@ namespace GameFields.StartTowerCardSelections
             InitSeats();
         }
 
-        public void Activate(IDrawCardManager player, IDrawCardManager enemy, Deck deck)
+        public void Activate(IDrawCardManager player, IDrawCardManager enemy)
         {
-            if (deck.IsHasCards(_firstTurnCardsCount * 2) == false)
-            {
-                throw new ArgumentOutOfRangeException("Недостаточно карт в колоде");
-            }
+            //if (deck.IsHasCards(_firstTurnCardsCount * 2) == false)
+            //{
+            //    throw new ArgumentOutOfRangeException("Недостаточно карт в колоде");
+            //}
 
             gameObject.SetActive(true);
 
             _startTowerCardSelectionPanel.Activate();
             _startTowerCardSelectionLabel.Activate();
 
-            TakeCards(deck, player).ToUniTask();
-            TakeCards(deck, enemy).ToUniTask();
+            player.StartTowerCardSelectionDraw().ToUniTask();
+            enemy.StartTowerCardSelectionDraw().ToUniTask();
         }
 
         public void Deactivate()
@@ -45,17 +45,17 @@ namespace GameFields.StartTowerCardSelections
             _startTowerCardSelectionPanel.Deactivate(()=> Destroy(gameObject));
         }
 
-        private IEnumerator TakeCards(Deck deck, IDrawCardManager person)
-        {
-            Card takenCard;
+        //private IEnumerator TakeCards(Deck deck, IDrawCardManager person)
+        //{
+        //    Card takenCard;
 
-            for (int i = 0; i < _firstTurnCardsCount; i++)
-            {
-                takenCard = deck.TakeTopCard();
-                person.DrawCard(takenCard);
-                yield return new WaitForSeconds(person.DrawCardsDelay);
-            }
-        }
+        //    for (int i = 0; i < _firstTurnCardsCount; i++)
+        //    {
+        //        takenCard = deck.TakeTopCard();
+        //        person.DrawCard(takenCard);
+        //        yield return new WaitForSeconds(person.DrawCardsDelay);
+        //    }
+        //}
 
         private void InitSeats()
         {

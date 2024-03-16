@@ -4,6 +4,7 @@ using System;
 using GameFields.Persons.Hands;
 using UnityEngine;
 using Cards;
+using Cysharp.Threading.Tasks;
 
 namespace GameFields.Persons.DrawCards
 {
@@ -11,7 +12,9 @@ namespace GameFields.Persons.DrawCards
     public class DrawCardRoot
     {
         [SerializeField] private int _countDrawCards = 1;
-        [SerializeField] private float _drawCardsDelay = 2f;
+        [SerializeField] private int _countStartTowerCardSelectionDrawCards = 3;
+        [SerializeField] private int _countPatriarchCorallDrawDrawCards = 3;
+        //[SerializeField] private float _drawCardsDelay = 2f;
         [SerializeField] private PlayerDrawCardAnimator _playerDrawCardAnimator;
 
         private Deck _deck;
@@ -36,7 +39,31 @@ namespace GameFields.Persons.DrawCards
         {
             AddCardsInQueue(_countDrawCards);
 
-            DrawCards();
+            DrawCards().ToUniTask();
+        }
+
+        public IEnumerator StartTowerCardSelectionDraw()
+        {
+            Debug.Log("StartTowerCardSelectionDraw begin");
+
+            if (_deck.IsHasCards(_countStartTowerCardSelectionDrawCards) == false)
+            {
+                throw new ArgumentOutOfRangeException("Недостаточно карт в колоде");
+            }
+
+            AddCardsInQueue(_countStartTowerCardSelectionDrawCards);
+
+            Debug.Log(_drawCardQueue.Count);
+
+
+            yield return DrawCards();
+        }
+
+        public IEnumerator PatriarchCorallDraw()
+        {
+            AddCardsInQueue(_countPatriarchCorallDrawDrawCards);
+
+            yield return DrawCards();
         }
 
         private IEnumerator DrawCards()
@@ -46,10 +73,13 @@ namespace GameFields.Persons.DrawCards
                 yield break;
             }
 
+            Debug.Log("DrawCards");
+
             _isDrawing = true;
 
             while (_drawCardQueue.Count > 0)
             {
+                Debug.Log("DrawCards process");
                 Card card = _drawCardQueue.Dequeue();
                 yield return _playerDrawCardAnimator.PlayingSimpleDrawCardAnimation(card);
             }

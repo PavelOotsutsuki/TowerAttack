@@ -1,3 +1,4 @@
+using System.Collections;
 using Cards;
 
 namespace GameFields.Persons
@@ -9,5 +10,7 @@ namespace GameFields.Persons
         //public void DrawCard(Card card);
 
         public void StartTurnDraw();
+        public IEnumerator StartTowerCardSelectionDraw();
+        public IEnumerator PatriarchCorallDraw();
     }
 }

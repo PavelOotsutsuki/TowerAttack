@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using GameFields.Effects;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.DrawCards;
+using System.Collections;
 
 namespace GameFields.Persons
 {
@@ -21,7 +22,7 @@ namespace GameFields.Persons
         //[SerializeField] private PlayerAnimator _playerAnimator;
         [SerializeField] private Transform _transform;
 
-        private DrawCardRoot _drawCardRoot;
+        [SerializeField] private DrawCardRoot _drawCardRoot;
         //public int CountDrawCards => _playerAnimator.CountDrawCards;
         //public float DrawCardsDelay => _playerAnimator.DrawCardsDelay;
 
@@ -67,9 +68,14 @@ namespace GameFields.Persons
             _drawCardRoot.StartTurnDraw();
         }
 
-        public void ActivateStartTowerCardSelection()
+        public IEnumerator StartTowerCardSelectionDraw()
         {
-            
+            yield return _drawCardRoot.StartTowerCardSelectionDraw();
+        }
+
+        public IEnumerator PatriarchCorallDraw()
+        {
+            yield return _drawCardRoot.PatriarchCorallDraw();
         }
 
         private void InitTower(IStartFightListener startFightListener)
@@ -85,7 +91,7 @@ namespace GameFields.Persons
             DefineTablePlayer();
             DefineTowerPlayer();
             DefineDiscover();
-            DefinePlayerAnimator();
+            //DefinePlayerAnimator();
             DefineTransform();
         }
 
@@ -113,11 +119,11 @@ namespace GameFields.Persons
             AutomaticFillComponents.DefineComponent(this, ref _discover, ComponentLocationTypes.InChildren);
         }
 
-        [ContextMenu(nameof(DefinePlayerAnimator))]
-        private void DefinePlayerAnimator()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _playerAnimator, ComponentLocationTypes.InThis);
-        }
+        //[ContextMenu(nameof(DefinePlayerAnimator))]
+        //private void DefinePlayerAnimator()
+        //{
+        //    AutomaticFillComponents.DefineComponent(this, ref _playerAnimator, ComponentLocationTypes.InThis);
+        //}
 
         [ContextMenu(nameof(DefineTransform))]
         private void DefineTransform()

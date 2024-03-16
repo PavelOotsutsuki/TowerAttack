@@ -5,6 +5,7 @@ using GameFields.Persons.PersonAnimators;
 using GameFields.Persons.Tables;
 using GameFields.Persons.Towers;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -63,6 +64,21 @@ namespace GameFields.Persons
         public List<Card> GetDiscardCards()
         {
             return _table.GetDiscardCards();
+        }
+
+        public void StartTurnDraw()
+        {
+            
+        }
+
+        public IEnumerator StartTowerCardSelectionDraw()
+        {
+            yield break;
+        }
+
+        public IEnumerator PatriarchCorallDraw()
+        {
+            yield break;
         }
     }
 }

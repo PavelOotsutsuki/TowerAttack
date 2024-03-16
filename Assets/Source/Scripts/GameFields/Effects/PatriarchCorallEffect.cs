@@ -9,7 +9,7 @@ namespace GameFields.Effects
 {
     public class PatriarchCorallEffect
     {
-        private const int CountDrawCards = 3;
+        //private const int CountDrawCards = 3;
 
         private Deck _deck;
         private IPerson _activePerson;
@@ -32,25 +32,30 @@ namespace GameFields.Effects
 
         private IEnumerator Playing()
         {
-            _drawnCards = new Card[CountDrawCards];
-
-            for (int i = 0; i < CountDrawCards; i++)
-            {
-                if (_deck.IsHasCards(1))
-                {
-                    yield return DrawingCard(i);
-                }
-            }
+            yield return _activePerson.PatriarchCorallDraw();
         }
 
-        private IEnumerator DrawingCard(int index)
-        {
-            Card card = _deck.TakeTopCard();
+        //private IEnumerator Playing()
+        //{
+        //    _drawnCards = new Card[CountDrawCards];
 
-            _activePerson.DrawCard(card);
-            yield return new WaitForSeconds(_activePerson.DrawCardsDelay);
+        //    for (int i = 0; i < CountDrawCards; i++)
+        //    {
+        //        if (_deck.IsHasCards(1))
+        //        {
+        //            yield return DrawingCard(i);
+        //        }
+        //    }
+        //}
 
-            _drawnCards[index] = card;
-        }
+        //private IEnumerator DrawingCard(int index)
+        //{
+        //    //Card card = _deck.TakeTopCard();
+
+        //    //_activePerson.DrawCard(card);
+        //    //yield return new WaitForSeconds(_activePerson.DrawCardsDelay);
+
+        //    //_drawnCards[index] = card;
+        //}
     }
 }

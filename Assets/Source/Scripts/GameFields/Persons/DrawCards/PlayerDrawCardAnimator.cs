@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
+using System;
 using Cards;
 using Cysharp.Threading.Tasks;
 using GameFields.Persons.Hands;
@@ -9,6 +9,7 @@ using UnityEngine.UI;
 
 namespace GameFields.Persons.DrawCards
 {
+    [Serializable]
     public class PlayerDrawCardAnimator
     {
         [SerializeField] private PlayerSimpleDrawCardAnimator _simpleDrawAnimator;

@@ -40,7 +40,7 @@ namespace GameFields
 
             _effectRoot = new EffectRoot(_deck, _discardPile, this);
 
-            _player.Init(this, _effectRoot);
+            _player.Init(this, _effectRoot, _deck);
             _enemy.Init(this, _effectRoot);
             //_effectRoot.Init(_deck, _discardPile, _activePerson, _deactivePerson);
         }
@@ -55,7 +55,7 @@ namespace GameFields
             DiscardCards();
             CheckEndFight();
             SwitchPerson();
-            StartTurn();
+            StartTurn().ToUniTask();
         }
 
         public void StartFight()
@@ -67,7 +67,7 @@ namespace GameFields
 
         public void StartFirstTurn()
         {
-            _startTowerCardSelection.Activate(_player, _enemy, _deck);
+            _startTowerCardSelection.Activate(_player, _enemy);
         }
 
         private void DiscardCards()
@@ -120,7 +120,7 @@ namespace GameFields
         {
             _activePerson.StartTurnDraw();
 
-            yield return 1.5f;
+            yield return new WaitForSeconds(1.5f);
 
             if (_activePerson is EnemyAI)
             {
