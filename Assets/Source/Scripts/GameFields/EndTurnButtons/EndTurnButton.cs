@@ -19,14 +19,14 @@ namespace GameFields.EndTurnButtons
             _changeSideAnimator = new ChangeSideAnimator(_activeView.gameObject, _deactiveView.gameObject, _rectTransform, _activeViewInvertDuration, _deactiveViewInvertDuration, drawHandler);
         }
 
-        public void OnClick()
-        {
-            SetDeactiveSide();
-        }
-
         public void SetActiveSide()
         {
             _changeSideAnimator.PlayUnlockButtonAnimation();
+        }
+
+        public void OnClick()
+        {
+            SetDeactiveSide();
         }
 
         private void OnEnable()

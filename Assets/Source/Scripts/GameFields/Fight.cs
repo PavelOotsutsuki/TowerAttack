@@ -111,30 +111,16 @@ namespace GameFields
             _player.DeactivateDropPlaces();
         }
 
-        private void StartTurn()
-        {
-            DrawningCard().ToUniTask();
-        }
+        //private void StartTurn()
+        //{
+        //    DrawningCard().ToUniTask();
+        //}
 
-        private void EndFight()
+        private IEnumerator StartTurn()
         {
-            Debug.Log("БОЙ ОКОНЧЕН! НИЧЬЯ!");
-        }
+            _activePerson.StartTurnDraw();
 
-        private IEnumerator DrawningCard()
-        {
-            WaitForSeconds delay = new WaitForSeconds(_activePerson.DrawCardsDelay);
-            Card drawnCard;
-
-            for (int i = 0; i < _activePerson.CountDrawCards; i++)
-            {
-                if (_deck.IsHasCards(1))
-                {
-                    drawnCard = _deck.TakeTopCard();
-                    _activePerson.DrawCard(drawnCard);
-                    yield return delay;
-                }
-            }
+            yield return 1.5f;
 
             if (_activePerson is EnemyAI)
             {
@@ -145,5 +131,35 @@ namespace GameFields
                 _endTurnButton.SetActiveSide();
             }
         }
+
+        private void EndFight()
+        {
+            Debug.Log("БОЙ ОКОНЧЕН! НИЧЬЯ!");
+        }
+
+        //private IEnumerator DrawningCard()
+        //{
+        //    //WaitForSeconds delay = new WaitForSeconds(_activePerson.DrawCardsDelay);
+        //    //Card drawnCard;
+
+        //    //for (int i = 0; i < _activePerson.CountDrawCards; i++)
+        //    //{
+        //    //    if (_deck.IsHasCards(1))
+        //    //    {
+        //    //        drawnCard = _deck.TakeTopCard();
+        //    //        _activePerson.DrawCard(drawnCard);
+        //    //        yield return delay;
+        //    //    }
+        //    //}
+
+        //    if (_activePerson is EnemyAI)
+        //    {
+        //        _enemy.PlayDragAndDropImitation();
+        //    }
+        //    else
+        //    {
+        //        _endTurnButton.SetActiveSide();
+        //    }
+        //}
     }
 }

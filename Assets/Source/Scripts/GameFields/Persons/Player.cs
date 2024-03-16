@@ -25,14 +25,14 @@ namespace GameFields.Persons
         //public int CountDrawCards => _playerAnimator.CountDrawCards;
         //public float DrawCardsDelay => _playerAnimator.DrawCardsDelay;
 
-        public void Init(IStartFightListener startFightListener, EffectRoot effectRoot)
+        public void Init(IStartFightListener startFightListener, EffectRoot effectRoot, Deck deck)
         {
             _hand.Init();
             InitTower(startFightListener);
             _table.Init(this, effectRoot);
-//            cardEffects.SetPlayerGameFieldElements(_table, _hand, _tower);
+            //            cardEffects.SetPlayerGameFieldElements(_table, _hand, _tower);
 
-            _playerAnimator.Init(_hand, _transform);
+            _drawCardRoot.Init(deck, _hand, _transform);
         }
 
         public List<Card> GetDiscardCards()
@@ -57,10 +57,14 @@ namespace GameFields.Persons
             _tower.Deactivate();
         }
 
-        public void DrawCard(Card card)
+        //public void DrawCard(Card card)
+        //{
+        //    card.SetDragAndDropListener(_hand);
+        //    _playerAnimator.StartDrawCardAnimation(card);
+        //}
+        public void StartTurnDraw()
         {
-            card.SetDragAndDropListener(_hand);
-            _playerAnimator.StartDrawCardAnimation(card);
+            _drawCardRoot.StartTurnDraw();
         }
 
         public void ActivateStartTowerCardSelection()

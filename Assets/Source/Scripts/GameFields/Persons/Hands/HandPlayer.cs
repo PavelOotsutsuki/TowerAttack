@@ -36,6 +36,7 @@ namespace GameFields.Persons.Hands
 
         public void AddCard(Card card)
         {
+            card.SetDragAndDropListener(this);
             _handActions.AddCard(card);
         }
 
