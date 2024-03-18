@@ -1,5 +1,6 @@
 using Cards;
 using GameFields.Effects;
+using GameFields.Persons.DrawCards;
 using GameFields.Persons.Hands;
 using GameFields.Persons.PersonAnimators;
 using GameFields.Persons.Tables;
@@ -18,6 +19,7 @@ namespace GameFields.Persons
         [SerializeField] private HandAI _hand;
         [SerializeField] private TableAI _table;
         [SerializeField] private TowerAI _tower;
+        [SerializeField] private DrawCardRoot _drawCardRoot;
 
         private IEndTurnHandler _endTurnHandler;
         private CardDragAndDropImitationActions _cardDragAndDropImitationActions;
@@ -25,15 +27,16 @@ namespace GameFields.Persons
         public float DrawCardsDelay => _enemyAnimator.DrawCardsDelay;
         public int CountDrawCards => _enemyAnimator.CountDrawCards;
 
-        public void Init(IEndTurnHandler endTurnHandler, EffectRoot effectRoot)
+        public void Init(IEndTurnHandler endTurnHandler, EffectRoot effectRoot, Deck deck, Transform transform)
         {
             _endTurnHandler = endTurnHandler;
 
             _hand.Init();
             _tower.Init(this);
             _table.Init(this, effectRoot);
-//            cardEffects.SetEnemyAIGameFieldElements(_table, _hand, _tower);
+            //            cardEffects.SetEnemyAIGameFieldElements(_table, _hand, _tower);
 
+            _drawCardRoot.Init(deck, _hand, transform);
             _cardDragAndDropImitationActions = new CardDragAndDropImitationActions(_hand, _table);
             _enemyAnimator.Init(_endTurnHandler, _cardDragAndDropImitationActions);
         }
@@ -68,17 +71,17 @@ namespace GameFields.Persons
 
         public void StartTurnDraw()
         {
-            
+            _drawCardRoot.StartTurnDraw();
         }
 
         public IEnumerator StartTowerCardSelectionDraw()
         {
-            yield break;
+            yield return _drawCardRoot.StartTowerCardSelectionDraw();
         }
 
         public IEnumerator PatriarchCorallDraw()
         {
-            yield break;
+            yield return _drawCardRoot.PatriarchCorallDraw();
         }
     }
 }

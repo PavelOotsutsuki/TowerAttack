@@ -26,7 +26,7 @@ namespace GameFields
         private IPerson _deactivePerson;
         private int _turnNumber;
 
-        public Fight(Player player, EnemyAI enemy, Deck deck, DiscardPile discardPile, EndTurnButton endTurnButton, FightAnimator fightAnimator, StartTowerCardSelection startTowerCardSelection)
+        public Fight(Player player, EnemyAI enemy, Deck deck, DiscardPile discardPile, EndTurnButton endTurnButton, FightAnimator fightAnimator, StartTowerCardSelection startTowerCardSelection, Transform transform)
         {
             _turnNumber = 1;
 
@@ -41,7 +41,7 @@ namespace GameFields
             _effectRoot = new EffectRoot(_deck, _discardPile, this);
 
             _player.Init(this, _effectRoot, _deck);
-            _enemy.Init(this, _effectRoot);
+            _enemy.Init(this, _effectRoot, _deck, transform);
             //_effectRoot.Init(_deck, _discardPile, _activePerson, _deactivePerson);
         }
 

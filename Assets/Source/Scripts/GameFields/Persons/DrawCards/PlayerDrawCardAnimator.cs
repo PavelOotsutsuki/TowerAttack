@@ -9,25 +9,15 @@ using UnityEngine.UI;
 
 namespace GameFields.Persons.DrawCards
 {
-    [Serializable]
-    public class PlayerDrawCardAnimator
+    public class PlayerDrawCardAnimator: DrawCardAnimator
     {
         [SerializeField] private PlayerSimpleDrawCardAnimator _simpleDrawAnimator;
 
-        private IHand _hand;
-        private Transform _parent;
-
-        public void Init(IHand hand, Transform parent)
+        public override IEnumerator PlayingSimpleDrawCardAnimation(Card drawnCard)
         {
-            _hand = hand;
-            _parent = parent;
-        }
+            yield return _simpleDrawAnimator.StartDrawCardAnimation(drawnCard, Parent);
 
-        public IEnumerator PlayingSimpleDrawCardAnimation(Card drawnCard)
-        {
-            yield return _simpleDrawAnimator.StartDrawCardAnimation(drawnCard, _parent);
-
-            _hand.AddCard(drawnCard);
+            Hand.AddCard(drawnCard);
         }
     }
 }

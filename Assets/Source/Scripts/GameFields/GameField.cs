@@ -29,7 +29,7 @@ namespace GameFields
             _discardPile.Init();
             _fightAnimator.Init(_discardPile);
 
-            _fight = new Fight(_player, _enemyAI, _deck, _discardPile, _endTurnButton, _fightAnimator, _startTowerCardSelection);
+            _fight = new Fight(_player, _enemyAI, _deck, _discardPile, _endTurnButton, _fightAnimator, _startTowerCardSelection, transform);
 
             _endTurnButton.Init(_fight);
 

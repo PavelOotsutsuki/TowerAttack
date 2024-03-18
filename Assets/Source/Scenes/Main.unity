@@ -989,6 +989,11 @@ MonoBehaviour:
     _hand: {fileID: 1620354845}
     _table: {fileID: 704143077}
     _tower: {fileID: 1939013310}
+    _drawCardRoot:
+      _countDrawCards: 1
+      _countStartTowerCardSelectionDrawCards: 3
+      _countPatriarchCorallDrawDrawCards: 3
+      _drawCardAnimator: {fileID: 1502786297}
 --- !u!114 &200841579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7422,6 +7427,7 @@ GameObject:
   - component: {fileID: 1502786294}
   - component: {fileID: 1502786296}
   - component: {fileID: 1502786295}
+  - component: {fileID: 1502786297}
   m_Layer: 0
   m_Name: EnemyAI
   m_TagString: Untagged
@@ -7487,6 +7493,19 @@ MonoBehaviour:
   _enemyDragAndDropImitation: {fileID: 1502786295}
   _countDrawCards: 2
   _drawCardsDelay: 0.5
+--- !u!114 &1502786297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1502786293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83794195e1c954ec8aa2fd9ece16fe73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _drawCardDelay: 0.5
 --- !u!1001 &1520164573
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9658,6 +9677,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1905208562}
   - component: {fileID: 1905208563}
+  - component: {fileID: 1905208564}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -9709,14 +9729,26 @@ MonoBehaviour:
     _countDrawCards: 1
     _countStartTowerCardSelectionDrawCards: 3
     _countPatriarchCorallDrawDrawCards: 3
-    _playerDrawCardAnimator:
-      _simpleDrawAnimator:
-        _invertCardFrontDuration: 1
-        _invertCardBackDuration: 1
-        _delay: 0.5
-        _invertCardBackRotation: 90
-        _invertCardBackScaleFactor: 1.8
-        _indent: 15
+    _drawCardAnimator: {fileID: 0}
+--- !u!114 &1905208564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1905208561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3782920d858474877a43536af929f182, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _simpleDrawAnimator:
+    _invertCardFrontDuration: 1
+    _invertCardBackDuration: 1
+    _delay: 0.5
+    _invertCardBackRotation: 90
+    _invertCardBackScaleFactor: 1.8
+    _indent: 15
 --- !u!1 &1915389997
 GameObject:
   m_ObjectHideFlags: 0

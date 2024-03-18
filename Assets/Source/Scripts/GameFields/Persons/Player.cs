@@ -34,6 +34,7 @@ namespace GameFields.Persons
             //            cardEffects.SetPlayerGameFieldElements(_table, _hand, _tower);
 
             _drawCardRoot.Init(deck, _hand, _transform);
+            _discover.Deactivate();
         }
 
         public List<Card> GetDiscardCards()

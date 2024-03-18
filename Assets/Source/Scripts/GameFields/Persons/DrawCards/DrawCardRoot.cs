@@ -15,7 +15,7 @@ namespace GameFields.Persons.DrawCards
         [SerializeField] private int _countStartTowerCardSelectionDrawCards = 3;
         [SerializeField] private int _countPatriarchCorallDrawDrawCards = 3;
         //[SerializeField] private float _drawCardsDelay = 2f;
-        [SerializeField] private PlayerDrawCardAnimator _playerDrawCardAnimator;
+        [SerializeField] private DrawCardAnimator _drawCardAnimator;
 
         private Deck _deck;
         //private IHand _hand;
@@ -32,7 +32,7 @@ namespace GameFields.Persons.DrawCards
             _isDrawing = false;
             _drawCardQueue = new Queue<Card>();
 
-            _playerDrawCardAnimator.Init(hand, _transform);
+            _drawCardAnimator.Init(hand, _transform);
         }
 
         public void StartTurnDraw()
@@ -44,17 +44,12 @@ namespace GameFields.Persons.DrawCards
 
         public IEnumerator StartTowerCardSelectionDraw()
         {
-            Debug.Log("StartTowerCardSelectionDraw begin");
-
             if (_deck.IsHasCards(_countStartTowerCardSelectionDrawCards) == false)
             {
                 throw new ArgumentOutOfRangeException("Недостаточно карт в колоде");
             }
 
             AddCardsInQueue(_countStartTowerCardSelectionDrawCards);
-
-            Debug.Log(_drawCardQueue.Count);
-
 
             yield return DrawCards();
         }
@@ -73,15 +68,12 @@ namespace GameFields.Persons.DrawCards
                 yield break;
             }
 
-            Debug.Log("DrawCards");
-
             _isDrawing = true;
 
             while (_drawCardQueue.Count > 0)
             {
-                Debug.Log("DrawCards process");
                 Card card = _drawCardQueue.Dequeue();
-                yield return _playerDrawCardAnimator.PlayingSimpleDrawCardAnimation(card);
+                yield return _drawCardAnimator.PlayingSimpleDrawCardAnimation(card);
             }
 
             _isDrawing = false;
