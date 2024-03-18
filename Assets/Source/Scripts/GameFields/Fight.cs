@@ -55,7 +55,7 @@ namespace GameFields
             DiscardCards();
             CheckEndFight();
             SwitchPerson();
-            StartTurn().ToUniTask();
+            StartTurn();
         }
 
         public void StartFight()
@@ -116,11 +116,11 @@ namespace GameFields
         //    DrawningCard().ToUniTask();
         //}
 
-        private IEnumerator StartTurn()
+        private void StartTurn()
         {
             _activePerson.StartTurnDraw();
 
-            yield return new WaitForSeconds(1.5f);
+            //yield return new WaitForSeconds(1.5f);
 
             if (_activePerson is EnemyAI)
             {
