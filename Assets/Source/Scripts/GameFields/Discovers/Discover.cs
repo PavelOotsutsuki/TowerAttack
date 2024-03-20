@@ -27,6 +27,8 @@ namespace GameFields.Persons.Discovers
 
             //_discoverSeatsPool.Init();
             InitSeats();
+
+            gameObject.SetActive(false);
         }
 
         public void Activate(Card[] cards, string activateMessage)

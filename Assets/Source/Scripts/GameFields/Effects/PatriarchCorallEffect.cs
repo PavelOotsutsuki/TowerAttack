@@ -4,6 +4,7 @@ using GameFields.Persons;
 using System.Collections;
 using Cysharp.Threading.Tasks;
 using System;
+using GameFields.Persons.Discovers;
 
 namespace GameFields.Effects
 {
@@ -15,6 +16,7 @@ namespace GameFields.Effects
         private IPerson _activePerson;
         private IPerson _deactivePerson;
         private Card[] _drawnCards;
+        private Discover _discover;
 
         public PatriarchCorallEffect(Deck deck, IPerson activePerson, IPerson deactivePerson)
         {
@@ -33,6 +35,9 @@ namespace GameFields.Effects
         private IEnumerator Playing()
         {
             yield return _activePerson.PatriarchCorallDraw();
+
+            //_discover.Activate(cards, )
+
         }
 
         //private IEnumerator Playing()

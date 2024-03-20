@@ -21,19 +21,22 @@ namespace GameFields.Persons
         [SerializeField] private Discover _discover;
         //[SerializeField] private PlayerAnimator _playerAnimator;
         [SerializeField] private Transform _transform;
+        [SerializeField] private int _countDrawCards = 1;
+        [SerializeField] private float _drawCardsDelay = 2f;
 
         [SerializeField] private DrawCardRoot _drawCardRoot;
-        //public int CountDrawCards => _playerAnimator.CountDrawCards;
-        //public float DrawCardsDelay => _playerAnimator.DrawCardsDelay;
 
-        public void Init(IStartFightListener startFightListener, EffectRoot effectRoot, Deck deck)
+        public int CountDrawCards => _countDrawCards;
+        public float DrawCardsDelay => _drawCardsDelay;
+
+        public void Init(IStartFightListener startFightListener, EffectRoot effectRoot)
         {
             _hand.Init();
             InitTower(startFightListener);
             _table.Init(this, effectRoot);
             //            cardEffects.SetPlayerGameFieldElements(_table, _hand, _tower);
 
-            _drawCardRoot.Init(deck, _hand, _transform);
+            _drawCardRoot.Init(_hand, _transform);
             _discover.Deactivate();
         }
 
@@ -59,25 +62,25 @@ namespace GameFields.Persons
             _tower.Deactivate();
         }
 
-        //public void DrawCard(Card card)
+        public void DrawCard(Card[] cards)
+        {
+            _drawCardRoot.TakeCards(cards);
+        }
+
+        //public void StartTurnDraw(Card[] cards)
         //{
-        //    card.SetDragAndDropListener(_hand);
-        //    _playerAnimator.StartDrawCardAnimation(card);
+        //    _drawCardRoot.TakeCards();
         //}
-        public void StartTurnDraw()
-        {
-            _drawCardRoot.StartTurnDraw();
-        }
 
-        public IEnumerator StartTowerCardSelectionDraw()
-        {
-            yield return _drawCardRoot.StartTowerCardSelectionDraw();
-        }
+        //public IEnumerator StartTowerCardSelectionDraw()
+        //{
+        //    yield return _drawCardRoot.StartTowerCardSelectionDraw();
+        //}
 
-        public IEnumerator PatriarchCorallDraw()
-        {
-            yield return _drawCardRoot.PatriarchCorallDraw();
-        }
+        //public IEnumerator PatriarchCorallDraw()
+        //{
+        //    yield return _drawCardRoot.PatriarchCorallDraw();
+        //}
 
         private void InitTower(IStartFightListener startFightListener)
         {

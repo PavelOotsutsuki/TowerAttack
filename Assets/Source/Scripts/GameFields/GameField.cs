@@ -16,11 +16,12 @@ namespace GameFields
         [SerializeField] private Player _player;
         [SerializeField] private FightAnimator _fightAnimator;
         [SerializeField] private StartTowerCardSelection _startTowerCardSelection;
-        [SerializeField] private EffectRoot _effectRoot;
 
         [SerializeField] private EnemyAI _enemyAI;
 
+        private EffectRoot _effectRoot;
         private Fight _fight;
+        private FightStepsController _fightStepsController;
 
         public void Init(Card[] cardsInDeck)
         {
@@ -29,7 +30,11 @@ namespace GameFields
             _discardPile.Init();
             _fightAnimator.Init(_discardPile);
 
-            _fight = new Fight(_player, _enemyAI, _deck, _discardPile, _endTurnButton, _fightAnimator, _startTowerCardSelection, transform);
+            _fight = new Fight(_player, _enemyAI, _endTurnButton, _fightAnimator, _startTowerCardSelection, transform);
+            _effectRoot = new EffectRoot(_deck, _discardPile, _fight);
+
+            _player.Init(_fight, _effectRoot, _deck);
+            _enemyAI.Init(_fight, _effectRoot, _deck, transform);
 
             _endTurnButton.Init(_fight);
 
@@ -45,7 +50,6 @@ namespace GameFields
             DefinePlayer();
             DefineFightAnimator();
             DefineFirstTurn();
-            DefineEffectRoot();
         }
 
         [ContextMenu(nameof(DefineDeck))]
@@ -82,12 +86,6 @@ namespace GameFields
         private void DefineFirstTurn()
         {
             AutomaticFillComponents.DefineComponent(this, ref _startTowerCardSelection, ComponentLocationTypes.InChildren);
-        }
-
-        [ContextMenu(nameof(DefineEffectRoot))]
-        private void DefineEffectRoot()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _effectRoot, ComponentLocationTypes.InChildren);
         }
     }
 }

@@ -15,33 +15,27 @@ namespace GameFields
 
         private Player _player;
         private EnemyAI _enemy;
-        private Deck _deck;
+        //private Deck _deck;
         private EndTurnButton _endTurnButton;
-        private DiscardPile _discardPile;
+        //private DiscardPile _discardPile;
         private FightAnimator _fightAnimator;
         private StartTowerCardSelection _startTowerCardSelection;
 
-        private EffectRoot _effectRoot;
         private IPerson _activePerson;
         private IPerson _deactivePerson;
         private int _turnNumber;
 
-        public Fight(Player player, EnemyAI enemy, Deck deck, DiscardPile discardPile, EndTurnButton endTurnButton, FightAnimator fightAnimator, StartTowerCardSelection startTowerCardSelection, Transform transform)
+        public Fight(Player player, EnemyAI enemy, EndTurnButton endTurnButton, FightAnimator fightAnimator, StartTowerCardSelection startTowerCardSelection, Transform transform)
         {
             _turnNumber = 1;
 
             _player = player;
             _enemy = enemy;
-            _deck = deck;
-            _discardPile = discardPile;
+            //_deck = deck;
+            //_discardPile = discardPile;
             _endTurnButton = endTurnButton;
             _fightAnimator = fightAnimator;
             _startTowerCardSelection = startTowerCardSelection;
-
-            _effectRoot = new EffectRoot(_deck, _discardPile, this);
-
-            _player.Init(this, _effectRoot, _deck);
-            _enemy.Init(this, _effectRoot, _deck, transform);
             //_effectRoot.Init(_deck, _discardPile, _activePerson, _deactivePerson);
         }
 
@@ -122,11 +116,15 @@ namespace GameFields
 
             //yield return new WaitForSeconds(1.5f);
 
-            if (_activePerson is EnemyAI)
-            {
-                _enemy.PlayDragAndDropImitation();
-            }
-            else
+            //if (_activePerson is EnemyAI)
+            //{
+            //    _enemy.PlayDragAndDropImitation();
+            //}
+            //else
+            //{
+            //    _endTurnButton.SetActiveSide();
+            //}
+            if (_activePerson is Player)
             {
                 _endTurnButton.SetActiveSide();
             }

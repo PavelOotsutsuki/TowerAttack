@@ -7,12 +7,11 @@ namespace GameFields.Persons.DrawCards
 {
     public class EnemyDrawCardAnimator : DrawCardAnimator
     {
-        [SerializeField] private float _drawCardDelay = 0.5f;
+        public override bool IsDone => true;
 
-        public override IEnumerator PlayingSimpleDrawCardAnimation(Card drawnCard)
+        public override void PlayingSimpleDrawCardAnimation(Card drawnCard)
         {
             Hand.AddCard(drawnCard);
-            yield return new WaitForSeconds(_drawCardDelay);
         }
     }
 }

@@ -11,55 +11,50 @@ namespace GameFields.Persons.DrawCards
     [Serializable]
     public class DrawCardRoot
     {
-        [SerializeField] private int _countDrawCards = 1;
-        [SerializeField] private int _countStartTowerCardSelectionDrawCards = 3;
-        [SerializeField] private int _countPatriarchCorallDrawDrawCards = 3;
+        //[SerializeField] private int _countDrawCards = 1;
+        //[SerializeField] private int _countStartTowerCardSelectionDrawCards = 3;
+        //[SerializeField] private int _countPatriarchCorallDrawDrawCards = 3;
         //[SerializeField] private float _drawCardsDelay = 2f;
         [SerializeField] private DrawCardAnimator _drawCardAnimator;
 
-        private Deck _deck;
         //private IHand _hand;
-        private Transform _transform;
         private Queue<Card> _drawCardQueue;
         private bool _isDrawing;
 
-        public void Init(Deck deck, IHand hand, Transform transform)
+        public void Init(IHand hand)
         {
-            _deck = deck;
             //_hand = hand;
-            _transform = transform;
-
             _isDrawing = false;
             _drawCardQueue = new Queue<Card>();
 
-            _drawCardAnimator.Init(hand, _transform);
+            _drawCardAnimator.Init(hand);
         }
 
-        public void StartTurnDraw()
+        public void TakeCards(Card[] cards)
         {
-            AddCardsInQueue(_countDrawCards);
+            AddCardsInQueue(cards);
 
             DrawCards().ToUniTask();
         }
 
-        public IEnumerator StartTowerCardSelectionDraw()
-        {
-            if (_deck.IsHasCards(_countStartTowerCardSelectionDrawCards) == false)
-            {
-                throw new ArgumentOutOfRangeException("Недостаточно карт в колоде");
-            }
+        //public IEnumerator TakeCards(int count)
+        //{
+        //    //if (_deck.IsHasCards(count) == false)
+        //    //{
+        //    //    throw new ArgumentOutOfRangeException("Недостаточно карт в колоде");
+        //    //}
 
-            AddCardsInQueue(_countStartTowerCardSelectionDrawCards);
+        //    AddCardsInQueue(count);
 
-            yield return DrawCards();
-        }
+        //    yield return DrawCards();
+        //}
 
-        public IEnumerator PatriarchCorallDraw()
-        {
-            AddCardsInQueue(_countPatriarchCorallDrawDrawCards);
+        //public IEnumerator TakeCards(int count)
+        //{
+        //    AddCardsInQueue(count);
 
-            yield return DrawCards();
-        }
+        //    yield return DrawCards();
+        //}
 
         private IEnumerator DrawCards()
         {
@@ -73,37 +68,19 @@ namespace GameFields.Persons.DrawCards
             while (_drawCardQueue.Count > 0)
             {
                 Card card = _drawCardQueue.Dequeue();
-                yield return _drawCardAnimator.PlayingSimpleDrawCardAnimation(card);
+                _drawCardAnimator.PlayingSimpleDrawCardAnimation(card);
+                yield return new WaitUntil(() => _drawCardAnimator.IsDone);
             }
 
             _isDrawing = false;
         }
 
-        private void AddCardsInQueue(int count)
+        private void AddCardsInQueue(Card[] cards)
         {
-            for (int i = 0; i < count; i++)
+            foreach (Card card in cards)
             {
-                if (TryGetCard(out Card card))
-                {
-                    _drawCardQueue.Enqueue(card);
-                }
-                else
-                {
-                    break;
-                }
+                _drawCardQueue.Enqueue(card);
             }
-        }
-
-        private bool TryGetCard(out Card card)
-        {
-            if (_deck.IsHasCards(1))
-            {
-                card = _deck.TakeTopCard();
-                return true;
-            }
-
-            card = null;
-            return false;
         }
     }
 }

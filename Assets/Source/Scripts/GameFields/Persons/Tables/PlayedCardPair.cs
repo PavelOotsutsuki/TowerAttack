@@ -1,6 +1,6 @@
 using Cards;
 
-namespace GameFields
+namespace GameFields.Persons.Tables
 {
     public class PlayedCardPair
     {

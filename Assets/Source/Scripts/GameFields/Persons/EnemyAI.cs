@@ -36,7 +36,7 @@ namespace GameFields.Persons
             _table.Init(this, effectRoot);
             //            cardEffects.SetEnemyAIGameFieldElements(_table, _hand, _tower);
 
-            _drawCardRoot.Init(deck, _hand, transform);
+            _drawCardRoot.Init(_hand);
             _cardDragAndDropImitationActions = new CardDragAndDropImitationActions(_hand, _table);
             _enemyAnimator.Init(_endTurnHandler, _cardDragAndDropImitationActions);
         }
@@ -54,9 +54,9 @@ namespace GameFields.Persons
             }
         }
 
-        public void DrawCard(Card card)
+        public void DrawCard(Card[] cards)
         {
-            _hand.AddCard(card);
+            _drawCardRoot.TakeCards(cards);
         }
 
         public void PlayCard(Card card)
