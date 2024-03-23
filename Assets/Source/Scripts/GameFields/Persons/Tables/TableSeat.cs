@@ -11,6 +11,7 @@ namespace GameFields.Persons.Tables
 
         private CardCharacter _cardCharacter;
         private EffectRoot _effectRoot;
+        private Effect _effect;
 
         internal void Init(EffectRoot effectRoot)
         {
@@ -25,7 +26,7 @@ namespace GameFields.Persons.Tables
             _cardCharacter.transform.SetParent(_rectTransform);
             _cardCharacter.transform.localPosition = cardCharacterPosition;
             _cardCharacter.Activate();
-            _effectRoot.PlayEffect(_cardCharacter.Effect);
+            _effect = _effectRoot.PlayEffect(_cardCharacter.Effect);
         }
 
         internal bool TryDiscardCardCharacter(out CardCharacter cardCharacter)
@@ -33,6 +34,13 @@ namespace GameFields.Persons.Tables
             cardCharacter = null;
 
             if (IsEmpty())
+            {
+                return false;
+            }
+
+            _effect.DecreaseCounter();
+
+            if (_effect.CountTurns > 0)
             {
                 return false;
             }

@@ -4,7 +4,7 @@ using GameFields.Persons;
 
 namespace GameFields.Effects
 {
-    public class ZhyzhaEffect
+    public class ZhyzhaEffect: Effect
     {
         private IPerson _deactivePerson;
 
@@ -13,6 +13,8 @@ namespace GameFields.Effects
             _deactivePerson = deactivePerson;
 
             PlayEffect();
+
+            CountTurns = 3;
         }
 
         private void PlayEffect()

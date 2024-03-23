@@ -4,7 +4,7 @@ using GameFields.Persons;
 
 namespace GameFields.Effects
 {
-    public class GreedyEffect
+    public class GreedyEffect: Effect
     {
         private IPerson _activePerson;
         private IPerson _deactivePerson;
@@ -15,6 +15,8 @@ namespace GameFields.Effects
             _deactivePerson = deactivePerson;
 
             PlayEffect();
+
+            CountTurns = 1;
         }
 
         private void PlayEffect()
