@@ -23,9 +23,9 @@ namespace GameFields.Persons.Tables
             Vector2 cardCharacterPosition = new Vector2(0, 0);
 
             _cardCharacter = cardCharacter;
-            _cardCharacter.transform.SetParent(_rectTransform);
-            _cardCharacter.transform.localPosition = cardCharacterPosition;
-            _cardCharacter.Activate();
+            //_cardCharacter.transform.SetParent(_rectTransform);
+            //_cardCharacter.transform.localPosition = cardCharacterPosition;
+            _cardCharacter.Activate(_rectTransform, cardCharacterPosition);
             _effect = _effectRoot.PlayEffect(_cardCharacter.Effect);
         }
 

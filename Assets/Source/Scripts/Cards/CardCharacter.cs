@@ -17,8 +17,10 @@ namespace Cards
             gameObject.SetActive(false);
         }
 
-        public void Activate()
+        public void Activate(Transform parent, Vector2 setedPosition)
         {
+            _rectTransform.SetParent(parent);
+            _rectTransform.localPosition = setedPosition;
             gameObject.SetActive(true);
             AudioSource.PlayClipAtPoint(_audioSource.clip, Vector3.zero);
         }
