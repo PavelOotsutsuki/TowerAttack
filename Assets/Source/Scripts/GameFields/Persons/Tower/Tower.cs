@@ -8,6 +8,8 @@ namespace GameFields.Persons.Towers
         [SerializeField] protected TowerSeat TowerSeat;
         [SerializeField] protected CanvasGroup CanvasGroup;
 
+        public bool IsTowerFill => TowerSeat.IsFill();
+
         protected IPlayCardManager PlayCardManager;
 
         public virtual void Init(IPlayCardManager playCardManager)

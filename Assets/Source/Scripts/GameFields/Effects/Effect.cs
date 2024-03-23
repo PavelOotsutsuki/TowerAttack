@@ -2,20 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GameFields
+namespace GameFields.Effects
 {
-    public class Effect : MonoBehaviour
+    public abstract class Effect
     {
-        // Start is called before the first frame update
-        void Start()
-        {
-        
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-        
-        }
+        public int CountTurns { get; protected set; } 
     }
 }

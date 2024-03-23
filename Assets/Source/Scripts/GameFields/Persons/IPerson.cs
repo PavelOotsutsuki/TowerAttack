@@ -3,7 +3,7 @@ using Cards;
 
 namespace GameFields.Persons
 {
-    public interface IPerson : IPlayCardManager, IDrawCardManager
+    public interface IPerson : IPlayCardManager, IStartTowerCardSelectionListener
     {
         //public int CountDrawCards { get; }
 

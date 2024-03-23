@@ -10,6 +10,7 @@ using GameFields.Effects;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.DrawCards;
 using System.Collections;
+using System;
 
 namespace GameFields.Persons
 {
@@ -20,23 +21,25 @@ namespace GameFields.Persons
         [SerializeField] private TowerPlayer _tower;
         [SerializeField] private Discover _discover;
         //[SerializeField] private PlayerAnimator _playerAnimator;
-        [SerializeField] private Transform _transform;
-        [SerializeField] private int _countDrawCards = 1;
-        [SerializeField] private float _drawCardsDelay = 2f;
+        //[SerializeField] private Transform _transform;
+        [SerializeField] private int _countStartTurnDrawCards = 1;
 
         [SerializeField] private DrawCardRoot _drawCardRoot;
 
-        public int CountDrawCards => _countDrawCards;
-        public float DrawCardsDelay => _drawCardsDelay;
+        private Deck _deck;
 
-        public void Init(IStartFightListener startFightListener, EffectRoot effectRoot)
+        public bool IsTowerFilled => _tower.IsTowerFill;
+
+        public void Init(EffectRoot effectRoot, Deck deck, Action startDrawCallback)
         {
+            _deck = deck;
+
             _hand.Init();
-            InitTower(startFightListener);
+            _tower.Init(this);
             _table.Init(this, effectRoot);
             //            cardEffects.SetPlayerGameFieldElements(_table, _hand, _tower);
 
-            _drawCardRoot.Init(_hand, _transform);
+            _drawCardRoot.Init(_hand, startDrawCallback);
             _discover.Deactivate();
         }
 
@@ -62,15 +65,47 @@ namespace GameFields.Persons
             _tower.Deactivate();
         }
 
-        public void DrawCard(Card[] cards)
+        public void DrawCards(Queue<Card> cards)
         {
             _drawCardRoot.TakeCards(cards);
         }
 
-        //public void StartTurnDraw(Card[] cards)
-        //{
-        //    _drawCardRoot.TakeCards();
-        //}
+        public void StartTurnDraw()
+        {
+            Queue<Card> cards = new Queue<Card>();
+
+            for (int i = 0; i < _countStartTurnDrawCards; i++)
+            {
+                if (_deck.IsHasCards(1))
+                {
+                    cards.Enqueue(_deck.TakeTopCard());
+                }
+            }
+
+            if (cards != null)
+            {
+                _drawCardRoot.StartTurnDraw(cards);
+            }
+        }
+
+        public void StartTowerCardSelection(int drawCardsCount)
+        {
+            Queue<Card> cards = new Queue<Card>();
+
+            for (int i = 0; i < drawCardsCount; i++)
+            {
+                if (_deck.IsHasCards(1))
+                {
+                    cards.Enqueue(_deck.TakeTopCard());
+                }
+            }
+
+            if (cards != null)
+            {
+                _drawCardRoot.TakeCards(cards);
+            }
+            //
+        }
 
         //public IEnumerator StartTowerCardSelectionDraw()
         //{
@@ -82,12 +117,6 @@ namespace GameFields.Persons
         //    yield return _drawCardRoot.PatriarchCorallDraw();
         //}
 
-        private void InitTower(IStartFightListener startFightListener)
-        {
-            _tower.Init(this);
-            _tower.SetStartFightListener(startFightListener);
-        }
-
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
@@ -96,7 +125,7 @@ namespace GameFields.Persons
             DefineTowerPlayer();
             DefineDiscover();
             //DefinePlayerAnimator();
-            DefineTransform();
+            //DefineTransform();
         }
 
         [ContextMenu(nameof(DefineHandPlayer))]
@@ -129,10 +158,10 @@ namespace GameFields.Persons
         //    AutomaticFillComponents.DefineComponent(this, ref _playerAnimator, ComponentLocationTypes.InThis);
         //}
 
-        [ContextMenu(nameof(DefineTransform))]
-        private void DefineTransform()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _transform, ComponentLocationTypes.InThis);
-        }
+        //[ContextMenu(nameof(DefineTransform))]
+        //private void DefineTransform()
+        //{
+        //    AutomaticFillComponents.DefineComponent(this, ref _transform, ComponentLocationTypes.InThis);
+        //}
     }
 }

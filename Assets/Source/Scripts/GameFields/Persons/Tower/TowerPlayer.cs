@@ -5,8 +5,6 @@ namespace GameFields.Persons.Towers
 {
     public class TowerPlayer : Tower, ICardDropPlace
     {
-        private IStartFightListener _startFightListener;
-
         public override void Init(IPlayCardManager playCardManager)
         {
             base.Init(playCardManager);
@@ -14,18 +12,11 @@ namespace GameFields.Persons.Towers
             Activate();
         }
 
-        public void SetStartFightListener(IStartFightListener startFightListener)
-        {
-            _startFightListener = startFightListener;
-        }
-
         public bool TrySeatCard(Card card)
         {
             if (TowerSeat.TryGetCard(card))
             {
                 PlayCardManager.PlayCard(card);
-
-                _startFightListener?.StartFight();
 
                 Deactivate();
 
@@ -37,7 +28,7 @@ namespace GameFields.Persons.Towers
 
         public void Activate()
         {
-            if (TowerSeat.IsVoid())
+            if (TowerSeat.IsFill() == false)
             {
                 CanvasGroup.blocksRaycasts = true;
             }

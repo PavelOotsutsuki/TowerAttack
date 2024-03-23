@@ -20,21 +20,37 @@ namespace GameFields.Persons.DrawCards
         //private IHand _hand;
         private Queue<Card> _drawCardQueue;
         private bool _isDrawing;
+        private Action _startDrawCallback;
 
-        public void Init(IHand hand)
+        public void Init(IHand hand, Action startDrawCallback)
         {
             //_hand = hand;
             _isDrawing = false;
             _drawCardQueue = new Queue<Card>();
 
+            _startDrawCallback = startDrawCallback;
             _drawCardAnimator.Init(hand);
         }
 
-        public void TakeCards(Card[] cards)
+        public void StartTurnDraw(Queue<Card> cards)
         {
             AddCardsInQueue(cards);
 
-            DrawCards().ToUniTask();
+            StartTurnDrawing().ToUniTask();
+        }
+
+        public void TakeCards(Queue<Card> cards)
+        {
+            AddCardsInQueue(cards);
+
+            DrawingCards().ToUniTask();
+        }
+
+        private IEnumerator StartTurnDrawing()
+        {
+            yield return DrawingCards();
+
+            _startDrawCallback?.Invoke();
         }
 
         //public IEnumerator TakeCards(int count)
@@ -56,7 +72,7 @@ namespace GameFields.Persons.DrawCards
         //    yield return DrawCards();
         //}
 
-        private IEnumerator DrawCards()
+        private IEnumerator DrawingCards()
         {
             if (_isDrawing)
             {
@@ -75,11 +91,11 @@ namespace GameFields.Persons.DrawCards
             _isDrawing = false;
         }
 
-        private void AddCardsInQueue(Card[] cards)
+        private void AddCardsInQueue(Queue<Card> cards)
         {
-            foreach (Card card in cards)
+            while(cards.Count > 0)
             {
-                _drawCardQueue.Enqueue(card);
+                _drawCardQueue.Enqueue(cards.Dequeue());
             }
         }
     }

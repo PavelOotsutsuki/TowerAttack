@@ -5,12 +5,14 @@ using System.Collections;
 using Cysharp.Threading.Tasks;
 using System;
 using GameFields.Persons.Discovers;
+using GameFields.Persons.DrawCards;
+using System.Collections.Generic;
 
 namespace GameFields.Effects
 {
     public class PatriarchCorallEffect
     {
-        //private const int CountDrawCards = 3;
+        private const int CountDrawCards = 3;
 
         private Deck _deck;
         private IPerson _activePerson;
@@ -34,7 +36,24 @@ namespace GameFields.Effects
 
         private IEnumerator Playing()
         {
-            yield return _activePerson.PatriarchCorallDraw();
+            //yield return _activePerson.PatriarchCorallDraw();
+            Queue<Card> cards = new Queue<Card>();
+
+            for (int i = 0; i < CountDrawCards; i++)
+            {
+                if (_deck.IsHasCards(1))
+                {
+                    cards.Enqueue(_deck.TakeTopCard());
+                }
+            }
+
+
+            if (cards != null)
+            {
+                _activePerson.DrawCards(cards);
+            }
+
+            yield break;
 
             //_discover.Activate(cards, )
 

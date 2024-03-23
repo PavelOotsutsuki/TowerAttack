@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Cards;
 using GameFields.Persons.Hands;
@@ -9,11 +10,12 @@ namespace GameFields.Persons.DrawCards
     {
         protected IHand Hand;
 
-        public abstract bool IsDone { get; }
+        public bool IsDone { get; protected set; }
 
         public void Init(IHand hand)
         {
             Hand = hand;
+            IsDone = true;
         }
 
         public abstract void PlayingSimpleDrawCardAnimation(Card drawnCard);

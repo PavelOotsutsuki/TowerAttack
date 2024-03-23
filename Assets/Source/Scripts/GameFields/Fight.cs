@@ -9,7 +9,7 @@ using GameFields.Effects;
 
 namespace GameFields
 {
-    internal class Fight : IEndTurnHandler, IStartFightListener, IPersonSideListener
+    internal class Fight : IEndTurnHandler, IPersonSideListener
     {
         private readonly int _maxTurns = 100;
 
@@ -19,14 +19,16 @@ namespace GameFields
         private EndTurnButton _endTurnButton;
         //private DiscardPile _discardPile;
         private FightAnimator _fightAnimator;
-        private StartTowerCardSelection _startTowerCardSelection;
 
         private IPerson _activePerson;
         private IPerson _deactivePerson;
         private int _turnNumber;
-
-        public Fight(Player player, EnemyAI enemy, EndTurnButton endTurnButton, FightAnimator fightAnimator, StartTowerCardSelection startTowerCardSelection, Transform transform)
+        private bool _isComlpete;
+        private EndFightResults _endFightResults;
+       
+        public Fight(Player player, EnemyAI enemy, EndTurnButton endTurnButton, FightAnimator fightAnimator)
         {
+            _isComlpete = false;
             _turnNumber = 1;
 
             _player = player;
@@ -35,12 +37,13 @@ namespace GameFields
             //_discardPile = discardPile;
             _endTurnButton = endTurnButton;
             _fightAnimator = fightAnimator;
-            _startTowerCardSelection = startTowerCardSelection;
             //_effectRoot.Init(_deck, _discardPile, _activePerson, _deactivePerson);
         }
 
         public IPerson ActivePerson => _activePerson;
         public IPerson DeactivePerson => _deactivePerson;
+        public bool IsComplete => _isComlpete;
+        public EndFightResults EndFightResults => _endFightResults;
 
         public void OnEndTurn()
         {
@@ -52,16 +55,9 @@ namespace GameFields
             StartTurn();
         }
 
-        public void StartFight()
+        public void Start()
         {
-            _startTowerCardSelection.Deactivate();
-
             SetPlayerTurn();
-        }
-
-        public void StartFirstTurn()
-        {
-            _startTowerCardSelection.Activate(_player, _enemy);
         }
 
         private void DiscardCards()
@@ -73,7 +69,8 @@ namespace GameFields
         {
             if (_turnNumber >= _maxTurns)
             {
-                EndFight();
+                _endFightResults = EndFightResults.Draw;
+                _isComlpete = true;
             }
         }
 
@@ -124,15 +121,10 @@ namespace GameFields
             //{
             //    _endTurnButton.SetActiveSide();
             //}
-            if (_activePerson is Player)
-            {
-                _endTurnButton.SetActiveSide();
-            }
-        }
-
-        private void EndFight()
-        {
-            Debug.Log("БОЙ ОКОНЧЕН! НИЧЬЯ!");
+            //if (_activePerson is Player)
+            //{
+            //    _endTurnButton.SetActiveSide();
+            //}
         }
 
         //private IEnumerator DrawningCard()

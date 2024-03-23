@@ -14,48 +14,50 @@ namespace GameFields.StartTowerCardSelections
         [SerializeField] private StartTowerCardSelectionPanel _startTowerCardSelectionPanel;
         [SerializeField] private StartTowerCardSelectionLabel _startTowerCardSelectionLabel;
         [SerializeField] private Seat[] _seats;
-        //[SerializeField] private int _firstTurnCardsCount = 3;
+        [SerializeField] private int _firstTurnCardsCount = 3;
 
-        public void Init()
+        private IStartTowerCardSelectionListener _player;
+        private IStartTowerCardSelectionListener _enemy;
+        private bool _isCompletePlayer;
+        private bool _isCompleteEnemy;
+
+        public bool IsComplete => _player.IsTowerFilled; //&& _enemy.IsTowerFilled;
+
+        public void Init(IStartTowerCardSelectionListener player, IStartTowerCardSelectionListener enemy)
         {
             _startTowerCardSelectionPanel.Init();
             _startTowerCardSelectionLabel.Init();
 
+            _player = player;
+            _enemy = enemy;
+
             InitSeats();
         }
 
-        public void Activate(IDrawCardManager player, IDrawCardManager enemy)
+        public void Activate()
         {
-            //if (deck.IsHasCards(_firstTurnCardsCount * 2) == false)
-            //{
-            //    throw new ArgumentOutOfRangeException("Недостаточно карт в колоде");
-            //}
-
             gameObject.SetActive(true);
 
             _startTowerCardSelectionPanel.Activate();
             _startTowerCardSelectionLabel.Activate();
 
-            player.StartTowerCardSelectionDraw().ToUniTask();
-            enemy.StartTowerCardSelectionDraw().ToUniTask();
+            StartProcess().ToUniTask();
         }
 
-        public void Deactivate()
+        private IEnumerator StartProcess()
         {
-            _startTowerCardSelectionPanel.Deactivate(()=> Destroy(gameObject));
+            _player.StartTowerCardSelection(_firstTurnCardsCount);
+            _enemy.StartTowerCardSelection(_firstTurnCardsCount);
+
+            yield return new WaitUntil(() => IsComplete);
+
+            Deactivate();
         }
 
-        //private IEnumerator TakeCards(Deck deck, IDrawCardManager person)
-        //{
-        //    Card takenCard;
-
-        //    for (int i = 0; i < _firstTurnCardsCount; i++)
-        //    {
-        //        takenCard = deck.TakeTopCard();
-        //        person.DrawCard(takenCard);
-        //        yield return new WaitForSeconds(person.DrawCardsDelay);
-        //    }
-        //}
+        private void Deactivate()
+        {
+            _startTowerCardSelectionPanel.Deactivate(() => Destroy(gameObject));
+        }
 
         private void InitSeats()
         {

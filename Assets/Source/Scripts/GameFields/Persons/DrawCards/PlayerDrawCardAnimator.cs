@@ -14,10 +14,6 @@ namespace GameFields.Persons.DrawCards
         [SerializeField] private PlayerSimpleDrawCardAnimator _simpleDrawAnimator;
         [SerializeField] private Transform _parent;
 
-        private bool _isDone;
-
-        public override bool IsDone => _isDone;
-
         public override void PlayingSimpleDrawCardAnimation(Card drawnCard)
         {
             Playing(drawnCard).ToUniTask();
@@ -25,12 +21,12 @@ namespace GameFields.Persons.DrawCards
 
         private IEnumerator Playing(Card drawnCard)
         {
-            _isDone = false;
+            IsDone = false;
 
             yield return _simpleDrawAnimator.StartDrawCardAnimation(drawnCard, _parent);
 
             Hand.AddCard(drawnCard);
-            _isDone = true;
+            IsDone = true;
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

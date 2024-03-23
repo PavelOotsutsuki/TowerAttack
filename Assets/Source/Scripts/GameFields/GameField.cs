@@ -19,26 +19,33 @@ namespace GameFields
 
         [SerializeField] private EnemyAI _enemyAI;
 
-        private EffectRoot _effectRoot;
-        private Fight _fight;
-        private FightStepsController _fightStepsController;
+        //private EffectRoot _effectRoot;
+        //private Fight _fight;
+        //private FightStepsController _fightStepsController;
 
         public void Init(Card[] cardsInDeck)
         {
-            _startTowerCardSelection.Init();
+            _startTowerCardSelection.Init(_player, _enemyAI);
             _deck.Init(cardsInDeck);
             _discardPile.Init();
             _fightAnimator.Init(_discardPile);
 
-            _fight = new Fight(_player, _enemyAI, _endTurnButton, _fightAnimator, _startTowerCardSelection, transform);
-            _effectRoot = new EffectRoot(_deck, _discardPile, _fight);
+            Fight fight = new Fight(_player, _enemyAI, _endTurnButton, _fightAnimator);
+            EffectRoot effectRoot = new EffectRoot(_deck, _discardPile, fight);
+            EndFight endFight = new EndFight();
 
-            _player.Init(_fight, _effectRoot, _deck);
-            _enemyAI.Init(_fight, _effectRoot, _deck, transform);
+            _player.Init(effectRoot, _deck, ActivateEndTurnButton);
+            _enemyAI.Init(fight, _deck, effectRoot);
 
-            _endTurnButton.Init(_fight);
+            _endTurnButton.Init(fight);
+            FightStepsController fightStepsController = new FightStepsController(_startTowerCardSelection, fight, endFight);
 
-            _fight.StartFirstTurn();
+            fightStepsController.StartFightSteps();
+        }
+
+        private void ActivateEndTurnButton()
+        {
+            _endTurnButton.SetActiveSide();
         }
 
         [ContextMenu(nameof(DefineAllComponents))]
