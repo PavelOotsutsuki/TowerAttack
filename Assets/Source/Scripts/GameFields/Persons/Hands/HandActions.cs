@@ -90,7 +90,7 @@ namespace GameFields.Persons.Hands
 
             int randomIndex = Random.Range(0, _handSeats.Count);
 
-            card = _handSeats[randomIndex].GetCard();
+            card = (Card)_handSeats[randomIndex].GetCard();
 
             return true;
         }

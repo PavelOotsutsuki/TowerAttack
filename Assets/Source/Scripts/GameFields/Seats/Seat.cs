@@ -8,7 +8,7 @@ namespace GameFields.Seats
     {
         [SerializeField] private Transform _transform;
 
-        private Card _card;
+        private ISeatable _seatableObject;
         private Movement _seatMovement;
 
         public void Init()
@@ -16,20 +16,20 @@ namespace GameFields.Seats
             _seatMovement = new Movement(_transform);
         }
 
-        public Card GetCard()
+        public ISeatable GetCard()
         {
-            return _card;
+            return _seatableObject;
         }
 
-        public void SetCard(Card card, bool isFrontCardSide, float duration)
+        public void SetCard(ISeatable seatableObject, bool isFrontSeatableObjectSide, float duration)
         {
-            _card = card;
-            _card.BindSeat(_transform, isFrontCardSide, duration);
+            _seatableObject = seatableObject;
+            _seatableObject.BindSeat(_transform, isFrontSeatableObjectSide, duration);
         }
 
-        public bool IsCardEqual(Card card)
+        public bool IsCardEqual(ISeatable card)
         {
-            return _card == card;
+            return _seatableObject == card;
         }
 
         public void Activate()

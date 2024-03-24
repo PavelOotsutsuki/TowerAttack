@@ -4,16 +4,16 @@ using System;
 
 namespace Cards
 {
-    public class Card : MonoBehaviour
+    public class Card : MonoBehaviour, ISeatable
     {
         [SerializeField] private CardBack _cardBack;
         [SerializeField] private CardFront _cardFront;
         [SerializeField] private CardSO _cardSO;
         [SerializeField] private CardDragAndDrop _cardDragAndDrop;
-        [SerializeField] private CardAnimator _cardAnimator;
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private Vector3 _defaultScaleVector;
 
+        private CardAnimator _cardAnimator;
         private CardDragAndDropActions _cardDragAndDropActions;
         private CardMovement _cardMovement;
         private CardSideFlipper _cardSideFlipper;
@@ -137,7 +137,6 @@ namespace Cards
             DefineCardFront();
             DefineCardDragAndDrop();
             DefineRectTransform();
-            DefineCardAnimator();
         }
 
         [ContextMenu(nameof(DefineCardDragAndDrop))]
@@ -162,12 +161,6 @@ namespace Cards
         private void DefineCardFront()
         {
             AutomaticFillComponents.DefineComponent(this, ref _cardFront, ComponentLocationTypes.InChildren);
-        }
-
-        [ContextMenu(nameof(DefineCardAnimator))]
-        private void DefineCardAnimator()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _cardAnimator, ComponentLocationTypes.InThis);
         }
     }
 }

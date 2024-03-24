@@ -1151,9 +1151,6 @@ MonoBehaviour:
     _table: {fileID: 704143077}
     _tower: {fileID: 1939013310}
     _drawCardRoot:
-      _countDrawCards: 20
-      _countStartTowerCardSelectionDrawCards: 1
-      _countPatriarchCorallDrawDrawCards: 3
       _drawCardAnimator: {fileID: 1502786297}
 --- !u!114 &200841579
 MonoBehaviour:
@@ -7157,6 +7154,7 @@ MonoBehaviour:
   - {fileID: 2077551562}
   - {fileID: 1623808800}
   - {fileID: 462340200}
+  _firstTurnCardsCount: 3
 --- !u!224 &1212017903 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5981172514607463790, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
@@ -9422,7 +9420,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83794195e1c954ec8aa2fd9ece16fe73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _drawCardDelay: 0.5
+  _delay: 0.5
 --- !u!1001 &1520164573
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11858,11 +11856,8 @@ MonoBehaviour:
   _table: {fileID: 867188514}
   _tower: {fileID: 1018812819545794878}
   _discover: {fileID: 790739710}
-  _transform: {fileID: 1905208562}
+  _countStartTurnDrawCards: 1
   _drawCardRoot:
-    _countDrawCards: 3
-    _countStartTowerCardSelectionDrawCards: 3
-    _countPatriarchCorallDrawDrawCards: 3
     _drawCardAnimator: {fileID: 1905208564}
 --- !u!114 &1905208564
 MonoBehaviour:
@@ -11883,6 +11878,7 @@ MonoBehaviour:
     _invertCardBackRotation: 90
     _invertCardBackScaleFactor: 1.8
     _indent: 15
+  _parent: {fileID: 1905208562}
 --- !u!1 &1915389997
 GameObject:
   m_ObjectHideFlags: 0

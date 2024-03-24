@@ -2,7 +2,7 @@ using GameFields.Persons;
 using Tools;
 using UnityEngine;
 using Cards;
-using System.Collections.Generic;
+using System;
 
 namespace GameFields.Effects
 {
@@ -38,9 +38,7 @@ namespace GameFields.Effects
                     effect = new PatriarchCorallEffect(_deck, _personSideListener.ActivePerson, _personSideListener.DeactivePerson);
                     break;
                 default:
-                    effect = null;
-                    Debug.Log("Effect is not founded");
-                    break;
+                    throw new NullReferenceException("Effect is not founded");
             }
 
             return effect;
