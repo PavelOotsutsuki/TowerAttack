@@ -1,0 +1,20 @@
+{
+    "name": "GameFields",
+    "rootNamespace": "GameFields",
+    "references": [
+        "GUID:bca3f2b6fb8db41aaa2c56cb32d6060e",
+        "GUID:802f65728030c443591527c69c93fe23",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:734fcd680d570414eb3d1c29fb8823c9"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
