@@ -1,17 +1,20 @@
-using UnityEngine;
-
 namespace Cards
 {
     internal class CardDragAndDropActions
     {
-        private CardFront _cardFront;
-        private Card _card;
+        private readonly CardFront _cardFront;
+        private readonly Card _card;
+        private readonly CardMovement _movement;
+        private readonly IBlockable _blockable;
+        
         private ICardDragListener _cardDragListener;
 
-        internal CardDragAndDropActions(CardFront cardFront, Card card)
+        public CardDragAndDropActions(CardFront cardFront, Card card, CardMovement movement, IBlockable blockable)
         {
             _cardFront = cardFront;
             _card = card;
+            _movement = movement;
+            _blockable = blockable;
         }
 
         internal void SetListener(ICardDragListener cardDragListener)
@@ -21,23 +24,23 @@ namespace Cards
 
         internal void StartDrag()
         {
-            if (_cardFront.IsBlock == false)
+            if (_blockable.IsBlocked == false)
             {
                 _cardFront.EndReview();
             }
 
             _cardDragListener.OnCardDrag(_card);
 
-            _cardFront.Block();
+            _blockable.Block();
         }
 
         internal void OnReturnInHand(bool isPointerOnCard)
         {
-            _cardFront.Unblock();
+            _blockable.Unblock();
 
             if (isPointerOnCard)
             {
-                if (_cardFront.IsBlock == false)
+                if (_blockable.IsBlocked == false)
                 {
                     _cardFront.StartReview();
                 }
@@ -61,7 +64,7 @@ namespace Cards
 
         internal void ReturnInHand(float duration)
         {
-            _card.ReturnToHand(duration);
+            _movement.ReturnToHand(duration);
         }
     }
 }

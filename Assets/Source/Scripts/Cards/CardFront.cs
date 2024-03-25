@@ -22,19 +22,16 @@ namespace Cards
         private CardDescription _cardDescription;
         private BigCard _bigCard;
         private CardSize _cardSize;
-        private CardSO _cardSO;
-        private bool _isBlock;
+        private CardSO _cardSo;
 
-        public bool IsBlock => _isBlock;
-
-        internal void Init(CardSO cardSO, RectTransform cartRectTransform, CardDescription cardDescription, BigCard bigCard)
+        internal void Init(CardSO cardSo, RectTransform cartRectTransform, CardDescription cardDescription, BigCard bigCard)
         {
-            _isBlock = false;
+            enabled = false;
             _cardSize = new CardSize(_width, _height);
             _cardRectTransform = cartRectTransform;
             _cardDescription = cardDescription;
             _bigCard = bigCard;
-            _cardSO = cardSO;
+            _cardSo = cardSo;
 
             DefineViewCharacters();
             DefineSmallSize();
@@ -42,7 +39,7 @@ namespace Cards
 
         internal void StartReview()
         {
-            _cardDescription.Show(_cardSO.Description);
+            _cardDescription.Show(_cardSo.Description);
             DefineBigCard();
         }
 
@@ -54,48 +51,22 @@ namespace Cards
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (_isBlock)
-            {
-                return;
-            }
-
             StartReview();
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (_isBlock)
-            {
-                return;
-            }
-
             EndReview();
         }
 
-        //internal void TranslateInto(Vector2 positon, Vector3 rotation, float duration)
-        //{
-        //    _cardRectTransform.DOMove(positon, duration);
-        //    _cardRectTransform.DORotate(rotation, duration);
-        //}
-
-        internal void Block()
+        internal void Disable()
         {
-            _isBlock = true;
+            enabled = false;
         }
 
-        internal void Unblock()
+        internal void Enable()
         {
-            _isBlock = false;
-
-            //PointerEventData eventData = new PointerEventData(EventSystem.current);
-            //if (EventSystem.current.TryGetComponentInRaycasts(eventData, out CardFront cardFront))
-            //{
-            //    if (cardFront == this)
-            //    {
-            //        StartReview();
-            //    }
-            //}
-
+            enabled = true;
 
             Vector3 ray = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D[] components = Physics2D.RaycastAll(ray, Vector3.forward);
@@ -115,7 +86,7 @@ namespace Cards
 
         private void DefineBigCard()
         {
-            _bigCard.Show(_cardSize, _cardRectTransform.position.x, _cardSO);
+            _bigCard.Show(_cardSize, _cardRectTransform.position.x, _cardSo);
             Hide();
         }
 
@@ -142,10 +113,10 @@ namespace Cards
 
         private void DefineViewCharacters()
         {
-            _icon.sprite = _cardSO.Icon;
-            _number.text = _cardSO.Number.ToString();
-            _name.text = _cardSO.Name;
-            _feature.text = _cardSO.Feature;
+            _icon.sprite = _cardSo.Icon;
+            _number.text = _cardSo.Number.ToString();
+            _name.text = _cardSo.Name;
+            _feature.text = _cardSo.Feature;
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

@@ -39,7 +39,7 @@ namespace Cards
             _movement.MoveSmoothly(_cardTransform.position, _cardTransform.rotation.eulerAngles, cardIncreaseDuration, _defaultScaleVector);
         }
 
-        public void MoveReturnToHand(float duration)
+        public void ReturnToHand(float duration)
         {
             _movement.MoveLocalSmoothly(Vector2.zero, Vector3.zero, duration, _defaultScaleVector);
         }

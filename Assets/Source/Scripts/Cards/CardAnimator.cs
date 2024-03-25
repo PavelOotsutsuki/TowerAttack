@@ -8,10 +8,10 @@ namespace Cards
         private DiscardCardAnimation _discardCardAnimation;
         //private DragAndDropAnimation _dragAndDropAnimation;
 
-        public CardAnimator (RectTransform cardRectTransform, CardMovement cardMovement, CardSideFlipper sideFlipper)
+        public CardAnimator (ICardSides sides,  CardMovement cardMovement)
         {
-            _drawCardAnimation = new DrawCardAnimation(cardMovement, sideFlipper);
-            _discardCardAnimation = new DiscardCardAnimation(cardRectTransform, cardMovement, sideFlipper);
+            _drawCardAnimation = new DrawCardAnimation(sides, cardMovement);
+            _discardCardAnimation = new DiscardCardAnimation(cardMovement, sides);
             //_dragAndDropAnimation = new DragAndDropAnimation(cardRectTransform, cardMovement);
         }
 
@@ -24,25 +24,5 @@ namespace Cards
         {
             _discardCardAnimation.PlayDiscardCardAnimation(startPosition, discardCardAnimationData);
         }
-
-        //public void PlaySelectCardAnimation(float screenFactor, float duration)
-        //{
-        //    _dragAndDropAnimation.PlaySelectCardAnimation(screenFactor, duration);
-        //}
-
-        //public void PlayUnselectCardAnimation(float screenFactor, float duration)
-        //{
-        //    _dragAndDropAnimation.PlayUnselectCardAnimation(screenFactor, duration);
-        //}
-
-        //public void PlayCardAnimation(Vector3 center, float duration)
-        //{
-        //    _dragAndDropAnimation.PlayCardAnimation(center, duration);
-        //}
-
-        //public void PlayReturnInHandAnimation(float duration)
-        //{
-        //    _dragAndDropAnimation.PlayReturnInHandAnimation(duration);
-        //}
     }
 }

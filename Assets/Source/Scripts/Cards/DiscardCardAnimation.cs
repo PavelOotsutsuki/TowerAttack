@@ -8,15 +8,13 @@ namespace Cards
 {
     internal class DiscardCardAnimation
     {
-        private RectTransform _rectTransform;
         private CardMovement _cardMovement;
-        private CardSideFlipper _cardSideFlipper;
+        private ICardSides _cardSides;
 
-        public DiscardCardAnimation(RectTransform rectTransform, CardMovement cardMovement, CardSideFlipper sideFlipper)
+        public DiscardCardAnimation(CardMovement cardMovement, ICardSides sides)
         {
-            _rectTransform = rectTransform;
             _cardMovement = cardMovement;
-            _cardSideFlipper = sideFlipper;
+            _cardSides = sides;
         }
 
         public void PlayDiscardCardAnimation(Vector3 startPosition, DiscardCardAnimationData discardCardAnimationData)
@@ -35,16 +33,15 @@ namespace Cards
             float invertCardBackDuration = discardCardAnimationData.InvertCardBackDuration;
             float delayAfterInvert = discardCardAnimationData.DelayAfterInvert;
 
-            _cardSideFlipper.SetFrontSide();
-            _cardSideFlipper.Block();
-
+            _cardSides.SetFrontSide();
+            
             _cardMovement.IncreaseCard(startPosition, startRotation, startScaleVector, cardIncreaseDuration);
             yield return new WaitForSeconds(cardIncreaseDuration + delayAfterIncrease);
 
             _cardMovement.InvertCardFrontOnDiscard(invertRotation, invertCardFrontDuration);
             yield return new WaitForSeconds(invertCardFrontDuration);
 
-            _cardSideFlipper.SetBackSide();
+            _cardSides.SetBackSide();
 
             _cardMovement.InvertCardBackOnDiscard(invertCardBackDuration);
             yield return new WaitForSeconds(invertCardBackDuration + delayAfterInvert);

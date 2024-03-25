@@ -33,9 +33,9 @@ namespace Cards
             //_cardAnimator = new CardAnimator(_rectTransform, _cardMovement, _discoverCardSideFlipper);
         }
 
-        public void BindSeat(Transform transform, bool isFrontSide, float duration = 0f)
+        public void BindSeat(Transform seat, bool isFrontSide, float duration = 0f)
         {
-            _rectTransform.SetParent(transform);
+            _rectTransform.SetParent(seat);
             _cardMovement.BindSeatMovement(duration);
 
             if (isFrontSide)
@@ -60,7 +60,7 @@ namespace Cards
 
         public void ReturnToHand(float duration)
         {
-            _cardMovement.MoveReturnToHand(duration);
+            _cardMovement.ReturnToHand(duration);
         }
 
         private void Activate()

@@ -1,10 +1,9 @@
 using UnityEngine;
 using Tools;
-using System;
 
 namespace Cards
 {
-    public class Card : MonoBehaviour, ISeatable
+    public class Card : MonoBehaviour, ISeatable, IBlockable
     {
         [SerializeField] private CardBack _cardBack;
         [SerializeField] private CardFront _cardFront;
@@ -16,7 +15,7 @@ namespace Cards
         private CardAnimator _cardAnimator;
         private CardDragAndDropActions _cardDragAndDropActions;
         private CardMovement _cardMovement;
-        private CardSideFlipper _cardSideFlipper;
+        private CardSides _cardSides;
         private CardCharacter _cardCharacter;
         private ViewType _viewType;
 
@@ -28,28 +27,48 @@ namespace Cards
 
             _cardFront.Init(_cardSO, _rectTransform, cardDescription, bigCard);
 
-            _cardDragAndDropActions = new CardDragAndDropActions(_cardFront, this);
+            _cardDragAndDropActions = new CardDragAndDropActions(_cardFront, this, _cardMovement,this);
             _cardDragAndDrop.Init(_rectTransform, _cardDragAndDropActions, dragContainer);
 
-            _cardSideFlipper = new CardSideFlipper(_cardFront, _cardBack, _cardDragAndDrop);
-            _cardSideFlipper.SetBackSide();
+            _cardSides = new CardSides(_cardFront, _cardBack);
+            _cardSides.SetBackSide();
 
-            _cardAnimator = new CardAnimator(_rectTransform, _cardMovement, _cardSideFlipper);
+            _cardAnimator = new CardAnimator(_cardSides, _cardMovement);
             _viewType = ViewType.Unselect;
+
+            Block();
+            DisableDrag();
         }
 
-        public void BindSeat(Transform transform, bool isFrontSide, float duration = 0f)
+        public bool IsBlocked { get; private set; }
+
+        public void Block()
         {
-            _rectTransform.SetParent(transform);
+            IsBlocked = true;
+            _cardSides.Disable();
+        }
+
+        public void Unblock()
+        {
+            IsBlocked = false;
+            _cardSides.Enable();
+        }
+
+        public void BindSeat(Transform seat, bool isFrontSide, float duration = 0f)
+        {
+            _rectTransform.SetParent(seat);
             _cardMovement.BindSeatMovement(duration);
 
             if (isFrontSide)
             {
-                _cardSideFlipper.SetFrontSide();
+                _cardSides.SetFrontSide();
+                EnableDrag();
+                Unblock();
             }
             else
             {
-                _cardSideFlipper.SetBackSide();
+                Block();
+                _cardSides.SetBackSide();
             }
         }
 
@@ -81,7 +100,7 @@ namespace Cards
 
         public void ReturnToHand(float duration)
         {
-            _cardMovement.MoveReturnToHand(duration);
+            _cardMovement.ReturnToHand(duration);
         }
 
         public void ViewCard(float duration)
@@ -111,7 +130,19 @@ namespace Cards
 
         private void Destroy()
         {
+            Block();
+            DisableDrag();
             gameObject.SetActive(false);
+        }
+
+        private void EnableDrag()
+        {
+            _cardDragAndDrop.enabled = true;
+        }
+
+        private void DisableDrag()
+        {
+            _cardDragAndDrop.enabled = false;
         }
 
         private void ChangeViewType()
