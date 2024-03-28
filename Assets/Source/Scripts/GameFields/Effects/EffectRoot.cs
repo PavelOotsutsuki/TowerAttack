@@ -24,22 +24,13 @@ namespace GameFields.Effects
 
         public Effect PlayEffect(EffectType effectType)
         {
-            Effect effect;
-
-            switch (effectType)
+            Effect effect = effectType switch
             {
-                case EffectType.ZhyzhaEffect:
-                    effect = new ZhyzhaEffect(_personSideListener.DeactivePerson);
-                    break;
-                case EffectType.GreedyEffect:
-                    effect = new GreedyEffect(_personSideListener.ActivePerson, _personSideListener.DeactivePerson);
-                    break;
-                case EffectType.PatriarchCorallEffect:
-                    effect = new PatriarchCorallEffect(_deck, _personSideListener.ActivePerson, _personSideListener.DeactivePerson);
-                    break;
-                default:
-                    throw new NullReferenceException("Effect is not founded");
-            }
+                EffectType.ZhyzhaEffect => new ZhyzhaEffect(_personSideListener.DeactivePerson),
+                EffectType.GreedyEffect => new GreedyEffect(_personSideListener.ActivePerson, _personSideListener.DeactivePerson),
+                EffectType.PatriarchCorallEffect => new PatriarchCorallEffect(_deck, _personSideListener.ActivePerson, _personSideListener.DeactivePerson),
+                _ => throw new NullReferenceException("Effect is not founded"),
+            };
 
             return effect;
         }

@@ -42,7 +42,7 @@ namespace GameFields.Persons.Discovers
 
             gameObject.SetActive(true);
 
-
+            PlayingSelection().ToUniTask();
 
 
             //TakeCards(deck, player).ToUniTask();
@@ -65,6 +65,11 @@ namespace GameFields.Persons.Discovers
         //        yield return new WaitForSeconds(person.DrawCardsDelay);
         //    }
         //}
+
+        private IEnumerator PlayingSelection()
+        {
+            yield break;
+        }
 
         private void SortDiscoverSeats()
         {
