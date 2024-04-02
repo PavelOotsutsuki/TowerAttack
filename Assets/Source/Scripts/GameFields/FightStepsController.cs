@@ -29,17 +29,17 @@ namespace GameFields
         {
             //yield break;
             _startTowerCardSelections.Activate();
-            Debug.Log("1. _startTowerCardSelections.IsComplete" + _startTowerCardSelections.IsComplete);
-            Debug.Log("1. _fight.IsComplete" + _fight.IsComplete);
+            //Debug.Log("1. _startTowerCardSelections.IsComplete" + _startTowerCardSelections.IsComplete);
+            //Debug.Log("1. _fight.IsComplete" + _fight.IsComplete);
 
             yield return new WaitUntil(() => _startTowerCardSelections.IsComplete);
-            Debug.Log("2. _startTowerCardSelections.IsComplete" + _startTowerCardSelections.IsComplete);
-            Debug.Log("2. _fight.IsComplete" + _fight.IsComplete);
+            //Debug.Log("2. _startTowerCardSelections.IsComplete" + _startTowerCardSelections.IsComplete);
+            //Debug.Log("2. _fight.IsComplete" + _fight.IsComplete);
 
             _fight.Start();
             yield return new WaitUntil(() => _fight.IsComplete);
-            Debug.Log("3. _startTowerCardSelections.IsComplete" + _startTowerCardSelections.IsComplete);
-            Debug.Log("3. _fight.IsComplete" + _fight.IsComplete);
+            //Debug.Log("3. _startTowerCardSelections.IsComplete" + _startTowerCardSelections.IsComplete);
+            //Debug.Log("3. _fight.IsComplete" + _fight.IsComplete);
 
             _endFight.Start(_fight.EndFightResults);
         }

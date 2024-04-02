@@ -19,7 +19,7 @@ namespace GameFields.Effects
 
         private void PlayEffect()
         {
-            Debug.Log("Эффект Жыжи");
+//            Debug.Log("Эффект Жыжи");
         }
     }
 }
