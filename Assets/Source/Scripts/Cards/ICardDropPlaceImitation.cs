@@ -1,9 +1,5 @@
-using UnityEngine;
-
 namespace Cards
 {
-    public interface ICardDropPlaceImitation : ICardSeatPlace
-    {
-        public Vector3 GetCentralСoordinates();
-    }
+    public interface ICardDropPlaceImitation : ICardSeatPlace, ICardMoveImitation
+    { }
 }

@@ -7,12 +7,12 @@ namespace GameFields.Persons
         private Card _activeCard;
 
         private ICardDragImitationListener _cardDragImitationListener;
-        private ICardDropPlaceImitation _cardDropPlaceImitation;
+        private ICardPlayPlaceImitation _cardPlayPlaceImitation;
 
-        public CardDragAndDropImitationActions(ICardDragImitationListener cardDragImitationListener, ICardDropPlaceImitation cardDropPlaceImitation)
+        public CardDragAndDropImitationActions(ICardDragImitationListener cardDragImitationListener, ICardPlayPlaceImitation cardPlayPlaceImitation)
         {
             _cardDragImitationListener = cardDragImitationListener;
-            _cardDropPlaceImitation = cardDropPlaceImitation;
+            _cardPlayPlaceImitation = cardPlayPlaceImitation;
         }
 
         internal void SetCard(Card card)
@@ -27,13 +27,13 @@ namespace GameFields.Persons
 
         public void PlayOnPlace(float duration)
         {
-            _activeCard.PlayOnPlace(_cardDropPlaceImitation.GetCentralСoordinates(), duration);
+            _activeCard.PlayOnPlace(_cardPlayPlaceImitation.GetCentralСoordinates(), duration);
             _cardDragImitationListener.OnCardDrag(_activeCard);
         }
 
         public bool TryReturnToHand(float returnToHandDuration)
         {
-            if (_cardDropPlaceImitation.TrySeatCard(_activeCard) == false)
+            if (_cardPlayPlaceImitation.TrySeatCard(_activeCard) == false)
             {
                 _cardDragImitationListener.OnCardDrop();
                 _activeCard.ReturnToHand(returnToHandDuration);

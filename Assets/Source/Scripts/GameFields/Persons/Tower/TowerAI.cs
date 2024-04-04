@@ -1,32 +1,33 @@
 using Cards;
+using GameFields.Persons.Hands;
 using UnityEngine;
 
 namespace GameFields.Persons.Towers
 {
-    public class TowerAI : Tower, ICardDropPlaceImitation
+    public class TowerAI : Tower//, ICardDropPlaceImitation
     {
-        public override void Init(IPlayCardManager playCardManager)
-        {
-            base.Init(playCardManager);
+        //public override void Init(IUnbindCardManager unbindCardManager)
+        //{
+        //    base.Init(unbindCardManager);
 
-            Deactivate();
-        }
+        //    Deactivate();
+        //}
 
-        public bool TrySeatCard(Card card)
-        {
-            if (TowerSeat.TryGetCard(card))
-            {
-                PlayCardManager.PlayCard(card);
+        //public bool TrySeatCard(Card card)
+        //{
+        //    if (TowerSeat.TrySetCard(card))
+        //    {
+        //        UnbindCardManager.PlayCard(card);
 
-                return true;
-            }
+        //        return true;
+        //    }
 
-            return false;
-        }
+        //    return false;
+        //}
 
-        public Vector3 GetCentralСoordinates()
-        {
-            return transform.position;
-        }
+        //public Vector3 GetCentralСoordinates()
+        //{
+        //    return transform.position;
+        //}
     }
 }

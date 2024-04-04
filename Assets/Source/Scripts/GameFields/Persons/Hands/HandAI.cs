@@ -19,25 +19,9 @@ namespace GameFields.Persons.Hands
             _canvasGroup.blocksRaycasts = true;
         }
 
-        //public void CardDragAnimation()
-        //{
-        //    // NEW!
-        //    // тут типо будет анимация лже-драга
-        //    // замена метода OnCardDrag
-        //    // ну или в отдельном классе
-        //}
-
-        //public void CardDropAnimation()
-        //{
-        //    // NEW!
-        //    // тут типо будет анимация лже-дропа после драга
-        //    // замена метода OnCardDrop
-        //    // ну или в отдельном классе
-        //}
-
-        public void OnCardDrag(Card card)
+        public void OnCardDrag(ISeatable seatableCard)
         {
-            _handActions.DragCard(card);
+            _handActions.DragCard(seatableCard);
         }
 
         public void OnCardDrop()
@@ -45,19 +29,19 @@ namespace GameFields.Persons.Hands
             _handActions.EndDragCard();
         }
 
-        public bool TryGetCard(out Card card)
+        public void UnbindDragableCard()
         {
-            return _handActions.TryGetCard(out card);
+            _handActions.RemoveDraggableCard();
         }
 
-        public void RemoveCard(Card card)
+        public void AddCard(ISeatable seatableCard)
         {
-            _handActions.RemoveCard();
+            _handActions.AddCard(seatableCard);
         }
 
-        public void AddCard(Card card)
+        public bool TryGetCard(out ISeatable seatableCard)
         {
-            _handActions.AddCard(card);
+            return _handActions.TryGetCard(out seatableCard);
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

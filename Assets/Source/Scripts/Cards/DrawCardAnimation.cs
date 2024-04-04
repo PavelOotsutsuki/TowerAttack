@@ -16,21 +16,21 @@ namespace Cards
             _cardMovement = cardMovement;
         }
 
-        public void PlayPlayerDrawnCardAnimation(float cardBackDuration, float cardBackRotation, float cardBackScaleFactor, float cardFrontDuration, float indent)
-        {
-            PlayingPlayerDrawnCardAnimation(cardBackDuration, cardBackRotation, cardBackScaleFactor, cardFrontDuration, indent).ToUniTask();
-        }
+        //public void PlayPlayerDrawnCardAnimation(float cardBackDuration, float cardBackRotation, float cardBackScaleFactor, float cardFrontDuration, float indent)
+        //{
+        //    PlayingPlayerDrawnCardAnimation(cardBackDuration, cardBackRotation, cardBackScaleFactor, cardFrontDuration, indent).ToUniTask();
+        //}
 
-        private IEnumerator PlayingPlayerDrawnCardAnimation(float cardBackDuration, float cardBackRotation, float cardBackScaleFactor, float cardFrontDuration, float indent)
-        {
-            _cardMovement.InvertCardBackOnDraw(cardBackDuration, cardBackRotation, cardBackScaleFactor, indent);
-            yield return new WaitForSeconds(cardBackDuration);
+        //private IEnumerator PlayingPlayerDrawnCardAnimation(float cardBackDuration, float cardBackRotation, float cardBackScaleFactor, float cardFrontDuration, float indent)
+        //{
+        //    _cardMovement.InvertCardBackOnDraw(cardBackDuration, cardBackRotation, cardBackScaleFactor, indent);
+        //    yield return new WaitForSeconds(cardBackDuration);
 
-            _sideFlipper.SetFrontSide();
-            _sideFlipper.Block();
+        //    _sideFlipper.SetFrontSide();
+        //    _sideFlipper.Block();
 
-            _cardMovement.InvertCardFrontOnDraw(cardFrontDuration, cardBackScaleFactor, indent);
-            yield return new WaitForSeconds(cardFrontDuration);
-        }
+        //    _cardMovement.InvertCardFrontOnDraw(cardFrontDuration, cardBackScaleFactor, indent);
+        //    yield return new WaitForSeconds(cardFrontDuration);
+        //}
     }
 }

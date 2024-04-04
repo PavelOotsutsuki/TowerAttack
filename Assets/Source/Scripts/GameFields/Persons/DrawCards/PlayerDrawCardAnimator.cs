@@ -11,7 +11,7 @@ namespace GameFields.Persons.DrawCards
 {
     public class PlayerDrawCardAnimator: DrawCardAnimator
     {
-        [SerializeField] private PlayerSimpleDrawCardAnimator _simpleDrawAnimator;
+        [SerializeField] private PlayerSimpleDrawCardAnimation _simpleDrawAnimation;
         [SerializeField] private Transform _parent;
 
         public override void PlayingSimpleDrawCardAnimation(Card drawnCard)
@@ -23,7 +23,7 @@ namespace GameFields.Persons.DrawCards
         {
             IsDone = false;
 
-            yield return _simpleDrawAnimator.StartDrawCardAnimation(drawnCard, _parent);
+            yield return _simpleDrawAnimation.StartAnimation(drawnCard, _parent);
 
             Hand.AddCard(drawnCard);
             IsDone = true;

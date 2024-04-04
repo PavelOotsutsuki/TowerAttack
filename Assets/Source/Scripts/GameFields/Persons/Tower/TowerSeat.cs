@@ -6,49 +6,56 @@ namespace GameFields.Persons.Towers
 {
     public class TowerSeat : MonoBehaviour
     {
-        private const bool IsFrontCardSide = false;
-
         [SerializeField] private Transform _transform;
-        [SerializeField, Min(0f)] private float _duration;
 
-        private Card _card;
+        private ISeatable _seatableObject;
 
         public void Init()
         {
-            ResetCard();
+            
         }
 
-        public void ResetCard()
+        //public void ResetCard()
+        //{
+        //    _seatableObject = null;
+        //}
+
+        //public bool TrySetCard(ISeatable seatableObject)
+        //{
+        //    if (_seatableObject != null)
+        //    {
+        //        return false;
+        //    }
+
+        //    SetCard(seatableObject, _duration);
+
+        //    return true;
+        //}
+
+        public void SetCard(ISeatable seatableObject, bool isFrontSeatableObjectSide, float duration)
         {
-            _card = null;
+            _seatableObject = seatableObject;
+            _seatableObject.BindSeat(_transform, isFrontSeatableObjectSide, duration);
         }
 
-        public bool TryGetCard(Card card)
+        public bool IsCardEqual(ISeatable seatableObject)
         {
-            if (_card != null)
-            {
-                return false;
-            }
-
-            SetCard(card, _duration);
-
-            return true;
+            return _seatableObject == seatableObject;
         }
 
-        public void SetCard(Card card, float duration)
+        public void Activate()
         {
-            _card = card;
-            _card.BindSeat(_transform, IsFrontCardSide, duration);
+            gameObject.SetActive(true);
         }
 
-        public bool IsCardEqual(Card card)
+        public void Disactivate()
         {
-            return _card == card;
+            gameObject.SetActive(false);
         }
 
         public bool IsFill()
         {
-            return _card != null;
+            return _seatableObject != null;
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

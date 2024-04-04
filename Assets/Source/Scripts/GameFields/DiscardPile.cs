@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace GameFields
 {
-    public class DiscardPile : MonoBehaviour
+    public class DiscardPile : MonoBehaviour, ICardDropPlaceImitation
     {
         private const float CenterRotation = 90f;
 
@@ -34,7 +34,17 @@ namespace GameFields
             _discardPileSeatPool.Init();
         }
 
-        public void AddCard(Card card)
+        //public void AddCard(Card card)
+        //{
+        //    if (_discardPileSeatPool.TryGetHandSeat(out Seat discardPileSeat))
+        //    {
+        //        _seats.Add(discardPileSeat);
+        //        discardPileSeat.SetLocalPositionValues(FindCardSeatPosition(), FindCardSeatRotation());
+        //        discardPileSeat.SetCard(card, _isFrontCardSide, _startCardTranslateSpeed);
+        //    }
+        //}
+
+        public bool TrySeatCard(ISeatable seatableObject)
         {
             if (_discardPileSeatPool.TryGetHandSeat(out Seat discardPileSeat))
             {
@@ -42,6 +52,11 @@ namespace GameFields
                 discardPileSeat.SetLocalPositionValues(FindCardSeatPosition(), FindCardSeatRotation());
                 discardPileSeat.SetCard(card, _isFrontCardSide, _startCardTranslateSpeed);
             }
+        }
+
+        public Vector3 GetCentralСoordinates()
+        {
+            throw new System.NotImplementedException();
         }
 
         //public void RemoveCard()

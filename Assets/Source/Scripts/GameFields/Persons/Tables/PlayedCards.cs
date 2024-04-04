@@ -12,7 +12,7 @@ namespace GameFields.Persons.Tables
             _playedCardPairs = new List<PlayedCardPair>();
         }
 
-        public Card GetCard(CardCharacter cardCharacter)
+        public IPlayable GetCard(CardCharacter cardCharacter)
         {
             foreach (PlayedCardPair playedCardPair in _playedCardPairs)
             {
@@ -25,7 +25,7 @@ namespace GameFields.Persons.Tables
             return null;
         }
 
-        public void Add(CardCharacter cardCharacter, Card card)
+        public void Add(CardCharacter cardCharacter, IPlayable card)
         {
             _playedCardPairs.Add(new PlayedCardPair(cardCharacter, card));
         }

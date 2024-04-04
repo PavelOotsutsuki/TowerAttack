@@ -1,14 +1,15 @@
 using Cards;
 using GameFields.Effects;
+using GameFields.Persons.Hands;
 using UnityEngine;
 
 namespace GameFields.Persons.Tables
 {
     public class TablePlayer : Table, ICardDropPlace
     {
-        public override void Init(IPlayCardManager playCardManager, EffectRoot effectRoot)
+        public override void Init(IUnbindCardManager unbindCardManager, EffectRoot effectRoot)
         {
-            base.Init(playCardManager, effectRoot);
+            base.Init(unbindCardManager, effectRoot);
 
             FirstTurnDeactivate();
         }

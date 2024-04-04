@@ -18,7 +18,7 @@ namespace GameFields.Persons
     {
         [SerializeField] private HandPlayer _hand;
         [SerializeField] private TablePlayer _table;
-        [SerializeField] private TowerPlayer _tower;
+        [SerializeField] private Tower _tower;
         [SerializeField] private Discover _discover;
         //[SerializeField] private PlayerAnimator _playerAnimator;
         //[SerializeField] private Transform _transform;
@@ -35,8 +35,8 @@ namespace GameFields.Persons
             _deck = deck;
 
             _hand.Init();
-            _tower.Init(this);
-            _table.Init(this, effectRoot);
+            _tower.Init(_hand);
+            _table.Init(_hand, effectRoot);
             //            cardEffects.SetPlayerGameFieldElements(_table, _hand, _tower);
 
             _drawCardRoot.Init(_hand, startDrawCallback);
@@ -48,21 +48,21 @@ namespace GameFields.Persons
             return _table.GetDiscardCards();
         }
 
-        public void PlayCard(Card card)
-        {
-            _hand.RemoveCard(card);
-        }
+        //public void UnbindHandsDragableCard()
+        //{
+        //    _hand.RemoveDraggableCard();
+        //}
 
         public void ActivateDropPlaces()
         {
             _table.Activate();
-            _tower.Activate();
+            //_tower.Activate();
         }
 
         public void DeactivateDropPlaces()
         {
             _table.Deactivate();
-            _tower.Deactivate();
+            //_tower.Deactivate();
         }
 
         public void DrawCards(Queue<Card> cards)

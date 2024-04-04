@@ -4,7 +4,7 @@ using System;
 
 namespace Cards
 {
-    public class Card : MonoBehaviour, ISeatable
+    public class Card : MonoBehaviour, IHandSeatable, ISeatable, IPlayable
     {
         [SerializeField] private CardBack _cardBack;
         [SerializeField] private CardFront _cardFront;
@@ -20,6 +20,8 @@ namespace Cards
         private CardCharacter _cardCharacter;
         private ViewType _viewType;
 
+        public CardMovement CardMovement => _cardMovement;
+
         internal void Init(CardDescription cardDescription, BigCard bigCard, Transform dragContainer)
         {
             _rectTransform.localScale = _defaultScaleVector;
@@ -28,7 +30,7 @@ namespace Cards
 
             _cardFront.Init(_cardSO, _rectTransform, cardDescription, bigCard);
 
-            _cardDragAndDropActions = new CardDragAndDropActions(_cardFront, this);
+            _cardDragAndDropActions = new CardDragAndDropActions(_cardFront, this, this);
             _cardDragAndDrop.Init(_rectTransform, _cardDragAndDropActions, dragContainer);
 
             _cardSideFlipper = new CardSideFlipper(_cardFront, _cardBack, _cardDragAndDrop);
@@ -58,21 +60,28 @@ namespace Cards
             _cardDragAndDropActions.SetListener(cardDragAndDropListener);
         }
 
-        public void Play(out CardCharacter cardCharacter)
+        public CardCharacter PlayOnTable()
         {
             if (_cardCharacter == null)
             {
                 CreateCardCharacter();
             }
 
-            cardCharacter = _cardCharacter;
-            Destroy();
+            Deactivate();
+
+            return _cardCharacter;
         }
 
-        public void Drawn(float cardBackDuration, float cardBackRotation, float cardBackScaleFactor, float cardFrontDuration, float indent)
+        public void FlipOnPlayerDraw()
         {
-            _cardAnimator.PlayDrawnCardAnimation(cardBackDuration, cardBackRotation, cardBackScaleFactor, cardFrontDuration, indent);
+            _cardSideFlipper.SetFrontSide();
+            _cardSideFlipper.Block();
         }
+
+        //public void Drawn(float cardBackDuration, float cardBackRotation, float cardBackScaleFactor, float cardFrontDuration, float indent)
+        //{
+        //    _cardAnimator.PlayDrawnCardAnimation(cardBackDuration, cardBackRotation, cardBackScaleFactor, cardFrontDuration, indent);
+        //}
 
         public void PlayOnPlace(Vector3 center, float duration)
         {
@@ -109,7 +118,7 @@ namespace Cards
             gameObject.SetActive(true);
         }
 
-        private void Destroy()
+        private void Deactivate()
         {
             gameObject.SetActive(false);
         }

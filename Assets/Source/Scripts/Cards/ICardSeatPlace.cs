@@ -2,6 +2,6 @@ namespace Cards
 {
     public interface ICardSeatPlace
     {
-        public bool TrySeatCard(Card card);
+        public bool TrySeatCard(ISeatable seatableObject);
     }
 }

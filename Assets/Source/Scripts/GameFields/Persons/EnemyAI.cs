@@ -18,7 +18,7 @@ namespace GameFields.Persons
         [SerializeField] private EnemyAnimator _enemyAnimator;
         [SerializeField] private HandAI _hand;
         [SerializeField] private TableAI _table;
-        [SerializeField] private TowerAI _tower;
+        [SerializeField] private Tower _tower;
         [SerializeField] private DrawCardRoot _drawCardRoot;
 
         private IEndTurnHandler _endTurnHandler;
@@ -34,8 +34,8 @@ namespace GameFields.Persons
             _endTurnHandler = endTurnHandler;
 
             _hand.Init();
-            _tower.Init(this);
-            _table.Init(this, effectRoot);
+            _tower.Init(_hand);
+            _table.Init(_hand, effectRoot);
             //            cardEffects.SetEnemyAIGameFieldElements(_table, _hand, _tower);
 
             _drawCardRoot.Init(_hand, PlayDragAndDropImitation);
@@ -48,10 +48,10 @@ namespace GameFields.Persons
             _drawCardRoot.TakeCards(cards);
         }
 
-        public void PlayCard(Card card)
-        {
-            _hand.RemoveCard(card);
-        }
+        //public void UnbindHandsDragableCard()
+        //{
+        //    _hand.RemoveDraggableCard();
+        //}
 
         public List<Card> GetDiscardCards()
         {

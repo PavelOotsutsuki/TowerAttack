@@ -1,6 +1,7 @@
 using UnityEngine;
 using Cards;
 using Tools;
+using System;
 
 namespace GameFields.Seats
 {
@@ -27,9 +28,9 @@ namespace GameFields.Seats
             _seatableObject.BindSeat(_transform, isFrontSeatableObjectSide, duration);
         }
 
-        public bool IsCardEqual(ISeatable card)
+        public bool IsCardEqual(ISeatable seatableObject)
         {
-            return _seatableObject == card;
+            return _seatableObject == seatableObject;
         }
 
         public void Activate()
@@ -40,6 +41,11 @@ namespace GameFields.Seats
         public void Disactivate()
         {
             gameObject.SetActive(false);
+        }
+
+        public bool IsFill()
+        {
+            return _seatableObject != null;
         }
 
         public void SetLocalPositionValues(Vector3 position, Vector3 rotation, float duration = 0f)

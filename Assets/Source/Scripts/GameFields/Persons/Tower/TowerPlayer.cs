@@ -1,37 +1,40 @@
 using Cards;
+using GameFields.Persons.Hands;
 using UnityEngine;
 
 namespace GameFields.Persons.Towers
 {
-    public class TowerPlayer : Tower, ICardDropPlace
+    public class TowerPlayer : Tower//, ICardDropPlace
     {
-        public override void Init(IPlayCardManager playCardManager)
-        {
-            base.Init(playCardManager);
+        //public override void Init(IUnbindCardManager unbindCardManager)
+        //{
+        //    base.Init(unbindCardManager);
 
-            Activate();
-        }
+        //    Activate();
+        //}
 
-        public bool TrySeatCard(Card card)
-        {
-            if (TowerSeat.TryGetCard(card))
-            {
-                PlayCardManager.PlayCard(card);
+        //public bool TrySeatCard(ISeatable seatableObject)
+        //{
+        //    if (TowerSeat.IsFill() == false)
+        //    {
+        //        TowerSeat.SetCard(seatableObject, IsFrontCardSide, SeatDuration);
+        //        UnbindCardManager.UnbindDragableCard();
 
-                Deactivate();
+        //        Deactivate();
 
-                return true;
-            }
+        //        return true;
+        //    }
 
-            return false;
-        }
+        //    Debug.Log("Если все хорошо этого сообщения не должно быть, вроде как");
+        //    return false;
+        //}
 
-        public void Activate()
-        {
-            if (TowerSeat.IsFill() == false)
-            {
-                CanvasGroup.blocksRaycasts = true;
-            }
-        }
+        //public void Activate()
+        //{
+        //    if (TowerSeat.IsFill() == false)
+        //    {
+        //        CanvasGroup.blocksRaycasts = true;
+        //    }
+        //}
     }
 }

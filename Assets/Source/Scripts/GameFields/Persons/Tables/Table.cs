@@ -1,34 +1,35 @@
 using System.Collections.Generic;
 using Cards;
 using GameFields.Effects;
+using GameFields.Persons.Hands;
 using Tools;
 using UnityEngine;
 
 namespace GameFields.Persons.Tables
 {
-    public abstract class Table : MonoBehaviour, ICardSeatPlace
+    public abstract class Table : MonoBehaviour, ICardPlayPlace
     {
         [SerializeField] protected CanvasGroup CanvasGroup;
         [SerializeField] private TableSeat[] _cardSeats;
 
-        private IPlayCardManager _playCardManager;
+        private IUnbindCardManager _unbindCardManager;
         private int[] _cardSeatsSortIndices;
         private PlayedCards _playedCards;
 
-        public virtual void Init(IPlayCardManager playCardManager, EffectRoot effectRoot)
+        public virtual void Init(IUnbindCardManager unbindCardManager, EffectRoot effectRoot)
         {
-            _playCardManager = playCardManager;
+            _unbindCardManager = unbindCardManager;
             _playedCards = new PlayedCards();
             InitTableSeats(effectRoot);
             SetCardSeatsIndices();
         }
 
-        public bool TrySeatCard(Card card)
+        public bool TryPlayCard(IPlayable card)
         {
             if (TryFindCardSeat(out TableSeat freeCardSeat))
             {
-                _playCardManager.PlayCard(card);
-                card.Play(out CardCharacter cardCharacter);
+                _unbindCardManager.UnbindDragableCard();
+                CardCharacter cardCharacter = card.PlayOnTable();
                 freeCardSeat.SetCardCharacter(cardCharacter);
                 _playedCards.Add(cardCharacter, card);
 

@@ -4,13 +4,13 @@ namespace GameFields.Persons.Tables
 {
     public class PlayedCardPair
     {
-        public PlayedCardPair(CardCharacter cardCharacter, Card card)
+        public PlayedCardPair(CardCharacter cardCharacter, IPlayable card)
         {
             CardCharacter = cardCharacter;
             Card = card;
         }
 
-        public Card Card { get; private set; }
+        public IPlayable Card { get; private set; }
         public CardCharacter CardCharacter { get; private set; }
     }
 }
