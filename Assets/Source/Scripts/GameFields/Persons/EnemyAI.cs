@@ -43,7 +43,7 @@ namespace GameFields.Persons
             _enemyAnimator.Init(_endTurnHandler, _cardDragAndDropImitationActions);
         }
 
-        public void DrawCards(Queue<Card> cards)
+        public void DrawCards(Queue<IHandSeatable> cards)
         {
             _drawCardRoot.TakeCards(cards);
         }
@@ -60,7 +60,7 @@ namespace GameFields.Persons
 
         public void StartTurnDraw()
         {
-            Queue<Card> cards = new Queue<Card>();
+            Queue<IHandSeatable> cards = new Queue<IHandSeatable>();
 
             for (int i = 0; i < _enemyAnimator.CountDrawCards; i++)
             {
@@ -79,7 +79,7 @@ namespace GameFields.Persons
 
         public void StartTowerCardSelection(int drawCardsCount)
         {
-            Queue<Card> cards = new Queue<Card>();
+            Queue<IHandSeatable> cards = new Queue<IHandSeatable>();
 
             for (int i = 0; i < drawCardsCount; i++)
             {
@@ -97,7 +97,7 @@ namespace GameFields.Persons
 
         private void PlayDragAndDropImitation()
         {
-            if (_hand.TryGetCard(out Card card))
+            if (_hand.TryGetCard(out ISeatable card))
             {
                 _cardDragAndDropImitationActions.SetCard(card);
                 _enemyAnimator.StartDragAndDropAnimation();

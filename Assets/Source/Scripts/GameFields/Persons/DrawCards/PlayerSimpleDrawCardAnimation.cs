@@ -15,10 +15,12 @@ namespace GameFields.Persons.DrawCards
         [SerializeField] private float _invertCardBackScaleFactor = 1.8f;
         [SerializeField] private float _indent = 15f;
 
-        internal IEnumerator StartAnimation(Card drawnCard, Transform parent)
+        internal IEnumerator StartAnimation(IHandSeatable drawnCard, Transform parent)
         {
             drawnCard.transform.SetParent(parent);
             drawnCard.transform.SetAsLastSibling();
+
+            CardMovement cardMovement = new CardMovement(drawnCard.transform);
 
             drawnCard.CardMovement.InvertCardBackOnDraw(_invertCardBackDuration, _invertCardBackRotation, _invertCardBackScaleFactor, _indent);
             yield return new WaitForSeconds(_invertCardBackDuration);

@@ -4,6 +4,6 @@ namespace GameFields.Persons.Hands
 {
     public interface IHand: IUnbindCardManager
     {
-        public void AddCard(ISeatable seatableCard);
+        public void AddCard(IHandSeatable seatableCard);
     }
 }

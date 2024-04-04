@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Towers
 {
-    public class Tower : MonoBehaviour, ICardDropPlaceImitation
+    public class Tower : MonoBehaviour, ICardDropSeatPlaceImitation
     {
         private const bool _isFrontCardSide = false;
 

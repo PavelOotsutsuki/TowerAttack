@@ -34,7 +34,7 @@ namespace GameFields.Persons.Hands
             _handActions.RemoveDraggableCard();
         }
 
-        public void AddCard(ISeatable seatableCard)
+        public void AddCard(IHandSeatable seatableCard)
         {
             _handActions.AddCard(seatableCard);
         }

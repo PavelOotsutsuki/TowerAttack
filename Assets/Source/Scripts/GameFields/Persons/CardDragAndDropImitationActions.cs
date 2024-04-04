@@ -4,7 +4,7 @@ namespace GameFields.Persons
 {
     public class CardDragAndDropImitationActions
     {
-        private Card _activeCard;
+        private ISeatable _activeCard;
 
         private ICardDragImitationListener _cardDragImitationListener;
         private ICardPlayPlaceImitation _cardPlayPlaceImitation;
@@ -15,7 +15,7 @@ namespace GameFields.Persons
             _cardPlayPlaceImitation = cardPlayPlaceImitation;
         }
 
-        internal void SetCard(Card card)
+        internal void SetCard(ISeatable card)
         {
             _activeCard = card;
         }

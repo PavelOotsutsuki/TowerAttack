@@ -18,7 +18,7 @@ namespace GameFields.Persons.DrawCards
         [SerializeField] private DrawCardAnimator _drawCardAnimator;
 
         //private IHand _hand;
-        private Queue<Card> _drawCardQueue;
+        private Queue<IHandSeatable> _drawCardQueue;
         private bool _isDrawing;
         private Action _startDrawCallback;
 
@@ -26,20 +26,20 @@ namespace GameFields.Persons.DrawCards
         {
             //_hand = hand;
             _isDrawing = false;
-            _drawCardQueue = new Queue<Card>();
+            _drawCardQueue = new Queue<IHandSeatable>();
 
             _startDrawCallback = startDrawCallback;
             _drawCardAnimator.Init(hand);
         }
 
-        public void StartTurnDraw(Queue<Card> cards)
+        public void StartTurnDraw(Queue<IHandSeatable> cards)
         {
             AddCardsInQueue(cards);
 
             StartTurnDrawing().ToUniTask();
         }
 
-        public void TakeCards(Queue<Card> cards)
+        public void TakeCards(Queue<IHandSeatable> cards)
         {
             AddCardsInQueue(cards);
 
@@ -83,7 +83,7 @@ namespace GameFields.Persons.DrawCards
 
             while (_drawCardQueue.Count > 0)
             {
-                Card card = _drawCardQueue.Dequeue();
+                IHandSeatable card = _drawCardQueue.Dequeue();
                 _drawCardAnimator.PlayingSimpleDrawCardAnimation(card);
                 yield return new WaitUntil(() => _drawCardAnimator.IsDone);
             }
@@ -91,7 +91,7 @@ namespace GameFields.Persons.DrawCards
             _isDrawing = false;
         }
 
-        private void AddCardsInQueue(Queue<Card> cards)
+        private void AddCardsInQueue(Queue<IHandSeatable> cards)
         {
             while(cards.Count > 0)
             {

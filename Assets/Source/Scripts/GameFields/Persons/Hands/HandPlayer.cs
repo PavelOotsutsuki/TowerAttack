@@ -34,7 +34,7 @@ namespace GameFields.Persons.Hands
             _canvasGroup.blocksRaycasts = true;
         }
 
-        public void AddCard(ISeatable seatableCard)
+        public void AddCard(IHandSeatable seatableCard)
         {
             seatableCard.SetDragAndDropListener(this);
             _handActions.AddCard(seatableCard);

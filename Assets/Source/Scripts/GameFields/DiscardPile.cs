@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace GameFields
 {
-    public class DiscardPile : MonoBehaviour, ICardDropPlaceImitation
+    public class DiscardPile : MonoBehaviour, ICardDropSeatPlaceImitation
     {
         private const float CenterRotation = 90f;
 

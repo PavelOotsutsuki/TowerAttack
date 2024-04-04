@@ -60,9 +60,9 @@ namespace Cards
                 return;
             }
 
-            if (EventSystem.current.TryGetComponentInRaycasts(eventData, out ICardDropPlace cardDropPlace))
+            if (EventSystem.current.TryGetComponentInRaycasts(eventData, out ICardDropPlayPlace cardDropPlayPlace))
             {
-                if (_cardDragAndDropActions.TryDrop(cardDropPlace))
+                if (_cardDragAndDropActions.TryDrop(cardDropPlayPlace))
                 {
                     _isDrag = false;
                     return;
