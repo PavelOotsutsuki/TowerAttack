@@ -68,20 +68,20 @@ namespace Cards
             }
         }
 
-        [ContextMenu("DefineAllComponents")]
+        [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
             DefineText();
             DefineCanvasGroup();
         }
 
-        [ContextMenu("DefineText")]
+        [ContextMenu(nameof(DefineText))]
         private void DefineText()
         {
             AutomaticFillComponents.DefineComponent(this, ref _text, ComponentLocationTypes.InChildren);
         }
 
-        [ContextMenu("DefineCanvasGroup")]
+        [ContextMenu(nameof(DefineCanvasGroup))]
         private void DefineCanvasGroup()
         {
             AutomaticFillComponents.DefineComponent(this, ref _canvasGroup, ComponentLocationTypes.InThis);

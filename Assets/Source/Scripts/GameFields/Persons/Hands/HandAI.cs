@@ -19,9 +19,9 @@ namespace GameFields.Persons.Hands
             _canvasGroup.blocksRaycasts = true;
         }
 
-        public void OnCardDrag(ISeatable seatableCard)
+        public void OnCardDrag(Card card)
         {
-            _handActions.DragCard(seatableCard);
+            _handActions.DragCard(card);
         }
 
         public void OnCardDrop()
@@ -34,14 +34,14 @@ namespace GameFields.Persons.Hands
             _handActions.RemoveDraggableCard();
         }
 
-        public void AddCard(IHandSeatable seatableCard)
+        public void AddCard(Card card)
         {
-            _handActions.AddCard(seatableCard);
+            _handActions.AddCard(card);
         }
 
-        public bool TryGetCard(out ISeatable seatableCard)
+        public bool TryGetCard(out Card card)
         {
-            return _handActions.TryGetCard(out seatableCard);
+            return _handActions.TryGetCard(out card);
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

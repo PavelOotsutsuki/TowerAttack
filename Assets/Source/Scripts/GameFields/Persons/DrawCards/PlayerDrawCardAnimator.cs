@@ -14,15 +14,16 @@ namespace GameFields.Persons.DrawCards
         [SerializeField] private PlayerSimpleDrawCardAnimation _simpleDrawAnimation;
         [SerializeField] private Transform _parent;
 
-        public override void PlayingSimpleDrawCardAnimation(IHandSeatable drawnCard)
+        public override void PlayingSimpleDrawCardAnimation(Card drawnCard)
         {
             Playing(drawnCard).ToUniTask();
         }
 
-        private IEnumerator Playing(IHandSeatable drawnCard)
+        private IEnumerator Playing(Card drawnCard)
         {
             IsDone = false;
 
+            //_simpleDrawAnimation.SetCard(drawnCard);
             yield return _simpleDrawAnimation.StartAnimation(drawnCard, _parent);
 
             Hand.AddCard(drawnCard);

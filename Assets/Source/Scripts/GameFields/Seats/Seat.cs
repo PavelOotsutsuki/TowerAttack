@@ -9,7 +9,7 @@ namespace GameFields.Seats
     {
         [SerializeField] private Transform _transform;
 
-        private ISeatable _seatableObject;
+        private Card _card;
         private Movement _seatMovement;
 
         public void Init()
@@ -20,23 +20,23 @@ namespace GameFields.Seats
 
         public void Reset()
         {
-            _seatableObject = null;
+            _card = null;
         }
 
-        public ISeatable GetCard()
+        public Card GetCard()
         {
-            return _seatableObject;
+            return _card;
         }
 
-        public void SetCard(ISeatable seatableObject, bool isFrontSeatableObjectSide, float duration)
+        public void SetCard(Card card, bool isFrontSeatableObjectSide, float duration)
         {
-            _seatableObject = seatableObject;
-            _seatableObject.BindSeat(_transform, isFrontSeatableObjectSide, duration);
+            _card = card;
+            _card.BindSeat(_transform, isFrontSeatableObjectSide, duration);
         }
 
-        public bool IsCardEqual(ISeatable seatableObject)
+        public bool IsCardEqual(Card card)
         {
-            return _seatableObject == seatableObject;
+            return _card == card;
         }
 
         public void Activate()
@@ -51,7 +51,7 @@ namespace GameFields.Seats
 
         public bool IsFill()
         {
-            return _seatableObject != null;
+            return _card != null;
         }
 
         public void SetLocalPositionValues(Vector3 position, Vector3 rotation, float duration = 0f)

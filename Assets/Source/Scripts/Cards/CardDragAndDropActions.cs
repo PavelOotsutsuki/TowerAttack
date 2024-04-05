@@ -5,15 +5,15 @@ namespace Cards
     internal class CardDragAndDropActions
     {
         private CardFront _cardFront;
-        private IPlayable _playableCard;
-        private IHandSeatable _handSeatableCard;
+        private Card _card;
+        private CardMovement _cardMovement;
         private ICardDragListener _cardDragListener;
 
-        internal CardDragAndDropActions(CardFront cardFront, IPlayable playableCard, IHandSeatable handSeatableCard)
+        internal CardDragAndDropActions(CardFront cardFront, Card card, CardMovement movement)
         {
             _cardFront = cardFront;
-            _playableCard = playableCard;
-            _handSeatableCard = handSeatableCard;
+            _card = card;
+            _cardMovement = movement;
         }
 
         internal void SetListener(ICardDragListener cardDragListener)
@@ -28,7 +28,7 @@ namespace Cards
                 _cardFront.EndReview();
             }
 
-            _cardDragListener.OnCardDrag(_handSeatableCard);
+            _cardDragListener.OnCardDrag(_card);
 
             _cardFront.Block();
         }
@@ -46,9 +46,9 @@ namespace Cards
             }
         }
 
-        internal bool TryDrop(ICardPlayPlace cardPlayPlace)
+        internal bool TryDrop(ICardDropPlace cardDropPlace)
         {
-            if (cardPlayPlace.TryPlayCard(_playableCard))
+            if (cardDropPlace.TrySeatCard(_card))
             {
                 return true;
             }
@@ -63,7 +63,7 @@ namespace Cards
 
         internal void ReturnInHand(float duration)
         {
-            _handSeatableCard.ReturnToHand(duration);
+            _cardMovement.BindSeatMovement(duration);
         }
     }
 }

@@ -7,8 +7,8 @@ namespace GameFields.Effects
 {
     public class ActiveEffect
     {
-        private IPerson _person;
-        private Effect _effect;
+        private readonly IPerson _person;
+        private readonly Effect _effect;
 
         public ActiveEffect(IPerson person, Effect effect)
         {

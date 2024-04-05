@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Cards
 {
-    public class DiscoverCard : MonoBehaviour, ISeatable
+    public class DiscoverCard : MonoBehaviour//, ISeatable
     {
         [SerializeField] private CardBack _cardBack;
         [SerializeField] private DiscoverCardFront _discoverCardFront;
@@ -58,10 +58,10 @@ namespace Cards
             _cardMovement.MoveOnPlace(center, duration);
         }
 
-        public void ReturnToHand(float duration)
-        {
-            _cardMovement.MoveReturnToHand(duration);
-        }
+        //public void ReturnToHand(float duration)
+        //{
+        //    _cardMovement.MoveReturnToHand(duration);
+        //}
 
         private void Activate()
         {

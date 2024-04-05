@@ -18,6 +18,6 @@ namespace GameFields.Persons.DrawCards
             IsDone = true;
         }
 
-        public abstract void PlayingSimpleDrawCardAnimation(IHandSeatable drawnCard);
+        public abstract void PlayingSimpleDrawCardAnimation(Card drawnCard);
     }
 }

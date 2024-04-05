@@ -4,13 +4,13 @@ namespace Cards
 {
     internal class CardAnimator
     {
-        private DrawCardAnimation _drawCardAnimation;
+        //private DrawCardAnimation _drawCardAnimation;
         private DiscardCardAnimation _discardCardAnimation;
         //private DragAndDropAnimation _dragAndDropAnimation;
 
         public CardAnimator (RectTransform cardRectTransform, CardMovement cardMovement, CardSideFlipper sideFlipper)
         {
-            _drawCardAnimation = new DrawCardAnimation(cardMovement, sideFlipper);
+            //_drawCardAnimation = new DrawCardAnimation(cardMovement, sideFlipper);
             _discardCardAnimation = new DiscardCardAnimation(cardRectTransform, cardMovement, sideFlipper);
             //_dragAndDropAnimation = new DragAndDropAnimation(cardRectTransform, cardMovement);
         }

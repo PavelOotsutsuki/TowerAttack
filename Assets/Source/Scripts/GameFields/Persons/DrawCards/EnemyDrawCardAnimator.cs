@@ -10,12 +10,12 @@ namespace GameFields.Persons.DrawCards
     {
         [SerializeField] private float _delay = 0.5f;
 
-        public override void PlayingSimpleDrawCardAnimation(IHandSeatable drawnCard)
+        public override void PlayingSimpleDrawCardAnimation(Card drawnCard)
         {
             Playing(drawnCard).ToUniTask();
         }
 
-        private IEnumerator Playing(IHandSeatable drawnCard)
+        private IEnumerator Playing(Card drawnCard)
         {
             IsDone = false;
             Hand.AddCard(drawnCard);

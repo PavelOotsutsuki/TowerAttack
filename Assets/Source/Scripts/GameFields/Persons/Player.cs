@@ -65,14 +65,14 @@ namespace GameFields.Persons
             //_tower.Deactivate();
         }
 
-        public void DrawCards(Queue<IHandSeatable> cards)
+        public void DrawCards(Queue<Card> cards)
         {
             _drawCardRoot.TakeCards(cards);
         }
 
         public void StartTurnDraw()
         {
-            Queue<IHandSeatable> cards = new Queue<IHandSeatable>();
+            Queue<Card> cards = new Queue<Card>();
 
             for (int i = 0; i < _countStartTurnDrawCards; i++)
             {
@@ -90,7 +90,7 @@ namespace GameFields.Persons
 
         public void StartTowerCardSelection(int drawCardsCount)
         {
-            Queue<IHandSeatable> cards = new Queue<IHandSeatable>();
+            Queue<Card> cards = new Queue<Card>();
 
             for (int i = 0; i < drawCardsCount; i++)
             {

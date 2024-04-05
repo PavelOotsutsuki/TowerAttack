@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Tables
 {
-    public abstract class Table : MonoBehaviour, ICardPlayPlace
+    public abstract class Table : MonoBehaviour, ICardSeatPlace
     {
         [SerializeField] protected CanvasGroup CanvasGroup;
         [SerializeField] private TableSeat[] _cardSeats;
@@ -24,7 +24,7 @@ namespace GameFields.Persons.Tables
             SetCardSeatsIndices();
         }
 
-        public bool TryPlayCard(IPlayable card)
+        public bool TrySeatCard(Card card)
         {
             if (TryFindCardSeat(out TableSeat freeCardSeat))
             {

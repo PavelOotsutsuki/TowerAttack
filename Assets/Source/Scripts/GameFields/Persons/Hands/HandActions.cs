@@ -35,14 +35,14 @@ namespace GameFields.Persons.Hands
             _handSeatPool.Init();
         }
 
-        public bool TryGetCard(out ISeatable seatableCard)
+        public bool TryGetCard(out Card card)
         {
-            return TryGetRandomCard(out seatableCard);
+            return TryGetRandomCard(out card);
         }
 
-        public void DragCard(ISeatable seatableCard)
+        public void DragCard(Card card)
         {
-            if (TryFindHandSeat(out Seat handSeat, seatableCard))
+            if (TryFindHandSeat(out Seat handSeat, card))
             {
                 _dragCardHandSeat = handSeat;
 
@@ -60,12 +60,12 @@ namespace GameFields.Persons.Hands
             ResetDragOptions();
         }
 
-        public void AddCard(ISeatable seatableCard)
+        public void AddCard(Card card)
         {
             if (_handSeatPool.TryGetHandSeat(out Seat handSeat))
             {
                 _handSeats.Add(handSeat);
-                handSeat.SetCard(seatableCard, _isFrontCardSide, _startCardTranslateSpeed);
+                handSeat.SetCard(card, _isFrontCardSide, _startCardTranslateSpeed);
             }
 
             SortHandSeats();
@@ -79,9 +79,9 @@ namespace GameFields.Persons.Hands
             ResetDragOptions();
         }
 
-        private bool TryGetRandomCard(out ISeatable seatableCard)
+        private bool TryGetRandomCard(out Card card)
         {
-            seatableCard = null;
+            card = null;
 
             if (_handSeats.Count <= 0)
             {
@@ -90,7 +90,7 @@ namespace GameFields.Persons.Hands
 
             int randomIndex = Random.Range(0, _handSeats.Count);
 
-            seatableCard = _handSeats[randomIndex].GetCard();
+            card = _handSeats[randomIndex].GetCard();
 
             return true;
         }
@@ -135,11 +135,11 @@ namespace GameFields.Persons.Hands
             }
         }
 
-        private bool TryFindHandSeat(out Seat findedHandSeat, ISeatable seatableCard)
+        private bool TryFindHandSeat(out Seat findedHandSeat, Card card)
         {
             foreach (Seat handSeat in _handSeats)
             {
-                if (handSeat.IsCardEqual(seatableCard))
+                if (handSeat.IsCardEqual(card))
                 {
                     findedHandSeat = handSeat;
                     return true;

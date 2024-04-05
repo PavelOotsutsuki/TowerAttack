@@ -19,7 +19,7 @@ namespace Cards
 
         public void SetBackSide()
         {
-            Block();
+            //Block();
 
             SetSide(true);
         }
@@ -28,7 +28,7 @@ namespace Cards
         {
             SetSide(false);
 
-            Unblock();
+            //Unblock();
         }
 
         public void Block()

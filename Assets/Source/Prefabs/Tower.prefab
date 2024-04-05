@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4940149930387063535}
   - component: {fileID: 2404349201422248753}
   - component: {fileID: 7697676776621595658}
+  - component: {fileID: 1677523096371386293}
   m_Layer: 0
   m_Name: Tower
   m_TagString: Untagged
@@ -90,6 +91,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1677523096371386293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4707179963278497091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18e38a53981314ea197f600a9c000196, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _towerSeat: {fileID: 369207257653272510}
+  _seatDuration: 0.5
 --- !u!1 &6426582931938232718
 GameObject:
   m_ObjectHideFlags: 0
@@ -174,9 +189,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4254836951524636958}
-  - component: {fileID: 6538754356184830588}
   - component: {fileID: 6607943346161368538}
   - component: {fileID: 6907753385457744810}
+  - component: {fileID: 369207257653272510}
   m_Layer: 0
   m_Name: CardSeat
   m_TagString: Untagged
@@ -203,20 +218,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0.9051, y: -3.1677}
   m_SizeDelta: {x: 350, y: 540}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &6538754356184830588
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8041989920869341692}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4fb4377758a4547db988a3d808edcc17, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _transform: {fileID: 4254836951524636958}
-  _duration: 0.5
 --- !u!222 &6607943346161368538
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -255,3 +256,16 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &369207257653272510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8041989920869341692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c27466b58398d4facbc0e6332720ccf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _transform: {fileID: 4254836951524636958}

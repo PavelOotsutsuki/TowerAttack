@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Towers
 {
-    public class Tower : MonoBehaviour, ICardDropSeatPlaceImitation
+    public class Tower : MonoBehaviour, ICardDropPlaceImitation
     {
         private const bool _isFrontCardSide = false;
 
@@ -18,13 +18,13 @@ namespace GameFields.Persons.Towers
 
         public bool IsTowerFill => _towerSeat.IsFill();
 
-        public virtual void Init(IUnbindCardManager unbindCardManager)
+        public void Init(IUnbindCardManager unbindCardManager)
         {
             _unbindCardManager = unbindCardManager;
 
             _towerSeat.Init();
 
-            Deactivate();
+            //Deactivate();
         }
 
         public Vector3 GetCentralСoordinates()
@@ -32,11 +32,11 @@ namespace GameFields.Persons.Towers
             return transform.position;
         }
 
-        public bool TrySeatCard(ISeatable seatableObject)
+        public bool TrySeatCard(Card card)
         {
             if (_towerSeat.IsFill() == false)
             {
-                _towerSeat.SetCard(seatableObject, _isFrontCardSide, _seatDuration);
+                _towerSeat.SetCard(card, _isFrontCardSide, _seatDuration);
                 _unbindCardManager.UnbindDragableCard();
 
                 return true;
@@ -46,10 +46,10 @@ namespace GameFields.Persons.Towers
             return false;
         }
 
-        private void Deactivate()
-        {
-            _towerSeat.Disactivate();
-        }
+        //private void Deactivate()
+        //{
+        //    _towerSeat.Disactivate();
+        //}
 
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()

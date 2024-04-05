@@ -4,7 +4,7 @@ using System;
 
 namespace Cards
 {
-    public class Card : MonoBehaviour, IHandSeatable, ISeatable, IPlayable
+    public class Card : MonoBehaviour, ICardTransformable
     {
         [SerializeField] private CardBack _cardBack;
         [SerializeField] private CardFront _cardFront;
@@ -20,7 +20,8 @@ namespace Cards
         private CardCharacter _cardCharacter;
         private ViewType _viewType;
 
-        public CardMovement CardMovement => _cardMovement;
+        public RectTransform Transform => _rectTransform;
+        public Vector3 DefaultScaleVector => _defaultScaleVector;
 
         internal void Init(CardDescription cardDescription, BigCard bigCard, Transform dragContainer)
         {
@@ -30,7 +31,7 @@ namespace Cards
 
             _cardFront.Init(_cardSO, _rectTransform, cardDescription, bigCard);
 
-            _cardDragAndDropActions = new CardDragAndDropActions(_cardFront, this, this);
+            _cardDragAndDropActions = new CardDragAndDropActions(_cardFront, this, _cardMovement);
             _cardDragAndDrop.Init(_rectTransform, _cardDragAndDropActions, dragContainer);
 
             _cardSideFlipper = new CardSideFlipper(_cardFront, _cardBack, _cardDragAndDrop);
@@ -47,11 +48,11 @@ namespace Cards
 
             if (isFrontSide)
             {
-                _cardSideFlipper.SetFrontSide();
+                SetEnableFrontSide();
             }
             else
             {
-                _cardSideFlipper.SetBackSide();
+                SetBackSide();
             }
         }
 
@@ -72,9 +73,21 @@ namespace Cards
             return _cardCharacter;
         }
 
-        public void FlipOnPlayerDraw()
+        public void SetDisableFrontSide()
         {
             _cardSideFlipper.SetFrontSide();
+            _cardSideFlipper.Block();
+        }
+
+        public void SetEnableFrontSide()
+        {
+            _cardSideFlipper.SetFrontSide();
+            _cardSideFlipper.Unblock();
+        }
+
+        public void SetBackSide()
+        {
+            _cardSideFlipper.SetBackSide();
             _cardSideFlipper.Block();
         }
 
@@ -88,10 +101,10 @@ namespace Cards
             _cardMovement.MoveOnPlace(center, duration);
         }
 
-        public void ReturnToHand(float duration)
-        {
-            _cardMovement.MoveReturnToHand(duration);
-        }
+        //public void ReturnToHand(float duration)
+        //{
+        //    _cardMovement.MoveReturnToHand(duration);
+        //}
 
         public void ViewCard(float duration)
         {

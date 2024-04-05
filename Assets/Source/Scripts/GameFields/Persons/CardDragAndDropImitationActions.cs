@@ -1,21 +1,23 @@
 using Cards;
+using Tools;
+using UnityEngine;
 
 namespace GameFields.Persons
 {
     public class CardDragAndDropImitationActions
     {
-        private ISeatable _activeCard;
+        private Card _activeCard;
 
         private ICardDragImitationListener _cardDragImitationListener;
-        private ICardPlayPlaceImitation _cardPlayPlaceImitation;
+        private ICardDropPlaceImitation _cardDropPlaceImitation;
 
-        public CardDragAndDropImitationActions(ICardDragImitationListener cardDragImitationListener, ICardPlayPlaceImitation cardPlayPlaceImitation)
+        public CardDragAndDropImitationActions(ICardDragImitationListener cardDragImitationListener, ICardDropPlaceImitation cardDropPlaceImitation)
         {
             _cardDragImitationListener = cardDragImitationListener;
-            _cardPlayPlaceImitation = cardPlayPlaceImitation;
+            _cardDropPlaceImitation = cardDropPlaceImitation;
         }
 
-        internal void SetCard(ISeatable card)
+        internal void SetCard(Card card)
         {
             _activeCard = card;
         }
@@ -27,16 +29,18 @@ namespace GameFields.Persons
 
         public void PlayOnPlace(float duration)
         {
-            _activeCard.PlayOnPlace(_cardPlayPlaceImitation.GetCentralСoordinates(), duration);
+            _activeCard.PlayOnPlace(_cardDropPlaceImitation.GetCentralСoordinates(), duration);
             _cardDragImitationListener.OnCardDrag(_activeCard);
         }
 
         public bool TryReturnToHand(float returnToHandDuration)
         {
-            if (_cardPlayPlaceImitation.TryPlayCard(_activeCard) == false)
+            if (_cardDropPlaceImitation.TrySeatCard(_activeCard) == false)
             {
+                ICardTransformable cardTransformable = _activeCard;
+                Movement movement = new Movement(cardTransformable.Transform);
                 _cardDragImitationListener.OnCardDrop();
-                _activeCard.ReturnToHand(returnToHandDuration);
+                movement.MoveLocalSmoothly(Vector2.zero, Vector3.zero, returnToHandDuration, cardTransformable.DefaultScaleVector);
 
                 return true;
             }

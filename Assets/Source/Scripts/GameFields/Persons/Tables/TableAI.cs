@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Tables
 {
-    public class TableAI : Table, ICardPlayPlaceImitation
+    public class TableAI : Table, ICardDropPlaceImitation
     {
         public override void Init(IUnbindCardManager playCardManager, EffectRoot effectRoot)
         {

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Cards
 {
-    public interface ICardMoveImitation
+    public interface ICardDropPlaceImitation : ICardSeatPlace
     {
         public Vector3 GetCentralСoordinates();
     }
