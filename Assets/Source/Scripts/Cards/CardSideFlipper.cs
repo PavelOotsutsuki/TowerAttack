@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Cards
 {
-    internal class CardSideFlipper
+     internal class CardSideFlipper
     {
         private CardFront _front;
         private CardBack _back;

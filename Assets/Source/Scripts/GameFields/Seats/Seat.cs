@@ -15,6 +15,12 @@ namespace GameFields.Seats
         public void Init()
         {
             _seatMovement = new Movement(_transform);
+            Reset();
+        }
+
+        public void Reset()
+        {
+            _seatableObject = null;
         }
 
         public ISeatable GetCard()

@@ -103,7 +103,8 @@ namespace Cards
         public void DiscardCard(DiscardCardAnimationData discardCardAnimationData)
         {
             Activate();
-            Vector3 startPosition = _cardCharacter.DiscardCard();
+            Vector3 startPosition = _cardCharacter.GetPositon();
+            _cardCharacter.Disable();
             _cardAnimator.PlayDiscardCardAnimation(startPosition, discardCardAnimationData);
         }
 

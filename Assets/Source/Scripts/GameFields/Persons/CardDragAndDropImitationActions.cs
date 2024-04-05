@@ -33,7 +33,7 @@ namespace GameFields.Persons
 
         public bool TryReturnToHand(float returnToHandDuration)
         {
-            if (_cardPlayPlaceImitation.TrySeatCard(_activeCard) == false)
+            if (_cardPlayPlaceImitation.TryPlayCard(_activeCard) == false)
             {
                 _cardDragImitationListener.OnCardDrop();
                 _activeCard.ReturnToHand(returnToHandDuration);

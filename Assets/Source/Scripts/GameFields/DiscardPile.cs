@@ -50,8 +50,12 @@ namespace GameFields
             {
                 _seats.Add(discardPileSeat);
                 discardPileSeat.SetLocalPositionValues(FindCardSeatPosition(), FindCardSeatRotation());
-                discardPileSeat.SetCard(card, _isFrontCardSide, _startCardTranslateSpeed);
+                discardPileSeat.SetCard(seatableObject, _isFrontCardSide, _startCardTranslateSpeed);
+
+                return true;
             }
+
+            return false;
         }
 
         public Vector3 GetCentralСoordinates()

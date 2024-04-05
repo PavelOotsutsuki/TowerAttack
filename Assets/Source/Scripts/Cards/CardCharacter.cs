@@ -25,11 +25,14 @@ namespace Cards
             AudioSource.PlayClipAtPoint(_audioSource.clip, Vector3.zero);
         }
 
-        public Vector3 DiscardCard()
+        public void Disable()
+        {
+            gameObject.SetActive(false);
+        }
+
+        public Vector3 GetPositon()
         {
             Vector3 startPosition = new Vector2(_rectTransform.position.x, _rectTransform.position.y);
-
-            gameObject.SetActive(false);
 
             return startPosition;
         }

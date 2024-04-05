@@ -47,7 +47,7 @@ namespace GameFields
             _discardCardAnimator.DiscardCard(card);
             yield return new WaitForSeconds(_discardCardAnimator.GetFullDelay());
 
-            _discardPile.AddCard(card);
+            _discardPile.TrySeatCard(card);
         }
     }
 }

@@ -83,10 +83,12 @@ namespace Cards
 
         private IEnumerator ViewCardAfterDrop(float endDuration, PointerEventData eventData)
         {
-            for (float duration = 0; duration < endDuration; duration += Time.deltaTime)
-            {
-                yield return true;
-            }
+            //for (float duration = 0; duration < endDuration; duration += Time.deltaTime)
+            //{
+            //    yield return true;
+            //}
+
+            yield return new WaitForSeconds(endDuration);
 
             _isDrag = false;
 
