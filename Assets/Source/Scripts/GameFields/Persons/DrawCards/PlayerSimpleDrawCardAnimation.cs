@@ -40,7 +40,7 @@ namespace GameFields.Persons.DrawCards
             InvertCardBack(_invertCardBackDuration, _invertCardBackRotation, _invertCardBackScaleFactor, _indent);
             yield return new WaitForSeconds(_invertCardBackDuration);
 
-            drawnCard.SetDisableFrontSide();
+            drawnCard.SetSide(SideType.DisableFront);
 
             //drawnCard.CardMovement.InvertCardFrontOnDraw(_invertCardFrontDuration, _invertCardBackScaleFactor, _indent);
             InvertCardFrontOnDraw(_invertCardFrontDuration, _invertCardBackScaleFactor, _indent);

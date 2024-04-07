@@ -14,7 +14,7 @@ namespace GameFields
 
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private SeatPool _discardPileSeatPool;
-        [SerializeField] private bool _isFrontCardSide;
+        [SerializeField] private SideType _sideType = SideType.Back;
         [SerializeField] private float _cardRotationOffset = 30f;
         [SerializeField] private float _startCardTranslateSpeed = 0.5f;
 
@@ -50,7 +50,7 @@ namespace GameFields
             {
                 _seats.Add(discardPileSeat);
                 discardPileSeat.SetLocalPositionValues(FindCardSeatPosition(), FindCardSeatRotation());
-                discardPileSeat.SetCard(card, _isFrontCardSide, _startCardTranslateSpeed);
+                discardPileSeat.SetCard(card, _sideType, _startCardTranslateSpeed);
 
                 return true;
             }

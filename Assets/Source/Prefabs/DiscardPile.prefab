@@ -51,7 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rectTransform: {fileID: 4565639392819788935}
   _discardPileSeatPool: {fileID: 4273034270251266425}
-  _isFrontCardSide: 0
+  _sideType: 2
   _cardRotationOffset: 20
   _startCardTranslateSpeed: 0.5
 --- !u!114 &4273034270251266425

@@ -28,10 +28,18 @@ namespace GameFields.Seats
             return _card;
         }
 
-        public void SetCard(Card card, bool isFrontSeatableObjectSide, float duration)
+        public void SetCard(Card card, SideType sideType, float duration)
         {
             _card = card;
-            _card.BindSeat(_transform, isFrontSeatableObjectSide, duration);
+            //_card.BindSeat(_transform, isFrontSide, duration);
+            ICardTransformable cardTransformable = _card;
+            Transform cardTransform = cardTransformable.Transform;
+            Movement cardMovement = new Movement(cardTransform);
+
+            cardTransform.SetParent(_transform);
+            cardMovement.MoveLocalSmoothly(Vector2.zero, Quaternion.identity.eulerAngles, duration, cardTransformable.DefaultScaleVector);
+
+            cardTransformable.SetSide(sideType);
         }
 
         public bool IsCardEqual(Card card)

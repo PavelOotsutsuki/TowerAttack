@@ -1,3 +1,4 @@
+using Tools;
 using UnityEngine;
 
 namespace Cards
@@ -6,14 +7,14 @@ namespace Cards
     {
         private CardFront _cardFront;
         private Card _card;
-        private CardMovement _cardMovement;
+        private Movement _movement;
         private ICardDragListener _cardDragListener;
 
-        internal CardDragAndDropActions(CardFront cardFront, Card card, CardMovement movement)
+        internal CardDragAndDropActions(CardFront cardFront, Card card)
         {
             _cardFront = cardFront;
             _card = card;
-            _cardMovement = movement;
+            _movement = new Movement(_card.Transform);
         }
 
         internal void SetListener(ICardDragListener cardDragListener)
@@ -63,7 +64,7 @@ namespace Cards
 
         internal void ReturnInHand(float duration)
         {
-            _cardMovement.BindSeatMovement(duration);
+            _movement.MoveLocalSmoothly(Vector2.zero, Quaternion.identity.eulerAngles, duration, _card.DefaultScaleVector);
         }
     }
 }

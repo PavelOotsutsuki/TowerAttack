@@ -17,7 +17,7 @@ namespace GameFields.Persons.Hands
         [SerializeField] private float _startCardTranslateSpeed = 0.5f;
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private SeatPool _handSeatPool;
-        [SerializeField] private bool _isFrontCardSide;
+        [SerializeField] private SideType _sideType;
 
         private List<Seat> _handSeats;
         private Seat _dragCardHandSeat;
@@ -65,7 +65,7 @@ namespace GameFields.Persons.Hands
             if (_handSeatPool.TryGetHandSeat(out Seat handSeat))
             {
                 _handSeats.Add(handSeat);
-                handSeat.SetCard(card, _isFrontCardSide, _startCardTranslateSpeed);
+                handSeat.SetCard(card, _sideType, _startCardTranslateSpeed);
             }
 
             SortHandSeats();

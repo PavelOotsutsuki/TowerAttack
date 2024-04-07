@@ -30,7 +30,7 @@ namespace Cards
             gameObject.SetActive(false);
         }
 
-        public Vector3 GetPositon()
+        public Vector3 GetPosition()
         {
             Vector3 startPosition = new Vector2(_rectTransform.position.x, _rectTransform.position.y);
 

@@ -13,12 +13,12 @@ namespace Cards
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private Vector3 _defaultScaleVector;
 
-        private CardAnimator _cardAnimator;
+        //private CardAnimator _cardAnimator;
         private CardDragAndDropActions _cardDragAndDropActions;
-        private CardMovement _cardMovement;
+        //private CardMovement _cardMovement;
         private CardSideFlipper _cardSideFlipper;
         private CardCharacter _cardCharacter;
-        private ViewType _viewType;
+        //private ViewType _viewType;
 
         public RectTransform Transform => _rectTransform;
         public Vector3 DefaultScaleVector => _defaultScaleVector;
@@ -27,34 +27,34 @@ namespace Cards
         {
             _rectTransform.localScale = _defaultScaleVector;
 
-            _cardMovement = new CardMovement(_rectTransform, _defaultScaleVector);
+            //_cardMovement = new CardMovement(_rectTransform, _defaultScaleVector);
 
             _cardFront.Init(_cardSO, _rectTransform, cardDescription, bigCard);
 
-            _cardDragAndDropActions = new CardDragAndDropActions(_cardFront, this, _cardMovement);
+            _cardDragAndDropActions = new CardDragAndDropActions(_cardFront, this);
             _cardDragAndDrop.Init(_rectTransform, _cardDragAndDropActions, dragContainer);
 
             _cardSideFlipper = new CardSideFlipper(_cardFront, _cardBack, _cardDragAndDrop);
             _cardSideFlipper.SetBackSide();
 
-            _cardAnimator = new CardAnimator(_rectTransform, _cardMovement, _cardSideFlipper);
-            _viewType = ViewType.Unselect;
+            //_cardAnimator = new CardAnimator(_rectTransform, _cardMovement, _cardSideFlipper);
+            //_viewType = ViewType.Unselect;
         }
 
-        public void BindSeat(Transform transform, bool isFrontSide, float duration = 0f)
-        {
-            _rectTransform.SetParent(transform);
-            _cardMovement.BindSeatMovement(duration);
+        //public void BindSeat(Transform transform, bool isFrontSide, float duration)
+        //{
+        //    _rectTransform.SetParent(transform);
+        //    _cardMovement.BindSeatMovement(duration);
 
-            if (isFrontSide)
-            {
-                SetEnableFrontSide();
-            }
-            else
-            {
-                SetBackSide();
-            }
-        }
+        //    if (isFrontSide)
+        //    {
+        //        SetEnableFrontSide();
+        //    }
+        //    else
+        //    {
+        //        SetBackSide();
+        //    }
+        //}
 
         public void SetDragAndDropListener(ICardDragListener cardDragAndDropListener)
         {
@@ -73,22 +73,22 @@ namespace Cards
             return _cardCharacter;
         }
 
-        public void SetDisableFrontSide()
+        public void SetSide(SideType sideType)
         {
-            _cardSideFlipper.SetFrontSide();
-            _cardSideFlipper.Block();
-        }
-
-        public void SetEnableFrontSide()
-        {
-            _cardSideFlipper.SetFrontSide();
-            _cardSideFlipper.Unblock();
-        }
-
-        public void SetBackSide()
-        {
-            _cardSideFlipper.SetBackSide();
-            _cardSideFlipper.Block();
+            switch(sideType)
+            {
+                case SideType.EnableFront:
+                    SetEnableFrontSide();
+                    break;
+                case SideType.DisableFront:
+                    SetDisableFrontSide();
+                    break;
+                case SideType.Back:
+                    SetBackSide();
+                    break;
+                default:
+                    throw new NullReferenceException("SideType is not founded");
+            }
         }
 
         //public void Drawn(float cardBackDuration, float cardBackRotation, float cardBackScaleFactor, float cardFrontDuration, float indent)
@@ -96,35 +96,68 @@ namespace Cards
         //    _cardAnimator.PlayDrawnCardAnimation(cardBackDuration, cardBackRotation, cardBackScaleFactor, cardFrontDuration, indent);
         //}
 
-        public void PlayOnPlace(Vector3 center, float duration)
-        {
-            _cardMovement.MoveOnPlace(center, duration);
-        }
+        //public void PlayOnPlace(Vector3 center, float duration)
+        //{
+        //    _cardMovement.MoveOnPlace(center, duration);
+        //}
 
         //public void ReturnToHand(float duration)
         //{
         //    _cardMovement.MoveReturnToHand(duration);
         //}
 
-        public void ViewCard(float duration)
-        {
-            ChangeViewType();
+        //public void ViewCard(float duration)
+        //{
+        //    ChangeViewType();
 
-            _cardMovement.ViewCardMovement(_viewType, duration);
+        //    _cardMovement.ViewCardMovement(_viewType, duration);
+        //}
+
+        public void DiscardCard()
+        {
+            if (gameObject.activeInHierarchy == true)
+            {
+                return;
+            }
+
+            Activate();
+            //Vector3 startPosition = _cardCharacter.GetPositon();
+            _cardCharacter.Disable();
+            //_cardAnimator.PlayDiscardCardAnimation(startPosition, discardCardAnimationData);
         }
 
-        public void DiscardCard(DiscardCardAnimationData discardCardAnimationData)
+        public Vector3 GetCardCharacterPosition()
         {
-            Activate();
-            Vector3 startPosition = _cardCharacter.GetPositon();
-            _cardCharacter.Disable();
-            _cardAnimator.PlayDiscardCardAnimation(startPosition, discardCardAnimationData);
+            if (_cardCharacter == null)
+            {
+                throw new NullReferenceException("СardCharacter is not instantiate");
+            }
+
+            return _cardCharacter.GetPosition();
         }
 
         private void CreateCardCharacter()
         {
             _cardCharacter = Instantiate(_cardSO.CardCharacter);
             _cardCharacter.Init(_cardSO.AwakeSound, _cardSO.Effect);
+        }
+
+        private void SetDisableFrontSide()
+        {
+            _cardSideFlipper.SetFrontSide();
+            _cardSideFlipper.Block();
+        }
+
+        private void SetEnableFrontSide()
+        {
+            _cardSideFlipper.SetFrontSide();
+            _cardSideFlipper.Unblock();
+        }
+
+        private void SetBackSide()
+        {
+            _cardSideFlipper.SetBackSide();
+            _cardSideFlipper.Block();
         }
 
         private void Activate()
@@ -137,21 +170,21 @@ namespace Cards
             gameObject.SetActive(false);
         }
 
-        private void ChangeViewType()
-        {
-            switch (_viewType)
-            {
-                case ViewType.Select:
-                    _viewType = ViewType.Unselect;
-                    break;
-                case ViewType.Unselect:
-                    _viewType = ViewType.Select;
-                    break;
-                default:
-                    Debug.LogError("Unknown ViewType");
-                    break;
-            }
-        }
+        //private void ChangeViewType()
+        //{
+        //    switch (_viewType)
+        //    {
+        //        case ViewType.Select:
+        //            _viewType = ViewType.Unselect;
+        //            break;
+        //        case ViewType.Unselect:
+        //            _viewType = ViewType.Select;
+        //            break;
+        //        default:
+        //            Debug.LogError("Unknown ViewType");
+        //            break;
+        //    }
+        //}
 
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()

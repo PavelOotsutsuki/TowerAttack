@@ -23,7 +23,7 @@ namespace Cards
 
             _rectTransform.localScale = _defaultScaleVector;
 
-            _cardMovement = new CardMovement(_rectTransform, _defaultScaleVector);
+            //_cardMovement = new CardMovement(_rectTransform, _defaultScaleVector);
 
             _discoverCardFront.Init(_cardSO, cardDescription);
 
@@ -36,7 +36,7 @@ namespace Cards
         public void BindSeat(Transform transform, bool isFrontSide, float duration = 0f)
         {
             _rectTransform.SetParent(transform);
-            _cardMovement.BindSeatMovement(duration);
+            //_cardMovement.BindSeatMovement(duration);
 
             if (isFrontSide)
             {
@@ -53,10 +53,10 @@ namespace Cards
         //    _cardAnimator.PlayDrawnCardAnimation(cardBackDuration, cardBackRotation, cardBackScaleFactor, cardFrontDuration, indent);
         //}
 
-        public void PlayOnPlace(Vector3 center, float duration)
-        {
-            _cardMovement.MoveOnPlace(center, duration);
-        }
+        //public void PlayOnPlace(Vector3 center, float duration)
+        //{
+        //    //_cardMovement.MoveOnPlace(center, duration);
+        //}
 
         //public void ReturnToHand(float duration)
         //{

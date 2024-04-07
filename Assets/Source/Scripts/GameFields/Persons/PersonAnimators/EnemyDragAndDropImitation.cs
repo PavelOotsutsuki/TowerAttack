@@ -7,6 +7,8 @@ namespace GameFields.Persons.PersonAnimators
     public class EnemyDragAndDropImitation : MonoBehaviour
     {
         private const int CountLogics = 1;
+        private const float SelectYDirection = -1;
+        private const float UnselectYDirection = 1;
 
         [SerializeField] private float _startDelayMin = 1f;
         [SerializeField] private float _startDelayMax = 2f;
@@ -48,12 +50,12 @@ namespace GameFields.Persons.PersonAnimators
             {
                 float cardViewDelay = Random.Range(_cardViewDelayMin, _cardViewDelayMax);
 
-                _cardImitationActions.ViewCard(_cardViewTime);
+                _cardImitationActions.ViewCard(_cardViewTime, SelectYDirection);
                 yield return new WaitForSeconds(_cardViewTime + cardViewDelay);
 
                 if (i != countRepeat)
                 {
-                    _cardImitationActions.ViewCard(_cardViewTime);
+                    _cardImitationActions.ViewCard(_cardViewTime, UnselectYDirection);
                     yield return new WaitForSeconds(_cardViewTime);
                 }
             }

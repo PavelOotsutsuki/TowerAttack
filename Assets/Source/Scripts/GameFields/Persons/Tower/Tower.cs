@@ -8,7 +8,7 @@ namespace GameFields.Persons.Towers
 {
     public class Tower : MonoBehaviour, ICardDropPlaceImitation
     {
-        private const bool _isFrontCardSide = false;
+        private const SideType DefaultSideType = SideType.Back;
 
         [SerializeField] private Seat _towerSeat;
         //[SerializeField] private CanvasGroup _canvasGroup;
@@ -36,7 +36,7 @@ namespace GameFields.Persons.Towers
         {
             if (_towerSeat.IsFill() == false)
             {
-                _towerSeat.SetCard(card, _isFrontCardSide, _seatDuration);
+                _towerSeat.SetCard(card, DefaultSideType, _seatDuration);
                 _unbindCardManager.UnbindDragableCard();
 
                 return true;
