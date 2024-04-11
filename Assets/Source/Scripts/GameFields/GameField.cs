@@ -5,6 +5,7 @@ using GameFields.Persons;
 using GameFields.EndTurnButtons;
 using GameFields.StartTowerCardSelections;
 using GameFields.Effects;
+using GameFields.DiscardPiles;
 
 namespace GameFields
 {
@@ -14,7 +15,7 @@ namespace GameFields
         [SerializeField] private DiscardPile _discardPile;
         [SerializeField] private EndTurnButton _endTurnButton;
         [SerializeField] private Player _player;
-        [SerializeField] private FightAnimator _fightAnimator;
+        //[SerializeField] private FightAnimator _fightAnimator;
         [SerializeField] private StartTowerCardSelection _startTowerCardSelection;
 
         [SerializeField] private EnemyAI _enemyAI;
@@ -28,14 +29,14 @@ namespace GameFields
             _startTowerCardSelection.Init(_player, _enemyAI);
             _deck.Init(cardsInDeck);
             _discardPile.Init();
-            _fightAnimator.Init(_discardPile);
+            //_fightAnimator.Init(_discardPile);
 
-            Fight fight = new Fight(_player, _enemyAI, _endTurnButton, _fightAnimator);
+            Fight fight = new Fight(_player, _enemyAI, _endTurnButton);
             EffectRoot effectRoot = new EffectRoot(_deck, _discardPile, fight);
             EndFight endFight = new EndFight();
 
-            _player.Init(effectRoot, _deck, ActivateEndTurnButton);
-            _enemyAI.Init(fight, _deck, effectRoot);
+            _player.Init(effectRoot, _deck, ActivateEndTurnButton, _discardPile);
+            _enemyAI.Init(fight, _deck, effectRoot, _discardPile);
 
             _endTurnButton.Init(fight);
             FightStepsController fightStepsController = new FightStepsController(_startTowerCardSelection, fight, endFight);
@@ -55,7 +56,7 @@ namespace GameFields
             DefineDiscardPile();
             DefineEndTurnButton();
             DefinePlayer();
-            DefineFightAnimator();
+            //DefineFightAnimator();
             DefineFirstTurn();
         }
 
@@ -83,11 +84,11 @@ namespace GameFields
             AutomaticFillComponents.DefineComponent(this, ref _player, ComponentLocationTypes.InChildren);
         }
 
-        [ContextMenu(nameof(DefineFightAnimator))]
-        private void DefineFightAnimator()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _fightAnimator, ComponentLocationTypes.InThis);
-        }
+        //[ContextMenu(nameof(DefineFightAnimator))]
+        //private void DefineFightAnimator()
+        //{
+        //    AutomaticFillComponents.DefineComponent(this, ref _fightAnimator, ComponentLocationTypes.InThis);
+        //}
 
         [ContextMenu(nameof(DefineFirstTurn))]
         private void DefineFirstTurn()

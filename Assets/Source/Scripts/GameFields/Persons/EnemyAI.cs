@@ -1,4 +1,5 @@
 using Cards;
+using GameFields.DiscardPiles;
 using GameFields.Effects;
 using GameFields.Persons.DrawCards;
 using GameFields.Persons.Hands;
@@ -24,14 +25,16 @@ namespace GameFields.Persons
         private IEndTurnHandler _endTurnHandler;
         private CardDragAndDropImitationActions _cardDragAndDropImitationActions;
         private Deck _deck;
+        private DiscardPile _discardPile;
 
         public bool IsTowerFilled => _tower.IsTowerFill;
 
-        public void Init(IEndTurnHandler endTurnHandler, Deck deck, EffectRoot effectRoot)
+        public void Init(IEndTurnHandler endTurnHandler, Deck deck, EffectRoot effectRoot, DiscardPile discardPile)
         {
             _deck = deck;
 
             _endTurnHandler = endTurnHandler;
+            _discardPile = discardPile;
 
             _hand.Init();
             _tower.Init(_hand);
@@ -53,9 +56,14 @@ namespace GameFields.Persons
         //    _hand.RemoveDraggableCard();
         //}
 
-        public List<Card> GetDiscardCards()
+        //public List<Card> GetDiscardCards()
+        //{
+        //    return _table.GetDiscardCards();
+        //}
+
+        public void DiscardCards()
         {
-            return _table.GetDiscardCards();
+            _discardPile.DiscardCards(_table.GetDiscardCards());
         }
 
         public void StartTurnDraw()

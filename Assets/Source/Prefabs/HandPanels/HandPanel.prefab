@@ -103,7 +103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _container: {fileID: 7724948398136886009}
-  _countObjects: 100
+  _countObjects: 50
   _template: {fileID: 3897465270784551387, guid: 8208b4381673849c1a76ded5f6fdb2da, type: 3}
 --- !u!114 &3330152501390823795
 MonoBehaviour:
@@ -122,6 +122,7 @@ MonoBehaviour:
   _startPositionX: 600
   _startPositionY: 90
   _startCardTranslateSpeed: 0.5
-  _rectTransform: {fileID: 0}
-  _handSeatPool: {fileID: 0}
-  _isFrontCardSide: 0
+  _rectTransform: {fileID: 7724948398136886009}
+  _handSeatPool: {fileID: 1993486227659136881}
+  _sideType: 1
+  _isActiveInteraction: 0

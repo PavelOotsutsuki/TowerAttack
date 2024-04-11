@@ -14,7 +14,7 @@ namespace Cards
 
         //private CardAnimator _cardAnimator;
         private CardSO _cardSO;
-        private CardMovement _cardMovement;
+        //private CardMovement _cardMovement;
         private DiscoverCardSideFlipper _discoverCardSideFlipper;
 
         internal void Init(CardSO cardSO, CardDescription cardDescription)

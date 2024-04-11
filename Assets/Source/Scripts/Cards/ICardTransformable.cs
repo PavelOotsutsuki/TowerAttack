@@ -8,5 +8,6 @@ namespace Cards
         public Vector3 DefaultScaleVector { get; }
 
         public void SetSide(SideType sideType);
+        public void SetActiveInteraction(bool isActive);
     }
 }

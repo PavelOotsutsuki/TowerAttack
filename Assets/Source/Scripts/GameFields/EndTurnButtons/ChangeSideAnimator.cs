@@ -2,35 +2,35 @@ using System.Collections;
 using Cysharp.Threading.Tasks;
 using Tools;
 using UnityEngine;
+using System;
+using UnityEngine.UI;
 
 namespace GameFields.EndTurnButtons
 {
+    [Serializable]
     public class ChangeSideAnimator
     {
         private readonly float _activeSideRotation = 90f;
         private readonly float _deactiveSideRotation = 0f;
 
-        private GameObject _activeView;
-        private GameObject _deactiveView;
-        private RectTransform _buttonTransform;
+        [SerializeField] private GameObject _activeView;
+        [SerializeField] private GameObject _deactiveView;
+        [SerializeField] private RectTransform _buttonTransform;
+        [SerializeField] private float _activeViewInvertDuration = 0.2f;
+        [SerializeField] private float _deactiveViewInvertDuration = 0.2f;
 
-        private float _activeViewInvertDuration;
-        private float _deactiveViewInvertDuration;
         private WaitForSeconds _activeViewInvertDelay;
         private WaitForSeconds _deactiveViewInvertDelay;
         private IEndTurnHandler _endTurnHandler;
         private Movement _endTurnButtonMovement;
+        private Button _button;
 
-        public ChangeSideAnimator(GameObject activeView, GameObject deactiveView, RectTransform buttonTransform, float activeViewInvertDuration, float deactiveViewInvertDuration, IEndTurnHandler endTurnHandler)
+        public void Init(Button button, IEndTurnHandler endTurnHandler)
         {
-            _activeView = activeView;
-            _deactiveView = deactiveView;
-            _buttonTransform = buttonTransform;
             _endTurnHandler = endTurnHandler;
             _endTurnButtonMovement = new Movement(_buttonTransform);
+            _button = button;
 
-            _activeViewInvertDuration = activeViewInvertDuration;
-            _deactiveViewInvertDuration = deactiveViewInvertDuration;
             _activeViewInvertDelay = new WaitForSeconds(_activeViewInvertDuration);
             _deactiveViewInvertDelay = new WaitForSeconds(_deactiveViewInvertDuration);
         }
@@ -47,8 +47,10 @@ namespace GameFields.EndTurnButtons
 
         private IEnumerator PlayingLockButtonAnimation()
         {
-            if (_activeView.activeInHierarchy == true)
+            if (_button.interactable)
             {
+                _button.interactable = false;
+
                 InvertActiveSide(_activeViewInvertDuration, _activeSideRotation);
                 yield return _activeViewInvertDelay;
 
@@ -63,7 +65,7 @@ namespace GameFields.EndTurnButtons
 
         private IEnumerator PlayingUnlockButtonAnimation()
         {
-            if (_activeView.activeInHierarchy == false)
+            if (_button.interactable == false)
             {
                 InvertActiveSide(_activeViewInvertDuration, _activeSideRotation);
                 yield return _activeViewInvertDelay;
@@ -72,6 +74,8 @@ namespace GameFields.EndTurnButtons
 
                 InvertDeactiveSide(_deactiveViewInvertDuration, _deactiveSideRotation);
                 yield return _deactiveViewInvertDelay;
+
+                _button.interactable = true;
             }
         }
 

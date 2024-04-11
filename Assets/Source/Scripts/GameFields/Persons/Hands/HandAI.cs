@@ -8,10 +8,10 @@ namespace GameFields.Persons.Hands
 {
     public class HandAI : MonoBehaviour, IHand, ICardDragImitationListener
     {
+        private const float SortDirection = -1;
+
         [SerializeField] private HandActions _handActions;
         [SerializeField] private CanvasGroup _canvasGroup;
-
-        private const float SortDirection = -1;
 
         public void Init()
         {

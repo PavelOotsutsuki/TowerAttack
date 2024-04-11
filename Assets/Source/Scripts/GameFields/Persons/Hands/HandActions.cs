@@ -18,6 +18,7 @@ namespace GameFields.Persons.Hands
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private SeatPool _handSeatPool;
         [SerializeField] private SideType _sideType;
+        [SerializeField] private bool _isActiveInteraction;
 
         private List<Seat> _handSeats;
         private Seat _dragCardHandSeat;
@@ -66,6 +67,7 @@ namespace GameFields.Persons.Hands
             {
                 _handSeats.Add(handSeat);
                 handSeat.SetCard(card, _sideType, _startCardTranslateSpeed);
+                card.SetActiveInteraction(_isActiveInteraction);
             }
 
             SortHandSeats();

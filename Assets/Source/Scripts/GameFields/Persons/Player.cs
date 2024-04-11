@@ -11,6 +11,7 @@ using GameFields.Persons.Discovers;
 using GameFields.Persons.DrawCards;
 using System.Collections;
 using System;
+using GameFields.DiscardPiles;
 
 namespace GameFields.Persons
 {
@@ -27,12 +28,14 @@ namespace GameFields.Persons
         [SerializeField] private DrawCardRoot _drawCardRoot;
 
         private Deck _deck;
+        private DiscardPile _discardPile;
 
         public bool IsTowerFilled => _tower.IsTowerFill;
 
-        public void Init(EffectRoot effectRoot, Deck deck, Action startDrawCallback)
+        public void Init(EffectRoot effectRoot, Deck deck, Action startDrawCallback, DiscardPile discardPile)
         {
             _deck = deck;
+            _discardPile = discardPile;
 
             _hand.Init();
             _tower.Init(_hand);
@@ -43,10 +46,15 @@ namespace GameFields.Persons
             _discover.Deactivate();
         }
 
-        public List<Card> GetDiscardCards()
+        public void DiscardCards()
         {
-            return _table.GetDiscardCards();
+            _discardPile.DiscardCards(_table.GetDiscardCards());
         }
+
+        //public List<Card> GetDiscardCards()
+        //{
+        //    return _table.GetDiscardCards();
+        //}
 
         //public void UnbindHandsDragableCard()
         //{
@@ -56,13 +64,11 @@ namespace GameFields.Persons
         public void ActivateDropPlaces()
         {
             _table.Activate();
-            //_tower.Activate();
         }
 
         public void DeactivateDropPlaces()
         {
             _table.Deactivate();
-            //_tower.Deactivate();
         }
 
         public void DrawCards(Queue<Card> cards)

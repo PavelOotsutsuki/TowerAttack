@@ -1,22 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cards;
+using Cysharp.Threading.Tasks;
 using GameFields.Persons.Hands;
 using GameFields.Seats;
 using Tools;
 using UnityEngine;
 
-namespace GameFields
+namespace GameFields.DiscardPiles
 {
-    public class DiscardPile : MonoBehaviour, ICardDropPlaceImitation
+    public class DiscardPile : MonoBehaviour//, ICardDropPlaceImitation
     {
         private const float CenterRotation = 90f;
 
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private SeatPool _discardPileSeatPool;
-        [SerializeField] private SideType _sideType = SideType.Back;
         [SerializeField] private float _cardRotationOffset = 30f;
         [SerializeField] private float _startCardTranslateSpeed = 0.5f;
+        [SerializeField] private float _discardDelay = 0.5f;
+        [SerializeField] private DiscardCardAnimationData _discardCardAnimationData;
 
         private float _maxCoordinateX;
         private float _maxCoordinateY;
@@ -44,23 +46,24 @@ namespace GameFields
         //    }
         //}
 
-        public bool TrySeatCard(Card card)
+        public void DiscardCards(List<Card> cards)
+        {
+            DiscardingCards(cards).ToUniTask();
+        }
+
+        private bool TrySeatCard(Card card)
         {
             if (_discardPileSeatPool.TryGetHandSeat(out Seat discardPileSeat))
             {
+                card.SetActiveInteraction(false);
                 _seats.Add(discardPileSeat);
                 discardPileSeat.SetLocalPositionValues(FindCardSeatPosition(), FindCardSeatRotation());
-                discardPileSeat.SetCard(card, _sideType, _startCardTranslateSpeed);
+                discardPileSeat.SetCard(card, SideType.Back, _startCardTranslateSpeed);
 
                 return true;
             }
 
             return false;
-        }
-
-        public Vector3 GetCentralСoordinates()
-        {
-            throw new System.NotImplementedException();
         }
 
         //public void RemoveCard()
@@ -70,6 +73,15 @@ namespace GameFields
         //    SortHandSeats();
         //    ResetDragOptions();
         //}
+
+        private IEnumerator DiscardingCards(List<Card> discardingCards)
+        {
+            foreach (Card card in discardingCards)
+            {
+                new DiscardCardAnimation(_discardCardAnimationData, _rectTransform, card, TrySeatCard);
+                yield return new WaitForSeconds(_discardDelay);
+            }
+        }
 
         private Vector3 FindCardSeatPosition()
         {

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 
-namespace Cards
+namespace GameFields.DiscardPiles
 {
     [Serializable]
     public class DiscardCardAnimationData

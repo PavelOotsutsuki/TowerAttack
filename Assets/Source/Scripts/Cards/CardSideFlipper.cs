@@ -31,13 +31,13 @@ namespace Cards
             //Unblock();
         }
 
-        public void Block()
+        public void DeactivateInteraction()
         {
             _cardDragAndDrop.enabled = false;
             _front.Block();
         }
 
-        public void Unblock()
+        public void ActivateInteraction()
         {
             _cardDragAndDrop.enabled = true;
             _front.Unblock();

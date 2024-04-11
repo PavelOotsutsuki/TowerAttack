@@ -2,8 +2,7 @@ namespace Cards
 {
     public enum SideType
     {
-        EnableFront,
-        DisableFront,
+        Front,
         Back
     }
 }

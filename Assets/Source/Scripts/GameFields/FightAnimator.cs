@@ -9,45 +9,46 @@ namespace GameFields
 {
     public class FightAnimator : MonoBehaviour
     {
-        [SerializeField] private DiscardCardAnimator _discardCardAnimator;
-        [SerializeField] private float _discardCardDelay = 0.5f;
+        //[SerializeField] private DiscardCardAnimator _discardCardAnimator;
+        //[SerializeField] private float _discardCardDelay = 0.5f;
 
-        private DiscardPile _discardPile;
+        //private DiscardPile _discardPile;
 
-        public void Init(DiscardPile discardPile)
-        {
-            _discardPile = discardPile;
-        }
-
-        //public void StartDiscardCardAnimation(PlayedCards playedCards)
+        //public void Init(DiscardPile discardPile)
         //{
-        //    foreach (CardCharacter cardCharacter in discardCards)
+        //    _discardPile = discardPile;
+        //}
+
+        ////public void StartDiscardCardAnimation(PlayedCards playedCards)
+        ////{
+        ////    foreach (CardCharacter cardCharacter in discardCards)
+        ////    {
+        ////        StartDiscardAnimation(cardCharacter).ToUniTask();
+        ////        yield return new WaitForSeconds(_discardCardDelay);
+        ////    }
+        ////}
+
+        //public void DiscardCards(List<Card> discardCards)
+        //{
+        //    //Debug.Log(discardCards.Count);
+        //    DiscardingCards(discardCards).ToUniTask();
+        //}
+
+        //private IEnumerator DiscardingCards(List<Card> discardCards)
+        //{
+        //    foreach (Card card in discardCards)
         //    {
-        //        StartDiscardAnimation(cardCharacter).ToUniTask();
+        //        StartDiscardCardAnimation(card).ToUniTask();
         //        yield return new WaitForSeconds(_discardCardDelay);
         //    }
         //}
 
-        public void DiscardCards(List<Card> discardCards)
-        {
-            DiscardingCards(discardCards).ToUniTask();
-        }
+        //private IEnumerator StartDiscardCardAnimation(Card card)
+        //{
+        //    _discardCardAnimator.DiscardCard(card);
+        //    yield return new WaitForSeconds(_discardCardAnimator.GetFullDelay());
 
-        private IEnumerator DiscardingCards(List<Card> discardCards)
-        {
-            foreach (Card card in discardCards)
-            {
-                StartDiscardCardAnimation(card).ToUniTask();
-                yield return new WaitForSeconds(_discardCardDelay);
-            }
-        }
-
-        private IEnumerator StartDiscardCardAnimation(Card card)
-        {
-            _discardCardAnimator.DiscardCard(card);
-            yield return new WaitForSeconds(_discardCardAnimator.GetFullDelay());
-
-            _discardPile.TrySeatCard(card);
-        }
+        //    _discardPile.TrySeatCard(card);
+        //}
     }
 }

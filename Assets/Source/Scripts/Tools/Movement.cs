@@ -33,8 +33,8 @@ namespace Tools
 
         public void MoveLocalSmoothly(Vector2 positon, Vector3 rotation, float duration, Vector3 scaleVector)
         {
-            _transform.DOLocalMove(positon, duration);
-            _transform.DOLocalRotate(rotation, duration);
+            MoveLocalSmoothly(positon, rotation, duration);
+
             _transform.DOScale(scaleVector, duration);
         }
 
@@ -57,16 +57,16 @@ namespace Tools
         //    _transform.DORotate(rotation, duration);
         //}
 
-        public void MoveLinear(Vector3 downWay, Vector3 maxRotationVector, float duration, Vector3 scaleVector)
+        public void MoveLinear(Vector3 position, Vector3 maxRotationVector, float duration, Vector3 scaleVector)
         {
-            _transform.DOMove(downWay, duration).SetEase(Ease.Linear);
-            _transform.DORotate(maxRotationVector, duration).SetEase(Ease.Linear);
+            MoveLinear(position, maxRotationVector, duration);
+
             _transform.DOScale(scaleVector, duration).SetEase(Ease.Linear);
         }
 
-        public void MoveLinear(Vector3 downWay, Vector3 maxRotationVector, float duration)
+        public void MoveLinear(Vector3 position, Vector3 maxRotationVector, float duration)
         {
-            _transform.DOMove(downWay, duration).SetEase(Ease.Linear);
+            _transform.DOMove(position, duration).SetEase(Ease.Linear);
             _transform.DORotate(maxRotationVector, duration).SetEase(Ease.Linear);
         }
     }

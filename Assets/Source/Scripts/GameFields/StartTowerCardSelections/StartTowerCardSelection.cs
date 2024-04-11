@@ -21,7 +21,8 @@ namespace GameFields.StartTowerCardSelections
         private bool _isCompletePlayer;
         private bool _isCompleteEnemy;
 
-        public bool IsComplete => _player.IsTowerFilled; //&& _enemy.IsTowerFilled;
+        //public bool IsComplete => _player.IsTowerFilled; //&& _enemy.IsTowerFilled;
+        public bool IsComplete => true; //&& _enemy.IsTowerFilled;
 
         public void Init(IStartTowerCardSelectionListener player, IStartTowerCardSelectionListener enemy)
         {

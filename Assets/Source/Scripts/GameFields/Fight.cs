@@ -18,7 +18,7 @@ namespace GameFields
         //private Deck _deck;
         private EndTurnButton _endTurnButton;
         //private DiscardPile _discardPile;
-        private FightAnimator _fightAnimator;
+        //private FightAnimator _fightAnimator;
 
         private IPerson _activePerson;
         private IPerson _deactivePerson;
@@ -26,7 +26,7 @@ namespace GameFields
         private bool _isComlpete;
         private EndFightResults _endFightResults;
        
-        public Fight(Player player, EnemyAI enemy, EndTurnButton endTurnButton, FightAnimator fightAnimator)
+        public Fight(Player player, EnemyAI enemy, EndTurnButton endTurnButton)
         {
             _isComlpete = false;
             _turnNumber = 1;
@@ -36,7 +36,7 @@ namespace GameFields
             //_deck = deck;
             //_discardPile = discardPile;
             _endTurnButton = endTurnButton;
-            _fightAnimator = fightAnimator;
+            //_fightAnimator = fightAnimator;
             //_effectRoot.Init(_deck, _discardPile, _activePerson, _deactivePerson);
         }
 
@@ -62,7 +62,7 @@ namespace GameFields
 
         private void DiscardCards()
         {
-            _fightAnimator.DiscardCards(_activePerson.GetDiscardCards());
+            _activePerson.DiscardCards();
         }
 
         private void CheckEndFight()
