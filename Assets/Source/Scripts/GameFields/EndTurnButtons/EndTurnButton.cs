@@ -11,9 +11,13 @@ namespace GameFields.EndTurnButtons
         [SerializeField] private Button _button;
         [SerializeField] private ChangeSideAnimator _changeSideAnimator;
 
-        public void Init(IEndTurnHandler drawHandler)
+        private IEndTurnHandler _endTurnHandler;
+
+        public void Init(IEndTurnHandler endTurnHandler)
         {
-            _changeSideAnimator.Init(_button, drawHandler);
+            _endTurnHandler = endTurnHandler;
+
+            _changeSideAnimator.Init(_button);
         }
 
         public void SetActiveSide()
@@ -39,6 +43,7 @@ namespace GameFields.EndTurnButtons
         private void SetDeactiveSide()
         {
             _changeSideAnimator.PlayLockButtonAnimation();
+            _endTurnHandler.OnEndTurn();
         }
     }
 }

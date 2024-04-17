@@ -29,19 +29,19 @@ namespace GameFields.Persons
 
         public bool IsTowerFilled => _tower.IsTowerFill;
 
-        public void Init(IEndTurnHandler endTurnHandler, Deck deck, EffectRoot effectRoot, DiscardPile discardPile)
+        public void Init(IEndTurnHandler endTurnHandler, EffectRoot effectRoot, Deck deck, DiscardPile discardPile)
         {
             _deck = deck;
+            _discardPile = discardPile;
 
             _endTurnHandler = endTurnHandler;
-            _discardPile = discardPile;
 
             _hand.Init();
             _tower.Init(_hand);
             _table.Init(_hand, effectRoot);
             //            cardEffects.SetEnemyAIGameFieldElements(_table, _hand, _tower);
 
-            _drawCardRoot.Init(_hand, PlayDragAndDropImitation);
+            _drawCardRoot.Init(_hand);
             _cardDragAndDropImitationActions = new CardDragAndDropImitationActions(_hand, _table);
             _enemyAnimator.Init(_endTurnHandler, _cardDragAndDropImitationActions);
         }
@@ -81,7 +81,7 @@ namespace GameFields.Persons
 
             if (cards != null)
             {
-                _drawCardRoot.StartTurnDraw(cards);
+                _drawCardRoot.TakeCards(cards, PlayDragAndDropImitation);
             }
         }
 

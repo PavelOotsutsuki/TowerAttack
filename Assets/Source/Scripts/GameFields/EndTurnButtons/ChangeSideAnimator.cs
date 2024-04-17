@@ -21,15 +21,15 @@ namespace GameFields.EndTurnButtons
 
         private WaitForSeconds _activeViewInvertDelay;
         private WaitForSeconds _deactiveViewInvertDelay;
-        private IEndTurnHandler _endTurnHandler;
         private Movement _endTurnButtonMovement;
         private Button _button;
+        private bool _isAnimationInWork;
 
-        public void Init(Button button, IEndTurnHandler endTurnHandler)
+        public void Init(Button button)
         {
-            _endTurnHandler = endTurnHandler;
             _endTurnButtonMovement = new Movement(_buttonTransform);
             _button = button;
+            _isAnimationInWork = false;
 
             _activeViewInvertDelay = new WaitForSeconds(_activeViewInvertDuration);
             _deactiveViewInvertDelay = new WaitForSeconds(_deactiveViewInvertDuration);
@@ -47,9 +47,13 @@ namespace GameFields.EndTurnButtons
 
         private IEnumerator PlayingLockButtonAnimation()
         {
+            yield return new WaitWhile(() => _isAnimationInWork);
+
             if (_button.interactable)
             {
                 _button.interactable = false;
+
+                _isAnimationInWork = true;
 
                 InvertActiveSide(_activeViewInvertDuration, _activeSideRotation);
                 yield return _activeViewInvertDelay;
@@ -59,14 +63,18 @@ namespace GameFields.EndTurnButtons
                 InvertDeactiveSide(_deactiveViewInvertDuration, _deactiveSideRotation);
                 yield return _deactiveViewInvertDelay;
 
-                _endTurnHandler.OnEndTurn();
+                _isAnimationInWork = false;
             }
         }
 
         private IEnumerator PlayingUnlockButtonAnimation()
         {
+            yield return new WaitWhile(() => _isAnimationInWork);
+
             if (_button.interactable == false)
             {
+                _isAnimationInWork = true;
+
                 InvertActiveSide(_activeViewInvertDuration, _activeSideRotation);
                 yield return _activeViewInvertDelay;
 
@@ -76,6 +84,8 @@ namespace GameFields.EndTurnButtons
                 yield return _deactiveViewInvertDelay;
 
                 _button.interactable = true;
+
+                _isAnimationInWork = false;
             }
         }
 

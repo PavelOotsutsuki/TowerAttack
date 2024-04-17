@@ -5,6 +5,8 @@ namespace GameFields.Seats
 {
     public class SeatPool: MonoBehaviour
     {
+        private const int CountExtraObjects = 10;
+
         [SerializeField] private Transform _container;
         [SerializeField] private int _countObjects;
         [SerializeField] private Seat _template;
@@ -20,18 +22,20 @@ namespace GameFields.Seats
             }
         }
 
-        public bool TryGetHandSeat(out Seat result)
+        public Seat GetHandSeat()
         {
+            Seat result;
+
             if (_remainingPool.Count <= 0)
             {
-                result = null;
-                return false;
+                AddExtraObjects();
             }
 
             result = _remainingPool.Dequeue();
             result.gameObject.SetActive(true);
             _usedPool.Add(result);
-            return true;
+
+            return result;
         }
 
         public void ReturnInPool(Seat handSeat)
@@ -58,6 +62,14 @@ namespace GameFields.Seats
             }
 
             _usedPool.Clear();
+        }
+
+        private void AddExtraObjects()
+        {
+            for (int i = 0; i < CountExtraObjects; i++)
+            {
+                CreateObject();
+            }
         }
 
         private void CreateObject()

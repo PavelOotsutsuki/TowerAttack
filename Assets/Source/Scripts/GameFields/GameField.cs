@@ -35,8 +35,8 @@ namespace GameFields
             EffectRoot effectRoot = new EffectRoot(_deck, _discardPile, fight);
             EndFight endFight = new EndFight();
 
-            _player.Init(effectRoot, _deck, ActivateEndTurnButton, _discardPile);
-            _enemyAI.Init(fight, _deck, effectRoot, _discardPile);
+            _player.Init(effectRoot, _deck, _discardPile);
+            _enemyAI.Init(fight, effectRoot, _deck, _discardPile);
 
             _endTurnButton.Init(fight);
             FightStepsController fightStepsController = new FightStepsController(_startTowerCardSelection, fight, endFight);
@@ -44,10 +44,10 @@ namespace GameFields
             fightStepsController.StartFightSteps();
         }
 
-        private void ActivateEndTurnButton()
-        {
-            _endTurnButton.SetActiveSide();
-        }
+        //private void ActivateEndTurnButton()
+        //{
+        //    _endTurnButton.SetActiveSide();
+        //}
 
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()

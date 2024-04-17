@@ -32,7 +32,7 @@ namespace GameFields.Persons
 
         public bool IsTowerFilled => _tower.IsTowerFill;
 
-        public void Init(EffectRoot effectRoot, Deck deck, Action startDrawCallback, DiscardPile discardPile)
+        public void Init(EffectRoot effectRoot, Deck deck, DiscardPile discardPile)
         {
             _deck = deck;
             _discardPile = discardPile;
@@ -42,7 +42,7 @@ namespace GameFields.Persons
             _table.Init(_hand, effectRoot);
             //            cardEffects.SetPlayerGameFieldElements(_table, _hand, _tower);
 
-            _drawCardRoot.Init(_hand, startDrawCallback);
+            _drawCardRoot.Init(_hand);
             _discover.Deactivate();
         }
 
@@ -90,7 +90,7 @@ namespace GameFields.Persons
 
             if (cards != null)
             {
-                _drawCardRoot.StartTurnDraw(cards);
+                _drawCardRoot.TakeCards(cards);
             }
         }
 

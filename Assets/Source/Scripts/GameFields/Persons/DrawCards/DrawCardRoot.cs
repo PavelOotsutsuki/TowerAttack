@@ -20,74 +20,55 @@ namespace GameFields.Persons.DrawCards
         //private IHand _hand;
         private Queue<Card> _drawCardQueue;
         private bool _isDrawing;
-        private Action _startDrawCallback;
+        //private Action _startDrawCallback;
 
-        public void Init(IHand hand, Action startDrawCallback)
+        public void Init(IHand hand)
         {
             //_hand = hand;
             _isDrawing = false;
             _drawCardQueue = new Queue<Card>();
 
-            _startDrawCallback = startDrawCallback;
+            //_startDrawCallback = startDrawCallback;
             _drawCardAnimator.Init(hand);
         }
 
-        public void StartTurnDraw(Queue<Card> cards)
+        //public void StartTurnDraw(Queue<Card> cards)
+        //{
+        //    AddCardsInQueue(cards);
+
+        //    StartTurnDrawing().ToUniTask();
+        //}
+
+        public void TakeCards(Queue<Card> cards, Action callback = null)
         {
             AddCardsInQueue(cards);
 
-            StartTurnDrawing().ToUniTask();
-        }
-
-        public void TakeCards(Queue<Card> cards)
-        {
-            AddCardsInQueue(cards);
-
-            DrawingCards().ToUniTask();
-        }
-
-        private IEnumerator StartTurnDrawing()
-        {
-            yield return DrawingCards();
-
-            _startDrawCallback?.Invoke();
-        }
-
-        //public IEnumerator TakeCards(int count)
-        //{
-        //    //if (_deck.IsHasCards(count) == false)
-        //    //{
-        //    //    throw new ArgumentOutOfRangeException("Недостаточно карт в колоде");
-        //    //}
-
-        //    AddCardsInQueue(count);
-
-        //    yield return DrawCards();
-        //}
-
-        //public IEnumerator TakeCards(int count)
-        //{
-        //    AddCardsInQueue(count);
-
-        //    yield return DrawCards();
-        //}
-
-        private IEnumerator DrawingCards()
-        {
-            if (_isDrawing)
+            if (_isDrawing == false)
             {
-                yield break;
+                DrawingCards(callback).ToUniTask();
             }
+        }
 
+        //private IEnumerator StartTurnDrawing()
+        //{
+        //    yield return DrawingCards();
+
+        //    _startDrawCallback?.Invoke();
+        //}
+
+        private IEnumerator DrawingCards(Action callback)
+        {
             _isDrawing = true;
 
             while (_drawCardQueue.Count > 0)
             {
                 Card card = _drawCardQueue.Dequeue();
                 _drawCardAnimator.PlayingSimpleDrawCardAnimation(card);
+
                 yield return new WaitUntil(() => _drawCardAnimator.IsDone);
             }
 
+            callback?.Invoke();
             _isDrawing = false;
         }
 

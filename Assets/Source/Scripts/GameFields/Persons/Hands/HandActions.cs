@@ -63,12 +63,10 @@ namespace GameFields.Persons.Hands
 
         public void AddCard(Card card)
         {
-            if (_handSeatPool.TryGetHandSeat(out Seat handSeat))
-            {
-                _handSeats.Add(handSeat);
-                handSeat.SetCard(card, _sideType, _startCardTranslateSpeed);
-                card.SetActiveInteraction(_isActiveInteraction);
-            }
+            Seat handSeat = _handSeatPool.GetHandSeat();
+            _handSeats.Add(handSeat);
+            handSeat.SetCard(card, _sideType, _startCardTranslateSpeed);
+            card.SetActiveInteraction(_isActiveInteraction);
 
             SortHandSeats();
         }

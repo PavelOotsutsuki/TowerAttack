@@ -51,19 +51,13 @@ namespace GameFields.DiscardPiles
             DiscardingCards(cards).ToUniTask();
         }
 
-        private bool TrySeatCard(Card card)
+        private void SeatCard(Card card)
         {
-            if (_discardPileSeatPool.TryGetHandSeat(out Seat discardPileSeat))
-            {
-                card.SetActiveInteraction(false);
-                _seats.Add(discardPileSeat);
-                discardPileSeat.SetLocalPositionValues(FindCardSeatPosition(), FindCardSeatRotation());
-                discardPileSeat.SetCard(card, SideType.Back, _startCardTranslateSpeed);
-
-                return true;
-            }
-
-            return false;
+            Seat discardPileSeat = _discardPileSeatPool.GetHandSeat();
+            card.SetActiveInteraction(false);
+            _seats.Add(discardPileSeat);
+            discardPileSeat.SetLocalPositionValues(FindCardSeatPosition(), FindCardSeatRotation());
+            discardPileSeat.SetCard(card, SideType.Back, _startCardTranslateSpeed);
         }
 
         //public void RemoveCard()
@@ -78,7 +72,7 @@ namespace GameFields.DiscardPiles
         {
             foreach (Card card in discardingCards)
             {
-                new DiscardCardAnimation(_discardCardAnimationData, _rectTransform, card, TrySeatCard);
+                new DiscardCardAnimation(_discardCardAnimationData, _rectTransform, card, SeatCard);
                 yield return new WaitForSeconds(_discardDelay);
             }
         }

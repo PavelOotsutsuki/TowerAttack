@@ -52,7 +52,7 @@ namespace GameFields
             DiscardCards();
             CheckEndFight();
             SwitchPerson();
-            StartTurn();
+            //StartTurn();
         }
 
         public void Start()
@@ -76,7 +76,7 @@ namespace GameFields
 
         private void SwitchPerson()
         {
-            if (_activePerson is Player)
+            if (_activePerson == _player)
             {
                 SetEnemyTurn();
             }
@@ -91,6 +91,9 @@ namespace GameFields
             _activePerson = _player;
             _deactivePerson = _enemy;
 
+            _activePerson.StartTurnDraw();
+            _endTurnButton.SetActiveSide();
+
             _player.ActivateDropPlaces();
         }
 
@@ -98,6 +101,8 @@ namespace GameFields
         {
             _activePerson = _enemy;
             _deactivePerson = _player;
+
+            _activePerson.StartTurnDraw();
 
             _player.DeactivateDropPlaces();
         }
@@ -107,25 +112,26 @@ namespace GameFields
         //    DrawningCard().ToUniTask();
         //}
 
-        private void StartTurn()
-        {
-            _activePerson.StartTurnDraw();
+        //private void StartTurn()
+        //{
+        //    _activePerson.StartTurnDraw();
+        //    _endTurnButton.SetActiveSide();
 
-            //yield return new WaitForSeconds(1.5f);
+        //    //yield return new WaitForSeconds(1.5f);
 
-            //if (_activePerson is EnemyAI)
-            //{
-            //    _enemy.PlayDragAndDropImitation();
-            //}
-            //else
-            //{
-            //    _endTurnButton.SetActiveSide();
-            //}
-            //if (_activePerson is Player)
-            //{
-            //    _endTurnButton.SetActiveSide();
-            //}
-        }
+        //    //if (_activePerson is EnemyAI)
+        //    //{
+        //    //    _enemy.PlayDragAndDropImitation();
+        //    //}
+        //    //else
+        //    //{
+        //    //    _endTurnButton.SetActiveSide();
+        //    //}
+        //    //if (_activePerson is Player)
+        //    //{
+        //    //    _endTurnButton.SetActiveSide();
+        //    //}
+        //}
 
         //private IEnumerator DrawningCard()
         //{

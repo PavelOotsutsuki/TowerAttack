@@ -28,13 +28,13 @@ namespace GameFields.DiscardPiles
 
         private DiscardCardAnimationData _data;
         private Transform _container;
-        private Func<Card, bool> _returnToHandCallback;
+        private Action<Card> _callback;
 
-        public DiscardCardAnimation(DiscardCardAnimationData data, Transform container, Card card, Func<Card, bool> returnToHandCallback)
+        public DiscardCardAnimation(DiscardCardAnimationData data, Transform container, Card card, Action<Card> callback)
         {
             _data = data;
             _container = container;
-            _returnToHandCallback = returnToHandCallback;
+            _callback = callback;
 
             _card = card;
             _cardTransformable = card;
@@ -79,7 +79,7 @@ namespace GameFields.DiscardPiles
             InvertCardBack();
             yield return new WaitForSeconds(_data.InvertCardBackDuration + _data.DelayAfterInvert);
 
-            _returnToHandCallback?.Invoke(_card);
+            _callback?.Invoke(_card);
         }
 
         private void InvertCardFront()
