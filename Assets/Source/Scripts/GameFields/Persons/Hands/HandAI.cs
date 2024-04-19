@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cards;
+using GameFields.Seats;
 using Tools;
 using UnityEngine;
 
@@ -13,9 +14,9 @@ namespace GameFields.Persons.Hands
         [SerializeField] private HandActions _handActions;
         [SerializeField] private CanvasGroup _canvasGroup;
 
-        public void Init()
+        public void Init(SeatPool seatPool)
         {
-            _handActions.Init(SortDirection);
+            _handActions.Init(SortDirection, seatPool);
             _canvasGroup.blocksRaycasts = true;
         }
 

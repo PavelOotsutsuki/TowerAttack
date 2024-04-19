@@ -16,24 +16,24 @@ namespace GameFields.Persons.Hands
         [SerializeField] private float _startPositionY = 90f;
         [SerializeField] private float _startCardTranslateSpeed = 0.5f;
         [SerializeField] private RectTransform _rectTransform;
-        [SerializeField] private SeatPool _handSeatPool;
         [SerializeField] private SideType _sideType;
         [SerializeField] private bool _isActiveInteraction;
 
         private List<Seat> _handSeats;
         private Seat _dragCardHandSeat;
         private int _handSeatIndex;
+        private SeatPool _handSeatPool;
 
         private float _sortDirection;
 
-        public void Init(float sortDirection)
+        public void Init(float sortDirection, SeatPool seatPool)
         {
             _sortDirection = sortDirection;
 
             _handSeats = new List<Seat>();
             _handSeatIndex = -1;
 
-            _handSeatPool.Init();
+            _handSeatPool = seatPool;
         }
 
         public bool TryGetCard(out Card card)
@@ -64,6 +64,8 @@ namespace GameFields.Persons.Hands
         public void AddCard(Card card)
         {
             Seat handSeat = _handSeatPool.GetHandSeat();
+            handSeat.transform.SetParent(_rectTransform);
+            handSeat.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
             _handSeats.Add(handSeat);
             handSeat.SetCard(card, _sideType, _startCardTranslateSpeed);
             card.SetActiveInteraction(_isActiveInteraction);

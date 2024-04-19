@@ -6,6 +6,7 @@ using GameFields.Persons.Hands;
 using GameFields.Persons.PersonAnimators;
 using GameFields.Persons.Tables;
 using GameFields.Persons.Towers;
+using GameFields.Seats;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -29,14 +30,14 @@ namespace GameFields.Persons
 
         public bool IsTowerFilled => _tower.IsTowerFill;
 
-        public void Init(IEndTurnHandler endTurnHandler, EffectRoot effectRoot, Deck deck, DiscardPile discardPile)
+        public void Init(IEndTurnHandler endTurnHandler, EffectRoot effectRoot, Deck deck, DiscardPile discardPile, SeatPool seatPool)
         {
             _deck = deck;
             _discardPile = discardPile;
 
             _endTurnHandler = endTurnHandler;
 
-            _hand.Init();
+            _hand.Init(seatPool);
             _tower.Init(_hand);
             _table.Init(_hand, effectRoot);
             //            cardEffects.SetEnemyAIGameFieldElements(_table, _hand, _tower);
@@ -78,10 +79,13 @@ namespace GameFields.Persons
                 }
             }
 
-
-            if (cards != null)
+            if (cards.Count > 0)
             {
                 _drawCardRoot.TakeCards(cards, PlayDragAndDropImitation);
+            }
+            else
+            {
+                PlayDragAndDropImitation();
             }
         }
 
@@ -97,10 +101,14 @@ namespace GameFields.Persons
                 }
             }
 
-            if (cards != null)
+            if (cards.Count > 0)
             {
-                _drawCardRoot.TakeCards(cards);
+                _drawCardRoot.TakeCards(cards);//, PlayDragAndDropImitation);
             }
+            //else
+            //{
+            //    PlayDragAndDropImitation();
+            //}
         }
 
         private void PlayDragAndDropImitation()

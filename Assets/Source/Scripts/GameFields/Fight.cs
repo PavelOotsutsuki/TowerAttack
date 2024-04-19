@@ -91,10 +91,10 @@ namespace GameFields
             _activePerson = _player;
             _deactivePerson = _enemy;
 
+            _player.ActivateDropPlaces();
+
             _activePerson.StartTurnDraw();
             _endTurnButton.SetActiveSide();
-
-            _player.ActivateDropPlaces();
         }
 
         private void SetEnemyTurn()
@@ -102,9 +102,9 @@ namespace GameFields
             _activePerson = _enemy;
             _deactivePerson = _player;
 
-            _activePerson.StartTurnDraw();
-
             _player.DeactivateDropPlaces();
+
+            _activePerson.StartTurnDraw();
         }
 
         //private void StartTurn()

@@ -14,7 +14,6 @@ namespace GameFields.DiscardPiles
         private const float CenterRotation = 90f;
 
         [SerializeField] private RectTransform _rectTransform;
-        [SerializeField] private SeatPool _discardPileSeatPool;
         [SerializeField] private float _cardRotationOffset = 30f;
         [SerializeField] private float _startCardTranslateSpeed = 0.5f;
         [SerializeField] private float _discardDelay = 0.5f;
@@ -25,15 +24,16 @@ namespace GameFields.DiscardPiles
         private float _minCoordinateX;
         private float _minCoordinateY;
         private List<Seat> _seats;
+        private SeatPool _discardPileSeatPool;
 
-        public void Init()
+        public void Init(SeatPool seatPool)
         {
             _maxCoordinateX = _rectTransform.rect.width / 2f;
             _maxCoordinateY = _rectTransform.rect.height / 2f;
             _minCoordinateX = _maxCoordinateX * -1;
             _minCoordinateY = _maxCoordinateY * -1;
             _seats = new List<Seat>();
-            _discardPileSeatPool.Init();
+            _discardPileSeatPool = seatPool;
         }
 
         //public void AddCard(Card card)
@@ -54,6 +54,7 @@ namespace GameFields.DiscardPiles
         private void SeatCard(Card card)
         {
             Seat discardPileSeat = _discardPileSeatPool.GetHandSeat();
+            discardPileSeat.transform.SetParent(_rectTransform);
             card.SetActiveInteraction(false);
             _seats.Add(discardPileSeat);
             discardPileSeat.SetLocalPositionValues(FindCardSeatPosition(), FindCardSeatRotation());

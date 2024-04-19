@@ -12,6 +12,7 @@ using GameFields.Persons.DrawCards;
 using System.Collections;
 using System;
 using GameFields.DiscardPiles;
+using GameFields.Seats;
 
 namespace GameFields.Persons
 {
@@ -32,12 +33,12 @@ namespace GameFields.Persons
 
         public bool IsTowerFilled => _tower.IsTowerFill;
 
-        public void Init(EffectRoot effectRoot, Deck deck, DiscardPile discardPile)
+        public void Init(EffectRoot effectRoot, Deck deck, DiscardPile discardPile, SeatPool seatPool)
         {
             _deck = deck;
             _discardPile = discardPile;
 
-            _hand.Init();
+            _hand.Init(seatPool);
             _tower.Init(_hand);
             _table.Init(_hand, effectRoot);
             //            cardEffects.SetPlayerGameFieldElements(_table, _hand, _tower);
