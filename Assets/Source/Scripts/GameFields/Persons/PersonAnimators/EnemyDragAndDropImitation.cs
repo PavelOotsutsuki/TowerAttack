@@ -19,13 +19,21 @@ namespace GameFields.Persons.PersonAnimators
         [SerializeField] private float _cardReturnInHandTime = 0.5f;
         [SerializeField] private float _endTurnDelay = 2f;
         [SerializeField] private int _maxCountRepeat = 1;
+        [SerializeField] private int _countDrawCards = 1;
+        [SerializeField] private float _drawCardsDelay = 0.5f;
 
-        private IEndTurnHandler _endTurnHandler;
+        public int CountDrawCards => _countDrawCards;
+        public float DrawCardsDelay => _drawCardsDelay;
+
+        //private IEndTurnHandler _endTurnHandler;
+
+        private System.Action _callback;
         private CardDragAndDropImitationActions _cardImitationActions;
 
-        internal void Init(IEndTurnHandler endTurnHandler, CardDragAndDropImitationActions cardImitationActions)
+        internal void Init(/*IEndTurnHandler endTurnHandler, */CardDragAndDropImitationActions cardImitationActions, System.Action callback)
         {
-            _endTurnHandler = endTurnHandler;
+            //_endTurnHandler = endTurnHandler;
+            _callback = callback;
             _cardImitationActions = cardImitationActions;
         }
 
@@ -70,7 +78,8 @@ namespace GameFields.Persons.PersonAnimators
 
             yield return new WaitForSeconds(_endTurnDelay);
 
-            _endTurnHandler.OnEndTurn();
+            //_endTurnHandler.OnEndTurn();
+            _callback?.Invoke();
         }
     }
 }

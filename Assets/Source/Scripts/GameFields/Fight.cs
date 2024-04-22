@@ -105,6 +105,15 @@ namespace GameFields
             _player.DeactivateDropPlaces();
 
             _activePerson.StartTurnDraw();
+
+            WaitingEndEnemyImitation().ToUniTask();
+        }
+
+        private IEnumerator WaitingEndEnemyImitation()
+        {
+            yield return new WaitUntil(() => _enemy.IsImitationComplete);
+
+            OnEndTurn();
         }
 
         //private void StartTurn()

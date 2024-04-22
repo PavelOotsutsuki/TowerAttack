@@ -8,7 +8,6 @@ using GameFields.Persons.Tables;
 using GameFields.Persons.Towers;
 using GameFields.Seats;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,34 +16,67 @@ namespace GameFields.Persons
     [Serializable]
     public class EnemyAI : IPerson
     {
-        [SerializeField] private EnemyAnimator _enemyAnimator;
-        [SerializeField] private HandAI _hand;
-        [SerializeField] private TableAI _table;
-        [SerializeField] private Tower _tower;
-        [SerializeField] private DrawCardRoot _drawCardRoot;
+        [SerializeField] private EnemyAiData _enemyAiData;
 
-        private IEndTurnHandler _endTurnHandler;
+        private EnemyDragAndDropImitation _enemyDragAndDropImitation;
+        private HandAI _hand;
+        private TableAI _table;
+        private Tower _tower;
+        private DrawCardRoot _drawCardRoot;
+
         private CardDragAndDropImitationActions _cardDragAndDropImitationActions;
+
+        //private IEndTurnHandler _endTurnHandler;
         private Deck _deck;
         private DiscardPile _discardPile;
 
-        public bool IsTowerFilled => _tower.IsTowerFill;
+        private bool _isImitationComplete;
 
-        public void Init(IEndTurnHandler endTurnHandler, EffectRoot effectRoot, Deck deck, DiscardPile discardPile, SeatPool seatPool)
+        public bool IsTowerFilled => _tower.IsTowerFill;
+        public bool IsImitationComplete => _isImitationComplete;
+
+        //public EnemyAI(/*IEndTurnHandler endTurnHandler, */EffectRoot effectRoot, Deck deck, DiscardPile discardPile, SeatPool seatPool, EnemyAiData enemyAiData)
+        //{
+        //    _deck = deck;
+        //    _discardPile = discardPile;
+        //    //_endTurnHandler = endTurnHandler;
+
+        //    _enemyDragAndDropImitation = enemyAiData.EnemyDragAndDropImitation;
+        //    _hand = enemyAiData.Hand;
+        //    _table = enemyAiData.Table;
+        //    _tower = enemyAiData.Tower;
+        //    _drawCardRoot = enemyAiData.DrawCardRoot;
+
+        //    _hand.Init(seatPool);
+        //    _tower.Init(_hand);
+        //    _table.Init(_hand, effectRoot);
+
+        //    _drawCardRoot.Init(_hand);
+        //    _cardDragAndDropImitationActions = new CardDragAndDropImitationActions(_hand, _table);
+        //    _enemyDragAndDropImitation.Init(_cardDragAndDropImitationActions, CompleteImitation);
+        //    //_enemyAnimator.Init(_endTurnHandler, _cardDragAndDropImitationActions);
+        //}
+
+        public void Init(/*IEndTurnHandler endTurnHandler, */EffectRoot effectRoot, Deck deck, DiscardPile discardPile, SeatPool seatPool)
         {
             _deck = deck;
             _discardPile = discardPile;
+            //_endTurnHandler = endTurnHandler;
 
-            _endTurnHandler = endTurnHandler;
+            _enemyDragAndDropImitation = _enemyAiData.EnemyDragAndDropImitation;
+            _hand = _enemyAiData.Hand;
+            _table = _enemyAiData.Table;
+            _tower = _enemyAiData.Tower;
+            _drawCardRoot = _enemyAiData.DrawCardRoot;
 
             _hand.Init(seatPool);
             _tower.Init(_hand);
             _table.Init(_hand, effectRoot);
-            //            cardEffects.SetEnemyAIGameFieldElements(_table, _hand, _tower);
 
             _drawCardRoot.Init(_hand);
             _cardDragAndDropImitationActions = new CardDragAndDropImitationActions(_hand, _table);
-            _enemyAnimator.Init(_endTurnHandler, _cardDragAndDropImitationActions);
+            _enemyDragAndDropImitation.Init(_cardDragAndDropImitationActions, CompleteImitation);
+            //_enemyAnimator.Init(_endTurnHandler, _cardDragAndDropImitationActions);
         }
 
         public void DrawCards(Queue<Card> cards)
@@ -71,13 +103,15 @@ namespace GameFields.Persons
         {
             Queue<Card> cards = new Queue<Card>();
 
-            for (int i = 0; i < _enemyAnimator.CountDrawCards; i++)
+            for (int i = 0; i < _enemyDragAndDropImitation.CountDrawCards; i++)
             {
                 if (_deck.IsHasCards(1))
                 {
                     cards.Enqueue(_deck.TakeTopCard());
                 }
             }
+
+            _isImitationComplete = false;
 
             if (cards.Count > 0)
             {
@@ -116,12 +150,18 @@ namespace GameFields.Persons
             if (_hand.TryGetCard(out Card card))
             {
                 _cardDragAndDropImitationActions.SetCard(card);
-                _enemyAnimator.StartDragAndDropAnimation();
+                _enemyDragAndDropImitation.StartDragAndDropAnimation();
             }
             else
             {
-                _endTurnHandler.OnEndTurn();
+                //_endTurnHandler.OnEndTurn();
+                CompleteImitation();
             }
+        }
+
+        private void CompleteImitation()
+        {
+            _isImitationComplete = true;
         }
 
         //public IEnumerator StartTowerCardSelectionDraw()

@@ -2,46 +2,96 @@ using Cards;
 using GameFields.Persons.Hands;
 using GameFields.Persons.Tables;
 using GameFields.Persons.Towers;
-using GameFields.Persons.PersonAnimators;
-using Tools;
-using UnityEngine;
 using System.Collections.Generic;
 using GameFields.Effects;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.DrawCards;
-using System.Collections;
-using System;
 using GameFields.DiscardPiles;
 using GameFields.Seats;
+using System;
+using UnityEngine;
 
 namespace GameFields.Persons
 {
-    internal class Player : MonoBehaviour, IPerson
+    [Serializable]
+    internal class Player : IPerson
     {
-        [SerializeField] private HandPlayer _hand;
-        [SerializeField] private TablePlayer _table;
-        [SerializeField] private Tower _tower;
-        [SerializeField] private Discover _discover;
-        //[SerializeField] private PlayerAnimator _playerAnimator;
-        //[SerializeField] private Transform _transform;
-        [SerializeField] private int _countStartTurnDrawCards = 1;
+        [SerializeField] private PlayerData _playerData;
 
-        [SerializeField] private DrawCardRoot _drawCardRoot;
+        private HandPlayer _hand;
+        private TablePlayer _table;
+        private Tower _tower;
+        private Discover _discover;
+        private int _countStartTurnDrawCards;
+        private DrawCardRoot _drawCardRoot;
 
         private Deck _deck;
         private DiscardPile _discardPile;
 
         public bool IsTowerFilled => _tower.IsTowerFill;
 
+        //public Player(EffectRoot effectRoot, Deck deck, DiscardPile discardPile, SeatPool seatPool, PlayerData playerData)
+        //{
+        //    //_hand.Init(seatPool);
+        //    //_tower.Init(_hand);
+        //    //_table.Init(_hand, effectRoot);
+        //    //            cardEffects.SetPlayerGameFieldElements(_table, _hand, _tower);
+
+        //    //_drawCardRoot.Init(_hand);
+        //    //_discover.Deactivate();
+
+        //    //string handPath = "Prefabs/HandPanels/HandPanelPlayer";
+
+        //    //HandPlayer handPlayerPrefab = Resources.Load<HandPlayer>(handPath);
+        //    //_hand = Instantiate(handPlayerPrefab, transform);
+
+
+        //    _deck = deck;
+        //    _discardPile = discardPile;
+
+        //    _hand = playerData.Hand;
+        //    _table = playerData.Table;
+        //    _tower = playerData.Tower;
+        //    _discover = playerData.Discover;
+        //    _countStartTurnDrawCards = playerData.CountStartTurnDrawCards;
+
+        //    _hand.Init(seatPool);
+        //    _tower.Init(_hand);
+        //    _table.Init(_hand, effectRoot);
+
+        //    _drawCardRoot.Init(_hand);
+        //    _discover.Deactivate();
+        //}
+
         public void Init(EffectRoot effectRoot, Deck deck, DiscardPile discardPile, SeatPool seatPool)
         {
+            //_hand.Init(seatPool);
+            //_tower.Init(_hand);
+            //_table.Init(_hand, effectRoot);
+            //            cardEffects.SetPlayerGameFieldElements(_table, _hand, _tower);
+
+            //_drawCardRoot.Init(_hand);
+            //_discover.Deactivate();
+
+            //string handPath = "Prefabs/HandPanels/HandPanelPlayer";
+
+            //HandPlayer handPlayerPrefab = Resources.Load<HandPlayer>(handPath);
+            //_hand = Instantiate(handPlayerPrefab, transform);
+
+
             _deck = deck;
             _discardPile = discardPile;
+
+            _hand = _playerData.Hand;
+            _table = _playerData.Table;
+            _tower = _playerData.Tower;
+            _discover = _playerData.Discover;
+            _countStartTurnDrawCards = _playerData.CountStartTurnDrawCards;
+            _drawCardRoot = _playerData.DrawCardRoot;
 
             _hand.Init(seatPool);
             _tower.Init(_hand);
             _table.Init(_hand, effectRoot);
-            //            cardEffects.SetPlayerGameFieldElements(_table, _hand, _tower);
 
             _drawCardRoot.Init(_hand);
             _discover.Deactivate();
@@ -122,53 +172,6 @@ namespace GameFields.Persons
         //public IEnumerator PatriarchCorallDraw()
         //{
         //    yield return _drawCardRoot.PatriarchCorallDraw();
-        //}
-
-        [ContextMenu(nameof(DefineAllComponents))]
-        private void DefineAllComponents()
-        {
-            DefineHandPlayer();
-            DefineTablePlayer();
-            DefineTowerPlayer();
-            DefineDiscover();
-            //DefinePlayerAnimator();
-            //DefineTransform();
-        }
-
-        [ContextMenu(nameof(DefineHandPlayer))]
-        private void DefineHandPlayer()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _hand, ComponentLocationTypes.InChildren);
-        }
-
-        [ContextMenu(nameof(DefineTablePlayer))]
-        private void DefineTablePlayer()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _table, ComponentLocationTypes.InChildren);
-        }
-
-        [ContextMenu(nameof(DefineTowerPlayer))]
-        private void DefineTowerPlayer()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _tower, ComponentLocationTypes.InChildren);
-        }
-
-        [ContextMenu(nameof(DefineDiscover))]
-        private void DefineDiscover()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _discover, ComponentLocationTypes.InChildren);
-        }
-
-        //[ContextMenu(nameof(DefinePlayerAnimator))]
-        //private void DefinePlayerAnimator()
-        //{
-        //    AutomaticFillComponents.DefineComponent(this, ref _playerAnimator, ComponentLocationTypes.InThis);
-        //}
-
-        //[ContextMenu(nameof(DefineTransform))]
-        //private void DefineTransform()
-        //{
-        //    AutomaticFillComponents.DefineComponent(this, ref _transform, ComponentLocationTypes.InThis);
         //}
     }
 }

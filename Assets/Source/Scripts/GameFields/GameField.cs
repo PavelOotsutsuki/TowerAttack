@@ -15,20 +15,24 @@ namespace GameFields
         [SerializeField] private Deck _deck;
         [SerializeField] private DiscardPile _discardPile;
         [SerializeField] private EndTurnButton _endTurnButton;
-        [SerializeField] private Player _player;
+        //[SerializeField] private PersonCreator _personCreator;
         //[SerializeField] private FightAnimator _fightAnimator;
         [SerializeField] private StartTowerCardSelection _startTowerCardSelection;
-        [SerializeField] private SeatPool _seatPool; 
-
-        [SerializeField] private EnemyAI _enemyAI;
+        [SerializeField] private SeatPool _seatPool;
 
         //private EffectRoot _effectRoot;
         //private Fight _fight;
         //private FightStepsController _fightStepsController;
 
+        [SerializeField] private Player _player;
+        [SerializeField] private EnemyAI _enemyAI;
+
         public void Init(Card[] cardsInDeck)
         {
             _seatPool.Init();
+            //_personCreator.Init(effectRoot, _deck, _discardPile, _seatPool);
+
+
             _startTowerCardSelection.Init(_player, _enemyAI);
             _deck.Init(cardsInDeck);
             _discardPile.Init(_seatPool);
@@ -39,7 +43,7 @@ namespace GameFields
             EndFight endFight = new EndFight();
 
             _player.Init(effectRoot, _deck, _discardPile, _seatPool);
-            _enemyAI.Init(fight, effectRoot, _deck, _discardPile, _seatPool);
+            _enemyAI.Init(effectRoot, _deck, _discardPile, _seatPool);
 
             _endTurnButton.Init(fight);
             FightStepsController fightStepsController = new FightStepsController(_startTowerCardSelection, fight, endFight);
@@ -58,7 +62,7 @@ namespace GameFields
             DefineDeck();
             DefineDiscardPile();
             DefineEndTurnButton();
-            DefinePlayer();
+            //DefinePersonCreator();
             DefineSeatPool();
             DefineFirstTurn();
         }
@@ -81,11 +85,11 @@ namespace GameFields
             AutomaticFillComponents.DefineComponent(this, ref _endTurnButton, ComponentLocationTypes.InChildren);
         }
 
-        [ContextMenu(nameof(DefinePlayer))]
-        private void DefinePlayer()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _player, ComponentLocationTypes.InChildren);
-        }
+        //[ContextMenu(nameof(DefinePersonCreator))]
+        //private void DefinePersonCreator()
+        //{
+        //    AutomaticFillComponents.DefineComponent(this, ref _personCreator, ComponentLocationTypes.InChildren);
+        //}
 
         [ContextMenu(nameof(DefineSeatPool))]
         private void DefineSeatPool()
