@@ -19,34 +19,22 @@ namespace GameFields.Persons.DrawCards
         private RectTransform _cardTransform;
         private Movement _movement;
 
-        internal IEnumerator StartAnimation(ICardTransformable drawnCard, Transform parent)
+        internal IEnumerator StartAnimation(ICardTransformable drawnCard, Transform container)
         {
             _cardTransform = drawnCard.Transform;
             _movement = new Movement(_cardTransform);
 
-            drawnCard.Transform.SetParent(parent);
+            drawnCard.Transform.SetParent(container);
             drawnCard.Transform.SetAsLastSibling();
 
-            //CardMovement cardMovement = new CardMovement(drawnCard.transform);
-            //Vector3 endRotationVector = new Vector3(_invertCardBackRotation, 0f, 0f);
-            //Vector3 scaleVector = _cardTransform.localScale * _invertCardBackScaleFactor;
-
-            //Vector3 downWay = _cardTransform.position;
-            //downWay.y -= (downWay.y - _indent - _cardTransform.rect.height) / 2;
-
-            //_movement.MoveLinear(downWay, endRotationVector, _invertCardBackDuration, scaleVector);
-
-            //drawnCard.CardMovement.InvertCardBackOnDraw(_invertCardBackDuration, _invertCardBackRotation, _invertCardBackScaleFactor, _indent);
             InvertCardBack(_invertCardBackDuration, _invertCardBackRotation, _invertCardBackScaleFactor, _indent);
             yield return new WaitForSeconds(_invertCardBackDuration);
 
             drawnCard.SetActiveInteraction(false);
             drawnCard.SetSide(SideType.Front);
 
-            //drawnCard.CardMovement.InvertCardFrontOnDraw(_invertCardFrontDuration, _invertCardBackScaleFactor, _indent);
             InvertCardFrontOnDraw(_invertCardFrontDuration, _invertCardBackScaleFactor, _indent);
             yield return new WaitForSeconds(_invertCardFrontDuration + _delay);
-            //yield return new WaitForSeconds(GetFullDelay());
         }
 
         private void InvertCardBack(float cardBackDuration, float cardBackRotation, float cardBackScaleFactor, float indent)
@@ -70,22 +58,5 @@ namespace GameFields.Persons.DrawCards
 
             _movement.MoveSmoothly(downWay, endRotationVector, duration, _cardTransform.localScale);
         }
-
-        //private float GetFullDelay()
-        //{
-        //    return _invertCardBackDuration + _invertCardFrontDuration + _delay;
-        //}
-
-        //private IEnumerator PlayingAnimation()
-        //{
-        //    _cardMovement.InvertCardBackOnDraw(_invertCardBackDuration, _invertCardBackRotation, _invertCardBackScaleFactor, _indent);
-        //    yield return new WaitForSeconds(_invertCardBackDuration);
-
-        //    _sideFlipper.SetFrontSide();
-        //    _sideFlipper.Block();
-
-        //    _cardMovement.InvertCardFrontOnDraw(_invertCardFrontDuration, _invertCardBackScaleFactor, _indent);
-        //    yield return new WaitForSeconds(_invertCardFrontDuration);
-        //}
     }
 }

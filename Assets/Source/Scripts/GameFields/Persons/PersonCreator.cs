@@ -1,6 +1,10 @@
 using GameFields.DiscardPiles;
 using GameFields.Effects;
+using GameFields.Persons.Discovers;
+using GameFields.Persons.DrawCards;
+using GameFields.Persons.Hands;
 using GameFields.Persons.Tables;
+using GameFields.Persons.Towers;
 using GameFields.Seats;
 using UnityEngine;
 
@@ -10,7 +14,14 @@ namespace GameFields.Persons
     {
         [Header("Player Fields:")]
 
-        [SerializeField] private PlayerData _playerData;
+        [SerializeField] private HandPlayer _playerHand;
+        [SerializeField] private Table _playerTable;
+        [SerializeField] private Tower _playerTower;
+        [SerializeField] private Discover _playerDiscover;
+        [SerializeField] private int _playerCountStartTurnDrawCards = 1;
+        [SerializeField] private DrawCardRoot _playerDrawCardRoot;
+        //[SerializeField] private PlayerSimpleDrawCardAnimation _playerSimpleDrawCardAnimation;
+        //[SerializeField] private PlayerDrawCardAnimator _playerDrawCardAnimator;
 
         [Space]
         [Header("----------------------------")]
@@ -18,7 +29,12 @@ namespace GameFields.Persons
 
         [Header("EnemyAI Fields:")]
 
-        [SerializeField] private EnemyAiData _enemyAiData;
+        [SerializeField] private EnemyDragAndDropImitation _enemyDragAndDropImitation;
+        [SerializeField] private HandAI _enemyHand;
+        [SerializeField] private Table _enemyTable;
+        [SerializeField] private Tower _enemyTower;
+        [SerializeField] private DrawCardRoot _enemyDrawCardRoot;
+        [SerializeField] private DiscoverImitation _enemyDiscoverImitation;
 
         [Space]
         [Header("----------------------------")]
@@ -39,12 +55,12 @@ namespace GameFields.Persons
 
         public Player CreatePlayer()
         {
-            return new Player(_deck, _discardPile, _tableActivator, _playerData);
+            return new Player(_deck, _discardPile, _tableActivator, _playerHand, _playerTable, _playerTower, _playerDiscover, _playerCountStartTurnDrawCards, _playerDrawCardRoot);
         }
 
         public EnemyAI CreateEnemyAI()
         {
-            return new EnemyAI(_deck, _discardPile, _tableActivator, _enemyAiData);
+            return new EnemyAI(_deck, _discardPile, _tableActivator, _enemyDragAndDropImitation, _enemyHand, _enemyTable, _enemyTower, _enemyDrawCardRoot, _enemyDiscoverImitation);
         }
     }
 }

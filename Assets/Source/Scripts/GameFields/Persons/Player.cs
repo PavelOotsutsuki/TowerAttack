@@ -7,6 +7,9 @@ using GameFields.Seats;
 using System;
 using UnityEngine;
 using GameFields.Persons.Tables;
+using GameFields.Persons.Hands;
+using GameFields.Persons.Towers;
+using GameFields.Persons.DrawCards;
 
 namespace GameFields.Persons
 {
@@ -19,11 +22,11 @@ namespace GameFields.Persons
         private int _countStartTurnDrawCards;
         private ITableActivator _tableActivator;
 
-        public Player(Deck deck, DiscardPile discardPile, ITableActivator tableActivator, PlayerData playerData): base(playerData.Hand, playerData.Table, playerData.DrawCardRoot, playerData.Tower, deck, discardPile)
+        public Player(Deck deck, DiscardPile discardPile, ITableActivator tableActivator, HandPlayer hand, Table table, Tower tower, Discover discover, int countStartTurnDrawCards, DrawCardRoot drawCardRoot) : base(hand, table, drawCardRoot, tower, deck, discardPile)
         {
-            _discover = playerData.Discover;
+            _discover = discover;
             _tableActivator = tableActivator;
-            _countStartTurnDrawCards = playerData.CountStartTurnDrawCards;
+            _countStartTurnDrawCards = countStartTurnDrawCards;
         }
 
         public override void Init(EffectRoot effectRoot, SeatPool seatPool)

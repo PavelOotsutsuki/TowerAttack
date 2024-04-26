@@ -29,10 +29,10 @@ namespace GameFields.Persons
 
         public bool IsImitationComplete => _isImitationComplete;
 
-        public EnemyAI(Deck deck, DiscardPile discardPile, ITableDeactivator tableDeactivator, EnemyAiData enemyAiData): base(enemyAiData.Hand, enemyAiData.Table, enemyAiData.DrawCardRoot, enemyAiData.Tower, deck, discardPile)
+        public EnemyAI(Deck deck, DiscardPile discardPile, ITableDeactivator tableDeactivator, EnemyDragAndDropImitation enemyDragAndDropImitation, HandAI hand, Table table, Tower tower, DrawCardRoot drawCardRoot, DiscoverImitation discoverImitation) : base(hand, table, drawCardRoot, tower, deck, discardPile)
         {
-            _enemyDragAndDropImitation = enemyAiData.EnemyDragAndDropImitation;
-            _discoverImitation = enemyAiData.DiscoverImitation;
+            _enemyDragAndDropImitation = enemyDragAndDropImitation;
+            _discoverImitation = discoverImitation;
             _tableDeactivator = tableDeactivator;
 
             _cardDragAndDropImitationActions = new CardDragAndDropImitationActions(Hand, Table);

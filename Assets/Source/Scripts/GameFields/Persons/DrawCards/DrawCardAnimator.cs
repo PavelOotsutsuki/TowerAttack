@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.DrawCards
 {
-    public abstract class DrawCardAnimator : MonoBehaviour
+    public abstract class DrawCardAnimator: MonoBehaviour
     {
         protected Hand Hand;
 

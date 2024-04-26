@@ -12,7 +12,7 @@ namespace GameFields.Persons.DrawCards
     public class PlayerDrawCardAnimator: DrawCardAnimator
     {
         [SerializeField] private PlayerSimpleDrawCardAnimation _simpleDrawAnimation;
-        [SerializeField] private Transform _parent;
+        [SerializeField] private Transform _dragImitationContainer;
 
         public override void PlayingSimpleDrawCardAnimation(Card drawnCard)
         {
@@ -24,22 +24,11 @@ namespace GameFields.Persons.DrawCards
             IsDone = false;
 
             //_simpleDrawAnimation.SetCard(drawnCard);
-            yield return _simpleDrawAnimation.StartAnimation(drawnCard, _parent);
+            yield return new WaitForSeconds(0.1f);
+            //yield return _simpleDrawAnimation.StartAnimation(drawnCard, _dragImitationContainer);
 
             Hand.AddCard(drawnCard);
             IsDone = true;
-        }
-
-        [ContextMenu(nameof(DefineAllComponents))]
-        private void DefineAllComponents()
-        {
-            DefineTransform();
-        }
-
-        [ContextMenu(nameof(DefineTransform))]
-        private void DefineTransform()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _parent, ComponentLocationTypes.InThis);
         }
     }
 }

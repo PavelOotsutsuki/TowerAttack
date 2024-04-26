@@ -27,14 +27,14 @@ namespace GameFields
         public void Init(Card[] cardsInDeck)
         {
             _seatPool.Init();
+            _deck.Init(cardsInDeck);
+            _discardPile.Init(_seatPool);
             _personCreator.Init(_deck, _discardPile);
 
             _player = _personCreator.CreatePlayer();
             _enemyAI = _personCreator.CreateEnemyAI();
 
             _startTowerCardSelection.Init(_player, _enemyAI);
-            _deck.Init(cardsInDeck);
-            _discardPile.Init(_seatPool);
 
             Fight fight = new Fight(_player, _enemyAI, _endTurnButton);
             EffectRoot effectRoot = new EffectRoot(_deck, _discardPile, fight);

@@ -23,9 +23,11 @@ namespace GameFields.Persons
         protected Hand Hand;
         protected Table Table;
         protected DrawCardRoot DrawCardRoot;
-        private Tower _tower;
 
         protected Deck Deck;
+
+        private Tower _tower;
+
         private DiscardPile _discardPile;
 
         public bool IsTowerFilled => _tower.IsTowerFill;

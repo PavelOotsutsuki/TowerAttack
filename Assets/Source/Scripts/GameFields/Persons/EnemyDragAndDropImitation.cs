@@ -4,7 +4,8 @@ using Cysharp.Threading.Tasks;
 
 namespace GameFields.Persons
 {
-    public class EnemyDragAndDropImitation : MonoBehaviour
+    [System.Serializable]
+    public class EnemyDragAndDropImitation
     {
         private const int CountLogics = 1;
         private const float SelectYDirection = 1;
@@ -18,7 +19,7 @@ namespace GameFields.Persons
         [SerializeField] private float _cardTranslateInDropPlaceTime = 0.5f;
         [SerializeField] private float _cardReturnInHandTime = 0.5f;
         [SerializeField] private float _endTurnDelay = 2f;
-        [SerializeField] private int _maxCountRepeat = 1;
+        [SerializeField] private int _maxCountRepeat = 2;
         [SerializeField] private int _countDrawCards = 1;
         [SerializeField] private float _drawCardsDelay = 0.5f;
 
