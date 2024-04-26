@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Towers
 {
-    public class Tower : MonoBehaviour, ICardDropPlaceImitation
+    public class Tower : MonoBehaviour, ICardDropPlace
     {
         private const SideType DefaultSideType = SideType.Back;
         private const bool IsCardInteraction = false;

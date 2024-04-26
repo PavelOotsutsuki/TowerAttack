@@ -8,6 +8,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 35988541827660383, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 35988541827660383, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
+      propertyPath: m_BlocksRaycasts
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3330152501390823795, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
       propertyPath: _sideType
       value: 1

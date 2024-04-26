@@ -6,9 +6,9 @@ namespace GameFields.Effects
 {
     public class ZhyzhaEffect: Effect
     {
-        private IPerson _deactivePerson;
+        private Person _deactivePerson;
 
-        public ZhyzhaEffect(IPerson deactivePerson)
+        public ZhyzhaEffect(Person deactivePerson)
         {
             _deactivePerson = deactivePerson;
 

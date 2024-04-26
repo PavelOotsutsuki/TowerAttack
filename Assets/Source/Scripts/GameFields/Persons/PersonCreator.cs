@@ -1,5 +1,6 @@
 using GameFields.DiscardPiles;
 using GameFields.Effects;
+using GameFields.Persons.Tables;
 using GameFields.Seats;
 using UnityEngine;
 
@@ -7,42 +8,43 @@ namespace GameFields.Persons
 {
     internal class PersonCreator: MonoBehaviour
     {
-        //[Header("Player Fields")]
-        //[Space]
+        [Header("Player Fields:")]
 
-        //[SerializeField] private PlayerData _playerData;
+        [SerializeField] private PlayerData _playerData;
 
-        //[Space]
-        //[Space]
-        //[Space]
-        //[Space]
+        [Space]
+        [Header("----------------------------")]
+        [Space]
 
-        //[Header("EnemyAI Fields")]
-        //[Space]
+        [Header("EnemyAI Fields:")]
 
-        //[SerializeField] private EnemyAiData _enemyAiData;
+        [SerializeField] private EnemyAiData _enemyAiData;
 
-        //private EffectRoot _effectRoot;
-        //private Deck _deck;
-        //private DiscardPile _discardPile;
-        //private SeatPool _seatPool;
+        [Space]
+        [Header("----------------------------")]
+        [Space]
 
-        //public void Init(EffectRoot effectRoot, Deck deck, DiscardPile discardPile, SeatPool seatPool)
-        //{
-        //    _effectRoot = effectRoot;
-        //    _deck = deck;
-        //    _discardPile = discardPile;
-        //    _seatPool = seatPool;
-        //}
+        [Header("Table Player Activator:")]
 
-        //public Player CreatePlayer()
-        //{
-        //    return new Player(_effectRoot, _deck, _discardPile, _seatPool, _playerData);
-        //}
+        [SerializeField] private TableActivator _tableActivator;
 
-        //public EnemyAI CreateEnemyAI()
-        //{
-        //    return new EnemyAI(_effectRoot, _deck, _discardPile, _seatPool, _enemyAiData);
-        //}
+        private Deck _deck;
+        private DiscardPile _discardPile;
+
+        public void Init(Deck deck, DiscardPile discardPile)
+        {
+            _deck = deck;
+            _discardPile = discardPile;
+        }
+
+        public Player CreatePlayer()
+        {
+            return new Player(_deck, _discardPile, _tableActivator, _playerData);
+        }
+
+        public EnemyAI CreateEnemyAI()
+        {
+            return new EnemyAI(_deck, _discardPile, _tableActivator, _enemyAiData);
+        }
     }
 }

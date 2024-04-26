@@ -7,9 +7,8 @@ using UnityEngine;
 
 namespace GameFields.Persons.Tables
 {
-    public abstract class Table : MonoBehaviour, ICardSeatPlace
+    public class Table : MonoBehaviour, ICardDropPlace
     {
-        [SerializeField] protected CanvasGroup CanvasGroup;
         [SerializeField] private TableSeat[] _cardSeats;
 
         private IUnbindCardManager _unbindCardManager;
@@ -52,6 +51,11 @@ namespace GameFields.Persons.Tables
             }
 
             return discardCards;
+        }
+
+        public Vector3 GetCentralСoordinates()
+        {
+            return transform.position;
         }
 
         private bool TryFindCardSeat(out TableSeat cardSeat)
@@ -99,19 +103,12 @@ namespace GameFields.Persons.Tables
         private void DefineAllComponents()
         {
             DefineAllCardSeats();
-            DefineCanvasGroup();
         }
 
         [ContextMenu(nameof(DefineAllCardSeats))]
         private void DefineAllCardSeats()
         {
             AutomaticFillComponents.DefineComponent(this, ref _cardSeats);
-        }
-
-        [ContextMenu(nameof(DefineCanvasGroup))]
-        private void DefineCanvasGroup()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref CanvasGroup, ComponentLocationTypes.InThis);
         }
     }
 }

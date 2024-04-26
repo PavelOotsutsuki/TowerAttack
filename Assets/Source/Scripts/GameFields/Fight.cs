@@ -1,11 +1,9 @@
 using GameFields.Persons;
-using Cards;
 using System.Collections;
 using UnityEngine;
 using GameFields.EndTurnButtons;
 using Cysharp.Threading.Tasks;
-using GameFields.StartTowerCardSelections;
-using GameFields.Effects;
+using GameFields.Persons.Tables;
 
 namespace GameFields
 {
@@ -15,13 +13,10 @@ namespace GameFields
 
         private Player _player;
         private EnemyAI _enemy;
-        //private Deck _deck;
         private EndTurnButton _endTurnButton;
-        //private DiscardPile _discardPile;
-        //private FightAnimator _fightAnimator;
 
-        private IPerson _activePerson;
-        private IPerson _deactivePerson;
+        private Person _activePerson;
+        private Person _deactivePerson;
         private int _turnNumber;
         private bool _isComlpete;
         private EndFightResults _endFightResults;
@@ -33,15 +28,11 @@ namespace GameFields
 
             _player = player;
             _enemy = enemy;
-            //_deck = deck;
-            //_discardPile = discardPile;
             _endTurnButton = endTurnButton;
-            //_fightAnimator = fightAnimator;
-            //_effectRoot.Init(_deck, _discardPile, _activePerson, _deactivePerson);
         }
 
-        public IPerson ActivePerson => _activePerson;
-        public IPerson DeactivePerson => _deactivePerson;
+        public Person ActivePerson => _activePerson;
+        public Person DeactivePerson => _deactivePerson;
         public bool IsComplete => _isComlpete;
         public EndFightResults EndFightResults => _endFightResults;
 
@@ -52,7 +43,6 @@ namespace GameFields
             DiscardCards();
             CheckEndFight();
             SwitchPerson();
-            //StartTurn();
         }
 
         public void Start()
@@ -91,9 +81,8 @@ namespace GameFields
             _activePerson = _player;
             _deactivePerson = _enemy;
 
-            _player.ActivateDropPlaces();
+            _activePerson.StartTurn();
 
-            _activePerson.StartTurnDraw();
             _endTurnButton.SetActiveSide();
         }
 
@@ -102,69 +91,16 @@ namespace GameFields
             _activePerson = _enemy;
             _deactivePerson = _player;
 
-            _player.DeactivateDropPlaces();
+            _activePerson.StartTurn();
 
-            _activePerson.StartTurnDraw();
-
-            WaitingEndEnemyImitation().ToUniTask();
+            EnemyTurnProcessing().ToUniTask();
         }
 
-        private IEnumerator WaitingEndEnemyImitation()
+        private IEnumerator EnemyTurnProcessing()
         {
             yield return new WaitUntil(() => _enemy.IsImitationComplete);
 
             OnEndTurn();
         }
-
-        //private void StartTurn()
-        //{
-        //    DrawningCard().ToUniTask();
-        //}
-
-        //private void StartTurn()
-        //{
-        //    _activePerson.StartTurnDraw();
-        //    _endTurnButton.SetActiveSide();
-
-        //    //yield return new WaitForSeconds(1.5f);
-
-        //    //if (_activePerson is EnemyAI)
-        //    //{
-        //    //    _enemy.PlayDragAndDropImitation();
-        //    //}
-        //    //else
-        //    //{
-        //    //    _endTurnButton.SetActiveSide();
-        //    //}
-        //    //if (_activePerson is Player)
-        //    //{
-        //    //    _endTurnButton.SetActiveSide();
-        //    //}
-        //}
-
-        //private IEnumerator DrawningCard()
-        //{
-        //    //WaitForSeconds delay = new WaitForSeconds(_activePerson.DrawCardsDelay);
-        //    //Card drawnCard;
-
-        //    //for (int i = 0; i < _activePerson.CountDrawCards; i++)
-        //    //{
-        //    //    if (_deck.IsHasCards(1))
-        //    //    {
-        //    //        drawnCard = _deck.TakeTopCard();
-        //    //        _activePerson.DrawCard(drawnCard);
-        //    //        yield return delay;
-        //    //    }
-        //    //}
-
-        //    if (_activePerson is EnemyAI)
-        //    {
-        //        _enemy.PlayDragAndDropImitation();
-        //    }
-        //    else
-        //    {
-        //        _endTurnButton.SetActiveSide();
-        //    }
-        //}
     }
 }

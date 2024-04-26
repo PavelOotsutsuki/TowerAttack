@@ -7,7 +7,7 @@ namespace GameFields.Persons
     public interface IDrawCardManager
     {
         public void DrawCards(Queue<Card> cards);
-        public void StartTurnDraw();
+        //public void StartTurn();
         //public IEnumerator StartTowerCardSelectionDraw();
         //public IEnumerator PatriarchCorallDraw();
     }

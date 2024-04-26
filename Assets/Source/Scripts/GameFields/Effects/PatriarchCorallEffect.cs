@@ -15,12 +15,12 @@ namespace GameFields.Effects
         private const int CountDrawCards = 3;
 
         private Deck _deck;
-        private IPerson _activePerson;
-        private IPerson _deactivePerson;
+        private Person _activePerson;
+        private Person _deactivePerson;
         private Card[] _drawnCards;
         private Discover _discover;
 
-        public PatriarchCorallEffect(Deck deck, IPerson activePerson, IPerson deactivePerson)
+        public PatriarchCorallEffect(Deck deck, Person activePerson, Person deactivePerson)
         {
             _deck = deck;
             _activePerson = activePerson;

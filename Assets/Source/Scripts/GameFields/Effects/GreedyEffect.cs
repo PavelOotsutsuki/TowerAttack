@@ -6,10 +6,10 @@ namespace GameFields.Effects
 {
     public class GreedyEffect: Effect
     {
-        private IPerson _activePerson;
-        private IPerson _deactivePerson;
+        private Person _activePerson;
+        private Person _deactivePerson;
 
-        public GreedyEffect(IPerson activePerson, IPerson deactivePerson)
+        public GreedyEffect(Person activePerson, Person deactivePerson)
         {
             _activePerson = activePerson;
             _deactivePerson = deactivePerson;

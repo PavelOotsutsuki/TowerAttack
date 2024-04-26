@@ -7,10 +7,10 @@ namespace GameFields.Effects
 {
     public class ActiveEffect
     {
-        private readonly IPerson _person;
+        private readonly Person _person;
         private readonly Effect _effect;
 
-        public ActiveEffect(IPerson person, Effect effect)
+        public ActiveEffect(Person person, Effect effect)
         {
             _person = person;
             _effect = effect;
@@ -18,7 +18,7 @@ namespace GameFields.Effects
 
         public int CountTurns => _effect.CountTurns;
 
-        public void DecreaseEffectCounter(IPerson activePerson)
+        public void DecreaseEffectCounter(Person activePerson)
         {
             if (activePerson == _person)
             {

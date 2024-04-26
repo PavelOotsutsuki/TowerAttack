@@ -5,53 +5,42 @@ using UnityEngine;
 
 namespace GameFields.Persons.Hands
 {
-    public class HandPlayer : MonoBehaviour, IHand, ICardDragListener
+    public class HandPlayer : Hand
     {
-        private const float SortDirection = 1;
-
-        [SerializeField] private HandActions _handActions;
         [SerializeField] private CanvasGroup _canvasGroup;
 
-        public void Init(SeatPool seatPool)
+        public override void OnCardDrag(Card card)
         {
-            _handActions.Init(SortDirection, seatPool);
-        }
+            base.OnCardDrag(card);
 
-        public void OnCardDrag(Card card)
-        {
-            _handActions.DragCard(card);
             _canvasGroup.blocksRaycasts = false;
         }
 
-        public void OnCardDrop()
+        public override void OnCardDrop()
         {
-            _handActions.EndDragCard();
+            base.OnCardDrop();
+            
             _canvasGroup.blocksRaycasts = true;
         }
 
-        public void UnbindDragableCard()
+        public override void UnbindDragableCard()
         {
-            _handActions.RemoveDraggableCard();
+            base.UnbindDragableCard();
+
             _canvasGroup.blocksRaycasts = true;
         }
 
-        public void AddCard(Card card)
+        public override void AddCard(Card card)
         {
             card.SetDragAndDropListener(this);
-            _handActions.AddCard(card);
+
+            base.AddCard(card);
         }
 
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
-            DefineHandSeatList();
             DefineCanvasGroup();
-        }
-
-        [ContextMenu(nameof(DefineHandSeatList))]
-        private void DefineHandSeatList()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _handActions, ComponentLocationTypes.InThis);
         }
 
         [ContextMenu(nameof(DefineCanvasGroup))]

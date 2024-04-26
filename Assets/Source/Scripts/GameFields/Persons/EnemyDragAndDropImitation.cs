@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 
-namespace GameFields.Persons.PersonAnimators
+namespace GameFields.Persons
 {
     public class EnemyDragAndDropImitation : MonoBehaviour
     {

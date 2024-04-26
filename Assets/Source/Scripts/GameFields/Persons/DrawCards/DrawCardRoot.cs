@@ -22,7 +22,7 @@ namespace GameFields.Persons.DrawCards
         private bool _isDrawing;
         //private Action _startDrawCallback;
 
-        public void Init(IHand hand)
+        public void Init(Hand hand)
         {
             //_hand = hand;
             _isDrawing = false;

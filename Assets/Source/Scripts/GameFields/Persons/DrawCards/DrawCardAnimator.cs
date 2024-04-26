@@ -8,11 +8,11 @@ namespace GameFields.Persons.DrawCards
 {
     public abstract class DrawCardAnimator : MonoBehaviour
     {
-        protected IHand Hand;
+        protected Hand Hand;
 
         public bool IsDone { get; protected set; }
 
-        public void Init(IHand hand)
+        public void Init(Hand hand)
         {
             Hand = hand;
             IsDone = true;

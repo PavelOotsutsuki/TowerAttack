@@ -1118,23 +1118,7 @@ MonoBehaviour:
   _endTurnButton: {fileID: 601274534}
   _startTowerCardSelection: {fileID: 1173604842}
   _seatPool: {fileID: 1504469769}
-  _player:
-    _playerData:
-      _hand: {fileID: 2141903759}
-      _table: {fileID: 867188514}
-      _tower: {fileID: 1018812819545794881}
-      _discover: {fileID: 790739710}
-      _countStartTurnDrawCards: 2
-      _drawCardRoot:
-        _drawCardAnimator: {fileID: 1905208564}
-  _enemyAI:
-    _enemyAiData:
-      _enemyDragAndDropImitation: {fileID: 1502786295}
-      _hand: {fileID: 1620354848}
-      _table: {fileID: 704143077}
-      _tower: {fileID: 1939013313}
-      _drawCardRoot:
-        _drawCardAnimator: {fileID: 1502786297}
+  _personCreator: {fileID: 610687167}
 --- !u!114 &200841579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4111,6 +4095,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d66d23be042c4e229a8dd403965d201, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerData:
+    _hand: {fileID: 2141903759}
+    _table: {fileID: 867188516}
+    _tower: {fileID: 1018812819545794881}
+    _discover: {fileID: 790739710}
+    _countStartTurnDrawCards: 1
+    _drawCardRoot:
+      _drawCardAnimator: {fileID: 1905208564}
+  _enemyAiData:
+    _enemyDragAndDropImitation: {fileID: 1502786295}
+    _hand: {fileID: 1620354848}
+    _table: {fileID: 704143079}
+    _tower: {fileID: 1939013313}
+    _drawCardRoot:
+      _drawCardAnimator: {fileID: 1502786297}
+    _discoverImitation: {fileID: 1674758350}
+  _tableActivator: {fileID: 867188514}
 --- !u!1001 &642726966
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4732,7 +4733,7 @@ GameObject:
   - component: {fileID: 704143072}
   - component: {fileID: 704143076}
   - component: {fileID: 704143075}
-  - component: {fileID: 704143077}
+  - component: {fileID: 704143079}
   - component: {fileID: 704143073}
   - component: {fileID: 704143078}
   m_Layer: 0
@@ -4830,25 +4831,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 704143071}
   m_CullTransparentMesh: 1
---- !u!114 &704143077
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 704143071}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d382b033af504cd6b73c16740742ced, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CanvasGroup: {fileID: 704143078}
-  _cardSeats:
-  - {fileID: 368091433}
-  - {fileID: 1534900755}
-  - {fileID: 332900071}
-  - {fileID: 2100830625}
-  - {fileID: 1578240525}
 --- !u!225 &704143078
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -4861,6 +4843,24 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &704143079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 704143071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78967979f872740ae98b548040954193, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cardSeats:
+  - {fileID: 368091433}
+  - {fileID: 1534900755}
+  - {fileID: 332900071}
+  - {fileID: 2100830625}
+  - {fileID: 1578240525}
 --- !u!224 &712126948 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5981172514607463790, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
@@ -5530,6 +5530,7 @@ GameObject:
   - component: {fileID: 867188511}
   - component: {fileID: 867188513}
   - component: {fileID: 867188514}
+  - component: {fileID: 867188516}
   - component: {fileID: 867188515}
   m_Layer: 0
   m_Name: TablePanelPlayer
@@ -5638,13 +5639,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c09254d7153a54accbb2ddbe0e5f7c98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CanvasGroup: {fileID: 867188515}
-  _cardSeats:
-  - {fileID: 1453413439}
-  - {fileID: 39366207}
-  - {fileID: 404782276}
-  - {fileID: 2106926862}
-  - {fileID: 129168447}
+  _canvasGroup: {fileID: 867188515}
 --- !u!225 &867188515
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -5657,6 +5652,24 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &867188516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 867188508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78967979f872740ae98b548040954193, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cardSeats:
+  - {fileID: 1453413439}
+  - {fileID: 39366207}
+  - {fileID: 404782276}
+  - {fileID: 2106926862}
+  - {fileID: 129168447}
 --- !u!1 &875847379
 GameObject:
   m_ObjectHideFlags: 0
@@ -8121,6 +8134,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5881593649367191547, guid: 23aab9bc2b38c49198bea4ff0fa09faf, type: 3}
+      propertyPath: _sortDirection
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9475,9 +9492,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1502786294}
-  - component: {fileID: 1502786296}
   - component: {fileID: 1502786295}
   - component: {fileID: 1502786297}
+  - component: {fileID: 1502786298}
   m_Layer: 0
   m_Name: EnemyAI
   m_TagString: Untagged
@@ -9500,6 +9517,7 @@ RectTransform:
   - {fileID: 1939013307}
   - {fileID: 1620354838}
   - {fileID: 704143072}
+  - {fileID: 1674758351}
   m_Father: {fileID: 200841573}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -9530,18 +9548,6 @@ MonoBehaviour:
   _maxCountRepeat: 2
   _countDrawCards: 1
   _drawCardsDelay: 0.5
---- !u!114 &1502786296
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1502786293}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69da580313a27481e81dc36a81a9a693, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1502786297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9555,6 +9561,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _delay: 0.5
+--- !u!225 &1502786298
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1502786293}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &1504469768
 GameObject:
   m_ObjectHideFlags: 0
@@ -10851,6 +10869,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5aac0c557266f4746a62198e7061fee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1674758349
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1674758351}
+  - component: {fileID: 1674758350}
+  m_Layer: 0
+  m_Name: DiscoverImitation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1674758350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1674758349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72d518092535446b9abf74bf31990112, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!224 &1674758351
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1674758349}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1502786294}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1742579666
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13710,6 +13776,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1502786294}
     m_Modifications:
+    - target: {fileID: -1956323984752673927, guid: e92509d3b05db4a738f18a406b474f8f, type: 3}
+      propertyPath: _sortDirection
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 73210832448927967, guid: e92509d3b05db4a738f18a406b474f8f, type: 3}
       propertyPath: _handSeatPool
       value: 
