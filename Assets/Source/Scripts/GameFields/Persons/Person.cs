@@ -43,14 +43,16 @@ namespace GameFields.Persons
             _discardPile = discardPile;
         }
 
-        public virtual void Init(EffectRoot effectRoot, SeatPool seatPool)
-        {
-            Hand.Init(seatPool);
-            _tower.Init(Hand);
-            Table.Init(Hand, effectRoot);
+        public abstract void Init();
+        public abstract void StartTurn();
 
-            DrawCardRoot.Init(Hand);
-        }
+        //{
+        //    Hand.Init(seatPool);
+        //    _tower.Init(Hand);
+        //    Table.Init(Hand, effectRoot);
+
+        //    DrawCardRoot.Init(Hand);
+        //}
 
 
         //public virtual void Init(EffectRoot effectRoot, Deck deck, DiscardPile discardPile, SeatPool seatPool)
@@ -92,7 +94,5 @@ namespace GameFields.Persons
                 DrawCardRoot.TakeCards(cards);
             }
         }
-
-        public abstract void StartTurn();
     }
 }

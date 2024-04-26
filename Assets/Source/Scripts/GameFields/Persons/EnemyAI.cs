@@ -38,10 +38,8 @@ namespace GameFields.Persons
             _cardDragAndDropImitationActions = new CardDragAndDropImitationActions(Hand, Table);
         }
 
-        public override void Init(EffectRoot effectRoot, SeatPool seatPool)
+        public override void Init()
         {
-            base.Init(effectRoot, seatPool);
-
             _enemyDragAndDropImitation.Init(_cardDragAndDropImitationActions, CompleteImitation);
         }
 

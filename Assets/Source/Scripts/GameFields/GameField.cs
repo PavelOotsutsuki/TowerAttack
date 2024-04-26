@@ -40,8 +40,9 @@ namespace GameFields
             EffectRoot effectRoot = new EffectRoot(_deck, _discardPile, fight);
             EndFight endFight = new EndFight();
 
-            _player.Init(effectRoot, _seatPool);
-            _enemyAI.Init(effectRoot, _seatPool);
+            _personCreator.InitPersonsData(effectRoot, _seatPool);
+            _player.Init();
+            _enemyAI.Init();
 
             _endTurnButton.Init(fight);
             FightStepsController fightStepsController = new FightStepsController(_startTowerCardSelection, fight, endFight);

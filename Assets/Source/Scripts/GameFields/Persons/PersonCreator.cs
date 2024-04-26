@@ -53,6 +53,12 @@ namespace GameFields.Persons
             _discardPile = discardPile;
         }
 
+        public void InitPersonsData(EffectRoot effectRoot, SeatPool seatPool)
+        {
+            InitPlayersData(effectRoot, seatPool);
+            InitEnemyData(effectRoot, seatPool);
+        }
+
         public Player CreatePlayer()
         {
             return new Player(_deck, _discardPile, _tableActivator, _playerHand, _playerTable, _playerTower, _playerDiscover, _playerCountStartTurnDrawCards, _playerDrawCardRoot);
@@ -61,6 +67,24 @@ namespace GameFields.Persons
         public EnemyAI CreateEnemyAI()
         {
             return new EnemyAI(_deck, _discardPile, _tableActivator, _enemyDragAndDropImitation, _enemyHand, _enemyTable, _enemyTower, _enemyDrawCardRoot, _enemyDiscoverImitation);
+        }
+
+        private void InitPlayersData(EffectRoot effectRoot, SeatPool seatPool)
+        {
+            _playerHand.Init(seatPool);
+            _playerTable.Init(_playerHand, effectRoot);
+            _playerTower.Init(_playerHand);
+
+            _playerDrawCardRoot.Init(_playerHand);
+        }
+
+        private void InitEnemyData(EffectRoot effectRoot, SeatPool seatPool)
+        {
+            _enemyHand.Init(seatPool);
+            _enemyTable.Init(_enemyHand, effectRoot);
+            _enemyTower.Init(_enemyHand);
+
+            _enemyDrawCardRoot.Init(_enemyHand);
         }
     }
 }

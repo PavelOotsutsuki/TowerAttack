@@ -29,10 +29,8 @@ namespace GameFields.Persons
             _countStartTurnDrawCards = countStartTurnDrawCards;
         }
 
-        public override void Init(EffectRoot effectRoot, SeatPool seatPool)
+        public override void Init()
         {
-            base.Init(effectRoot, seatPool);
-
             _discover.Deactivate();
         }
 
