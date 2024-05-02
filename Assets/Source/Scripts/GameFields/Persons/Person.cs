@@ -24,22 +24,19 @@ namespace GameFields.Persons
         protected Table Table;
         protected DrawCardRoot DrawCardRoot;
 
-        protected Deck Deck;
-
         private Tower _tower;
 
         private DiscardPile _discardPile;
 
         public bool IsTowerFilled => _tower.IsTowerFill;
 
-        public Person(Hand hand, Table table, DrawCardRoot drawCardRoot, Tower tower, Deck deck, DiscardPile discardPile)
+        public Person(Hand hand, Table table, DrawCardRoot drawCardRoot, Tower tower, DiscardPile discardPile)
         {
             Hand = hand;
             Table = table;
             DrawCardRoot = drawCardRoot;
             _tower = tower;
 
-            Deck = deck;
             _discardPile = discardPile;
         }
 
@@ -72,27 +69,9 @@ namespace GameFields.Persons
             _discardPile.DiscardCards(Table.GetDiscardCards());
         }
 
-        public void DrawCards(Queue<Card> cards)
+        public List<Card> DrawCards(int countCards, Action callback = null)
         {
-            DrawCardRoot.TakeCards(cards);
-        }
-
-        public void StartTowerCardSelection(int drawCardsCount)
-        {
-            Queue<Card> cards = new Queue<Card>();
-
-            for (int i = 0; i < drawCardsCount; i++)
-            {
-                if (Deck.IsHasCards(1))
-                {
-                    cards.Enqueue(Deck.TakeTopCard());
-                }
-            }
-
-            if (cards.Count > 0)
-            {
-                DrawCardRoot.TakeCards(cards);
-            }
+            return DrawCardRoot.DrawCards(countCards, callback);
         }
     }
 }

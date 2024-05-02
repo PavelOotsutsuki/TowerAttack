@@ -39,21 +39,21 @@ namespace GameFields.Effects
         private IEnumerator Playing()
         {
             //yield return _activePerson.PatriarchCorallDraw();
-            Queue<Card> cards = new Queue<Card>();
+            //Queue<Card> cards = new Queue<Card>();
 
-            for (int i = 0; i < CountDrawCards; i++)
-            {
-                if (_deck.IsHasCards(1))
-                {
-                    cards.Enqueue(_deck.TakeTopCard());
-                }
-            }
+            //for (int i = 0; i < CountDrawCards; i++)
+            //{
+            //    if (_deck.IsHasCards(1))
+            //    {
+            //        cards.Enqueue(_deck.TakeTopCard());
+            //    }
+            //}
 
 
-            if (cards != null)
-            {
-                _activePerson.DrawCards(cards);
-            }
+            //if (cards != null)
+            //{
+                _activePerson.DrawCards(CountDrawCards);
+            //}
 
             yield break;
 

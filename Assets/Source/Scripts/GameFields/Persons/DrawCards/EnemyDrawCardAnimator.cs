@@ -7,24 +7,24 @@ using UnityEngine;
 
 namespace GameFields.Persons.DrawCards
 {
-    public class EnemyDrawCardAnimator : DrawCardAnimator
+    public class EnemyDrawCardAnimator// : SimpleDrawCardAnimation
     {
-        [SerializeField] private float _delay = 0.5f;
+        //[SerializeField] private float _delay = 0.5f;
 
-        public override void PlayingSimpleDrawCardAnimation(Card drawnCard)
-        {
-            Playing(drawnCard).ToUniTask();
-        }
+        //public override void PlayingSimpleDrawCardAnimation(Card drawnCard)
+        //{
+        //    Playing(drawnCard).ToUniTask();
+        //}
 
-        private IEnumerator Playing(Card drawnCard)
-        {
-            IsDone = false;
-            Hand.AddCard(drawnCard);
+        //private IEnumerator Playing(Card drawnCard)
+        //{
+        //    IsDone = false;
+        //    _hand.AddCard(drawnCard);
 
-            yield return new WaitForSeconds(_delay);
+        //    yield return new WaitForSeconds(_delay);
 
-            IsDone = true;
-        }
+        //    IsDone = true;
+        //}
 
     }
 }

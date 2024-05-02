@@ -22,7 +22,7 @@ namespace GameFields.Persons
         private int _countStartTurnDrawCards;
         private ITableActivator _tableActivator;
 
-        public Player(Deck deck, DiscardPile discardPile, ITableActivator tableActivator, HandPlayer hand, Table table, Tower tower, Discover discover, int countStartTurnDrawCards, DrawCardRoot drawCardRoot) : base(hand, table, drawCardRoot, tower, deck, discardPile)
+        public Player(DiscardPile discardPile, ITableActivator tableActivator, HandPlayer hand, Table table, Tower tower, Discover discover, int countStartTurnDrawCards, DrawCardRoot drawCardRoot) : base(hand, table, drawCardRoot, tower, discardPile)
         {
             _discover = discover;
             _tableActivator = tableActivator;
@@ -38,20 +38,7 @@ namespace GameFields.Persons
         {
             _tableActivator.Activate();
 
-            Queue<Card> cards = new Queue<Card>();
-
-            for (int i = 0; i < _countStartTurnDrawCards; i++)
-            {
-                if (Deck.IsHasCards(1))
-                {
-                    cards.Enqueue(Deck.TakeTopCard());
-                }
-            }
-
-            if (cards != null)
-            {
-                DrawCardRoot.TakeCards(cards);
-            }
+            DrawCardRoot.StartTurnDraw();
         }
     }
 }

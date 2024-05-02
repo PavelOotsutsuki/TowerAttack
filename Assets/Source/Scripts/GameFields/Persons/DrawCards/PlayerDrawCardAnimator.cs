@@ -9,26 +9,26 @@ using UnityEngine.UI;
 
 namespace GameFields.Persons.DrawCards
 {
-    public class PlayerDrawCardAnimator: DrawCardAnimator
+    public class PlayerDrawCardAnimator//: SimpleDrawCardAnimation
     {
-        [SerializeField] private PlayerSimpleDrawCardAnimation _simpleDrawAnimation;
-        [SerializeField] private Transform _dragImitationContainer;
+        //[SerializeField] private PlayerSimpleDrawCardAnimation _simpleDrawAnimation;
+        //[SerializeField] private Transform _dragImitationContainer;
 
-        public override void PlayingSimpleDrawCardAnimation(Card drawnCard)
-        {
-            Playing(drawnCard).ToUniTask();
-        }
+        //public override void PlayingSimpleDrawCardAnimation(Card drawnCard)
+        //{
+        //    Playing(drawnCard).ToUniTask();
+        //}
 
-        private IEnumerator Playing(Card drawnCard)
-        {
-            IsDone = false;
+        //private IEnumerator Playing(Card drawnCard)
+        //{
+        //    IsDone = false;
 
-            //_simpleDrawAnimation.SetCard(drawnCard);
-            yield return new WaitForSeconds(0.1f);
-            //yield return _simpleDrawAnimation.StartAnimation(drawnCard, _dragImitationContainer);
+        //    //_simpleDrawAnimation.SetCard(drawnCard);
+        //    yield return new WaitForSeconds(0.1f);
+        //    //yield return _simpleDrawAnimation.StartAnimation(drawnCard, _dragImitationContainer);
 
-            Hand.AddCard(drawnCard);
-            IsDone = true;
-        }
+        //    _hand.AddCard(drawnCard);
+        //    IsDone = true;
+      //  }
     }
 }

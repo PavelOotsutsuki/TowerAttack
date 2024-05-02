@@ -44,47 +44,45 @@ namespace GameFields.Persons
 
         [SerializeField] private TableActivator _tableActivator;
 
-        private Deck _deck;
         private DiscardPile _discardPile;
 
-        public void Init(Deck deck, DiscardPile discardPile)
+        public void Init(DiscardPile discardPile)
         {
-            _deck = deck;
             _discardPile = discardPile;
         }
 
-        public void InitPersonsData(EffectRoot effectRoot, SeatPool seatPool)
+        public void InitPersonsData(EffectRoot effectRoot, SeatPool seatPool, Deck deck)
         {
-            InitPlayersData(effectRoot, seatPool);
-            InitEnemyData(effectRoot, seatPool);
+            InitPlayersData(effectRoot, seatPool, deck);
+            InitEnemyData(effectRoot, seatPool, deck);
         }
 
         public Player CreatePlayer()
         {
-            return new Player(_deck, _discardPile, _tableActivator, _playerHand, _playerTable, _playerTower, _playerDiscover, _playerCountStartTurnDrawCards, _playerDrawCardRoot);
+            return new Player(_discardPile, _tableActivator, _playerHand, _playerTable, _playerTower, _playerDiscover, _playerCountStartTurnDrawCards, _playerDrawCardRoot);
         }
 
         public EnemyAI CreateEnemyAI()
         {
-            return new EnemyAI(_deck, _discardPile, _tableActivator, _enemyDragAndDropImitation, _enemyHand, _enemyTable, _enemyTower, _enemyDrawCardRoot, _enemyDiscoverImitation);
+            return new EnemyAI(_discardPile, _tableActivator, _enemyDragAndDropImitation, _enemyHand, _enemyTable, _enemyTower, _enemyDrawCardRoot, _enemyDiscoverImitation);
         }
 
-        private void InitPlayersData(EffectRoot effectRoot, SeatPool seatPool)
+        private void InitPlayersData(EffectRoot effectRoot, SeatPool seatPool, Deck deck)
         {
             _playerHand.Init(seatPool);
             _playerTable.Init(_playerHand, effectRoot);
             _playerTower.Init(_playerHand);
 
-            _playerDrawCardRoot.Init(_playerHand);
+            _playerDrawCardRoot.Init(_playerHand, deck);
         }
 
-        private void InitEnemyData(EffectRoot effectRoot, SeatPool seatPool)
+        private void InitEnemyData(EffectRoot effectRoot, SeatPool seatPool, Deck deck)
         {
             _enemyHand.Init(seatPool);
             _enemyTable.Init(_enemyHand, effectRoot);
             _enemyTower.Init(_enemyHand);
 
-            _enemyDrawCardRoot.Init(_enemyHand);
+            _enemyDrawCardRoot.Init(_enemyHand, deck);
         }
     }
 }

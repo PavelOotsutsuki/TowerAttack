@@ -33,7 +33,7 @@ namespace GameFields.Persons.DrawCards
             drawnCard.SetActiveInteraction(false);
             drawnCard.SetSide(SideType.Front);
 
-            InvertCardFrontOnDraw(_invertCardFrontDuration, _invertCardBackScaleFactor, _indent);
+            InvertCardFront(_invertCardFrontDuration, _invertCardBackScaleFactor, _indent);
             yield return new WaitForSeconds(_invertCardFrontDuration + _delay);
         }
 
@@ -48,7 +48,7 @@ namespace GameFields.Persons.DrawCards
             _movement.MoveLinear(downWay, endRotationVector, cardBackDuration, scaleVector);
         }
 
-        private void InvertCardFrontOnDraw(float duration, float scaleFactor, float indent)
+        private void InvertCardFront(float duration, float scaleFactor, float indent)
         {
             Vector3 endRotationVector = new Vector3(0f, 0f, 0f);
             Vector3 downWay = _cardTransform.position;

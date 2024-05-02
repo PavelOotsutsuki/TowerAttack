@@ -29,7 +29,7 @@ namespace GameFields.Persons
 
         public bool IsImitationComplete => _isImitationComplete;
 
-        public EnemyAI(Deck deck, DiscardPile discardPile, ITableDeactivator tableDeactivator, EnemyDragAndDropImitation enemyDragAndDropImitation, HandAI hand, Table table, Tower tower, DrawCardRoot drawCardRoot, DiscoverImitation discoverImitation) : base(hand, table, drawCardRoot, tower, deck, discardPile)
+        public EnemyAI(DiscardPile discardPile, ITableDeactivator tableDeactivator, EnemyDragAndDropImitation enemyDragAndDropImitation, HandAI hand, Table table, Tower tower, DrawCardRoot drawCardRoot, DiscoverImitation discoverImitation) : base(hand, table, drawCardRoot, tower, discardPile)
         {
             _enemyDragAndDropImitation = enemyDragAndDropImitation;
             _discoverImitation = discoverImitation;
@@ -47,26 +47,16 @@ namespace GameFields.Persons
         {
             _tableDeactivator.Deactivate();
 
-            Queue<Card> cards = new Queue<Card>();
-
-            for (int i = 0; i < _enemyDragAndDropImitation.CountDrawCards; i++)
-            {
-                if (Deck.IsHasCards(1))
-                {
-                    cards.Enqueue(Deck.TakeTopCard());
-                }
-            }
-
             _isImitationComplete = false;
 
-            if (cards.Count > 0)
-            {
-                DrawCardRoot.TakeCards(cards, PlayDragAndDropImitation);
-            }
-            else
-            {
-                PlayDragAndDropImitation();
-            }
+            //if (cards.Count > 0)
+            //{
+            DrawCardRoot.StartTurnDraw(PlayDragAndDropImitation);
+            //}
+            //else
+            //{
+            //    PlayDragAndDropImitation();
+            //}
         }
 
         private void PlayDragAndDropImitation()
