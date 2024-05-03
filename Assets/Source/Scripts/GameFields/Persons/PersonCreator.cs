@@ -1,3 +1,4 @@
+using Cards;
 using GameFields.DiscardPiles;
 using GameFields.Effects;
 using GameFields.Persons.Discovers;
@@ -18,7 +19,6 @@ namespace GameFields.Persons
         [SerializeField] private Table _playerTable;
         [SerializeField] private Tower _playerTower;
         [SerializeField] private Discover _playerDiscover;
-        [SerializeField] private int _playerCountStartTurnDrawCards = 1;
         [SerializeField] private DrawCardRoot _playerDrawCardRoot;
         //[SerializeField] private PlayerSimpleDrawCardAnimation _playerSimpleDrawCardAnimation;
         //[SerializeField] private PlayerDrawCardAnimator _playerDrawCardAnimator;
@@ -59,7 +59,7 @@ namespace GameFields.Persons
 
         public Player CreatePlayer()
         {
-            return new Player(_discardPile, _tableActivator, _playerHand, _playerTable, _playerTower, _playerDiscover, _playerCountStartTurnDrawCards, _playerDrawCardRoot);
+            return new Player(_discardPile, _tableActivator, _playerHand, _playerTable, _playerTower, _playerDiscover, _playerDrawCardRoot);
         }
 
         public EnemyAI CreateEnemyAI()

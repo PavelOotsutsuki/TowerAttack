@@ -69,8 +69,8 @@ namespace GameFields.Persons.DrawCards
 
         private List<Card> TakeCards(int countCards, Action callback = null)
         {
-            if (_isDrawing == false)
-            {
+            //if (_isDrawing == false)
+            //{
                 List<Card> cards = new List<Card>();
 
                 for (int i = 0; i < countCards; i++)
@@ -84,11 +84,11 @@ namespace GameFields.Persons.DrawCards
                 DrawingCards(cards, callback).ToUniTask();
 
                 return cards;
-            }
-            else
-            {
-                throw new ArgumentOutOfRangeException("Invalid draw cards timing");
-            }
+            //}
+            //else
+            //{
+            //    throw new ArgumentOutOfRangeException("Invalid draw cards timing");
+            //}
         }
 
         //private IEnumerator StartTurnDrawing()

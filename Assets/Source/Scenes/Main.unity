@@ -4137,10 +4137,10 @@ MonoBehaviour:
   _playerDiscover: {fileID: 790739710}
   _playerCountStartTurnDrawCards: 1
   _playerDrawCardRoot:
-    _countStartDrawCards: 1
+    _countStartDrawCards: 3
     _fireActiveTurnsCount: 3
     _fireDrawCardsDelay: 2
-    _simpleDrawCardsDelay: 0.1
+    _simpleDrawCardsDelay: 2
   _enemyDragAndDropImitation:
     _startDelayMin: 1
     _startDelayMax: 2
@@ -4157,10 +4157,10 @@ MonoBehaviour:
   _enemyTable: {fileID: 704143079}
   _enemyTower: {fileID: 1939013313}
   _enemyDrawCardRoot:
-    _countStartDrawCards: 1
+    _countStartDrawCards: 3
     _fireActiveTurnsCount: 3
     _fireDrawCardsDelay: 2
-    _simpleDrawCardsDelay: 0.1
+    _simpleDrawCardsDelay: 2
   _enemyDiscoverImitation: {fileID: 1674758350}
   _tableActivator: {fileID: 867188514}
 --- !u!1001 &642726966

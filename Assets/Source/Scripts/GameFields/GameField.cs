@@ -18,6 +18,7 @@ namespace GameFields
         [SerializeField] private EndTurnButton _endTurnButton;
         [SerializeField] private StartTowerCardSelection _startTowerCardSelection;
         [SerializeField] private SeatPool _seatPool;
+        //[SerializeField] private SpeedUpButton _speedUpButton;
 
         [SerializeField] private PersonCreator _personCreator;
 

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Hands
 {
-    public class HandPlayer : Hand
+    public class HandPlayer : Hand, IBlockable
     {
         [SerializeField] private CanvasGroup _canvasGroup;
 
@@ -32,9 +32,21 @@ namespace GameFields.Persons.Hands
 
         public override void AddCard(Card card)
         {
+            //_canvasGroup.blocksRaycasts = false;
+
             card.SetDragAndDropListener(this);
 
             base.AddCard(card);
+        }
+
+        public void Block()
+        {
+            _canvasGroup.blocksRaycasts = false;
+        }
+
+        public void Unblock()
+        {
+            _canvasGroup.blocksRaycasts = true;
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

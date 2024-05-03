@@ -19,14 +19,14 @@ namespace GameFields.Persons
         //[SerializeField] private Discover _discover;
 
         private Discover _discover;
-        private int _countStartTurnDrawCards;
         private ITableActivator _tableActivator;
+        private IBlockable _handBlockable;
 
-        public Player(DiscardPile discardPile, ITableActivator tableActivator, HandPlayer hand, Table table, Tower tower, Discover discover, int countStartTurnDrawCards, DrawCardRoot drawCardRoot) : base(hand, table, drawCardRoot, tower, discardPile)
+        public Player(DiscardPile discardPile, ITableActivator tableActivator, HandPlayer hand, Table table, Tower tower, Discover discover, DrawCardRoot drawCardRoot) : base(hand, table, drawCardRoot, tower, discardPile)
         {
             _discover = discover;
             _tableActivator = tableActivator;
-            _countStartTurnDrawCards = countStartTurnDrawCards;
+            _handBlockable = hand;
         }
 
         public override void Init()
@@ -36,9 +36,10 @@ namespace GameFields.Persons
 
         public override void StartTurn()
         {
+            _handBlockable.Block();
             _tableActivator.Activate();
 
-            DrawCardRoot.StartTurnDraw();
+            DrawCardRoot.StartTurnDraw(_handBlockable.Unblock);
         }
     }
 }
