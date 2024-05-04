@@ -18,6 +18,10 @@ namespace Cards
         [SerializeField] private TMP_Text _feature;
         [SerializeField] private CanvasGroup _canvasGroup;
 
+        [SerializeField] private Image _frameImage;
+        [SerializeField] private Color _enableFrameColor;
+        [SerializeField] private Color _disableFrameColor;
+
         private RectTransform _cardRectTransform;
         private CardDescription _cardDescription;
         private BigCard _bigCard;
@@ -80,11 +84,13 @@ namespace Cards
 
         internal void Block()
         {
+            _frameImage.color = _disableFrameColor;
             _isBlock = true;
         }
 
         internal void Unblock()
         {
+            _frameImage.color = _enableFrameColor;
             _isBlock = false;
 
             //PointerEventData eventData = new PointerEventData(EventSystem.current);
