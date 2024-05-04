@@ -15,8 +15,6 @@ namespace GameFields.Persons.DrawCards
         //[SerializeField] private int _countPatriarchCorallDrawDrawCards = 3;
         [SerializeField] private int _countStartDrawCards = 1;
 
-        [SerializeField] private int _fireActiveTurnsCount = 3;
-
         [SerializeField] private float _fireDrawCardsDelay = 2f;
         [SerializeField] private float _simpleDrawCardsDelay = 0.1f;
 
@@ -38,7 +36,7 @@ namespace GameFields.Persons.DrawCards
 
             //_startDrawCallback = startDrawCallback;
             _simpleDrawCardAnimation = new SimpleDrawCardAnimation(hand, _simpleDrawCardsDelay);
-            _fireDrawCardAnimation = new FireDrawCardAnimation(hand, _fireDrawCardsDelay, _fireActiveTurnsCount);
+            _fireDrawCardAnimation = new FireDrawCardAnimation(hand, _fireDrawCardsDelay);
 
             _startDrawCardAnimator = new StartDrawCardAnimator(new SimpleDrawCardAnimation(hand, _simpleDrawCardsDelay), _fireDrawCardAnimation);
             //_startDrawCardAnimator = new StartDrawCardAnimator(_simpleDrawCardAnimation, _fireDrawCardAnimation);
@@ -50,6 +48,10 @@ namespace GameFields.Persons.DrawCards
 
         //    StartTurnDrawing().ToUniTask();
         //}
+        public void SetFireDraw(int countTurns)
+        {
+            _startDrawCardAnimator.SetFireMode(countTurns);
+        }
 
         public void StartTurnDraw(Action callback = null)
         {

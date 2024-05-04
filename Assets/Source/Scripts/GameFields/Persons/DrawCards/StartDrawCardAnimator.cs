@@ -21,13 +21,11 @@ namespace GameFields.Persons.DrawCards
             _countExtraAnimationTurns = 0;
         }
 
-        public void SetFireMode()
+        public void SetFireMode(int countTurns)
         {
-            IExtraDrawCardAnimation extraDrawCardAnimation = _fireDrawCardAnimation;
+            _currentAnimation = _fireDrawCardAnimation;
 
-            _currentAnimation = extraDrawCardAnimation;
-
-            _countExtraAnimationTurns = extraDrawCardAnimation.ActiveTurnsCount;
+            _countExtraAnimationTurns = countTurns;
         }
 
         public void Play(Card card)

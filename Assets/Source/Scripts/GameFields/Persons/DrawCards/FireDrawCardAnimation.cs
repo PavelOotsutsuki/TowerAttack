@@ -7,22 +7,22 @@ using UnityEngine;
 
 namespace GameFields.Persons.DrawCards
 {
-    public class FireDrawCardAnimation : IExtraDrawCardAnimation
+    public class FireDrawCardAnimation : IDrawCardAnimation
     {
         private Hand _hand;
         private float _delay;
         private bool _isDone;
-        private int _activeTurnsCount;
+        //private int _activeTurnsCount;
 
         public bool IsDone => _isDone;
 
-        public int ActiveTurnsCount => _activeTurnsCount;
+        //public int ActiveTurnsCount => _activeTurnsCount;
 
-        public FireDrawCardAnimation(Hand hand, float delay, int activeTurnsCount)
+        public FireDrawCardAnimation(Hand hand, float delay)
         {
             _hand = hand;
             _delay = delay;
-            _activeTurnsCount = activeTurnsCount;
+            //_activeTurnsCount = activeTurnsCount;
 
             _isDone = true;
         }

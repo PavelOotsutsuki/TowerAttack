@@ -1,34 +1,64 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace GameFields
 {
-    public class SpeedUpButton : MonoBehaviour
+    public class SpeedUpButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
     {
-        [SerializeField] private Button _button;
+        private const float DefaultSpeed = 1f;
 
-        private void OnClick()
+        [SerializeField] private Image _image;
+        [SerializeField] private Color _normalColor;
+        [SerializeField] private Color _selectColor;
+        [SerializeField] private Color _activeSpeedColor;
+        [SerializeField] private float _activeSpeed = 2f;
+
+        private Color _currentColor;
+
+        public void OnEnable()
         {
-            if (Time.timeScale == 1)
+            SetNormalSettings();
+        }
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            if (Mathf.Approximately(Time.timeScale, DefaultSpeed))
             {
-                Time.timeScale = 2;
+                SetActiveSpeedSettings();
             }
             else
             {
-                Time.timeScale = 1;
+                SetNormalSettings();
             }
         }
 
-        private void OnEnable()
+        public void OnPointerEnter(PointerEventData eventData)
         {
-            _button.onClick.AddListener(OnClick);
+            _image.color = _selectColor;
         }
 
-        private void OnDisable()
+        public void OnPointerExit(PointerEventData eventData)
         {
-            _button.onClick.RemoveListener(OnClick);
+            _image.color = _currentColor;
+        }
+
+        private void SetNormalSettings()
+        {
+            Time.timeScale = DefaultSpeed;
+
+            _image.color = _normalColor;
+
+            _currentColor = _image.color;
+        }
+
+        private void SetActiveSpeedSettings()
+        {
+            Time.timeScale = _activeSpeed;
+
+            _image.color = _activeSpeedColor;
+
+            _currentColor = _image.color;
         }
     }
 }

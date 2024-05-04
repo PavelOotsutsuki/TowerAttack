@@ -88,6 +88,8 @@ namespace Cards
             if (_isForciblyDrag)
             {
                 eventData.position = _cardTransform.position;
+                _isDrag = false;
+                return;
             }
             //_isForciblyDrag = false;
 
