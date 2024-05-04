@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Hands
 {
-    public class HandPlayer : Hand, IBlockable
+    public class HandPlayer : Hand
     {
         [SerializeField] private CanvasGroup _canvasGroup;
 
@@ -13,21 +13,21 @@ namespace GameFields.Persons.Hands
         {
             base.OnCardDrag(card);
 
-            _canvasGroup.blocksRaycasts = false;
+            //_canvasGroup.blocksRaycasts = false;
         }
 
         public override void OnCardDrop()
         {
             base.OnCardDrop();
             
-            _canvasGroup.blocksRaycasts = true;
+            //_canvasGroup.blocksRaycasts = true;
         }
 
         public override void UnbindDragableCard()
         {
             base.UnbindDragableCard();
 
-            _canvasGroup.blocksRaycasts = true;
+            //_canvasGroup.blocksRaycasts = true;
         }
 
         public override void AddCard(Card card)
@@ -37,18 +37,6 @@ namespace GameFields.Persons.Hands
             card.SetDragAndDropListener(this);
 
             base.AddCard(card);
-        }
-
-        public void Block()
-        {
-            base.OnCardDrop();
-
-            _canvasGroup.blocksRaycasts = false;
-        }
-
-        public void Unblock()
-        {
-            _canvasGroup.blocksRaycasts = true;
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

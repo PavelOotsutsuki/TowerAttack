@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Hands
 {
-    public abstract class Hand : MonoBehaviour, IUnbindCardManager, ICardDragListener
+    public abstract class Hand : MonoBehaviour, IUnbindCardManager, ICardDragListener, IBlockable
     {
         [SerializeField, Range(-1, 1)] private float _sortDirection;
         [SerializeField] private HandActions _handActions;
@@ -23,6 +23,12 @@ namespace GameFields.Persons.Hands
         public virtual void OnCardDrop()
         {
             _handActions.EndDragCard();
+            _handActions.UnblockCards();
+        }
+
+        public void OnCardPlay()
+        {
+            _handActions.UnblockCards();
         }
 
         public virtual void UnbindDragableCard()
@@ -38,6 +44,17 @@ namespace GameFields.Persons.Hands
         public virtual bool TryGetCard(out Card card)
         {
             return _handActions.TryGetCard(out card);
+        }
+
+        public void Block()
+        {
+            _handActions.BlockCards();
+            _handActions.EndDragCard();
+        }
+
+        public void Unblock()
+        {
+            _handActions.UnblockCards();
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

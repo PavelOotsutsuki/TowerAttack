@@ -47,6 +47,8 @@ namespace GameFields.Persons.Hands
             {
                 _dragCardHandSeat = handSeat;
 
+                BlockCards(new List<Card> {card});
+
                 _handSeatIndex = _handSeats.IndexOf(_dragCardHandSeat);
                 _handSeats.Remove(_dragCardHandSeat);
                 SortHandSeats();
@@ -57,7 +59,6 @@ namespace GameFields.Persons.Hands
         {
             if (_handSeatIndex != -1)
             {
-                _dragCardHandSeat.GetCard().EndDrag();
                 _handSeats.Insert(_handSeatIndex, _dragCardHandSeat);
 
                 SortHandSeats();
@@ -83,6 +84,33 @@ namespace GameFields.Persons.Hands
 
             SortHandSeats();
             ResetDragOptions();
+        }
+
+        public void UnblockCards()
+        {
+            _isActiveInteraction = true;
+
+            foreach (Seat seat in _handSeats)
+            {
+                seat.GetCard().SetActiveInteraction(true);
+            }
+        }
+
+        public void BlockCards()
+        {
+            if (_handSeatIndex != -1)
+            {
+                _dragCardHandSeat.GetCard().EndDrag();
+            }
+
+            _isActiveInteraction = false;
+
+            foreach (Seat seat in _handSeats)
+            {
+                Card card = seat.GetCard();
+
+                card.SetActiveInteraction(false);
+            }
         }
 
         private bool TryGetRandomCard(out Card card)
@@ -154,6 +182,30 @@ namespace GameFields.Persons.Hands
 
             findedHandSeat = null;
             return false;
+        }
+
+        private void BlockCards(List<Card> exceptions)
+        {
+            _isActiveInteraction = false;
+
+            foreach (Seat seat in _handSeats)
+            {
+                bool isException = false;
+                Card card = seat.GetCard();
+
+                foreach (Card exceptionCard in exceptions)
+                {
+                    if (card == exceptionCard)
+                    {
+                        isException = true;
+                    }
+                }
+
+                if (isException == false)
+                {
+                    card.SetActiveInteraction(false);
+                }
+            }
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

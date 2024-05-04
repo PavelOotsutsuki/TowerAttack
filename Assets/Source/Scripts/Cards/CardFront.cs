@@ -68,10 +68,10 @@ namespace Cards
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (_isBlock)
-            {
-                return;
-            }
+            //if (_isBlock)
+            //{
+            //    return;
+            //}
 
             EndReview();
         }
