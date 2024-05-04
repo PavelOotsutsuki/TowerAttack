@@ -12,6 +12,7 @@ namespace Cards
         private Coroutine _viewCardAfterDropInWork;
         private bool _isDrag;
         private bool _isAlreadyDrag;
+        private bool _isForciblyDrag;
         private Transform _cardTransform;
 
         private CardDragAndDropActions _cardDragAndDropActions;
@@ -25,7 +26,29 @@ namespace Cards
             _cardDragAndDropActions = cardDragAndDropActions;
             _isDrag = false;
             _isAlreadyDrag = false;
+            _isForciblyDrag = false;
         }
+
+        public void BlockDrag()
+        {
+            _isDrag = false;
+
+            _cardTransform.SetParent(_defaultParent);
+            _cardDragAndDropActions.ReturnInHand(_returnInHandSpeed);
+            _isForciblyDrag = true;
+        }
+
+        //public void BlockDrag()
+        //{
+        //    Debug.Log("222222. _isDrag = " + _isDrag + ", _isAlreadyDrag = " + _isAlreadyDrag);
+
+        //    if (_isDrag == false || _isAlreadyDrag == true)
+        //    {
+        //        return;
+        //    }
+
+        //    OnEndDrag(_eventData);
+        //}
 
         public void OnBeginDrag(PointerEventData eventData)
         {
@@ -36,6 +59,7 @@ namespace Cards
             }
 
             _isDrag = true;
+            _isForciblyDrag = false;
 
             _defaultParent = _cardTransform.parent;
             _cardTransform.SetParent(_container);
@@ -49,11 +73,24 @@ namespace Cards
                 return;
             }
 
+            if (_isForciblyDrag)
+            {
+                Debug.Log(eventData.position);
+                eventData.position = _cardTransform.position;
+                return;
+            }
+
             _cardTransform.position = eventData.position;
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
+            if (_isForciblyDrag)
+            {
+                eventData.position = _cardTransform.position;
+            }
+            //_isForciblyDrag = false;
+
             if (_isAlreadyDrag)
             {
                 _isAlreadyDrag = false;
@@ -83,11 +120,6 @@ namespace Cards
 
         private IEnumerator ViewCardAfterDrop(float endDuration, PointerEventData eventData)
         {
-            //for (float duration = 0; duration < endDuration; duration += Time.deltaTime)
-            //{
-            //    yield return true;
-            //}
-
             yield return new WaitForSeconds(endDuration);
 
             _isDrag = false;

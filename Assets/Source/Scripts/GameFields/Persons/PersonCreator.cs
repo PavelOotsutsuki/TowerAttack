@@ -22,6 +22,7 @@ namespace GameFields.Persons
         [SerializeField] private DrawCardRoot _playerDrawCardRoot;
         //[SerializeField] private PlayerSimpleDrawCardAnimation _playerSimpleDrawCardAnimation;
         //[SerializeField] private PlayerDrawCardAnimator _playerDrawCardAnimator;
+        //[SerializeField] private CardBlockPanel _cardBlockPanel;
 
         [Space]
         [Header("----------------------------")]

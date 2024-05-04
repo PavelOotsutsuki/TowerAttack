@@ -41,6 +41,8 @@ namespace GameFields.Persons.Hands
 
         public void Block()
         {
+            base.OnCardDrop();
+
             _canvasGroup.blocksRaycasts = false;
         }
 

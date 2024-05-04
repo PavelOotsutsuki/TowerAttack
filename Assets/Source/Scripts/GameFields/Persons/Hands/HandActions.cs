@@ -55,10 +55,14 @@ namespace GameFields.Persons.Hands
 
         public void EndDragCard()
         {
-            _handSeats.Insert(_handSeatIndex, _dragCardHandSeat);
+            if (_handSeatIndex != -1)
+            {
+                _dragCardHandSeat.GetCard().EndDrag();
+                _handSeats.Insert(_handSeatIndex, _dragCardHandSeat);
 
-            SortHandSeats();
-            ResetDragOptions();
+                SortHandSeats();
+                ResetDragOptions();
+            }
         }
 
         public void AddCard(Card card)

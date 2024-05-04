@@ -61,6 +61,11 @@ namespace Cards
         //    }
         //}
 
+        public void EndDrag()
+        {
+            _cardDragAndDrop.BlockDrag();
+        }
+
         public void SetDragAndDropListener(ICardDragListener cardDragAndDropListener)
         {
             _cardDragAndDropActions.SetListener(cardDragAndDropListener);
