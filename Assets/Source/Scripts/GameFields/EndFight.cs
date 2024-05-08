@@ -1,19 +1,30 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameFields
 {
-    public class EndFight
+    public class EndFight: IFightStep
     {
-        public EndFight()
-        {
+        private FightResult _fightResult;
+        private bool _isComplete;
 
+        public bool IsComplete => _isComplete;
+
+        public EndFight(FightResult fightResult)
+        {
+            _fightResult = fightResult;
+            _isComplete = false;
         }
 
-        public void Start(EndFightResults endFightResults)
+        public void PrepareToStart()
         {
-            switch (endFightResults)
+            _isComplete = false;
+        }
+
+        public void StartStep()
+        {
+            switch (_fightResult.Result)
             {
                 case EndFightResults.PlayerWin:
                     ActivatePlayerWinActions();
@@ -25,9 +36,10 @@ namespace GameFields
                     ActivateDrawActions();
                     break;
                 default:
-                    Debug.Log("Error");
-                    break;
+                    throw new ArgumentNullException("Invalid EndTurnResult");
             }
+
+            _isComplete = true;
         }
 
         private void ActivatePlayerWinActions()

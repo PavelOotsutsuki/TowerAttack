@@ -64,9 +64,7 @@ namespace GameFields.Persons.DrawCards
         {
             _currentDrawCardAnimation = _simpleDrawCardAnimation;
 
-            List<Card> cards = TakeCards(countCards, callback);
-
-            return cards;
+            return TakeCards(countCards, callback);
         }
 
         private List<Card> TakeCards(int countCards, Action callback = null)

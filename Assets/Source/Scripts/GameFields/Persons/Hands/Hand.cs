@@ -15,12 +15,12 @@ namespace GameFields.Persons.Hands
             _handActions.Init(_sortDirection, seatPool);
         }
 
-        public virtual void OnCardDrag(Card card)
+        public void OnCardDrag(Card card)
         {
             _handActions.DragCard(card);
         }
 
-        public virtual void OnCardDrop()
+        public void OnCardDrop()
         {
             _handActions.EndDragCard();
             _handActions.UnblockCards();
@@ -31,7 +31,7 @@ namespace GameFields.Persons.Hands
             _handActions.UnblockCards();
         }
 
-        public virtual void UnbindDragableCard()
+        public void UnbindDragableCard()
         {
             _handActions.RemoveDraggableCard();
         }
@@ -41,7 +41,7 @@ namespace GameFields.Persons.Hands
             _handActions.AddCard(card);
         }
 
-        public virtual bool TryGetCard(out Card card)
+        public bool TryGetCard(out Card card)
         {
             return _handActions.TryGetCard(out card);
         }

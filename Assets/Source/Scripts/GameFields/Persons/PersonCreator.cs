@@ -67,7 +67,7 @@ namespace GameFields.Persons
         {
             return new EnemyAI(_discardPile, _tableActivator, _enemyDragAndDropImitation, _enemyHand, _enemyTable, _enemyTower, _enemyDrawCardRoot, _enemyDiscoverImitation);
         }
-
+        
         private void InitPlayersData(EffectRoot effectRoot, SeatPool seatPool, Deck deck)
         {
             _playerHand.Init(seatPool);

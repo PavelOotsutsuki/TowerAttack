@@ -4,10 +4,11 @@ using UnityEngine;
 using GameFields.EndTurnButtons;
 using Cysharp.Threading.Tasks;
 using GameFields.Persons.Tables;
+using System;
 
 namespace GameFields
 {
-    internal class Fight : IEndTurnHandler, IPersonSideListener
+    internal class Fight : IEndTurnHandler, IPersonSideListener, IFightStep
     {
         private readonly int _maxTurns = 100;
 
@@ -15,17 +16,19 @@ namespace GameFields
         private EnemyAI _enemy;
         private EndTurnButton _endTurnButton;
 
+        private int _turnNumber;
+
         private Person _activePerson;
         private Person _deactivePerson;
-        private int _turnNumber;
         private bool _isComlpete;
-        private EndFightResults _endFightResults;
+        private FightResult _fightResult;
        
-        public Fight(Player player, EnemyAI enemy, EndTurnButton endTurnButton)
+        public Fight(Player player, EnemyAI enemy, EndTurnButton endTurnButton, FightResult fightResult)
         {
             _isComlpete = false;
             _turnNumber = 1;
 
+            _fightResult = fightResult;
             _player = player;
             _enemy = enemy;
             _endTurnButton = endTurnButton;
@@ -34,7 +37,6 @@ namespace GameFields
         public Person ActivePerson => _activePerson;
         public Person DeactivePerson => _deactivePerson;
         public bool IsComplete => _isComlpete;
-        public EndFightResults EndFightResults => _endFightResults;
 
         public void OnEndTurn()
         {
@@ -45,7 +47,12 @@ namespace GameFields
             SwitchPerson();
         }
 
-        public void Start()
+        public void PrepareToStart()
+        {
+            _isComlpete = false;
+        }
+
+        public void StartStep()
         {
             SetPlayerTurn();
         }
@@ -59,7 +66,7 @@ namespace GameFields
         {
             if (_turnNumber >= _maxTurns)
             {
-                _endFightResults = EndFightResults.Draw;
+                _fightResult.SetDraw();
                 _isComlpete = true;
             }
         }

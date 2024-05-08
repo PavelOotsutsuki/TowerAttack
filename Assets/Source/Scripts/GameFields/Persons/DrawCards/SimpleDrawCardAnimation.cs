@@ -35,6 +35,7 @@ namespace GameFields.Persons.DrawCards
             yield return new WaitForSeconds(_delay);
 
             _hand.AddCard(drawnCard);
+            //_dfsdfsdf.SetListenter(_hand);
             _isDone = true;
         }
     }

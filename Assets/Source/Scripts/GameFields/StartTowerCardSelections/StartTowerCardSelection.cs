@@ -9,7 +9,7 @@ using System;
 
 namespace GameFields.StartTowerCardSelections
 {
-    public class StartTowerCardSelection : MonoBehaviour
+    public class StartTowerCardSelection : MonoBehaviour, IFightStep
     {
         [SerializeField] private StartTowerCardSelectionPanel _startTowerCardSelectionPanel;
         [SerializeField] private StartTowerCardSelectionLabel _startTowerCardSelectionLabel;
@@ -20,9 +20,10 @@ namespace GameFields.StartTowerCardSelections
         private IStartTowerCardSelectionListener _enemy;
         private bool _isCompletePlayer;
         private bool _isCompleteEnemy;
+        private bool _isComplete; //Потом заменить 
 
         //public bool IsComplete => _player.IsTowerFilled; //&& _enemy.IsTowerFilled;
-        public bool IsComplete => true; //&& _enemy.IsTowerFilled;
+        public bool IsComplete => _isComplete; //&& _enemy.IsTowerFilled;
 
         public void Init(IStartTowerCardSelectionListener player, IStartTowerCardSelectionListener enemy)
         {
@@ -35,7 +36,12 @@ namespace GameFields.StartTowerCardSelections
             InitSeats();
         }
 
-        public void Activate()
+        public void PrepareToStart()
+        {
+            _isComplete = false;
+        }
+
+        public void StartStep()
         {
             gameObject.SetActive(true);
 

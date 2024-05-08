@@ -28,6 +28,7 @@ namespace GameFields.Persons
         private bool _isImitationComplete;
 
         public bool IsImitationComplete => _isImitationComplete;
+        //public bool IsImitationComplete => StartTurnDraw.IsComplete && Imitation.IsComplete && EffectCard.IsComplete;
 
         public EnemyAI(DiscardPile discardPile, ITableDeactivator tableDeactivator, EnemyDragAndDropImitation enemyDragAndDropImitation, HandAI hand, Table table, Tower tower, DrawCardRoot drawCardRoot, DiscoverImitation discoverImitation) : base(hand, table, drawCardRoot, tower, discardPile)
         {

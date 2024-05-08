@@ -40,8 +40,6 @@ namespace GameFields.DiscardPiles
             _cardTransformable = card;
             _cardTransform = _cardTransformable.Transform;
             _cardMovement = new Movement(_cardTransform);
-
-            DiscardingCard().ToUniTask();
         }
 
         //public void DiscardCard(Card card)
@@ -58,6 +56,10 @@ namespace GameFields.DiscardPiles
         //{
         //    return _cardIncreaseDuration + _delayAfterIncrease + _invertCardBackDuration + _invertCardFrontDuration + _delayAfterInvert;
         //}
+        public void Play()
+        {
+            DiscardingCard().ToUniTask();
+        }
 
         private IEnumerator DiscardingCard()
         {

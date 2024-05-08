@@ -37,9 +37,11 @@ namespace GameFields
 
             _startTowerCardSelection.Init(_player, _enemyAI);
 
-            Fight fight = new Fight(_player, _enemyAI, _endTurnButton);
+            FightResult fightResult = new FightResult();
+
+            Fight fight = new Fight(_player, _enemyAI, _endTurnButton, fightResult);
             EffectRoot effectRoot = new EffectRoot(_deck, _discardPile, fight);
-            EndFight endFight = new EndFight();
+            EndFight endFight = new EndFight(fightResult);
 
             _personCreator.InitPersonsData(effectRoot, _seatPool, _deck);
             _player.Init();
@@ -48,7 +50,8 @@ namespace GameFields
             _endTurnButton.Init(fight);
             FightStepsController fightStepsController = new FightStepsController(_startTowerCardSelection, fight, endFight);
 
-            fightStepsController.StartFightSteps();
+            fightStepsController.PrepareToStart();
+            fightStepsController.StartStep();
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

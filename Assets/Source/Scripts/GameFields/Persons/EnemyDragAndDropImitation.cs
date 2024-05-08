@@ -25,6 +25,7 @@ namespace GameFields.Persons
 
         public int CountDrawCards => _countDrawCards;
         public float DrawCardsDelay => _drawCardsDelay;
+        //public bool IsComplete => _isComplete;
 
         //private IEndTurnHandler _endTurnHandler;
 

@@ -7,11 +7,13 @@ using UnityEngine;
 
 namespace GameFields
 {
-    internal class FightStepsController
+    internal class FightStepsController: IStateMachineStep
     {
         private StartTowerCardSelection _startTowerCardSelections;
         private Fight _fight;
         private EndFight _endFight;
+
+        private IFightStep _currentStep;
 
         public FightStepsController(StartTowerCardSelection startTowerCardSelections, Fight fight, EndFight endFight)
         {
@@ -20,8 +22,19 @@ namespace GameFields
             _endFight = endFight;
         }
 
-        public void StartFightSteps()
+        public bool IsComplete => _startTowerCardSelections.IsComplete && _fight.IsComplete && _endFight.IsComplete;
+
+        public void PrepareToStart()
         {
+            _startTowerCardSelections.PrepareToStart();
+            _fight.PrepareToStart();
+            _endFight.PrepareToStart();
+        }
+
+        public void StartStep()
+        {
+            _currentStep = _fight;
+
             Starting().ToUniTask();
         }
 
@@ -31,10 +44,35 @@ namespace GameFields
 
             //yield return new WaitUntil(() => _startTowerCardSelections.IsComplete);
 
-            _fight.Start();
-            yield return new WaitUntil(() => _fight.IsComplete);
+            //_fight.StartStep();
+            //yield return new WaitUntil(() => _fight.IsComplete);
 
-            _endFight.Start(_fight.EndFightResults);
+            //_endFight.StartStep(_fight.EndFightResults);
+
+            while (IsComplete == false)
+            {
+                _currentStep.StartStep();
+                yield return new WaitUntil(() => _currentStep.IsComplete);
+
+                NextStep();
+            }
+        }
+
+        private void NextStep()
+        {
+            switch (_currentStep)
+            {
+                case StartTowerCardSelection:
+                    _currentStep = _fight;
+                    break;
+                case Fight:
+                    _currentStep = _endFight;
+                    break;
+                case EndFight:
+                    break;
+                default:
+                    throw new ArgumentNullException("Invalid FightStep");
+            }
         }
     }
 }

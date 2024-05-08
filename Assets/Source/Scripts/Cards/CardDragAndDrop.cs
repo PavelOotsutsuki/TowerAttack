@@ -73,12 +73,12 @@ namespace Cards
                 return;
             }
 
-            if (_isForciblyDrag)
-            {
-                Debug.Log(eventData.position);
-                eventData.position = _cardTransform.position;
-                return;
-            }
+            //if (_isForciblyDrag)
+            //{
+            //    Debug.Log(eventData.position);
+            //    eventData.position = _cardTransform.position;
+            //    return;
+            //}
 
             _cardTransform.position = eventData.position;
         }
@@ -87,7 +87,7 @@ namespace Cards
         {
             if (_isForciblyDrag)
             {
-                eventData.position = _cardTransform.position;
+                //eventData.position = _cardTransform.position;
                 _isDrag = false;
                 this.enabled = false;
                 return;
