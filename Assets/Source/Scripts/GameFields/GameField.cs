@@ -30,7 +30,7 @@ namespace GameFields
             _seatPool.Init();
             _deck.Init(cardsInDeck);
             _discardPile.Init(_seatPool);
-            _personCreator.Init(_discardPile);
+            _personCreator.Init(_discardPile, _deck);
 
             _player = _personCreator.CreatePlayer();
             _enemyAI = _personCreator.CreateEnemyAI();
@@ -43,7 +43,7 @@ namespace GameFields
             EffectRoot effectRoot = new EffectRoot(_deck, _discardPile, fight);
             EndFight endFight = new EndFight(fightResult);
 
-            _personCreator.InitPersonsData(effectRoot, _seatPool, _deck);
+            _personCreator.InitPersonsData(effectRoot, _seatPool);
             _player.Init();
             _enemyAI.Init();
 

@@ -23,6 +23,7 @@ namespace GameFields.Persons
         protected Hand Hand;
         protected Table Table;
         protected DrawCardRoot DrawCardRoot;
+        protected StartTurnDraw StartTurnDraw;
 
         private Tower _tower;
 
@@ -30,12 +31,13 @@ namespace GameFields.Persons
 
         public bool IsTowerFilled => _tower.IsTowerFill;
 
-        public Person(Hand hand, Table table, DrawCardRoot drawCardRoot, Tower tower, DiscardPile discardPile)
+        public Person(Hand hand, Table table, DrawCardRoot drawCardRoot, Tower tower, DiscardPile discardPile, StartTurnDraw startTurnDraw)
         {
             Hand = hand;
             Table = table;
-            DrawCardRoot = drawCardRoot;
             _tower = tower;
+            DrawCardRoot = drawCardRoot;
+            StartTurnDraw = startTurnDraw;
 
             _discardPile = discardPile;
         }

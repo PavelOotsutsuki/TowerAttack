@@ -8,19 +8,16 @@ using Cysharp.Threading.Tasks;
 
 namespace GameFields.Persons.DrawCards
 {
-    [Serializable]
     public class DrawCardRoot
     {
-        //[SerializeField] private int _countStartTowerCardSelectionDrawCards = 3;
-        //[SerializeField] private int _countPatriarchCorallDrawDrawCards = 3;
-        [SerializeField] private int _countStartDrawCards = 1;
+        //[SerializeField] private int _countStartDrawCards = 1;
 
-        [SerializeField] private float _fireDrawCardsDelay = 2f;
-        [SerializeField] private float _simpleDrawCardsDelay = 0.1f;
+        //[SerializeField] private float _fireDrawCardsDelay = 2f;
+        //[SerializeField] private float _simpleDrawCardsDelay = 0.1f;
 
         private SimpleDrawCardAnimation _simpleDrawCardAnimation;
-        private FireDrawCardAnimation _fireDrawCardAnimation; 
-        private StartDrawCardAnimator _startDrawCardAnimator;
+        //private FireDrawCardAnimation _fireDrawCardAnimation; 
+        //private StartDrawCardAnimator _startDrawCardAnimator;
 
         private IDrawCardAnimation _currentDrawCardAnimation;
         private Deck _deck;
@@ -29,16 +26,17 @@ namespace GameFields.Persons.DrawCards
         public bool IsDrawing => _isDrawing;
         //private Action _startDrawCallback;
 
-        public void Init(Hand hand, Deck deck)
+        public DrawCardRoot(SimpleDrawCardAnimation simpleDrawCardAnimation, Deck deck)
         {
+            _simpleDrawCardAnimation = simpleDrawCardAnimation;
             _deck = deck;
             _isDrawing = false;
 
             //_startDrawCallback = startDrawCallback;
-            _simpleDrawCardAnimation = new SimpleDrawCardAnimation(hand, _simpleDrawCardsDelay);
-            _fireDrawCardAnimation = new FireDrawCardAnimation(hand, _fireDrawCardsDelay);
+            //_simpleDrawCardAnimation = new SimpleDrawCardAnimation(hand, _simpleDrawCardsDelay);
+            //_fireDrawCardAnimation = new FireDrawCardAnimation(hand, _fireDrawCardsDelay);
 
-            _startDrawCardAnimator = new StartDrawCardAnimator(new SimpleDrawCardAnimation(hand, _simpleDrawCardsDelay), _fireDrawCardAnimation);
+            //_startDrawCardAnimator = new StartDrawCardAnimator(new SimpleDrawCardAnimation(hand, _simpleDrawCardsDelay), _fireDrawCardAnimation);
             //_startDrawCardAnimator = new StartDrawCardAnimator(_simpleDrawCardAnimation, _fireDrawCardAnimation);
         }
 
@@ -48,23 +46,30 @@ namespace GameFields.Persons.DrawCards
 
         //    StartTurnDrawing().ToUniTask();
         //}
-        public void SetFireDraw(int countTurns)
-        {
-            _startDrawCardAnimator.SetFireMode(countTurns);
-        }
+        //public void SetFireDraw(int countTurns)
+        //{
+        //    _startDrawCardAnimator.SetFireMode(countTurns);
+        //}
 
-        public void StartTurnDraw(Action callback = null)
-        {
-            _currentDrawCardAnimation = _startDrawCardAnimator;
+        //public void StartTurnDraw(Action callback = null)
+        //{
+        //    _currentDrawCardAnimation = _startDrawCardAnimator;
 
-            TakeCards(_countStartDrawCards, callback);
-        }
+        //    TakeCards(_countStartDrawCards, callback);
+        //}
 
         public List<Card> DrawCards(int countCards, Action callback = null)
         {
             _currentDrawCardAnimation = _simpleDrawCardAnimation;
 
             return TakeCards(countCards, callback);
+        }
+
+        public void DrawCards(IDrawCardAnimation drawCardAnimation, int countCards, Action callback = null)
+        {
+            _currentDrawCardAnimation = drawCardAnimation;
+
+            TakeCards(countCards, callback);
         }
 
         private List<Card> TakeCards(int countCards, Action callback = null)
@@ -113,9 +118,10 @@ namespace GameFields.Persons.DrawCards
                 }
             }
 
-            _isDrawing = false;
 
             callback?.Invoke();
+
+            _isDrawing = false;
         }
 
         //private void AddCardsInQueue(Queue<Card> cards)

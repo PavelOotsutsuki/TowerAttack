@@ -19,10 +19,11 @@ namespace GameFields.Persons
         [SerializeField] private Table _playerTable;
         [SerializeField] private Tower _playerTower;
         [SerializeField] private Discover _playerDiscover;
-        [SerializeField] private DrawCardRoot _playerDrawCardRoot;
+        //[SerializeField] private DrawCardRoot _playerDrawCardRoot;
         //[SerializeField] private PlayerSimpleDrawCardAnimation _playerSimpleDrawCardAnimation;
         //[SerializeField] private PlayerDrawCardAnimator _playerDrawCardAnimator;
         //[SerializeField] private CardBlockPanel _cardBlockPanel;
+        [SerializeField] private int _playerCountStartDrawCards = 1;
 
         [Space]
         [Header("----------------------------")]
@@ -34,8 +35,10 @@ namespace GameFields.Persons
         [SerializeField] private HandAI _enemyHand;
         [SerializeField] private Table _enemyTable;
         [SerializeField] private Tower _enemyTower;
-        [SerializeField] private DrawCardRoot _enemyDrawCardRoot;
+        //[SerializeField] private DrawCardRoot _enemyDrawCardRoot;
         [SerializeField] private DiscoverImitation _enemyDiscoverImitation;
+        [SerializeField] private int _enemyCountStartDrawCards = 1;
+
 
         [Space]
         [Header("----------------------------")]
@@ -45,45 +48,68 @@ namespace GameFields.Persons
 
         [SerializeField] private TableActivator _tableActivator;
 
-        private DiscardPile _discardPile;
+        [Space]
+        [Header("----------------------------")]
+        [Space]
 
-        public void Init(DiscardPile discardPile)
+        [Header("Draw Card Animation's data:")]
+
+        [SerializeField] private float _simpleDrawCardDelay = 0.1f;
+        [SerializeField] private float _fireDrawCardDelay = 2f;
+
+        private DiscardPile _discardPile;
+        private Deck _deck;
+
+        public void Init(DiscardPile discardPile, Deck deck)
         {
             _discardPile = discardPile;
+            _deck = deck;
         }
 
-        public void InitPersonsData(EffectRoot effectRoot, SeatPool seatPool, Deck deck)
+        public void InitPersonsData(EffectRoot effectRoot, SeatPool seatPool)
         {
-            InitPlayersData(effectRoot, seatPool, deck);
-            InitEnemyData(effectRoot, seatPool, deck);
+            InitPlayersData(effectRoot, seatPool);
+            InitEnemyData(effectRoot, seatPool);
         }
 
         public Player CreatePlayer()
         {
-            return new Player(_discardPile, _tableActivator, _playerHand, _playerTable, _playerTower, _playerDiscover, _playerDrawCardRoot);
+            SimpleDrawCardAnimation simpleDrawCardAnimation = new SimpleDrawCardAnimation(_playerHand, _simpleDrawCardDelay);
+            FireDrawCardAnimation fireDrawCardAnimation = new FireDrawCardAnimation(_playerHand, _fireDrawCardDelay);
+            DrawCardRoot drawCardRoot = new DrawCardRoot(new SimpleDrawCardAnimation(_playerHand, _simpleDrawCardDelay), _deck);
+
+            StartTurnDraw startTurnDraw = new StartTurnDraw(drawCardRoot, simpleDrawCardAnimation, fireDrawCardAnimation, _playerCountStartDrawCards);
+
+            return new Player(_discardPile, _tableActivator, _playerHand, _playerTable, _playerTower, _playerDiscover, drawCardRoot, startTurnDraw);
         }
 
         public EnemyAI CreateEnemyAI()
         {
-            return new EnemyAI(_discardPile, _tableActivator, _enemyDragAndDropImitation, _enemyHand, _enemyTable, _enemyTower, _enemyDrawCardRoot, _enemyDiscoverImitation);
+            SimpleDrawCardAnimation simpleDrawCardAnimation = new SimpleDrawCardAnimation(_enemyHand, _simpleDrawCardDelay);
+            FireDrawCardAnimation fireDrawCardAnimation = new FireDrawCardAnimation(_enemyHand, _fireDrawCardDelay);
+            DrawCardRoot drawCardRoot = new DrawCardRoot(new SimpleDrawCardAnimation(_enemyHand, _simpleDrawCardDelay), _deck);
+
+            StartTurnDraw startTurnDraw = new StartTurnDraw(drawCardRoot, simpleDrawCardAnimation, fireDrawCardAnimation, _enemyCountStartDrawCards);
+
+            return new EnemyAI(_discardPile, _tableActivator, _enemyDragAndDropImitation, _enemyHand, _enemyTable, _enemyTower, drawCardRoot, _enemyDiscoverImitation, startTurnDraw);
         }
         
-        private void InitPlayersData(EffectRoot effectRoot, SeatPool seatPool, Deck deck)
+        private void InitPlayersData(EffectRoot effectRoot, SeatPool seatPool)
         {
             _playerHand.Init(seatPool);
             _playerTable.Init(_playerHand, effectRoot);
             _playerTower.Init(_playerHand);
 
-            _playerDrawCardRoot.Init(_playerHand, deck);
+            //_playerDrawCardRoot = new DrawCardRoot(new SimpleDrawCardAnimation(_playerHand, _simpleDrawCardDelay), deck);
         }
 
-        private void InitEnemyData(EffectRoot effectRoot, SeatPool seatPool, Deck deck)
+        private void InitEnemyData(EffectRoot effectRoot, SeatPool seatPool)
         {
             _enemyHand.Init(seatPool);
             _enemyTable.Init(_enemyHand, effectRoot);
             _enemyTower.Init(_enemyHand);
 
-            _enemyDrawCardRoot.Init(_enemyHand, deck);
+            //_enemyDrawCardRoot = new DrawCardRoot(new SimpleDrawCardAnimation(_enemyHand, _simpleDrawCardDelay), deck);
         }
     }
 }

@@ -105,7 +105,7 @@ namespace GameFields
 
         private IEnumerator EnemyTurnProcessing()
         {
-            yield return new WaitUntil(() => _enemy.IsImitationComplete);
+            yield return new WaitUntil(() => _enemy.IsComplete);
 
             OnEndTurn();
         }

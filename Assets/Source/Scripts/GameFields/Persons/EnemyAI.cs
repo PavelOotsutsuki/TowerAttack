@@ -1,4 +1,5 @@
 using Cards;
+using Cysharp.Threading.Tasks;
 using GameFields.DiscardPiles;
 using GameFields.Effects;
 using GameFields.Persons.Discovers;
@@ -8,6 +9,7 @@ using GameFields.Persons.Tables;
 using GameFields.Persons.Towers;
 using GameFields.Seats;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,12 +27,12 @@ namespace GameFields.Persons
 
         private CardDragAndDropImitationActions _cardDragAndDropImitationActions;
 
-        private bool _isImitationComplete;
+        private bool _isComplete;
 
-        public bool IsImitationComplete => _isImitationComplete;
+        public bool IsComplete => _isComplete;
         //public bool IsImitationComplete => StartTurnDraw.IsComplete && Imitation.IsComplete && EffectCard.IsComplete;
 
-        public EnemyAI(DiscardPile discardPile, ITableDeactivator tableDeactivator, EnemyDragAndDropImitation enemyDragAndDropImitation, HandAI hand, Table table, Tower tower, DrawCardRoot drawCardRoot, DiscoverImitation discoverImitation) : base(hand, table, drawCardRoot, tower, discardPile)
+        public EnemyAI(DiscardPile discardPile, ITableDeactivator tableDeactivator, EnemyDragAndDropImitation enemyDragAndDropImitation, HandAI hand, Table table, Tower tower, DrawCardRoot drawCardRoot, DiscoverImitation discoverImitation, StartTurnDraw startTurnDraw) : base(hand, table, drawCardRoot, tower, discardPile, startTurnDraw)
         {
             _enemyDragAndDropImitation = enemyDragAndDropImitation;
             _discoverImitation = discoverImitation;
@@ -48,11 +50,11 @@ namespace GameFields.Persons
         {
             _tableDeactivator.Deactivate();
 
-            _isImitationComplete = false;
+            _isComplete = false;
 
             //if (cards.Count > 0)
             //{
-            DrawCardRoot.StartTurnDraw(PlayDragAndDropImitation);
+            ProcessingTurn().ToUniTask();
             //}
             //else
             //{
@@ -75,7 +77,17 @@ namespace GameFields.Persons
 
         private void CompleteImitation()
         {
-            _isImitationComplete = true;
+            _isComplete = true;
+        }
+
+        private IEnumerator ProcessingTurn()
+        {
+            StartTurnDraw.PrepareToStart();
+            StartTurnDraw.StartStep();
+
+            yield return new WaitUntil(() => StartTurnDraw.IsComplete);
+
+            PlayDragAndDropImitation();
         }
     }
 }
