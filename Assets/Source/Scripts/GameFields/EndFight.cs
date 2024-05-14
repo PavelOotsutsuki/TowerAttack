@@ -6,12 +6,12 @@ namespace GameFields
 {
     public class EndFight: IFightStep
     {
-        private FightResult _fightResult;
+        private IReadonlyFightResult _fightResult;
         private bool _isComplete;
 
         public bool IsComplete => _isComplete;
 
-        public EndFight(FightResult fightResult)
+        public EndFight(IReadonlyFightResult fightResult)
         {
             _fightResult = fightResult;
             _isComplete = false;

@@ -1,29 +1,55 @@
+using System;
+
 namespace GameFields
 {
-    public class FightResult
+    public class FightResult : IReadonlyFightResult
     {
         private EndFightResults _endFightResult;
-
-        public EndFightResults Result => _endFightResult;
+        private bool _isEmpty;
 
         public FightResult()
         {
-            _endFightResult = EndFightResults.None;
+            _isEmpty = true;
+            _endFightResult = EndFightResults.Draw;
+        }
+
+        public EndFightResults Result
+        {
+            get
+            {
+                if (_isEmpty)
+                {
+                    throw new ArgumentNullException("Fight Result is empty");
+                }
+
+                return _endFightResult;
+            }
         }
 
         public void SetPlayerWin()
         {
-            _endFightResult = EndFightResults.PlayerWin;
+            SetResult(EndFightResults.PlayerWin);
         }
 
         public void SetEnemyWin()
         {
-            _endFightResult = EndFightResults.EnemyWin;
+            SetResult(EndFightResults.EnemyWin);
         }
 
         public void SetDraw()
         {
-            _endFightResult = EndFightResults.Draw;
+            SetResult(EndFightResults.Draw);
+        }
+
+        private void SetResult(EndFightResults result)
+        {
+            if (_isEmpty == false)
+            {
+                throw new Exception("Fight Result is already setted");
+            }
+
+            _isEmpty = false;
+            _endFightResult = result;
         }
     }
 }
