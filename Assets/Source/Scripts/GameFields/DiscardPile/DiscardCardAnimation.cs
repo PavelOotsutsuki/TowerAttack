@@ -7,28 +7,16 @@ using Tools;
 
 namespace GameFields.DiscardPiles
 {
-    //[Serializable]
     public class DiscardCardAnimation
     {
-        //[SerializeField] private Transform _container;
-        ////[SerializeField] private DiscardCardAnimationData _discardCardAnimationData;
-        //[SerializeField] public Vector3 _startScaleVector = new Vector3(0.5f, 0.5f, 0.5f);
-        //[SerializeField] public Vector3 _startRotation  = Vector3.zero;
-        //[SerializeField] public Vector3 _invertRotation = new Vector3(0f, -90f, 0f);
-        //[SerializeField] public float _cardIncreaseDuration  = 0.5f;
-        //[SerializeField] public float _delayAfterIncrease = 0.5f;
-        //[SerializeField] public float _invertCardFrontDuration = 0.5f;
-        //[SerializeField] public float _invertCardBackDuration = 0.5f;
-        //[SerializeField] public float _delayAfterInvert = 0.5f;
+        private readonly Card _card;
+        private readonly ICardTransformable _cardTransformable;
+        private readonly Transform _cardTransform;
+        private readonly Movement _cardMovement;
 
-        private Card _card;
-        private ICardTransformable _cardTransformable;
-        private Transform _cardTransform;
-        private Movement _cardMovement;
-
-        private DiscardCardAnimationData _data;
-        private Transform _container;
-        private Action<Card> _callback;
+        private readonly DiscardCardAnimationData _data;
+        private readonly Transform _container;
+        private readonly Action<Card> _callback;
 
         public DiscardCardAnimation(DiscardCardAnimationData data, Transform container, Card card, Action<Card> callback)
         {
@@ -42,20 +30,6 @@ namespace GameFields.DiscardPiles
             _cardMovement = new Movement(_cardTransform);
         }
 
-        //public void DiscardCard(Card card)
-        //{
-        //    _card = card;
-        //    _cardTransformable = card;
-        //    _cardTransform = _cardTransformable.Transform;
-        //    _cardMovement = new Movement(_cardTransform);
-
-        //    DiscardingCard().ToUniTask();
-        //}
-
-        //public float GetFullDelay()
-        //{
-        //    return _cardIncreaseDuration + _delayAfterIncrease + _invertCardBackDuration + _invertCardFrontDuration + _delayAfterInvert;
-        //}
         public void Play()
         {
             DiscardingCard().ToUniTask();

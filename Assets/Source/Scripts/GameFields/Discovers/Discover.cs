@@ -1,9 +1,5 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using Cards;
-using Cysharp.Threading.Tasks;
-using GameFields.Persons;
 using GameFields.Seats;
 using Tools;
 using UnityEngine;
@@ -42,29 +38,13 @@ namespace GameFields.Persons.Discovers
 
             gameObject.SetActive(true);
 
-            PlayingSelection().ToUniTask();
-
-
-            //TakeCards(deck, player).ToUniTask();
-            //TakeCards(deck, enemy).ToUniTask();
+            StartCoroutine(PlayingSelection());
         }
 
         public void Deactivate()
         {
             gameObject.SetActive(false);
         }
-
-        //private IEnumerator TakeCards(Deck deck, IDrawCardManager person)
-        //{
-        //    Card takenCard;
-
-        //    for (int i = 0; i < _firstTurnCardsCount; i++)
-        //    {
-        //        takenCard = deck.TakeTopCard();
-        //        person.DrawCard(takenCard);
-        //        yield return new WaitForSeconds(person.DrawCardsDelay);
-        //    }
-        //}
 
         private IEnumerator PlayingSelection()
         {

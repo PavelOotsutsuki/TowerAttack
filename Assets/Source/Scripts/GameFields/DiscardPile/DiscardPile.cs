@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cards;
-using Cysharp.Threading.Tasks;
-using GameFields.Persons.Hands;
 using GameFields.Seats;
 using Tools;
 using UnityEngine;
@@ -36,19 +34,9 @@ namespace GameFields.DiscardPiles
             _discardPileSeatPool = seatPool;
         }
 
-        //public void AddCard(Card card)
-        //{
-        //    if (_discardPileSeatPool.TryGetHandSeat(out Seat discardPileSeat))
-        //    {
-        //        _seats.Add(discardPileSeat);
-        //        discardPileSeat.SetLocalPositionValues(FindCardSeatPosition(), FindCardSeatRotation());
-        //        discardPileSeat.SetCard(card, _isFrontCardSide, _startCardTranslateSpeed);
-        //    }
-        //}
-
         public void DiscardCards(List<Card> cards)
         {
-            DiscardingCards(cards).ToUniTask();
+            StartCoroutine(DiscardingCards(cards));
         }
 
         private void SeatCard(Card card)
@@ -60,14 +48,6 @@ namespace GameFields.DiscardPiles
             discardPileSeat.SetLocalPositionValues(FindCardSeatPosition(), FindCardSeatRotation());
             discardPileSeat.SetCard(card, SideType.Back, _startCardTranslateSpeed);
         }
-
-        //public void RemoveCard()
-        //{
-        //    _discardPileSeatPool.ReturnInPool(_dragCardHandSeat);
-
-        //    SortHandSeats();
-        //    ResetDragOptions();
-        //}
 
         private IEnumerator DiscardingCards(List<Card> discardingCards)
         {

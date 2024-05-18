@@ -50,7 +50,7 @@ namespace GameFields.StartTowerCardSelections
             _startTowerCardSelectionPanel.Activate();
             _startTowerCardSelectionLabel.Activate();
 
-            StartProcess().ToUniTask();
+            StartCoroutine(StartProcess());
         }
 
         private IEnumerator StartProcess()

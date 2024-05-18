@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
 using TMPro;
 using Tools;
 using UnityEngine;
@@ -31,7 +29,7 @@ namespace GameFields.Persons.Discovers
 
         public void Activate(string message)
         {
-            Activating(message).ToUniTask();
+            StartCoroutine(Activating(message));
         }
 
         private IEnumerator Activating(string message)

@@ -32,7 +32,7 @@ namespace GameFields.StartTowerCardSelections
 
         public void Activate()
         {
-            Activating().ToUniTask();
+            StartCoroutine(Activating());
         }
 
         private IEnumerator Activating()
