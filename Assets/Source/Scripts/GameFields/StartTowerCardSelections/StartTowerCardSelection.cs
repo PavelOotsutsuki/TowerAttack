@@ -27,6 +27,8 @@ namespace GameFields.StartTowerCardSelections
 
         public void Init(IStartTowerCardSelectionListener player, IStartTowerCardSelectionListener enemy)
         {
+            _isComplete = false;
+
             _startTowerCardSelectionPanel.Init();
             _startTowerCardSelectionLabel.Init();
 
@@ -36,10 +38,10 @@ namespace GameFields.StartTowerCardSelections
             InitSeats();
         }
 
-        public void PrepareToStart()
-        {
-            _isComplete = false;
-        }
+        //public void PrepareToStart()
+        //{
+        //    _isComplete = false;
+        //}
 
         public void StartStep()
         {

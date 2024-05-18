@@ -50,7 +50,7 @@ namespace GameFields
             _endTurnButton.Init(fight);
             FightStepsController fightStepsController = new FightStepsController(_startTowerCardSelection, fight, endFight);
 
-            fightStepsController.PrepareToStart();
+            //fightStepsController.PrepareToStart();
             fightStepsController.StartStep();
         }
 

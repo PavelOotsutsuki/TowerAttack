@@ -7,33 +7,54 @@ using UnityEngine;
 
 namespace GameFields
 {
-    internal class FightStepsController: IStateMachineStep
+    internal class FightStepsController//: IStateMachineStep
     {
-        private StartTowerCardSelection _startTowerCardSelections;
-        private Fight _fight;
-        private EndFight _endFight;
+        //private StartTowerCardSelection _startTowerCardSelections;
+        //private Fight _fight;
+        //private EndFight _endFight;
+
+        private IFightStep[] _fightSteps;
 
         private IFightStep _currentStep;
+        private int _currentStepIndex;
+
+        private bool _isComplete;
 
         public FightStepsController(StartTowerCardSelection startTowerCardSelections, Fight fight, EndFight endFight)
         {
-            _startTowerCardSelections = startTowerCardSelections;
-            _fight = fight;
-            _endFight = endFight;
+            //_startTowerCardSelections = startTowerCardSelections;
+            //_fight = fight;
+            //_endFight = endFight;
+
+            _isComplete = false;
+
+            _fightSteps = new IFightStep[]
+            {
+                startTowerCardSelections,
+                fight,
+                endFight
+            };
+
+            _currentStepIndex = 1;
         }
 
-        public bool IsComplete => _startTowerCardSelections.IsComplete && _fight.IsComplete && _endFight.IsComplete;
+        //public bool IsComplete => _startTowerCardSelections.IsComplete && _fight.IsComplete && _endFight.IsComplete;
 
-        public void PrepareToStart()
-        {
-            _startTowerCardSelections.PrepareToStart();
-            _fight.PrepareToStart();
-            _endFight.PrepareToStart();
-        }
+        //public void PrepareToStart()
+        //{
+        //    //_startTowerCardSelections.PrepareToStart();
+        //    //_fight.PrepareToStart();
+        //    //_endFight.PrepareToStart();
+
+        //    foreach (IFightStep step in _fightSteps)
+        //    {
+        //        step.PrepareToStart();
+        //    }
+        //}
 
         public void StartStep()
         {
-            _currentStep = _fight;
+            _currentStep = _fightSteps[_currentStepIndex];
 
             Starting().ToUniTask();
         }
@@ -49,7 +70,7 @@ namespace GameFields
 
             //_endFight.StartStep(_fight.EndFightResults);
 
-            while (IsComplete == false)
+            while (_isComplete == false)
             {
                 _currentStep.StartStep();
                 yield return new WaitUntil(() => _currentStep.IsComplete);
@@ -60,18 +81,20 @@ namespace GameFields
 
         private void NextStep()
         {
-            switch (_currentStep)
+            _currentStepIndex++;
+
+            if(_currentStepIndex < 0)
             {
-                case StartTowerCardSelection:
-                    _currentStep = _fight;
-                    break;
-                case Fight:
-                    _currentStep = _endFight;
-                    break;
-                case EndFight:
-                    break;
-                default:
-                    throw new ArgumentNullException("Invalid FightStep");
+                throw new ArgumentOutOfRangeException("Invalid fight step index");
+            }
+
+            if (_currentStepIndex < _fightSteps.Length)
+            {
+                _currentStep = _fightSteps[_currentStepIndex];
+            }
+            else
+            {
+                _isComplete = true;
             }
         }
     }

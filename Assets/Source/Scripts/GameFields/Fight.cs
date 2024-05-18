@@ -47,10 +47,10 @@ namespace GameFields
             SwitchPerson();
         }
 
-        public void PrepareToStart()
-        {
-            _isComlpete = false;
-        }
+        //public void PrepareToStart()
+        //{
+        //    _isComlpete = false;
+        //}
 
         public void StartStep()
         {

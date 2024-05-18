@@ -17,10 +17,10 @@ namespace GameFields
             _isComplete = false;
         }
 
-        public void PrepareToStart()
-        {
-            _isComplete = false;
-        }
+        //public void PrepareToStart()
+        //{
+        //    _isComplete = false;
+        //}
 
         public void StartStep()
         {

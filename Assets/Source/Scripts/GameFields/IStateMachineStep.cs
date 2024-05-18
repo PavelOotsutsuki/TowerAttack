@@ -4,7 +4,7 @@ namespace GameFields
     {
         public bool IsComplete { get; }
 
-        public void PrepareToStart();
+        //public void PrepareToStart();
         public void StartStep();
     }
 }

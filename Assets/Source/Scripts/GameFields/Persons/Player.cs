@@ -49,7 +49,7 @@ namespace GameFields.Persons
 
         private IEnumerator ProcessingTurn()
         {
-            StartTurnDraw.PrepareToStart();
+            //StartTurnDraw.PrepareToStart();
             StartTurnDraw.StartStep();
 
             yield return new WaitUntil(()=> StartTurnDraw.IsComplete);
