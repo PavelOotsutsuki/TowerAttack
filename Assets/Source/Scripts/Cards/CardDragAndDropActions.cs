@@ -36,7 +36,7 @@ namespace Cards
 
         internal void OnReturnInHand(bool isPointerOnCard)
         {
-            _cardFront.Unblock();
+            //_cardFront.Unblock();
 
             if (isPointerOnCard)
             {

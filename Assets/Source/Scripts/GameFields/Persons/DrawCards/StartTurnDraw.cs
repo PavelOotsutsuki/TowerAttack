@@ -31,10 +31,10 @@ namespace GameFields.Persons.DrawCards
             _countExtraAnimationTurns = 0;
         }
 
-        //public void PrepareToStart()
-        //{
-        //    _isComplete = false;
-        //}
+        public void PrepareToStart()
+        {
+            _isComplete = false;
+        }
 
         public void StartStep()
         {

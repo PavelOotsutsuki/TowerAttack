@@ -27,9 +27,10 @@ namespace GameFields.Persons
 
         private CardDragAndDropImitationActions _cardDragAndDropImitationActions;
 
+        //private 
+
         private bool _isComplete;
 
-        public bool IsComplete => _isComplete;
         //public bool IsImitationComplete => StartTurnDraw.IsComplete && Imitation.IsComplete && EffectCard.IsComplete;
 
         public EnemyAI(DiscardPile discardPile, ITableDeactivator tableDeactivator, EnemyDragAndDropImitation enemyDragAndDropImitation, HandAI hand, Table table, Tower tower, DrawCardRoot drawCardRoot, DiscoverImitation discoverImitation, StartTurnDraw startTurnDraw) : base(hand, table, drawCardRoot, tower, discardPile, startTurnDraw)
@@ -40,6 +41,8 @@ namespace GameFields.Persons
 
             _cardDragAndDropImitationActions = new CardDragAndDropImitationActions(Hand, Table);
         }
+
+        public bool IsComplete => _isComplete;
 
         public override void Init()
         {
@@ -82,12 +85,17 @@ namespace GameFields.Persons
 
         private IEnumerator ProcessingTurn()
         {
-            //StartTurnDraw.PrepareToStart();
+            StartTurnDraw.PrepareToStart();
             StartTurnDraw.StartStep();
 
             yield return new WaitUntil(() => StartTurnDraw.IsComplete);
 
             PlayDragAndDropImitation();
+        }
+
+        private void NextTurn()
+        {
+
         }
     }
 }

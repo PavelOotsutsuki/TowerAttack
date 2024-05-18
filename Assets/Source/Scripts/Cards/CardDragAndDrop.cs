@@ -90,6 +90,7 @@ namespace Cards
                 //eventData.position = _cardTransform.position;
                 _isDrag = false;
                 this.enabled = false;
+
                 return;
             }
             //_isForciblyDrag = false;
