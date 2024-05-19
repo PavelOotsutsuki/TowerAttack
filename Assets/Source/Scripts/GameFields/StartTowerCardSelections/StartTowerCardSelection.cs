@@ -1,11 +1,7 @@
 using System.Collections;
 using Tools;
 using UnityEngine;
-using Cysharp.Threading.Tasks;
 using GameFields.Seats;
-using Cards;
-using GameFields.Persons;
-using System;
 
 namespace GameFields.StartTowerCardSelections
 {

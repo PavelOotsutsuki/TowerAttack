@@ -1,10 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Cards;
-using Cysharp.Threading.Tasks;
-using UnityEngine;
-
 namespace GameFields.Persons.DrawCards
 {
     public class EnemyDrawCardAnimator// : SimpleDrawCardAnimation

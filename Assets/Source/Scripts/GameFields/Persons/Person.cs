@@ -2,13 +2,10 @@ using System;
 using System.Collections.Generic;
 using Cards;
 using GameFields.DiscardPiles;
-using GameFields.Effects;
 using GameFields.Persons.DrawCards;
 using GameFields.Persons.Hands;
 using GameFields.Persons.Tables;
 using GameFields.Persons.Towers;
-using GameFields.Seats;
-using UnityEngine;
 
 namespace GameFields.Persons
 {

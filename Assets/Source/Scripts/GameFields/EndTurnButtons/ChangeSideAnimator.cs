@@ -1,5 +1,4 @@
 using System.Collections;
-using Cysharp.Threading.Tasks;
 using Tools;
 using UnityEngine;
 using System;
@@ -37,12 +36,12 @@ namespace GameFields.EndTurnButtons
 
         public void PlayLockButtonAnimation()
         {
-            PlayingLockButtonAnimation().ToUniTask();
+            _button.StartCoroutine(PlayingLockButtonAnimation());
         }
 
         public void PlayUnlockButtonAnimation()
         {
-            PlayingUnlockButtonAnimation().ToUniTask();
+            _button.StartCoroutine(PlayingUnlockButtonAnimation());
         }
 
         private IEnumerator PlayingLockButtonAnimation()

@@ -1,5 +1,4 @@
 using UnityEngine;
-using Cards;
 using GameFields.Persons;
 
 namespace GameFields.Effects

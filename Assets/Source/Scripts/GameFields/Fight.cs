@@ -2,15 +2,13 @@ using GameFields.Persons;
 using System.Collections;
 using UnityEngine;
 using GameFields.EndTurnButtons;
-using Cysharp.Threading.Tasks;
-using GameFields.Persons.Tables;
-using System;
 
 namespace GameFields
 {
     internal class Fight : IEndTurnHandler, IPersonSideListener, IFightStep
     {
         private readonly int _maxTurns = 100;
+        private readonly MonoBehaviour _coroutineContainer;
 
         private Player _player;
         private EnemyAI _enemy;
@@ -23,10 +21,11 @@ namespace GameFields
         private bool _isComlpete;
         private FightResult _fightResult;
        
-        public Fight(Player player, EnemyAI enemy, EndTurnButton endTurnButton, FightResult fightResult)
+        public Fight(Player player, EnemyAI enemy, EndTurnButton endTurnButton, FightResult fightResult, MonoBehaviour coroutineContainer)
         {
             _isComlpete = false;
             _turnNumber = 1;
+            _coroutineContainer = coroutineContainer;
 
             _fightResult = fightResult;
             _player = player;
@@ -100,7 +99,7 @@ namespace GameFields
 
             _activePerson.StartTurn();
 
-            EnemyTurnProcessing().ToUniTask();
+            _coroutineContainer.StartCoroutine(EnemyTurnProcessing());
         }
 
         private IEnumerator EnemyTurnProcessing()

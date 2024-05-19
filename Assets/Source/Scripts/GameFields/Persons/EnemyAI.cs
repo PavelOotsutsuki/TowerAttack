@@ -1,16 +1,11 @@
 using Cards;
-using Cysharp.Threading.Tasks;
 using GameFields.DiscardPiles;
-using GameFields.Effects;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.DrawCards;
 using GameFields.Persons.Hands;
 using GameFields.Persons.Tables;
 using GameFields.Persons.Towers;
-using GameFields.Seats;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameFields.Persons
@@ -28,22 +23,27 @@ namespace GameFields.Persons
         private CardDragAndDropImitationActions _cardDragAndDropImitationActions;
 
         private bool _isComplete;
+        private readonly MonoBehaviour _coroutineContainer;
 
         public bool IsComplete => _isComplete;
         //public bool IsImitationComplete => StartTurnDraw.IsComplete && Imitation.IsComplete && EffectCard.IsComplete;
 
-        public EnemyAI(DiscardPile discardPile, ITableDeactivator tableDeactivator, EnemyDragAndDropImitation enemyDragAndDropImitation, HandAI hand, Table table, Tower tower, DrawCardRoot drawCardRoot, DiscoverImitation discoverImitation, StartTurnDraw startTurnDraw) : base(hand, table, drawCardRoot, tower, discardPile, startTurnDraw)
+        public EnemyAI(DiscardPile discardPile, ITableDeactivator tableDeactivator, EnemyDragAndDropImitation enemyDragAndDropImitation,
+            HandAI hand, Table table, Tower tower, DrawCardRoot drawCardRoot, DiscoverImitation discoverImitation,
+            StartTurnDraw startTurnDraw, MonoBehaviour coroutineContainer)
+            : base(hand, table, drawCardRoot, tower, discardPile, startTurnDraw)
         {
             _enemyDragAndDropImitation = enemyDragAndDropImitation;
             _discoverImitation = discoverImitation;
             _tableDeactivator = tableDeactivator;
+            _coroutineContainer = coroutineContainer;
 
             _cardDragAndDropImitationActions = new CardDragAndDropImitationActions(Hand, Table);
         }
 
         public override void Init()
         {
-            _enemyDragAndDropImitation.Init(_cardDragAndDropImitationActions, CompleteImitation);
+            _enemyDragAndDropImitation.Init(_cardDragAndDropImitationActions, CompleteImitation, _coroutineContainer);
         }
 
         public override void StartTurn()
@@ -54,7 +54,7 @@ namespace GameFields.Persons
 
             //if (cards.Count > 0)
             //{
-            ProcessingTurn().ToUniTask();
+            _coroutineContainer.StartCoroutine(ProcessingTurn());
             //}
             //else
             //{

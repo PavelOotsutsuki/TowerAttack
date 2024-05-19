@@ -1,7 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
 using GameFields.StartTowerCardSelections;
 using UnityEngine;
 
@@ -19,14 +17,16 @@ namespace GameFields
         private int _currentStepIndex;
 
         private bool _isComplete;
+        private readonly MonoBehaviour _coroutineContainer;
 
-        public FightStepsController(StartTowerCardSelection startTowerCardSelections, Fight fight, EndFight endFight)
+        public FightStepsController(StartTowerCardSelection startTowerCardSelections, Fight fight, EndFight endFight, MonoBehaviour coroutineContainer)
         {
             //_startTowerCardSelections = startTowerCardSelections;
             //_fight = fight;
             //_endFight = endFight;
 
             _isComplete = false;
+            _coroutineContainer = coroutineContainer;
 
             _fightSteps = new IFightStep[]
             {
@@ -56,7 +56,7 @@ namespace GameFields
         {
             _currentStep = _fightSteps[_currentStepIndex];
 
-            Starting().ToUniTask();
+            _coroutineContainer.StartCoroutine(Starting());
         }
 
         private IEnumerator Starting()

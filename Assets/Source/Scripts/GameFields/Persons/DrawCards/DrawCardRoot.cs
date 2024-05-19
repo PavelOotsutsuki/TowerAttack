@@ -1,10 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
-using GameFields.Persons.Hands;
 using UnityEngine;
 using Cards;
-using Cysharp.Threading.Tasks;
 
 namespace GameFields.Persons.DrawCards
 {
@@ -22,15 +20,17 @@ namespace GameFields.Persons.DrawCards
         private IDrawCardAnimation _currentDrawCardAnimation;
         private Deck _deck;
         private bool _isDrawing;
+        private readonly MonoBehaviour _coroutineContainer;
 
         public bool IsDrawing => _isDrawing;
         //private Action _startDrawCallback;
 
-        public DrawCardRoot(SimpleDrawCardAnimation simpleDrawCardAnimation, Deck deck)
+        public DrawCardRoot(SimpleDrawCardAnimation simpleDrawCardAnimation, Deck deck, MonoBehaviour coroutineContainer)
         {
             _simpleDrawCardAnimation = simpleDrawCardAnimation;
             _deck = deck;
             _isDrawing = false;
+            _coroutineContainer = coroutineContainer;
         }
 
         public List<Card> DrawCards(int countCards, Action callback = null)
@@ -59,7 +59,7 @@ namespace GameFields.Persons.DrawCards
                     }
                 }
 
-                DrawingCards(cards, callback).ToUniTask();
+                _coroutineContainer.StartCoroutine(DrawingCards(cards, callback));
 
                 return cards;
         }

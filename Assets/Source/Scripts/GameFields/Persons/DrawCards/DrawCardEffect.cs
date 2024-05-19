@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Cards;
-using UnityEngine;
 
 namespace GameFields.Persons.DrawCards
 {

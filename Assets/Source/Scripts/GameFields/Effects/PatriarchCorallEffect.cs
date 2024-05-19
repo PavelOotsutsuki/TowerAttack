@@ -1,12 +1,8 @@
-using UnityEngine;
 using Cards;
 using GameFields.Persons;
 using System.Collections;
-using Cysharp.Threading.Tasks;
-using System;
 using GameFields.Persons.Discovers;
-using GameFields.Persons.DrawCards;
-using System.Collections.Generic;
+using UnityEngine;
 
 namespace GameFields.Effects
 {
@@ -19,12 +15,15 @@ namespace GameFields.Effects
         private Person _deactivePerson;
         private Card[] _drawnCards;
         private Discover _discover;
+        
+        private readonly MonoBehaviour _coroutineContainer;
 
-        public PatriarchCorallEffect(Deck deck, Person activePerson, Person deactivePerson)
+        public PatriarchCorallEffect(Deck deck, Person activePerson, Person deactivePerson, MonoBehaviour coroutineContainer)
         {
             _deck = deck;
             _activePerson = activePerson;
             _deactivePerson = deactivePerson;
+            _coroutineContainer = coroutineContainer;
 
             PlayEffect();
 
@@ -33,55 +32,14 @@ namespace GameFields.Effects
 
         private void PlayEffect()
         {
-            Playing().ToUniTask();
+            _coroutineContainer.StartCoroutine(Playing());
         }
 
         private IEnumerator Playing()
         {
-            //yield return _activePerson.PatriarchCorallDraw();
-            //Queue<Card> cards = new Queue<Card>();
-
-            //for (int i = 0; i < CountDrawCards; i++)
-            //{
-            //    if (_deck.IsHasCards(1))
-            //    {
-            //        cards.Enqueue(_deck.TakeTopCard());
-            //    }
-            //}
-
-
-            //if (cards != null)
-            //{
-                _activePerson.DrawCards(CountDrawCards);
-            //}
+            _activePerson.DrawCards(CountDrawCards);
 
             yield break;
-
-            //_discover.Activate(cards, )
-
         }
-
-        //private IEnumerator Playing()
-        //{
-        //    _drawnCards = new Card[CountDrawCards];
-
-        //    for (int i = 0; i < CountDrawCards; i++)
-        //    {
-        //        if (_deck.IsHasCards(1))
-        //        {
-        //            yield return DrawingCard(i);
-        //        }
-        //    }
-        //}
-
-        //private IEnumerator DrawingCard(int index)
-        //{
-        //    //Card card = _deck.TakeTopCard();
-
-        //    //_activePerson.DrawCard(card);
-        //    //yield return new WaitForSeconds(_activePerson.DrawCardsDelay);
-
-        //    //_drawnCards[index] = card;
-        //}
     }
 }

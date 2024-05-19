@@ -2,7 +2,6 @@ using System.Collections;
 using Cards;
 using UnityEngine;
 using System;
-using Cysharp.Threading.Tasks;
 using Tools;
 
 namespace GameFields.DiscardPiles
@@ -16,12 +15,14 @@ namespace GameFields.DiscardPiles
 
         private readonly DiscardCardAnimationData _data;
         private readonly Transform _container;
+        private readonly MonoBehaviour _coroutineContainer;
         private readonly Action<Card> _callback;
 
-        public DiscardCardAnimation(DiscardCardAnimationData data, Transform container, Card card, Action<Card> callback)
+        public DiscardCardAnimation(DiscardCardAnimationData data, Transform container, MonoBehaviour coroutineContainer, Card card, Action<Card> callback)
         {
             _data = data;
             _container = container;
+            _coroutineContainer = coroutineContainer;
             _callback = callback;
 
             _card = card;
@@ -32,7 +33,7 @@ namespace GameFields.DiscardPiles
 
         public void Play()
         {
-            DiscardingCard().ToUniTask();
+            _coroutineContainer.StartCoroutine(DiscardingCard());
         }
 
         private IEnumerator DiscardingCard()

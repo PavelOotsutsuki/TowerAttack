@@ -1,5 +1,3 @@
-using Cards;
-using Tools;
 using UnityEngine;
 
 namespace GameFields.Persons.Towers

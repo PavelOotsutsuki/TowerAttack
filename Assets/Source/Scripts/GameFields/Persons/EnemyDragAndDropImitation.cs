@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using Cysharp.Threading.Tasks;
 
 namespace GameFields.Persons
 {
@@ -22,6 +21,8 @@ namespace GameFields.Persons
         [SerializeField] private int _maxCountRepeat = 2;
         [SerializeField] private int _countDrawCards = 1;
         [SerializeField] private float _drawCardsDelay = 0.5f;
+        
+        private MonoBehaviour _coroutineContainer;
 
         public int CountDrawCards => _countDrawCards;
         public float DrawCardsDelay => _drawCardsDelay;
@@ -32,11 +33,12 @@ namespace GameFields.Persons
         private System.Action _callback;
         private CardDragAndDropImitationActions _cardImitationActions;
 
-        internal void Init(/*IEndTurnHandler endTurnHandler, */CardDragAndDropImitationActions cardImitationActions, System.Action callback)
+        internal void Init(CardDragAndDropImitationActions cardImitationActions, System.Action callback, MonoBehaviour coroutineContainer)
         {
             //_endTurnHandler = endTurnHandler;
             _callback = callback;
             _cardImitationActions = cardImitationActions;
+            _coroutineContainer = coroutineContainer;
         }
 
         internal void StartDragAndDropAnimation()
@@ -45,7 +47,7 @@ namespace GameFields.Persons
 
             if (logicNumber == 1)
             {
-                DragAndDropBehaviour1().ToUniTask();
+                _coroutineContainer.StartCoroutine(DragAndDropBehaviour1());
             }
         }
 

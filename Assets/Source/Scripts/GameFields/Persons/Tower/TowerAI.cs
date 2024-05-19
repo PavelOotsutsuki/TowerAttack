@@ -1,7 +1,3 @@
-using Cards;
-using GameFields.Persons.Hands;
-using UnityEngine;
-
 namespace GameFields.Persons.Towers
 {
     public class TowerAI : Tower//, ICardDropPlaceImitation

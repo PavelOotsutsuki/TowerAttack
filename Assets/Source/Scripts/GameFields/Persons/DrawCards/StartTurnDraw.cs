@@ -1,7 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace GameFields.Persons.DrawCards
@@ -17,10 +14,12 @@ namespace GameFields.Persons.DrawCards
         private int _countExtraAnimationTurns;
 
         private IDrawCardAnimation _currentAnimation;
+        private readonly MonoBehaviour _coroutineContainer;
 
         public bool IsComplete => _isComplete;
 
-        public StartTurnDraw(DrawCardRoot drawCardRoot, SimpleDrawCardAnimation simpleDrawCardAnimation, FireDrawCardAnimation fireDrawCardAnimation, int countDrawCards)
+        public StartTurnDraw(DrawCardRoot drawCardRoot, SimpleDrawCardAnimation simpleDrawCardAnimation,
+            FireDrawCardAnimation fireDrawCardAnimation, int countDrawCards, MonoBehaviour coroutineContainer)
         {
             _drawCardRoot = drawCardRoot;
             _simpleDrawCardAnimation = simpleDrawCardAnimation;
@@ -28,6 +27,7 @@ namespace GameFields.Persons.DrawCards
             _countDrawCards = countDrawCards;
 
             _currentAnimation = _simpleDrawCardAnimation;
+            _coroutineContainer = coroutineContainer;
             _countExtraAnimationTurns = 0;
         }
 
@@ -38,7 +38,7 @@ namespace GameFields.Persons.DrawCards
 
         public void StartStep()
         {
-            DrawingCards().ToUniTask();
+            _coroutineContainer.StartCoroutine(DrawingCards());
 
             if (_countExtraAnimationTurns > 0)
             {

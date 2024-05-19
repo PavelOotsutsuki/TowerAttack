@@ -1,17 +1,11 @@
-using Cards;
-using System.Collections.Generic;
-using GameFields.Effects;
 using GameFields.Persons.Discovers;
 using GameFields.DiscardPiles;
-using GameFields.Seats;
-using System;
 using UnityEngine;
 using GameFields.Persons.Tables;
 using GameFields.Persons.Hands;
 using GameFields.Persons.Towers;
 using GameFields.Persons.DrawCards;
 using System.Collections;
-using Cysharp.Threading.Tasks;
 
 namespace GameFields.Persons
 {
@@ -23,12 +17,16 @@ namespace GameFields.Persons
         private Discover _discover;
         private ITableActivator _tableActivator;
         private IBlockable _handBlockable;
+        private readonly MonoBehaviour _coroutineContainer;
 
-        public Player(DiscardPile discardPile, ITableActivator tableActivator, HandPlayer hand, Table table, Tower tower, Discover discover, DrawCardRoot drawCardRoot, StartTurnDraw startTurnDraw) : base(hand, table, drawCardRoot, tower, discardPile, startTurnDraw)
+        public Player(DiscardPile discardPile, ITableActivator tableActivator, HandPlayer hand, Table table, Tower tower,
+            Discover discover, DrawCardRoot drawCardRoot, StartTurnDraw startTurnDraw, MonoBehaviour coroutineContainer)
+            : base(hand, table, drawCardRoot, tower, discardPile, startTurnDraw)
         {
             _discover = discover;
             _tableActivator = tableActivator;
             _handBlockable = hand;
+            _coroutineContainer = coroutineContainer;
         }
 
         public override void Init()
@@ -41,7 +39,7 @@ namespace GameFields.Persons
             _handBlockable.Block();
             _tableActivator.Activate();
 
-            ProcessingTurn().ToUniTask();
+            _coroutineContainer.StartCoroutine(ProcessingTurn());
 
 
             //DrawCardRoot.StartTurnDraw(_handBlockable.Unblock);

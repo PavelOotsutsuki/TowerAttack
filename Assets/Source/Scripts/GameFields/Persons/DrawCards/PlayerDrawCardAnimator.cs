@@ -1,12 +1,3 @@
-using System.Collections;
-using System;
-using Cards;
-using Cysharp.Threading.Tasks;
-using GameFields.Persons.Hands;
-using Tools;
-using UnityEngine;
-using UnityEngine.UI;
-
 namespace GameFields.Persons.DrawCards
 {
     public class PlayerDrawCardAnimator//: SimpleDrawCardAnimation

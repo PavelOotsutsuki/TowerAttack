@@ -7,7 +7,6 @@ using GameFields.StartTowerCardSelections;
 using GameFields.Effects;
 using GameFields.DiscardPiles;
 using GameFields.Seats;
-using GameFields.Persons.Tables;
 
 namespace GameFields
 {
@@ -39,8 +38,8 @@ namespace GameFields
 
             FightResult fightResult = new FightResult();
 
-            Fight fight = new Fight(_player, _enemyAI, _endTurnButton, fightResult);
-            EffectRoot effectRoot = new EffectRoot(_deck, _discardPile, fight);
+            Fight fight = new Fight(_player, _enemyAI, _endTurnButton, fightResult, this);
+            EffectRoot effectRoot = new EffectRoot(_deck, _discardPile, fight, this);
             EndFight endFight = new EndFight(fightResult);
 
             _personCreator.InitPersonsData(effectRoot, _seatPool);
@@ -48,7 +47,7 @@ namespace GameFields
             _enemyAI.Init();
 
             _endTurnButton.Init(fight);
-            FightStepsController fightStepsController = new FightStepsController(_startTowerCardSelection, fight, endFight);
+            FightStepsController fightStepsController = new FightStepsController(_startTowerCardSelection, fight, endFight, this);
 
             //fightStepsController.PrepareToStart();
             fightStepsController.StartStep();

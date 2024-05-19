@@ -1,7 +1,4 @@
-using Tools;
 using UnityEngine;
-using Cysharp.Threading.Tasks;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace GameFields.EndTurnButtons
