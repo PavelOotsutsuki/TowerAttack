@@ -1,11 +1,14 @@
 using System.Collections;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
+using GameFields.Persons.Hands;
+using Cards;
+using GameFields.EndTurnButtons;
 
 namespace GameFields.Persons
 {
     [System.Serializable]
-    public class EnemyDragAndDropImitation
+    public class EnemyDragAndDropImitation: ITurnStep
     {
         private const int CountLogics = 1;
         private const float SelectYDirection = 1;
@@ -23,30 +26,60 @@ namespace GameFields.Persons
         [SerializeField] private int _countDrawCards = 1;
         [SerializeField] private float _drawCardsDelay = 0.5f;
 
+        private Hand _hand;
+        private bool _isComplete;
+        private CardDragAndDropImitationActions _cardImitationActions;
+
         public int CountDrawCards => _countDrawCards;
         public float DrawCardsDelay => _drawCardsDelay;
+
+        public bool IsComplete => _isComplete;
+
         //public bool IsComplete => _isComplete;
 
         //private IEndTurnHandler _endTurnHandler;
 
-        private System.Action _callback;
-        private CardDragAndDropImitationActions _cardImitationActions;
+        //private System.Action _callback;
 
-        internal void Init(/*IEndTurnHandler endTurnHandler, */CardDragAndDropImitationActions cardImitationActions, System.Action callback)
+        internal void Init(/*IEndTurnHandler endTurnHandler, */CardDragAndDropImitationActions cardImitationActions, Hand hand)
         {
             //_endTurnHandler = endTurnHandler;
-            _callback = callback;
+            _isComplete = false;
+            //_callback = callback;
+            _hand = hand;
             _cardImitationActions = cardImitationActions;
         }
 
-        internal void StartDragAndDropAnimation()
+        //internal void StartDragAndDropAnimation()
+        //{
+        //    int logicNumber = Random.Range(1, CountLogics + 1);
+
+        //    if (logicNumber == 1)
+        //    {
+        //        DragAndDropBehaviour1().ToUniTask();
+        //    }
+        //}
+        public void StartStep()
         {
             int logicNumber = Random.Range(1, CountLogics + 1);
 
             if (logicNumber == 1)
             {
-                DragAndDropBehaviour1().ToUniTask();
+                if (_hand.TryGetCard(out Card card))
+                {
+                    _cardImitationActions.SetCard(card);
+                    DragAndDropBehaviour1().ToUniTask();
+                }
+                else
+                {
+                    _isComplete = true;
+                }
             }
+        }
+
+        public void PrepareToStart()
+        {
+            _isComplete = false;
         }
 
         private IEnumerator DragAndDropBehaviour1()
@@ -81,7 +114,7 @@ namespace GameFields.Persons
             yield return new WaitForSeconds(_endTurnDelay);
 
             //_endTurnHandler.OnEndTurn();
-            _callback?.Invoke();
+            _isComplete = true;
         }
     }
 }

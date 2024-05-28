@@ -1,6 +1,6 @@
 namespace GameFields
 {
-    public interface IStateMachineStep
+    public interface IStateMachineState
     {
         public bool IsComplete { get; }
 

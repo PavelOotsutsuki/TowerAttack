@@ -6,18 +6,21 @@ using UnityEngine.UI;
 
 namespace GameFields.EndTurnButtons
 {
-    public class EndTurnButton : MonoBehaviour
+    public class EndTurnButton : MonoBehaviour, IButtonActivator
     {
         [SerializeField] private Button _button;
         [SerializeField] private ChangeSideAnimator _changeSideAnimator;
 
-        private IEndTurnHandler _endTurnHandler;
+        //private IEndTurnHandler _endTurnHandler;
 
-        public void Init(IEndTurnHandler endTurnHandler)
+        public bool IsActive => _changeSideAnimator.IsActiveSide;
+
+        public void Init()
         {
-            _endTurnHandler = endTurnHandler;
+            //_endTurnHandler = endTurnHandler;
 
             _changeSideAnimator.Init(_button);
+            _changeSideAnimator.PlayLockButtonAnimation();
         }
 
         public void SetActiveSide()
@@ -43,7 +46,7 @@ namespace GameFields.EndTurnButtons
         private void SetDeactiveSide()
         {
             _changeSideAnimator.PlayLockButtonAnimation();
-            _endTurnHandler.OnEndTurn();
+            //_endTurnHandler.OnEndTurn();
         }
     }
 }

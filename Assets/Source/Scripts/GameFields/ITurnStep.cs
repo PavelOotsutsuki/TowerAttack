@@ -1,5 +1,7 @@
 namespace GameFields
 {
-    public interface ITurnStep: IStateMachineStep
-    { }
+    public interface ITurnStep: IStateMachineState
+    {
+        public void PrepareToStart();
+    }
 }

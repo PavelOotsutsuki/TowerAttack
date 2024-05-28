@@ -1,5 +1,5 @@
 namespace GameFields
 {
-    public interface IFightStep : IStateMachineStep
+    public interface IFightStep : IStateMachineState
     { }
 }

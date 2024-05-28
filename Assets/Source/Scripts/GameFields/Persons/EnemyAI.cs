@@ -25,9 +25,10 @@ namespace GameFields.Persons
         private DiscoverImitation _discoverImitation;
         private ITableDeactivator _tableDeactivator;
 
-        private CardDragAndDropImitationActions _cardDragAndDropImitationActions;
+        //private CardDragAndDropImitationActions _cardDragAndDropImitationActions;
 
-        //private 
+        private Queue<ITurnStep> _turnSteps;
+        private ITurnStep _currentStep;
 
         private bool _isComplete;
 
@@ -39,63 +40,74 @@ namespace GameFields.Persons
             _discoverImitation = discoverImitation;
             _tableDeactivator = tableDeactivator;
 
-            _cardDragAndDropImitationActions = new CardDragAndDropImitationActions(Hand, Table);
+            //_turnSteps = new ITurnStep[]
+            //{
+            //    startTurnDraw,
+            //    _enemyDragAndDropImitation
+            //};
+
+            //_cardDragAndDropImitationActions = new CardDragAndDropImitationActions(Hand, Table);
         }
 
-        public bool IsComplete => _isComplete;
+        public override bool IsComplete => _isComplete;
 
-        public override void Init()
+        //public override void Init()
+        //{
+        //    _enemyDragAndDropImitation.Init(_cardDragAndDropImitationActions, Hand);
+        //}
+        public override void PrepareToStart()
         {
-            _enemyDragAndDropImitation.Init(_cardDragAndDropImitationActions, CompleteImitation);
+            _isComplete = false;
+
+            _turnSteps = new Queue<ITurnStep>();
+
+            EnqueueStep(StartTurnDraw);
+            EnqueueStep(_enemyDragAndDropImitation);
         }
 
         public override void StartTurn()
         {
             _tableDeactivator.Deactivate();
+            _currentStep = _turnSteps.Dequeue();
 
-            _isComplete = false;
-
-            //if (cards.Count > 0)
-            //{
             ProcessingTurn().ToUniTask();
-            //}
-            //else
-            //{
-            //    PlayDragAndDropImitation();
-            //}
-        }
-
-        private void PlayDragAndDropImitation()
-        {
-            if (Hand.TryGetCard(out Card card))
-            {
-                _cardDragAndDropImitationActions.SetCard(card);
-                _enemyDragAndDropImitation.StartDragAndDropAnimation();
-            }
-            else
-            {
-                CompleteImitation();
-            }
-        }
-
-        private void CompleteImitation()
-        {
-            _isComplete = true;
         }
 
         private IEnumerator ProcessingTurn()
         {
-            StartTurnDraw.PrepareToStart();
-            StartTurnDraw.StartStep();
+            //StartTurnDraw.PrepareToStart();
+            //StartTurnDraw.StartStep();
 
-            yield return new WaitUntil(() => StartTurnDraw.IsComplete);
+            //yield return new WaitUntil(() => StartTurnDraw.IsComplete);
 
-            PlayDragAndDropImitation();
+            //PlayDragAndDropImitation();
+
+            while (_isComplete == false)
+            {
+                _currentStep.StartStep();
+                yield return new WaitUntil(() => _currentStep.IsComplete);
+
+                NextStep();
+            }
         }
 
-        private void NextTurn()
+        private void NextStep()
         {
+            if (_turnSteps.Count > 0)
+            {
+                _currentStep = _turnSteps.Dequeue();
+            }
+            else
+            {
+                _isComplete = true;
+            }
+        }
 
+        private void EnqueueStep(ITurnStep turnStep)
+        {
+            _turnSteps.Enqueue(turnStep);
+
+            turnStep.PrepareToStart();
         }
     }
 }

@@ -1,6 +1,7 @@
 using Cards;
 using GameFields.DiscardPiles;
 using GameFields.Effects;
+using GameFields.EndTurnButtons;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.DrawCards;
 using GameFields.Persons.Hands;
@@ -59,11 +60,13 @@ namespace GameFields.Persons
 
         private DiscardPile _discardPile;
         private Deck _deck;
+        private EndTurnButton _endTurnButton;
 
-        public void Init(DiscardPile discardPile, Deck deck)
+        public void Init(DiscardPile discardPile, Deck deck, EndTurnButton endTurnButton)
         {
             _discardPile = discardPile;
             _deck = deck;
+            _endTurnButton = endTurnButton;
         }
 
         public void InitPersonsData(EffectRoot effectRoot, SeatPool seatPool)
@@ -78,9 +81,11 @@ namespace GameFields.Persons
             FireDrawCardAnimation fireDrawCardAnimation = new FireDrawCardAnimation(_playerHand, _fireDrawCardDelay);
             DrawCardRoot drawCardRoot = new DrawCardRoot(new SimpleDrawCardAnimation(_playerHand, _simpleDrawCardDelay), _deck);
 
+            TurnProcessing turnProcessing = new TurnProcessing(_endTurnButton, _playerHand);
+
             StartTurnDraw startTurnDraw = new StartTurnDraw(drawCardRoot, simpleDrawCardAnimation, fireDrawCardAnimation, _playerCountStartDrawCards);
 
-            return new Player(_discardPile, _tableActivator, _playerHand, _playerTable, _playerTower, _playerDiscover, drawCardRoot, startTurnDraw);
+            return new Player(_discardPile, _tableActivator, _playerHand, _playerTable, _playerTower, _playerDiscover, drawCardRoot, startTurnDraw, turnProcessing);
         }
 
         public EnemyAI CreateEnemyAI()
@@ -88,6 +93,9 @@ namespace GameFields.Persons
             SimpleDrawCardAnimation simpleDrawCardAnimation = new SimpleDrawCardAnimation(_enemyHand, _simpleDrawCardDelay);
             FireDrawCardAnimation fireDrawCardAnimation = new FireDrawCardAnimation(_enemyHand, _fireDrawCardDelay);
             DrawCardRoot drawCardRoot = new DrawCardRoot(new SimpleDrawCardAnimation(_enemyHand, _simpleDrawCardDelay), _deck);
+            CardDragAndDropImitationActions cardDragAndDropImitationActions = new CardDragAndDropImitationActions(_enemyHand, _enemyTable);
+
+            _enemyDragAndDropImitation.Init(cardDragAndDropImitationActions, _enemyHand);
 
             StartTurnDraw startTurnDraw = new StartTurnDraw(drawCardRoot, simpleDrawCardAnimation, fireDrawCardAnimation, _enemyCountStartDrawCards);
 

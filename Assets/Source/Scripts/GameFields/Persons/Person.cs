@@ -29,7 +29,6 @@ namespace GameFields.Persons
 
         private DiscardPile _discardPile;
 
-        public bool IsTowerFilled => _tower.IsTowerFill;
 
         public Person(Hand hand, Table table, DrawCardRoot drawCardRoot, Tower tower, DiscardPile discardPile, StartTurnDraw startTurnDraw)
         {
@@ -42,8 +41,12 @@ namespace GameFields.Persons
             _discardPile = discardPile;
         }
 
-        public abstract void Init();
+        public bool IsTowerFilled => _tower.IsTowerFill;
+        //public abstract void Init();
+        public abstract bool IsComplete { get; }
+
         public abstract void StartTurn();
+        public abstract void PrepareToStart();
 
         //{
         //    Hand.Init(seatPool);

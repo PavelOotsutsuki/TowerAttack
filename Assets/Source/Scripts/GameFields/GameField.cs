@@ -30,7 +30,8 @@ namespace GameFields
             _seatPool.Init();
             _deck.Init(cardsInDeck);
             _discardPile.Init(_seatPool);
-            _personCreator.Init(_discardPile, _deck);
+            _endTurnButton.Init();
+            _personCreator.Init(_discardPile, _deck, _endTurnButton);
 
             _player = _personCreator.CreatePlayer();
             _enemyAI = _personCreator.CreateEnemyAI();
@@ -44,10 +45,9 @@ namespace GameFields
             EndFight endFight = new EndFight(fightResult);
 
             _personCreator.InitPersonsData(effectRoot, _seatPool);
-            _player.Init();
-            _enemyAI.Init();
+            //_player.Init();
+            //_enemyAI.Init();
 
-            _endTurnButton.Init(fight);
             FightStepsController fightStepsController = new FightStepsController(_startTowerCardSelection, fight, endFight);
 
             //fightStepsController.PrepareToStart();

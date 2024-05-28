@@ -12,6 +12,8 @@ namespace GameFields
     {
         private readonly int _maxTurns = 100;
 
+        private static int _numbOperation;
+
         private Player _player;
         private EnemyAI _enemy;
         private EndTurnButton _endTurnButton;
@@ -25,6 +27,8 @@ namespace GameFields
        
         public Fight(Player player, EnemyAI enemy, EndTurnButton endTurnButton, FightResult fightResult)
         {
+            _numbOperation = 0;
+
             _isComlpete = false;
             _turnNumber = 1;
 
@@ -45,6 +49,7 @@ namespace GameFields
             DiscardCards();
             CheckEndFight();
             SwitchPerson();
+            StartTurn();
         }
 
         //public void PrepareToStart()
@@ -54,7 +59,10 @@ namespace GameFields
 
         public void StartStep()
         {
-            SetPlayerTurn();
+            _activePerson = _player;
+            _deactivePerson = _enemy;
+
+            StartTurn();
         }
 
         private void DiscardCards()
@@ -71,42 +79,71 @@ namespace GameFields
             }
         }
 
+        //private void SwitchPerson()
+        //{
+        //    if (_activePerson == _player)
+        //    {
+        //        SetEnemyTurn();
+        //    }
+        //    else
+        //    {
+        //        SetPlayerTurn();
+        //    }
+        //}
+
+        //private void SetPlayerTurn()
+        //{
+        //    _activePerson = _player;
+        //    _deactivePerson = _enemy;
+
+        //    _activePerson.StartTurn();
+
+        //    //_endTurnButton.SetActiveSide();
+        //}
+
         private void SwitchPerson()
         {
-            if (_activePerson == _player)
-            {
-                SetEnemyTurn();
-            }
-            else
-            {
-                SetPlayerTurn();
-            }
+            Person tempPerson = _activePerson;
+
+            _activePerson = _deactivePerson;
+            _deactivePerson = tempPerson;
         }
 
-        private void SetPlayerTurn()
+        private void StartTurn()
         {
-            _activePerson = _player;
-            _deactivePerson = _enemy;
+            _activePerson.PrepareToStart();
 
             _activePerson.StartTurn();
 
-            _endTurnButton.SetActiveSide();
+            TurnProcessing().ToUniTask();
         }
 
-        private void SetEnemyTurn()
+        //private void SetEnemyTurn()
+        //{
+        //    _activePerson = _enemy;
+        //    _deactivePerson = _player;
+
+        //    _activePerson.StartTurn();
+
+        //    EnemyTurnProcessing().ToUniTask();
+        //}
+
+        //private IEnumerator EnemyTurnProcessing()
+        //{
+        //    yield return new WaitUntil(() => _enemy.IsComplete);
+
+        //    OnEndTurn();
+        //}
+
+        private IEnumerator TurnProcessing()
         {
-            _activePerson = _enemy;
-            _deactivePerson = _player;
+            _numbOperation++;
+            int numbOperation = _numbOperation;
 
-            _activePerson.StartTurn();
+            Debug.Log(numbOperation + ") _activePerson (TurnProcessing) start: " + _activePerson);
+            yield return new WaitUntil(() => _activePerson.IsComplete);
 
-            EnemyTurnProcessing().ToUniTask();
-        }
-
-        private IEnumerator EnemyTurnProcessing()
-        {
-            yield return new WaitUntil(() => _enemy.IsComplete);
-
+            Debug.Log(numbOperation + ") activePerson (TurnProcessing) end: " + _activePerson);
             OnEndTurn();
         }
     }

@@ -23,17 +23,38 @@ namespace GameFields.Persons
         private Discover _discover;
         private ITableActivator _tableActivator;
         private IBlockable _handBlockable;
+        private TurnProcessing _turnProcessing;
 
-        public Player(DiscardPile discardPile, ITableActivator tableActivator, HandPlayer hand, Table table, Tower tower, Discover discover, DrawCardRoot drawCardRoot, StartTurnDraw startTurnDraw) : base(hand, table, drawCardRoot, tower, discardPile, startTurnDraw)
+        private Queue<ITurnStep> _turnSteps;
+        private ITurnStep _currentStep;
+
+        private bool _isComplete;
+
+        public Player(DiscardPile discardPile, ITableActivator tableActivator, HandPlayer hand, Table table, Tower tower, Discover discover, DrawCardRoot drawCardRoot, StartTurnDraw startTurnDraw, TurnProcessing turnProcessing) : base(hand, table, drawCardRoot, tower, discardPile, startTurnDraw)
         {
             _discover = discover;
             _tableActivator = tableActivator;
             _handBlockable = hand;
+            _turnProcessing = turnProcessing;
+
+            _discover.Deactivate();
         }
 
-        public override void Init()
+        public override bool IsComplete => _isComplete;
+
+        //public override void Init()
+        //{
+        //    _discover.Deactivate();
+        //}
+
+        public override void PrepareToStart()
         {
-            _discover.Deactivate();
+            _isComplete = false;
+
+            _turnSteps = new Queue<ITurnStep>();
+
+            EnqueueStep(StartTurnDraw);
+            EnqueueStep(_turnProcessing);
         }
 
         public override void StartTurn()
@@ -41,20 +62,59 @@ namespace GameFields.Persons
             _handBlockable.Block();
             _tableActivator.Activate();
 
+            _currentStep = _turnSteps.Dequeue();
+
             ProcessingTurn().ToUniTask();
 
 
             //DrawCardRoot.StartTurnDraw(_handBlockable.Unblock);
         }
 
+        //private IEnumerator ProcessingTurn()
+        //{
+        //    StartTurnDraw.PrepareToStart();
+        //    StartTurnDraw.StartStep();
+
+        //    yield return new WaitUntil(()=> StartTurnDraw.IsComplete);
+
+        //    _handBlockable.Unblock();
+        //}
+
         private IEnumerator ProcessingTurn()
         {
-            StartTurnDraw.PrepareToStart();
-            StartTurnDraw.StartStep();
+            //StartTurnDraw.PrepareToStart();
+            //StartTurnDraw.StartStep();
 
-            yield return new WaitUntil(()=> StartTurnDraw.IsComplete);
+            //yield return new WaitUntil(() => StartTurnDraw.IsComplete);
 
-            _handBlockable.Unblock();
+            //PlayDragAndDropImitation();
+
+            while (_isComplete == false)
+            {
+                _currentStep.StartStep();
+                yield return new WaitUntil(() => _currentStep.IsComplete);
+
+                NextStep();
+            }
+        }
+
+        private void NextStep()
+        {
+            if (_turnSteps.Count > 0)
+            {
+                _currentStep = _turnSteps.Dequeue();
+            }
+            else
+            {
+                _isComplete = true;
+            }
+        }
+
+        private void EnqueueStep(ITurnStep turnStep)
+        {
+            _turnSteps.Enqueue(turnStep);
+
+            turnStep.PrepareToStart();
         }
     }
 }

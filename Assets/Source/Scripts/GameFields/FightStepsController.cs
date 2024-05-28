@@ -13,10 +13,9 @@ namespace GameFields
         //private Fight _fight;
         //private EndFight _endFight;
 
-        private IFightStep[] _fightSteps;
+        private Queue<IFightStep> _fightSteps;
 
         private IFightStep _currentStep;
-        private int _currentStepIndex;
 
         private bool _isComplete;
 
@@ -28,14 +27,11 @@ namespace GameFields
 
             _isComplete = false;
 
-            _fightSteps = new IFightStep[]
-            {
-                startTowerCardSelections,
-                fight,
-                endFight
-            };
+            _fightSteps = new Queue<IFightStep>();
 
-            _currentStepIndex = 1;
+            //_fightSteps.Enqueue(startTowerCardSelections);
+            _fightSteps.Enqueue(fight);
+            _fightSteps.Enqueue(endFight);
         }
 
         //public bool IsComplete => _startTowerCardSelections.IsComplete && _fight.IsComplete && _endFight.IsComplete;
@@ -54,7 +50,7 @@ namespace GameFields
 
         public void StartStep()
         {
-            _currentStep = _fightSteps[_currentStepIndex];
+            _currentStep = _fightSteps.Dequeue();
 
             Starting().ToUniTask();
         }
@@ -81,16 +77,9 @@ namespace GameFields
 
         private void NextStep()
         {
-            _currentStepIndex++;
-
-            if(_currentStepIndex < 0)
+            if (_fightSteps.Count > 0)
             {
-                throw new ArgumentOutOfRangeException("Invalid fight step index");
-            }
-
-            if (_currentStepIndex < _fightSteps.Length)
-            {
-                _currentStep = _fightSteps[_currentStepIndex];
+                _currentStep = _fightSteps.Dequeue();
             }
             else
             {

@@ -25,11 +25,14 @@ namespace GameFields.EndTurnButtons
         private Button _button;
         private bool _isAnimationInWork;
 
+        public bool IsActiveSide { get; private set; }
+
         public void Init(Button button)
         {
             _endTurnButtonMovement = new Movement(_buttonTransform);
             _button = button;
             _isAnimationInWork = false;
+            IsActiveSide = false;
 
             _activeViewInvertDelay = new WaitForSeconds(_activeViewInvertDuration);
             _deactiveViewInvertDelay = new WaitForSeconds(_deactiveViewInvertDuration);
@@ -47,6 +50,8 @@ namespace GameFields.EndTurnButtons
 
         private IEnumerator PlayingLockButtonAnimation()
         {
+            IsActiveSide = false;
+
             yield return new WaitWhile(() => _isAnimationInWork);
 
             if (_button.interactable)
@@ -69,6 +74,8 @@ namespace GameFields.EndTurnButtons
 
         private IEnumerator PlayingUnlockButtonAnimation()
         {
+            IsActiveSide = true;
+
             yield return new WaitWhile(() => _isAnimationInWork);
 
             if (_button.interactable == false)
