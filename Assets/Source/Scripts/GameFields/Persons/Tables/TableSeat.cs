@@ -2,7 +2,7 @@ using UnityEngine;
 using Cards;
 using Tools;
 using GameFields.Effects;
-using System;
+//using System;
 
 namespace GameFields.Persons.Tables
 {
@@ -14,24 +14,24 @@ namespace GameFields.Persons.Tables
         private EffectRoot _effectRoot;
         private Effect _effect;
 
-        internal bool IsEmpty => _cardCharacter == null;
-        internal bool IsDiscarded => _effect.CountTurns <= 0;
-        internal CardCharacter CardCharacter => _cardCharacter;
+        //internal bool IsEmpty => _cardCharacter == null;
+        //internal bool IsDiscarded => _effect.CountTurns <= 0;
+        //internal CardCharacter CardCharacter => _cardCharacter;
 
         internal void Init(EffectRoot effectRoot)
         {
             _effectRoot = effectRoot;
         }
 
-        public void DecreaseCounter()
-        {
-            if (IsEmpty)
-            {
-                return;
-            }
+        //public void DecreaseCounter()
+        //{
+        //    if (IsEmpty)
+        //    {
+        //        return;
+        //    }
 
-            _effect.DecreaseCounter();
-        }
+        //    _effect.DecreaseCounter();
+        //}
 
         internal void SetCardCharacter(CardCharacter cardCharacter)
         {
@@ -48,7 +48,7 @@ namespace GameFields.Persons.Tables
         {
             cardCharacter = null;
 
-            if (IsEmpty)
+            if (IsEmpty())
             {
                 return false;
             }
@@ -63,6 +63,11 @@ namespace GameFields.Persons.Tables
             cardCharacter = _cardCharacter;
             _cardCharacter = null;
             return true;
+        }
+
+        internal bool IsEmpty()
+        {
+            return _cardCharacter == null;
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

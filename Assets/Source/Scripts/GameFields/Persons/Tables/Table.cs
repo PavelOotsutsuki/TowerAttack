@@ -38,13 +38,13 @@ namespace GameFields.Persons.Tables
             return false;
         }
 
-        public void DecreaseCardCounter()
-        {
-            foreach (var seat in _cardSeats)
-            {
-                seat.DecreaseCounter();
-            }
-        }
+        //public void DecreaseCardCounter()
+        //{
+        //    foreach (var seat in _cardSeats)
+        //    {
+        //        seat.DecreaseCounter();
+        //    }
+        //}
 
         public List<Card> GetDiscardCards()
         {
@@ -52,9 +52,9 @@ namespace GameFields.Persons.Tables
 
             foreach (TableSeat tableSeat in _cardSeats)
             {
-                if (tableSeat.IsDiscarded)
+                if (tableSeat.TryDiscardCardCharacter(out CardCharacter cardCharacter))
                 {
-                    discardCards.Add(_playedCards.GetCard(tableSeat.CardCharacter));
+                    discardCards.Add(_playedCards.GetCard(cardCharacter));
                 }
             }
 
@@ -72,7 +72,7 @@ namespace GameFields.Persons.Tables
 
             foreach (int index in _cardSeatsSortIndices)
             {
-                if (_cardSeats[index].IsEmpty)
+                if (_cardSeats[index].IsEmpty())
                 {
                     cardSeat = _cardSeats[index];
                     return true;
