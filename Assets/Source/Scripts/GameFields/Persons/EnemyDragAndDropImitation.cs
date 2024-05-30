@@ -61,6 +61,7 @@ namespace GameFields.Persons
         //}
         public void StartStep()
         {
+            _isComplete = false;
             int logicNumber = Random.Range(1, CountLogics + 1);
 
             if (logicNumber == 1)
@@ -77,10 +78,10 @@ namespace GameFields.Persons
             }
         }
 
-        public void PrepareToStart()
-        {
-            _isComplete = false;
-        }
+        //public void PrepareToStart()
+        //{
+        //    //_isComplete = false;
+        //}
 
         private IEnumerator DragAndDropBehaviour1()
         {

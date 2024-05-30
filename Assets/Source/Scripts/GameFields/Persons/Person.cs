@@ -1,82 +1,105 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Cards;
+using Cysharp.Threading.Tasks;
 using GameFields.DiscardPiles;
-using GameFields.Effects;
 using GameFields.Persons.DrawCards;
 using GameFields.Persons.Hands;
 using GameFields.Persons.Tables;
 using GameFields.Persons.Towers;
-using GameFields.Seats;
 using UnityEngine;
 
 namespace GameFields.Persons
 {
-    //[Serializable]
-    public abstract class Person : IStartTowerCardSelectionListener
+    public abstract class Person : IStartTowerCardSelectionListener, IStateMachineState
     {
-        //[SerializeField] protected Hand Hand;
-        //[SerializeField] protected Table Table;
-        //[SerializeField] protected DrawCardRoot DrawCardRoot;
-        //[SerializeField] private Tower _tower;
+        private Hand _hand;
+        private Table _table;
+        private DrawCardRoot _drawCardRoot;
+        private StartTurnDraw _startTurnDraw;
 
-        protected Hand Hand;
-        protected Table Table;
-        protected DrawCardRoot DrawCardRoot;
-        protected StartTurnDraw StartTurnDraw;
+        private ITurnStep _turnProcess;
 
         private Tower _tower;
 
         private DiscardPile _discardPile;
 
+        private Queue<ITurnStep> _turnSteps;
+        private ITurnStep _currentStep;
 
-        public Person(Hand hand, Table table, DrawCardRoot drawCardRoot, Tower tower, DiscardPile discardPile, StartTurnDraw startTurnDraw)
+        private bool _isComplete;
+
+        public Person(Hand hand, Table table, DrawCardRoot drawCardRoot, Tower tower, DiscardPile discardPile,
+            StartTurnDraw startTurnDraw, ITurnStep turnProcess)
         {
-            Hand = hand;
-            Table = table;
+            _hand = hand;
+            _table = table;
             _tower = tower;
-            DrawCardRoot = drawCardRoot;
-            StartTurnDraw = startTurnDraw;
+            _drawCardRoot = drawCardRoot;
+            _startTurnDraw = startTurnDraw;
+            _turnProcess = turnProcess;
 
             _discardPile = discardPile;
         }
 
+        public bool IsComplete => _isComplete;
         public bool IsTowerFilled => _tower.IsTowerFill;
-        //public abstract void Init();
-        public abstract bool IsComplete { get; }
 
-        public abstract void StartTurn();
-        public abstract void PrepareToStart();
+        public void StartStep()
+        {
+            _isComplete = false;
 
-        //{
-        //    Hand.Init(seatPool);
-        //    _tower.Init(Hand);
-        //    Table.Init(Hand, effectRoot);
+            _turnSteps = new Queue<ITurnStep>();
 
-        //    DrawCardRoot.Init(Hand);
-        //}
+            EnqueueStep(_startTurnDraw);
+            EnqueueStep(_turnProcess);
 
+            OnStartStep();
 
-        //public virtual void Init(EffectRoot effectRoot, Deck deck, DiscardPile discardPile, SeatPool seatPool)
-        //{
-        //    Deck = deck;
-        //    _discardPile = discardPile;
+            _currentStep = _turnSteps.Dequeue();
 
-        //    Hand.Init(seatPool);
-        //    _tower.Init(Hand);
-        //    Table.Init(Hand, effectRoot);
-
-        //    DrawCardRoot.Init(Hand);
-        //}
+            ProcessingTurn().ToUniTask();
+        }
 
         public void DiscardCards()
         {
-            _discardPile.DiscardCards(Table.GetDiscardCards());
+            _discardPile.DiscardCards(_table.GetDiscardCards());
         }
 
         public List<Card> DrawCards(int countCards, Action callback = null)
         {
-            return DrawCardRoot.DrawCards(countCards, callback);
+            return _drawCardRoot.DrawCards(countCards, callback);
+        }
+
+        protected abstract void OnStartStep();
+
+        private IEnumerator ProcessingTurn()
+        {
+            while (_isComplete == false)
+            {
+                _currentStep.StartStep();
+                yield return new WaitUntil(() => _currentStep.IsComplete);
+
+                NextStep();
+            }
+        }
+
+        private void NextStep()
+        {
+            if (_turnSteps.Count > 0)
+            {
+                _currentStep = _turnSteps.Dequeue();
+            }
+            else
+            {
+                _isComplete = true;
+            }
+        }
+
+        private void EnqueueStep(ITurnStep turnStep)
+        {
+            _turnSteps.Enqueue(turnStep);
         }
     }
 }

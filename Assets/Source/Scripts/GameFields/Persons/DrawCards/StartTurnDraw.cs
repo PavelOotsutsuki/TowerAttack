@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -31,13 +29,14 @@ namespace GameFields.Persons.DrawCards
             _countExtraAnimationTurns = 0;
         }
 
-        public void PrepareToStart()
-        {
-            _isComplete = false;
-        }
+        //public void PrepareToStart()
+        //{
+        //    //_isComplete = false;
+        //}
 
         public void StartStep()
         {
+            _isComplete = false;
             DrawingCards().ToUniTask();
 
             if (_countExtraAnimationTurns > 0)

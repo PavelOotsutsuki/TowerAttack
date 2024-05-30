@@ -22,13 +22,14 @@ namespace GameFields.Persons
 
         public bool IsComplete => _isComplete;
 
-        public void PrepareToStart()
-        {
-            _isComplete = false;
-        }
+        //public void PrepareToStart()
+        //{
+        //    //_isComplete = false;
+        //}
 
         public void StartStep()
         {
+            _isComplete = false;
             _buttonActivator.SetActiveSide();
             _handBlockable.Unblock();
 

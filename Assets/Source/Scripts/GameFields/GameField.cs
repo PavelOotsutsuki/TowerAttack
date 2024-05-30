@@ -40,7 +40,7 @@ namespace GameFields
 
             FightResult fightResult = new FightResult();
 
-            Fight fight = new Fight(_player, _enemyAI, _endTurnButton, fightResult);
+            Fight fight = new Fight(_player, _enemyAI, fightResult);
             EffectRoot effectRoot = new EffectRoot(_deck, _discardPile, fight);
             EndFight endFight = new EndFight(fightResult);
 
