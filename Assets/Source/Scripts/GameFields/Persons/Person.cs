@@ -64,7 +64,8 @@ namespace GameFields.Persons
 
         public void DiscardCards()
         {
-            _discardPile.DiscardCards(_table.GetDiscardCards());
+            _table.DecreaseCardCounter();
+            _discardPile.DiscardCards(_table.DiscardedCards);
         }
 
         public List<Card> DrawCards(int countCards, Action callback = null)

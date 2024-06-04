@@ -46,7 +46,7 @@ namespace GameFields.DiscardPiles
         //    }
         //}
 
-        public void DiscardCards(List<Card> cards)
+        public void DiscardCards(IEnumerable<Card> cards)
         {
             DiscardingCards(cards).ToUniTask();
         }
@@ -69,7 +69,7 @@ namespace GameFields.DiscardPiles
         //    ResetDragOptions();
         //}
 
-        private IEnumerator DiscardingCards(List<Card> discardingCards)
+        private IEnumerator DiscardingCards(IEnumerable<Card> discardingCards)
         {
             foreach (Card card in discardingCards)
             {

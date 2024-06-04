@@ -2,7 +2,6 @@ using UnityEngine;
 using Cards;
 using Tools;
 using GameFields.Effects;
-//using System;
 
 namespace GameFields.Persons.Tables
 {
@@ -10,64 +9,35 @@ namespace GameFields.Persons.Tables
     {
         [SerializeField] private RectTransform _rectTransform;
 
-        private CardCharacter _cardCharacter;
         private EffectRoot _effectRoot;
         private Effect _effect;
 
-        //internal bool IsEmpty => _cardCharacter == null;
-        //internal bool IsDiscarded => _effect.CountTurns <= 0;
-        //internal CardCharacter CardCharacter => _cardCharacter;
+        internal bool IsEmpty => CardCharacter == null;
+        internal bool CanBeDiscarded => _effect is {CountTurns: <= 0};
+        internal CardCharacter CardCharacter { get; private set; }
 
         internal void Init(EffectRoot effectRoot)
         {
             _effectRoot = effectRoot;
         }
 
-        //public void DecreaseCounter()
-        //{
-        //    if (IsEmpty)
-        //    {
-        //        return;
-        //    }
+        internal void DecreaseCounter()
+        {
+            if (IsEmpty)
+                return;
 
-        //    _effect.DecreaseCounter();
-        //}
+            _effect.DecreaseCounter();
+        }
+
+        internal void Discard() => CardCharacter = null;
 
         internal void SetCardCharacter(CardCharacter cardCharacter)
         {
             Vector2 cardCharacterPosition = new Vector2(0, 0);
 
-            _cardCharacter = cardCharacter;
-            //_cardCharacter.transform.SetParent(_rectTransform);
-            //_cardCharacter.transform.localPosition = cardCharacterPosition;
-            _cardCharacter.Activate(_rectTransform, cardCharacterPosition);
-            _effect = _effectRoot.PlayEffect(_cardCharacter.Effect);
-        }
-
-        internal bool TryDiscardCardCharacter(out CardCharacter cardCharacter)
-        {
-            cardCharacter = null;
-
-            if (IsEmpty())
-            {
-                return false;
-            }
-
-            _effect.DecreaseCounter();
-
-            if (_effect.CountTurns > 0)
-            {
-                return false;
-            }
-
-            cardCharacter = _cardCharacter;
-            _cardCharacter = null;
-            return true;
-        }
-
-        internal bool IsEmpty()
-        {
-            return _cardCharacter == null;
+            CardCharacter = cardCharacter;
+            CardCharacter.Activate(_rectTransform, cardCharacterPosition);
+            _effect = _effectRoot.PlayEffect(CardCharacter.Effect);
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

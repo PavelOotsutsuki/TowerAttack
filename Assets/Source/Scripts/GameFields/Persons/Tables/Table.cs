@@ -9,12 +9,16 @@ namespace GameFields.Persons.Tables
 {
     public class Table : MonoBehaviour, ICardDropPlace
     {
+        private readonly List<Card> _discardedCards = new();
+        
         [SerializeField] private TableSeat[] _cardSeats;
 
         private IUnbindCardManager _unbindCardManager;
         private int[] _cardSeatsSortIndices;
         private PlayedCards _playedCards;
 
+        public IEnumerable<Card> DiscardedCards => _discardedCards;
+        
         public virtual void Init(IUnbindCardManager unbindCardManager, EffectRoot effectRoot)
         {
             _unbindCardManager = unbindCardManager;
@@ -38,27 +42,20 @@ namespace GameFields.Persons.Tables
             return false;
         }
 
-        //public void DecreaseCardCounter()
-        //{
-        //    foreach (var seat in _cardSeats)
-        //    {
-        //        seat.DecreaseCounter();
-        //    }
-        //}
-
-        public List<Card> GetDiscardCards()
+        public void DecreaseCardCounter()
         {
-            List<Card> discardCards = new List<Card>();
-
-            foreach (TableSeat tableSeat in _cardSeats)
+            _discardedCards.Clear();
+            
+            foreach (var seat in _cardSeats)
             {
-                if (tableSeat.TryDiscardCardCharacter(out CardCharacter cardCharacter))
+                seat.DecreaseCounter();
+
+                if (seat.CanBeDiscarded)
                 {
-                    discardCards.Add(_playedCards.GetCard(cardCharacter));
+                    _discardedCards.Add(_playedCards.GetCard(seat.CardCharacter));
+                    seat.Discard();
                 }
             }
-
-            return discardCards;
         }
 
         public Vector3 GetCentralСoordinates()
@@ -72,7 +69,7 @@ namespace GameFields.Persons.Tables
 
             foreach (int index in _cardSeatsSortIndices)
             {
-                if (_cardSeats[index].IsEmpty())
+                if (_cardSeats[index].IsEmpty)
                 {
                     cardSeat = _cardSeats[index];
                     return true;
@@ -102,9 +99,7 @@ namespace GameFields.Persons.Tables
         private void InitTableSeats(EffectRoot effectRoot)
         {
             foreach (TableSeat tableSeat in _cardSeats)
-            {
                 tableSeat.Init(effectRoot);
-            }
         }
 
         [ContextMenu(nameof(DefineAllComponents))]
