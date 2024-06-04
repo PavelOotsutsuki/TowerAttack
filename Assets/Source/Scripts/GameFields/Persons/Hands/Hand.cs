@@ -38,6 +38,7 @@ namespace GameFields.Persons.Hands
 
         public virtual void AddCard(Card card)
         {
+            card.SetDragAndDropListener(this);
             _handActions.AddCard(card);
         }
 

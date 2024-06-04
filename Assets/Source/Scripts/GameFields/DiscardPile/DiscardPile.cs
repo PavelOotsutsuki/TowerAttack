@@ -73,7 +73,8 @@ namespace GameFields.DiscardPiles
         {
             foreach (Card card in discardingCards)
             {
-                DiscardCardAnimation discardCardAnimation = new DiscardCardAnimation(_discardCardAnimationData, _rectTransform, card, SeatCard);
+                DiscardCardAnimation discardCardAnimation 
+                    = new DiscardCardAnimation(_discardCardAnimationData, _rectTransform, card, SeatCard);
                 discardCardAnimation.Play();
                 yield return new WaitForSeconds(_discardDelay);
             }

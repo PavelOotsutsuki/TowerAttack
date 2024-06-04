@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Cards;
 
 namespace GameFields.Persons.Tables
@@ -14,15 +15,7 @@ namespace GameFields.Persons.Tables
 
         public Card GetCard(CardCharacter cardCharacter)
         {
-            foreach (PlayedCardPair playedCardPair in _playedCardPairs)
-            {
-                if (playedCardPair.CardCharacter == cardCharacter)
-                {
-                    return playedCardPair.Card;
-                }
-            }
-
-            return null;
+            return _playedCardPairs.First(pair => pair.CardCharacter == cardCharacter).Card;
         }
 
         public void Add(CardCharacter cardCharacter, Card card)
