@@ -40,7 +40,6 @@ namespace GameFields.Persons
         {
             yield return new WaitUntil(() => _buttonActivator.IsActive == false);
 
-            Debug.Log("_buttonActivator.IsActive: " + _buttonActivator.IsActive);
             _isComplete = true;
         }
     }

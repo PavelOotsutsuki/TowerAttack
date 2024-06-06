@@ -100,7 +100,10 @@ namespace GameFields.Persons.Hands
         {
             if (_handSeatIndex != -1)
             {
-                _dragCardHandSeat.GetCard().EndDrag();
+                Card dragCard = _dragCardHandSeat.GetCard();
+
+                dragCard.EndDrag();
+                dragCard.SetActiveInteraction(false);
             }
 
             _isActiveInteraction = false;

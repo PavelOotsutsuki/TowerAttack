@@ -58,6 +58,7 @@ namespace Cards
 
         public void OnPointerEnter(PointerEventData eventData)
         {
+            Debug.Log($"Card. On pointer enter. Is block: {_isBlock}");
             if (_isBlock)
             {
                 return;
@@ -73,6 +74,7 @@ namespace Cards
             //    return;
             //}
 
+            Debug.Log($"Card. On pointer exit. Is block: {_isBlock}");
             EndReview();
         }
 
