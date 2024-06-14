@@ -1,3 +1,5 @@
+using System.Collections;
+using Cysharp.Threading.Tasks;
 using Tools;
 using UnityEngine;
 
@@ -9,12 +11,14 @@ namespace Cards
         private Card _card;
         private Movement _movement;
         private ICardDragListener _cardDragListener;
+        private ICardTransformable _blocker;
 
         internal CardDragAndDropActions(CardFront cardFront, Card card)
         {
             _cardFront = cardFront;
             _card = card;
             _movement = new Movement(_card.Transform);
+            _blocker = _card;
         }
 
         internal void SetListener(ICardDragListener cardDragListener)
@@ -36,7 +40,7 @@ namespace Cards
 
         internal void OnReturnInHand(bool isPointerOnCard)
         {
-            //_cardFront.Unblock();
+            _blocker.SetActiveInteraction(true);
 
             if (isPointerOnCard)
             {
@@ -71,5 +75,10 @@ namespace Cards
         {
             _movement.MoveLocalSmoothly(Vector2.zero, Quaternion.identity.eulerAngles, duration, _card.DefaultScaleVector);
         }
+
+        //internal void UnblockCard()
+        //{
+        //    _cardFront.Unblock();
+        //}
     }
 }

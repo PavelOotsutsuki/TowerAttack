@@ -142,26 +142,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e660a199669a3474c96e96b401be9d8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _handActions: {fileID: 6793070961381919315}
-  _canvasGroup: {fileID: 8074137612788998527}
+  _sortDirection: 1
+  _offsetX: 162.5
+  _handLength: 1175
+  _startPositionX: 600
+  _startPositionY: 90
+  _startCardTranslateSpeed: 0.5
+  _rectTransform: {fileID: 1965334848228530649}
+  _sideType: 0
+  _isActiveInteraction: 1
 --- !u!224 &1965334848228530649 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7724948398136886009, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
-  m_PrefabInstance: {fileID: 8102751993681386272}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &6793070961381919315 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3330152501390823795, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
-  m_PrefabInstance: {fileID: 8102751993681386272}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1682169626264638571}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a83ff3e0f932a4000b4fd7e4915b9c59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!225 &8074137612788998527 stripped
-CanvasGroup:
-  m_CorrespondingSourceObject: {fileID: 35988541827660383, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
   m_PrefabInstance: {fileID: 8102751993681386272}
   m_PrefabAsset: {fileID: 0}

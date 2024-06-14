@@ -21,6 +21,8 @@ namespace Cards
 
         private PointerEventData _currentEventData;
 
+        public bool IsDragable => _isDrag || _isAlreadyDrag; //|| _isForciblyDrag;
+
         internal void Init(Transform cardTransform, CardDragAndDropActions cardDragAndDropActions, Transform container)
         {
             _container = container;
@@ -172,6 +174,7 @@ namespace Cards
             yield return new WaitForSeconds(endDuration);
 
             _isDrag = false;
+            //_cardDragAndDropActions.UnblockCard();
 
             EventSystem.current.TryGetComponentInRaycasts(eventData, out CardDragAndDrop cardDragAndDrop);
 

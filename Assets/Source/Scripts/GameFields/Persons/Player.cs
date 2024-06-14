@@ -26,7 +26,7 @@ namespace GameFields.Persons
 
         protected override void OnStartStep()
         {
-            _handBlockable.Block();
+            _handBlockable.ForciblyBlock();
             _tableActivator.Activate();
         }
     }

@@ -102,7 +102,10 @@ namespace Cards
         {
             if (isActive)
             {
-                _cardSideFlipper.ActivateInteraction();
+                if (_cardDragAndDrop.IsDragable == false)
+                {
+                    _cardSideFlipper.ActivateInteraction();
+                }
             }
             else
             {

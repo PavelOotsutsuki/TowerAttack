@@ -14,7 +14,6 @@ namespace Cards
         [SerializeField] private TMP_Text _number;
         [SerializeField] private TMP_Text _name;
         [SerializeField] private TMP_Text _feature;
-        [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private CanvasScaler _canvasScaler;
 
@@ -34,7 +33,7 @@ namespace Cards
 
         internal void Hide()
         {
-            _canvasGroup.alpha = 0;
+            gameObject.SetActive(false);
         }
 
         internal void Show(CardSize cardSize, float positionX, CardSO cardSO)
@@ -49,20 +48,13 @@ namespace Cards
             _screenFactor = Screen.height / _canvasHeight;
             _rectTransform.position = new Vector2(positionX, (_bigHeight / 2f + _canvasHeight / 10f) * _screenFactor);
             _rectTransform.sizeDelta = new Vector2(_bigWidth, _bigHeight);
-            _canvasGroup.alpha = 1;
+            gameObject.SetActive(true);
         }
 
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
-            DefineCanvasGroup();
             DefineRectTransform();
-        }
-
-        [ContextMenu(nameof(DefineCanvasGroup))]
-        private void DefineCanvasGroup()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _canvasGroup, ComponentLocationTypes.InThis);
         }
 
         [ContextMenu(nameof(DefineRectTransform))]

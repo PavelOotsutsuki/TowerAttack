@@ -5351,7 +5351,6 @@ MonoBehaviour:
   _number: {fileID: 4397869607858203462}
   _name: {fileID: 5836341445237938294}
   _feature: {fileID: 3660269446861639844}
-  _canvasGroup: {fileID: 5763220878910184078}
   _rectTransform: {fileID: 7326404107217165916}
   _canvasScaler: {fileID: 2053596825}
 --- !u!1 &744047436
@@ -8386,7 +8385,15 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5881593649367191547, guid: 23aab9bc2b38c49198bea4ff0fa09faf, type: 3}
+      propertyPath: _rectTransform
+      value: 
+      objectReference: {fileID: 1332597214}
+    - target: {fileID: 5881593649367191547, guid: 23aab9bc2b38c49198bea4ff0fa09faf, type: 3}
       propertyPath: _sortDirection
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5881593649367191547, guid: 23aab9bc2b38c49198bea4ff0fa09faf, type: 3}
+      propertyPath: _isActiveInteraction
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

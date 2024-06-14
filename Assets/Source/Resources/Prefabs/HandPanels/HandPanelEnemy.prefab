@@ -116,20 +116,9 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: -1956323984752673927}
   m_SourcePrefab: {fileID: 100100000, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
---- !u!114 &73210832448927967 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3330152501390823795, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
-  m_PrefabInstance: {fileID: 3401076245592762796}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5195335986557511399}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a83ff3e0f932a4000b4fd7e4915b9c59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!225 &3408336169917502451 stripped
-CanvasGroup:
-  m_CorrespondingSourceObject: {fileID: 35988541827660383, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
+--- !u!224 &4902040036255427413 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 7724948398136886009, guid: 1b3723c28e7774c5194bddde74421c4d, type: 3}
   m_PrefabInstance: {fileID: 3401076245592762796}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &5195335986557511399 stripped
@@ -149,5 +138,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a86d889d762e43889e85f38e880170f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _handActions: {fileID: 73210832448927967}
-  _canvasGroup: {fileID: 3408336169917502451}
+  _sortDirection: -1
+  _offsetX: 162.5
+  _handLength: 1175
+  _startPositionX: 600
+  _startPositionY: 90
+  _startCardTranslateSpeed: 0.5
+  _rectTransform: {fileID: 4902040036255427413}
+  _sideType: 1
+  _isActiveInteraction: 0

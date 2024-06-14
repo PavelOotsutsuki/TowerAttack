@@ -29,6 +29,8 @@ namespace Cards
         private CardSO _cardSO;
         private bool _isBlock;
 
+        private PointerEventData _currentEventData;
+
         public bool IsBlock => _isBlock;
 
         internal void Init(CardSO cardSO, RectTransform cartRectTransform, CardDescription cardDescription, BigCard bigCard)
@@ -58,7 +60,8 @@ namespace Cards
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            Debug.Log($"Card. On pointer enter. Is block: {_isBlock}");
+            _currentEventData = eventData;
+
             if (_isBlock)
             {
                 return;
@@ -69,12 +72,12 @@ namespace Cards
 
         public void OnPointerExit(PointerEventData eventData)
         {
+            _currentEventData = eventData;
             //if (_isBlock)
             //{
             //    return;
             //}
 
-            Debug.Log($"Card. On pointer exit. Is block: {_isBlock}");
             EndReview();
         }
 
@@ -103,34 +106,49 @@ namespace Cards
             //        StartReview();
             //    }
             //}
+            //if (_currentEventData is not null)
+            //    Debug.Log("Unblock " + _currentEventData.position);
 
+            //Vector3 ray = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            //RaycastHit2D[] components = Physics2D.RaycastAll(ray, Vector3.forward);
 
-            Vector3 ray = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            RaycastHit2D[] components = Physics2D.RaycastAll(ray, Vector3.forward);
+            //foreach (RaycastHit2D raycastHit in components)
+            //{
+            //    Debug.Log(raycastHit.ToString());
 
-            foreach (RaycastHit2D raycastHit in components)
-            {
-                if (raycastHit.collider.gameObject.TryGetComponent(out CardFront cardFront))
-                {
-                    if (cardFront == this)
-                    {
-                        Debug.Log("УРа");
-                        StartReview();
-                    }
-                }
-            }
+            //    if (raycastHit.collider.gameObject.TryGetComponent(out CardFront cardFront))
+            //    {
+            //        if (cardFront == this)
+            //        {
+            //            Debug.Log("УРа");
+            //            StartReview();
+            //        }
+            //    }
+            //}
+            //if (_currentEventData is not null)
+            //{
+
+            //    EventSystem.current.TryGetComponentInRaycasts(_currentEventData, out CardFront cardFront);
+
+            //    if (cardFront == this)
+            //    {
+            //        Debug.Log("УРа");
+            //        StartReview();
+            //    }
+            //}
+
+        }
+
+        internal void DefineSmallCard()
+        {
+            _bigCard.Hide();
+            Show();
         }
 
         private void DefineBigCard()
         {
             _bigCard.Show(_cardSize, _cardRectTransform.position.x, _cardSO);
             Hide();
-        }
-
-        private void DefineSmallCard()
-        {
-            _bigCard.Hide();
-            Show();
         }
 
         private void DefineSmallSize()
