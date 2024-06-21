@@ -7,7 +7,7 @@ using UnityEngine.UI;
 namespace Cards
 {
     [RequireComponent(typeof(CanvasGroup))]
-    internal class CardFront : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler
+    internal class CardFront : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler, IShowable
     {
         [SerializeField] private float _width = 150f;
         [SerializeField] private float _height = 210f;
@@ -23,8 +23,7 @@ namespace Cards
         [SerializeField] private Color _disableFrameColor;
 
         private RectTransform _cardRectTransform;
-        private CardDescription _cardDescription;
-        private BigCard _bigCard;
+        private CardViewService _cardViewService;
         private CardSize _cardSize;
         private CardSO _cardSO;
         private bool _isBlock;
@@ -33,13 +32,12 @@ namespace Cards
 
         public bool IsBlock => _isBlock;
 
-        internal void Init(CardSO cardSO, RectTransform cartRectTransform, CardDescription cardDescription, BigCard bigCard)
+        internal void Init(CardSO cardSO, RectTransform cartRectTransform, CardViewService cardViewService)
         {
             _isBlock = false;
             _cardSize = new CardSize(_width, _height);
             _cardRectTransform = cartRectTransform;
-            _cardDescription = cardDescription;
-            _bigCard = bigCard;
+            _cardViewService = cardViewService;
             _cardSO = cardSO;
 
             DefineViewCharacters();
@@ -48,14 +46,12 @@ namespace Cards
 
         internal void StartReview()
         {
-            _cardDescription.Show(_cardSO.Description);
-            DefineBigCard();
+            _cardViewService.Show(this, _cardSize, _cardRectTransform.position.x, _cardSO);
         }
 
         internal void EndReview()
         {
-            _cardDescription.Hide();
-            DefineSmallCard();
+            _cardViewService.Hide();
         }
 
         public void OnPointerEnter(PointerEventData eventData)
@@ -73,19 +69,9 @@ namespace Cards
         public void OnPointerExit(PointerEventData eventData)
         {
             _currentEventData = eventData;
-            //if (_isBlock)
-            //{
-            //    return;
-            //}
 
             EndReview();
         }
-
-        //internal void TranslateInto(Vector2 positon, Vector3 rotation, float duration)
-        //{
-        //    _cardRectTransform.DOMove(positon, duration);
-        //    _cardRectTransform.DORotate(rotation, duration);
-        //}
 
         internal void Block()
         {
@@ -97,58 +83,6 @@ namespace Cards
         {
             _frameImage.color = _enableFrameColor;
             _isBlock = false;
-
-            //PointerEventData eventData = new PointerEventData(EventSystem.current);
-            //if (EventSystem.current.TryGetComponentInRaycasts(eventData, out CardFront cardFront))
-            //{
-            //    if (cardFront == this)
-            //    {
-            //        StartReview();
-            //    }
-            //}
-            //if (_currentEventData is not null)
-            //    Debug.Log("Unblock " + _currentEventData.position);
-
-            //Vector3 ray = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            //RaycastHit2D[] components = Physics2D.RaycastAll(ray, Vector3.forward);
-
-            //foreach (RaycastHit2D raycastHit in components)
-            //{
-            //    Debug.Log(raycastHit.ToString());
-
-            //    if (raycastHit.collider.gameObject.TryGetComponent(out CardFront cardFront))
-            //    {
-            //        if (cardFront == this)
-            //        {
-            //            Debug.Log("УРа");
-            //            StartReview();
-            //        }
-            //    }
-            //}
-            //if (_currentEventData is not null)
-            //{
-
-            //    EventSystem.current.TryGetComponentInRaycasts(_currentEventData, out CardFront cardFront);
-
-            //    if (cardFront == this)
-            //    {
-            //        Debug.Log("УРа");
-            //        StartReview();
-            //    }
-            //}
-
-        }
-
-        internal void DefineSmallCard()
-        {
-            _bigCard.Hide();
-            Show();
-        }
-
-        private void DefineBigCard()
-        {
-            _bigCard.Show(_cardSize, _cardRectTransform.position.x, _cardSO);
-            Hide();
         }
 
         private void DefineSmallSize()
@@ -156,14 +90,14 @@ namespace Cards
             _cardRectTransform.sizeDelta = new Vector2(_cardSize.Width, _cardSize.Height);
         }
 
-        private void Hide()
-        {
-            _canvasGroup.alpha = 0;
-        }
-
-        private void Show()
+        public void Show()
         {
             _canvasGroup.alpha = 1;
+        }
+
+        public void Hide()
+        {
+            _canvasGroup.alpha = 0;
         }
 
         private void DefineViewCharacters()

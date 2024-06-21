@@ -50,6 +50,11 @@ namespace GameFields.Persons.Hands
             UnblockCards();
         }
 
+        public void OnCardReturnInHand()
+        {
+            SetActiveSeatsCardsInteraction();
+        }
+
         public void UnbindDragableCard()
         {
             RemoveDraggableCard();
@@ -87,10 +92,7 @@ namespace GameFields.Persons.Hands
         {
             _isActiveInteraction = true;
 
-            foreach (Seat seat in _handSeats)
-            {
-                seat.GetCard().SetActiveInteraction(true);
-            }
+            SetActiveSeatsCardsInteraction();
         }
 
         private void BlockCards()
@@ -103,14 +105,7 @@ namespace GameFields.Persons.Hands
                 dragCard.SetActiveInteraction(false);
             }
 
-            _isActiveInteraction = false;
-
-            foreach (Seat seat in _handSeats)
-            {
-                Card card = seat.GetCard();
-
-                card.SetActiveInteraction(false);
-            }
+            BlockActiveSeatsCards();
         }
 
         private void RemoveDraggableCard()
@@ -138,7 +133,7 @@ namespace GameFields.Persons.Hands
             {
                 _dragCardHandSeat = handSeat;
 
-                BlockCards(new List<Card> { card });
+                BlockActiveSeatsCards(new List<Card> { card });
 
                 _handSeatIndex = _handSeats.IndexOf(_dragCardHandSeat);
                 _handSeats.Remove(_dragCardHandSeat);
@@ -217,7 +212,7 @@ namespace GameFields.Persons.Hands
             return false;
         }
 
-        private void BlockCards(List<Card> exceptions)
+        private void BlockActiveSeatsCards(List<Card> exceptions)
         {
             _isActiveInteraction = false;
 
@@ -230,7 +225,6 @@ namespace GameFields.Persons.Hands
                 {
                     if (card == exceptionCard)
                     {
-                        Debug.Log("Произошло");
                         isException = true;
                     }
                 }
@@ -242,11 +236,27 @@ namespace GameFields.Persons.Hands
             }
         }
 
+        private void BlockActiveSeatsCards()
+        {
+            _isActiveInteraction = false;
+
+            SetActiveSeatsCardsInteraction();
+        }
+
+        private void SetActiveSeatsCardsInteraction()
+        {
+            foreach (Seat seat in _handSeats)
+            {
+                Card card = seat.GetCard();
+
+                card.SetActiveInteraction(_isActiveInteraction);
+            }
+        }
+
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
             DefineRectTransform();
-            //DefineHandSeatPool();
         }
 
         [ContextMenu(nameof(DefineRectTransform))]
@@ -254,11 +264,5 @@ namespace GameFields.Persons.Hands
         {
             AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
         }
-
-        //[ContextMenu(nameof(DefineHandSeatPool))]
-        //private void DefineHandSeatPool()
-        //{
-        //    AutomaticFillComponents.DefineComponent(this, ref _handSeatPool, ComponentLocationTypes.InThis);
-        //}
     }
 }

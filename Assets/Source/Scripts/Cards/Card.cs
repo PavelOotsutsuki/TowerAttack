@@ -26,13 +26,13 @@ namespace Cards
         public RectTransform Transform => _rectTransform;
         public Vector3 DefaultScaleVector => _defaultScaleVector;
 
-        internal void Init(CardDescription cardDescription, BigCard bigCard, Transform dragContainer)
+        internal void Init(CardViewService cardViewService, Transform dragContainer)
         {
             _rectTransform.localScale = _defaultScaleVector;
 
             //_cardMovement = new CardMovement(_rectTransform, _defaultScaleVector);
 
-            _cardFront.Init(_cardSO, _rectTransform, cardDescription, bigCard);
+            _cardFront.Init(_cardSO, _rectTransform, cardViewService);
 
             _cardDragAndDropActions = new CardDragAndDropActions(_cardFront, this);
             _cardDragAndDrop.Init(_rectTransform, _cardDragAndDropActions, dragContainer);

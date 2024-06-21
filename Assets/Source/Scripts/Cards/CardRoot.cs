@@ -10,17 +10,16 @@ namespace Cards
         [SerializeField] private Card[] _cards;
         [SerializeField] private Transform _dragContainer;
 
+        internal CardViewService _cardViewService;
         public Card[] Cards => _cards;
 
         public void Init()
         {
-            InitAll();
-        }
-
-        private void InitAll()
-        {
             InitCardDescription();
             InitBigCard();
+
+            _cardViewService = new CardViewService(_bigCard, _cardDescription);
+
             InitCards();
         }
 
@@ -38,7 +37,7 @@ namespace Cards
         {
             foreach (Card card in _cards)
             {
-                card.Init(_cardDescription, _bigCard, _dragContainer);
+                card.Init(_cardViewService, _dragContainer);
             }
         }
 
