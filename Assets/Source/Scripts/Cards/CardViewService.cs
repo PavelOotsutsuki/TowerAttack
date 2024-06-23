@@ -4,34 +4,40 @@ namespace Cards
     {
         private BigCard _bigCard;
         private CardDescription _cardDescription;
-        private IShowable _currentShowableCard;
+        private IShowable _currentCard;
 
         public CardViewService(BigCard bigCard, CardDescription cardDescription)
         {
             _bigCard = bigCard;
             _cardDescription = cardDescription;
-            _currentShowableCard = null;
+            _currentCard = null;
         }
 
-        public void Show(IShowable showableCard, CardSize cardSize, float positionX, CardSO cardSO)
+        public void SetOverview(IShowable showableCard, CardSize cardSize, float positionX, CardSO cardSO)
         {
-            if (_currentShowableCard is not null)
-            {
-                _currentShowableCard.Show();
-            }
+            ShowCurrentCard();
 
-            _currentShowableCard = showableCard;
+            _currentCard = showableCard;
 
             _cardDescription.Show(cardSO.Description);
             _bigCard.Show(cardSize, positionX, cardSO);
-            _currentShowableCard.Hide();
+            _currentCard.Hide();
         }
 
-        public void Hide()
+        public void SetDefaultView()
         {
             _cardDescription.Hide();
             _bigCard.Hide();
-            _currentShowableCard.Show();
+
+            ShowCurrentCard();
+        }
+
+        private void ShowCurrentCard()
+        {
+            if (_currentCard is not null)
+            {
+                _currentCard.Show();
+            }
         }
     }
 }

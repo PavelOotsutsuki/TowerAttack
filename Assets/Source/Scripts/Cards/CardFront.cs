@@ -46,12 +46,12 @@ namespace Cards
 
         internal void StartReview()
         {
-            _cardViewService.Show(this, _cardSize, _cardRectTransform.position.x, _cardSO);
+            _cardViewService.SetOverview(this, _cardSize, _cardRectTransform.position.x, _cardSO);
         }
 
         internal void EndReview()
         {
-            _cardViewService.Hide();
+            _cardViewService.SetDefaultView();
         }
 
         public void OnPointerEnter(PointerEventData eventData)
