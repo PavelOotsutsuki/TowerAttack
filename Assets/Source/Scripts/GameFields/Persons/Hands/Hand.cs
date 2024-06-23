@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Cards;
 using GameFields.Seats;
 using Tools;
@@ -26,6 +27,7 @@ namespace GameFields.Persons.Hands
         private int _handSeatIndex;
         private SeatPool _handSeatPool;
 
+        #region Main
         public void Init(SeatPool seatPool)
         {
             _handSeats = new List<Seat>();
@@ -52,7 +54,7 @@ namespace GameFields.Persons.Hands
 
         public void OnCardReturnInHand()
         {
-            SetActiveSeatsCardsInteraction();
+            SetCardInteractions(_handSeats);
         }
 
         public void UnbindDragableCard()
@@ -77,35 +79,25 @@ namespace GameFields.Persons.Hands
             return TryGetRandomCard(out card);
         }
 
-        public void ForciblyBlock()
+        public void Block()
         {
-            BlockCards();
+            _isActiveInteraction = false;
+            
+            // if (_handSeatIndex != -1)
+            // {
+            //     Card dragCard = _dragCardHandSeat.Card;
+            //
+            //     dragCard.EndDrag();
+            //     dragCard.SetActiveInteraction(_isActiveInteraction);
+            // }
+            
+            SetCardInteractions(_handSeats);
             EndDragCard();
         }
 
         public void Unblock()
         {
             UnblockCards();
-        }
-
-        private void UnblockCards()
-        {
-            _isActiveInteraction = true;
-
-            SetActiveSeatsCardsInteraction();
-        }
-
-        private void BlockCards()
-        {
-            if (_handSeatIndex != -1)
-            {
-                Card dragCard = _dragCardHandSeat.GetCard();
-
-                dragCard.EndDrag();
-                dragCard.SetActiveInteraction(false);
-            }
-
-            BlockActiveSeatsCards();
         }
 
         private void RemoveDraggableCard()
@@ -120,6 +112,10 @@ namespace GameFields.Persons.Hands
         {
             if (_handSeatIndex != -1)
             {
+                Card dragCard = _dragCardHandSeat.Card;
+
+                dragCard.EndDrag();
+                dragCard.SetActiveInteraction(_isActiveInteraction);
                 _handSeats.Insert(_handSeatIndex, _dragCardHandSeat);
 
                 SortHandSeats();
@@ -152,7 +148,7 @@ namespace GameFields.Persons.Hands
 
             int randomIndex = Random.Range(0, _handSeats.Count);
 
-            card = _handSeats[randomIndex].GetCard();
+            card = _handSeats[randomIndex].Card;
 
             return true;
         }
@@ -211,47 +207,36 @@ namespace GameFields.Persons.Hands
             findedHandSeat = null;
             return false;
         }
+        
+        #endregion
+        
+        #region CardsBlocking
 
-        private void BlockActiveSeatsCards(List<Card> exceptions)
+        private void UnblockCards()
+        {
+            _isActiveInteraction = true;
+
+            SetCardInteractions(_handSeats);
+        }
+        
+        private void BlockActiveSeatsCards(ICollection<Card> exceptions)
         {
             _isActiveInteraction = false;
 
-            foreach (Seat seat in _handSeats)
+            List<Seat> cards = _handSeats.Where(seat => exceptions.Contains(seat.Card) == false).ToList();
+            
+            SetCardInteractions(cards);
+        }
+
+        private void SetCardInteractions(IEnumerable<Seat> cards)
+        {
+            foreach (Seat seat in cards)
             {
-                bool isException = false;
-                Card card = seat.GetCard();
-
-                foreach (Card exceptionCard in exceptions)
-                {
-                    if (card == exceptionCard)
-                    {
-                        isException = true;
-                    }
-                }
-
-                if (isException == false)
-                {
-                    card.SetActiveInteraction(false);
-                }
+                seat.Card.SetActiveInteraction(_isActiveInteraction);
             }
         }
-
-        private void BlockActiveSeatsCards()
-        {
-            _isActiveInteraction = false;
-
-            SetActiveSeatsCardsInteraction();
-        }
-
-        private void SetActiveSeatsCardsInteraction()
-        {
-            foreach (Seat seat in _handSeats)
-            {
-                Card card = seat.GetCard();
-
-                card.SetActiveInteraction(_isActiveInteraction);
-            }
-        }
+        
+        #endregion
 
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()

@@ -7,7 +7,7 @@ namespace Cards
 {
     internal class CardDragAndDrop : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
     {
-        [SerializeField] private float _returnInHandSpeed = 0.5f;
+        [SerializeField] private float _returnInHandDuration = 0.5f;
 
         private Coroutine _viewCardAfterDropInWork;
         private bool _isDrag;
@@ -21,7 +21,7 @@ namespace Cards
 
         private PointerEventData _currentEventData;
 
-        public bool IsDragable => _isDrag;// || _isAlreadyDrag; //|| _isForciblyDrag;
+        public bool IsDragable => _isDrag;
 
         internal void Init(Transform cardTransform, CardDragAndDropActions cardDragAndDropActions, Transform container)
         {
@@ -49,8 +49,6 @@ namespace Cards
                 StartEndDragActions();
 
             }
-            //_isForciblyDrag = true;
-            //Debug.Log(_cardTransform.gameObject.name + ": конец Block");
         }
 
         public void OnBeginDrag(PointerEventData eventData)
@@ -64,12 +62,6 @@ namespace Cards
                 return;
             }
 
-            //if (_isForciblyDrag)
-            //{
-            //    return;
-            //}
-
-            //Debug.Log(_cardTransform.gameObject.name + ": начало OnBeginDrag");
             _isDrag = true;
             _isForciblyDrag = false;
 
@@ -87,36 +79,13 @@ namespace Cards
                 return;
             }
 
-            //if (_isForciblyDrag)
-            //{
-            //    Debug.Log(eventData.position);
-            //    eventData.position = _cardTransform.position;
-            //    return;
-            //}
-
-            //Debug.Log(_cardTransform.gameObject.name + ": идет Drag");
-
             _cardTransform.position = eventData.position;
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            //Debug.Log(_cardTransform.gameObject.name + ": начало OnEndDrag");
-
-            //if (_isForciblyDrag)
-            //{
-            //    //eventData.position = _cardTransform.position;
-            //    _isDrag = false;
-            //    _isForciblyDrag = false;
-
-            //    //this.enabled = false;
-            //    //_cardTransform.gameObject.GetComponent<Card>().SetActiveInteraction(false);
-            //    Debug.Log(_cardTransform.gameObject.name + ": начало OnEndDrag (_isForciblyDrag)");
-
-            //    return;
-            //}
-
-
+            Debug.Log($"{nameof(OnEndDrag)} for {name}. ForciblyDrag: {_isForciblyDrag}");
+            
             if (_isForciblyDrag)
             {
                 _isDrag = false;
@@ -124,13 +93,6 @@ namespace Cards
 
                 return;
             }
-
-            //if (_isAlreadyDrag)
-            //{
-            //    Debug.Log(_cardTransform.gameObject.name + ": _isAlreadyDrag END");
-            //    _isAlreadyDrag = false;
-            //    return;
-            //}
 
             if (EventSystem.current.TryGetComponentInRaycasts(eventData, out ICardDropPlace cardDropPlace))
             {
@@ -142,7 +104,7 @@ namespace Cards
                 }
             }
 
-            this.enabled = false;
+            enabled = false;
             _cardDragAndDropActions.EndDrag();
 
             StartEndDragActions();
@@ -157,8 +119,8 @@ namespace Cards
                 StopCoroutine(_viewCardAfterDropInWork);
             }
 
-            _viewCardAfterDropInWork = StartCoroutine(ViewCardAfterDrop(_returnInHandSpeed, _currentEventData));
-            _cardDragAndDropActions.ReturnInHand(_returnInHandSpeed);
+            _viewCardAfterDropInWork = StartCoroutine(ViewCardAfterDrop(_returnInHandDuration, _currentEventData));
+            _cardDragAndDropActions.ReturnInHand(_returnInHandDuration);
         }
 
         private IEnumerator ViewCardAfterDrop(float endDuration, PointerEventData eventData)
