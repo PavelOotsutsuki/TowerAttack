@@ -4,8 +4,8 @@ namespace GameFields.Persons.DrawCards
 {
     public class StartDrawCardAnimator : IDrawCardAnimation
     {
-        private SimpleDrawCardAnimation _simpleDrawCardAnimation;
-        private FireDrawCardAnimation _fireDrawCardAnimation;
+        private readonly SimpleDrawCardAnimation _simpleDrawCardAnimation;
+        private readonly FireDrawCardAnimation _fireDrawCardAnimation;
         private int _countExtraAnimationTurns;
 
         private IDrawCardAnimation _currentAnimation;
@@ -30,6 +30,7 @@ namespace GameFields.Persons.DrawCards
 
         public void Play(Card card)
         {
+            card.SetActiveInteraction(false);
             _currentAnimation.Play(card);
 
             if (_countExtraAnimationTurns > 0)

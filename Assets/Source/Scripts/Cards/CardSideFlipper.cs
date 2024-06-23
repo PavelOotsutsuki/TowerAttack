@@ -19,27 +19,23 @@ namespace Cards
 
         public void SetBackSide()
         {
-            //Block();
-
             SetSide(true);
         }
 
         public void SetFrontSide()
         {
             SetSide(false);
-
-            //Unblock();
         }
 
         public void DeactivateInteraction()
         {
-            _cardDragAndDrop.enabled = false;
+            _cardDragAndDrop.Disable();
             _front.Block();
         }
 
         public void ActivateInteraction()
         {
-            _cardDragAndDrop.enabled = true;
+            _cardDragAndDrop.Enable();
             _front.Unblock();
         }
 

@@ -27,15 +27,11 @@ namespace GameFields.Seats
         public void SetCard(Card card, SideType sideType, float duration)
         {
             Card = card;
-            //_card.BindSeat(_transform, isFrontSide, duration);
-            ICardTransformable cardTransformable = Card;
-            Transform cardTransform = cardTransformable.Transform;
-            Movement cardMovement = new Movement(cardTransform);
+            Card.SetSide(sideType);
+            Card.BindDragAndDropContainer(_transform);
 
-            cardTransform.SetParent(_transform);
-            cardMovement.MoveLocalSmoothly(Vector2.zero, Quaternion.identity.eulerAngles, duration, cardTransformable.DefaultScaleVector);
-
-            cardTransformable.SetSide(sideType);
+            Movement cardMovement = new(Card.Transform);
+            cardMovement.MoveLocalSmoothly(Vector2.zero, Quaternion.identity.eulerAngles, duration, Card.DefaultScaleVector);
         }
 
         public bool IsCardEqual(Card card)

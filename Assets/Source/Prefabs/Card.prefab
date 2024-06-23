@@ -702,7 +702,7 @@ MonoBehaviour:
   _cardBack: {fileID: 7343953678776589404}
   _cardFront: {fileID: 2805773735245598067}
   _cardSO: {fileID: 0}
-  _cardDragAndDrop: {fileID: 7802601998824976280}
+  _dragAndDrop: {fileID: 7802601998824976280}
   _rectTransform: {fileID: 5981172514607463790}
   _defaultScaleVector: {x: 1, y: 1, z: 1}
 --- !u!114 &7802601998824976280

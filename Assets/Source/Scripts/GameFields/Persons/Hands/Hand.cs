@@ -83,14 +83,6 @@ namespace GameFields.Persons.Hands
         {
             _isActiveInteraction = false;
             
-            // if (_handSeatIndex != -1)
-            // {
-            //     Card dragCard = _dragCardHandSeat.Card;
-            //
-            //     dragCard.EndDrag();
-            //     dragCard.SetActiveInteraction(_isActiveInteraction);
-            // }
-            
             SetCardInteractions(_handSeats);
             EndDragCard();
         }
@@ -110,17 +102,17 @@ namespace GameFields.Persons.Hands
 
         private void EndDragCard()
         {
-            if (_handSeatIndex != -1)
-            {
-                Card dragCard = _dragCardHandSeat.Card;
+            if (_handSeatIndex == -1)
+                return;
+            
+            Card dragCard = _dragCardHandSeat.Card;
+            dragCard.ForceEndDrag();
+            //dragCard.SetActiveInteraction(_isActiveInteraction);
+            
+            _handSeats.Insert(_handSeatIndex, _dragCardHandSeat);
 
-                dragCard.EndDrag();
-                dragCard.SetActiveInteraction(_isActiveInteraction);
-                _handSeats.Insert(_handSeatIndex, _dragCardHandSeat);
-
-                SortHandSeats();
-                ResetDragOptions();
-            }
+            SortHandSeats();
+            ResetDragOptions();
         }
 
         private void DragCard(Card card)
