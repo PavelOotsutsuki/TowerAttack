@@ -12,6 +12,8 @@ namespace GameFields.Seats
         private Card _card;
         private Movement _seatMovement;
 
+        public Card Card => _card;
+
         public void Init()
         {
             _seatMovement = new Movement(_transform);
@@ -21,11 +23,6 @@ namespace GameFields.Seats
         public void Reset()
         {
             _card = null;
-        }
-
-        public Card GetCard()
-        {
-            return _card;
         }
 
         public void SetCard(Card card, SideType sideType, float duration)

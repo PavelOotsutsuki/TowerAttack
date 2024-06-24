@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Cards;
 using GameFields.Seats;
 using Tools;
@@ -42,7 +43,7 @@ namespace GameFields.Persons.Hands
         public void OnCardDrop()
         {
             UnblockCards();
-            EndDragCard();
+            EndDragCard(false);
         }
 
         public void OnCardPlay()
@@ -52,12 +53,15 @@ namespace GameFields.Persons.Hands
 
         public void OnCardReturnInHand()
         {
-            SetActiveSeatsCardsInteraction();
+            SetCardsInteraction(_handSeats);
         }
 
         public void UnbindDragableCard()
         {
-            RemoveDraggableCard();
+            _handSeatPool.ReturnInPool(_dragCardHandSeat);
+
+            SortHandSeats();
+            ResetDragOptions();
         }
 
         public virtual void AddCard(Card card)
@@ -79,8 +83,8 @@ namespace GameFields.Persons.Hands
 
         public void ForciblyBlock()
         {
+            EndDragCard(true);
             BlockCards();
-            EndDragCard();
         }
 
         public void Unblock()
@@ -92,34 +96,21 @@ namespace GameFields.Persons.Hands
         {
             _isActiveInteraction = true;
 
-            SetActiveSeatsCardsInteraction();
+            SetCardsInteraction(_handSeats);
         }
 
-        private void BlockCards()
+        private void EndDragCard(bool isForced)
         {
             if (_handSeatIndex != -1)
             {
-                Card dragCard = _dragCardHandSeat.GetCard();
+                if (isForced)
+                {
+                    Card dragCard = _dragCardHandSeat.Card;
 
-                dragCard.EndDrag();
-                dragCard.SetActiveInteraction(false);
-            }
+                    dragCard.EndDrag();
+                    dragCard.SetActiveInteraction(false);
+                }
 
-            BlockActiveSeatsCards();
-        }
-
-        private void RemoveDraggableCard()
-        {
-            _handSeatPool.ReturnInPool(_dragCardHandSeat);
-
-            SortHandSeats();
-            ResetDragOptions();
-        }
-
-        private void EndDragCard()
-        {
-            if (_handSeatIndex != -1)
-            {
                 _handSeats.Insert(_handSeatIndex, _dragCardHandSeat);
 
                 SortHandSeats();
@@ -133,13 +124,95 @@ namespace GameFields.Persons.Hands
             {
                 _dragCardHandSeat = handSeat;
 
-                BlockActiveSeatsCards(new List<Card> { card });
-
                 _handSeatIndex = _handSeats.IndexOf(_dragCardHandSeat);
                 _handSeats.Remove(_dragCardHandSeat);
+
+                BlockCards();
                 SortHandSeats();
             }
         }
+
+        private void BlockCards()
+        {
+            _isActiveInteraction = false;
+
+            SetCardsInteraction(_handSeats);
+        }
+
+        private void BlockCards(ICollection<Card> exceptions)
+        {
+            _isActiveInteraction = false;
+
+            IEnumerable<Seat> seats = _handSeats.Where(seat => exceptions.Contains(seat.Card) == false);
+
+            SetCardsInteraction(seats);
+        }
+
+        private void SetCardsInteraction(IEnumerable<Seat> seats)
+        {
+            foreach (Seat seat in seats)
+            {
+                Card card = seat.Card;
+
+                card.SetActiveInteraction(_isActiveInteraction);
+            }
+        }
+
+        private void ResetDragOptions()
+        {
+            _handSeatIndex = -1;
+            _dragCardHandSeat = null;
+        }
+
+        #region Comments
+
+        //private void BlockActiveSeatsCards(List<Card> exceptions)
+        //{
+        //    _isActiveInteraction = false;
+
+        //    foreach (Seat seat in _handSeats)
+        //    {
+        //        bool isException = false;
+        //        Card card = seat.GetCard();
+
+        //        foreach (Card exceptionCard in exceptions)
+        //        {
+        //            if (card == exceptionCard)
+        //            {
+        //                isException = true;
+        //            }
+        //        }
+
+        //        if (isException == false)
+        //        {
+        //            card.SetActiveInteraction(false);
+        //        }
+        //    }
+        //}
+
+        //private void BlockActiveSeatsCards()
+        //{
+        //    _isActiveInteraction = false;
+
+        //    SetCardsInteraction();
+        //}
+
+        //private void BlockCards()
+        //{
+        //    if (_handSeatIndex != -1)
+        //    {
+        //        Card dragCard = _dragCardHandSeat.GetCard();
+
+        //        dragCard.EndDrag();
+        //        dragCard.SetActiveInteraction(false);
+        //    }
+
+        //    BlockActiveSeatsCards();
+        //}
+
+        #endregion
+
+        #region Right
 
         private bool TryGetRandomCard(out Card card)
         {
@@ -152,15 +225,24 @@ namespace GameFields.Persons.Hands
 
             int randomIndex = Random.Range(0, _handSeats.Count);
 
-            card = _handSeats[randomIndex].GetCard();
+            card = _handSeats[randomIndex].Card;
 
             return true;
         }
 
-        private void ResetDragOptions()
+        private bool TryFindHandSeat(out Seat findedHandSeat, Card card)
         {
-            _handSeatIndex = -1;
-            _dragCardHandSeat = null;
+            foreach (Seat handSeat in _handSeats)
+            {
+                if (handSeat.IsCardEqual(card))
+                {
+                    findedHandSeat = handSeat;
+                    return true;
+                }
+            }
+
+            findedHandSeat = null;
+            return false;
         }
 
         private void SortHandSeats()
@@ -197,62 +279,6 @@ namespace GameFields.Persons.Hands
             }
         }
 
-        private bool TryFindHandSeat(out Seat findedHandSeat, Card card)
-        {
-            foreach (Seat handSeat in _handSeats)
-            {
-                if (handSeat.IsCardEqual(card))
-                {
-                    findedHandSeat = handSeat;
-                    return true;
-                }
-            }
-
-            findedHandSeat = null;
-            return false;
-        }
-
-        private void BlockActiveSeatsCards(List<Card> exceptions)
-        {
-            _isActiveInteraction = false;
-
-            foreach (Seat seat in _handSeats)
-            {
-                bool isException = false;
-                Card card = seat.GetCard();
-
-                foreach (Card exceptionCard in exceptions)
-                {
-                    if (card == exceptionCard)
-                    {
-                        isException = true;
-                    }
-                }
-
-                if (isException == false)
-                {
-                    card.SetActiveInteraction(false);
-                }
-            }
-        }
-
-        private void BlockActiveSeatsCards()
-        {
-            _isActiveInteraction = false;
-
-            SetActiveSeatsCardsInteraction();
-        }
-
-        private void SetActiveSeatsCardsInteraction()
-        {
-            foreach (Seat seat in _handSeats)
-            {
-                Card card = seat.GetCard();
-
-                card.SetActiveInteraction(_isActiveInteraction);
-            }
-        }
-
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
@@ -264,5 +290,7 @@ namespace GameFields.Persons.Hands
         {
             AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
         }
+
+        #endregion 
     }
 }
