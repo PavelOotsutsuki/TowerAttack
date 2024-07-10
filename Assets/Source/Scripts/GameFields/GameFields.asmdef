@@ -1,0 +1,21 @@
+{
+    "name": "GameFields",
+    "rootNamespace": "GameFields",
+    "references": [
+        "Cards",
+        "Tools",
+        "UniTask",
+        "Unity.TextMeshPro",
+        "DOTween.Modules",
+        "Zenject"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
