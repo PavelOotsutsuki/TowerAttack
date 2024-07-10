@@ -12,22 +12,40 @@ namespace GameFields.Persons.Tables
             _playedCardPairs = new List<PlayedCardPair>();
         }
 
-        public Card GetCard(CardCharacter cardCharacter)
+        //public Card GetCard(CardCharacter cardCharacter)
+        //{
+        //    foreach (PlayedCardPair playedCardPair in _playedCardPairs)
+        //    {
+        //        if (playedCardPair.CardCharacter == cardCharacter)
+        //        {
+        //            return playedCardPair.Card;
+        //        }
+        //    }
+
+        //    return null;
+        //}
+
+        public List<Card> GetDiscardCards()
         {
+            List<Card> discardCards = new List<Card>();
+
             foreach (PlayedCardPair playedCardPair in _playedCardPairs)
             {
-                if (playedCardPair.CardCharacter == cardCharacter)
+                playedCardPair.DecreaseCardCounter();
+
+                if (playedCardPair.TryDiscard(out Card card))
                 {
-                    return playedCardPair.Card;
+                    discardCards.Add(card);
+                    _playedCardPairs.Remove(playedCardPair);
                 }
             }
 
-            return null;
+            return discardCards;
         }
 
-        public void Add(CardCharacter cardCharacter, Card card)
+        public void Add(CardCharacter cardCharacter, Card card, int countTurnsOnTable)
         {
-            _playedCardPairs.Add(new PlayedCardPair(cardCharacter, card));
+            _playedCardPairs.Add(new PlayedCardPair(cardCharacter, card, countTurnsOnTable));
         }
     }
 }

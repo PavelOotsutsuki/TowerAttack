@@ -71,7 +71,7 @@ namespace Cards
             _cardDragAndDropActions.SetListener(cardDragAndDropListener);
         }
 
-        public CardCharacter PlayOnTable()
+        public CardCharacter Play()
         {
             if (_cardCharacter == null)
             {

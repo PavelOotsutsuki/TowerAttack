@@ -11,17 +11,17 @@ namespace GameFields.Persons.Tables
         [SerializeField] private RectTransform _rectTransform;
 
         private CardCharacter _cardCharacter;
-        private EffectRoot _effectRoot;
-        private Effect _effect;
+        //private EffectRoot _effectRoot;
+        //private Effect _effect;
 
         //internal bool IsEmpty => _cardCharacter == null;
         //internal bool IsDiscarded => _effect.CountTurns <= 0;
         //internal CardCharacter CardCharacter => _cardCharacter;
 
-        internal void Init(EffectRoot effectRoot)
-        {
-            _effectRoot = effectRoot;
-        }
+        //internal void Init(EffectRoot effectRoot)
+        //{
+        //    _effectRoot = effectRoot;
+        //}
 
         //public void DecreaseCounter()
         //{
@@ -41,28 +41,38 @@ namespace GameFields.Persons.Tables
             //_cardCharacter.transform.SetParent(_rectTransform);
             //_cardCharacter.transform.localPosition = cardCharacterPosition;
             _cardCharacter.Activate(_rectTransform, cardCharacterPosition);
-            _effect = _effectRoot.PlayEffect(_cardCharacter.Effect);
+            //_effect = _effectRoot.PlayEffect(_cardCharacter.Effect);
         }
 
-        internal bool TryDiscardCardCharacter(out CardCharacter cardCharacter)
+        //internal bool TryDiscardCardCharacter(out CardCharacter cardCharacter)
+        //{
+        //    cardCharacter = null;
+
+        //    if (IsEmpty())
+        //    {
+        //        return false;
+        //    }
+
+        //    _effect.DecreaseCounter();
+
+        //    if (_effect.CountTurns > 0)
+        //    {
+        //        return false;
+        //    }
+
+        //    cardCharacter = _cardCharacter;
+        //    _cardCharacter = null;
+        //    return true;
+        //}
+
+        internal void DiscardCardCharacter()
         {
-            cardCharacter = null;
-
-            if (IsEmpty())
-            {
-                return false;
-            }
-
-            _effect.DecreaseCounter();
-
-            if (_effect.CountTurns > 0)
-            {
-                return false;
-            }
-
-            cardCharacter = _cardCharacter;
             _cardCharacter = null;
-            return true;
+        }
+
+        internal bool IsEqualCharacter(CardCharacter character)
+        {
+            return character == _cardCharacter;
         }
 
         internal bool IsEmpty()
