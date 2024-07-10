@@ -8,6 +8,7 @@ using GameFields.Effects;
 using GameFields.DiscardPiles;
 using GameFields.Seats;
 using GameFields.Persons.Tables;
+using Zenject;
 
 namespace GameFields
 {
@@ -24,6 +25,13 @@ namespace GameFields
 
         private Player _player;
         private EnemyAI _enemyAI;
+        private SignalBus _bus;
+
+        [Inject]
+        private void Construct(DiContainer container)
+        {
+            _bus = container.Resolve<SignalBus>();
+        }
 
         public void Init(Card[] cardsInDeck)
         {
@@ -41,7 +49,7 @@ namespace GameFields
             FightResult fightResult = new FightResult();
 
             Fight fight = new Fight(_player, _enemyAI, fightResult);
-            EffectRoot effectRoot = new EffectRoot(_deck, _discardPile, fight);
+            EffectRoot effectRoot = new EffectRoot(_bus, _deck, _discardPile, fight);
             EndFight endFight = new EndFight(fightResult);
 
             _personCreator.InitPersonsData(effectRoot, _seatPool);

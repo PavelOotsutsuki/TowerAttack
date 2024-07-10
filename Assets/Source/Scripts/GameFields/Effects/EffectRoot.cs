@@ -4,23 +4,33 @@ using UnityEngine;
 using Cards;
 using System;
 using GameFields.DiscardPiles;
+using Zenject;
 
 namespace GameFields.Effects
 {
     public class EffectRoot
     {
+        private SignalBus _bus;
         private Deck _deck;
         private DiscardPile _discardPile;
         private IPersonSideListener _personSideListener;
         //private List<ActiveEffect> _activeEffects;
 
-        public EffectRoot(Deck deck, DiscardPile discardPile, IPersonSideListener personSideListener)
+        public EffectRoot(SignalBus bus, Deck deck, DiscardPile discardPile, IPersonSideListener personSideListener)
         {
             //_activeEffects = new List<ActiveEffect>();
 
+            _bus = bus;
             _deck = deck;
             _discardPile = discardPile;
             _personSideListener = personSideListener;
+
+            _bus.Subscribe<PlayCardSignal>(OnPlayCardSignal);
+        }
+
+        private void OnPlayCardSignal(PlayCardSignal signal)
+        {
+            PlayEffect(signal.Effect);
         }
 
         public Effect PlayEffect(EffectType effectType)

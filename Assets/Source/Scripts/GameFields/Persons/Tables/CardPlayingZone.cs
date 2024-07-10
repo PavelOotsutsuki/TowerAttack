@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using Cards;
+using GameFields.DiscardPiles;
 using GameFields.Effects;
 using GameFields.Persons.Hands;
 using UnityEngine;
+using Zenject;
 
 namespace GameFields.Persons.Tables
 {
@@ -13,17 +15,43 @@ namespace GameFields.Persons.Tables
         private EffectRoot _effectRoot;
         private List<Effect> _activeEffects;
         private PlayedCards _playedCards;
+        private DiscardPile _discardPile;
 
-        public void Init(IUnbindCardManager unbindCardManager, EffectRoot effectRoot)
+        private SignalBus _bus;
+
+        [Inject]
+        private void Construct(SignalBus bus)
+        {
+            _bus.DeclareSignal<PlayCardSignal>();
+            _bus = bus;
+        }
+
+        public void Init(IUnbindCardManager unbindCardManager, EffectRoot effectRoot, DiscardPile discardPile)
         {
             _activeEffects = new List<Effect>();
             _unbindCardManager = unbindCardManager;
             _effectRoot = effectRoot;
+            _discardPile = discardPile;
         }
 
         public void EndTurn()
         {
             List<Card> discardCards = _playedCards.GetDiscardCards();
+
+            foreach (Effect effect in _activeEffects)
+            {
+                effect.DecreaseCounter();
+
+                if (effect.CountTurns <= 0)
+                {
+                    _activeEffects.Remove(effect);
+                }
+            }
+
+            if (discardCards.Count > 0)
+            {
+                _discardPile.DiscardCards(discardCards);
+            }
         }
 
         public Vector3 GetCentralСoordinates()
@@ -43,6 +71,8 @@ namespace GameFields.Persons.Tables
                 _unbindCardManager.UnbindDragableCard();
                 _table.SeatCardCharacter(character); 
                 _activeEffects.Add(effect);
+
+                _bus.Fire(new PlayCardSignal(character.Effect));
             }
 
             return tableHasFreeSeats;
