@@ -1,44 +1,37 @@
-using System.Collections.Generic;
+using System.Linq;
 using Cards;
-using GameFields.Effects;
-using GameFields.Persons.Hands;
 using Tools;
 using UnityEngine;
 
 namespace GameFields.Persons.Tables
 {
-    public class Table : MonoBehaviour//, ICardDropPlace
+    public class Table : MonoBehaviour
     {
         [SerializeField] private TableSeat[] _cardSeats;
 
-        //private IUnbindCardManager _unbindCardManager;
         private int[] _cardSeatsSortIndices;
-        //private PlayedCards _playedCards;
 
-        //public void Init(IUnbindCardManager unbindCardManager, EffectRoot effectRoot)
-        //{
-        //    _unbindCardManager = unbindCardManager;
-        //    _playedCards = new PlayedCards();
-        //    InitTableSeats(effectRoot);
-        //    SetCardSeatsIndices();
-        //}
+        public bool HasFreeSeat => _cardSeatsSortIndices.Any(index => _cardSeats[index].IsEmpty);
 
         public void Init()
         {
-            //_unbindCardManager = unbindCardManager;
-            //_playedCards = new PlayedCards();
-            //InitTableSeats(effectRoot);
             SetCardSeatsIndices();
         }
 
-        public void SeatCardCharacter(CardCharacter character)
+        public void FreeSeatByCharacter(GameObject character)
+        {
+            var seat = _cardSeats.FirstOrDefault(seat => seat.CompareCharacters(character));
+
+            if (seat != null)
+                seat.ResetCharacter();
+        }
+
+        public void SeatCharacter(CardCharacter character)
         {
             if (TryFindCardSeat(out TableSeat freeCardSeat))
             {
-                //_unbindCardManager.UnbindDragableCard();
-                //CardCharacter cardCharacter = card.Play();
-                freeCardSeat.SetCardCharacter(character);
-                //_playedCards.Add(cardCharacter, card);
+                character.Activate(freeCardSeat.transform);
+                freeCardSeat.SetCardCharacter(character.gameObject);
             }
             else
             {
@@ -46,63 +39,20 @@ namespace GameFields.Persons.Tables
             }
         }
 
-        //public List<Card> GetDiscardCards()
-        //{
-        //    List<Card> discardCards = new List<Card>();
-
-        //    foreach (TableSeat tableSeat in _cardSeats)
-        //    {
-        //        if (tableSeat.TryDiscardCardCharacter(out CardCharacter cardCharacter))
-        //        {
-        //            discardCards.Add(_playedCards.GetCard(cardCharacter));
-        //        }
-        //    }
-
-        //    return discardCards;
-        //}
-
-        public void DiscardCard(CardCharacter character)
-        {
-            foreach (TableSeat tableSeat in _cardSeats)
-            {
-                if (tableSeat.IsEqualCharacter(character))
-                {
-                    tableSeat.DiscardCardCharacter();
-                }
-            }
-        }
-
-        //public Vector3 GetCentralСoordinates()
-        //{
-        //    return transform.position;
-        //}
-        public bool IsHasFreeSeat()
-        {
-            foreach (int index in _cardSeatsSortIndices)
-            {
-                if (_cardSeats[index].IsEmpty())
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
         private bool TryFindCardSeat(out TableSeat cardSeat)
         {
             cardSeat = null;
-
+            
             foreach (int index in _cardSeatsSortIndices)
             {
-                if (_cardSeats[index].IsEmpty())
+                if (_cardSeats[index].IsEmpty)
                 {
                     cardSeat = _cardSeats[index];
                     return true;
                 }
             }
 
-            return false;
+            return cardSeat != null;
         }
 
         private void SetCardSeatsIndices()
@@ -117,18 +67,10 @@ namespace GameFields.Persons.Tables
             }
         }
 
-        private int GetSortIndex(int inputIndex, int countSeats)
+        private static int GetSortIndex(int inputIndex, int countSeats)
         {
             return (countSeats + 1) / 2 + (inputIndex + 1) / 2 * ((inputIndex + 1) % 2 * 2 - 1) - 1;
         }
-
-        //private void InitTableSeats(EffectRoot effectRoot)
-        //{
-        //    foreach (TableSeat tableSeat in _cardSeats)
-        //    {
-        //        tableSeat.Init(effectRoot);
-        //    }
-        //}
 
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()

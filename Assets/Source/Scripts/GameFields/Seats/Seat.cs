@@ -1,7 +1,6 @@
 using UnityEngine;
 using Cards;
 using Tools;
-using System;
 
 namespace GameFields.Seats
 {
@@ -9,10 +8,9 @@ namespace GameFields.Seats
     {
         [SerializeField] private Transform _transform;
 
-        private Card _card;
         private Movement _seatMovement;
 
-        public Card Card => _card;
+        public Card Card { get; private set; }
 
         public void Init()
         {
@@ -22,42 +20,22 @@ namespace GameFields.Seats
 
         public void Reset()
         {
-            _card = null;
+            Card = null;
         }
 
         public void SetCard(Card card, SideType sideType, float duration)
         {
-            _card = card;
-            //_card.BindSeat(_transform, isFrontSide, duration);
-            ICardTransformable cardTransformable = _card;
-            Transform cardTransform = cardTransformable.Transform;
-            Movement cardMovement = new Movement(cardTransform);
+            Card = card;
 
-            cardTransform.SetParent(_transform);
-            cardMovement.MoveLocalSmoothly(Vector2.zero, Quaternion.identity.eulerAngles, duration, cardTransformable.DefaultScaleVector);
-
-            cardTransformable.SetSide(sideType);
+            Card.SetSide(sideType);
+            Card.transform.SetParent(_transform);
+            Movement cardMovement = new(Card.transform);
+            cardMovement.MoveLocalSmoothly(Vector2.zero, Quaternion.identity.eulerAngles, duration, Card.DefaultScaleVector);
         }
 
-        public bool IsCardEqual(Card card)
-        {
-            return _card == card;
-        }
+        public bool IsCardEqual(Card card) => Card == card;
 
-        public void Activate()
-        {
-            gameObject.SetActive(true);
-        }
-
-        public void Disactivate()
-        {
-            gameObject.SetActive(false);
-        }
-
-        public bool IsFill()
-        {
-            return _card != null;
-        }
+        public bool IsFill() => Card != null;
 
         public void SetLocalPositionValues(Vector3 position, Vector3 rotation, float duration = 0f)
         {

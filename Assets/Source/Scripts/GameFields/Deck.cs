@@ -6,7 +6,7 @@ namespace GameFields
 {
     public class Deck : MonoBehaviour
     {
-        private readonly Vector2 _cardAddPosition = new Vector2(0f, 0f);
+        private readonly Vector2 _cardAddPosition = new(0f, 0f);
 
         private List<Card> _cards;
 
@@ -71,7 +71,7 @@ namespace GameFields
 
         private void ShuffleCards()
         {
-            List<Card> shuffleCards = new List<Card>();
+            List<Card> shuffleCards = new();
             int index;
             Card card;
 

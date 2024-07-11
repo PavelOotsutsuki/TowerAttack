@@ -2,16 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using Cards;
 using Cysharp.Threading.Tasks;
-using GameFields.Persons.Hands;
+using GameFields.DiscardPiles;
 using GameFields.Seats;
 using Tools;
 using UnityEngine;
+using Zenject;
+using Random = UnityEngine.Random;
 
-namespace GameFields.DiscardPiles
+namespace GameFields.Discarding
 {
-    public class DiscardPile : MonoBehaviour//, ICardDropPlaceImitation
+    public class DiscardPile : MonoBehaviour
     {
         private const float CenterRotation = 90f;
+        private readonly List<Seat> _seats =  new();
 
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private float _cardRotationOffset = 30f;
@@ -23,8 +26,27 @@ namespace GameFields.DiscardPiles
         private float _maxCoordinateY;
         private float _minCoordinateX;
         private float _minCoordinateY;
-        private List<Seat> _seats;
         private SeatPool _discardPileSeatPool;
+
+        private SignalBus _bus;
+
+        [Inject]
+        private void Construct(SignalBus bus)
+        {
+            _bus = bus;
+            
+            _bus.Subscribe<DiscardCardsSignal>(OnDiscardCardsSignal);
+        }
+
+        private void OnDestroy()
+        {
+            _bus.Unsubscribe<DiscardCardsSignal>(OnDiscardCardsSignal);
+        }
+
+        private void OnDiscardCardsSignal(DiscardCardsSignal signal)
+        {
+            DiscardCards(signal.Cards);
+        }
 
         public void Init(SeatPool seatPool)
         {
@@ -32,21 +54,10 @@ namespace GameFields.DiscardPiles
             _maxCoordinateY = _rectTransform.rect.height / 2f;
             _minCoordinateX = _maxCoordinateX * -1;
             _minCoordinateY = _maxCoordinateY * -1;
-            _seats = new List<Seat>();
             _discardPileSeatPool = seatPool;
         }
 
-        //public void AddCard(Card card)
-        //{
-        //    if (_discardPileSeatPool.TryGetHandSeat(out Seat discardPileSeat))
-        //    {
-        //        _seats.Add(discardPileSeat);
-        //        discardPileSeat.SetLocalPositionValues(FindCardSeatPosition(), FindCardSeatRotation());
-        //        discardPileSeat.SetCard(card, _isFrontCardSide, _startCardTranslateSpeed);
-        //    }
-        //}
-
-        public void DiscardCards(List<Card> cards)
+        private void DiscardCards(List<Card> cards)
         {
             DiscardingCards(cards).ToUniTask();
         }
@@ -61,19 +72,11 @@ namespace GameFields.DiscardPiles
             discardPileSeat.SetCard(card, SideType.Back, _startCardTranslateSpeed);
         }
 
-        //public void RemoveCard()
-        //{
-        //    _discardPileSeatPool.ReturnInPool(_dragCardHandSeat);
-
-        //    SortHandSeats();
-        //    ResetDragOptions();
-        //}
-
         private IEnumerator DiscardingCards(List<Card> discardingCards)
         {
             foreach (Card card in discardingCards)
             {
-                DiscardCardAnimation discardCardAnimation = new DiscardCardAnimation(_discardCardAnimationData, _rectTransform, card, SeatCard);
+                DiscardCardAnimation discardCardAnimation = new(_discardCardAnimationData, _rectTransform, card, SeatCard);
                 discardCardAnimation.Play();
                 yield return new WaitForSeconds(_discardDelay);
             }

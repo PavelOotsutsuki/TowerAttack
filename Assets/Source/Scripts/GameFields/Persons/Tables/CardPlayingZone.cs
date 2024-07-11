@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Cards;
-using GameFields.Effects;
 using GameFields.Persons.Hands;
 using UnityEngine;
 
@@ -10,39 +10,34 @@ namespace GameFields.Persons.Tables
     {
         private Table _table;
         private IUnbindCardManager _unbindCardManager;
-        private EffectRoot _effectRoot;
-        private List<Effect> _activeEffects;
-        private PlayedCards _playedCards;
 
-        public void Init(IUnbindCardManager unbindCardManager, EffectRoot effectRoot)
+        public event Action<Card, CardCharacter> Played;
+
+        public void Init(Table table, IUnbindCardManager unbindCardManager)
         {
-            _activeEffects = new List<Effect>();
+            _table = table;
             _unbindCardManager = unbindCardManager;
-            _effectRoot = effectRoot;
         }
 
-        public void EndTurn()
+        public void FreeSeatsByCharacters(List<CardCharacter> characters)
         {
-            List<Card> discardCards = _playedCards.GetDiscardCards();
+            foreach (CardCharacter character in characters)
+                _table.FreeSeatByCharacter(character.gameObject);
         }
 
-        public Vector3 GetCentralСoordinates()
-        {
-            return transform.position;
-        }
+        public Vector3 GetPosition() => transform.position;
 
         public bool TrySeatCard(Card card)
         {
-            bool tableHasFreeSeats = _table.IsHasFreeSeat();
+            bool tableHasFreeSeats = _table.HasFreeSeat;
 
             if (tableHasFreeSeats)
             {
                 CardCharacter character = card.Play();
-                Effect effect = _effectRoot.PlayEffect(character.Effect);
-                _playedCards.Add(character, card, effect.CountTurns);
                 _unbindCardManager.UnbindDragableCard();
-                _table.SeatCardCharacter(character); 
-                _activeEffects.Add(effect);
+                _table.SeatCharacter(character); 
+
+                Played?.Invoke(card, character);
             }
 
             return tableHasFreeSeats;

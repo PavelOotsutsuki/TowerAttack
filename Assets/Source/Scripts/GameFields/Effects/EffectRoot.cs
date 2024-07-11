@@ -1,29 +1,41 @@
-using GameFields.Persons;
-using Tools;
-using UnityEngine;
 using Cards;
 using System;
-using GameFields.DiscardPiles;
+using GameFields.Discarding;
+using Zenject;
 
 namespace GameFields.Effects
 {
-    public class EffectRoot
+    public class EffectRoot : IDisposable
     {
-        private Deck _deck;
-        private DiscardPile _discardPile;
-        private IPersonSideListener _personSideListener;
-        //private List<ActiveEffect> _activeEffects;
+        private readonly SignalBus _bus;
+        private readonly Deck _deck;
+        private readonly IPersonSideListener _personSideListener;
 
-        public EffectRoot(Deck deck, DiscardPile discardPile, IPersonSideListener personSideListener)
+        public EffectRoot(SignalBus bus, Deck deck, IPersonSideListener personSideListener)
         {
-            //_activeEffects = new List<ActiveEffect>();
-
+            _bus = bus;
             _deck = deck;
-            _discardPile = discardPile;
             _personSideListener = personSideListener;
+            
+            _bus.Subscribe<CardPlayedSignal>(OnPlayCardSignal);
         }
 
-        public Effect PlayEffect(EffectType effectType)
+        public void Dispose()
+        {
+            _bus.Unsubscribe<CardPlayedSignal>(OnPlayCardSignal);
+        }
+
+        private void OnPlayCardSignal(CardPlayedSignal signal)
+        {
+            Effect effect = PlayEffect(signal.Character.Effect);
+            
+            //TODO: rework to adding for correct person
+            _personSideListener.ActivePerson.ApplyEffect(effect);
+            
+            _bus.Fire(new EffectCreatedSignal(signal.Character, effect));
+        }
+
+        private Effect PlayEffect(EffectType effectType)
         {
             Effect effect = effectType switch
             {
@@ -35,18 +47,5 @@ namespace GameFields.Effects
 
             return effect;
         }
-
-        //public void DecreaseEffectCounter()
-        //{
-        //    foreach (ActiveEffect activeEffect in _activeEffects)
-        //    {
-        //        activeEffect.DecreaseEffectCounter(_personSideListener.ActivePerson);
-
-        //        if (activeEffect.CountTurns <= 0)
-        //        {
-        //            _activeEffects.Remove(activeEffect);
-        //        }
-        //    }
-        //}
     }
 }

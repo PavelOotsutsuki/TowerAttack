@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
-using GameFields.Persons.Hands;
 using UnityEngine;
 using Cards;
 using Cysharp.Threading.Tasks;
@@ -10,102 +9,51 @@ namespace GameFields.Persons.DrawCards
 {
     public class DrawCardRoot
     {
-        //[SerializeField] private int _countStartDrawCards = 1;
-
-        //[SerializeField] private float _fireDrawCardsDelay = 2f;
-        //[SerializeField] private float _simpleDrawCardsDelay = 0.1f;
-
-        private SimpleDrawCardAnimation _simpleDrawCardAnimation;
-        //private FireDrawCardAnimation _fireDrawCardAnimation; 
-        //private StartDrawCardAnimator _startDrawCardAnimator;
+        private readonly SimpleDrawCardAnimation _simpleDrawCardAnimation;
+        private readonly Deck _deck;
 
         private IDrawCardAnimation _currentDrawCardAnimation;
-        private Deck _deck;
-        private bool _isDrawing;
-
-        public bool IsDrawing => _isDrawing;
-        //private Action _startDrawCallback;
 
         public DrawCardRoot(SimpleDrawCardAnimation simpleDrawCardAnimation, Deck deck)
         {
             _simpleDrawCardAnimation = simpleDrawCardAnimation;
             _deck = deck;
-            _isDrawing = false;
-
-            //_startDrawCallback = startDrawCallback;
-            //_simpleDrawCardAnimation = new SimpleDrawCardAnimation(hand, _simpleDrawCardsDelay);
-            //_fireDrawCardAnimation = new FireDrawCardAnimation(hand, _fireDrawCardsDelay);
-
-            //_startDrawCardAnimator = new StartDrawCardAnimator(new SimpleDrawCardAnimation(hand, _simpleDrawCardsDelay), _fireDrawCardAnimation);
-            //_startDrawCardAnimator = new StartDrawCardAnimator(_simpleDrawCardAnimation, _fireDrawCardAnimation);
         }
 
-        //public void StartTurnDraw(Queue<Card> cards)
-        //{
-        //    AddCardsInQueue(cards);
-
-        //    StartTurnDrawing().ToUniTask();
-        //}
-        //public void SetFireDraw(int countTurns)
-        //{
-        //    _startDrawCardAnimator.SetFireMode(countTurns);
-        //}
-
-        //public void StartTurnDraw(Action callback = null)
-        //{
-        //    _currentDrawCardAnimation = _startDrawCardAnimator;
-
-        //    TakeCards(_countStartDrawCards, callback);
-        //}
+        public bool IsDrawing { get; private set; } = false;
 
         public List<Card> DrawCards(int countCards, Action callback = null)
         {
             _currentDrawCardAnimation = _simpleDrawCardAnimation;
-
             return TakeCards(countCards, callback);
         }
 
         public void DrawCards(IDrawCardAnimation drawCardAnimation, int countCards, Action callback = null)
         {
             _currentDrawCardAnimation = drawCardAnimation;
-
             TakeCards(countCards, callback);
         }
 
         private List<Card> TakeCards(int countCards, Action callback = null)
         {
-            //if (_isDrawing == false)
-            //{
-                List<Card> cards = new List<Card>();
+            List<Card> cards = new();
 
-                for (int i = 0; i < countCards; i++)
+            for (int i = 0; i < countCards; i++)
+            {
+                if (_deck.IsHasCards(1))
                 {
-                    if (_deck.IsHasCards(1))
-                    {
-                        cards.Add(_deck.TakeTopCard());
-                    }
+                    cards.Add(_deck.TakeTopCard());
                 }
+            }
 
-                DrawingCards(cards, callback).ToUniTask();
+            DrawingCards(cards, callback).ToUniTask();
 
-                return cards;
-            //}
-            //else
-            //{
-            //    throw new ArgumentOutOfRangeException("Invalid draw cards timing");
-            //}
+            return cards;
         }
 
-        //private IEnumerator StartTurnDrawing()
-        //{
-        //    yield return DrawingCards();
-
-        //    _startDrawCallback?.Invoke();
-        //}
-
-        private IEnumerator DrawingCards(List<Card> cards, Action callback)
+        private IEnumerator DrawingCards(IReadOnlyList<Card> cards, Action callback)
         {
-            _isDrawing = true;
+            IsDrawing = true;
 
             if (cards.Count > 0)
             {
@@ -117,19 +65,9 @@ namespace GameFields.Persons.DrawCards
                     yield return new WaitUntil(() => _currentDrawCardAnimation.IsDone);
                 }
             }
-
-
+            
             callback?.Invoke();
-
-            _isDrawing = false;
+            IsDrawing = false;
         }
-
-        //private void AddCardsInQueue(Queue<Card> cards)
-        //{
-        //    while(cards.Count > 0)
-        //    {
-        //        _drawCardQueue.Enqueue(cards.Dequeue());
-        //    }
-        //}
     }
 }

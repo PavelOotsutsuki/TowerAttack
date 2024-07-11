@@ -24,7 +24,7 @@ namespace GameFields.StartTowerCardSelections
         {
             gameObject.SetActive(false);
 
-            Color startColor = new Color(_label.color.r, _label.color.g, _label.color.b, LifeAlpha);
+            Color startColor = new(_label.color.r, _label.color.g, _label.color.b, LifeAlpha);
 
             _label.color = startColor;
             _label.fontSize = _startFontSize;
@@ -54,7 +54,7 @@ namespace GameFields.StartTowerCardSelections
             float startAlpha = _label.color.a;
             float alphaWay = (EndAlpha - startAlpha) / _endDuration;
 
-            Color color = new Color(_label.color.r, _label.color.g, _label.color.b, startAlpha);
+            Color color = new(_label.color.r, _label.color.g, _label.color.b, startAlpha);
 
             for (float time = 0f; time < _endDuration; time += Time.deltaTime)
             {

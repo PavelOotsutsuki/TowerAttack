@@ -11,8 +11,8 @@ namespace GameFields.Seats
         [SerializeField] private int _countObjects;
         [SerializeField] private Seat _template;
 
-        private Queue<Seat> _remainingPool = new Queue<Seat>();
-        private List<Seat> _usedPool = new List<Seat>();
+        private Queue<Seat> _remainingPool = new();
+        private List<Seat> _usedPool = new();
 
         public void Init()
         {

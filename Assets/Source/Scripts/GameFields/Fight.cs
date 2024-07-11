@@ -1,44 +1,45 @@
 using GameFields.Persons;
 using System.Collections;
 using UnityEngine;
-using GameFields.EndTurnButtons;
 using Cysharp.Threading.Tasks;
+using GameFields.Discarding;
+using Zenject;
 
 namespace GameFields
 {
     internal class Fight : IEndTurnHandler, IPersonSideListener, IFightStep
     {
-        private readonly int _maxTurns = 100;
+        private const int MaxTurns = 100;
 
-        private Player _player;
-        private EnemyAI _enemy;
+        private readonly SignalBus _bus;
+        private readonly Player _player;
+        private readonly EnemyAI _enemy;
+        private readonly FightResult _fightResult;
 
         private int _turnNumber;
-
-        private Person _activePerson;
-        private Person _deactivePerson;
-        private bool _isComlpete;
-        private FightResult _fightResult;
-       
-        public Fight(Player player, EnemyAI enemy, FightResult fightResult)
+        
+        public Fight(SignalBus bus, Player player, EnemyAI enemy, FightResult fightResult)
         {
-            _isComlpete = false;
-            _turnNumber = 1;
-
-            _fightResult = fightResult;
+            _bus = bus;
             _player = player;
             _enemy = enemy;
+            _fightResult = fightResult;
+
+            _turnNumber = 1;
+
+            IsComplete = false;
         }
 
-        public Person ActivePerson => _activePerson;
-        public Person DeactivePerson => _deactivePerson;
-        public bool IsComplete => _isComlpete;
+        public bool IsComplete { get; private set; }
+        public Person ActivePerson { get; private set; }
+        public Person DeactivePerson { get; private set; }
 
         public void OnEndTurn()
         {
             _turnNumber++;
 
-            DiscardCards();
+            _bus.Fire(new DiscardCardsSignal(ActivePerson.DiscardCards()));
+            
             CheckEndFight();
             SwitchPerson();
             StartTurn();
@@ -46,44 +47,33 @@ namespace GameFields
 
         public void StartStep()
         {
-            _activePerson = _player;
-            _deactivePerson = _enemy;
+            ActivePerson = _player;
+            DeactivePerson = _enemy;
 
             StartTurn();
         }
 
-        private void DiscardCards()
-        {
-            _activePerson.DiscardCards();
-        }
-
         private void CheckEndFight()
         {
-            if (_turnNumber >= _maxTurns)
+            if (_turnNumber >= MaxTurns)
             {
                 _fightResult.SetDraw();
-                _isComlpete = true;
+                IsComplete = true;
             }
         }
 
-        private void SwitchPerson()
-        {
-            Person tempPerson = _activePerson;
-
-            _activePerson = _deactivePerson;
-            _deactivePerson = tempPerson;
-        }
+        private void SwitchPerson() => (ActivePerson, DeactivePerson) = (DeactivePerson, ActivePerson);
 
         private void StartTurn()
         {
-            _activePerson.StartStep();
+            ActivePerson.StartStep();
 
             TurnProcessing().ToUniTask();
         }
 
         private IEnumerator TurnProcessing()
         {
-            yield return new WaitUntil(() => _activePerson.IsComplete);
+            yield return new WaitUntil(() => ActivePerson.IsComplete);
 
             OnEndTurn();
         }

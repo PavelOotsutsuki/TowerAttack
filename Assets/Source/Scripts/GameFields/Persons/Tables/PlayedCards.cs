@@ -1,51 +1,41 @@
 using System.Collections.Generic;
 using Cards;
+using GameFields.Effects;
 
 namespace GameFields.Persons.Tables
 {
     public class PlayedCards
     {
-        private List<PlayedCardPair> _playedCardPairs;
+        private readonly Dictionary<CardCharacter, Card> _pairs = new();
+        private readonly Dictionary<Effect, CardCharacter> _pairs2 = new();
 
-        public PlayedCards()
+        public CardCharacter GetCharacterByCard(Card card)
         {
-            _playedCardPairs = new List<PlayedCardPair>();
+            foreach ((CardCharacter character, Card value) in _pairs)
+                if (value == card)
+                    return character;
+
+            return null;
         }
 
-        //public Card GetCard(CardCharacter cardCharacter)
-        //{
-        //    foreach (PlayedCardPair playedCardPair in _playedCardPairs)
-        //    {
-        //        if (playedCardPair.CardCharacter == cardCharacter)
-        //        {
-        //            return playedCardPair.Card;
-        //        }
-        //    }
+        public void Add(CardCharacter cardCharacter, Card card) 
+            => _pairs.Add(cardCharacter, card);
 
-        //    return null;
-        //}
+        public void Remove(CardCharacter cardCharacter) => _pairs.Remove(cardCharacter);
+
+        public bool HasCharacter(CardCharacter cardCharacter) => _pairs.ContainsKey(cardCharacter);
+
+        public void BindEffect(CardCharacter character,Effect effect) => _pairs2.Add(effect, character);
 
         public List<Card> GetDiscardCards()
         {
-            List<Card> discardCards = new List<Card>();
+            List<Card> cards = new();
 
-            foreach (PlayedCardPair playedCardPair in _playedCardPairs)
-            {
-                playedCardPair.DecreaseCardCounter();
+            foreach ((Effect effect, CardCharacter character) in _pairs2)
+                if (effect.CountTurns < 1)
+                    cards.Add(_pairs[character]);
 
-                if (playedCardPair.TryDiscard(out Card card))
-                {
-                    discardCards.Add(card);
-                    _playedCardPairs.Remove(playedCardPair);
-                }
-            }
-
-            return discardCards;
-        }
-
-        public void Add(CardCharacter cardCharacter, Card card, int countTurnsOnTable)
-        {
-            _playedCardPairs.Add(new PlayedCardPair(cardCharacter, card, countTurnsOnTable));
+            return cards;
         }
     }
 }

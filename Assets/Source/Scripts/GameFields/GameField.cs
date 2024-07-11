@@ -1,13 +1,13 @@
 using Cards;
+using GameFields.Discarding;
 using Tools;
 using UnityEngine;
 using GameFields.Persons;
 using GameFields.EndTurnButtons;
 using GameFields.StartTowerCardSelections;
 using GameFields.Effects;
-using GameFields.DiscardPiles;
 using GameFields.Seats;
-using GameFields.Persons.Tables;
+using Zenject;
 
 namespace GameFields
 {
@@ -18,39 +18,48 @@ namespace GameFields
         [SerializeField] private EndTurnButton _endTurnButton;
         [SerializeField] private StartTowerCardSelection _startTowerCardSelection;
         [SerializeField] private SeatPool _seatPool;
-        //[SerializeField] private SpeedUpButton _speedUpButton;
 
         [SerializeField] private PersonCreator _personCreator;
 
         private Player _player;
         private EnemyAI _enemyAI;
 
-        public void Init(Card[] cardsInDeck)
+        private EffectRoot _effectRoot;
+        private SignalBus _bus;
+
+        [Inject]
+        private void Construct(SignalBus bus, DiContainer container)
+        {
+            _bus = bus;
+        }
+
+        private void OnDestroy()
+        {
+            _effectRoot.Dispose();
+        }
+
+        public void Init(Card[] startCards)
         {
             _seatPool.Init();
-            _deck.Init(cardsInDeck);
+            _deck.Init(startCards);
             _discardPile.Init(_seatPool);
             _endTurnButton.Init();
-            _personCreator.Init(_discardPile, _deck, _endTurnButton);
+            _personCreator.Init(_bus, _deck, _endTurnButton);
 
             _player = _personCreator.CreatePlayer();
             _enemyAI = _personCreator.CreateEnemyAI();
 
             _startTowerCardSelection.Init(_player, _enemyAI);
 
-            FightResult fightResult = new FightResult();
+            FightResult fightResult = new();
+            Fight fight = new(_bus, _player, _enemyAI, fightResult);
+            EndFight endFight = new(fightResult);
 
-            Fight fight = new Fight(_player, _enemyAI, fightResult);
-            EffectRoot effectRoot = new EffectRoot(_deck, _discardPile, fight);
-            EndFight endFight = new EndFight(fightResult);
+            _effectRoot = new EffectRoot(_bus, _deck, fight);
+            _personCreator.InitPersonsData(_seatPool);
 
-            _personCreator.InitPersonsData(effectRoot, _seatPool);
-            //_player.Init();
-            //_enemyAI.Init();
+            FightStepsController fightStepsController = new(_startTowerCardSelection, fight, endFight);
 
-            FightStepsController fightStepsController = new FightStepsController(_startTowerCardSelection, fight, endFight);
-
-            //fightStepsController.PrepareToStart();
             fightStepsController.StartStep();
         }
 

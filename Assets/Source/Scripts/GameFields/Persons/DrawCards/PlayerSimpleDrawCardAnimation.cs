@@ -39,7 +39,7 @@ namespace GameFields.Persons.DrawCards
 
         private void InvertCardBack(float cardBackDuration, float cardBackRotation, float cardBackScaleFactor, float indent)
         {
-            Vector3 endRotationVector = new Vector3(cardBackRotation, 0f, 0f);
+            Vector3 endRotationVector = new(cardBackRotation, 0f, 0f);
             Vector3 scaleVector = _cardTransform.localScale * cardBackScaleFactor;
 
             Vector3 downWay = _cardTransform.position;
@@ -50,7 +50,7 @@ namespace GameFields.Persons.DrawCards
 
         private void InvertCardFront(float duration, float scaleFactor, float indent)
         {
-            Vector3 endRotationVector = new Vector3(0f, 0f, 0f);
+            Vector3 endRotationVector = new(0f, 0f, 0f);
             Vector3 downWay = _cardTransform.position;
             float screenfactor = ScreenView.GetFactorY();
 

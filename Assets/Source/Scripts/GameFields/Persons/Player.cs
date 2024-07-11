@@ -1,21 +1,21 @@
 using GameFields.Persons.Discovers;
-using GameFields.DiscardPiles;
 using GameFields.Persons.Tables;
 using GameFields.Persons.Hands;
 using GameFields.Persons.Towers;
 using GameFields.Persons.DrawCards;
+using Zenject;
 
 namespace GameFields.Persons
 {
     internal class Player : Person
     {
-        private Discover _discover;
-        private ITableActivator _tableActivator;
-        private IBlockable _handBlockable;
+        private readonly Discover _discover;
+        private readonly ITableActivator _tableActivator;
+        private readonly IBlockable _handBlockable;
 
-        public Player(DiscardPile discardPile, ITableActivator tableActivator, HandPlayer hand, Table table, Tower tower, Discover discover,
-            DrawCardRoot drawCardRoot, StartTurnDraw startTurnDraw, TurnProcessing turnProcessing) :
-            base(hand, table, drawCardRoot, tower, discardPile, startTurnDraw, turnProcessing)
+        public Player(ITableActivator tableActivator, IBlockable hand, CardPlayingZone cardPlayingZone, Tower tower,
+            Discover discover, DrawCardRoot drawCardRoot, StartTurnDraw startTurnDraw, ITurnStep turnProcessing, SignalBus bus) :
+            base(cardPlayingZone, drawCardRoot, tower, startTurnDraw, turnProcessing, bus)
         {
             _discover = discover;
             _tableActivator = tableActivator;

@@ -1,59 +1,81 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Cards;
 using Cysharp.Threading.Tasks;
-using GameFields.DiscardPiles;
+using GameFields.Discarding;
+using GameFields.Effects;
 using GameFields.Persons.DrawCards;
-using GameFields.Persons.Hands;
 using GameFields.Persons.Tables;
 using GameFields.Persons.Towers;
+using StateMachine;
 using UnityEngine;
+using Zenject;
 
 namespace GameFields.Persons
 {
     public abstract class Person : IStartTowerCardSelectionListener, IStateMachineState
     {
-        private Hand _hand;
-        private Table _table;
-        private DrawCardRoot _drawCardRoot;
-        private StartTurnDraw _startTurnDraw;
-
-        private ITurnStep _turnProcess;
-
-        private Tower _tower;
-
-        private DiscardPile _discardPile;
+        private readonly ITurnStep _turnProcess;
+        private readonly CardPlayingZone _playingZone;
+        private readonly DrawCardRoot _drawCardRoot;
+        private readonly StartTurnDraw _startTurnDraw;
+        private readonly Tower _tower;
+        private readonly List<Effect> _appliedEffects = new();
+        private readonly PlayedCards _playedCards = new();
+        private readonly SignalBus _bus;
 
         private Queue<ITurnStep> _turnSteps;
         private ITurnStep _currentStep;
 
-        private bool _isComplete;
-
-        public Person(Hand hand, Table table, DrawCardRoot drawCardRoot, Tower tower, DiscardPile discardPile,
-            StartTurnDraw startTurnDraw, ITurnStep turnProcess)
+        protected Person(CardPlayingZone playingZone, DrawCardRoot drawCardRoot, Tower tower,
+            StartTurnDraw startTurnDraw, ITurnStep turnProcess, SignalBus bus)
         {
-            _hand = hand;
-            _table = table;
+            _playingZone = playingZone;
             _tower = tower;
             _drawCardRoot = drawCardRoot;
             _startTurnDraw = startTurnDraw;
             _turnProcess = turnProcess;
+            _bus = bus;
 
-            _discardPile = discardPile;
+            _playingZone.Played += PlayingZoneOnPlayed;
+            _bus.Subscribe<EffectCreatedSignal>(OnEffectCreatedSignal);
         }
 
-        public bool IsComplete => _isComplete;
+        ~Person()
+        {
+            _playingZone.Played -= PlayingZoneOnPlayed;
+            _bus.Unsubscribe<EffectCreatedSignal>(OnEffectCreatedSignal);
+        }
+
+        private void PlayingZoneOnPlayed(Card card, CardCharacter character)
+        {
+            _playedCards.Add(character, card);
+            _bus.Fire(new CardPlayedSignal(character));
+        }
+
+        private void OnEffectCreatedSignal(EffectCreatedSignal signal)
+        {
+            if (_playedCards.HasCharacter(signal.Character))
+                _playedCards.BindEffect(signal.Character, signal.Effect);
+        }
+
+        public bool IsComplete { get; private set; }
         public bool IsTowerFilled => _tower.IsTowerFill;
 
         public void StartStep()
         {
-            _isComplete = false;
+            IsComplete = false;
 
             _turnSteps = new Queue<ITurnStep>();
 
             EnqueueStep(_startTurnDraw);
             EnqueueStep(_turnProcess);
+
+            foreach (Effect effect in _appliedEffects)
+                if (effect.CountTurns > 0)
+                    effect.DecreaseCounter();
 
             OnStartStep();
 
@@ -62,21 +84,27 @@ namespace GameFields.Persons
             ProcessingTurn().ToUniTask();
         }
 
-        public void DiscardCards()
+        public List<Card> DiscardCards()
         {
-            _discardPile.DiscardCards(_table.GetDiscardCards());
+            List<Card> cards = _playedCards.GetDiscardCards();
+
+            List<CardCharacter> characters = cards.Select(card => _playedCards.GetCharacterByCard(card)).ToList();
+            _playingZone.FreeSeatsByCharacters(characters);
+
+            foreach (CardCharacter character in characters)
+                _playedCards.Remove(character);
+
+            return cards;
         }
 
         public List<Card> DrawCards(int countCards, Action callback = null)
-        {
-            return _drawCardRoot.DrawCards(countCards, callback);
-        }
+            => _drawCardRoot.DrawCards(countCards, callback);
 
         protected abstract void OnStartStep();
 
         private IEnumerator ProcessingTurn()
         {
-            while (_isComplete == false)
+            while (IsComplete == false)
             {
                 _currentStep.StartStep();
                 yield return new WaitUntil(() => _currentStep.IsComplete);
@@ -93,13 +121,12 @@ namespace GameFields.Persons
             }
             else
             {
-                _isComplete = true;
+                IsComplete = true;
             }
         }
 
-        private void EnqueueStep(ITurnStep turnStep)
-        {
-            _turnSteps.Enqueue(turnStep);
-        }
+        private void EnqueueStep(ITurnStep turnStep) => _turnSteps.Enqueue(turnStep);
+
+        public void ApplyEffect(Effect effect) => _appliedEffects.Add(effect);
     }
 }

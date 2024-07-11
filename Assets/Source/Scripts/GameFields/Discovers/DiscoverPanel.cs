@@ -21,7 +21,7 @@ namespace GameFields.Persons.Discovers
         {
             _panel.raycastTarget = false;
 
-            Color startColor = new Color(_panel.color.r, _panel.color.g, _panel.color.b, DeactiveAlpha);
+            Color startColor = new(_panel.color.r, _panel.color.g, _panel.color.b, DeactiveAlpha);
 
             _panel.color = startColor;
         }
@@ -30,7 +30,7 @@ namespace GameFields.Persons.Discovers
         {
             _panel.raycastTarget = true;
 
-            Color activateColor = new Color(_panel.color.r, _panel.color.g, _panel.color.b, ActiveAlpha / MaxAlpha);
+            Color activateColor = new(_panel.color.r, _panel.color.g, _panel.color.b, ActiveAlpha / MaxAlpha);
 
             _panel.DOColor(activateColor, _activateDuration);
         }
@@ -45,7 +45,7 @@ namespace GameFields.Persons.Discovers
             //    _panel.color = new Color(_panel.color.r, _panel.color.g, _panel.color.b, startAlpha + alphaWay * time);
             //    yield return null;
             //}
-            Color deactivateColor = new Color(_panel.color.r, _panel.color.g, _panel.color.b, DeactiveAlpha / MaxAlpha);
+            Color deactivateColor = new(_panel.color.r, _panel.color.g, _panel.color.b, DeactiveAlpha / MaxAlpha);
 
             _panel.DOColor(deactivateColor, _deactivateDuration)
             .OnComplete(() =>

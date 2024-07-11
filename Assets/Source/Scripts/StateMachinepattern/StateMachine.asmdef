@@ -1,15 +1,7 @@
 {
-    "name": "GameFields",
-    "rootNamespace": "GameFields",
-    "references": [
-        "Unity.TextMeshPro",
-        "DOTween.Modules",
-        "UniTask",
-        "Zenject",
-        "Cards",
-        "Tools",
-        "StateMachine"
-    ],
+    "name": "StateMachine",
+    "rootNamespace": "StateMachine",
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

@@ -273,7 +273,7 @@ namespace GameFields.Persons.Hands
             {
                 positionX = _startPositionX + ((_handSeats.Count - 1) / 2f - i) * offsetX;
                 Vector3 positon = new Vector2(positionX + _rectTransform.rect.xMin, _startPositionY + _rectTransform.rect.yMin);
-                Vector3 rotation = new Vector3(0f, 0f, StartRotation);
+                Vector3 rotation = new(0f, 0f, StartRotation);
 
                 _handSeats[i].SetLocalPositionValues(positon, rotation, _startCardTranslateSpeed);
             }

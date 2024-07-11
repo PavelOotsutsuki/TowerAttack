@@ -1,9 +1,8 @@
-using GameFields.DiscardPiles;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.DrawCards;
-using GameFields.Persons.Hands;
 using GameFields.Persons.Tables;
 using GameFields.Persons.Towers;
+using Zenject;
 
 namespace GameFields.Persons
 {
@@ -12,9 +11,9 @@ namespace GameFields.Persons
         private DiscoverImitation _discoverImitation;
         private ITableDeactivator _tableDeactivator;
 
-        public EnemyAI(DiscardPile discardPile, ITableDeactivator tableDeactivator, EnemyDragAndDropImitation enemyDragAndDropImitation, HandAI hand, Table table, Tower tower,
-            DrawCardRoot drawCardRoot, DiscoverImitation discoverImitation, StartTurnDraw startTurnDraw) :
-            base(hand, table, drawCardRoot, tower, discardPile, startTurnDraw, enemyDragAndDropImitation)
+        public EnemyAI(ITableDeactivator tableDeactivator, ITurnStep enemyDragAndDropImitation, CardPlayingZone cardPlayingZone,
+            Tower tower, DrawCardRoot drawCardRoot, DiscoverImitation discoverImitation, StartTurnDraw startTurnDraw, SignalBus bus) :
+            base(cardPlayingZone, drawCardRoot, tower, startTurnDraw, enemyDragAndDropImitation, bus)
         {
             _discoverImitation = discoverImitation;
             _tableDeactivator = tableDeactivator;

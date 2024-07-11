@@ -98,7 +98,7 @@ namespace GameFields.EndTurnButtons
 
         private void InvertActiveSide(float duration, float rotation)
         {
-            Vector3 endRotationVector = new Vector3(rotation, 0f, 0f);
+            Vector3 endRotationVector = new(rotation, 0f, 0f);
             Vector3 scaleVector = _buttonTransform.localScale;
             Vector3 downWay = _buttonTransform.position;
 
@@ -107,7 +107,7 @@ namespace GameFields.EndTurnButtons
 
         private void InvertDeactiveSide(float duration, float rotation)
         {
-            Vector3 endRotationVector = new Vector3(rotation, 0f, 0f);
+            Vector3 endRotationVector = new(rotation, 0f, 0f);
             Vector3 scaleVector = _buttonTransform.localScale;
             Vector3 downWay = _buttonTransform.position;
 
