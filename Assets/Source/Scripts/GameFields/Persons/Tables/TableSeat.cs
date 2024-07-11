@@ -35,12 +35,12 @@ namespace GameFields.Persons.Tables
 
         internal void SetCardCharacter(CardCharacter cardCharacter)
         {
-            Vector2 cardCharacterPosition = new Vector2(0, 0);
+            //Vector2 cardCharacterPosition = new Vector2(0, 0);
 
             _cardCharacter = cardCharacter;
             //_cardCharacter.transform.SetParent(_rectTransform);
             //_cardCharacter.transform.localPosition = cardCharacterPosition;
-            _cardCharacter.Activate(_rectTransform, cardCharacterPosition);
+            _cardCharacter.Activate(_rectTransform);
             //_effect = _effectRoot.PlayEffect(_cardCharacter.Effect);
         }
 
