@@ -1,6 +1,5 @@
 using Cards;
 using GameFields.DiscardPiles;
-using GameFields.Effects;
 using GameFields.EndTurnButtons;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.DrawCards;
@@ -69,13 +68,7 @@ namespace GameFields.Persons
             _endTurnButton = endTurnButton;
         }
 
-        public void InitPersonsData(EffectRoot effectRoot, SeatPool seatPool)
-        {
-            InitPlayersData(effectRoot, seatPool);
-            InitEnemyData(effectRoot, seatPool);
-        }
-
-        public Player CreatePlayer()
+        public Player CreatePlayer(SeatPool seatPool)
         {
             SimpleDrawCardAnimation simpleDrawCardAnimation = new SimpleDrawCardAnimation(_playerHand, _simpleDrawCardDelay);
             FireDrawCardAnimation fireDrawCardAnimation = new FireDrawCardAnimation(_playerHand, _fireDrawCardDelay);
@@ -85,10 +78,11 @@ namespace GameFields.Persons
 
             StartTurnDraw startTurnDraw = new StartTurnDraw(drawCardRoot, simpleDrawCardAnimation, fireDrawCardAnimation, _playerCountStartDrawCards);
 
+            InitPlayersData(seatPool);
             return new Player(_discardPile, _tableActivator, _playerHand, _playerTable, _playerTower, _playerDiscover, drawCardRoot, startTurnDraw, turnProcessing);
         }
 
-        public EnemyAI CreateEnemyAI()
+        public EnemyAI CreateEnemyAI(SeatPool seatPool)
         {
             SimpleDrawCardAnimation simpleDrawCardAnimation = new SimpleDrawCardAnimation(_enemyHand, _simpleDrawCardDelay);
             FireDrawCardAnimation fireDrawCardAnimation = new FireDrawCardAnimation(_enemyHand, _fireDrawCardDelay);
@@ -99,10 +93,11 @@ namespace GameFields.Persons
 
             StartTurnDraw startTurnDraw = new StartTurnDraw(drawCardRoot, simpleDrawCardAnimation, fireDrawCardAnimation, _enemyCountStartDrawCards);
 
+            InitEnemyData(seatPool);
             return new EnemyAI(_discardPile, _tableActivator, _enemyDragAndDropImitation, _enemyHand, _enemyTable, _enemyTower, drawCardRoot, _enemyDiscoverImitation, startTurnDraw);
         }
         
-        private void InitPlayersData(EffectRoot effectRoot, SeatPool seatPool)
+        private void InitPlayersData(SeatPool seatPool)
         {
             _playerHand.Init(seatPool);
             _playerTable.Init(_playerHand);
@@ -111,7 +106,7 @@ namespace GameFields.Persons
             //_playerDrawCardRoot = new DrawCardRoot(new SimpleDrawCardAnimation(_playerHand, _simpleDrawCardDelay), deck);
         }
 
-        private void InitEnemyData(EffectRoot effectRoot, SeatPool seatPool)
+        private void InitEnemyData(SeatPool seatPool)
         {
             _enemyHand.Init(seatPool);
             _enemyTable.Init(_enemyHand);

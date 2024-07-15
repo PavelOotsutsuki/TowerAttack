@@ -33,8 +33,8 @@ namespace GameFields
             _endTurnButton.Init();
             _personCreator.Init(_discardPile, _deck, _endTurnButton);
 
-            _player = _personCreator.CreatePlayer();
-            _enemyAI = _personCreator.CreateEnemyAI();
+            _player = _personCreator.CreatePlayer(_seatPool);
+            _enemyAI = _personCreator.CreateEnemyAI(_seatPool);
 
             _startTowerCardSelection.Init(_player, _enemyAI);
 
@@ -44,7 +44,6 @@ namespace GameFields
             EffectRoot effectRoot = new EffectRoot(_deck, _discardPile, fight);
             EndFight endFight = new EndFight(fightResult);
 
-            _personCreator.InitPersonsData(effectRoot, _seatPool);
             //_player.Init();
             //_enemyAI.Init();
 
