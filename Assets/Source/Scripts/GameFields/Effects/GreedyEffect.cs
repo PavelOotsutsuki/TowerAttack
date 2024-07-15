@@ -9,7 +9,7 @@ namespace GameFields.Effects
         private Person _activePerson;
         private Person _deactivePerson;
 
-        public GreedyEffect(Person activePerson, Person deactivePerson)
+        public GreedyEffect(Person activePerson, Person deactivePerson) : base(activePerson)
         {
             _activePerson = activePerson;
             _deactivePerson = deactivePerson;

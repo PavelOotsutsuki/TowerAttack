@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace GameFields.Effects
 {
-    public class PatriarchCorallEffect: Effect
+    public class PatriarchCorallEffect : Effect
     {
         private const int CountDrawCards = 3;
 
@@ -20,7 +20,7 @@ namespace GameFields.Effects
         private Card[] _drawnCards;
         private Discover _discover;
 
-        public PatriarchCorallEffect(Deck deck, Person activePerson, Person deactivePerson)
+        public PatriarchCorallEffect(Deck deck, Person activePerson, Person deactivePerson) : base(activePerson)
         {
             _deck = deck;
             _activePerson = activePerson;

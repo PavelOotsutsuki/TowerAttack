@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Cards;
 using GameFields.Effects;
 
@@ -21,8 +22,6 @@ namespace GameFields.Persons.Tables
         public void Add(CardCharacter cardCharacter, Card card) 
             => _pairs.Add(cardCharacter, card);
 
-        public void Remove(CardCharacter cardCharacter) => _pairs.Remove(cardCharacter);
-
         public bool HasCharacter(CardCharacter cardCharacter) => _pairs.ContainsKey(cardCharacter);
 
         public void BindEffect(CardCharacter character,Effect effect) => _pairs2.Add(effect, character);
@@ -34,8 +33,20 @@ namespace GameFields.Persons.Tables
             foreach ((Effect effect, CardCharacter character) in _pairs2)
                 if (effect.CountTurns < 1)
                     cards.Add(_pairs[character]);
-
+            
             return cards;
+        }
+
+        public void RemoveCard(IEnumerable<Card> cards)
+        {
+            foreach (Card card in cards)
+            {
+                CardCharacter character = _pairs.FirstOrDefault(kvp => kvp.Value == card).Key;
+                _pairs.Remove(character);
+                
+                Effect effect = _pairs2.FirstOrDefault(kvp => kvp.Value == character).Key;
+                _pairs2.Remove(effect);
+            } 
         }
     }
 }

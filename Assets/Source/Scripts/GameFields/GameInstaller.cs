@@ -10,8 +10,8 @@ namespace GameFields
             SignalBusInstaller.Install(Container);
             
             Container.DeclareSignal<CardPlayedSignal>();
-            Container.DeclareSignal<DiscardCardsSignal>();
             Container.DeclareSignal<EffectCreatedSignal>();
+            Container.DeclareSignal<DiscardCardsSignal>();
         }
     }
 }

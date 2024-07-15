@@ -22,11 +22,11 @@ namespace GameFields.Persons
         private readonly DrawCardRoot _drawCardRoot;
         private readonly StartTurnDraw _startTurnDraw;
         private readonly Tower _tower;
-        private readonly List<Effect> _appliedEffects = new();
-        private readonly PlayedCards _playedCards = new();
         private readonly SignalBus _bus;
-
-        private Queue<ITurnStep> _turnSteps;
+        private readonly List<Effect> _appliedEffects;
+        private readonly PlayedCards _playedCards;
+        private readonly Queue<ITurnStep> _turnSteps;
+        
         private ITurnStep _currentStep;
 
         protected Person(CardPlayingZone playingZone, DrawCardRoot drawCardRoot, Tower tower,
@@ -38,7 +38,11 @@ namespace GameFields.Persons
             _startTurnDraw = startTurnDraw;
             _turnProcess = turnProcess;
             _bus = bus;
-
+            
+            _appliedEffects = new List<Effect>();
+            _playedCards = new PlayedCards();
+            _turnSteps = new Queue<ITurnStep>();
+            
             _playingZone.Played += PlayingZoneOnPlayed;
             _bus.Subscribe<EffectCreatedSignal>(OnEffectCreatedSignal);
         }
@@ -67,16 +71,8 @@ namespace GameFields.Persons
         public void StartStep()
         {
             IsComplete = false;
-
-            _turnSteps = new Queue<ITurnStep>();
-
-            EnqueueStep(_startTurnDraw);
-            EnqueueStep(_turnProcess);
-
-            foreach (Effect effect in _appliedEffects)
-                if (effect.CountTurns > 0)
-                    effect.DecreaseCounter();
-
+            
+            InitTurnSteps();
             OnStartStep();
 
             _currentStep = _turnSteps.Dequeue();
@@ -84,21 +80,25 @@ namespace GameFields.Persons
             ProcessingTurn().ToUniTask();
         }
 
-        public List<Card> DiscardCards()
+        private void InitTurnSteps()
         {
-            List<Card> cards = _playedCards.GetDiscardCards();
-
-            List<CardCharacter> characters = cards.Select(card => _playedCards.GetCharacterByCard(card)).ToList();
-            _playingZone.FreeSeatsByCharacters(characters);
-
-            foreach (CardCharacter character in characters)
-                _playedCards.Remove(character);
-
-            return cards;
+            _turnSteps.Clear();
+            
+            EnqueueStep(_startTurnDraw);
+            EnqueueStep(_turnProcess);
         }
 
         public List<Card> DrawCards(int countCards, Action callback = null)
             => _drawCardRoot.DrawCards(countCards, callback);
+
+        public void ApplyEffect(Effect effect) => _appliedEffects.Add(effect);
+
+        public void FinishTurn()
+        {
+            Debug.Log($"{ToString()} finishing turn");
+            DecreaseEffectsCounters();
+            _bus.Fire(new DiscardCardsSignal(GetDiscardedCards()));
+        }
 
         protected abstract void OnStartStep();
 
@@ -127,6 +127,22 @@ namespace GameFields.Persons
 
         private void EnqueueStep(ITurnStep turnStep) => _turnSteps.Enqueue(turnStep);
 
-        public void ApplyEffect(Effect effect) => _appliedEffects.Add(effect);
+        private void DecreaseEffectsCounters()
+        {
+            foreach (Effect effect in _appliedEffects)
+                if (effect.CountTurns > 0)
+                    effect.DecreaseCounter();
+        }
+
+        private List<Card> GetDiscardedCards()
+        {
+            List<Card> cards = _playedCards.GetDiscardCards();
+            List<CardCharacter> characters = cards.Select(card => _playedCards.GetCharacterByCard(card)).ToList();
+            
+            _playingZone.FreeSeatsByCharacters(characters);
+            _playedCards.RemoveCard(cards);
+
+            return cards;
+        }
     }
 }

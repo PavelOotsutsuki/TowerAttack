@@ -33,18 +33,13 @@ namespace GameFields
             _bus = bus;
         }
 
-        private void OnDestroy()
-        {
-            _effectRoot.Dispose();
-        }
-
         public void Init(Card[] startCards)
         {
             _seatPool.Init();
             _deck.Init(startCards);
             _discardPile.Init(_seatPool);
             _endTurnButton.Init();
-            _personCreator.Init(_bus, _deck, _endTurnButton);
+            _personCreator.Init(_bus, _deck, _endTurnButton, _seatPool);
 
             _player = _personCreator.CreatePlayer();
             _enemyAI = _personCreator.CreateEnemyAI();
@@ -52,15 +47,14 @@ namespace GameFields
             _startTowerCardSelection.Init(_player, _enemyAI);
 
             FightResult fightResult = new();
-            Fight fight = new(_bus, _player, _enemyAI, fightResult);
+            Fight fight = new(_player, _enemyAI, fightResult);
             EndFight endFight = new(fightResult);
-
-            _effectRoot = new EffectRoot(_bus, _deck, fight);
-            _personCreator.InitPersonsData(_seatPool);
 
             FightStepsController fightStepsController = new(_startTowerCardSelection, fight, endFight);
 
             fightStepsController.StartStep();
+
+            _effectRoot = new EffectRoot(_bus, _deck, fight);
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

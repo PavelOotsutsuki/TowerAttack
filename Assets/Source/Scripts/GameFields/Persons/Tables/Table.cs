@@ -9,9 +9,9 @@ namespace GameFields.Persons.Tables
     {
         [SerializeField] private TableSeat[] _cardSeats;
 
-        private int[] _cardSeatsSortIndices;
+        private TableSeat[] _sortedSeats;
 
-        public bool HasFreeSeat => _cardSeatsSortIndices.Any(index => _cardSeats[index].IsEmpty);
+        public bool HasFreeSeat => _sortedSeats.Any(seat => seat.IsEmpty);
 
         public void Init()
         {
@@ -20,7 +20,7 @@ namespace GameFields.Persons.Tables
 
         public void FreeSeatByCharacter(GameObject character)
         {
-            var seat = _cardSeats.FirstOrDefault(seat => seat.CompareCharacters(character));
+            var seat = _sortedSeats.FirstOrDefault(seat => seat.CompareCharacters(character));
 
             if (seat != null)
                 seat.ResetCharacter();
@@ -28,42 +28,22 @@ namespace GameFields.Persons.Tables
 
         public void SeatCharacter(CardCharacter character)
         {
-            if (TryFindCardSeat(out TableSeat freeCardSeat))
-            {
-                character.Activate(freeCardSeat.transform);
-                freeCardSeat.SetCardCharacter(character.gameObject);
-            }
-            else
-            {
-                throw new System.NullReferenceException("Не найден TableSeat");
-            }
+            TableSeat freeCardSeat = GetFreeSeat();
+            character.Activate(freeCardSeat.transform);
+            freeCardSeat.SetCardCharacter(character.gameObject);
         }
 
-        private bool TryFindCardSeat(out TableSeat cardSeat)
-        {
-            cardSeat = null;
-            
-            foreach (int index in _cardSeatsSortIndices)
-            {
-                if (_cardSeats[index].IsEmpty)
-                {
-                    cardSeat = _cardSeats[index];
-                    return true;
-                }
-            }
-
-            return cardSeat != null;
-        }
+        private TableSeat GetFreeSeat() => _sortedSeats.First(seat => seat.IsEmpty);
 
         private void SetCardSeatsIndices()
         {
             int countSeats = _cardSeats.Length;
 
-            _cardSeatsSortIndices = new int[countSeats];
+            _sortedSeats = new TableSeat[countSeats];
 
             for (int i = 0; i < countSeats; i++)
             {
-                _cardSeatsSortIndices[i] = GetSortIndex(i, countSeats);
+                _sortedSeats[i] = _cardSeats[GetSortIndex(i, countSeats)];
             }
         }
 

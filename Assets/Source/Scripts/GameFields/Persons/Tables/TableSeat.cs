@@ -9,13 +9,13 @@ namespace GameFields.Persons.Tables
 
         private GameObject _character;
 
+        internal bool IsEmpty => _character == null;
+
         internal void SetCardCharacter(GameObject cardCharacter) => _character = cardCharacter;
 
         internal void ResetCharacter() => _character = null;
 
         internal bool CompareCharacters(GameObject character) => character == _character;
-
-        internal bool IsEmpty => _character == null;
 
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()

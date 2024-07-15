@@ -2,8 +2,6 @@ using GameFields.Persons;
 using System.Collections;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
-using GameFields.Discarding;
-using Zenject;
 
 namespace GameFields
 {
@@ -11,16 +9,14 @@ namespace GameFields
     {
         private const int MaxTurns = 100;
 
-        private readonly SignalBus _bus;
         private readonly Player _player;
         private readonly EnemyAI _enemy;
         private readonly FightResult _fightResult;
 
         private int _turnNumber;
         
-        public Fight(SignalBus bus, Player player, EnemyAI enemy, FightResult fightResult)
+        public Fight(Player player, EnemyAI enemy, FightResult fightResult)
         {
-            _bus = bus;
             _player = player;
             _enemy = enemy;
             _fightResult = fightResult;
@@ -34,13 +30,20 @@ namespace GameFields
         public Person ActivePerson { get; private set; }
         public Person DeactivePerson { get; private set; }
 
+        private bool TurnsIsOut => _turnNumber >= MaxTurns;
+
         public void OnEndTurn()
         {
             _turnNumber++;
 
-            _bus.Fire(new DiscardCardsSignal(ActivePerson.DiscardCards()));
+            ActivePerson.FinishTurn();
             
-            CheckEndFight();
+            if (TurnsIsOut)
+            {
+                _fightResult.SetDraw();
+                IsComplete = true;
+            }
+            
             SwitchPerson();
             StartTurn();
         }
@@ -53,16 +56,12 @@ namespace GameFields
             StartTurn();
         }
 
-        private void CheckEndFight()
+        private void SwitchPerson()
         {
-            if (_turnNumber >= MaxTurns)
-            {
-                _fightResult.SetDraw();
-                IsComplete = true;
-            }
+            Person temp = ActivePerson;
+            ActivePerson = DeactivePerson;
+            DeactivePerson = temp;
         }
-
-        private void SwitchPerson() => (ActivePerson, DeactivePerson) = (DeactivePerson, ActivePerson);
 
         private void StartTurn()
         {

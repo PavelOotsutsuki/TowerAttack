@@ -4,11 +4,11 @@ using GameFields.Persons;
 
 namespace GameFields.Effects
 {
-    public class ZhyzhaEffect: Effect
+    public class ZhyzhaEffect : Effect
     {
         private Person _deactivePerson;
 
-        public ZhyzhaEffect(Person deactivePerson)
+        public ZhyzhaEffect(Person deactivePerson) : base(deactivePerson)
         {
             _deactivePerson = deactivePerson;
 

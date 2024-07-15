@@ -57,15 +57,12 @@ namespace GameFields.Persons
         private Deck _deck;
         private EndTurnButton _endTurnButton;
 
-        public void Init(SignalBus bus, Deck deck, EndTurnButton endTurnButton)
+        public void Init(SignalBus bus, Deck deck, EndTurnButton endTurnButton, SeatPool seatPool)
         {
             _bus = bus;
             _deck = deck;
             _endTurnButton = endTurnButton;
-        }
-
-        public void InitPersonsData(SeatPool seatPool)
-        {
+            
             InitPlayersData(seatPool);
             InitEnemyData(seatPool);
         }
@@ -75,9 +72,7 @@ namespace GameFields.Persons
             SimpleDrawCardAnimation simpleDrawCardAnimation = new(_playerHand, _simpleDrawCardDelay);
             FireDrawCardAnimation fireDrawCardAnimation = new(_playerHand, _fireDrawCardDelay);
             DrawCardRoot drawCardRoot = new(new SimpleDrawCardAnimation(_playerHand, _simpleDrawCardDelay), _deck);
-
             TurnProcessing turnProcessing = new(_endTurnButton, _playerHand);
-
             StartTurnDraw startTurnDraw = new(drawCardRoot, simpleDrawCardAnimation, fireDrawCardAnimation, _playerCountStartDrawCards);
 
             return new Player(_tableActivator, _playerHand, _playerPlayingZone, _playerTower, _playerDiscover,
@@ -90,10 +85,9 @@ namespace GameFields.Persons
             FireDrawCardAnimation fireDrawCardAnimation = new(_enemyHand, _fireDrawCardDelay);
             DrawCardRoot drawCardRoot = new(new SimpleDrawCardAnimation(_enemyHand, _simpleDrawCardDelay), _deck);
             CardDragAndDropImitationActions cardDragAndDropImitationActions = new(_enemyHand, _enemyPlayingZone);
-
-            _enemyDragAndDropImitation.Init(cardDragAndDropImitationActions, _enemyHand);
-
             StartTurnDraw startTurnDraw = new(drawCardRoot, simpleDrawCardAnimation, fireDrawCardAnimation, _enemyCountStartDrawCards);
+            
+            _enemyDragAndDropImitation.Init(cardDragAndDropImitationActions, _enemyHand);
 
             return new EnemyAI(_tableActivator, _enemyDragAndDropImitation, _enemyPlayingZone,
                 _enemyTower, drawCardRoot, _enemyDiscoverImitation, startTurnDraw, _bus);

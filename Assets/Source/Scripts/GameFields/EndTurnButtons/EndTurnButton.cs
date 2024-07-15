@@ -1,7 +1,4 @@
-using Tools;
 using UnityEngine;
-using Cysharp.Threading.Tasks;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace GameFields.EndTurnButtons
@@ -11,14 +8,10 @@ namespace GameFields.EndTurnButtons
         [SerializeField] private Button _button;
         [SerializeField] private ChangeSideAnimator _changeSideAnimator;
 
-        //private IEndTurnHandler _endTurnHandler;
-
         public bool IsActive => _changeSideAnimator.IsActiveSide;
 
         public void Init()
         {
-            //_endTurnHandler = endTurnHandler;
-
             _changeSideAnimator.Init(_button);
             _changeSideAnimator.PlayLockButtonAnimation();
         }
@@ -28,7 +21,7 @@ namespace GameFields.EndTurnButtons
             _changeSideAnimator.PlayUnlockButtonAnimation();
         }
 
-        public void OnClick()
+        private void OnClick()
         {
             SetDeactiveSide();
         }
@@ -46,7 +39,6 @@ namespace GameFields.EndTurnButtons
         private void SetDeactiveSide()
         {
             _changeSideAnimator.PlayLockButtonAnimation();
-            //_endTurnHandler.OnEndTurn();
         }
     }
 }

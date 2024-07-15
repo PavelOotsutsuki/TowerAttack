@@ -5,7 +5,7 @@ using Zenject;
 
 namespace GameFields.Effects
 {
-    public class EffectRoot : IDisposable
+    public class EffectRoot
     {
         private readonly SignalBus _bus;
         private readonly Deck _deck;
@@ -20,7 +20,7 @@ namespace GameFields.Effects
             _bus.Subscribe<CardPlayedSignal>(OnPlayCardSignal);
         }
 
-        public void Dispose()
+        ~EffectRoot()
         {
             _bus.Unsubscribe<CardPlayedSignal>(OnPlayCardSignal);
         }
@@ -28,9 +28,6 @@ namespace GameFields.Effects
         private void OnPlayCardSignal(CardPlayedSignal signal)
         {
             Effect effect = PlayEffect(signal.Character.Effect);
-            
-            //TODO: rework to adding for correct person
-            _personSideListener.ActivePerson.ApplyEffect(effect);
             
             _bus.Fire(new EffectCreatedSignal(signal.Character, effect));
         }
