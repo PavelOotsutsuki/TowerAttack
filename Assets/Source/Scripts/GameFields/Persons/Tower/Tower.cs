@@ -28,7 +28,7 @@ namespace GameFields.Persons.Towers
             //Deactivate();
         }
 
-        public Vector3 GetCentralСoordinates()
+        public Vector3 GetPosition()
         {
             return transform.position;
         }

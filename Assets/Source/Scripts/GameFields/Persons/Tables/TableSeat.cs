@@ -33,10 +33,8 @@ namespace GameFields.Persons.Tables
         //    _effect.DecreaseCounter();
         //}
 
-        internal void SetCardCharacter(CardCharacter cardCharacter)
+        internal void SetCharacter(CardCharacter cardCharacter)
         {
-            //Vector2 cardCharacterPosition = new Vector2(0, 0);
-
             _cardCharacter = cardCharacter;
             //_cardCharacter.transform.SetParent(_rectTransform);
             //_cardCharacter.transform.localPosition = cardCharacterPosition;
@@ -65,7 +63,7 @@ namespace GameFields.Persons.Tables
         //    return true;
         //}
 
-        internal void DiscardCardCharacter()
+        internal void DiscardCharacter()
         {
             _cardCharacter = null;
         }

@@ -12,40 +12,40 @@ namespace GameFields.Persons.Tables
             _playedCardPairs = new List<PlayedCardPair>();
         }
 
-        //public Card GetCard(CardCharacter cardCharacter)
-        //{
-        //    foreach (PlayedCardPair playedCardPair in _playedCardPairs)
-        //    {
-        //        if (playedCardPair.CardCharacter == cardCharacter)
-        //        {
-        //            return playedCardPair.Card;
-        //        }
-        //    }
-
-        //    return null;
-        //}
-
-        public List<Card> GetDiscardCards()
+        public Card GetCard(CardCharacter cardCharacter)
         {
-            List<Card> discardCards = new List<Card>();
-
             foreach (PlayedCardPair playedCardPair in _playedCardPairs)
             {
-                playedCardPair.DecreaseCardCounter();
-
-                if (playedCardPair.TryDiscard(out Card card))
+                if (playedCardPair.CardCharacter == cardCharacter)
                 {
-                    discardCards.Add(card);
-                    _playedCardPairs.Remove(playedCardPair);
+                    return playedCardPair.Card;
                 }
             }
 
-            return discardCards;
+            return null;
         }
 
-        public void Add(CardCharacter cardCharacter, Card card, int countTurnsOnTable)
+        //public List<Card> GetDiscardCards()
+        //{
+        //    List<Card> discardCards = new List<Card>();
+
+        //    foreach (PlayedCardPair playedCardPair in _playedCardPairs)
+        //    {
+        //        playedCardPair.DecreaseCardCounter();
+
+        //        if (playedCardPair.TryDiscard(out Card card))
+        //        {
+        //            discardCards.Add(card);
+        //            _playedCardPairs.Remove(playedCardPair);
+        //        }
+        //    }
+
+        //    return discardCards;
+        //}
+
+        public void Add(CardCharacter cardCharacter, Card card)
         {
-            _playedCardPairs.Add(new PlayedCardPair(cardCharacter, card, countTurnsOnTable));
+            _playedCardPairs.Add(new PlayedCardPair(cardCharacter, card));
         }
     }
 }

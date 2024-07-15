@@ -105,7 +105,7 @@ namespace GameFields.Persons
         private void InitPlayersData(EffectRoot effectRoot, SeatPool seatPool)
         {
             _playerHand.Init(seatPool);
-            _playerTable.Init(_playerHand, effectRoot);
+            _playerTable.Init(_playerHand);
             _playerTower.Init(_playerHand);
 
             //_playerDrawCardRoot = new DrawCardRoot(new SimpleDrawCardAnimation(_playerHand, _simpleDrawCardDelay), deck);
@@ -114,7 +114,7 @@ namespace GameFields.Persons
         private void InitEnemyData(EffectRoot effectRoot, SeatPool seatPool)
         {
             _enemyHand.Init(seatPool);
-            _enemyTable.Init(_enemyHand, effectRoot);
+            _enemyTable.Init(_enemyHand);
             _enemyTower.Init(_enemyHand);
 
             //_enemyDrawCardRoot = new DrawCardRoot(new SimpleDrawCardAnimation(_enemyHand, _simpleDrawCardDelay), deck);

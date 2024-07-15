@@ -38,7 +38,7 @@ namespace GameFields.Persons
 
         public void PlayOnPlace(float duration)
         {
-            MoveOnPlace(_cardDropPlaceImitation.GetCentralСoordinates(), duration);
+            MoveOnPlace(_cardDropPlaceImitation.GetPosition(), duration);
 
             _cardDragListener.OnCardDrag(_activeCard);
         }

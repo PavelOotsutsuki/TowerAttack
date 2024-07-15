@@ -6,8 +6,8 @@ using UnityEngine;
 
 namespace GameFields.Persons.Tables
 {
-    public class CardPlayingZone : MonoBehaviour, ICardDropPlace
-    {
+    public class CardPlayingZone : MonoBehaviour//, ICardDropPlace
+    {/*
         private Table _table;
         private IUnbindCardManager _unbindCardManager;
         private EffectRoot _effectRoot;
@@ -26,10 +26,10 @@ namespace GameFields.Persons.Tables
             List<Card> discardCards = _playedCards.GetDiscardCards();
         }
 
-        public Vector3 GetCentralСoordinates()
-        {
-            return transform.position;
-        }
+        //public Vector3 GetPosition()
+        //{
+        //    return transform.position;
+        //}
 
         public bool TrySeatCard(Card card)
         {
@@ -46,6 +46,6 @@ namespace GameFields.Persons.Tables
             }
 
             return tableHasFreeSeats;
-        }
+        }*/
     }
 }

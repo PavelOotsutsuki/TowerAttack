@@ -4,16 +4,20 @@ using GameFields.Effects;
 using GameFields.Persons.Hands;
 using Tools;
 using UnityEngine;
+using System.Linq;
+using System;
 
 namespace GameFields.Persons.Tables
 {
-    public class Table : MonoBehaviour//, ICardDropPlace
+    public class Table : MonoBehaviour, ICardDropPlace
     {
         [SerializeField] private TableSeat[] _cardSeats;
 
-        //private IUnbindCardManager _unbindCardManager;
+        private IUnbindCardManager _unbindCardManager;
         private int[] _cardSeatsSortIndices;
-        //private PlayedCards _playedCards;
+        private PlayedCards _playedCards;
+
+        public event Action<CardCharacter> Played;
 
         //public void Init(IUnbindCardManager unbindCardManager, EffectRoot effectRoot)
         //{
@@ -23,28 +27,53 @@ namespace GameFields.Persons.Tables
         //    SetCardSeatsIndices();
         //}
 
-        public void Init()
+        //public bool IsHasSeat => _cardSeats.Any(cardSeat => cardSeat.IsEmpty());
+
+        public void Init(IUnbindCardManager unbindCardManager)
         {
-            //_unbindCardManager = unbindCardManager;
-            //_playedCards = new PlayedCards();
+            _unbindCardManager = unbindCardManager;
+            _playedCards = new PlayedCards();
             //InitTableSeats(effectRoot);
             SetCardSeatsIndices();
         }
 
-        public void SeatCardCharacter(CardCharacter character)
+        public Vector3 GetPosition()
+        {
+            return transform.position;
+        }
+
+        public bool TrySeatCard(Card card)
         {
             if (TryFindCardSeat(out TableSeat freeCardSeat))
             {
-                //_unbindCardManager.UnbindDragableCard();
-                //CardCharacter cardCharacter = card.Play();
-                freeCardSeat.SetCardCharacter(character);
-                //_playedCards.Add(cardCharacter, card);
+                CardCharacter character = card.Play();
+                _unbindCardManager.UnbindDragableCard();
+                //Effect effect = _effectRoot.PlayEffect(character.Effect);
+                freeCardSeat.SetCharacter(character);
+                _playedCards.Add(character, card);
+                Played?.Invoke(character);
+                //_table.SeatCardCharacter(character);
+                //_activeEffects.Add(effect);
+                return true;
             }
-            else
-            {
-                throw new System.NullReferenceException("Не найден TableSeat");
-            }
+
+            return false;
         }
+
+        //public void SeatCardCharacter(CardCharacter character)
+        //{
+        //    if (TryFindCardSeat(out TableSeat freeCardSeat))
+        //    {
+        //        //_unbindCardManager.UnbindDragableCard();
+        //        //CardCharacter cardCharacter = card.Play();
+        //        freeCardSeat.SetCharacter(character);
+        //        //_playedCards.Add(cardCharacter, card);
+        //    }
+        //    else
+        //    {
+        //        throw new System.NullReferenceException("Не найден TableSeat");
+        //    }
+        //}
 
         //public List<Card> GetDiscardCards()
         //{
@@ -67,7 +96,7 @@ namespace GameFields.Persons.Tables
             {
                 if (tableSeat.IsEqualCharacter(character))
                 {
-                    tableSeat.DiscardCardCharacter();
+                    tableSeat.DiscardCharacter();
                 }
             }
         }
@@ -76,18 +105,18 @@ namespace GameFields.Persons.Tables
         //{
         //    return transform.position;
         //}
-        public bool IsHasFreeSeat()
-        {
-            foreach (int index in _cardSeatsSortIndices)
-            {
-                if (_cardSeats[index].IsEmpty())
-                {
-                    return true;
-                }
-            }
+        //public bool IsHasFreeSeat()
+        //{
+        //    foreach (int index in _cardSeatsSortIndices)
+        //    {
+        //        if (_cardSeats[index].IsEmpty())
+        //        {
+        //            return true;
+        //        }
+        //    }
 
-            return false;
-        }
+        //    return false;
+        //}
 
         private bool TryFindCardSeat(out TableSeat cardSeat)
         {
