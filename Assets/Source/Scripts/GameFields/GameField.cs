@@ -24,7 +24,7 @@ namespace GameFields
         private Player _player;
         private EnemyAI _enemyAI;
 
-        private EffectRoot _effectRoot;
+        private EffectFactory _effectFactory;
         private SignalBus _bus;
 
         [Inject]
@@ -35,26 +35,30 @@ namespace GameFields
 
         public void Init(Card[] startCards)
         {
+            _effectFactory = new EffectFactory(_deck);
             _seatPool.Init();
             _deck.Init(startCards);
             _discardPile.Init(_seatPool);
             _endTurnButton.Init();
-            _personCreator.Init(_bus, _deck, _endTurnButton, _seatPool);
+            _personCreator.Init(_bus, _deck, _endTurnButton, _seatPool, _effectFactory);
 
+            InitLevel();
+        }
+
+        private void InitLevel()
+        {
             _player = _personCreator.CreatePlayer();
             _enemyAI = _personCreator.CreateEnemyAI();
 
             _startTowerCardSelection.Init(_player, _enemyAI);
 
             FightResult fightResult = new();
-            Fight fight = new(_player, _enemyAI, fightResult);
+            Fight fight = new(_player, _enemyAI, fightResult, _bus);
             EndFight endFight = new(fightResult);
 
             FightStepsController fightStepsController = new(_startTowerCardSelection, fight, endFight);
 
             fightStepsController.StartStep();
-
-            _effectRoot = new EffectRoot(_bus, _deck, fight);
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

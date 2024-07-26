@@ -5,9 +5,9 @@ namespace GameFields.Discarding
 {
     public struct DiscardCardsSignal
     {
-        public readonly List<Card> Cards;
+        public readonly IEnumerable<Card> Cards;
 
-        public DiscardCardsSignal(List<Card> cards)
+        public DiscardCardsSignal(IEnumerable<Card> cards)
         {
             Cards = cards;
         }

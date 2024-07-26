@@ -1,3 +1,4 @@
+using GameFields.Effects;
 using GameFields.EndTurnButtons;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.DrawCards;
@@ -56,12 +57,14 @@ namespace GameFields.Persons
         private SignalBus _bus;
         private Deck _deck;
         private EndTurnButton _endTurnButton;
+        private EffectFactory _effectFactory;
 
-        public void Init(SignalBus bus, Deck deck, EndTurnButton endTurnButton, SeatPool seatPool)
+        public void Init(SignalBus bus, Deck deck, EndTurnButton endTurnButton, SeatPool seatPool, EffectFactory effectFactory)
         {
             _bus = bus;
             _deck = deck;
             _endTurnButton = endTurnButton;
+            _effectFactory = effectFactory;
             
             InitPlayersData(seatPool);
             InitEnemyData(seatPool);
@@ -97,7 +100,7 @@ namespace GameFields.Persons
         {
             _playerHand.Init(seatPool);
             _playerTable.Init();
-            _playerPlayingZone.Init(_playerTable, _playerHand, _bus);
+            _playerPlayingZone.Init(_playerTable, _playerHand, _bus, _effectFactory);
             _playerTower.Init(_playerHand);
         }
 
@@ -105,7 +108,7 @@ namespace GameFields.Persons
         {
             _enemyHand.Init(seatPool);
             _enemyTable.Init();
-            _enemyPlayingZone.Init(_enemyTable, _enemyHand, _bus);
+            _enemyPlayingZone.Init(_enemyTable, _enemyHand, _bus, _effectFactory);
             _enemyTower.Init(_enemyHand);
         }
     }

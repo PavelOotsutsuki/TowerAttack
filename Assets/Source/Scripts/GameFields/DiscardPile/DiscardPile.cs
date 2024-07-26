@@ -58,7 +58,7 @@ namespace GameFields.Discarding
             _discardPileSeatPool = seatPool;
         }
 
-        private void DiscardCards(List<Card> cards)
+        private void DiscardCards(IEnumerable<Card> cards)
         {
             DiscardingCards(cards).ToUniTask();
         }
@@ -73,7 +73,7 @@ namespace GameFields.Discarding
             discardPileSeat.SetCard(card, SideType.Back, _startCardTranslateSpeed);
         }
 
-        private IEnumerator DiscardingCards(List<Card> discardingCards)
+        private IEnumerator DiscardingCards(IEnumerable<Card> discardingCards)
         {
             foreach (Card card in discardingCards)
             {

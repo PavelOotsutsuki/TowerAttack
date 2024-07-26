@@ -1,5 +1,3 @@
-using UnityEngine;
-using Cards;
 using GameFields.Persons;
 
 namespace GameFields.Effects
@@ -8,7 +6,7 @@ namespace GameFields.Effects
     {
         private Person _deactivePerson;
 
-        public ZhyzhaEffect(Person deactivePerson) : base(deactivePerson)
+        public ZhyzhaEffect(Person deactivePerson) : base(EffectTarget.Self)
         {
             _deactivePerson = deactivePerson;
 

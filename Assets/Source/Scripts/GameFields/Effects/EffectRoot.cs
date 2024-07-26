@@ -9,13 +9,13 @@ namespace GameFields.Effects
     {
         private readonly SignalBus _bus;
         private readonly Deck _deck;
-        private readonly IPersonSideListener _personSideListener;
+        private readonly IPersonSides _personSides;
 
-        public EffectRoot(SignalBus bus, Deck deck, IPersonSideListener personSideListener)
+        public EffectRoot(SignalBus bus, Deck deck, IPersonSides personSides)
         {
             _bus = bus;
             _deck = deck;
-            _personSideListener = personSideListener;
+            _personSides = personSides;
             
             _bus.Subscribe<CardPlayedSignal>(OnPlayCardSignal);
         }
@@ -29,16 +29,16 @@ namespace GameFields.Effects
         {
             Effect effect = PlayEffect(signal.Character.Effect);
             
-            _bus.Fire(new EffectCreatedSignal(signal.Character, effect));
+            _bus.Fire(new EffectCreatedSignal(effect));
         }
 
         private Effect PlayEffect(EffectType effectType)
         {
             Effect effect = effectType switch
             {
-                EffectType.ZhyzhaEffect => new ZhyzhaEffect(_personSideListener.DeactivePerson),
-                EffectType.GreedyEffect => new GreedyEffect(_personSideListener.ActivePerson, _personSideListener.DeactivePerson),
-                EffectType.PatriarchCorallEffect => new PatriarchCorallEffect(_deck, _personSideListener.ActivePerson, _personSideListener.DeactivePerson),
+                EffectType.ZhyzhaEffect => new ZhyzhaEffect(_personSides.DeactivePerson),
+                EffectType.GreedyEffect => new GreedyEffect(_personSides.ActivePerson, _personSides.DeactivePerson),
+                EffectType.PatriarchCorallEffect => new PatriarchCorallEffect(_deck, _personSides.ActivePerson, _personSides.DeactivePerson),
                 _ => throw new NullReferenceException("Effect is not founded"),
             };
 

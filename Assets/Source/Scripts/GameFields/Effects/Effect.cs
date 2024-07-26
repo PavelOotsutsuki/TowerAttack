@@ -1,14 +1,13 @@
-using GameFields.Persons;
-
 namespace GameFields.Effects
 {
     public abstract class Effect
     {
+        public EffectTarget Target { get; }
         public int CountTurns { get; protected set; }
 
-        protected Effect(Person target)
+        protected Effect(EffectTarget target)
         {
-            target.ApplyEffect(this);
+            Target = target;
         }
 
         public void DecreaseCounter()

@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Cards;
 using Cysharp.Threading.Tasks;
 using GameFields.Discarding;
@@ -24,7 +23,6 @@ namespace GameFields.Persons
         private readonly Tower _tower;
         private readonly SignalBus _bus;
         private readonly List<Effect> _appliedEffects;
-        //private readonly PlayedCards _playedCards;
         private readonly Queue<ITurnStep> _turnSteps;
         
         private ITurnStep _currentStep;
@@ -40,30 +38,8 @@ namespace GameFields.Persons
             _bus = bus;
 
             _appliedEffects = new List<Effect>();
-            //_playedCards = new PlayedCards();
             _turnSteps = new Queue<ITurnStep>();
-            
-            //_playingZone.Played += PlayingZoneOnPlayed;
-            //_bus.Subscribe<EffectCreatedSignal>(OnEffectCreatedSignal);
         }
-
-        //~Person()
-        //{
-        //    _playingZone.Played -= PlayingZoneOnPlayed;
-        //    _bus.Unsubscribe<EffectCreatedSignal>(OnEffectCreatedSignal);
-        //}
-
-        //private void PlayingZoneOnPlayed(Card card, CardCharacter character)
-        //{
-        //    _playedCards.Add(character, card);
-        //    _bus.Fire(new CardPlayedSignal(character));
-        //}
-
-        //private void OnEffectCreatedSignal(EffectCreatedSignal signal)
-        //{
-        //    if (_playedCards.HasCharacter(signal.Character))
-        //        _playedCards.BindEffect(signal.Character, signal.Effect);
-        //}
 
         public bool IsComplete { get; private set; }
         public bool IsTowerFilled => _tower.IsTowerFill;
@@ -96,7 +72,7 @@ namespace GameFields.Persons
         public void FinishTurn()
         {
             DecreaseEffectsCounters();
-            _bus.Fire(new DiscardCardsSignal(GetDiscardedCards()));
+            _bus.Fire(new DiscardCardsSignal(_playingZone.GetDiscardedCards()));
         }
 
         protected abstract void OnStartStep();
@@ -128,21 +104,15 @@ namespace GameFields.Persons
 
         private void DecreaseEffectsCounters()
         {
-            foreach (Effect effect in _appliedEffects)
+            List<Effect> effects = new(_appliedEffects);
+
+            foreach (Effect effect in effects)
+            {
                 if (effect.CountTurns > 0)
                     effect.DecreaseCounter();
-        }
-
-        private List<Card> GetDiscardedCards()
-        {
-            //List<Card> cards = _playedCards.GetDiscardCards();
-            //List<CardCharacter> characters = cards.Select(card => _playedCards.GetCharacterByCard(card)).ToList();
-
-            //_playingZone.FreeSeatsByCharacters(characters);
-            //_playedCards.RemoveCard(cards);
-
-            //List<Card> cards = null;
-            return _playingZone.GetDiscardedCards();
+                else
+                    _appliedEffects.Remove(effect);
+            }
         }
     }
 }

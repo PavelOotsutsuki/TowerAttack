@@ -20,7 +20,7 @@ namespace GameFields.Effects
         private Card[] _drawnCards;
         private Discover _discover;
 
-        public PatriarchCorallEffect(Deck deck, Person activePerson, Person deactivePerson) : base(activePerson)
+        public PatriarchCorallEffect(Deck deck, Person activePerson, Person deactivePerson) : base(EffectTarget.Self)
         {
             _deck = deck;
             _activePerson = activePerson;
@@ -52,7 +52,7 @@ namespace GameFields.Effects
 
             //if (cards != null)
             //{
-                _activePerson.DrawCards(CountDrawCards);
+                _activePerson?.DrawCards(CountDrawCards);
             //}
 
             yield break;

@@ -4,12 +4,12 @@ using GameFields.Persons;
 
 namespace GameFields.Effects
 {
-    public class GreedyEffect: Effect
+    public class GreedyEffect : Effect
     {
         private Person _activePerson;
         private Person _deactivePerson;
 
-        public GreedyEffect(Person activePerson, Person deactivePerson) : base(activePerson)
+        public GreedyEffect(Person activePerson, Person deactivePerson) : base(EffectTarget.Self)
         {
             _activePerson = activePerson;
             _deactivePerson = deactivePerson;
