@@ -24,7 +24,7 @@ namespace GameFields.Persons
         private readonly Tower _tower;
         private readonly SignalBus _bus;
         private readonly List<Effect> _appliedEffects;
-        private readonly PlayedCards _playedCards;
+        //private readonly PlayedCards _playedCards;
         private readonly Queue<ITurnStep> _turnSteps;
         
         private ITurnStep _currentStep;
@@ -38,32 +38,32 @@ namespace GameFields.Persons
             _startTurnDraw = startTurnDraw;
             _turnProcess = turnProcess;
             _bus = bus;
-            
+
             _appliedEffects = new List<Effect>();
-            _playedCards = new PlayedCards();
+            //_playedCards = new PlayedCards();
             _turnSteps = new Queue<ITurnStep>();
             
-            _playingZone.Played += PlayingZoneOnPlayed;
-            _bus.Subscribe<EffectCreatedSignal>(OnEffectCreatedSignal);
+            //_playingZone.Played += PlayingZoneOnPlayed;
+            //_bus.Subscribe<EffectCreatedSignal>(OnEffectCreatedSignal);
         }
 
-        ~Person()
-        {
-            _playingZone.Played -= PlayingZoneOnPlayed;
-            _bus.Unsubscribe<EffectCreatedSignal>(OnEffectCreatedSignal);
-        }
+        //~Person()
+        //{
+        //    _playingZone.Played -= PlayingZoneOnPlayed;
+        //    _bus.Unsubscribe<EffectCreatedSignal>(OnEffectCreatedSignal);
+        //}
 
-        private void PlayingZoneOnPlayed(Card card, CardCharacter character)
-        {
-            _playedCards.Add(character, card);
-            _bus.Fire(new CardPlayedSignal(character));
-        }
+        //private void PlayingZoneOnPlayed(Card card, CardCharacter character)
+        //{
+        //    _playedCards.Add(character, card);
+        //    _bus.Fire(new CardPlayedSignal(character));
+        //}
 
-        private void OnEffectCreatedSignal(EffectCreatedSignal signal)
-        {
-            if (_playedCards.HasCharacter(signal.Character))
-                _playedCards.BindEffect(signal.Character, signal.Effect);
-        }
+        //private void OnEffectCreatedSignal(EffectCreatedSignal signal)
+        //{
+        //    if (_playedCards.HasCharacter(signal.Character))
+        //        _playedCards.BindEffect(signal.Character, signal.Effect);
+        //}
 
         public bool IsComplete { get; private set; }
         public bool IsTowerFilled => _tower.IsTowerFill;
@@ -95,7 +95,6 @@ namespace GameFields.Persons
 
         public void FinishTurn()
         {
-            Debug.Log($"{ToString()} finishing turn");
             DecreaseEffectsCounters();
             _bus.Fire(new DiscardCardsSignal(GetDiscardedCards()));
         }
@@ -136,13 +135,14 @@ namespace GameFields.Persons
 
         private List<Card> GetDiscardedCards()
         {
-            List<Card> cards = _playedCards.GetDiscardCards();
-            List<CardCharacter> characters = cards.Select(card => _playedCards.GetCharacterByCard(card)).ToList();
-            
-            _playingZone.FreeSeatsByCharacters(characters);
-            _playedCards.RemoveCard(cards);
+            //List<Card> cards = _playedCards.GetDiscardCards();
+            //List<CardCharacter> characters = cards.Select(card => _playedCards.GetCharacterByCard(card)).ToList();
 
-            return cards;
+            //_playingZone.FreeSeatsByCharacters(characters);
+            //_playedCards.RemoveCard(cards);
+
+            //List<Card> cards = null;
+            return _playingZone.GetDiscardedCards();
         }
     }
 }

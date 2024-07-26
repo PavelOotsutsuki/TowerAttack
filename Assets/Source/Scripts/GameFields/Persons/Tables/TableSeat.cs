@@ -1,5 +1,6 @@
 using UnityEngine;
 using Tools;
+using Cards;
 
 namespace GameFields.Persons.Tables
 {
@@ -7,15 +8,19 @@ namespace GameFields.Persons.Tables
     {
         [SerializeField] private RectTransform _rectTransform;
 
-        private GameObject _character;
+        private ISeatable _character;
 
         internal bool IsEmpty => _character == null;
 
-        internal void SetCardCharacter(GameObject cardCharacter) => _character = cardCharacter;
+        internal void SetCardCharacter(ISeatable cardCharacter)
+        {
+            _character = cardCharacter;
+            _character.BindParent(_rectTransform);
+        }
 
         internal void ResetCharacter() => _character = null;
 
-        internal bool CompareCharacters(GameObject character) => character == _character;
+        internal bool CompareCharacters(ISeatable character) => character == _character;
 
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()

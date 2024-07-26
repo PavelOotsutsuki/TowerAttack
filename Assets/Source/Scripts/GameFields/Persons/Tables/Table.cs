@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Cards;
 using Tools;
@@ -10,27 +11,56 @@ namespace GameFields.Persons.Tables
         [SerializeField] private TableSeat[] _cardSeats;
 
         private TableSeat[] _sortedSeats;
+        //private PlayedCards _playedCards;
 
         public bool HasFreeSeat => _sortedSeats.Any(seat => seat.IsEmpty);
 
         public void Init()
         {
+            //_playedCards = new PlayedCards();
+
             SetCardSeatsIndices();
         }
 
-        public void FreeSeatByCharacter(GameObject character)
+        public void FreeSeatBySeatable(ISeatable character)
         {
-            var seat = _sortedSeats.FirstOrDefault(seat => seat.CompareCharacters(character));
+            TableSeat seat = _sortedSeats.FirstOrDefault(seat => seat.CompareCharacters(character));
 
             if (seat != null)
                 seat.ResetCharacter();
         }
 
-        public void SeatCharacter(CardCharacter character)
+        public Dictionary<CardCharacter, Card> FreeSeats(Dictionary<CardCharacter, Card> dictionary)
         {
+            Dictionary<CardCharacter, Card> newDictionary = new();
+
+            foreach(var seat in _cardSeats)
+            {
+                var first = dictionary.FirstOrDefault(pair => seat.CompareCharacters(pair.Key));
+
+                if (first.Key != null)
+                {
+                    newDictionary.Add(first.Key, first.Value);
+                    seat.ResetCharacter();
+                }
+                
+            }
+
+            //TableSeat seat = _sortedSeats.FirstOrDefault(seat => seat.CompareCharacters(character));
+
+            //if (seat != null)
+            //    seat.ResetCharacter();
+
+            return newDictionary;
+        }
+
+        public void SeatCharacter(ISeatable character)
+        {
+            //CardCharacter character = card.Play();
             TableSeat freeCardSeat = GetFreeSeat();
-            character.Activate(freeCardSeat.transform);
-            freeCardSeat.SetCardCharacter(character.gameObject);
+            //card.Activate(freeCardSeat.transform);
+            freeCardSeat.SetCardCharacter(character);
+            //_playedCards.Add(character, card);
         }
 
         private TableSeat GetFreeSeat() => _sortedSeats.First(seat => seat.IsEmpty);

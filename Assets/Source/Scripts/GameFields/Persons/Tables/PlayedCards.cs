@@ -26,27 +26,34 @@ namespace GameFields.Persons.Tables
 
         public void BindEffect(CardCharacter character,Effect effect) => _pairs2.Add(effect, character);
 
-        public List<Card> GetDiscardCards()
+        public Dictionary<CardCharacter, Card> GetDiscardCards()
         {
-            List<Card> cards = new();
+            Dictionary<CardCharacter, Card> cards = new();
+            var pairs2Temp = new Dictionary<Effect, CardCharacter>(_pairs2);
 
-            foreach ((Effect effect, CardCharacter character) in _pairs2)
+            foreach ((Effect effect, CardCharacter character) in pairs2Temp)
+            {
                 if (effect.CountTurns < 1)
-                    cards.Add(_pairs[character]);
+                {
+                    cards.Add(character, _pairs[character]);
+                    _pairs.Remove(character);
+                    _pairs2.Remove(effect);
+                }
+            }
             
             return cards;
         }
 
-        public void RemoveCard(IEnumerable<Card> cards)
-        {
-            foreach (Card card in cards)
-            {
-                CardCharacter character = _pairs.FirstOrDefault(kvp => kvp.Value == card).Key;
-                _pairs.Remove(character);
+        //public void RemoveCard(IEnumerable<Card> cards)
+        //{
+        //    foreach (Card card in cards)
+        //    {
+        //        CardCharacter character = _pairs.FirstOrDefault(kvp => kvp.Value == card).Key;
+        //        _pairs.Remove(character);
                 
-                Effect effect = _pairs2.FirstOrDefault(kvp => kvp.Value == character).Key;
-                _pairs2.Remove(effect);
-            } 
-        }
+        //        Effect effect = _pairs2.FirstOrDefault(kvp => kvp.Value == character).Key;
+        //        _pairs2.Remove(effect);
+        //    } 
+        //}
     }
 }

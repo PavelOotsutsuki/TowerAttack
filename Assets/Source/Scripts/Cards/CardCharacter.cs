@@ -3,7 +3,7 @@ using Tools;
 
 namespace Cards
 {
-    public class CardCharacter : MonoBehaviour
+    public class CardCharacter : MonoBehaviour, ISeatable
     {
         [SerializeField] private AudioSource _audioSource;
         [SerializeField] private RectTransform _rectTransform;
@@ -17,7 +17,7 @@ namespace Cards
             gameObject.SetActive(false);
         }
 
-        public void Activate(Transform parent)
+        public void BindParent(Transform parent)
         {
             _rectTransform.SetParent(parent);
             _rectTransform.localPosition = Vector3.zero;
