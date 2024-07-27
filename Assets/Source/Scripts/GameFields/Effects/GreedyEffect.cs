@@ -9,14 +9,13 @@ namespace GameFields.Effects
         private Person _activePerson;
         private Person _deactivePerson;
 
-        public GreedyEffect(Person activePerson, Person deactivePerson) : base(EffectTarget.Self)
+        public GreedyEffect(Card card, Person activePerson, Person deactivePerson) 
+            : base(card, EffectTarget.Self, 1)
         {
             _activePerson = activePerson;
             _deactivePerson = deactivePerson;
 
             PlayEffect();
-
-            CountTurns = 1;
         }
 
         private void PlayEffect()

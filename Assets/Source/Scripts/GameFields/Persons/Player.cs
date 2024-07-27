@@ -7,7 +7,7 @@ using Zenject;
 
 namespace GameFields.Persons
 {
-    internal class Player : Person
+    public class Player : Person
     {
         private readonly Discover _discover;
         private readonly ITableActivator _tableActivator;

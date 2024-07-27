@@ -1,3 +1,4 @@
+using Cards;
 using GameFields.Persons;
 
 namespace GameFields.Effects
@@ -6,13 +7,12 @@ namespace GameFields.Effects
     {
         private Person _deactivePerson;
 
-        public ZhyzhaEffect(Person deactivePerson) : base(EffectTarget.Self)
+        public ZhyzhaEffect(Card card, Person deactivePerson) 
+            : base(card, EffectTarget.Self, 3)
         {
             _deactivePerson = deactivePerson;
 
             PlayEffect();
-
-            CountTurns = 3;
         }
 
         private void PlayEffect()

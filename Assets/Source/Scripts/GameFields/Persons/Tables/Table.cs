@@ -19,20 +19,20 @@ namespace GameFields.Persons.Tables
             SetCardSeatsIndices();
         }
 
-        public IEnumerable<PlayedCardContainer> FreeSeats(List<PlayedCardContainer> containers)
+        public List<Card> FreeSeats(IEnumerable<Card> containers)
         {
-            List<PlayedCardContainer> newContainers = new();
+            List<Card> newContainers = new();
 
             foreach(var seat in _cardSeats)
             {
-                var first = containers.FirstOrDefault(container => seat.CompareCharacters(container.CardCharacter));
+                Card first = containers
+                    .FirstOrDefault(card => seat.CompareSeatable(card.CardCharacter));
 
                 if (first != null)
                 {
                     newContainers.Add(first);
                     seat.ResetCharacter();
                 }
-                
             }
 
             return newContainers;

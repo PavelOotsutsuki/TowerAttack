@@ -1,14 +1,20 @@
+using Cards;
+
 namespace GameFields.Effects
 {
     public abstract class Effect
     {
-        public EffectTarget Target { get; }
-        public int CountTurns { get; protected set; }
+        public readonly Card Card;
+        public readonly EffectTarget Target;
 
-        protected Effect(EffectTarget target)
+        protected Effect(Card card, EffectTarget target, int turnsCount)
         {
+            Card = card;
             Target = target;
+            CountTurns = turnsCount;
         }
+        
+        public int CountTurns { get; private set; }
 
         public void DecreaseCounter()
         {

@@ -1,4 +1,3 @@
-using GameFields.Effects;
 using GameFields.EndTurnButtons;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.DrawCards;
@@ -11,7 +10,7 @@ using Zenject;
 
 namespace GameFields.Persons
 {
-    internal class PersonCreator: MonoBehaviour
+    public class PersonCreator : MonoBehaviour
     {
         [Header("Player Fields:")]
 
@@ -35,8 +34,7 @@ namespace GameFields.Persons
         [SerializeField] private Tower _enemyTower;
         [SerializeField] private DiscoverImitation _enemyDiscoverImitation;
         [SerializeField] private int _enemyCountStartDrawCards = 1;
-
-
+        
         [Space]
         [Header("----------------------------")]
         [Space]
@@ -57,15 +55,13 @@ namespace GameFields.Persons
         private SignalBus _bus;
         private Deck _deck;
         private EndTurnButton _endTurnButton;
-        private EffectFactory _effectFactory;
 
-        public void Init(SignalBus bus, Deck deck, EndTurnButton endTurnButton, SeatPool seatPool, EffectFactory effectFactory)
+        public void Init(SignalBus bus, Deck deck, EndTurnButton endTurnButton, SeatPool seatPool)
         {
             _bus = bus;
             _deck = deck;
             _endTurnButton = endTurnButton;
-            _effectFactory = effectFactory;
-            
+
             InitPlayersData(seatPool);
             InitEnemyData(seatPool);
         }
@@ -100,7 +96,7 @@ namespace GameFields.Persons
         {
             _playerHand.Init(seatPool);
             _playerTable.Init();
-            _playerPlayingZone.Init(_playerTable, _playerHand, _bus, _effectFactory);
+            _playerPlayingZone.Init(_playerTable, _playerHand, _bus);
             _playerTower.Init(_playerHand);
         }
 
@@ -108,7 +104,7 @@ namespace GameFields.Persons
         {
             _enemyHand.Init(seatPool);
             _enemyTable.Init();
-            _enemyPlayingZone.Init(_enemyTable, _enemyHand, _bus, _effectFactory);
+            _enemyPlayingZone.Init(_enemyTable, _enemyHand, _bus);
             _enemyTower.Init(_enemyHand);
         }
     }

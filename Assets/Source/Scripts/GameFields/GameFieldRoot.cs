@@ -1,4 +1,7 @@
 using Cards;
+using GameFields.Effects;
+using GameFields.EndTurnButtons;
+using GameFields.Seats;
 using Tools;
 using UnityEngine;
 
@@ -8,14 +11,9 @@ namespace GameFields
     {
         [SerializeField] private GameFieldPVE _fightPVE;
 
-        public void Init(Card[] cards)
+        public void Init(PersonsState personsState)
         {
-            InitFightPVE(cards);
-        }
-
-        private void InitFightPVE(Card[] cards)
-        {
-            _fightPVE.Init(cards);
+            _fightPVE.Init(personsState);
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

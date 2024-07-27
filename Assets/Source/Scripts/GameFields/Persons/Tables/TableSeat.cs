@@ -20,7 +20,7 @@ namespace GameFields.Persons.Tables
 
         internal void ResetCharacter() => _character = null;
 
-        internal bool CompareCharacters(ISeatable character) => character == _character;
+        internal bool CompareSeatable(ISeatable character) => character == _character;
 
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()

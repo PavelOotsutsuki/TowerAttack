@@ -20,15 +20,14 @@ namespace GameFields.Effects
         private Card[] _drawnCards;
         private Discover _discover;
 
-        public PatriarchCorallEffect(Deck deck, Person activePerson, Person deactivePerson) : base(EffectTarget.Self)
+        public PatriarchCorallEffect(Card card, Deck deck, Person activePerson, Person deactivePerson) 
+            : base(card, EffectTarget.Self, 1)
         {
             _deck = deck;
             _activePerson = activePerson;
             _deactivePerson = deactivePerson;
 
             PlayEffect();
-
-            CountTurns = 1;
         }
 
         private void PlayEffect()

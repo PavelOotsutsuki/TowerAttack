@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using Cards;
 
 namespace GameFields.Persons.Tables
 {
@@ -9,21 +11,26 @@ namespace GameFields.Persons.Tables
         public void Add(PlayedCardContainer played) 
             => _played.Add(played);
 
-        public List<PlayedCardContainer> GetDiscardCards()
+        public PlayedCardContainer RemoveByCard(Card card)
         {
-            List<PlayedCardContainer> discarded = new();
-            var pairs2Temp = new List<PlayedCardContainer>(_played);
+            var played = _played.FirstOrDefault(p => p.Card == card);
 
-            foreach (PlayedCardContainer container in pairs2Temp)
-            {
-                if (container.Effect.CountTurns < 1)
-                {
-                    discarded.Add(container);
-                    _played.Remove(container);
-                }
-            }
+            if (played == null)
+                return null;
             
-            return discarded;
+            _played.Remove(played);
+            return played;
+        }
+
+        public PlayedCardContainer RemoveByCharacter(CardCharacter character)
+        {
+            var played = _played.FirstOrDefault(p => p.CardCharacter == character);
+
+            if (played == null)
+                return null;
+            
+            _played.Remove(played);
+            return played;
         }
     }
 }

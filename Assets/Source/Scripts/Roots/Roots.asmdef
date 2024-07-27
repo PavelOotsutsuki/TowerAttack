@@ -2,6 +2,7 @@
     "name": "Roots",
     "rootNamespace": "Roots",
     "references": [
+        "GUID:0d8beb7f090555447a6cf5ce9e54dbb4",
         "GUID:dee620ee157904eff877cf45fde3726a",
         "GUID:bca3f2b6fb8db41aaa2c56cb32d6060e",
         "GUID:802f65728030c443591527c69c93fe23"

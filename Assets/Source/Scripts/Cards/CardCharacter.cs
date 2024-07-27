@@ -8,12 +8,9 @@ namespace Cards
         [SerializeField] private AudioSource _audioSource;
         [SerializeField] private RectTransform _rectTransform;
 
-        public EffectType Effect { get; private set; }
-
-        public void Init(AudioClip awakeSound, EffectType effect)
+        public void Init(AudioClip awakeSound)
         {
             _audioSource.clip = awakeSound;
-            Effect = effect;
             gameObject.SetActive(false);
         }
 

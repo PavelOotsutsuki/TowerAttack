@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Cards;
 using GameFields.Discarding;
-using GameFields.Effects;
 using GameFields.Persons.Hands;
 using UnityEngine;
 using Zenject;
@@ -13,16 +11,14 @@ namespace GameFields.Persons.Tables
     {
         private Table _table;
         private IUnbindCardManager _unbindCardManager;
-        private SignalBus _bus;
         private PlayedCards _playedCards;
-        private EffectFactory _effectFactory;
+        private SignalBus _bus;
 
-        public void Init(Table table, IUnbindCardManager unbindCardManager, SignalBus bus, EffectFactory effectFactory)
+        public void Init(Table table, IUnbindCardManager unbindCardManager, SignalBus bus)
         {
             _table = table;
             _unbindCardManager = unbindCardManager;
             _bus = bus;
-            _effectFactory = effectFactory;
             
             _playedCards = new PlayedCards();
         }
@@ -38,21 +34,20 @@ namespace GameFields.Persons.Tables
                 CardCharacter character = card.Play();
                 _unbindCardManager.UnbindDragableCard();
                 _table.SeatCharacter(character);
+                _playedCards.Add(new PlayedCardContainer(card, character));
 
-                Effect effect = _effectFactory.Create(character.Effect);
-                _playedCards.Add(new PlayedCardContainer(card, character, effect));
-                
-                _bus.Fire(new EffectCreatedSignal(effect));
+                _bus.Fire(new CardPlayedSignal(card));
             }
 
             return tableHasFreeSeats;
         }
 
-        public IEnumerable<Card> GetDiscardedCards()
+        public IEnumerable<Card> RemoveCards(IEnumerable<Card> cards)
         {
-            //TODO: NEED REFACTOR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            List<PlayedCardContainer> cards = _playedCards.GetDiscardCards();
-            return _table.FreeSeats(cards).Select(container => container.Card).ToList();
+            foreach (Card card in cards)
+                _playedCards.RemoveByCard(card);
+            
+            return _table.FreeSeats(cards);
         }
     }
 }

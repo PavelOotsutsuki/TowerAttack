@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Tools;
 using UnityEngine;
 
@@ -10,8 +11,9 @@ namespace Cards
         [SerializeField] private Card[] _cards;
         [SerializeField] private Transform _dragContainer;
 
-        internal CardViewService _cardViewService;
-        public Card[] Cards => _cards;
+        private CardViewService _cardViewService;
+        
+        public IEnumerable<Card> Cards => _cards;
 
         public void Init()
         {

@@ -4,11 +4,11 @@ namespace GameFields.Discarding
 {
     public struct CardPlayedSignal
     {
-        public readonly CardCharacter Character;
+        public readonly Card Card;
 
-        public CardPlayedSignal(CardCharacter character)
+        public CardPlayedSignal(Card card)
         {
-            Character = character;
+            Card = card;
         }
     }
 }

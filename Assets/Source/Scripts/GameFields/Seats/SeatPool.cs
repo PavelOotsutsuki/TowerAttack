@@ -11,8 +11,8 @@ namespace GameFields.Seats
         [SerializeField] private int _countObjects;
         [SerializeField] private Seat _template;
 
-        private Queue<Seat> _remainingPool = new();
-        private List<Seat> _usedPool = new();
+        private readonly Queue<Seat> _remainingPool = new();
+        private readonly List<Seat> _usedPool = new();
 
         public void Init()
         {
@@ -24,14 +24,12 @@ namespace GameFields.Seats
 
         public Seat GetHandSeat()
         {
-            Seat result;
-
             if (_remainingPool.Count <= 0)
             {
                 AddExtraObjects();
             }
 
-            result = _remainingPool.Dequeue();
+            Seat result = _remainingPool.Dequeue();
             result.gameObject.SetActive(true);
             _usedPool.Add(result);
 

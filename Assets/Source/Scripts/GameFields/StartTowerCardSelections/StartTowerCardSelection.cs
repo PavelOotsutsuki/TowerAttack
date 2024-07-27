@@ -3,9 +3,6 @@ using Tools;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using GameFields.Seats;
-using Cards;
-using GameFields.Persons;
-using System;
 
 namespace GameFields.StartTowerCardSelections
 {
@@ -16,32 +13,23 @@ namespace GameFields.StartTowerCardSelections
         [SerializeField] private Seat[] _seats;
         [SerializeField] private int _firstTurnCardsCount = 3;
 
-        private IStartTowerCardSelectionListener _player;
-        private IStartTowerCardSelectionListener _enemy;
+        private PersonsState _personsState;
         private bool _isCompletePlayer;
         private bool _isCompleteEnemy;
-        private bool _isComplete; //Потом заменить 
 
-        //public bool IsComplete => _player.IsTowerFilled; //&& _enemy.IsTowerFilled;
-        public bool IsComplete => _isComplete; //&& _enemy.IsTowerFilled;
+        public bool IsComplete { get; private set; }
 
-        public void Init(IStartTowerCardSelectionListener player, IStartTowerCardSelectionListener enemy)
+        public void Init(PersonsState personsState)
         {
-            _isComplete = false;
+            _personsState = personsState;
+            
+            IsComplete = false;
 
             _startTowerCardSelectionPanel.Init();
             _startTowerCardSelectionLabel.Init();
 
-            _player = player;
-            _enemy = enemy;
-
             InitSeats();
         }
-
-        //public void PrepareToStart()
-        //{
-        //    _isComplete = false;
-        //}
 
         public void StartStep()
         {
@@ -55,8 +43,8 @@ namespace GameFields.StartTowerCardSelections
 
         private IEnumerator StartProcess()
         {
-            _player.DrawCards(_firstTurnCardsCount);
-            _enemy.DrawCards(_firstTurnCardsCount);
+            _personsState.ActivePerson.DrawCards(_firstTurnCardsCount);
+            _personsState.DeactivePerson.DrawCards(_firstTurnCardsCount);
 
             yield return new WaitUntil(() => IsComplete);
 
