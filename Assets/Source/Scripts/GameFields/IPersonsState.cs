@@ -1,10 +1,11 @@
+using System;
 using GameFields.Persons;
 
 namespace GameFields
 {
-    public interface IPersonsState
+    public interface IPersonsState : IDisposable
     {
-        public Person ActivePerson { get; }
-        public Person DeactivePerson { get; }
+        public Person Active { get; }
+        public Person Deactive { get; }
     }
 }

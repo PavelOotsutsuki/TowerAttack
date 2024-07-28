@@ -2,23 +2,13 @@ using Cards;
 
 namespace GameFields.Effects
 {
-    public abstract class Effect
+    public abstract class Effect : ICardEffect
     {
-        public readonly Card Card;
         public readonly EffectTarget Target;
 
-        protected Effect(Card card, EffectTarget target, int turnsCount)
+        protected Effect(EffectTarget target)
         {
-            Card = card;
             Target = target;
-            CountTurns = turnsCount;
-        }
-        
-        public int CountTurns { get; private set; }
-
-        public void DecreaseCounter()
-        {
-            CountTurns -= 1;
         }
     }
 }

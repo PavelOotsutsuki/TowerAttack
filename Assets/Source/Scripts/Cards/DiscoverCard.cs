@@ -13,19 +13,19 @@ namespace Cards
         [SerializeField] private Vector3 _defaultScaleVector;
 
         //private CardAnimator _cardAnimator;
-        private CardSO _cardSO;
+        private CardConfig _cardConfig;
         //private CardMovement _cardMovement;
         private DiscoverCardSideFlipper _discoverCardSideFlipper;
 
-        internal void Init(CardSO cardSO, CardDescription cardDescription)
+        internal void Init(CardConfig cardConfig, CardDescription cardDescription)
         {
-            _cardSO = cardSO;
+            _cardConfig = cardConfig;
 
             _rectTransform.localScale = _defaultScaleVector;
 
             //_cardMovement = new CardMovement(_rectTransform, _defaultScaleVector);
 
-            _discoverCardFront.Init(_cardSO, cardDescription);
+            _discoverCardFront.Init(_cardConfig, cardDescription);
 
             _discoverCardSideFlipper = new DiscoverCardSideFlipper(_discoverCardFront, _cardBack);
             _discoverCardSideFlipper.SetBackSide();

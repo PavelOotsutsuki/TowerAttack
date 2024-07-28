@@ -16,14 +16,14 @@ namespace GameFields.Effects
             _effect = effect;
         }
 
-        public int CountTurns => _effect.CountTurns;
-
-        public void DecreaseEffectCounter(Person activePerson)
-        {
-            if (activePerson == _person)
-            {
-                _effect.DecreaseCounter();
-            }
-        }
+        // public int CountTurns => _effect.CountTurns;
+        //
+        // public void DecreaseEffectCounter(Person activePerson)
+        // {
+        //     if (activePerson == _person)
+        //     {
+        //         _effect.DecreaseCounter();
+        //     }
+        // }
     }
 }

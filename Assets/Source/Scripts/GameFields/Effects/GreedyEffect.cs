@@ -1,5 +1,4 @@
 using UnityEngine;
-using Cards;
 using GameFields.Persons;
 
 namespace GameFields.Effects
@@ -9,8 +8,8 @@ namespace GameFields.Effects
         private Person _activePerson;
         private Person _deactivePerson;
 
-        public GreedyEffect(Card card, Person activePerson, Person deactivePerson) 
-            : base(card, EffectTarget.Self, 1)
+        public GreedyEffect(Person activePerson, Person deactivePerson) 
+            : base(EffectTarget.Self)
         {
             _activePerson = activePerson;
             _deactivePerson = deactivePerson;

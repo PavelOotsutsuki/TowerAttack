@@ -1,53 +1,59 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Cards;
-using GameFields.Discarding;
 using GameFields.Persons.Hands;
 using UnityEngine;
-using Zenject;
 
 namespace GameFields.Persons.Tables
 {
     public class CardPlayingZone : MonoBehaviour, ICardDropPlace
     {
+        private readonly List<Card> _playedCards = new();
+        
         private Table _table;
         private IUnbindCardManager _unbindCardManager;
-        private List<Card> _playedCards;
-        private SignalBus _bus;
 
-        public void Init(Table table, IUnbindCardManager unbindCardManager, SignalBus bus)
+        public void Init(Table table, IUnbindCardManager unbindCardManager)
         {
             _table = table;
             _unbindCardManager = unbindCardManager;
-            _bus = bus;
-            
-            _playedCards = new List<Card>();
         }
 
         public Vector3 GetPosition() => transform.position;
 
         public bool TrySeatCard(Card card)
         {
-            bool tableHasFreeSeats = _table.HasFreeSeat;
+            if (_table.HasFreeSeat == false)
+                return false;
+            
+            card.Play();
+            _unbindCardManager.UnbindDragableCard();
+            _table.SeatCharacter(card.Character);
+            _playedCards.Add(card);
 
-            if (tableHasFreeSeats)
-            {
-                CardCharacter character = card.Play();
-                _unbindCardManager.UnbindDragableCard();
-                _table.SeatCharacter(character);
-                _playedCards.Add(card);
-
-                _bus.Fire(new CardPlayedSignal(card));
-            }
-
-            return tableHasFreeSeats;
+            return true;
         }
 
-        public IEnumerable<Card> RemoveCards(IEnumerable<Card> cards)
+        public IReadOnlyList<Card> UpdateCards()
         {
-            foreach (Card card in cards)
-                _playedCards.Remove(card);
+            List<Card> toDiscard = new();
             
-            return _table.FreeSeats(cards);
+            foreach (Card playedCard in _playedCards)
+            {
+                playedCard.DecreaseCounter();
+
+                if (playedCard.EffectCounter <= 0)
+                    toDiscard.Add(playedCard);
+            }
+            
+            toDiscard = toDiscard.OrderBy(card => card.Character.transform.position.x).ToList();
+
+            foreach (Card card in toDiscard)
+                _playedCards.Remove(card);
+
+            _table.FreeSeats(toDiscard.Select(card => card.Character));
+            
+            return toDiscard;
         }
     }
 }

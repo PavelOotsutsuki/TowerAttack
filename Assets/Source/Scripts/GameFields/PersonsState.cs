@@ -4,20 +4,26 @@ namespace GameFields
 {
     public class PersonsState : IPersonsState
     {
-        public PersonsState(PersonCreator personCreator)
+        public PersonsState(Person active, Person  deactive)
         {
-            ActivePerson = personCreator.CreatePlayer();
-            DeactivePerson = personCreator.CreateEnemyAI();
+            Active = active;
+            Deactive = deactive;
         }
 
-        public Person ActivePerson { get; private set; }
-        public Person DeactivePerson { get; private set; }
+        public Person Active { get; private set; }
+        public Person Deactive { get; private set; }
 
         public void Switch()
         {
-            Person temp = ActivePerson;
-            ActivePerson = DeactivePerson;
-            DeactivePerson = temp;
+            Person temp = Active;
+            Active = Deactive;
+            Deactive = temp;
+        }
+
+        public void Dispose()
+        {
+            Active.Dispose();
+            Deactive.Dispose();
         }
     }
 }

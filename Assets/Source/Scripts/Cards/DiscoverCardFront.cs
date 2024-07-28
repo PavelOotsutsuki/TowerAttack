@@ -18,16 +18,16 @@ namespace Cards
 
         private CardDescription _cardDescription;
         private CardSize _cardSize;
-        private CardSO _cardSO;
+        private CardConfig _cardConfig;
         private bool _isBlock;
 
         public bool IsBlock => _isBlock;
 
-        internal void Init(CardSO cardSO, CardDescription cardDescription)
+        internal void Init(CardConfig cardConfig, CardDescription cardDescription)
         {
             _isBlock = false;
             _cardDescription = cardDescription;
-            _cardSO = cardSO;
+            _cardConfig = cardConfig;
 
             DefineViewCharacters();
         }
@@ -100,7 +100,7 @@ namespace Cards
 
         private void StartReview()
         {
-            _cardDescription.Show(_cardSO.Description);
+            _cardDescription.Show(_cardConfig.Description);
         }
 
         private void EndReview()
@@ -110,10 +110,10 @@ namespace Cards
 
         private void DefineViewCharacters()
         {
-            _icon.sprite = _cardSO.Icon;
-            _number.text = _cardSO.Number.ToString();
-            _name.text = _cardSO.Name;
-            _feature.text = _cardSO.Feature;
+            _icon.sprite = _cardConfig.Icon;
+            _number.text = _cardConfig.Number.ToString();
+            _name.text = _cardConfig.Name;
+            _feature.text = _cardConfig.Feature;
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

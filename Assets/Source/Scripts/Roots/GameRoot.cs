@@ -1,4 +1,3 @@
-using UnityEngine;
 using Cards;
 using GameFields;
 using GameFields.Discarding;
@@ -7,6 +6,7 @@ using GameFields.EndTurnButtons;
 using GameFields.Persons;
 using GameFields.Seats;
 using Tools;
+using UnityEngine;
 using Zenject;
 
 namespace Roots
@@ -19,22 +19,29 @@ namespace Roots
         [SerializeField] private ScreenRoot _screenRoot;
         [SerializeField] private PersonCreator _personCreator;
 
+        private PersonsState _personsState;
+        
         [Inject]
         private void Construct(SignalBus bus, Deck deck, DiscardPile discardPile, SeatPool seatPool)
         {
             _personCreator.Init(bus, deck, _endTurnButton, seatPool);
             _endTurnButton.Init();
             _screenRoot.Init();
-            _cardRoot.Init();
 
             seatPool.Init();
             discardPile.Init(seatPool);
             deck.Init(_cardRoot.Cards);
 
-            PersonsState personsState = new(_personCreator);
-            EffectFactory effectFactory = new(bus, deck, personsState);
+            _personsState = new PersonsState(_personCreator.CreatePlayer(), _personCreator.CreateEnemyAI());
+            EffectFactory effectFactory = new(bus, deck, _personsState);
+            _cardRoot.Init(effectFactory);
 
-            _gameFieldRoot.Init(personsState);
+            _gameFieldRoot.Init(_personsState);
+        }
+
+        private void OnDestroy()
+        {
+            _personsState.Dispose();
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

@@ -9,7 +9,7 @@ namespace GameFields
 {
     public class GameFieldRoot : MonoBehaviour
     {
-        [SerializeField] private GameFieldPVE _fightPVE;
+        [SerializeField] private GameField _fightPVE;
 
         public void Init(PersonsState personsState)
         {

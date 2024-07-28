@@ -24,21 +24,19 @@ namespace Cards
 
         private RectTransform _cardRectTransform;
         private CardViewService _cardViewService;
-        private CardSize _cardSize;
-        private CardSO _cardSO;
-        private bool _isBlock;
+        private Vector2 _cardSize;
+        private CardConfig _cardConfig;
 
-        private PointerEventData _currentEventData;
+        public bool IsBlock { get; private set; }
 
-        public bool IsBlock => _isBlock;
-
-        internal void Init(CardSO cardSO, RectTransform cartRectTransform, CardViewService cardViewService)
+        internal void Init(CardConfig cardConfig, RectTransform cartRectTransform, CardViewService cardViewService)
         {
-            _isBlock = false;
-            _cardSize = new CardSize(_width, _height);
+            _cardConfig = cardConfig;
             _cardRectTransform = cartRectTransform;
             _cardViewService = cardViewService;
-            _cardSO = cardSO;
+            _cardSize = new Vector2(_width, _height);
+
+            IsBlock = false;
 
             DefineViewCharacters();
             DefineSmallSize();
@@ -46,7 +44,7 @@ namespace Cards
 
         internal void StartReview()
         {
-            _cardViewService.SetOverview(this, _cardSize, _cardRectTransform.position.x, _cardSO);
+            _cardViewService.SetOverview(this, _cardSize, _cardRectTransform.position.x, _cardConfig);
         }
 
         internal void EndReview()
@@ -56,9 +54,7 @@ namespace Cards
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            _currentEventData = eventData;
-
-            if (_isBlock)
+            if (IsBlock)
             {
                 return;
             }
@@ -68,26 +64,24 @@ namespace Cards
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            _currentEventData = eventData;
-
             EndReview();
         }
 
         internal void Block()
         {
             _frameImage.color = _disableFrameColor;
-            _isBlock = true;
+            IsBlock = true;
         }
 
         internal void Unblock()
         {
             _frameImage.color = _enableFrameColor;
-            _isBlock = false;
+            IsBlock = false;
         }
 
         private void DefineSmallSize()
         {
-            _cardRectTransform.sizeDelta = new Vector2(_cardSize.Width, _cardSize.Height);
+            _cardRectTransform.sizeDelta = _cardSize;
         }
 
         public void Show()
@@ -102,10 +96,10 @@ namespace Cards
 
         private void DefineViewCharacters()
         {
-            _icon.sprite = _cardSO.Icon;
-            _number.text = _cardSO.Number.ToString();
-            _name.text = _cardSO.Name;
-            _feature.text = _cardSO.Feature;
+            _icon.sprite = _cardConfig.Icon;
+            _number.text = _cardConfig.Number.ToString();
+            _name.text = _cardConfig.Name;
+            _feature.text = _cardConfig.Feature;
         }
 
         [ContextMenu(nameof(DefineAllComponents))]

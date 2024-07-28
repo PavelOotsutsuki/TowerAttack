@@ -17,7 +17,7 @@ namespace GameFields
             foreach (Card card in cards)
             {
                 _cards.Add(card);
-                ShowCard(card.transform);
+                BindCard(card.transform);
             }
 
             ShuffleCards();
@@ -32,7 +32,7 @@ namespace GameFields
         {
             int position = Random.Range(0, _cards.Count);
             _cards.Insert(position, card);
-            ShowCard(card.transform);
+            BindCard(card.transform);
 
             ShuffleCards();
         }
@@ -65,7 +65,7 @@ namespace GameFields
             _cards = shuffleCards;
         }
 
-        private void ShowCard(Transform card)
+        private void BindCard(Transform card)
         {
             card.SetParent(transform);
             card.localPosition = _cardAddPosition;

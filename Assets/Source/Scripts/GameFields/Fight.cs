@@ -25,7 +25,7 @@ namespace GameFields
         }
 
         public bool IsComplete { get; private set; }
-        private Person ActivePerson => _personsState.ActivePerson;
+        private Person ActivePerson => _personsState.Active;
 
         private bool TurnsIsOut => _turnNumber >= MaxTurns;
 
@@ -33,7 +33,7 @@ namespace GameFields
         {
             _turnNumber++;
 
-            _personsState.ActivePerson.FinishTurn();
+            _personsState.Active.FinishTurn();
             
             if (TurnsIsOut)
             {

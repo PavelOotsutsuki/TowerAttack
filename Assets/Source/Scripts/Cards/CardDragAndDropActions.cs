@@ -1,5 +1,3 @@
-using System.Collections;
-using Cysharp.Threading.Tasks;
 using Tools;
 using UnityEngine;
 
@@ -7,18 +5,16 @@ namespace Cards
 {
     internal class CardDragAndDropActions
     {
-        private CardFront _cardFront;
-        private Card _card;
-        private Movement _movement;
+        private readonly CardFront _cardFront;
+        private readonly Card _card;
+        private readonly Movement _movement;
         private ICardDragListener _cardDragListener;
-        //private ICardTransformable _blocker;
 
         internal CardDragAndDropActions(CardFront cardFront, Card card)
         {
             _cardFront = cardFront;
             _card = card;
             _movement = new Movement(_card.Transform);
-            //_blocker = _card;
         }
 
         internal void SetListener(ICardDragListener cardDragListener)
@@ -41,25 +37,16 @@ namespace Cards
         internal void OnReturnInHand(bool isPointerOnCard)
         {
             _cardDragListener.OnCardReturnInHand();
-            //_blocker.SetActiveInteraction(true);
 
-            if (isPointerOnCard)
+            if (isPointerOnCard && _cardFront.IsBlock == false)
             {
-                if (_cardFront.IsBlock == false)
-                {
-                    _cardFront.StartReview();
-                }
+                _cardFront.StartReview();
             }
         }
 
         internal bool TryDrop(ICardDropPlace cardDropPlace)
         {
-            if (cardDropPlace.TrySeatCard(_card))
-            {
-                return true;
-            }
-
-            return false;
+            return cardDropPlace.TrySeatCard(_card);
         }
 
         internal void EndDrag()

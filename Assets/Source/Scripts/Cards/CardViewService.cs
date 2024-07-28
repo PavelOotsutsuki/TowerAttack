@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace Cards
 {
     internal class CardViewService
@@ -13,14 +15,14 @@ namespace Cards
             _currentCard = null;
         }
 
-        public void SetOverview(IShowable showableCard, CardSize cardSize, float positionX, CardSO cardSO)
+        public void SetOverview(IShowable showableCard, Vector2 cardSize, float positionX, CardConfig cardConfig)
         {
             ShowCurrentCard();
 
             _currentCard = showableCard;
 
-            _cardDescription.Show(cardSO.Description);
-            _bigCard.Show(cardSize, positionX, cardSO);
+            _cardDescription.Show(cardConfig.Description);
+            _bigCard.Show(cardSize, positionX, cardConfig);
             _currentCard.Hide();
         }
 

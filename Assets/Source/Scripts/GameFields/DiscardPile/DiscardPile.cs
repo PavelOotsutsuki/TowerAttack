@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cards;
@@ -46,7 +45,7 @@ namespace GameFields.Discarding
 
         private void OnDiscardCardsSignal(DiscardCardsSignal signal)
         {
-            DiscardCards(signal.Cards);
+            DiscardingCards(signal.Cards).ToUniTask();
         }
 
         public void Init(SeatPool seatPool)
@@ -58,19 +57,23 @@ namespace GameFields.Discarding
             _discardPileSeatPool = seatPool;
         }
 
-        private void DiscardCards(IEnumerable<Card> cards)
+        private void SeatCard(Card card)
         {
-            DiscardingCards(cards).ToUniTask();
+            card.SetActiveInteraction(false);
+            
+            Seat discardPileSeat = GetSeat();
+            discardPileSeat.SetCard(card, SideType.Back, _startCardTranslateSpeed);
+            
+            //TODO: add seat removing
+            _seats.Add(discardPileSeat);
         }
 
-        private void SeatCard(Card card)
+        private Seat GetSeat()
         {
             Seat discardPileSeat = _discardPileSeatPool.GetHandSeat();
             discardPileSeat.transform.SetParent(_rectTransform);
-            card.SetActiveInteraction(false);
-            _seats.Add(discardPileSeat);
             discardPileSeat.SetLocalPositionValues(FindCardSeatPosition(), FindCardSeatRotation());
-            discardPileSeat.SetCard(card, SideType.Back, _startCardTranslateSpeed);
+            return discardPileSeat;
         }
 
         private IEnumerator DiscardingCards(IEnumerable<Card> discardingCards)

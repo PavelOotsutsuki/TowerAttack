@@ -6,7 +6,7 @@ using Zenject;
 
 namespace GameFields.Effects
 {
-    public class EffectFactory
+    public class EffectFactory : IEffectFactory
     {
         private readonly SignalBus _bus;
         private readonly Deck _deck;
@@ -17,25 +17,22 @@ namespace GameFields.Effects
             _bus = bus;
             _deck = deck;
             _personsState = personsState;
-            
-            _bus.Subscribe<CardPlayedSignal>(OnCreateEffectSignal);
         }
 
-        private void OnCreateEffectSignal(CardPlayedSignal signal) => Create(signal.Card);
-
-        private void Create(Card card)
+        public void Create(EffectType type)
         {
-            Effect effect = card.Effect switch
+            Effect effect = type switch
             {
-                EffectType.ZhyzhaEffect => new ZhyzhaEffect(card, _personsState.ActivePerson),
-                EffectType.GreedyEffect => new GreedyEffect(card, _personsState.ActivePerson, _personsState.DeactivePerson),
-                EffectType.PatriarchCorallEffect => new PatriarchCorallEffect(card, _deck, _personsState.ActivePerson, _personsState.DeactivePerson),
+                EffectType.ZhyzhaEffect => new ZhyzhaEffect(_personsState.Active),
+                EffectType.GreedyEffect => new GreedyEffect(_personsState.Active, _personsState.Deactive),
+                EffectType.PatriarchCorallEffect => new PatriarchCorallEffect(_deck, _personsState.Active, _personsState.Deactive),
                 _ => throw new NullReferenceException("Effect is not founded"),
             };
 
             Person target = effect.Target == EffectTarget.Self
-                ? _personsState.ActivePerson
-                : _personsState.DeactivePerson;
+                ? _personsState.Active
+                : _personsState.Deactive;
+            
             _bus.Fire(new EffectCreatedSignal(target, effect));
         }
     }

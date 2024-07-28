@@ -14,7 +14,7 @@ using Zenject;
 
 namespace GameFields.Persons
 {
-    public abstract class Person : IStateMachineState
+    public abstract class Person : IStateMachineState, IDisposable
     {
         private readonly ITurnStep _turnProcess;
         private readonly CardPlayingZone _playingZone;
@@ -24,7 +24,6 @@ namespace GameFields.Persons
         private readonly SignalBus _bus;
         private readonly List<Effect> _appliedEffects;
         private readonly Queue<ITurnStep> _turnSteps;
-        private readonly List<Card> _discardedCards;
 
         private ITurnStep _currentStep;
 
@@ -40,13 +39,19 @@ namespace GameFields.Persons
 
             _appliedEffects = new List<Effect>();
             _turnSteps = new Queue<ITurnStep>();
-            _discardedCards = new List<Card>();
             
             _bus.Subscribe<EffectCreatedSignal>(OnEffectCreatedSignal);
+            _bus.Subscribe<RemoveEffectSignal>(OnRemoveEffectSignal);
         }
 
         public bool IsComplete { get; private set; }
         public bool IsTowerFilled => _tower.IsTowerFill;
+
+        public void Dispose()
+        {
+            _bus.Unsubscribe<EffectCreatedSignal>(OnEffectCreatedSignal);
+            _bus.Unsubscribe<RemoveEffectSignal>(OnRemoveEffectSignal);
+        }
 
         public void StartStep()
         {
@@ -73,14 +78,10 @@ namespace GameFields.Persons
 
         public void FinishTurn()
         {
-            _discardedCards.Clear();
-            DecreaseEffectsCounters();
+            IReadOnlyList<Card> discardedCards = _playingZone.UpdateCards();
 
-            if (_discardedCards.Count > 0)
-            {
-                var sortedDiscardedCards = _playingZone.RemoveCards(_discardedCards);
-                _bus.Fire(new DiscardCardsSignal(sortedDiscardedCards));
-            }
+            if (discardedCards.Count > 0)
+                _bus.Fire(new DiscardCardsSignal(discardedCards));
         }
 
         protected abstract void OnStartStep();
@@ -110,29 +111,15 @@ namespace GameFields.Persons
 
         private void EnqueueStep(ITurnStep turnStep) => _turnSteps.Enqueue(turnStep);
 
-        private void DecreaseEffectsCounters()
-        {
-            List<Effect> effects = new(_appliedEffects);
-
-            foreach (Effect effect in effects)
-            {
-                effect.DecreaseCounter();
-                
-                if (effect.CountTurns <= 0)
-                    RemoveEffect(effect);
-            }
-        }
-
-        private void RemoveEffect(Effect effect)
-        {
-            _discardedCards.Add(effect.Card);
-            _appliedEffects.Remove(effect);
-        }
-
         private void OnEffectCreatedSignal(EffectCreatedSignal signal)
         {
             if (signal.Target == this)
                 _appliedEffects.Add(signal.Effect);
+        }
+
+        private void OnRemoveEffectSignal(RemoveEffectSignal signal)
+        {
+            _appliedEffects.Remove(signal.Effect);
         }
     }
 }

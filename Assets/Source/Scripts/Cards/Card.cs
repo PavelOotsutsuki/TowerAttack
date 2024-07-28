@@ -11,24 +11,27 @@ namespace Cards
 
         [SerializeField] private CardBack _cardBack;
         [SerializeField] private CardFront _cardFront;
-        [SerializeField] private CardSO _cardSO;
+        [SerializeField] private CardConfig _cardConfig;
         [SerializeField] private CardDragAndDrop _cardDragAndDrop;
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private Vector3 _defaultScaleVector;
 
         private CardDragAndDropActions _cardDragAndDropActions;
         private CardSideFlipper _cardSideFlipper;
-        private CardCharacter _cardCharacter;
+        private CardCharacter _createdCharacter;
+        private IEffectFactory _effectFactory; 
 
         public RectTransform Transform => _rectTransform;
         public Vector3 DefaultScaleVector => _defaultScaleVector;
-        public EffectType Effect => _cardSO.Effect;
-        public CardCharacter CardCharacter => _cardCharacter;
+        public CardCharacter Character { get; private set; }
+        public int EffectCounter { get; private set; } 
 
-        internal void Init(CardViewService cardViewService, Transform dragContainer)
+        internal void Init(IEffectFactory effectFactory, CardViewService cardViewService, Transform dragContainer)
         {
+            _effectFactory = effectFactory;
+            
             _rectTransform.localScale = _defaultScaleVector;
-            _cardFront.Init(_cardSO, _rectTransform, cardViewService);
+            _cardFront.Init(_cardConfig, _rectTransform, cardViewService);
 
             _cardDragAndDropActions = new CardDragAndDropActions(_cardFront, this);
             _cardDragAndDrop.Init(_rectTransform, _cardDragAndDropActions, dragContainer);
@@ -49,16 +52,17 @@ namespace Cards
             _cardDragAndDropActions.SetListener(cardDragAndDropListener);
         }
 
-        public CardCharacter Play()
+        public void Play()
         {
-            if (_cardCharacter == null)
+            if (_createdCharacter == null)
             {
                 CreateCardCharacter();
             }
 
             Deactivate();
-
-            return _cardCharacter;
+            _effectFactory.Create(_cardConfig.Effect.Type);
+            EffectCounter = _cardConfig.Effect.Duration;
+            Character = _createdCharacter;
         }
 
         public void SetSide(SideType sideType)
@@ -72,22 +76,21 @@ namespace Cards
                     _cardSideFlipper.SetBackSide();
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException("SideType is not founded");
+                    throw new ArgumentOutOfRangeException($"Unknown side type: {sideType}");
             }
         }
 
         public void SetActiveInteraction(bool isActive)
         {
-            if (isActive)
-            {
-                if (_cardDragAndDrop.IsDragable == false)
-                {
-                    _cardSideFlipper.ActivateInteraction();
-                }
-            }
-            else
+            if (!isActive)
             {
                 _cardSideFlipper.DeactivateInteraction();
+                return;
+            }
+
+            if (_cardDragAndDrop.IsDragable == false)
+            {
+                _cardSideFlipper.ActivateInteraction();
             }
         }
 
@@ -95,23 +98,26 @@ namespace Cards
         {
             Activate();
             
-            _cardCharacter.Disable();
+            _createdCharacter.Disable();
+            Character = null;
         }
 
         public Vector3 GetCardCharacterPosition()
         {
-            if (_cardCharacter == null)
+            if (_createdCharacter == null)
             {
                 throw new NullReferenceException("СardCharacter is not instantiate");
             }
 
-            return _cardCharacter.GetPosition();
+            return _createdCharacter.GetPosition();
         }
+
+        public void DecreaseCounter() => EffectCounter--;
 
         private void CreateCardCharacter()
         {
-            _cardCharacter = Instantiate(_cardSO.CardCharacter);
-            _cardCharacter.Init(_cardSO.AwakeSound);
+            _createdCharacter = Instantiate(_cardConfig.CardCharacter);
+            _createdCharacter.Init(_cardConfig.AwakeSound);
         }
 
         private void Activate()

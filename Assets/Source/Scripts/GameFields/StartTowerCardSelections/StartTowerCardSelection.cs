@@ -13,13 +13,13 @@ namespace GameFields.StartTowerCardSelections
         [SerializeField] private Seat[] _seats;
         [SerializeField] private int _firstTurnCardsCount = 3;
 
-        private PersonsState _personsState;
+        private IPersonsState _personsState;
         private bool _isCompletePlayer;
         private bool _isCompleteEnemy;
 
         public bool IsComplete { get; private set; }
 
-        public void Init(PersonsState personsState)
+        public void Init(IPersonsState personsState)
         {
             _personsState = personsState;
             
@@ -43,8 +43,8 @@ namespace GameFields.StartTowerCardSelections
 
         private IEnumerator StartProcess()
         {
-            _personsState.ActivePerson.DrawCards(_firstTurnCardsCount);
-            _personsState.DeactivePerson.DrawCards(_firstTurnCardsCount);
+            _personsState.Active.DrawCards(_firstTurnCardsCount);
+            _personsState.Deactive.DrawCards(_firstTurnCardsCount);
 
             yield return new WaitUntil(() => IsComplete);
 

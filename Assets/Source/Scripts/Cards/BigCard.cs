@@ -36,13 +36,13 @@ namespace Cards
             gameObject.SetActive(false);
         }
 
-        internal void Show(CardSize cardSize, float positionX, CardSO cardSO)
+        internal void Show(Vector2 cardSize, float positionX, CardConfig cardConfig)
         {
-            _icon.sprite = cardSO.Icon;
-            _number.text = cardSO.Number.ToString();
-            _name.text = cardSO.Name;
-            _feature.text = cardSO.Feature;
-            _sizeFactor = cardSize.Width / cardSize.Height;
+            _icon.sprite = cardConfig.Icon;
+            _number.text = cardConfig.Number.ToString();
+            _name.text = cardConfig.Name;
+            _feature.text = cardConfig.Feature;
+            _sizeFactor = cardSize.x / cardSize.y;
             _bigHeight = _canvasHeight / _scaleFactor;
             _bigWidth = _bigHeight * _sizeFactor;
             _screenFactor = Screen.height / _canvasHeight;
