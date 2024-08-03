@@ -34,6 +34,7 @@ namespace Cards
             return startPosition;
         }
 
+        #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
@@ -52,6 +53,7 @@ namespace Cards
         {
             AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
         }
+        #endregion 
     }
 }
 

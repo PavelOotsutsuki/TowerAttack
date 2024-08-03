@@ -22,6 +22,7 @@ namespace GameFields.Persons.Tables
 
         internal bool CompareSeatable(ISeatable character) => character == _character;
 
+        #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
@@ -33,6 +34,7 @@ namespace GameFields.Persons.Tables
         {
             AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
         }
+        #endregion 
     }
 }
 

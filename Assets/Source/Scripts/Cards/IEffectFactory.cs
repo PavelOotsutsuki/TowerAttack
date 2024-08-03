@@ -2,6 +2,6 @@ namespace Cards
 {
     public interface IEffectFactory
     {
-        void Create(EffectType type);
+        public void Create(EffectType type);
     }
 }

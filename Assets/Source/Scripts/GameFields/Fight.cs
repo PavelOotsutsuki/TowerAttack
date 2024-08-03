@@ -5,7 +5,7 @@ using Cysharp.Threading.Tasks;
 
 namespace GameFields
 {
-    internal class Fight : IEndTurnHandler, IFightStep
+    internal class Fight : IFightStep//, IEndTurnHandler
     {
         private const int MaxTurns = 100;
 
@@ -25,25 +25,9 @@ namespace GameFields
         }
 
         public bool IsComplete { get; private set; }
+
         private Person ActivePerson => _personsState.Active;
-
         private bool TurnsIsOut => _turnNumber >= MaxTurns;
-
-        public void OnEndTurn()
-        {
-            _turnNumber++;
-
-            _personsState.Active.FinishTurn();
-            
-            if (TurnsIsOut)
-            {
-                _fightResult.SetDraw();
-                IsComplete = true;
-            }
-            
-            _personsState.Switch();
-            StartTurn();
-        }
 
         public void StartStep()
         {
@@ -61,6 +45,22 @@ namespace GameFields
             yield return new WaitUntil(() => ActivePerson.IsComplete);
 
             OnEndTurn();
+        }
+
+        private void OnEndTurn()
+        {
+            _turnNumber++;
+
+            _personsState.Active.FinishTurn();
+
+            if (TurnsIsOut)
+            {
+                _fightResult.SetDraw();
+                IsComplete = true;
+            }
+
+            _personsState.Switch();
+            StartTurn();
         }
     }
 }

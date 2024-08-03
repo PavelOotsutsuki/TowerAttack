@@ -33,7 +33,7 @@ namespace Roots
             deck.Init(_cardRoot.Cards);
 
             _personsState = new PersonsState(_personCreator.CreatePlayer(), _personCreator.CreateEnemyAI());
-            EffectFactory effectFactory = new(bus, deck, _personsState);
+            EffectFactory effectFactory = new EffectFactory(bus, deck, _personsState);
             _cardRoot.Init(effectFactory);
 
             _gameFieldRoot.Init(_personsState);
@@ -43,6 +43,8 @@ namespace Roots
         {
             _personsState.Dispose();
         }
+
+        #region AutomaticFillComponents
 
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
@@ -69,5 +71,7 @@ namespace Roots
         {
             AutomaticFillComponents.DefineComponent(this, ref _screenRoot, ComponentLocationTypes.InThis);
         }
+
+        #endregion
     }
 }

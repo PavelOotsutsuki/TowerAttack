@@ -24,6 +24,7 @@ namespace Roots
             ScreenView.SetReferenceResolution(_defaultReferenceResolution);
         }
 
+        #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
@@ -35,5 +36,6 @@ namespace Roots
         {
             AutomaticFillComponents.DefineComponent(this, ref _allCanvasScalers);
         }
+        #endregion
     }
 }

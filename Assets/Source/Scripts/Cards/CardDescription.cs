@@ -68,6 +68,7 @@ namespace Cards
             }
         }
 
+        #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
@@ -86,5 +87,6 @@ namespace Cards
         {
             AutomaticFillComponents.DefineComponent(this, ref _canvasGroup, ComponentLocationTypes.InThis);
         }
+        #endregion
     }
 }

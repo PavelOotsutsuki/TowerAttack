@@ -96,16 +96,16 @@ namespace GameFields.Persons
         {
             _playerHand.Init(seatPool);
             _playerTable.Init();
-            _playerPlayingZone.Init(_playerTable, _playerHand);
-            _playerTower.Init(_playerHand);
+            _playerPlayingZone.Init(_playerTable/*, _playerHand*/);
+            _playerTower.Init(/*_playerHand*/);
         }
 
         private void InitEnemyData(SeatPool seatPool)
         {
             _enemyHand.Init(seatPool);
             _enemyTable.Init();
-            _enemyPlayingZone.Init(_enemyTable, _enemyHand);
-            _enemyTower.Init(_enemyHand);
+            _enemyPlayingZone.Init(_enemyTable/*, _enemyHand*/);
+            _enemyTower.Init(/*_enemyHand*/);
         }
     }
 }

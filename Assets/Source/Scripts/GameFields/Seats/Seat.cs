@@ -29,7 +29,7 @@ namespace GameFields.Seats
 
             Card.SetSide(sideType);
             Card.transform.SetParent(_transform);
-            Movement cardMovement = new(Card.transform);
+            Movement cardMovement = new Movement(Card.transform);
             cardMovement.MoveLocalSmoothly(Vector2.zero, Quaternion.identity.eulerAngles, duration, Card.DefaultScaleVector);
         }
 
@@ -49,6 +49,8 @@ namespace GameFields.Seats
             }
         }
 
+        #region AutomaticFillComponents
+
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
@@ -60,5 +62,7 @@ namespace GameFields.Seats
         {
             AutomaticFillComponents.DefineComponent(this, ref _transform, ComponentLocationTypes.InThis);
         }
+
+        #endregion 
     }
 }

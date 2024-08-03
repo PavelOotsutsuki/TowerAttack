@@ -1,7 +1,3 @@
-using Cards;
-using GameFields.Effects;
-using GameFields.EndTurnButtons;
-using GameFields.Seats;
 using Tools;
 using UnityEngine;
 
@@ -16,6 +12,7 @@ namespace GameFields
             _fightPVE.Init(personsState);
         }
 
+        #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
@@ -27,5 +24,6 @@ namespace GameFields
         {
             AutomaticFillComponents.DefineComponent(this, ref _fightPVE, ComponentLocationTypes.InChildren);
         }
+        #endregion 
     }
 }

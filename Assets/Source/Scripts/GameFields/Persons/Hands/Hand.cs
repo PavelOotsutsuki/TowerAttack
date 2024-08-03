@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Hands
 {
-    public abstract class Hand : MonoBehaviour, IUnbindCardManager, ICardDragListener, IBlockable
+    public abstract class Hand : MonoBehaviour, /*IUnbindCardManager,*/ ICardDragAndDropListener, IBlockable
     {
         private const float StartRotation = 0;
 
@@ -49,6 +49,7 @@ namespace GameFields.Persons.Hands
         public void OnCardPlay()
         {
             UnblockCards();
+            UnbindDragableCard();
         }
 
         public void OnCardReturnInHand()
@@ -56,7 +57,14 @@ namespace GameFields.Persons.Hands
             SetCardsInteraction(_handSeats);
         }
 
-        public void UnbindDragableCard()
+        //public void UnbindDragableCard()
+        //{
+        //    _handSeatPool.ReturnInPool(_dragCardHandSeat);
+
+        //    SortHandSeats();
+        //    ResetDragOptions();
+        //}
+        private void UnbindDragableCard()
         {
             _handSeatPool.ReturnInPool(_dragCardHandSeat);
 
@@ -66,7 +74,7 @@ namespace GameFields.Persons.Hands
 
         public virtual void AddCard(Card card)
         {
-            Seat handSeat = _handSeatPool.GetHandSeat();
+            Seat handSeat = _handSeatPool.GetSeat();
             handSeat.transform.SetParent(_rectTransform);
             handSeat.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
             _handSeats.Add(handSeat);
@@ -164,56 +172,6 @@ namespace GameFields.Persons.Hands
             _dragCardHandSeat = null;
         }
 
-        #region Comments
-
-        //private void BlockActiveSeatsCards(List<Card> exceptions)
-        //{
-        //    _isActiveInteraction = false;
-
-        //    foreach (Seat seat in _handSeats)
-        //    {
-        //        bool isException = false;
-        //        Card card = seat.GetCard();
-
-        //        foreach (Card exceptionCard in exceptions)
-        //        {
-        //            if (card == exceptionCard)
-        //            {
-        //                isException = true;
-        //            }
-        //        }
-
-        //        if (isException == false)
-        //        {
-        //            card.SetActiveInteraction(false);
-        //        }
-        //    }
-        //}
-
-        //private void BlockActiveSeatsCards()
-        //{
-        //    _isActiveInteraction = false;
-
-        //    SetCardsInteraction();
-        //}
-
-        //private void BlockCards()
-        //{
-        //    if (_handSeatIndex != -1)
-        //    {
-        //        Card dragCard = _dragCardHandSeat.GetCard();
-
-        //        dragCard.EndDrag();
-        //        dragCard.SetActiveInteraction(false);
-        //    }
-
-        //    BlockActiveSeatsCards();
-        //}
-
-        #endregion
-
-        #region Right
-
         private bool TryGetRandomCard(out Card card)
         {
             card = null;
@@ -273,12 +231,13 @@ namespace GameFields.Persons.Hands
             {
                 positionX = _startPositionX + ((_handSeats.Count - 1) / 2f - i) * offsetX;
                 Vector3 positon = new Vector2(positionX + _rectTransform.rect.xMin, _startPositionY + _rectTransform.rect.yMin);
-                Vector3 rotation = new(0f, 0f, StartRotation);
+                Vector3 rotation = new Vector3(0f, 0f, StartRotation);
 
                 _handSeats[i].SetLocalPositionValues(positon, rotation, _startCardTranslateSpeed);
             }
         }
 
+        #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
@@ -290,7 +249,6 @@ namespace GameFields.Persons.Hands
         {
             AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
         }
-
         #endregion 
     }
 }

@@ -19,16 +19,12 @@ namespace Cards
 
         public void SetBackSide()
         {
-            //Block();
-
             SetSide(true);
         }
 
         public void SetFrontSide()
         {
             SetSide(false);
-
-            //Unblock();
         }
 
         public void DeactivateInteraction()

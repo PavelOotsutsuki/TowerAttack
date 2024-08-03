@@ -47,7 +47,7 @@ namespace Cards
             _cardDragAndDrop.BlockDrag();
         }
 
-        public void SetDragAndDropListener(ICardDragListener cardDragAndDropListener)
+        public void SetDragAndDropListener(ICardDragAndDropListener cardDragAndDropListener)
         {
             _cardDragAndDropActions.SetListener(cardDragAndDropListener);
         }
@@ -82,7 +82,7 @@ namespace Cards
 
         public void SetActiveInteraction(bool isActive)
         {
-            if (!isActive)
+            if (isActive == false)
             {
                 _cardSideFlipper.DeactivateInteraction();
                 return;
@@ -130,6 +130,7 @@ namespace Cards
             gameObject.SetActive(false);
         }
 
+        #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
@@ -162,5 +163,6 @@ namespace Cards
         {
             AutomaticFillComponents.DefineComponent(this, ref _cardFront, ComponentLocationTypes.InChildren);
         }
+        #endregion 
     }
 }

@@ -1,6 +1,6 @@
 namespace Cards
 {
-    public interface ICardDragListener
+    public interface ICardDragAndDropListener
     {
         public void OnCardDrag(Card card);
         public void OnCardDrop();

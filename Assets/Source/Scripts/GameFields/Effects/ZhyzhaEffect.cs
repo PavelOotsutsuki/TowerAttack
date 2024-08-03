@@ -7,7 +7,7 @@ namespace GameFields.Effects
         private Person _deactivePerson;
 
         public ZhyzhaEffect(Person deactivePerson) 
-            : base(EffectTarget.Self)
+            : base(EffectTarget.Opponent)
         {
             _deactivePerson = deactivePerson;
 

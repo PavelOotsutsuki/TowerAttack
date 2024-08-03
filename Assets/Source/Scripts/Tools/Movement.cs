@@ -12,11 +12,6 @@ namespace Tools
             _transform = transform;
         }
 
-        //public void TranslateLocalInstantly(Vector2 positon, Vector3 rotation)
-        //{
-        //    _transfrom.Translate(positon);
-        //    _transfrom.Rotate(rotation);
-        //}
         public void MoveLocalInstantly(Vector2 position, Vector3 rotation)
         {
             _transform.localPosition = position;
@@ -25,8 +20,6 @@ namespace Tools
 
         public void MoveInstantly(Vector2 position, Vector3 rotation, Vector3 scaleVector)
         {
-            //_transform.position = position;
-            //_transform.rotation = Quaternion.Euler(rotation);
             _transform.SetPositionAndRotation(position, Quaternion.Euler(rotation));
             _transform.localScale = scaleVector;
         }
@@ -50,12 +43,6 @@ namespace Tools
             _transform.DORotate(rotation, duration);
             _transform.DOScale(scaleVector, duration);
         }
-
-        //public void MoveSmoothly(Vector2 positon, Vector3 rotation, float duration)
-        //{
-        //    _transform.DOMove(positon, duration);
-        //    _transform.DORotate(rotation, duration);
-        //}
 
         public void MoveLinear(Vector3 position, Vector3 maxRotationVector, float duration, Vector3 scaleVector)
         {

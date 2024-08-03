@@ -8,7 +8,7 @@ namespace Cards
         private readonly CardFront _cardFront;
         private readonly Card _card;
         private readonly Movement _movement;
-        private ICardDragListener _cardDragListener;
+        private ICardDragAndDropListener _cardDragListener;
 
         internal CardDragAndDropActions(CardFront cardFront, Card card)
         {
@@ -17,7 +17,7 @@ namespace Cards
             _movement = new Movement(_card.Transform);
         }
 
-        internal void SetListener(ICardDragListener cardDragListener)
+        internal void SetListener(ICardDragAndDropListener cardDragListener)
         {
             _cardDragListener = cardDragListener;
         }

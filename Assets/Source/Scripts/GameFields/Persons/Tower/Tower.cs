@@ -12,20 +12,17 @@ namespace GameFields.Persons.Towers
         private const bool IsCardInteraction = false;
 
         [SerializeField] private Seat _towerSeat;
-        //[SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField, Min(0f)] private float _seatDuration = 0.5f;
 
-        private IUnbindCardManager _unbindCardManager;
+        //private IUnbindCardManager _unbindCardManager;
 
         public bool IsTowerFill => _towerSeat.IsFill();
 
-        public void Init(IUnbindCardManager unbindCardManager)
+        public void Init(/*IUnbindCardManager unbindCardManager*/)
         {
-            _unbindCardManager = unbindCardManager;
+            //_unbindCardManager = unbindCardManager;
 
             _towerSeat.Init();
-
-            //Deactivate();
         }
 
         public Vector3 GetPosition()
@@ -39,7 +36,7 @@ namespace GameFields.Persons.Towers
             {
                 card.SetActiveInteraction(IsCardInteraction);
                 _towerSeat.SetCard(card, DefaultSideType, _seatDuration);
-                _unbindCardManager.UnbindDragableCard();
+                //_unbindCardManager.UnbindDragableCard();
 
                 return true;
             }
@@ -48,16 +45,11 @@ namespace GameFields.Persons.Towers
             return false;
         }
 
-        //private void Deactivate()
-        //{
-        //    _towerSeat.Disactivate();
-        //}
-
+        #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
             DefineTowerSeat();
-            //DefineCanvasGroup();
         }
 
         [ContextMenu(nameof(DefineTowerSeat))]
@@ -65,11 +57,6 @@ namespace GameFields.Persons.Towers
         {
             AutomaticFillComponents.DefineComponent(this, ref _towerSeat, ComponentLocationTypes.InChildren);
         }
-
-        //[ContextMenu(nameof(DefineCanvasGroup))]
-        //private void DefineCanvasGroup()
-        //{
-        //    AutomaticFillComponents.DefineComponent(this, ref _canvasGroup, ComponentLocationTypes.InThis);
-        //}
+        #endregion
     }
 }

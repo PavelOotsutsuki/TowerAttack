@@ -26,6 +26,7 @@ namespace GameFields
 
             Container.DeclareSignal<EffectCreatedSignal>();
             Container.DeclareSignal<DiscardCardsSignal>();
+            Container.DeclareSignal<RemoveEffectSignal>();
         }
     }
 }

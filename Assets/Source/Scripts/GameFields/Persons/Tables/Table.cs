@@ -55,6 +55,7 @@ namespace GameFields.Persons.Tables
             return (countSeats + 1) / 2 + (inputIndex + 1) / 2 * ((inputIndex + 1) % 2 * 2 - 1) - 1;
         }
 
+        #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
@@ -66,5 +67,6 @@ namespace GameFields.Persons.Tables
         {
             AutomaticFillComponents.DefineComponent(this, ref _cardSeats);
         }
+        #endregion 
     }
 }

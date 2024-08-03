@@ -8,15 +8,15 @@ namespace GameFields.Persons.Tables
 {
     public class CardPlayingZone : MonoBehaviour, ICardDropPlace
     {
-        private readonly List<Card> _playedCards = new();
+        private readonly List<Card> _playedCards = new List<Card>();
         
         private Table _table;
-        private IUnbindCardManager _unbindCardManager;
+        //private IUnbindCardManager _unbindCardManager;
 
-        public void Init(Table table, IUnbindCardManager unbindCardManager)
+        public void Init(Table table/*, IUnbindCardManager unbindCardManager*/)
         {
             _table = table;
-            _unbindCardManager = unbindCardManager;
+            //_unbindCardManager = unbindCardManager;
         }
 
         public Vector3 GetPosition() => transform.position;
@@ -27,7 +27,7 @@ namespace GameFields.Persons.Tables
                 return false;
             
             card.Play();
-            _unbindCardManager.UnbindDragableCard();
+            //_unbindCardManager.UnbindDragableCard();
             _table.SeatCharacter(card.Character);
             _playedCards.Add(card);
 
@@ -36,7 +36,7 @@ namespace GameFields.Persons.Tables
 
         public IReadOnlyList<Card> UpdateCards()
         {
-            List<Card> toDiscard = new();
+            List<Card> toDiscard = new List<Card>();
             
             foreach (Card playedCard in _playedCards)
             {

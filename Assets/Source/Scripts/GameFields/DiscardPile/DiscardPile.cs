@@ -14,7 +14,7 @@ namespace GameFields.Discarding
     public class DiscardPile : MonoBehaviour
     {
         private const float CenterRotation = 90f;
-        private readonly List<Seat> _seats =  new();
+        private readonly List<Seat> _seats =  new List<Seat>();
 
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private float _cardRotationOffset = 30f;
@@ -70,7 +70,7 @@ namespace GameFields.Discarding
 
         private Seat GetSeat()
         {
-            Seat discardPileSeat = _discardPileSeatPool.GetHandSeat();
+            Seat discardPileSeat = _discardPileSeatPool.GetSeat();
             discardPileSeat.transform.SetParent(_rectTransform);
             discardPileSeat.SetLocalPositionValues(FindCardSeatPosition(), FindCardSeatRotation());
             return discardPileSeat;
@@ -80,7 +80,7 @@ namespace GameFields.Discarding
         {
             foreach (Card card in discardingCards)
             {
-                DiscardCardAnimation discardCardAnimation = new(_discardCardAnimationData, _rectTransform, card, SeatCard);
+                DiscardCardAnimation discardCardAnimation = new DiscardCardAnimation(_discardCardAnimationData, _rectTransform, card, SeatCard);
                 discardCardAnimation.Play();
                 yield return new WaitForSeconds(_discardDelay);
             }
@@ -101,6 +101,7 @@ namespace GameFields.Discarding
             return new Vector3(0f, 0f, zRotation);
         }
 
+        #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
@@ -119,5 +120,6 @@ namespace GameFields.Discarding
         {
             AutomaticFillComponents.DefineComponent(this, ref _discardPileSeatPool, ComponentLocationTypes.InThis);
         }
+        #endregion 
     }
 }

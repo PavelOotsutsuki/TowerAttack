@@ -7,20 +7,8 @@ using Tools;
 
 namespace GameFields.DiscardPiles
 {
-    //[Serializable]
     public class DiscardCardAnimation
     {
-        //[SerializeField] private Transform _container;
-        ////[SerializeField] private DiscardCardAnimationData _discardCardAnimationData;
-        //[SerializeField] public Vector3 _startScaleVector = new Vector3(0.5f, 0.5f, 0.5f);
-        //[SerializeField] public Vector3 _startRotation  = Vector3.zero;
-        //[SerializeField] public Vector3 _invertRotation = new Vector3(0f, -90f, 0f);
-        //[SerializeField] public float _cardIncreaseDuration  = 0.5f;
-        //[SerializeField] public float _delayAfterIncrease = 0.5f;
-        //[SerializeField] public float _invertCardFrontDuration = 0.5f;
-        //[SerializeField] public float _invertCardBackDuration = 0.5f;
-        //[SerializeField] public float _delayAfterInvert = 0.5f;
-
         private Card _card;
         private ICardTransformable _cardTransformable;
         private Transform _cardTransform;
@@ -42,20 +30,6 @@ namespace GameFields.DiscardPiles
             _cardMovement = new Movement(_cardTransform);
         }
 
-        //public void DiscardCard(Card card)
-        //{
-        //    _card = card;
-        //    _cardTransformable = card;
-        //    _cardTransform = _cardTransformable.Transform;
-        //    _cardMovement = new Movement(_cardTransform);
-
-        //    DiscardingCard().ToUniTask();
-        //}
-
-        //public float GetFullDelay()
-        //{
-        //    return _cardIncreaseDuration + _delayAfterIncrease + _invertCardBackDuration + _invertCardFrontDuration + _delayAfterInvert;
-        //}
         public void Play()
         {
             DiscardingCard().ToUniTask();
@@ -107,22 +81,5 @@ namespace GameFields.DiscardPiles
             _cardMovement.MoveInstantly(startPosition, _data.StartRotation, _data.StartScaleVector);
             _cardMovement.MoveSmoothly(_cardTransform.position, _cardTransform.rotation.eulerAngles, _data.CardIncreaseDuration, _cardTransformable.DefaultScaleVector);
         }
-
-        //private IEnumerator PlayingDiscardCardAnimation()
-        //{
-        //    _cardSideFlipper.SetFrontSide();
-        //    _cardSideFlipper.Block();
-
-        //    _cardMovement.IncreaseCard(startPosition, startRotation, startScaleVector, cardIncreaseDuration);
-        //    yield return new WaitForSeconds(cardIncreaseDuration + delayAfterIncrease);
-
-        //    _cardMovement.InvertCardFrontOnDiscard(invertRotation, invertCardFrontDuration);
-        //    yield return new WaitForSeconds(invertCardFrontDuration);
-
-        //    _cardSideFlipper.SetBackSide();
-
-        //    _cardMovement.InvertCardBackOnDiscard(invertCardBackDuration);
-        //    yield return new WaitForSeconds(invertCardBackDuration + delayAfterInvert);
-        //}
     }
 }

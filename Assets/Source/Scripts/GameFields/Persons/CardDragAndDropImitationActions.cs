@@ -11,12 +11,12 @@ namespace GameFields.Persons
         private RectTransform _cardTransform;
         private Movement _cardMovement;
 
-        private ICardDragListener _cardDragListener;
+        private ICardDragAndDropListener _cardDragAndDropListener;
         private ICardDropPlace _cardDropPlaceImitation;
 
-        public CardDragAndDropImitationActions(ICardDragListener cardDragListener, ICardDropPlace cardDropPlaceImitation)
+        public CardDragAndDropImitationActions(ICardDragAndDropListener cardDragListener, ICardDropPlace cardDropPlaceImitation)
         {
-            _cardDragListener = cardDragListener;
+            _cardDragAndDropListener = cardDragListener;
             _cardDropPlaceImitation = cardDropPlaceImitation;
         }
 
@@ -40,14 +40,14 @@ namespace GameFields.Persons
         {
             MoveOnPlace(_cardDropPlaceImitation.GetPosition(), duration);
 
-            _cardDragListener.OnCardDrag(_activeCard);
+            _cardDragAndDropListener.OnCardDrag(_activeCard);
         }
 
         public bool TryReturnToHand(float returnToHandDuration)
         {
             if (_cardDropPlaceImitation.TrySeatCard(_activeCard) == false)
             {
-                _cardDragListener.OnCardDrop();
+                _cardDragAndDropListener.OnCardDrop();
                 _cardMovement.MoveLocalSmoothly(Vector2.zero, Vector3.zero, returnToHandDuration, _cardTransformable.DefaultScaleVector);
 
                 return true;

@@ -8,7 +8,7 @@ namespace GameFields
     {
         private readonly Vector2 _cardAddPosition = new(0f, 0f);
 
-        private List<Card> _cards = new();
+        private List<Card> _cards;
 
         public void Init(IEnumerable<Card> cards)
         {
@@ -53,7 +53,7 @@ namespace GameFields
 
         private void ShuffleCards()
         {
-            List<Card> shuffleCards = new();
+            List<Card> shuffleCards = new List<Card>();
 
             while(_cards.Count > 0)
             {

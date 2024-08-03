@@ -15,14 +15,15 @@ namespace GameFields
         {
             _startTowerCardSelection.Init(personsState);
 
-            FightResult fightResult = new();
-            Fight fight = new(personsState, fightResult);
-            EndFight endFight = new(fightResult);
-            FightStepsController fightStepsController = new(_startTowerCardSelection, fight, endFight);
+            FightResult fightResult = new FightResult();
+            Fight fight = new Fight(personsState, fightResult);
+            EndFight endFight = new EndFight(fightResult);
+            FightStepsController fightStepsController = new FightStepsController(_startTowerCardSelection, fight, endFight);
 
             fightStepsController.StartStep();
         }
 
+        #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
@@ -34,5 +35,6 @@ namespace GameFields
         {
             AutomaticFillComponents.DefineComponent(this, ref _startTowerCardSelection, ComponentLocationTypes.InChildren);
         }
+        #endregion 
     }
 }
