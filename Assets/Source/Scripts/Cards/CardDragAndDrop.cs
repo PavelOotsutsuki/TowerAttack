@@ -118,7 +118,6 @@ namespace Cards
             EventSystem.current.TryGetComponentInRaycasts(eventData, out CardDragAndDrop cardDragAndDrop);
 
             _cardDragAndDropActions.OnReturnInHand(cardDragAndDrop == this);
-
         }
     }
 }

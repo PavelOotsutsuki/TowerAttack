@@ -36,7 +36,7 @@ namespace Cards
 
         internal void OnReturnInHand(bool isPointerOnCard)
         {
-            _cardDragListener.OnCardReturnInHand();
+            _cardDragListener.OnCardReturnInHand(_card);
 
             if (isPointerOnCard && _cardFront.IsBlock == false)
             {

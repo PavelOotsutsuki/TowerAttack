@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Hands
 {
-    public abstract class Hand : MonoBehaviour, /*IUnbindCardManager,*/ ICardDragAndDropListener, IBlockable
+    public abstract class Hand : MonoBehaviour, ICardDragAndDropListener, IBlockable
     {
         private const float StartRotation = 0;
 
@@ -37,7 +37,7 @@ namespace GameFields.Persons.Hands
 
         public void OnCardDrag(Card card)
         {
-            DragCard(card);
+            StartDragCard(card);
         }
 
         public void OnCardDrop()
@@ -52,18 +52,11 @@ namespace GameFields.Persons.Hands
             UnbindDragableCard();
         }
 
-        public void OnCardReturnInHand()
+        public void OnCardReturnInHand(Card card)
         {
-            SetCardsInteraction(_handSeats);
+            card.SetActiveInteraction(_isActiveInteraction);
         }
 
-        //public void UnbindDragableCard()
-        //{
-        //    _handSeatPool.ReturnInPool(_dragCardHandSeat);
-
-        //    SortHandSeats();
-        //    ResetDragOptions();
-        //}
         private void UnbindDragableCard()
         {
             _handSeatPool.ReturnInPool(_dragCardHandSeat);
@@ -104,29 +97,29 @@ namespace GameFields.Persons.Hands
         {
             _isActiveInteraction = true;
 
-            SetCardsInteraction(_handSeats);
+            SetCardsInteraction();
         }
 
         private void EndDragCard(bool isForced)
         {
-            if (_handSeatIndex != -1)
+            if (_handSeatIndex == -1)
+                return;
+            
+            if (isForced)
             {
-                if (isForced)
-                {
-                    Card dragCard = _dragCardHandSeat.Card;
+                Card dragCard = _dragCardHandSeat.Card;
 
-                    dragCard.EndDrag();
-                    dragCard.SetActiveInteraction(false);
-                }
-
-                _handSeats.Insert(_handSeatIndex, _dragCardHandSeat);
-
-                SortHandSeats();
-                ResetDragOptions();
+                dragCard.EndDrag();
+                dragCard.SetActiveInteraction(false);
             }
+
+            _handSeats.Insert(_handSeatIndex, _dragCardHandSeat);
+
+            SortHandSeats();
+            ResetDragOptions();
         }
 
-        private void DragCard(Card card)
+        private void StartDragCard(Card card)
         {
             if (TryFindHandSeat(out Seat handSeat, card))
             {
@@ -144,24 +137,14 @@ namespace GameFields.Persons.Hands
         {
             _isActiveInteraction = false;
 
-            SetCardsInteraction(_handSeats);
+            SetCardsInteraction();
         }
 
-        private void BlockCards(ICollection<Card> exceptions)
+        private void SetCardsInteraction()
         {
-            _isActiveInteraction = false;
-
-            IEnumerable<Seat> seats = _handSeats.Where(seat => exceptions.Contains(seat.Card) == false);
-
-            SetCardsInteraction(seats);
-        }
-
-        private void SetCardsInteraction(IEnumerable<Seat> seats)
-        {
-            foreach (Seat seat in seats)
+            foreach (Seat seat in _handSeats)
             {
                 Card card = seat.Card;
-
                 card.SetActiveInteraction(_isActiveInteraction);
             }
         }

@@ -5,6 +5,6 @@ namespace Cards
         public void OnCardDrag(Card card);
         public void OnCardDrop();
         public void OnCardPlay();
-        public void OnCardReturnInHand();
+        public void OnCardReturnInHand(Card card);
     }
 }
