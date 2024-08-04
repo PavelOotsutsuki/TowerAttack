@@ -1,8 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
 using GameFields.StartTowerCardSelections;
-using UnityEngine;
 
 namespace GameFields
 {
@@ -25,29 +22,25 @@ namespace GameFields
             _fightSteps.Enqueue(endFight);
         }
 
-        public void StartStep()
+        public void Update()
         {
-            _currentStep = _fightSteps.Dequeue();
-
-            Starting().ToUniTask();
-        }
-
-        private IEnumerator Starting()
-        {
-            while (_isComplete == false)
+            if (_isComplete)
             {
-                _currentStep.StartStep();
-                yield return new WaitUntil(() => _currentStep.IsComplete);
-
+                return;
+            }
+            
+            if (_currentStep.IsComplete)
+            {
                 NextStep();
             }
         }
 
-        private void NextStep()
+        public void NextStep()
         {
             if (_fightSteps.Count > 0)
             {
                 _currentStep = _fightSteps.Dequeue();
+                _currentStep.StartStep();
             }
             else
             {

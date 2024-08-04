@@ -1,3 +1,4 @@
+using System;
 using Tools;
 using UnityEngine;
 using GameFields.StartTowerCardSelections;
@@ -10,6 +11,7 @@ namespace GameFields
         [SerializeField] private StartTowerCardSelection _startTowerCardSelection;
 
         private EffectFactory _effectFactory;
+        private FightStepsController _fightStepsController;
 
         public void Init(PersonsState personsState)
         {
@@ -18,9 +20,14 @@ namespace GameFields
             FightResult fightResult = new FightResult();
             Fight fight = new Fight(personsState, fightResult);
             EndFight endFight = new EndFight(fightResult);
-            FightStepsController fightStepsController = new FightStepsController(_startTowerCardSelection, fight, endFight);
+            _fightStepsController = new FightStepsController(_startTowerCardSelection, fight, endFight);
 
-            fightStepsController.StartStep();
+            _fightStepsController.NextStep();
+        }
+
+        private void Update()
+        {
+            _fightStepsController.Update();
         }
 
         #region AutomaticFillComponents
