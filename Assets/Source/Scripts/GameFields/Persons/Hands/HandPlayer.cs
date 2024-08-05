@@ -1,7 +1,4 @@
 using Cards;
-using GameFields.Seats;
-using Tools;
-using UnityEngine;
 
 namespace GameFields.Persons.Hands
 {

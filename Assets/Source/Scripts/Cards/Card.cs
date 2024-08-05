@@ -24,7 +24,8 @@ namespace Cards
         public RectTransform Transform => _rectTransform;
         public Vector3 DefaultScaleVector => _defaultScaleVector;
         public CardCharacter Character { get; private set; }
-        public int EffectCounter { get; private set; } 
+        public int EffectCounter { get; private set; }
+        public EffectType EffectType => _cardConfig.Effect.Type;
 
         internal void Init(IEffectFactory effectFactory, CardViewService cardViewService, Transform dragContainer)
         {

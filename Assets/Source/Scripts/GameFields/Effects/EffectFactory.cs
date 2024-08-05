@@ -33,7 +33,7 @@ namespace GameFields.Effects
                 ? _personsState.Active
                 : _personsState.Deactive;
             
-            _bus.Fire(new EffectCreatedSignal(target, effect));
+            _bus.Fire(new EffectCreatedSignal(target, type));
         }
     }
 }

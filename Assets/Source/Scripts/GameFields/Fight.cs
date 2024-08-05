@@ -5,7 +5,7 @@ using Cysharp.Threading.Tasks;
 
 namespace GameFields
 {
-    internal class Fight : IFightStep//, IEndTurnHandler
+    internal class Fight : IFightStep
     {
         private const int MaxTurns = 100;
 
@@ -44,10 +44,10 @@ namespace GameFields
         {
             yield return new WaitUntil(() => ActivePerson.IsComplete);
 
-            OnEndTurn();
+            NextTurn();
         }
 
-        private void OnEndTurn()
+        private void NextTurn()
         {
             _turnNumber++;
 

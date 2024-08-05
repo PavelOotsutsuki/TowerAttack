@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Cards;
-using GameFields.Persons.Hands;
+using GameFields.Discarding;
 using UnityEngine;
+using Zenject;
 
 namespace GameFields.Persons.Tables
 {
@@ -11,12 +12,12 @@ namespace GameFields.Persons.Tables
         private readonly List<Card> _playedCards = new List<Card>();
         
         private Table _table;
-        //private IUnbindCardManager _unbindCardManager;
+        private SignalBus _bus;
 
-        public void Init(Table table/*, IUnbindCardManager unbindCardManager*/)
+        public void Init(Table table, SignalBus bus)
         {
             _table = table;
-            //_unbindCardManager = unbindCardManager;
+            _bus = bus;
         }
 
         public Vector3 GetPosition() => transform.position;
@@ -27,7 +28,6 @@ namespace GameFields.Persons.Tables
                 return false;
             
             card.Play();
-            //_unbindCardManager.UnbindDragableCard();
             _table.SeatCharacter(card.Character);
             _playedCards.Add(card);
 
@@ -43,7 +43,10 @@ namespace GameFields.Persons.Tables
                 playedCard.DecreaseCounter();
 
                 if (playedCard.EffectCounter <= 0)
+                {
                     toDiscard.Add(playedCard);
+                    _bus.Fire(new RemoveEffectSignal(playedCard.EffectType));
+                }
             }
             
             toDiscard = toDiscard.OrderBy(card => card.Character.transform.position.x).ToList();

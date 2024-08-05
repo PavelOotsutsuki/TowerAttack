@@ -1,14 +1,15 @@
+using Cards;
 using GameFields.Effects;
 
 namespace GameFields.Discarding
 {
     public struct RemoveEffectSignal
     {
-        public readonly Effect Effect;
+        public readonly EffectType Type;
 
-        public RemoveEffectSignal(Effect effect)
+        public RemoveEffectSignal(EffectType type)
         {
-            Effect = effect;
+            Type = type;
         }
     }
 }

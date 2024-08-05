@@ -22,7 +22,7 @@ namespace GameFields.Persons
         private readonly StartTurnDraw _startTurnDraw;
         private readonly Tower _tower;
         private readonly SignalBus _bus;
-        private readonly List<Effect> _appliedEffects;
+        private readonly List<EffectType> _appliedEffects;
         private readonly Queue<ITurnStep> _turnSteps;
 
         private ITurnStep _currentStep;
@@ -37,7 +37,7 @@ namespace GameFields.Persons
             _turnProcess = turnProcess;
             _bus = bus;
 
-            _appliedEffects = new List<Effect>();
+            _appliedEffects = new List<EffectType>();
             _turnSteps = new Queue<ITurnStep>();
             
             _bus.Subscribe<EffectCreatedSignal>(OnEffectCreatedSignal);
@@ -114,12 +114,12 @@ namespace GameFields.Persons
         private void OnEffectCreatedSignal(EffectCreatedSignal signal)
         {
             if (signal.Target == this)
-                _appliedEffects.Add(signal.Effect);
+                _appliedEffects.Add(signal.Type);
         }
 
         private void OnRemoveEffectSignal(RemoveEffectSignal signal)
         {
-            _appliedEffects.Remove(signal.Effect);
+            _appliedEffects.Remove(signal.Type);
         }
     }
 }
