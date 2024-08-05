@@ -173,17 +173,9 @@ namespace GameFields.Persons.Hands
 
         private bool TryFindHandSeat(out Seat findedHandSeat, Card card)
         {
-            foreach (Seat handSeat in _handSeats)
-            {
-                if (handSeat.IsCardEqual(card))
-                {
-                    findedHandSeat = handSeat;
-                    return true;
-                }
-            }
+            findedHandSeat = _handSeats.FirstOrDefault(seat => seat.IsCardEqual(card));
 
-            findedHandSeat = null;
-            return false;
+            return findedHandSeat != null;
         }
 
         private void SortHandSeats()
