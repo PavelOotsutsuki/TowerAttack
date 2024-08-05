@@ -43,7 +43,7 @@ namespace GameFields.Persons.Hands
         public void OnCardDrop()
         {
             UnblockCards();
-            EndDragCard(false);
+            StartEndDragCard(false);
         }
 
         public void OnCardPlay()
@@ -84,7 +84,7 @@ namespace GameFields.Persons.Hands
 
         public void ForciblyBlock()
         {
-            EndDragCard(true);
+            StartEndDragCard(true);
             BlockCards();
         }
 
@@ -100,7 +100,7 @@ namespace GameFields.Persons.Hands
             SetCardsInteraction();
         }
 
-        private void EndDragCard(bool isForced)
+        private void StartEndDragCard(bool isForced)
         {
             if (_handSeatIndex == -1)
                 return;

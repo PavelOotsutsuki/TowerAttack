@@ -49,7 +49,7 @@ namespace Cards
             return cardDropPlace.TrySeatCard(_card);
         }
 
-        internal void EndDrag()
+        internal void StartEndDrag()
         {
             _cardDragListener.OnCardDrop();
         }

@@ -91,7 +91,7 @@ namespace Cards
             }
 
             enabled = false;
-            _cardDragAndDropActions.EndDrag();
+            _cardDragAndDropActions.StartEndDrag();
 
             StartEndDragActions();
         }
