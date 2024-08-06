@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using Cards;
 using Cysharp.Threading.Tasks;
 using GameFields.Persons.Hands;
@@ -12,17 +11,13 @@ namespace GameFields.Persons.DrawCards
         private Hand _hand;
         private float _delay;
         private bool _isDone;
-        //private int _activeTurnsCount;
 
         public bool IsDone => _isDone;
-
-        //public int ActiveTurnsCount => _activeTurnsCount;
 
         public FireDrawCardAnimation(Hand hand, float delay)
         {
             _hand = hand;
             _delay = delay;
-            //_activeTurnsCount = activeTurnsCount;
 
             _isDone = true;
         }

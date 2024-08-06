@@ -1,5 +1,4 @@
 using Cards;
-using GameFields.Effects;
 
 namespace GameFields.Discarding
 {

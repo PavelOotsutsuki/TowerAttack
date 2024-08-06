@@ -3,7 +3,6 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using GameFields.Persons.Hands;
 using Cards;
-using GameFields.EndTurnButtons;
 
 namespace GameFields.Persons
 {
@@ -35,30 +34,13 @@ namespace GameFields.Persons
 
         public bool IsComplete => _isComplete;
 
-        //public bool IsComplete => _isComplete;
-
-        //private IEndTurnHandler _endTurnHandler;
-
-        //private System.Action _callback;
-
-        internal void Init(/*IEndTurnHandler endTurnHandler, */CardDragAndDropImitationActions cardImitationActions, Hand hand)
+        internal void Init(CardDragAndDropImitationActions cardImitationActions, Hand hand)
         {
-            //_endTurnHandler = endTurnHandler;
             _isComplete = false;
-            //_callback = callback;
             _hand = hand;
             _cardImitationActions = cardImitationActions;
         }
 
-        //internal void StartDragAndDropAnimation()
-        //{
-        //    int logicNumber = Random.Range(1, CountLogics + 1);
-
-        //    if (logicNumber == 1)
-        //    {
-        //        DragAndDropBehaviour1().ToUniTask();
-        //    }
-        //}
         public void StartStep()
         {
             _isComplete = false;
@@ -77,11 +59,6 @@ namespace GameFields.Persons
                 }
             }
         }
-
-        //public void PrepareToStart()
-        //{
-        //    //_isComplete = false;
-        //}
 
         private IEnumerator DragAndDropBehaviour1()
         {
@@ -114,7 +91,6 @@ namespace GameFields.Persons
 
             yield return new WaitForSeconds(_endTurnDelay);
 
-            //_endTurnHandler.OnEndTurn();
             _isComplete = true;
         }
     }

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Cards;
 using Cysharp.Threading.Tasks;
 using GameFields.Discarding;
-using GameFields.Effects;
 using GameFields.Persons.DrawCards;
 using GameFields.Persons.Tables;
 using GameFields.Persons.Towers;
@@ -113,7 +112,7 @@ namespace GameFields.Persons
 
         private void OnEffectCreatedSignal(EffectCreatedSignal signal)
         {
-            if (signal.Target == this)
+            //if (signal.Target == this)
                 _appliedEffects.Add(signal.Type);
         }
 

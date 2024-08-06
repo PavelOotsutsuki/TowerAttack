@@ -29,7 +29,6 @@ namespace GameFields.Persons.DrawCards
             _countExtraAnimationTurns = 0;
         }
 
-
         public void StartStep()
         {
             _isComplete = false;
@@ -39,7 +38,7 @@ namespace GameFields.Persons.DrawCards
             {
                 _countExtraAnimationTurns--;
 
-                if (_countExtraAnimationTurns == 0)
+                if (_countExtraAnimationTurns <= 0)
                 {
                     SetSimpleMode();
                 }

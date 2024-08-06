@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using GameFields.EndTurnButtons;
 using GameFields.Persons.Hands;
@@ -21,11 +20,6 @@ namespace GameFields.Persons
         }
 
         public bool IsComplete => _isComplete;
-
-        //public void PrepareToStart()
-        //{
-        //    //_isComplete = false;
-        //}
 
         public void StartStep()
         {

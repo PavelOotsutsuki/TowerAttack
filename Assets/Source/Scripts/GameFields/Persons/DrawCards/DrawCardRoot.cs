@@ -36,7 +36,7 @@ namespace GameFields.Persons.DrawCards
 
         private void TakeCards(int countCards, Action callback = null)
         {
-            List<Card> cards = new();
+            List<Card> cards = new List<Card>();
 
             for (int i = 0; i < countCards; i++)
             {

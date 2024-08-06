@@ -68,11 +68,11 @@ namespace GameFields.Persons
 
         public Player CreatePlayer()
         {
-            SimpleDrawCardAnimation simpleDrawCardAnimation = new(_playerHand, _simpleDrawCardDelay);
-            FireDrawCardAnimation fireDrawCardAnimation = new(_playerHand, _fireDrawCardDelay);
-            DrawCardRoot drawCardRoot = new(new SimpleDrawCardAnimation(_playerHand, _simpleDrawCardDelay), _deck);
-            TurnProcessing turnProcessing = new(_endTurnButton, _playerHand);
-            StartTurnDraw startTurnDraw = new(drawCardRoot, simpleDrawCardAnimation, fireDrawCardAnimation, _playerCountStartDrawCards);
+            SimpleDrawCardAnimation simpleDrawCardAnimation = new SimpleDrawCardAnimation(_playerHand, _simpleDrawCardDelay);
+            FireDrawCardAnimation fireDrawCardAnimation = new FireDrawCardAnimation(_playerHand, _fireDrawCardDelay);
+            DrawCardRoot drawCardRoot = new DrawCardRoot(new SimpleDrawCardAnimation(_playerHand, _simpleDrawCardDelay), _deck);
+            TurnProcessing turnProcessing = new TurnProcessing(_endTurnButton, _playerHand);
+            StartTurnDraw startTurnDraw = new StartTurnDraw(drawCardRoot, simpleDrawCardAnimation, fireDrawCardAnimation, _playerCountStartDrawCards);
 
             return new Player(_tableActivator, _playerHand, _playerPlayingZone, _playerTower, _playerDiscover,
                 drawCardRoot, startTurnDraw, turnProcessing, _bus);
@@ -80,11 +80,11 @@ namespace GameFields.Persons
 
         public EnemyAI CreateEnemyAI()
         {
-            SimpleDrawCardAnimation simpleDrawCardAnimation = new(_enemyHand, _simpleDrawCardDelay);
-            FireDrawCardAnimation fireDrawCardAnimation = new(_enemyHand, _fireDrawCardDelay);
-            DrawCardRoot drawCardRoot = new(new SimpleDrawCardAnimation(_enemyHand, _simpleDrawCardDelay), _deck);
-            CardDragAndDropImitationActions cardDragAndDropImitationActions = new(_enemyHand, _enemyPlayingZone);
-            StartTurnDraw startTurnDraw = new(drawCardRoot, simpleDrawCardAnimation, fireDrawCardAnimation, _enemyCountStartDrawCards);
+            SimpleDrawCardAnimation simpleDrawCardAnimation = new SimpleDrawCardAnimation(_enemyHand, _simpleDrawCardDelay);
+            FireDrawCardAnimation fireDrawCardAnimation = new FireDrawCardAnimation(_enemyHand, _fireDrawCardDelay);
+            DrawCardRoot drawCardRoot = new DrawCardRoot(new SimpleDrawCardAnimation(_enemyHand, _simpleDrawCardDelay), _deck);
+            CardDragAndDropImitationActions cardDragAndDropImitationActions = new CardDragAndDropImitationActions(_enemyHand, _enemyPlayingZone);
+            StartTurnDraw startTurnDraw = new StartTurnDraw(drawCardRoot, simpleDrawCardAnimation, fireDrawCardAnimation, _enemyCountStartDrawCards);
             
             _enemyDragAndDropImitation.Init(cardDragAndDropImitationActions, _enemyHand);
 
@@ -97,7 +97,7 @@ namespace GameFields.Persons
             _playerHand.Init(seatPool);
             _playerTable.Init();
             _playerPlayingZone.Init(_playerTable, _bus);
-            _playerTower.Init(/*_playerHand*/);
+            _playerTower.Init();
         }
 
         private void InitEnemyData(SeatPool seatPool)
@@ -105,7 +105,7 @@ namespace GameFields.Persons
             _enemyHand.Init(seatPool);
             _enemyTable.Init();
             _enemyPlayingZone.Init(_enemyTable, _bus);
-            _enemyTower.Init(/*_enemyHand*/);
+            _enemyTower.Init();
         }
     }
 }
