@@ -1,3 +1,4 @@
+using GameFields.Effects;
 using GameFields.EndTurnButtons;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.DrawCards;
@@ -53,58 +54,54 @@ namespace GameFields.Persons
         [SerializeField] private float _fireDrawCardDelay = 2f;
 
         private SignalBus _bus;
-        private Deck _deck;
-        private EndTurnButton _endTurnButton;
 
-        public void Init(SignalBus bus, Deck deck, EndTurnButton endTurnButton, SeatPool seatPool)
+        public void Init(SignalBus bus, SeatPool seatPool, EffectFactory effectFactory)
         {
             _bus = bus;
-            _deck = deck;
-            _endTurnButton = endTurnButton;
 
-            InitPlayersData(seatPool);
-            InitEnemyData(seatPool);
+            InitPlayersData(seatPool, effectFactory);
+            InitEnemyData(seatPool, effectFactory);
         }
 
-        public Player CreatePlayer()
+        public Player CreatePlayer(SignalBus bus, Deck deck, EndTurnButton endTurnButton)
         {
             SimpleDrawCardAnimation simpleDrawCardAnimation = new SimpleDrawCardAnimation(_playerHand, _simpleDrawCardDelay);
             FireDrawCardAnimation fireDrawCardAnimation = new FireDrawCardAnimation(_playerHand, _fireDrawCardDelay);
-            DrawCardRoot drawCardRoot = new DrawCardRoot(new SimpleDrawCardAnimation(_playerHand, _simpleDrawCardDelay), _deck);
-            TurnProcessing turnProcessing = new TurnProcessing(_endTurnButton, _playerHand);
+            DrawCardRoot drawCardRoot = new DrawCardRoot(new SimpleDrawCardAnimation(_playerHand, _simpleDrawCardDelay), deck);
+            TurnProcessing turnProcessing = new TurnProcessing(endTurnButton, _playerHand);
             StartTurnDraw startTurnDraw = new StartTurnDraw(drawCardRoot, simpleDrawCardAnimation, fireDrawCardAnimation, _playerCountStartDrawCards);
 
             return new Player(_tableActivator, _playerHand, _playerPlayingZone, _playerTower, _playerDiscover,
-                drawCardRoot, startTurnDraw, turnProcessing, _bus);
+                drawCardRoot, startTurnDraw, turnProcessing, bus);
         }
 
-        public EnemyAI CreateEnemyAI()
+        public EnemyAI CreateEnemyAI(SignalBus bus, Deck deck)
         {
             SimpleDrawCardAnimation simpleDrawCardAnimation = new SimpleDrawCardAnimation(_enemyHand, _simpleDrawCardDelay);
             FireDrawCardAnimation fireDrawCardAnimation = new FireDrawCardAnimation(_enemyHand, _fireDrawCardDelay);
-            DrawCardRoot drawCardRoot = new DrawCardRoot(new SimpleDrawCardAnimation(_enemyHand, _simpleDrawCardDelay), _deck);
+            DrawCardRoot drawCardRoot = new DrawCardRoot(new SimpleDrawCardAnimation(_enemyHand, _simpleDrawCardDelay), deck);
             CardDragAndDropImitationActions cardDragAndDropImitationActions = new CardDragAndDropImitationActions(_enemyHand, _enemyPlayingZone);
             StartTurnDraw startTurnDraw = new StartTurnDraw(drawCardRoot, simpleDrawCardAnimation, fireDrawCardAnimation, _enemyCountStartDrawCards);
             
             _enemyDragAndDropImitation.Init(cardDragAndDropImitationActions, _enemyHand);
 
             return new EnemyAI(_tableActivator, _enemyDragAndDropImitation, _enemyPlayingZone,
-                _enemyTower, drawCardRoot, _enemyDiscoverImitation, startTurnDraw, _bus);
+                _enemyTower, drawCardRoot, _enemyDiscoverImitation, startTurnDraw, bus);
         }
         
-        private void InitPlayersData(SeatPool seatPool)
+        private void InitPlayersData(SeatPool seatPool, EffectFactory effectFactory)
         {
             _playerHand.Init(seatPool);
             _playerTable.Init();
-            _playerPlayingZone.Init(_playerTable, _bus);
+            _playerPlayingZone.Init(_playerTable, _bus, effectFactory);
             _playerTower.Init();
         }
 
-        private void InitEnemyData(SeatPool seatPool)
+        private void InitEnemyData(SeatPool seatPool, EffectFactory effectFactory)
         {
             _enemyHand.Init(seatPool);
             _enemyTable.Init();
-            _enemyPlayingZone.Init(_enemyTable, _bus);
+            _enemyPlayingZone.Init(_enemyTable, _bus, effectFactory);
             _enemyTower.Init();
         }
     }

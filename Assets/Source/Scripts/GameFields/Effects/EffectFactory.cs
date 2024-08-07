@@ -6,7 +6,7 @@ using Zenject;
 
 namespace GameFields.Effects
 {
-    public class EffectFactory : IEffectFactory
+    public class EffectFactory
     {
         private readonly SignalBus _bus;
         private readonly Deck _deck;
@@ -19,7 +19,7 @@ namespace GameFields.Effects
             _personsState = personsState;
         }
 
-        public void Create(EffectType type)
+        public Effect Create(EffectType type)
         {
             Effect effect = type switch
             {
@@ -34,6 +34,7 @@ namespace GameFields.Effects
                 : _personsState.Deactive;
             
             _bus.Fire(new EffectCreatedSignal(target, type));
+            return effect;
         }
     }
 }

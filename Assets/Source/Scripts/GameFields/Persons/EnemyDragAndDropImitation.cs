@@ -7,7 +7,7 @@ using Cards;
 namespace GameFields.Persons
 {
     [System.Serializable]
-    public class EnemyDragAndDropImitation: ITurnStep
+    public class EnemyDragAndDropImitation : ITurnStep
     {
         private const int CountLogics = 1;
         private const float SelectYDirection = 1;

@@ -7,20 +7,19 @@ using UnityEngine;
 
 namespace GameFields.Persons.DrawCards
 {
-    public class SimpleDrawCardAnimation: IDrawCardAnimation
+    public class SimpleDrawCardAnimation : IDrawCardAnimation
     {
-        private Hand _hand;
-        private float _delay;
-        private bool _isDone;
+        private readonly Hand _hand;
+        private readonly float _delay;
 
-        public bool IsDone => _isDone;
+        public bool IsDone { get; private set; }
 
         public SimpleDrawCardAnimation(Hand hand, float delay)
         {
             _hand = hand;
             _delay = delay;
 
-            _isDone = true;
+            IsDone = true;
         }
 
         public void Play(Card card)
@@ -30,12 +29,12 @@ namespace GameFields.Persons.DrawCards
 
         private IEnumerator Playing(Card drawnCard)
         {
-            _isDone = false;
+            IsDone = false;
 
             yield return new WaitForSeconds(_delay);
 
             _hand.AddCard(drawnCard);
-            _isDone = true;
+            IsDone = true;
         }
     }
 }

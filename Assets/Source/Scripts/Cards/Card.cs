@@ -19,7 +19,6 @@ namespace Cards
         private CardDragAndDropActions _cardDragAndDropActions;
         private CardSideFlipper _cardSideFlipper;
         private CardCharacter _createdCharacter;
-        private IEffectFactory _effectFactory; 
 
         public RectTransform Transform => _rectTransform;
         public Vector3 DefaultScaleVector => _defaultScaleVector;
@@ -27,10 +26,8 @@ namespace Cards
         public int EffectCounter { get; private set; }
         public EffectType EffectType => _cardConfig.Effect.Type;
 
-        internal void Init(IEffectFactory effectFactory, CardViewService cardViewService, Transform dragContainer)
+        internal void Init(CardViewService cardViewService, Transform dragContainer)
         {
-            _effectFactory = effectFactory;
-            
             _rectTransform.localScale = _defaultScaleVector;
             _cardFront.Init(_cardConfig, _rectTransform, cardViewService);
 
@@ -61,7 +58,6 @@ namespace Cards
             }
 
             Deactivate();
-            _effectFactory.Create(_cardConfig.Effect.Type);
             EffectCounter = _cardConfig.Effect.Duration;
             Character = _createdCharacter;
         }

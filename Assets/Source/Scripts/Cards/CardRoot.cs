@@ -15,14 +15,14 @@ namespace Cards
         
         public IEnumerable<Card> Cards => _cards;
 
-        public void Init(IEffectFactory effectFactory)
+        public void Init()
         {
             InitCardDescription();
             InitBigCard();
 
             _cardViewService = new CardViewService(_bigCard, _cardDescription);
 
-            InitCards(effectFactory);
+            InitCards();
         }
 
         private void InitCardDescription()
@@ -35,11 +35,11 @@ namespace Cards
             _bigCard.Init();
         }
 
-        private void InitCards(IEffectFactory effectFactory)
+        private void InitCards()
         {
             foreach (Card card in _cards)
             {
-                card.Init(effectFactory, _cardViewService, _dragContainer);
+                card.Init(_cardViewService, _dragContainer);
             }
         }
 

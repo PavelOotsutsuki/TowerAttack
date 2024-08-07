@@ -38,7 +38,7 @@ namespace GameFields.Persons
 
             _appliedEffects = new List<EffectType>();
             _turnSteps = new Queue<ITurnStep>();
-            
+
             _bus.Subscribe<EffectCreatedSignal>(OnEffectCreatedSignal);
             _bus.Subscribe<RemoveEffectSignal>(OnRemoveEffectSignal);
         }
@@ -112,13 +112,13 @@ namespace GameFields.Persons
 
         private void OnEffectCreatedSignal(EffectCreatedSignal signal)
         {
-            //if (signal.Target == this)
+            if (signal.Target == this)
                 _appliedEffects.Add(signal.Type);
         }
 
         private void OnRemoveEffectSignal(RemoveEffectSignal signal)
         {
-            _appliedEffects.Remove(signal.Type);
+                _appliedEffects.Remove(signal.Type);
         }
     }
 }

@@ -1,8 +1,6 @@
-using Cards;
-
 namespace GameFields.Effects
 {
-    public abstract class Effect : ICardEffect
+    public abstract class Effect
     {
         public readonly EffectTarget Target;
 
