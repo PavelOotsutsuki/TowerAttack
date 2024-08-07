@@ -12,7 +12,7 @@ namespace GameFields.Persons
         private ITableDeactivator _tableDeactivator;
 
         public EnemyAI(ITableDeactivator tableDeactivator, ITurnStep enemyDragAndDropImitation, CardPlayingZone cardPlayingZone,
-            Tower tower, DrawCardRoot drawCardRoot, DiscoverImitation discoverImitation, StartTurnDraw startTurnDraw, SignalBus bus) :
+            Tower tower, SimpleCardDrawer drawCardRoot, DiscoverImitation discoverImitation, StartTurnDraw startTurnDraw, SignalBus bus) :
             base(cardPlayingZone, drawCardRoot, tower, startTurnDraw, enemyDragAndDropImitation, bus)
         {
             _discoverImitation = discoverImitation;

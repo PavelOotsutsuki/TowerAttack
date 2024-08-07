@@ -14,7 +14,7 @@ namespace GameFields.Persons
         private readonly IBlockable _handBlockable;
 
         public Player(ITableActivator tableActivator, IBlockable hand, CardPlayingZone cardPlayingZone, Tower tower,
-            Discover discover, DrawCardRoot drawCardRoot, StartTurnDraw startTurnDraw, ITurnStep turnProcessing, SignalBus bus) :
+            Discover discover, SimpleCardDrawer drawCardRoot, StartTurnDraw startTurnDraw, ITurnStep turnProcessing, SignalBus bus) :
             base(cardPlayingZone, drawCardRoot, tower, startTurnDraw, turnProcessing, bus)
         {
             _discover = discover;

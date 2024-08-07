@@ -17,7 +17,7 @@ namespace GameFields.Persons
     {
         private readonly ITurnStep _turnProcess;
         private readonly CardPlayingZone _playingZone;
-        private readonly DrawCardRoot _drawCardRoot;
+        private readonly SimpleCardDrawer _drawCardRoot;
         private readonly StartTurnDraw _startTurnDraw;
         private readonly Tower _tower;
         private readonly SignalBus _bus;
@@ -26,7 +26,7 @@ namespace GameFields.Persons
 
         private ITurnStep _currentStep;
 
-        protected Person(CardPlayingZone playingZone, DrawCardRoot drawCardRoot, Tower tower,
+        protected Person(CardPlayingZone playingZone, SimpleCardDrawer drawCardRoot, Tower tower,
             StartTurnDraw startTurnDraw, ITurnStep turnProcess, SignalBus bus)
         {
             _playingZone = playingZone;
@@ -72,8 +72,8 @@ namespace GameFields.Persons
             EnqueueStep(_turnProcess);
         }
 
-        public void DrawCards(int countCards, Action callback = null)
-            => _drawCardRoot.DrawCards(countCards, callback);
+        public void EffectsIgnoredDrawCards(int countCards, Action callback = null)
+            => _drawCardRoot.DrawCards(countCards);
 
         public void FinishTurn()
         {

@@ -43,8 +43,8 @@ namespace GameFields.StartTowerCardSelections
 
         private IEnumerator StartProcess()
         {
-            _personsState.Active.DrawCards(_firstTurnCardsCount);
-            _personsState.Deactive.DrawCards(_firstTurnCardsCount);
+            // _personsState.Active.DrawCards(_firstTurnCardsCount);
+            // _personsState.Deactive.DrawCards(_firstTurnCardsCount);
 
             yield return new WaitUntil(() => IsComplete);
 

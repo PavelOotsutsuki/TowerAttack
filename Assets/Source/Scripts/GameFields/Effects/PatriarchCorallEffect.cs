@@ -51,7 +51,7 @@ namespace GameFields.Effects
 
             //if (cards != null)
             //{
-                _activePerson?.DrawCards(CountDrawCards);
+                _activePerson?.EffectsIgnoredDrawCards(CountDrawCards);
             //}
 
             yield break;
