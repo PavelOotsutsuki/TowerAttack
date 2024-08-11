@@ -36,10 +36,7 @@ namespace Cards
 
         private void ShowCurrentCard()
         {
-            if (_currentCard is not null)
-            {
-                _currentCard.Show();
-            }
+            _currentCard?.Show();
         }
     }
 }

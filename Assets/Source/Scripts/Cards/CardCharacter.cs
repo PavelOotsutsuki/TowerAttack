@@ -3,43 +3,48 @@ using Tools;
 
 namespace Cards
 {
-    public class CardCharacter : MonoBehaviour, ISeatable
+    public class CardCharacter : MonoBehaviour, ICardState
     {
         [SerializeField] private AudioSource _audioSource;
-        [SerializeField] private RectTransform _rectTransform;
+        //[SerializeField] private RectTransform _rectTransform;
 
         public void Init(AudioClip awakeSound)
         {
             _audioSource.clip = awakeSound;
-            gameObject.SetActive(false);
         }
 
-        public void BindParent(Transform parent)
+        //public void BindParent(Transform parent)
+        //{
+        //    _rectTransform.SetParent(parent);
+        //    _rectTransform.localPosition = Vector3.zero;
+        //    gameObject.SetActive(true);
+        //    AudioSource.PlayClipAtPoint(_audioSource.clip, Vector3.zero);
+        //}
+
+        public void View()
         {
-            _rectTransform.SetParent(parent);
-            _rectTransform.localPosition = Vector3.zero;
-            gameObject.SetActive(true);
             AudioSource.PlayClipAtPoint(_audioSource.clip, Vector3.zero);
+            gameObject.SetActive(true);
         }
 
-        public void Disable()
+        public void Hide()
         {
             gameObject.SetActive(false);
         }
 
-        public Vector3 GetPosition()
-        {
-            Vector3 startPosition = new Vector2(_rectTransform.position.x, _rectTransform.position.y);
+        //public Vector3 GetPosition()
+        //{
+        //    Vector3 startPosition = new Vector2(_rectTransform.position.x, _rectTransform.position.y);
 
-            return startPosition;
-        }
+        //    return startPosition;
+        //}
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
             DefineAudioSource();
-            DefineRectTransform();
+            //DefineRectTransform();
         }
 
         [ContextMenu(nameof(DefineAudioSource))]
@@ -48,12 +53,12 @@ namespace Cards
             AutomaticFillComponents.DefineComponent(this, ref _audioSource, ComponentLocationTypes.InThis);
         }
 
-        [ContextMenu(nameof(DefineRectTransform))]
-        private void DefineRectTransform()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
-        }
-        #endregion 
+        //[ContextMenu(nameof(DefineRectTransform))]
+        //private void DefineRectTransform()
+        //{
+        //    AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
+        //}
+        #endregion
     }
 }
 

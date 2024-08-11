@@ -8,19 +8,20 @@ namespace GameFields.Persons.Tables
     {
         [SerializeField] private RectTransform _rectTransform;
 
-        private ISeatable _character;
+        private Card _card;
 
-        internal bool IsEmpty => _character == null;
+        internal bool IsEmpty => _card == null;
 
-        internal void SetCardCharacter(ISeatable cardCharacter)
+        internal void SetCard(Card card)
         {
-            _character = cardCharacter;
-            _character.BindParent(_rectTransform);
+            _card = card;
+            _card.Transform.SetParent(_rectTransform);
+            //_card.BindParent(_rectTransform);
         }
 
-        internal void ResetCharacter() => _character = null;
+        internal void ResetCard() => _card = null;
 
-        internal bool CompareSeatable(ISeatable character) => character == _character;
+        internal bool CompareSeatable(Card card) => card == _card;
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents))]

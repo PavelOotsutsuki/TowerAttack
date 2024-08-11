@@ -39,7 +39,7 @@ namespace GameFields.DiscardPiles
         {
             _cardTransform.SetParent(_container);
             
-            _card.DiscardCard();
+            _card.SetDiscardSide();
 
             _cardTransformable.SetActiveInteraction(false);
             _cardTransformable.SetSide(SideType.Front);
@@ -76,7 +76,7 @@ namespace GameFields.DiscardPiles
 
         private void IncreaseCard()
         {
-            Vector3 startPosition = _card.GetCardCharacterPosition();
+            Vector3 startPosition = _card.GetPosition();
 
             _cardMovement.MoveInstantly(startPosition, _data.StartRotation, _data.StartScaleVector);
             _cardMovement.MoveSmoothly(_cardTransform.position, _cardTransform.rotation.eulerAngles, _data.CardIncreaseDuration, _cardTransformable.DefaultScaleVector);

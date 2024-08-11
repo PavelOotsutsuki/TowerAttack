@@ -96,7 +96,7 @@ namespace GameFields.Persons
         {
             _playerHand.Init(seatPool);
             _playerTable.Init();
-            _playerPlayingZone.Init(_playerTable, _bus);
+            _playerPlayingZone.Init(_playerTable);
             _playerTower.Init();
         }
 
@@ -104,7 +104,7 @@ namespace GameFields.Persons
         {
             _enemyHand.Init(seatPool);
             _enemyTable.Init();
-            _enemyPlayingZone.Init(_enemyTable, _bus);
+            _enemyPlayingZone.Init(_enemyTable);
             _enemyTower.Init();
         }
     }

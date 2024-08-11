@@ -12,12 +12,12 @@ namespace GameFields.Persons.Tables
         private readonly List<Card> _playedCards = new List<Card>();
         
         private Table _table;
-        private SignalBus _bus;
+        //private SignalBus _bus;
 
-        public void Init(Table table, SignalBus bus)
+        public void Init(Table table/*, SignalBus bus*/)
         {
             _table = table;
-            _bus = bus;
+            //_bus = bus;
         }
 
         public Vector3 GetPosition() => transform.position;
@@ -28,7 +28,7 @@ namespace GameFields.Persons.Tables
                 return false;
             
             card.Play();
-            _table.SeatCharacter(card.Character);
+            _table.SeatCard(card);
             _playedCards.Add(card);
 
             return true;
@@ -40,21 +40,24 @@ namespace GameFields.Persons.Tables
             
             foreach (Card playedCard in _playedCards)
             {
-                playedCard.DecreaseCounter();
-
-                if (playedCard.EffectCounter <= 0)
+                if (playedCard.TryDiscard())
                 {
                     toDiscard.Add(playedCard);
-                    _bus.Fire(new RemoveEffectSignal(playedCard.EffectType));
                 }
+
+                //if (playedCard.EffectCounter <= 0)
+                //{
+                //    toDiscard.Add(playedCard);
+                //    _bus.Fire(new RemoveEffectSignal(playedCard.EffectType));
+                //}
             }
             
-            toDiscard = toDiscard.OrderBy(card => card.Character.transform.position.x).ToList();
+            toDiscard = toDiscard.OrderBy(card => card.transform.position.x).ToList();
 
             foreach (Card card in toDiscard)
                 _playedCards.Remove(card);
 
-            _table.FreeSeats(toDiscard.Select(card => card.Character));
+            _table.FreeSeats(toDiscard.Select(card => card));
             
             return toDiscard;
         }

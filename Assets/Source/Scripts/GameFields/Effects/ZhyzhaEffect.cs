@@ -1,22 +1,26 @@
+using Cards;
 using GameFields.Persons;
+using UnityEngine;
 
 namespace GameFields.Effects
 {
-    public class ZhyzhaEffect : Effect
+    public class ZhyzhaEffect : IEffect
     {
         private Person _deactivePerson;
 
         public ZhyzhaEffect(Person deactivePerson) 
-            : base(EffectTarget.Opponent)
         {
             _deactivePerson = deactivePerson;
-
-            PlayEffect();
         }
 
-        private void PlayEffect()
+        public void Play()
         {
-//            Debug.Log("Эффект Жыжи");
+            Debug.Log("Эффект Жыжи");
+        }
+
+        public void End()
+        {
+            Debug.Log("Эффект Жыжи закончен");
         }
     }
 }

@@ -112,13 +112,14 @@ namespace GameFields.Persons
 
         private void OnEffectCreatedSignal(EffectCreatedSignal signal)
         {
-            //if (signal.Target == this)
+            if (signal.Target == this)
                 _appliedEffects.Add(signal.Type);
         }
 
         private void OnRemoveEffectSignal(RemoveEffectSignal signal)
         {
-            _appliedEffects.Remove(signal.Type);
+            //if (signal.Target == this)
+                _appliedEffects.Remove(signal.Type);
         }
     }
 }

@@ -1,169 +1,127 @@
-using UnityEngine;
-using Tools;
 using System;
+using UnityEngine;
 
 namespace Cards
 {
     public class Card : MonoBehaviour, ICardTransformable
     {
-        private const SideType DefaultSide = SideType.Back;
-        private const bool DefaultInteractionActive = false;
-
-        [SerializeField] private CardBack _cardBack;
-        [SerializeField] private CardFront _cardFront;
-        [SerializeField] private CardConfig _cardConfig;
-        [SerializeField] private CardDragAndDrop _cardDragAndDrop;
-        [SerializeField] private RectTransform _rectTransform;
+        [SerializeField] RectTransform _rectTransform;
+        [SerializeField] CardPaper _cardPaper;
+        [SerializeField] CardCharacter _character;
+        [SerializeField] CardConfig _config;
         [SerializeField] private Vector3 _defaultScaleVector;
 
-        private CardDragAndDropActions _cardDragAndDropActions;
-        private CardSideFlipper _cardSideFlipper;
-        private CardCharacter _createdCharacter;
-        private IEffectFactory _effectFactory; 
+        private int _effectCounter;
+        private IEffectFactory _effectFactory;
+        private IEffect _effect;
+
+        private ICardState _currentState;
 
         public RectTransform Transform => _rectTransform;
         public Vector3 DefaultScaleVector => _defaultScaleVector;
-        public CardCharacter Character { get; private set; }
-        public int EffectCounter { get; private set; }
-        public EffectType EffectType => _cardConfig.Effect.Type;
 
         internal void Init(IEffectFactory effectFactory, CardViewService cardViewService, Transform dragContainer)
         {
             _effectFactory = effectFactory;
-            
+
             _rectTransform.localScale = _defaultScaleVector;
-            _cardFront.Init(_cardConfig, _rectTransform, cardViewService);
 
-            _cardDragAndDropActions = new CardDragAndDropActions(_cardFront, this);
-            _cardDragAndDrop.Init(_rectTransform, _cardDragAndDropActions, dragContainer);
+            _cardPaper.Init(this, cardViewService, _config, dragContainer, _rectTransform);
 
-            _cardSideFlipper = new CardSideFlipper(_cardFront, _cardBack, _cardDragAndDrop);
-
-            SetSide(DefaultSide);
-            SetActiveInteraction(DefaultInteractionActive);
+            SetState(_cardPaper);
         }
 
         public void EndDrag()
         {
-            _cardDragAndDrop.BlockDrag();
+            _cardPaper.EndDrag();
         }
 
         public void SetDragAndDropListener(ICardDragAndDropListener cardDragAndDropListener)
         {
-            _cardDragAndDropActions.SetListener(cardDragAndDropListener);
+            SetDragAndDropListener(cardDragAndDropListener);
+        }
+
+        public Vector3 GetPosition()
+        {
+            return _rectTransform.position;
         }
 
         public void Play()
         {
-            if (_createdCharacter == null)
+            CheckStateByNull();
+
+            if (_currentState is not CardPaper)
+            {
+                throw new Exception("Try play not CardPaper. Card state: " + _currentState.ToString());
+            }
+
+            if (_character == null)
             {
                 CreateCardCharacter();
             }
 
-            Deactivate();
-            _effectFactory.Create(_cardConfig.Effect.Type);
-            EffectCounter = _cardConfig.Effect.Duration;
-            Character = _createdCharacter;
+            SetState(_character);
+            _effect = _effectFactory.Create(_config.Effect.Type);
+            _effect.Play();
+            _effectCounter = _config.Effect.Duration;
+        }
+
+        public bool TryDiscard()
+        {
+            _effectCounter--;
+
+            if (_effectCounter <= 0)
+            {
+                _effect?.End();
+                _effect = null;
+                return true;
+            }
+
+            return false;
+        }
+
+        public void SetDiscardSide()
+        {
+            CheckStateByNull();
+
+            if (_currentState is not CardCharacter)
+            {
+                throw new Exception("Try discard not CardCharacter. Card state: " + _currentState.ToString());
+            }
+
+            SetState(_cardPaper);
+            _character = null;
         }
 
         public void SetSide(SideType sideType)
         {
-            switch (sideType)
-            {
-                case SideType.Front:
-                    _cardSideFlipper.SetFrontSide();
-                    break;
-                case SideType.Back:
-                    _cardSideFlipper.SetBackSide();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException($"Unknown side type: {sideType}");
-            }
+            _cardPaper.SetSide(sideType);
         }
 
         public void SetActiveInteraction(bool isActive)
         {
-            if (isActive == false)
-            {
-                _cardSideFlipper.DeactivateInteraction();
-                return;
-            }
-
-            if (_cardDragAndDrop.IsDragable == false)
-            {
-                _cardSideFlipper.ActivateInteraction();
-            }
+            _cardPaper.SetActiveInteraction(isActive);
         }
-
-        public void DiscardCard()
-        {
-            Activate();
-            
-            _createdCharacter.Disable();
-            Character = null;
-        }
-
-        public Vector3 GetCardCharacterPosition()
-        {
-            if (_createdCharacter == null)
-            {
-                throw new NullReferenceException("СardCharacter is not instantiate");
-            }
-
-            return _createdCharacter.GetPosition();
-        }
-
-        public void DecreaseCounter() => EffectCounter--;
 
         private void CreateCardCharacter()
         {
-            _createdCharacter = Instantiate(_cardConfig.CardCharacter);
-            _createdCharacter.Init(_cardConfig.AwakeSound);
+            _character = Instantiate(_config.CardCharacter);
+            _character.Init(_config.AwakeSound);
         }
 
-        private void Activate()
+        private void CheckStateByNull()
         {
-            gameObject.SetActive(true);
+            if (_currentState is null)
+            {
+                throw new NullReferenceException("Current card state is null");
+            }
         }
 
-        private void Deactivate()
+        private void SetState(ICardState state)
         {
-            gameObject.SetActive(false);
+            _currentState?.Hide();
+            _currentState = state;
+            _currentState.View();
         }
-
-        #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents))]
-        private void DefineAllComponents()
-        {
-            DefineCardBack();
-            DefineCardFront();
-            DefineCardDragAndDrop();
-            DefineRectTransform();
-        }
-
-        [ContextMenu(nameof(DefineCardDragAndDrop))]
-        private void DefineCardDragAndDrop()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _cardDragAndDrop, ComponentLocationTypes.InThis);
-        }
-
-        [ContextMenu(nameof(DefineRectTransform))]
-        private void DefineRectTransform()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
-        }
-
-        [ContextMenu(nameof(DefineCardBack))]
-        private void DefineCardBack()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _cardBack, ComponentLocationTypes.InChildren);
-        }
-
-        [ContextMenu(nameof(DefineCardFront))]
-        private void DefineCardFront()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _cardFront, ComponentLocationTypes.InChildren);
-        }
-        #endregion 
     }
 }
