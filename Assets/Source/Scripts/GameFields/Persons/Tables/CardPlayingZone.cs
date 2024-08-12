@@ -12,12 +12,10 @@ namespace GameFields.Persons.Tables
         private readonly List<Card> _playedCards = new List<Card>();
         
         private Table _table;
-        //private SignalBus _bus;
 
-        public void Init(Table table/*, SignalBus bus*/)
+        public void Init(Table table)
         {
             _table = table;
-            //_bus = bus;
         }
 
         public Vector3 GetPosition() => transform.position;
@@ -44,12 +42,6 @@ namespace GameFields.Persons.Tables
                 {
                     toDiscard.Add(playedCard);
                 }
-
-                //if (playedCard.EffectCounter <= 0)
-                //{
-                //    toDiscard.Add(playedCard);
-                //    _bus.Fire(new RemoveEffectSignal(playedCard.EffectType));
-                //}
             }
             
             toDiscard = toDiscard.OrderBy(card => card.transform.position.x).ToList();

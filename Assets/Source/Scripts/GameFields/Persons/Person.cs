@@ -13,7 +13,7 @@ using Zenject;
 
 namespace GameFields.Persons
 {
-    public abstract class Person : IStateMachineState, IDisposable
+    public abstract class Person : IStateMachineState
     {
         private readonly ITurnStep _turnProcess;
         private readonly CardPlayingZone _playingZone;
@@ -21,7 +21,6 @@ namespace GameFields.Persons
         private readonly StartTurnDraw _startTurnDraw;
         private readonly Tower _tower;
         private readonly SignalBus _bus;
-        private readonly List<EffectType> _appliedEffects;
         private readonly Queue<ITurnStep> _turnSteps;
 
         private ITurnStep _currentStep;
@@ -29,28 +28,18 @@ namespace GameFields.Persons
         protected Person(CardPlayingZone playingZone, DrawCardRoot drawCardRoot, Tower tower,
             StartTurnDraw startTurnDraw, ITurnStep turnProcess, SignalBus bus)
         {
+            _bus = bus;
             _playingZone = playingZone;
             _tower = tower;
             _drawCardRoot = drawCardRoot;
             _startTurnDraw = startTurnDraw;
             _turnProcess = turnProcess;
-            _bus = bus;
 
-            _appliedEffects = new List<EffectType>();
             _turnSteps = new Queue<ITurnStep>();
-            
-            _bus.Subscribe<EffectCreatedSignal>(OnEffectCreatedSignal);
-            _bus.Subscribe<RemoveEffectSignal>(OnRemoveEffectSignal);
         }
 
         public bool IsComplete { get; private set; }
         public bool IsTowerFilled => _tower.IsTowerFill;
-
-        public void Dispose()
-        {
-            _bus.Unsubscribe<EffectCreatedSignal>(OnEffectCreatedSignal);
-            _bus.Unsubscribe<RemoveEffectSignal>(OnRemoveEffectSignal);
-        }
 
         public void StartStep()
         {
@@ -109,17 +98,5 @@ namespace GameFields.Persons
         }
 
         private void EnqueueStep(ITurnStep turnStep) => _turnSteps.Enqueue(turnStep);
-
-        private void OnEffectCreatedSignal(EffectCreatedSignal signal)
-        {
-            if (signal.Target == this)
-                _appliedEffects.Add(signal.Type);
-        }
-
-        private void OnRemoveEffectSignal(RemoveEffectSignal signal)
-        {
-            //if (signal.Target == this)
-                _appliedEffects.Remove(signal.Type);
-        }
     }
 }

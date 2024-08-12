@@ -24,9 +24,7 @@ namespace GameFields
         {
             SignalBusInstaller.Install(Container);
 
-            Container.DeclareSignal<EffectCreatedSignal>();
             Container.DeclareSignal<DiscardCardsSignal>();
-            Container.DeclareSignal<RemoveEffectSignal>();
         }
     }
 }

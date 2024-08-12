@@ -34,7 +34,9 @@ namespace Tools
         public void MoveLocalSmoothly(Vector2 positon, Vector3 rotation, float duration)
         {
             _transform.DOLocalMove(positon, duration);
-            _transform.DOLocalRotate(rotation, duration);
+
+            if (_transform.rotation.eulerAngles != rotation)
+                _transform.DOLocalRotate(rotation, duration);
         }
 
         public void MoveSmoothly(Vector2 positon, Vector3 rotation, float duration, Vector3 scaleVector)

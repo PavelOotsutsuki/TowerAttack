@@ -24,24 +24,20 @@ namespace Roots
         [Inject]
         private void Construct(SignalBus bus, Deck deck, DiscardPile discardPile, SeatPool seatPool)
         {
-            _personCreator.Init(bus, deck, _endTurnButton, seatPool);
-            _endTurnButton.Init();
             _screenRoot.Init();
 
             seatPool.Init();
-            discardPile.Init(seatPool);
-            deck.Init(_cardRoot.Cards);
+            _endTurnButton.Init();
+            _personCreator.Init(bus, deck, _endTurnButton, seatPool);
+
+            discardPile.Init(seatPool, bus);
 
             _personsState = new PersonsState(_personCreator.CreatePlayer(), _personCreator.CreateEnemyAI());
             EffectFactory effectFactory = new EffectFactory(deck, _personsState);
+
             _cardRoot.Init(effectFactory);
-
+            deck.Init(_cardRoot.Cards);
             _gameFieldRoot.Init(_personsState);
-        }
-
-        private void OnDestroy()
-        {
-            _personsState.Dispose();
         }
 
         #region AutomaticFillComponents

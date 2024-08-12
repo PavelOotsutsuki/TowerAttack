@@ -30,11 +30,14 @@ namespace GameFields.Discarding
 
         private SignalBus _bus;
 
-        [Inject]
-        private void Construct(SignalBus bus)
+        public void Init(SeatPool seatPool, SignalBus bus)
         {
+            _maxCoordinateX = _rectTransform.rect.width / 2f;
+            _maxCoordinateY = _rectTransform.rect.height / 2f;
+            _minCoordinateX = _maxCoordinateX * -1;
+            _minCoordinateY = _maxCoordinateY * -1;
+            _discardPileSeatPool = seatPool;
             _bus = bus;
-            
             _bus.Subscribe<DiscardCardsSignal>(OnDiscardCardsSignal);
         }
 
@@ -46,15 +49,6 @@ namespace GameFields.Discarding
         private void OnDiscardCardsSignal(DiscardCardsSignal signal)
         {
             DiscardingCards(signal.Cards).ToUniTask();
-        }
-
-        public void Init(SeatPool seatPool)
-        {
-            _maxCoordinateX = _rectTransform.rect.width / 2f;
-            _maxCoordinateY = _rectTransform.rect.height / 2f;
-            _minCoordinateX = _maxCoordinateX * -1;
-            _minCoordinateY = _maxCoordinateY * -1;
-            _discardPileSeatPool = seatPool;
         }
 
         private void SeatCard(Card card)

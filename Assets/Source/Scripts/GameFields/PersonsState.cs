@@ -19,11 +19,5 @@ namespace GameFields
             Active = Deactive;
             Deactive = temp;
         }
-
-        public void Dispose()
-        {
-            Active.Dispose();
-            Deactive.Dispose();
-        }
     }
 }

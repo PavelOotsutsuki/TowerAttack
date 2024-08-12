@@ -4466,7 +4466,7 @@ MonoBehaviour:
   _enemyDiscoverImitation: {fileID: 1674758350}
   _enemyCountStartDrawCards: 1
   _tableActivator: {fileID: 867188514}
-  _simpleDrawCardDelay: 0.1
+  _simpleDrawCardDelay: 0.2
   _fireDrawCardDelay: 2
 --- !u!1001 &642726966
 PrefabInstance:
