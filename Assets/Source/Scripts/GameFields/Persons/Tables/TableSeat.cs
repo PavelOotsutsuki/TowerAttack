@@ -16,6 +16,7 @@ namespace GameFields.Persons.Tables
         {
             _card = card;
             _card.Transform.SetParent(_rectTransform);
+            _card.Transform.localPosition = Vector2.zero;
             //_card.BindParent(_rectTransform);
         }
 

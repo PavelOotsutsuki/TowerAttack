@@ -5,12 +5,12 @@ namespace Cards
 {
     public class Card : MonoBehaviour, ICardTransformable
     {
-        [SerializeField] RectTransform _rectTransform;
-        [SerializeField] CardPaper _cardPaper;
-        [SerializeField] CardCharacter _character;
-        [SerializeField] CardConfig _config;
+        [SerializeField] private RectTransform _rectTransform;
+        [SerializeField] private CardPaper _cardPaper;
+        [SerializeField] private CardConfig _config;
         [SerializeField] private Vector3 _defaultScaleVector;
 
+        private CardCharacter _character;
         private int _effectCounter;
         private IEffectFactory _effectFactory;
         private IEffect _effect;
@@ -28,6 +28,7 @@ namespace Cards
 
             _cardPaper.Init(this, cardViewService, _config, dragContainer, _rectTransform);
 
+            CreateCardCharacter();
             SetState(_cardPaper);
         }
 
@@ -38,7 +39,7 @@ namespace Cards
 
         public void SetDragAndDropListener(ICardDragAndDropListener cardDragAndDropListener)
         {
-            SetDragAndDropListener(cardDragAndDropListener);
+            _cardPaper.SetDragAndDropListener(cardDragAndDropListener);
         }
 
         public Vector3 GetPosition()
@@ -90,7 +91,6 @@ namespace Cards
             }
 
             SetState(_cardPaper);
-            _character = null;
         }
 
         public void SetSide(SideType sideType)
@@ -105,7 +105,7 @@ namespace Cards
 
         private void CreateCardCharacter()
         {
-            _character = Instantiate(_config.CardCharacter);
+            _character = Instantiate(_config.CardCharacter, _rectTransform);
             _character.Init(_config.AwakeSound);
         }
 

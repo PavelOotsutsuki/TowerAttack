@@ -11,6 +11,8 @@ namespace Cards
         public void Init(AudioClip awakeSound)
         {
             _audioSource.clip = awakeSound;
+            transform.localPosition = Vector2.zero;
+            Hide();
         }
 
         //public void BindParent(Transform parent)
