@@ -4446,7 +4446,7 @@ MonoBehaviour:
   _playerTable: {fileID: 867188516}
   _playerTower: {fileID: 1018812819545794881}
   _playerDiscover: {fileID: 790739710}
-  _playerCountStartDrawCards: 3
+  _playerCountStartDrawCards: 1
   _enemyDragAndDropImitation:
     _startDelayMin: 1
     _startDelayMax: 2
@@ -4466,7 +4466,7 @@ MonoBehaviour:
   _enemyDiscoverImitation: {fileID: 1674758350}
   _enemyCountStartDrawCards: 1
   _tableActivator: {fileID: 867188514}
-  _simpleDrawCardDelay: 0.2
+  _simpleDrawCardDelay: 0.1
   _fireDrawCardDelay: 2
 --- !u!1001 &642726966
 PrefabInstance:
@@ -6381,17 +6381,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4565639392819788935, guid: 153252a73c8744978a5b02cb032bcfa1, type: 3}
   m_PrefabInstance: {fileID: 4454904474773731474}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1000203021 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5666874303116025444, guid: 153252a73c8744978a5b02cb032bcfa1, type: 3}
-  m_PrefabInstance: {fileID: 4454904474773731474}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9c6e2249fb604b4d82f97a33ef93ef5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &1004745431 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5981172514607463790, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
@@ -9673,8 +9662,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _deck: {fileID: 250433512}
-  _discardPile: {fileID: 1000203021}
   _seatPool: {fileID: 1504469769}
+  _discardPileConfig:
+    RectTransform: {fileID: 1000203020}
+    CardRotationOffset: 30
+    StartCardTranslateSpeed: 0.5
+    DiscardDelay: 0.5
+    DiscardCardAnimationData:
+      <StartScaleVector>k__BackingField: {x: 0.5, y: 0.5, z: 0.5}
+      <StartRotation>k__BackingField: {x: 0, y: 0, z: 0}
+      <InvertRotation>k__BackingField: {x: 0, y: -90, z: 0}
+      <CardIncreaseDuration>k__BackingField: 0.5
+      <DelayAfterIncrease>k__BackingField: 0.5
+      <InvertCardFrontDuration>k__BackingField: 0.5
+      <InvertCardBackDuration>k__BackingField: 0.5
+      <DelayAfterInvert>k__BackingField: 0.5
 --- !u!114 &1470769802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14708,7 +14710,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: DiscardPile
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5666874303116025444, guid: 153252a73c8744978a5b02cb032bcfa1, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

@@ -18,6 +18,7 @@ namespace Cards
         private ICardState _currentState;
 
         public RectTransform Transform => _rectTransform;
+        public CardMovement CardMovement { get; private set; }
         public Vector3 DefaultScaleVector => _defaultScaleVector;
 
         internal void Init(IEffectFactory effectFactory, CardViewService cardViewService, Transform dragContainer)
@@ -25,6 +26,7 @@ namespace Cards
             _effectFactory = effectFactory;
 
             _rectTransform.localScale = _defaultScaleVector;
+            CardMovement = new CardMovement(_rectTransform);
 
             _cardPaper.Init(this, cardViewService, _config, dragContainer, _rectTransform);
 

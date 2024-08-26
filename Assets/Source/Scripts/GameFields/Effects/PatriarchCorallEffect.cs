@@ -12,7 +12,8 @@ namespace GameFields.Effects
 {
     public class PatriarchCorallEffect : IEffect
     {
-        private const int CountDrawCards = 3;
+        private readonly int _countDrawCards = 3;
+        private readonly string _activateDiscoverMessage = "Выберете, какую карту отдадите противнику";
 
         private Deck _deck;
         private Person _activePerson;
@@ -53,7 +54,8 @@ namespace GameFields.Effects
 
             //if (cards != null)
             //{
-                _activePerson?.DrawCards(CountDrawCards);
+            List<Card> cards = _activePerson?.DrawCards(_countDrawCards);
+            _activePerson.DiscoverCards(cards, _activateDiscoverMessage);
             //}
 
             yield break;

@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4565639392819788935}
-  - component: {fileID: 5666874303116025444}
   m_Layer: 0
   m_Name: DiscardPile
   m_TagString: Untagged
@@ -36,29 +35,3 @@ RectTransform:
   m_AnchoredPosition: {x: -780, y: 0}
   m_SizeDelta: {x: 300, y: 450}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &5666874303116025444
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6814718192597506231}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9c6e2249fb604b4d82f97a33ef93ef5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rectTransform: {fileID: 4565639392819788935}
-  _discardPileSeatPool: {fileID: 0}
-  _cardRotationOffset: 20
-  _startCardTranslateSpeed: 0.5
-  _discardDelay: 0.5
-  _discardCardAnimationData:
-    <StartScaleVector>k__BackingField: {x: 0.5, y: 0.5, z: 0.5}
-    <StartRotation>k__BackingField: {x: 0, y: 0, z: 0}
-    <InvertRotation>k__BackingField: {x: 0, y: -90, z: 0}
-    <CardIncreaseDuration>k__BackingField: 0.5
-    <DelayAfterIncrease>k__BackingField: 0.5
-    <InvertCardFrontDuration>k__BackingField: 0.5
-    <InvertCardBackDuration>k__BackingField: 0.5
-    <DelayAfterInvert>k__BackingField: 0.5

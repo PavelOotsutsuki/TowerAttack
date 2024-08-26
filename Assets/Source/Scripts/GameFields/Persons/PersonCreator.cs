@@ -98,6 +98,7 @@ namespace GameFields.Persons
             _playerTable.Init();
             _playerPlayingZone.Init(_playerTable);
             _playerTower.Init();
+            _playerDiscover.Init();
         }
 
         private void InitEnemyData(SeatPool seatPool)
@@ -106,6 +107,7 @@ namespace GameFields.Persons
             _enemyTable.Init();
             _enemyPlayingZone.Init(_enemyTable);
             _enemyTower.Init();
+            _enemyDiscoverImitation.Init();
         }
     }
 }

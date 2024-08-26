@@ -22,10 +22,10 @@ namespace GameFields.Persons.DrawCards
 
         public bool IsDrawing { get; private set; } = false;
 
-        public void DrawCards(int countCards, Action callback = null)
+        public List<Card> DrawCards(int countCards, Action callback = null)
         {
             _currentDrawCardAnimation = _simpleDrawCardAnimation;
-            TakeCards(countCards, callback);
+            return TakeCards(countCards, callback);
         }
 
         public void DrawCards(IDrawCardAnimation drawCardAnimation, int countCards, Action callback = null)
@@ -34,7 +34,7 @@ namespace GameFields.Persons.DrawCards
             TakeCards(countCards, callback);
         }
 
-        private void TakeCards(int countCards, Action callback = null)
+        private List<Card> TakeCards(int countCards, Action callback = null)
         {
             List<Card> cards = new List<Card>();
 
@@ -47,6 +47,8 @@ namespace GameFields.Persons.DrawCards
             }
 
             DrawingCards(cards, callback).ToUniTask();
+
+            return cards;
         }
 
         private IEnumerator DrawingCards(IReadOnlyList<Card> cards, Action callback)

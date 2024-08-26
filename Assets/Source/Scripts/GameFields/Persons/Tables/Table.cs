@@ -23,9 +23,9 @@ namespace GameFields.Persons.Tables
         {
             foreach(TableSeat seat in _cardSeats)
             {
-                if (seatables.Any(card => seat.CompareSeatable(card)))
+                if (seatables.Any(card => seat.IsCardEqual(card)))
                 {
-                    seat.ResetCard();
+                    seat.Reset();
                 }
             }
         }

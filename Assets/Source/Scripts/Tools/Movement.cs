@@ -6,6 +6,7 @@ namespace Tools
     public class Movement
     {
         private Transform _transform;
+        private Sequence _currentSequence;
 
         public Movement(Transform transform)
         {
@@ -14,8 +15,7 @@ namespace Tools
 
         public void MoveLocalInstantly(Vector2 position, Vector3 rotation)
         {
-            _transform.localPosition = position;
-            _transform.localRotation = Quaternion.Euler(rotation);
+            _transform.SetLocalPositionAndRotation(position, Quaternion.Euler(rotation));
         }
 
         public void MoveInstantly(Vector2 position, Vector3 rotation, Vector3 scaleVector)
@@ -26,37 +26,50 @@ namespace Tools
 
         public void MoveLocalSmoothly(Vector2 positon, Vector3 rotation, float duration, Vector3 scaleVector)
         {
-            MoveLocalSmoothly(positon, rotation, duration);
+            Sequence sequence = DOTween.Sequence()
+            .Join(_transform.DOLocalMove(positon, duration))
+            .Join(_transform.DOLocalRotate(rotation, duration))
+            .Join(_transform.DOScale(scaleVector, duration));
 
-            _transform.DOScale(scaleVector, duration);
+            _currentSequence = sequence;
         }
 
         public void MoveLocalSmoothly(Vector2 positon, Vector3 rotation, float duration)
         {
-            _transform.DOLocalMove(positon, duration);
+            Sequence sequence = DOTween.Sequence()
+            .Join(_transform.DOLocalMove(positon, duration))
+            .Join(_transform.DOLocalRotate(rotation, duration));
 
-            if (_transform.rotation.eulerAngles != rotation)
-                _transform.DOLocalRotate(rotation, duration);
+            _currentSequence = sequence;
         }
 
         public void MoveSmoothly(Vector2 positon, Vector3 rotation, float duration, Vector3 scaleVector)
         {
-            _transform.DOMove(positon, duration);
-            _transform.DORotate(rotation, duration);
-            _transform.DOScale(scaleVector, duration);
+            Sequence sequence = DOTween.Sequence()
+            .Join(_transform.DOMove(positon, duration))
+            .Join(_transform.DORotate(rotation, duration))
+            .Join(_transform.DOScale(scaleVector, duration));
+
+            _currentSequence = sequence;
         }
 
         public void MoveLinear(Vector3 position, Vector3 maxRotationVector, float duration, Vector3 scaleVector)
         {
-            MoveLinear(position, maxRotationVector, duration);
+            Sequence sequence = DOTween.Sequence()
+            .Join(_transform.DOMove(position, duration).SetEase(Ease.Linear))
+            .Join(_transform.DORotate(maxRotationVector, duration).SetEase(Ease.Linear))
+            .Join(_transform.DOScale(scaleVector, duration).SetEase(Ease.Linear));
 
-            _transform.DOScale(scaleVector, duration).SetEase(Ease.Linear);
+            _currentSequence = sequence;
         }
 
         public void MoveLinear(Vector3 position, Vector3 maxRotationVector, float duration)
         {
-            _transform.DOMove(position, duration).SetEase(Ease.Linear);
-            _transform.DORotate(maxRotationVector, duration).SetEase(Ease.Linear);
+            Sequence sequence = DOTween.Sequence()
+            .Join(_transform.DOMove(position, duration).SetEase(Ease.Linear))
+            .Join(_transform.DORotate(maxRotationVector, duration).SetEase(Ease.Linear));
+
+            _currentSequence = sequence;
         }
     }
 }

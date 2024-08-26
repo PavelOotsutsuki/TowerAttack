@@ -11,7 +11,7 @@ namespace GameFields.Persons.Discovers
     {
         private const float MaxAlpha = 255f;
         private const float DeactiveAlpha = 0f;
-        private const float ActiveAlpha = 211f;
+        private const float ActiveAlpha = 240f;
 
         [SerializeField] private Image _panel;
         [SerializeField] private float _activateDuration = 1f;

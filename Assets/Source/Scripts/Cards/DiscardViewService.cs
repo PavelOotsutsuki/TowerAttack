@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GameFields.Persons.Discovers
+namespace Cards
 {
-    public class DiscoverImitation : Discover
+    public class DiscardViewService
     {
 
     }

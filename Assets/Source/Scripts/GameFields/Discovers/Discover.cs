@@ -18,7 +18,9 @@ namespace GameFields.Persons.Discovers
         [SerializeField] private DiscoverLabel _discoverLabel;
         [SerializeField] private Seat[] _seats;
 
-        private Card[] _cards;
+        private List<Card> _cards;
+
+        public int MaxSeats => _seats.Length;
 
         public void Init()
         {
@@ -31,7 +33,7 @@ namespace GameFields.Persons.Discovers
             gameObject.SetActive(false);
         }
 
-        public void Activate(Card[] cards, string activateMessage)
+        public void Activate(List<Card> cards, string activateMessage)
         {
             _cards = cards;
 
@@ -42,7 +44,11 @@ namespace GameFields.Persons.Discovers
 
             gameObject.SetActive(true);
 
-            PlayingSelection().ToUniTask();
+            foreach (Card card in _cards)
+            {
+
+            }
+            //PlayingSelection().ToUniTask();
 
 
             //TakeCards(deck, player).ToUniTask();
@@ -66,26 +72,26 @@ namespace GameFields.Persons.Discovers
         //    }
         //}
 
-        private IEnumerator PlayingSelection()
-        {
-            yield break;
-        }
+        //private IEnumerator PlayingSelection()
+        //{
+        //    yield break;
+        //}
 
         private void SortDiscoverSeats()
         {
             float startPositionX;
             Vector3 seatPosition;
 
-            if (_cards.Length % 2 == 1)
+            if (_cards.Count % 2 == 1)
             {
-                startPositionX = (_cards.Length / 2 * _offset) * -1;
+                startPositionX = (_cards.Count / 2 * _offset) * -1;
             }
             else
             {
-                startPositionX = ((_cards.Length / 2 - 1) * _offset + _offset / 2) * -1;
+                startPositionX = ((_cards.Count / 2 - 1) * _offset + _offset / 2) * -1;
             }
 
-            for (int i = 0; i < _cards.Length; i++)
+            for (int i = 0; i < _cards.Count; i++)
             {
                 seatPosition = new Vector3(startPositionX + _offset * i, _positionY);
 
@@ -100,6 +106,8 @@ namespace GameFields.Persons.Discovers
                 seat.Init();
             }
         }
+
+        #region AutomaticFillComponents
 
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
@@ -126,5 +134,7 @@ namespace GameFields.Persons.Discovers
         {
             AutomaticFillComponents.DefineComponent(this, ref _seats);
         }
+
+        #endregion 
     }
 }

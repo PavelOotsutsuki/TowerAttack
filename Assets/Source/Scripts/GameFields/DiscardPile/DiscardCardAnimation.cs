@@ -10,9 +10,8 @@ namespace GameFields.DiscardPiles
     public class DiscardCardAnimation
     {
         private Card _card;
-        private ICardTransformable _cardTransformable;
         private Transform _cardTransform;
-        private Movement _cardMovement;
+        private CardMovement _cardMovement;
 
         private DiscardCardAnimationData _data;
         private Transform _container;
@@ -25,9 +24,8 @@ namespace GameFields.DiscardPiles
             _callback = callback;
 
             _card = card;
-            _cardTransformable = card;
-            _cardTransform = _cardTransformable.Transform;
-            _cardMovement = new Movement(_cardTransform);
+            _cardTransform = _card.Transform;
+            _cardMovement = _card.CardMovement;
         }
 
         public void Play()
@@ -41,8 +39,8 @@ namespace GameFields.DiscardPiles
             
             _card.SetDiscardSide();
 
-            _cardTransformable.SetActiveInteraction(false);
-            _cardTransformable.SetSide(SideType.Front);
+            _card.SetActiveInteraction(false);
+            _card.SetSide(SideType.Front);
 
             IncreaseCard();
             yield return new WaitForSeconds(_data.CardIncreaseDuration + _data.DelayAfterIncrease);
@@ -50,7 +48,7 @@ namespace GameFields.DiscardPiles
             InvertCardFront();
             yield return new WaitForSeconds(_data.InvertCardFrontDuration);
 
-            _cardTransformable.SetSide(SideType.Back);
+            _card.SetSide(SideType.Back);
 
             InvertCardBack();
             yield return new WaitForSeconds(_data.InvertCardBackDuration + _data.DelayAfterInvert);
@@ -60,7 +58,7 @@ namespace GameFields.DiscardPiles
 
         private void InvertCardFront()
         {
-            Vector3 scaleVector = _cardTransformable.DefaultScaleVector;
+            Vector3 scaleVector = _card.DefaultScaleVector;
             Vector3 position = _cardTransform.position;
 
             _cardMovement.MoveLinear(position, _data.InvertRotation, _data.InvertCardFrontDuration, scaleVector);
@@ -79,7 +77,7 @@ namespace GameFields.DiscardPiles
             Vector3 startPosition = _card.GetPosition();
 
             _cardMovement.MoveInstantly(startPosition, _data.StartRotation, _data.StartScaleVector);
-            _cardMovement.MoveSmoothly(_cardTransform.position, _cardTransform.rotation.eulerAngles, _data.CardIncreaseDuration, _cardTransformable.DefaultScaleVector);
+            _cardMovement.MoveSmoothly(_cardTransform.position, _cardTransform.rotation.eulerAngles, _data.CardIncreaseDuration, _card.DefaultScaleVector);
         }
     }
 }

@@ -82,7 +82,7 @@ namespace GameFields.Persons
             }
 
             _cardImitationActions.PlayOnPlace(_cardTranslateInDropPlaceTime);
-            yield return new WaitForSeconds(_cardTranslateInDropPlaceTime);
+            yield return new WaitForSeconds(_cardTranslateInDropPlaceTime + 0.01f);
 
             if (_cardImitationActions.TryReturnToHand(_cardReturnInHandTime))
             {

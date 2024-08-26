@@ -22,7 +22,9 @@ namespace Cards
 
             _cardViewService = new CardViewService(_bigCard, _cardDescription);
 
-            InitCards(effectFactory);
+            DiscardViewService discardViewService = new DiscardViewService();
+
+            InitCards(effectFactory, discardViewService);
         }
 
         private void InitCardDescription()
@@ -35,7 +37,7 @@ namespace Cards
             _bigCard.Init();
         }
 
-        private void InitCards(IEffectFactory effectFactory)
+        private void InitCards(IEffectFactory effectFactory, DiscardViewService discardViewService)
         {
             foreach (Card card in _cards)
             {

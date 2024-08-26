@@ -9,19 +9,15 @@ namespace GameFields.Persons
 {
     public class Player : Person
     {
-        private readonly Discover _discover;
         private readonly ITableActivator _tableActivator;
         private readonly IBlockable _handBlockable;
 
         public Player(ITableActivator tableActivator, IBlockable hand, CardPlayingZone cardPlayingZone, Tower tower,
             Discover discover, DrawCardRoot drawCardRoot, StartTurnDraw startTurnDraw, ITurnStep turnProcessing, SignalBus bus) :
-            base(cardPlayingZone, drawCardRoot, tower, startTurnDraw, turnProcessing, bus)
+            base(cardPlayingZone, drawCardRoot, tower, startTurnDraw, turnProcessing, discover, bus)
         {
-            _discover = discover;
             _tableActivator = tableActivator;
             _handBlockable = hand;
-
-            _discover.Deactivate();
         }
 
         protected override void OnStartStep()

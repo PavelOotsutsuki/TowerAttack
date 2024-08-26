@@ -8,14 +8,12 @@ namespace GameFields.Persons
 {
     public class EnemyAI : Person
     {
-        private DiscoverImitation _discoverImitation;
         private ITableDeactivator _tableDeactivator;
 
         public EnemyAI(ITableDeactivator tableDeactivator, ITurnStep enemyDragAndDropImitation, CardPlayingZone cardPlayingZone,
             Tower tower, DrawCardRoot drawCardRoot, DiscoverImitation discoverImitation, StartTurnDraw startTurnDraw, SignalBus bus) :
-            base(cardPlayingZone, drawCardRoot, tower, startTurnDraw, enemyDragAndDropImitation, bus)
+            base(cardPlayingZone, drawCardRoot, tower, startTurnDraw, enemyDragAndDropImitation,discoverImitation, bus)
         {
-            _discoverImitation = discoverImitation;
             _tableDeactivator = tableDeactivator;
         }
 

@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Cards;
 using Cysharp.Threading.Tasks;
-using GameFields.Discarding;
+using GameFields.DiscardPiles;
+using GameFields.Persons.Discovers;
 using GameFields.Persons.DrawCards;
 using GameFields.Persons.Tables;
 using GameFields.Persons.Towers;
@@ -22,11 +23,12 @@ namespace GameFields.Persons
         private readonly Tower _tower;
         private readonly SignalBus _bus;
         private readonly Queue<ITurnStep> _turnSteps;
+        private readonly Discover _discover;
 
         private ITurnStep _currentStep;
 
         protected Person(CardPlayingZone playingZone, DrawCardRoot drawCardRoot, Tower tower,
-            StartTurnDraw startTurnDraw, ITurnStep turnProcess, SignalBus bus)
+            StartTurnDraw startTurnDraw, ITurnStep turnProcess, Discover discover, SignalBus bus)
         {
             _bus = bus;
             _playingZone = playingZone;
@@ -34,8 +36,11 @@ namespace GameFields.Persons
             _drawCardRoot = drawCardRoot;
             _startTurnDraw = startTurnDraw;
             _turnProcess = turnProcess;
+            _discover = discover;
 
             _turnSteps = new Queue<ITurnStep>();
+
+            _discover.Deactivate();
         }
 
         public bool IsComplete { get; private set; }
@@ -53,15 +58,7 @@ namespace GameFields.Persons
             ProcessingTurn().ToUniTask();
         }
 
-        private void InitTurnSteps()
-        {
-            _turnSteps.Clear();
-            
-            EnqueueStep(_startTurnDraw);
-            EnqueueStep(_turnProcess);
-        }
-
-        public void DrawCards(int countCards, Action callback = null)
+        public List<Card> DrawCards(int countCards, Action callback = null)
             => _drawCardRoot.DrawCards(countCards, callback);
 
         public void FinishTurn()
@@ -72,7 +69,25 @@ namespace GameFields.Persons
                 _bus.Fire(new DiscardCardsSignal(discardedCards));
         }
 
+        public void DiscoverCards(List<Card> cards, string activateMessage)
+        {
+            if (cards.Count > _discover.MaxSeats)
+            {
+                throw new Exception("So many cards for discover: " + cards.Count + "/" + _discover.MaxSeats);
+            }
+
+            _discover.Activate(cards, activateMessage);
+        }
+
         protected abstract void OnStartStep();
+
+        private void InitTurnSteps()
+        {
+            _turnSteps.Clear();
+            
+            EnqueueStep(_startTurnDraw);
+            EnqueueStep(_turnProcess);
+        }
 
         private IEnumerator ProcessingTurn()
         {

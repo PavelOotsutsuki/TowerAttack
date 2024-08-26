@@ -7,9 +7,8 @@ namespace GameFields.Persons
     public class CardDragAndDropImitationActions
     {
         private Card _activeCard;
-        private ICardTransformable _cardTransformable;
         private RectTransform _cardTransform;
-        private Movement _cardMovement;
+        private CardMovement _cardMovement;
 
         private ICardDragAndDropListener _cardDragAndDropListener;
         private ICardDropPlace _cardDropPlaceImitation;
@@ -23,9 +22,8 @@ namespace GameFields.Persons
         internal void SetCard(Card card)
         {
             _activeCard = card;
-            _cardTransformable = card;
-            _cardTransform = _cardTransformable.Transform;
-            _cardMovement = new Movement(_cardTransform);
+            _cardTransform = _activeCard.Transform;
+            _cardMovement = _activeCard.CardMovement;
         }
 
         public void ViewCard(float duration, float yDirection)
@@ -33,7 +31,7 @@ namespace GameFields.Persons
             Vector3 position = _cardTransform.localPosition;
             position.y += _cardTransform.rect.height / 2 * yDirection;
 
-            _cardMovement.MoveLocalSmoothly(position, Vector3.zero, duration, _cardTransformable.DefaultScaleVector);
+            _cardMovement.MoveLocalSmoothly(position, Vector3.zero, duration, _activeCard.DefaultScaleVector);
         }
 
         public void PlayOnPlace(float duration)
@@ -48,7 +46,7 @@ namespace GameFields.Persons
             if (_cardDropPlaceImitation.TrySeatCard(_activeCard) == false)
             {
                 _cardDragAndDropListener.OnCardDrop();
-                _cardMovement.MoveLocalSmoothly(Vector2.zero, Vector3.zero, returnToHandDuration, _cardTransformable.DefaultScaleVector);
+                _cardMovement.MoveLocalSmoothly(Vector2.zero, Vector3.zero, returnToHandDuration, _activeCard.DefaultScaleVector);
 
                 return true;
             }

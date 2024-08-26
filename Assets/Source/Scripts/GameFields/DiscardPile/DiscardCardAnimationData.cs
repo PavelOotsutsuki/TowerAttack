@@ -14,10 +14,5 @@ namespace GameFields.DiscardPiles
         [field: SerializeField] public float InvertCardFrontDuration { get; private set; } = 0.5f;
         [field: SerializeField] public float InvertCardBackDuration { get; private set; } = 0.5f;
         [field: SerializeField] public float DelayAfterInvert { get; private set; } = 0.5f;
-
-        public float GetFullDelay()
-        {
-            return CardIncreaseDuration + DelayAfterIncrease + InvertCardBackDuration + InvertCardFrontDuration + DelayAfterInvert;
-        }
     }
 }

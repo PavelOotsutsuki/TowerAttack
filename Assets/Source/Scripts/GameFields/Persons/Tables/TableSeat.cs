@@ -16,12 +16,15 @@ namespace GameFields.Persons.Tables
         {
             _card = card;
             _card.Transform.SetParent(_rectTransform);
-            _card.Transform.localPosition = Vector2.zero;
+            //_card.Transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
+            CardMovement cardMovement = _card.CardMovement;
+            //cardMovement.MoveLocalInstantly(Vector2.zero, Quaternion.identity.eulerAngles);
+            cardMovement.MoveLocalInstantly(Vector2.zero, Quaternion.identity.eulerAngles);
         }
 
-        internal void ResetCard() => _card = null;
+        internal void Reset() => _card = null;
 
-        internal bool CompareSeatable(Card card) => card == _card;
+        internal bool IsCardEqual(Card card) => card == _card;
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents))]

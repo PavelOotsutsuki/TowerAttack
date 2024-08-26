@@ -6,44 +6,31 @@ namespace Cards
     {
         private CardFront _front;
         private CardBack _back;
-        private CardDragAndDrop _cardDragAndDrop;
+        //private CardDragAndDrop _cardDragAndDrop;
 
-        public CardSideFlipper(CardFront front, CardBack back, CardDragAndDrop cardDragAndDrop)
+        public CardSideFlipper(CardFront front, CardBack back/*, CardDragAndDrop cardDragAndDrop*/)
         {
             _front = front;
             _back = back;
-            _cardDragAndDrop = cardDragAndDrop;
+            //_cardDragAndDrop = cardDragAndDrop;
         }
 
-        public bool IsFrontSide { get; private set; }
-
-        public void SetBackSide()
+        public void SetSide(SideType side)
         {
-            SetSide(true);
-        }
-
-        public void SetFrontSide()
-        {
-            SetSide(false);
+            _front.gameObject.SetActive(side == SideType.Front);
+            _back.gameObject.SetActive(side == SideType.Back);
         }
 
         public void DeactivateInteraction()
         {
-            _cardDragAndDrop.enabled = false;
+            //_cardDragAndDrop.enabled = false;
             _front.Block();
         }
 
         public void ActivateInteraction()
         {
-            _cardDragAndDrop.enabled = true;
+            //_cardDragAndDrop.enabled = true;
             _front.Unblock();
-        }
-
-        private void SetSide(bool isBackSide)
-        {
-            _front.gameObject.SetActive(isBackSide == false);
-            _back.gameObject.SetActive(isBackSide);
-            IsFrontSide = isBackSide == false;
         }
     }
 }

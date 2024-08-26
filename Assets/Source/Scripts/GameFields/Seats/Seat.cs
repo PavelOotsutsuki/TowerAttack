@@ -12,16 +12,13 @@ namespace GameFields.Seats
 
         public Card Card { get; private set; }
 
-        public void Init()
+        public virtual void Init()
         {
             _seatMovement = new Movement(_transform);
             Reset();
         }
 
-        public void Reset()
-        {
-            Card = null;
-        }
+        public void Reset() => Card = null;
 
         public void SetCard(Card card, SideType sideType, float duration)
         {
@@ -29,7 +26,7 @@ namespace GameFields.Seats
 
             Card.SetSide(sideType);
             Card.transform.SetParent(_transform);
-            Movement cardMovement = new Movement(Card.transform);
+            CardMovement cardMovement = Card.CardMovement;
             cardMovement.MoveLocalSmoothly(Vector2.zero, Quaternion.identity.eulerAngles, duration, Card.DefaultScaleVector);
         }
 

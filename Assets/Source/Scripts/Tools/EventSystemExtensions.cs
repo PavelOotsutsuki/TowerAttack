@@ -5,12 +5,12 @@ namespace Tools
 {
     public static class EventSystemExtensions
     {
-        public static bool TryGetComponentInRaycasts<T>(this EventSystem system, PointerEventData eventData, out T findedComponent) where T : class
+        public static bool TryGetComponentInRaycasts<T>(this EventSystem system, PointerEventData eventData, out T findedComponent)
         {
             List<RaycastResult> raycastResults = new List<RaycastResult>();
 
             system.RaycastAll(eventData, raycastResults);
-            findedComponent = null;
+            findedComponent = default;
 
             foreach (RaycastResult raycastResult in raycastResults)
             {
