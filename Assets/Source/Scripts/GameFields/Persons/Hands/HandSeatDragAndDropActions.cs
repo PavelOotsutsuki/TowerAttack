@@ -7,6 +7,11 @@ namespace GameFields.Persons.Hands
 {
     public class HandSeatDragAndDropActions : IDragAndDropActions
     {
+        public HandSeatDragAndDropActions()
+        {
+
+        }
+
         public void Drop()
         {
             throw new System.NotImplementedException();

@@ -25,13 +25,13 @@ namespace Cards
         private RectTransform _cardRectTransform;
         private CardViewService _cardViewService;
         private Vector2 _cardSize;
-        private CardConfig _cardConfig;
+        private CardViewConfig _cardViewConfig;
 
         public bool IsBlock { get; private set; }
 
-        internal void Init(CardConfig cardConfig, RectTransform cartRectTransform, CardViewService cardViewService)
+        internal void Init(CardViewConfig cardViewConfig, RectTransform cartRectTransform, CardViewService cardViewService)
         {
-            _cardConfig = cardConfig;
+            _cardViewConfig = cardViewConfig;
             _cardRectTransform = cartRectTransform;
             _cardViewService = cardViewService;
             _cardSize = new Vector2(_width, _height);
@@ -44,7 +44,7 @@ namespace Cards
 
         internal void StartReview()
         {
-            _cardViewService.SetOverview(this, _cardSize, _cardRectTransform.position.x, _cardConfig);
+            _cardViewService.SetOverview(this, _cardSize, _cardRectTransform.position.x, _cardViewConfig);
         }
 
         internal void EndReview()
@@ -96,10 +96,10 @@ namespace Cards
 
         private void DefineViewCharacters()
         {
-            _icon.sprite = _cardConfig.Icon;
-            _number.text = _cardConfig.Number.ToString();
-            _name.text = _cardConfig.Name;
-            _feature.text = _cardConfig.Feature;
+            _icon.sprite = _cardViewConfig.Icon;
+            _number.text = _cardViewConfig.Number.ToString();
+            _name.text = _cardViewConfig.Name;
+            _feature.text = _cardViewConfig.Feature;
         }
 
         #region AutomaticFillComponents

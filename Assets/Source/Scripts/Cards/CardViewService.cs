@@ -15,14 +15,14 @@ namespace Cards
             _currentCard = null;
         }
 
-        public void SetOverview(IShowable showableCard, Vector2 cardSize, float positionX, CardConfig cardConfig)
+        public void SetOverview(IShowable showableCard, Vector2 cardSize, float positionX, CardViewConfig cardViewConfig)
         {
             ShowCurrentCard();
 
             _currentCard = showableCard;
 
-            _cardDescription.Show(cardConfig.Description);
-            _bigCard.Show(cardSize, positionX, cardConfig);
+            _cardDescription.Show(cardViewConfig.Description);
+            _bigCard.Show(cardSize, positionX, cardViewConfig);
             _currentCard.Hide();
         }
 

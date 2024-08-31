@@ -41,4 +41,3 @@ namespace GameFields.Persons.Tables
         #endregion 
     }
 }
-

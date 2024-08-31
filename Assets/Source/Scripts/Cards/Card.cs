@@ -1,4 +1,5 @@
 using System;
+using Tools;
 using UnityEngine;
 
 namespace Cards
@@ -8,6 +9,7 @@ namespace Cards
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private CardPaper _cardPaper;
         [SerializeField] private CardConfig _config;
+        [SerializeField] private DiscoverCard _discoverCard;
         [SerializeField] private Vector3 _defaultScaleVector;
 
         private CardCharacter _character;
@@ -20,6 +22,7 @@ namespace Cards
         public RectTransform Transform => _rectTransform;
         public CardMovement CardMovement { get; private set; }
         public Vector3 DefaultScaleVector => _defaultScaleVector;
+        public CardViewConfig ViewConfig => _config.CardViewConfig;
 
         internal void Init(IEffectFactory effectFactory, CardViewService cardViewService, Transform dragContainer)
         {
@@ -28,7 +31,8 @@ namespace Cards
             _rectTransform.localScale = _defaultScaleVector;
             CardMovement = new CardMovement(_rectTransform);
 
-            _cardPaper.Init(this, cardViewService, _config, dragContainer, _rectTransform);
+            _cardPaper.Init(this, cardViewService, ViewConfig, dragContainer, _rectTransform);
+            _discoverCard.Init(ViewConfig, _rectTransform, _cardPaper);
 
             CreateCardCharacter();
             SetState(_cardPaper);
@@ -42,6 +46,13 @@ namespace Cards
         public void SetDragAndDropListener(ICardDragAndDropListener cardDragAndDropListener)
         {
             _cardPaper.SetDragAndDropListener(cardDragAndDropListener);
+        }
+
+        public void Discover(Transform parent)
+        {
+            _discoverCard.transform.SetParent(parent);
+
+            SetState(_discoverCard);
         }
 
         public Vector3 GetPosition()
@@ -71,6 +82,11 @@ namespace Cards
 
         public bool TryDiscard()
         {
+            if (_currentState is not CardCharacter)
+            {
+                throw new Exception("Try discard not CardCharacter. Card state: " + _currentState.ToString());
+            }
+
             _effectCounter--;
 
             if (_effectCounter <= 0)

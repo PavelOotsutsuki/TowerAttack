@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
 using Tools;
 using UnityEngine;
@@ -21,7 +19,7 @@ namespace GameFields.Persons.Discovers
         {
             _panel.raycastTarget = false;
 
-            Color startColor = new(_panel.color.r, _panel.color.g, _panel.color.b, DeactiveAlpha);
+            Color startColor = new Color(_panel.color.r, _panel.color.g, _panel.color.b, DeactiveAlpha);
 
             _panel.color = startColor;
         }
@@ -30,22 +28,14 @@ namespace GameFields.Persons.Discovers
         {
             _panel.raycastTarget = true;
 
-            Color activateColor = new(_panel.color.r, _panel.color.g, _panel.color.b, ActiveAlpha / MaxAlpha);
+            Color activateColor = new Color(_panel.color.r, _panel.color.g, _panel.color.b, ActiveAlpha / MaxAlpha);
 
             _panel.DOColor(activateColor, _activateDuration);
         }
 
         public void Deactivate()
         {
-            //float startAlpha = _panel.color.a;
-            //float alphaWay = (DeactiveAlpha - startAlpha) / _deactivateDuration;
-
-            //for (float time = 0f; time < _deactivateDuration; time += Time.deltaTime)
-            //{
-            //    _panel.color = new Color(_panel.color.r, _panel.color.g, _panel.color.b, startAlpha + alphaWay * time);
-            //    yield return null;
-            //}
-            Color deactivateColor = new(_panel.color.r, _panel.color.g, _panel.color.b, DeactiveAlpha / MaxAlpha);
+            Color deactivateColor = new Color(_panel.color.r, _panel.color.g, _panel.color.b, DeactiveAlpha / MaxAlpha);
 
             _panel.DOColor(deactivateColor, _deactivateDuration)
             .OnComplete(() =>
@@ -54,6 +44,7 @@ namespace GameFields.Persons.Discovers
             });
         }
 
+        #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
@@ -65,5 +56,6 @@ namespace GameFields.Persons.Discovers
         {
             AutomaticFillComponents.DefineComponent(this, ref _panel, ComponentLocationTypes.InThis);
         }
+        #endregion 
     }
 }

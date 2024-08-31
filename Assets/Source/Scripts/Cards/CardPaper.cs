@@ -11,19 +11,19 @@ namespace Cards
 
         [SerializeField] private CardBack _cardBack;
         [SerializeField] private CardFront _cardFront;
-        //[SerializeField] private CardDragAndDrop _cardDragAndDrop;
+        [SerializeField] private CardDragAndDrop _cardDragAndDrop;
 
-        //private CardDragAndDropActions _cardDragAndDropActions;
+        private CardDragAndDropActions _cardDragAndDropActions;
         private CardSideFlipper _cardSideFlipper;
 
-        internal void Init(Card me, CardViewService cardViewService, CardConfig cardConfig, Transform dragContainer, RectTransform cardTransform)
+        internal void Init(Card me, CardViewService cardViewService, CardViewConfig cardViewConfig, Transform dragContainer, RectTransform cardTransform)
         {
-            _cardFront.Init(cardConfig, cardTransform, cardViewService);
+            _cardFront.Init(cardViewConfig, cardTransform, cardViewService);
 
-            //_cardDragAndDropActions = new CardDragAndDropActions(_cardFront, me);
-            //_cardDragAndDrop.Init(cardTransform, _cardDragAndDropActions, dragContainer);
+            _cardDragAndDropActions = new CardDragAndDropActions(_cardFront, me);
+            _cardDragAndDrop.Init(cardTransform, _cardDragAndDropActions, dragContainer);
 
-            _cardSideFlipper = new CardSideFlipper(_cardFront, _cardBack/*, _cardDragAndDrop*/);
+            _cardSideFlipper = new CardSideFlipper(_cardFront, _cardBack, _cardDragAndDrop);
 
             SetSide(DefaultSide);
             SetActiveInteraction(DefaultInteractionActive);
@@ -31,12 +31,12 @@ namespace Cards
 
         public void EndDrag()
         {
-            //_cardDragAndDrop.BlockDrag();
+            _cardDragAndDrop.BlockDrag();
         }
 
         public void SetDragAndDropListener(ICardDragAndDropListener cardDragAndDropListener)
         {
-            //_cardDragAndDropActions.SetListener(cardDragAndDropListener);
+            _cardDragAndDropActions.SetListener(cardDragAndDropListener);
         }
 
         public void SetSide(SideType sideType)
@@ -52,10 +52,10 @@ namespace Cards
                 return;
             }
 
-            //if (_cardDragAndDrop.IsDragable == false)
-            //{
-            //    _cardSideFlipper.ActivateInteraction();
-            //}
+            if (_cardDragAndDrop.IsDragable == false)
+            {
+                _cardSideFlipper.ActivateInteraction();
+            }
         }
 
         public void View()
@@ -74,14 +74,14 @@ namespace Cards
         {
             DefineCardBack();
             DefineCardFront();
-            //DefineCardDragAndDrop();
+            DefineCardDragAndDrop();
         }
 
-        //[ContextMenu(nameof(DefineCardDragAndDrop))]
-        //private void DefineCardDragAndDrop()
-        //{
-        //    AutomaticFillComponents.DefineComponent(this, ref _cardDragAndDrop, ComponentLocationTypes.InThis);
-        //}
+        [ContextMenu(nameof(DefineCardDragAndDrop))]
+        private void DefineCardDragAndDrop()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _cardDragAndDrop, ComponentLocationTypes.InThis);
+        }
 
         [ContextMenu(nameof(DefineCardBack))]
         private void DefineCardBack()

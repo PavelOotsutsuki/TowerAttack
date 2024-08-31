@@ -13,10 +13,10 @@ namespace GameFields.Persons.Discovers
     public class Discover : MonoBehaviour
     {
         [SerializeField] private float _offset = 400f;
-        [SerializeField] private float _positionY = -255f;
+        [SerializeField] private float _positionY = 0f;
         [SerializeField] private DiscoverPanel _discoverPanel;
         [SerializeField] private DiscoverLabel _discoverLabel;
-        [SerializeField] private Seat[] _seats;
+        [SerializeField] private DiscoverSeat[] _seats;
 
         private List<Card> _cards;
 
@@ -44,16 +44,31 @@ namespace GameFields.Persons.Discovers
 
             gameObject.SetActive(true);
 
-            foreach (Card card in _cards)
-            {
+            //for (int i = 0; i < cards.Count; i++)
+            //{
+            //    _seats[i].SetCard(cards[i], SideType.Front, 0.5f);
+            //}
 
-            }
+            //SetCards(cards).ToUniTask();
             //PlayingSelection().ToUniTask();
 
-
+            for (int i = 0; i < cards.Count; i++)
+            {
+                _seats[i].SetCard(cards[i]);
+            }
             //TakeCards(deck, player).ToUniTask();
             //TakeCards(deck, enemy).ToUniTask();
         }
+
+        //public IEnumerator SetCards(List<Card> cards)
+        //{
+        //    yield return new WaitForSeconds(1f);
+
+        //    for (int i = 0; i < cards.Count; i++)
+        //    {
+        //        _seats[i].SetCard(cards[i]);
+        //    }
+        //}
 
         public void Deactivate()
         {
@@ -101,7 +116,7 @@ namespace GameFields.Persons.Discovers
 
         private void InitSeats()
         {
-            foreach (Seat seat in _seats)
+            foreach (DiscoverSeat seat in _seats)
             {
                 seat.Init();
             }

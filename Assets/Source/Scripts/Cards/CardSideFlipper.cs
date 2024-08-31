@@ -6,13 +6,13 @@ namespace Cards
     {
         private CardFront _front;
         private CardBack _back;
-        //private CardDragAndDrop _cardDragAndDrop;
+        private CardDragAndDrop _cardDragAndDrop;
 
-        public CardSideFlipper(CardFront front, CardBack back/*, CardDragAndDrop cardDragAndDrop*/)
+        public CardSideFlipper(CardFront front, CardBack back, CardDragAndDrop cardDragAndDrop)
         {
             _front = front;
             _back = back;
-            //_cardDragAndDrop = cardDragAndDrop;
+            _cardDragAndDrop = cardDragAndDrop;
         }
 
         public void SetSide(SideType side)
@@ -23,13 +23,13 @@ namespace Cards
 
         public void DeactivateInteraction()
         {
-            //_cardDragAndDrop.enabled = false;
+            _cardDragAndDrop.enabled = false;
             _front.Block();
         }
 
         public void ActivateInteraction()
         {
-            //_cardDragAndDrop.enabled = true;
+            _cardDragAndDrop.enabled = true;
             _front.Unblock();
         }
     }

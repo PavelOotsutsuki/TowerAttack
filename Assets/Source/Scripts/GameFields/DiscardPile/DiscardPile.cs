@@ -36,7 +36,7 @@ namespace GameFields.DiscardPiles
             _bus.Subscribe<DiscardCardsSignal>(OnDiscardCardsSignal);
         }
 
-        private void OnDestroy()
+        ~DiscardPile()
         {
             _bus.Unsubscribe<DiscardCardsSignal>(OnDiscardCardsSignal);
         }

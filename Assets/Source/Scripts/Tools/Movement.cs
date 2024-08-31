@@ -53,6 +53,15 @@ namespace Tools
             _currentSequence = sequence;
         }
 
+        //public void MoveSmoothly(Vector2 positon, Vector3 rotation, float duration)
+        //{
+        //    Sequence sequence = DOTween.Sequence()
+        //    .Join(_transform.DOMove(positon, duration))
+        //    .Join(_transform.DORotate(rotation, duration));
+
+        //    _currentSequence = sequence;
+        //}
+
         public void MoveLinear(Vector3 position, Vector3 maxRotationVector, float duration, Vector3 scaleVector)
         {
             Sequence sequence = DOTween.Sequence()
