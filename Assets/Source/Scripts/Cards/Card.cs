@@ -9,7 +9,7 @@ namespace Cards
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private CardPaper _cardPaper;
         [SerializeField] private CardConfig _config;
-        [SerializeField] private DiscoverCard _discoverCard;
+        //[SerializeField] private DiscoverCard _discoverCard;
         [SerializeField] private Vector3 _defaultScaleVector;
 
         private CardCharacter _character;
@@ -32,7 +32,7 @@ namespace Cards
             CardMovement = new CardMovement(_rectTransform);
 
             _cardPaper.Init(this, cardViewService, ViewConfig, dragContainer, _rectTransform);
-            _discoverCard.Init(ViewConfig, _rectTransform, _cardPaper);
+            //_discoverCard.Init(ViewConfig, _rectTransform, _cardPaper);
 
             CreateCardCharacter();
             SetState(_cardPaper);
@@ -48,12 +48,12 @@ namespace Cards
             _cardPaper.SetDragAndDropListener(cardDragAndDropListener);
         }
 
-        public void Discover(Transform parent)
-        {
-            _discoverCard.transform.SetParent(parent);
+        //public void Discover(Transform parent)
+        //{
+        //    _discoverCard.transform.SetParent(parent);
 
-            SetState(_discoverCard);
-        }
+        //    SetState(_discoverCard);
+        //}
 
         public Vector3 GetPosition()
         {

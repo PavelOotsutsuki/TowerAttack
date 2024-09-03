@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Discovers
 {
-    public class Discover : MonoBehaviour
+    public class Discover : MonoBehaviour, IDiscoverChoiceHandler
     {
         [SerializeField] private float _offset = 400f;
         [SerializeField] private float _positionY = 0f;
@@ -19,6 +19,7 @@ namespace GameFields.Persons.Discovers
         [SerializeField] private DiscoverSeat[] _seats;
 
         private List<Card> _cards;
+        private Action<Card> _callback;
 
         public int MaxSeats => _seats.Length;
 
@@ -33,9 +34,23 @@ namespace GameFields.Persons.Discovers
             gameObject.SetActive(false);
         }
 
-        public void Activate(List<Card> cards, string activateMessage)
+        public void OnMakeChoice(Card card)
+        {
+            foreach (DiscoverSeat seat in _seats)
+            {
+                seat.Reset();
+            }
+
+            _callback?.Invoke(card);
+            _callback = null;
+
+            Deactivate();
+        }
+
+        public void Activate(List<Card> cards, string activateMessage, Action<Card> callback)
         {
             _cards = cards;
+            _callback = callback;
 
             SortDiscoverSeats();
 
@@ -72,6 +87,9 @@ namespace GameFields.Persons.Discovers
 
         public void Deactivate()
         {
+            _discoverPanel.Deactivate();
+            _discoverLabel.Deactivate();
+
             gameObject.SetActive(false);
         }
 
@@ -118,7 +136,7 @@ namespace GameFields.Persons.Discovers
         {
             foreach (DiscoverSeat seat in _seats)
             {
-                seat.Init();
+                seat.Init(this);
             }
         }
 
@@ -150,6 +168,6 @@ namespace GameFields.Persons.Discovers
             AutomaticFillComponents.DefineComponent(this, ref _seats);
         }
 
-        #endregion 
+        #endregion
     }
 }

@@ -3,21 +3,26 @@ using System.Collections.Generic;
 using Cards;
 using Tools;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace GameFields.Persons.Discovers
 {
-    public class DiscoverSeat : MonoBehaviour
+    internal class DiscoverSeat : MonoBehaviour
     {
         [SerializeField] private RectTransform _rectTransform;
+        [SerializeField] private DiscoverCard _discoverCard;
 
         private Card _card;
         private Movement _seatMovement;
+        private IDiscoverChoiceHandler _discoverChoiceHandler;
 
         internal bool IsEmpty => _card == null;
 
-        public void Init()
+        public void Init(IDiscoverChoiceHandler discoverChoiceHandler)
         {
             _seatMovement = new Movement(_rectTransform);
+            _discoverChoiceHandler = discoverChoiceHandler;
+            _discoverCard.Init(OnDiscoverCardClick);
             Reset();
         }
 
@@ -27,26 +32,29 @@ namespace GameFields.Persons.Discovers
             //_card.Discover();
             //_card.Transform.SetParent(_rectTransform);
             //_card.Transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
-            _card.Discover(_rectTransform);
+            _discoverCard.Activate(_card.ViewConfig, _card.Transform.sizeDelta.y, _card.Transform.sizeDelta.x);
+            //_card.Discover(_rectTransform);
             //cardMovement.MoveLocalInstantly(Vector2.zero, Quaternion.identity.eulerAngles);
             //cardMovement.MoveLocalInstantly(Vector2.zero, Quaternion.identity.eulerAngles);
             //IncreaseCard(discoverMovement);
         }
 
-        internal void Reset() => _card = null;
+        internal void Reset()
+        {
+            _card = null;
+            _discoverCard.Hide();
+        }
 
         internal bool IsCardEqual(Card card) => card == _card;
 
         public void SetLocalPositionValues(Vector3 position, Vector3 rotation, float duration = 0f)
         {
-            if (Mathf.Approximately(duration, 0f))
-            {
-                _seatMovement.MoveLocalInstantly(position, rotation);
-            }
-            else
-            {
-                _seatMovement.MoveLocalSmoothly(position, rotation, duration);
-            }
+            _seatMovement.MoveLocalSmoothly(position, rotation, duration);
+        }
+
+        private void OnDiscoverCardClick()
+        {
+            _discoverChoiceHandler.OnMakeChoice(_card);
         }
 
         //private void IncreaseCard(Movement discoverMovement)
@@ -69,6 +77,6 @@ namespace GameFields.Persons.Discovers
         {
             AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
         }
-        #endregion 
+        #endregion
     }
 }

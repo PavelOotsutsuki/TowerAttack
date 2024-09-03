@@ -89,7 +89,7 @@ namespace GameFields.Persons
             _enemyDragAndDropImitation.Init(cardDragAndDropImitationActions, _enemyHand);
 
             return new EnemyAI(_tableActivator, _enemyDragAndDropImitation, _enemyPlayingZone,
-                _enemyTower, drawCardRoot, _enemyDiscoverImitation, startTurnDraw, _bus);
+                _enemyTower, drawCardRoot, _enemyDiscoverImitation, startTurnDraw, _bus, _enemyHand);
         }
         
         private void InitPlayersData(SeatPool seatPool)

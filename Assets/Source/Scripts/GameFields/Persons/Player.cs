@@ -12,9 +12,9 @@ namespace GameFields.Persons
         private readonly ITableActivator _tableActivator;
         private readonly IBlockable _handBlockable;
 
-        public Player(ITableActivator tableActivator, IBlockable hand, CardPlayingZone cardPlayingZone, Tower tower,
+        public Player(ITableActivator tableActivator, Hand hand, CardPlayingZone cardPlayingZone, Tower tower,
             Discover discover, DrawCardRoot drawCardRoot, StartTurnDraw startTurnDraw, ITurnStep turnProcessing, SignalBus bus) :
-            base(cardPlayingZone, drawCardRoot, tower, startTurnDraw, turnProcessing, discover, bus)
+            base(cardPlayingZone, drawCardRoot, tower, startTurnDraw, turnProcessing, discover, bus, hand)
         {
             _tableActivator = tableActivator;
             _handBlockable = hand;

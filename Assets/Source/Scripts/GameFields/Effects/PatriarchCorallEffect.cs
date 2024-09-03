@@ -18,7 +18,7 @@ namespace GameFields.Effects
         private Deck _deck;
         private Person _activePerson;
         private Person _deactivePerson;
-        private Card[] _drawnCards;
+        private List<Card> _cards;
         private Discover _discover;
 
         public PatriarchCorallEffect(Deck deck, Person activePerson, Person deactivePerson) 
@@ -54,14 +54,41 @@ namespace GameFields.Effects
 
             //if (cards != null)
             //{
-            List<Card> cards = _activePerson?.DrawCards(_countDrawCards);
-            _activePerson.DiscoverCards(cards, _activateDiscoverMessage);
+            List<Card> cards = _activePerson?.DrawCards(_countDrawCards, DiscoverCards);
+            _cards = cards;
+
+
+
+            //if (cards.Count <= 0)
+            //{
+            //    yield break;
+            //}
+
+            //_activePerson.DiscoverCards(cards, _activateDiscoverMessage, RechangeCards);
             //}
 
             yield break;
 
             //_discover.Activate(cards, )
 
+        }
+
+        private void DiscoverCards()
+        {
+            if (_cards.Count <= 0)
+            {
+                return;
+            }
+
+            _activePerson.DiscoverCards(_cards, _activateDiscoverMessage, RechangeCards);
+        }
+
+        private void RechangeCards(Card myCard)
+        {
+            if (_activePerson.TryGetCard(myCard))
+            {
+                _deactivePerson.SetCard(myCard);
+            }
         }
 
         //private IEnumerator Playing()

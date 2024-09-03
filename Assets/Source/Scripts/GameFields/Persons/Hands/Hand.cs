@@ -82,6 +82,18 @@ namespace GameFields.Persons.Hands
             return TryGetRandomCard(out card);
         }
 
+        public bool TryGetCard(Card card)
+        {
+            bool isFind = TryFindHandSeat(out Seat findedHandSeat, card);
+
+            _handSeats.Remove(findedHandSeat);
+            findedHandSeat.Reset();
+
+            SortHandSeats();
+
+            return isFind;
+        }
+
         public void ForciblyBlock()
         {
             StartEndDragCard(true);

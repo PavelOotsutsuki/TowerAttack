@@ -6,6 +6,7 @@ using Cysharp.Threading.Tasks;
 using GameFields.DiscardPiles;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.DrawCards;
+using GameFields.Persons.Hands;
 using GameFields.Persons.Tables;
 using GameFields.Persons.Towers;
 using StateMachine;
@@ -24,12 +25,14 @@ namespace GameFields.Persons
         private readonly SignalBus _bus;
         private readonly Queue<ITurnStep> _turnSteps;
         private readonly Discover _discover;
+        private readonly Hand _hand;// удалить потом
 
         private ITurnStep _currentStep;
 
         protected Person(CardPlayingZone playingZone, DrawCardRoot drawCardRoot, Tower tower,
-            StartTurnDraw startTurnDraw, ITurnStep turnProcess, Discover discover, SignalBus bus)
+            StartTurnDraw startTurnDraw, ITurnStep turnProcess, Discover discover, SignalBus bus, Hand hand)
         {
+            _hand = hand; // удалить потом
             _bus = bus;
             _playingZone = playingZone;
             _tower = tower;
@@ -69,14 +72,24 @@ namespace GameFields.Persons
                 _bus.Fire(new DiscardCardsSignal(discardedCards));
         }
 
-        public void DiscoverCards(List<Card> cards, string activateMessage)
+        public void DiscoverCards(List<Card> cards, string activateMessage, Action<Card> callback)
         {
             if (cards.Count > _discover.MaxSeats)
             {
                 throw new Exception("So many cards for discover: " + cards.Count + "/" + _discover.MaxSeats);
             }
 
-            _discover.Activate(cards, activateMessage);
+            _discover.Activate(cards, activateMessage, callback);
+        }
+
+        public bool TryGetCard(Card card) // удалить потом
+        {
+            return _hand.TryGetCard(card);
+        }
+
+        public void SetCard(Card card)
+        {
+            _hand.AddCard(card);
         }
 
         protected abstract void OnStartStep();
