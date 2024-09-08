@@ -2,85 +2,57 @@ using UnityEngine;
 using Cards;
 using GameFields.Persons;
 using System.Collections;
-using Cysharp.Threading.Tasks;
-using System;
-using GameFields.Persons.Discovers;
-using GameFields.Persons.DrawCards;
 using System.Collections.Generic;
 
 namespace GameFields.Effects
 {
-    public class PatriarchCorallEffect : IEffect
+    public class PatriarchCorallEffect : Effect
     {
         private readonly int _countDrawCards = 3;
         private readonly string _activateDiscoverMessage = "Выберете, какую карту отдадите противнику";
+        private readonly float _waitDiscoverDuration = 0.5f;
 
-        private Deck _deck;
         private Person _activePerson;
         private Person _deactivePerson;
         private List<Card> _cards;
-        private Discover _discover;
+        private bool _endPlaying;
 
-        public PatriarchCorallEffect(Deck deck, Person activePerson, Person deactivePerson) 
+        public PatriarchCorallEffect(Person activePerson, Person deactivePerson): base()
         {
-            _deck = deck;
             _activePerson = activePerson;
             _deactivePerson = deactivePerson;
+
+            Play();
         }
 
-        public void Play()
+        protected override IEnumerator OnPlaying()
         {
-            Playing().ToUniTask();
+            _endPlaying = false;
+            _cards = _activePerson?.DrawCards(_countDrawCards, DiscoverCards);
+
+            yield return new WaitUntil(() => _endPlaying);
         }
 
-        public void End()
+        public override void End()
         {
             Debug.Log("End patriarch corall effect");
         }
 
-        private IEnumerator Playing()
-        {
-            //yield return _activePerson.PatriarchCorallDraw();
-            //Queue<Card> cards = new Queue<Card>();
-
-            //for (int i = 0; i < CountDrawCards; i++)
-            //{
-            //    if (_deck.IsHasCards(1))
-            //    {
-            //        cards.Enqueue(_deck.TakeTopCard());
-            //    }
-            //}
-
-
-            //if (cards != null)
-            //{
-            List<Card> cards = _activePerson?.DrawCards(_countDrawCards, DiscoverCards);
-            _cards = cards;
-
-
-
-            //if (cards.Count <= 0)
-            //{
-            //    yield break;
-            //}
-
-            //_activePerson.DiscoverCards(cards, _activateDiscoverMessage, RechangeCards);
-            //}
-
-            yield break;
-
-            //_discover.Activate(cards, )
-
-        }
-
         private void DiscoverCards()
         {
-            if (_cards.Count <= 0)
+            if (_cards is null)
             {
+                _endPlaying = true;
                 return;
             }
 
-            _activePerson.DiscoverCards(_cards, _activateDiscoverMessage, RechangeCards);
+            if (_cards.Count <= 0)
+            {
+                _endPlaying = true;
+                return;
+            }
+
+            _activePerson.DiscoverCards(_cards, _activateDiscoverMessage, RechangeCards, _waitDiscoverDuration);
         }
 
         private void RechangeCards(Card myCard)
@@ -89,29 +61,8 @@ namespace GameFields.Effects
             {
                 _deactivePerson.SetCard(myCard);
             }
+
+            _endPlaying = true;
         }
-
-        //private IEnumerator Playing()
-        //{
-        //    _drawnCards = new Card[CountDrawCards];
-
-        //    for (int i = 0; i < CountDrawCards; i++)
-        //    {
-        //        if (_deck.IsHasCards(1))
-        //        {
-        //            yield return DrawingCard(i);
-        //        }
-        //    }
-        //}
-
-        //private IEnumerator DrawingCard(int index)
-        //{
-        //    //Card card = _deck.TakeTopCard();
-
-        //    //_activePerson.DrawCard(card);
-        //    //yield return new WaitForSeconds(_activePerson.DrawCardsDelay);
-
-        //    //_drawnCards[index] = card;
-        //}
     }
 }

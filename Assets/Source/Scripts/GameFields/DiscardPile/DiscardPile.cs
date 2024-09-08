@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Cards;
 using Cysharp.Threading.Tasks;
 using GameFields.Seats;
+using GameFields.Signals;
 using Tools;
 using UnityEngine;
 using Zenject;

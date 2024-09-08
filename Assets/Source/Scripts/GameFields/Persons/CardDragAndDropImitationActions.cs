@@ -1,6 +1,8 @@
 using Cards;
 using Tools;
 using UnityEngine;
+using Zenject;
+using GameFields.Signals;
 
 namespace GameFields.Persons
 {
@@ -12,11 +14,13 @@ namespace GameFields.Persons
 
         private ICardDragAndDropListener _cardDragAndDropListener;
         private ICardDropPlace _cardDropPlaceImitation;
+        private SignalBus _bus;
 
-        public CardDragAndDropImitationActions(ICardDragAndDropListener cardDragListener, ICardDropPlace cardDropPlaceImitation)
+        public CardDragAndDropImitationActions(ICardDragAndDropListener cardDragListener, ICardDropPlace cardDropPlaceImitation, SignalBus bus)
         {
             _cardDragAndDropListener = cardDragListener;
             _cardDropPlaceImitation = cardDropPlaceImitation;
+            _bus = bus;
         }
 
         internal void SetCard(Card card)
@@ -34,22 +38,23 @@ namespace GameFields.Persons
             _cardMovement.MoveLocalSmoothly(position, Vector3.zero, duration, _activeCard.DefaultScaleVector);
         }
 
-        public void PlayOnPlace(float duration)
+        public void MoveOnPlace(float duration)
         {
             MoveOnPlace(_cardDropPlaceImitation.GetPosition(), duration);
 
             _cardDragAndDropListener.OnCardDrag(_activeCard);
         }
 
-        public bool TryReturnToHand(float returnToHandDuration)
+        public bool TryPlay(float returnToHandDuration)
         {
-            if (_cardDropPlaceImitation.TrySeatCard(_activeCard) == false)
+            if (_cardDropPlaceImitation.TrySeatCard(_activeCard))
             {
-                _cardDragAndDropListener.OnCardDrop();
-                _cardMovement.MoveLocalSmoothly(Vector2.zero, Vector3.zero, returnToHandDuration, _activeCard.DefaultScaleVector);
-
+                _bus.Fire(new StartEffectSignal(_activeCard));
                 return true;
             }
+
+            _cardDragAndDropListener.OnCardDrop();
+            _cardMovement.MoveLocalSmoothly(Vector2.zero, Vector3.zero, returnToHandDuration, _activeCard.DefaultScaleVector);
 
             return false;
         }

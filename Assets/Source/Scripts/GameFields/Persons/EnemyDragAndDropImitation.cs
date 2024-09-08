@@ -20,7 +20,7 @@ namespace GameFields.Persons
         [SerializeField] private float _cardViewDelayMax = 4f;
         [SerializeField] private float _cardTranslateInDropPlaceTime = 0.5f;
         [SerializeField] private float _cardReturnInHandTime = 0.5f;
-        [SerializeField] private float _endTurnDelay = 2f;
+        [SerializeField] private float _endTurnDelay = 0.5f;
         [SerializeField] private int _maxCountRepeat = 2;
         [SerializeField] private int _countDrawCards = 1;
         [SerializeField] private float _drawCardsDelay = 0.5f;
@@ -81,10 +81,10 @@ namespace GameFields.Persons
                 }
             }
 
-            _cardImitationActions.PlayOnPlace(_cardTranslateInDropPlaceTime);
-            yield return new WaitForSeconds(_cardTranslateInDropPlaceTime + 0.01f);
+            _cardImitationActions.MoveOnPlace(_cardTranslateInDropPlaceTime);
+            yield return new WaitForSeconds(_cardTranslateInDropPlaceTime + 0.05f);
 
-            if (_cardImitationActions.TryReturnToHand(_cardReturnInHandTime))
+            if (_cardImitationActions.TryPlay(_cardReturnInHandTime) == false)
             {
                 yield return new WaitForSeconds(_cardReturnInHandTime);
             }

@@ -10,10 +10,11 @@ using UnityEngine;
 
 namespace GameFields.Persons.Discovers
 {
-    public class Discover : MonoBehaviour, IDiscoverChoiceHandler
+    public class Discover : MonoBehaviour, IDiscoverChoiceHandler, IDiscover
     {
         [SerializeField] private float _offset = 400f;
         [SerializeField] private float _positionY = 0f;
+        [SerializeField, Min(1f)] private float _scaleFactor = 2f;
         [SerializeField] private DiscoverPanel _discoverPanel;
         [SerializeField] private DiscoverLabel _discoverLabel;
         [SerializeField] private DiscoverSeat[] _seats;
@@ -47,7 +48,7 @@ namespace GameFields.Persons.Discovers
             Deactivate();
         }
 
-        public void Activate(List<Card> cards, string activateMessage, Action<Card> callback)
+        public void Activate(List<Card> cards, string activateMessage, Action<Card> callback, float waitDuration)
         {
             _cards = cards;
             _callback = callback;
@@ -69,7 +70,7 @@ namespace GameFields.Persons.Discovers
 
             for (int i = 0; i < cards.Count; i++)
             {
-                _seats[i].SetCard(cards[i]);
+                _seats[i].SetCard(cards[i], waitDuration);
             }
             //TakeCards(deck, player).ToUniTask();
             //TakeCards(deck, enemy).ToUniTask();
@@ -136,7 +137,7 @@ namespace GameFields.Persons.Discovers
         {
             foreach (DiscoverSeat seat in _seats)
             {
-                seat.Init(this);
+                seat.Init(this, _scaleFactor);
             }
         }
 

@@ -1,6 +1,7 @@
 using GameFields;
 using GameFields.DiscardPiles;
 using GameFields.Seats;
+using GameFields.Signals;
 using UnityEngine;
 using Zenject;
 
@@ -28,6 +29,7 @@ namespace Roots
             SignalBusInstaller.Install(Container);
 
             Container.DeclareSignal<DiscardCardsSignal>();
+            Container.DeclareSignal<StartEffectSignal>();
         }
     }
 }

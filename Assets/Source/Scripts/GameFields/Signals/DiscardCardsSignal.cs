@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Cards;
 
-namespace GameFields.DiscardPiles
+namespace GameFields.Signals
 {
     public struct DiscardCardsSignal
     {

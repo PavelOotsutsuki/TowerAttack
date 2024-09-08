@@ -31,7 +31,7 @@ namespace Roots
             _personCreator.Init(bus, deck, _endTurnButton, seatPool);
 
             _personsState = new PersonsState(_personCreator.CreatePlayer(), _personCreator.CreateEnemyAI());
-            EffectFactory effectFactory = new EffectFactory(deck, _personsState);
+            EffectFactory effectFactory = new EffectFactory(_personsState);
 
             _cardRoot.Init(effectFactory);
             deck.Init(_cardRoot.Cards);

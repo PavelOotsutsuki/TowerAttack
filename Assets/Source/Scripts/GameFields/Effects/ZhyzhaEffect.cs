@@ -1,26 +1,29 @@
+using System.Collections;
 using Cards;
 using GameFields.Persons;
 using UnityEngine;
 
 namespace GameFields.Effects
 {
-    public class ZhyzhaEffect : IEffect
+    public class ZhyzhaEffect : Effect
     {
         private Person _deactivePerson;
 
-        public ZhyzhaEffect(Person deactivePerson) 
+        public ZhyzhaEffect(Person deactivePerson) : base()
         {
             _deactivePerson = deactivePerson;
+
+            Play();
         }
 
-        public void Play()
-        {
-            Debug.Log("Эффект Жыжи");
-        }
-
-        public void End()
+        public override void End()
         {
             Debug.Log("Эффект Жыжи закончен");
+        }
+
+        protected override IEnumerator OnPlaying()
+        {
+            yield break;
         }
     }
 }

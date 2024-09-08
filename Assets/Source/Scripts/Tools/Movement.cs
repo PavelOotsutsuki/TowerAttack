@@ -1,7 +1,5 @@
 using UnityEngine;
 using DG.Tweening;
-using UnityEngine.UIElements;
-using static UnityEditor.FilePathAttribute;
 
 namespace Tools
 {

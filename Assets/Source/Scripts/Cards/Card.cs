@@ -15,7 +15,7 @@ namespace Cards
         private CardCharacter _character;
         private int _effectCounter;
         private IEffectFactory _effectFactory;
-        private IEffect _effect;
+        private Effect _effect;
 
         private ICardState _currentState;
 
@@ -23,6 +23,18 @@ namespace Cards
         public CardMovement CardMovement { get; private set; }
         public Vector3 DefaultScaleVector => _defaultScaleVector;
         public CardViewConfig ViewConfig => _config.CardViewConfig;
+        public bool IsPlayingEffect
+        {
+            get
+            {
+                if (_effect is not null)
+                {
+                    return _effect.IsPlayed;
+                }
+
+                return false;
+            }
+        }
 
         internal void Init(IEffectFactory effectFactory, CardViewService cardViewService, Transform dragContainer)
         {
@@ -76,7 +88,6 @@ namespace Cards
 
             SetState(_character);
             _effect = _effectFactory.Create(_config.Effect.Type);
-            _effect.Play();
             _effectCounter = _config.Effect.Duration;
         }
 

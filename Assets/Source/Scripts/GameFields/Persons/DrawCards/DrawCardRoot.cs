@@ -68,6 +68,7 @@ namespace GameFields.Persons.DrawCards
             
             callback?.Invoke();
             IsDrawing = false;
+            yield break;
         }
     }
 }

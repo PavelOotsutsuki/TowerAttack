@@ -3,12 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using Cards;
 using Cysharp.Threading.Tasks;
-using GameFields.DiscardPiles;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.DrawCards;
 using GameFields.Persons.Hands;
 using GameFields.Persons.Tables;
 using GameFields.Persons.Towers;
+using GameFields.Signals;
 using StateMachine;
 using UnityEngine;
 using Zenject;
@@ -22,18 +22,19 @@ namespace GameFields.Persons
         private readonly DrawCardRoot _drawCardRoot;
         private readonly StartTurnDraw _startTurnDraw;
         private readonly Tower _tower;
-        private readonly SignalBus _bus;
         private readonly Queue<ITurnStep> _turnSteps;
-        private readonly Discover _discover;
+        private readonly IDiscover _discover;
         private readonly Hand _hand;// удалить потом
 
         private ITurnStep _currentStep;
 
+        protected readonly SignalBus Bus;
+
         protected Person(CardPlayingZone playingZone, DrawCardRoot drawCardRoot, Tower tower,
-            StartTurnDraw startTurnDraw, ITurnStep turnProcess, Discover discover, SignalBus bus, Hand hand)
+            StartTurnDraw startTurnDraw, ITurnStep turnProcess, IDiscover discover, SignalBus bus, Hand hand)
         {
             _hand = hand; // удалить потом
-            _bus = bus;
+            Bus = bus;
             _playingZone = playingZone;
             _tower = tower;
             _drawCardRoot = drawCardRoot;
@@ -69,17 +70,17 @@ namespace GameFields.Persons
             IReadOnlyList<Card> discardedCards = _playingZone.UpdateCards();
 
             if (discardedCards.Count > 0)
-                _bus.Fire(new DiscardCardsSignal(discardedCards));
+                Bus.Fire(new DiscardCardsSignal(discardedCards));
         }
 
-        public void DiscoverCards(List<Card> cards, string activateMessage, Action<Card> callback)
+        public void DiscoverCards(List<Card> cards, string activateMessage, Action<Card> callback, float waitDuration = 0f)
         {
             if (cards.Count > _discover.MaxSeats)
             {
                 throw new Exception("So many cards for discover: " + cards.Count + "/" + _discover.MaxSeats);
             }
 
-            _discover.Activate(cards, activateMessage, callback);
+            _discover.Activate(cards, activateMessage, callback, waitDuration);
         }
 
         public bool TryGetCard(Card card) // удалить потом
@@ -93,6 +94,8 @@ namespace GameFields.Persons
         }
 
         protected abstract void OnStartStep();
+
+        protected void EnqueueStep(ITurnStep turnStep) => _turnSteps.Enqueue(turnStep);
 
         private void InitTurnSteps()
         {
@@ -124,7 +127,5 @@ namespace GameFields.Persons
                 IsComplete = true;
             }
         }
-
-        private void EnqueueStep(ITurnStep turnStep) => _turnSteps.Enqueue(turnStep);
     }
 }

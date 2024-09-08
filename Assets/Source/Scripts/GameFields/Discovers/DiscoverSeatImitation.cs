@@ -7,10 +7,10 @@ using UnityEngine.EventSystems;
 
 namespace GameFields.Persons.Discovers
 {
-    internal class DiscoverSeat : MonoBehaviour
+    internal class DiscoverSeatImitation : MonoBehaviour
     {
         [SerializeField] private RectTransform _rectTransform;
-        [SerializeField] private DiscoverCard _discoverCard;
+        [SerializeField] private DiscoverCardImitation _discoverCard;
 
         private Card _card;
         private Movement _seatMovement;
@@ -32,11 +32,16 @@ namespace GameFields.Persons.Discovers
             //_card.Discover();
             //_card.Transform.SetParent(_rectTransform);
             //_card.Transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
-            _discoverCard.Activate(_card.ViewConfig, _card.Transform.sizeDelta.y, _card.Transform.sizeDelta.x, waitDuration);
+            _discoverCard.Activate(_card.Transform.sizeDelta.y, _card.Transform.sizeDelta.x);
             //_card.Discover(_rectTransform);
             //cardMovement.MoveLocalInstantly(Vector2.zero, Quaternion.identity.eulerAngles);
             //cardMovement.MoveLocalInstantly(Vector2.zero, Quaternion.identity.eulerAngles);
             //IncreaseCard(discoverMovement);
+        }
+
+        internal void StartClickImitation()
+        {
+            _discoverCard.StartClickImitation();
         }
 
         internal void Reset()
