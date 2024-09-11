@@ -8,65 +8,44 @@ using UnityEngine.UI;
 
 namespace GameFields.Persons.Discovers
 {
-    internal class DiscoverCardImitation: MonoBehaviour
+    internal class DiscoverCardImitation: DiscoverCard
     {
-        [SerializeField] private float _growDuration = 1f;
-        [SerializeField] private RectTransform _rectTransform;
-
-        [SerializeField] private Image _frameImage;
         [SerializeField] private Color _selectedFrameColor;
         [SerializeField] private float _selectedWaitDuration = 1f;
 
-        private Movement _movement;
-        private Action _clickCallback;
-        private float _scaleFactor;
         private Color _defaultColor;
 
-        public void Init(Action clickCallback, float scaleFactor)
+        public override void Init(Action clickCallback, IDiscoverClickHandler discoverClickHandler)
         {
-            _defaultColor = _frameImage.color;
-            _scaleFactor = scaleFactor;
-            _rectTransform.rotation = Quaternion.identity;
-            _rectTransform.localPosition = Vector3.zero;
-            _clickCallback = clickCallback;
-            _movement = new Movement(_rectTransform);
+            _defaultColor = FrameImage.color;
 
-            Hide();
+            base.Init(clickCallback, discoverClickHandler);
         }
 
-        public void Hide()
+        public override void Hide()
         {
             gameObject.SetActive(false);
         }
 
-        public void Activate(float cardHeight, float cardWidth)
+        public override void Activate(float cardHeight, float cardWidth, CardViewConfig cardViewConfig = null)
         {
-            float bigHeight = cardHeight * _scaleFactor;
-            float bigWidth = cardWidth * _scaleFactor;
+            FrameImage.color = _defaultColor;
 
-            _frameImage.color = _defaultColor;
-            _rectTransform.sizeDelta = new Vector2(bigWidth, bigHeight);
-            _rectTransform.localPosition = Vector3.zero;
-
-            Vector3 defaultScale = _rectTransform.localScale;
-            _movement.MoveLocalInstantly(Vector3.zero, Quaternion.identity.eulerAngles, Vector3.zero);
-            _movement.MoveLocalSmoothly(Vector3.zero, Quaternion.identity.eulerAngles, _growDuration, defaultScale);
-
-            gameObject.SetActive(true);
+            View(cardHeight, cardWidth);
         }
 
-        public void StartClickImitation()
+        public override void StartClickActions()
         {
             ClickingImitation().ToUniTask();
         }
 
         private IEnumerator ClickingImitation()
         {
-            _frameImage.color = _selectedFrameColor;
+            FrameImage.color = _selectedFrameColor;
 
             yield return new WaitForSeconds(_selectedWaitDuration);
 
-            _clickCallback?.Invoke();
+            ClickCallback?.Invoke();
         }
     }
 }

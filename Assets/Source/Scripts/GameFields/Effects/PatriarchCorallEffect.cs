@@ -10,7 +10,6 @@ namespace GameFields.Effects
     {
         private readonly int _countDrawCards = 3;
         private readonly string _activateDiscoverMessage = "Выберете, какую карту отдадите противнику";
-        private readonly float _waitDiscoverDuration = 0.5f;
 
         private Person _activePerson;
         private Person _deactivePerson;
@@ -52,14 +51,14 @@ namespace GameFields.Effects
                 return;
             }
 
-            _activePerson.DiscoverCards(_cards, _activateDiscoverMessage, RechangeCards, _waitDiscoverDuration);
+            _activePerson.DiscoverCards(_cards, _activateDiscoverMessage, RechangeCards);
         }
 
-        private void RechangeCards(Card myCard)
+        private void RechangeCards(Card card)
         {
-            if (_activePerson.TryGetCard(myCard))
+            if (_activePerson.TryGetCard(card))
             {
-                _deactivePerson.SetCard(myCard);
+                _deactivePerson.SetCard(card);
             }
 
             _endPlaying = true;

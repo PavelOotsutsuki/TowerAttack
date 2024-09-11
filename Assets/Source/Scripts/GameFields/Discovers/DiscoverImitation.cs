@@ -13,7 +13,6 @@ namespace GameFields.Persons.Discovers
     {
         [SerializeField] private float _minWaitDuration = 1.5f;
         [SerializeField] private float _maxWaitDuration = 5f;
-        [SerializeField, Min(1f)] private float _scaleFactor = 1.5f;
         [SerializeField] private float _offset = 400f;
         [SerializeField] private float _positionY = 0f;
         [SerializeField] private DiscoverSeatImitation[] _seats;
@@ -30,7 +29,7 @@ namespace GameFields.Persons.Discovers
             gameObject.SetActive(false);
         }
 
-        public void Activate(List<Card> cards, string activateMessage, Action<Card> callback, float waitDuration)
+        public void Activate(List<Card> cards, string activateMessage, Action<Card> callback)
         {
             _cards = cards;
             _callback = callback;
@@ -49,7 +48,7 @@ namespace GameFields.Persons.Discovers
 
             for (int i = 0; i < cards.Count; i++)
             {
-                _seats[i].SetCard(cards[i], waitDuration);
+                _seats[i].SetCard(cards[i]);
             }
 
             WaitingToSelect().ToUniTask();
@@ -80,7 +79,7 @@ namespace GameFields.Persons.Discovers
 
             yield return new WaitForSeconds(waitDuration);
 
-            _seats[selectedCardNumber].StartClickImitation();
+            _seats[selectedCardNumber].StartClick();
         }
 
         private void SortDiscoverSeats()
@@ -109,7 +108,7 @@ namespace GameFields.Persons.Discovers
         {
             foreach (DiscoverSeatImitation seat in _seats)
             {
-                seat.Init(this, _scaleFactor);
+                seat.Init(this);
             }
         }
     }

@@ -73,14 +73,14 @@ namespace GameFields.Persons
                 Bus.Fire(new DiscardCardsSignal(discardedCards));
         }
 
-        public void DiscoverCards(List<Card> cards, string activateMessage, Action<Card> callback, float waitDuration = 0f)
+        public void DiscoverCards(List<Card> cards, string activateMessage, Action<Card> callback)
         {
             if (cards.Count > _discover.MaxSeats)
             {
                 throw new Exception("So many cards for discover: " + cards.Count + "/" + _discover.MaxSeats);
             }
 
-            _discover.Activate(cards, activateMessage, callback, waitDuration);
+            _discover.Activate(cards, activateMessage, callback);
         }
 
         public bool TryGetCard(Card card) // удалить потом

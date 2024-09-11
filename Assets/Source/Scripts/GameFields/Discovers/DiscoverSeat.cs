@@ -1,51 +1,39 @@
-using System.Collections;
-using System.Collections.Generic;
 using Cards;
 using Tools;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace GameFields.Persons.Discovers
 {
-    internal class DiscoverSeat : MonoBehaviour
+    public abstract class DiscoverSeat : MonoBehaviour, IDiscoverClickHandler
     {
+        [SerializeField] protected DiscoverCard DiscoverCard;
         [SerializeField] private RectTransform _rectTransform;
-        [SerializeField] private DiscoverCard _discoverCard;
 
-        private Card _card;
+        protected Card Card;
+
         private Movement _seatMovement;
         private IDiscoverChoiceHandler _discoverChoiceHandler;
 
-        internal bool IsEmpty => _card == null;
-
-        public void Init(IDiscoverChoiceHandler discoverChoiceHandler, float scaleFactor)
+        public void Init(IDiscoverChoiceHandler discoverChoiceHandler)
         {
             _seatMovement = new Movement(_rectTransform);
             _discoverChoiceHandler = discoverChoiceHandler;
-            _discoverCard.Init(OnDiscoverCardClick, scaleFactor);
+            DiscoverCard.Init(OnDiscoverCardClick, this);
             Reset();
         }
 
-        internal void SetCard(Card card, float waitDuration = 0f)
+        public abstract void SetCard(Card card);
+
+        public void StartClick()
         {
-            _card = card;
-            //_card.Discover();
-            //_card.Transform.SetParent(_rectTransform);
-            //_card.Transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
-            _discoverCard.Activate(_card.ViewConfig, _card.Transform.sizeDelta.y, _card.Transform.sizeDelta.x, waitDuration);
-            //_card.Discover(_rectTransform);
-            //cardMovement.MoveLocalInstantly(Vector2.zero, Quaternion.identity.eulerAngles);
-            //cardMovement.MoveLocalInstantly(Vector2.zero, Quaternion.identity.eulerAngles);
-            //IncreaseCard(discoverMovement);
+            DiscoverCard.StartClickActions();
         }
 
-        internal void Reset()
+        public void Reset()
         {
-            _card = null;
-            _discoverCard.Hide();
+            Card = null;
+            DiscoverCard.Hide();
         }
-
-        internal bool IsCardEqual(Card card) => card == _card;
 
         public void SetLocalPositionValues(Vector3 position, Vector3 rotation, float duration = 0f)
         {
@@ -54,16 +42,8 @@ namespace GameFields.Persons.Discovers
 
         private void OnDiscoverCardClick()
         {
-            _discoverChoiceHandler.OnMakeChoice(_card);
+            _discoverChoiceHandler.OnMakeChoice(Card);
         }
-
-        //private void IncreaseCard(Movement discoverMovement)
-        //{
-        //    Vector3 position = _rectTransform.position;
-
-        //    discoverMovement.MoveInstantly(position, Quaternion.identity.eulerAngles, Vector3.zero);
-        //    discoverMovement.MoveSmoothly(position, Quaternion.identity.eulerAngles, 1f, _card.DefaultScaleVector * 2);
-        //}
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents))]

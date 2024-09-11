@@ -255,9 +255,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6df8d2b804bf744b7a7a0f4050925f72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _growDuration: 1
+  GrowDuration: 0.5
+  FrameImage: {fileID: 8278571099896121170}
   _rectTransform: {fileID: 844688072803091307}
-  _frameImage: {fileID: 8278571099896121170}
+  _scaleFactor: 1.5
   _selectedFrameColor: {r: 0.8509804, g: 0.011764706, b: 0.011764706, a: 1}
   _selectedWaitDuration: 1
 --- !u!1001 &1533160703642616098

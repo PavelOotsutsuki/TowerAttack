@@ -18,7 +18,7 @@ namespace GameFields.Persons
         [SerializeField] private HandPlayer _playerHand;
         [SerializeField] private Table _playerTable;
         [SerializeField] private Tower _playerTower;
-        [SerializeField] private Discover _playerDiscover;
+        [SerializeField] private PlayerDiscover _playerDiscover;
         [SerializeField] private int _playerCountStartDrawCards = 1;
 
         [Space]

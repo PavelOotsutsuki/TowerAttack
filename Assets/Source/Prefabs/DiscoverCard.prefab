@@ -1180,14 +1180,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4af768730aa1a4195ab8fceeeb15259a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scaleFactor: 2
+  GrowDuration: 0.5
+  FrameImage: {fileID: 5568063326927377020}
+  _rectTransform: {fileID: 7618827951908783399}
   _icon: {fileID: 566134732455732466}
   _number: {fileID: 4606953827740633675}
   _name: {fileID: 8081553350937781104}
   _feature: {fileID: 5162270551157492551}
-  _rectTransform: {fileID: 7618827951908783399}
-  _growDuration: 1
-  _frameImage: {fileID: 5568063326927377020}
   _enableFrameColor: {r: 0.05882353, g: 1, b: 0, a: 1}
   _disableFrameColor: {r: 0.8509804, g: 0.011764706, b: 0.011764706, a: 1}
   _canvasGroup: {fileID: 5198153373583702261}
