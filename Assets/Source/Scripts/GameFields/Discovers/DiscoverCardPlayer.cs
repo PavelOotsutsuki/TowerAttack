@@ -1,17 +1,14 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using Cards;
 using Cysharp.Threading.Tasks;
 using TMPro;
-using Tools;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace GameFields.Persons.Discovers
 {
-    public class PlayerDiscoverCard : DiscoverCard, IPointerClickHandler
+    public class DiscoverCardPlayer : DiscoverCard, IPointerClickHandler
     {
         [SerializeField] private Image _icon;
         [SerializeField] private TMP_Text _number;

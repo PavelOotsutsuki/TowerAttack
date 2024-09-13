@@ -1178,13 +1178,13 @@ RectTransform:
   - {fileID: 250433509}
   - {fileID: 1502786294}
   - {fileID: 601274533}
-  - {fileID: 1173604841}
   - {fileID: 1905208562}
   - {fileID: 1000203020}
   - {fileID: 1504469770}
   - {fileID: 1487169830}
   - {fileID: 165532016}
   - {fileID: 1156189548}
+  - {fileID: 1173604841}
   - {fileID: 489448957}
   - {fileID: 8497135425252126178}
   m_Father: {fileID: 1272924793}
@@ -2346,7 +2346,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3186079991975962272, guid: 8208b4381673849c1a76ded5f6fdb2da, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -255
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3186079991975962272, guid: 8208b4381673849c1a76ded5f6fdb2da, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4830,7 +4830,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3186079991975962272, guid: 8208b4381673849c1a76ded5f6fdb2da, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -255
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3186079991975962272, guid: 8208b4381673849c1a76ded5f6fdb2da, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -5864,16 +5864,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fe019458c1084723bd6429d7c6126f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _offset: 400
-  _positionY: 0
-  _scaleFactor: 2
-  _discoverPanel: {fileID: 306466712}
-  _discoverLabel: {fileID: 467083777}
-  _seats:
+  Seats:
   - {fileID: 325521950}
   - {fileID: 1440626158}
   - {fileID: 37909990}
   - {fileID: 3186079991339361240}
+  _offset: 400
+  _positionY: 0
+  _discoverPanel: {fileID: 306466712}
+  _discoverLabel: {fileID: 467083777}
 --- !u!1001 &817382725
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6239,6 +6238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canvasGroup: {fileID: 867188515}
+  _activateDelay: 0.5
 --- !u!225 &867188515
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -9612,7 +9612,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3186079991975962272, guid: 8208b4381673849c1a76ded5f6fdb2da, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -255
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3186079991975962272, guid: 8208b4381673849c1a76ded5f6fdb2da, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -11900,16 +11900,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72d518092535446b9abf74bf31990112, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _minWaitDuration: 1.5
-  _maxWaitDuration: 5
-  _scaleFactor: 1.5
-  _offset: 400
-  _positionY: -255
-  _seats:
+  Seats:
   - {fileID: 561088658}
   - {fileID: 30689865}
   - {fileID: 1767852769}
   - {fileID: 1646141726}
+  _offset: 400
+  _positionY: -255
+  _minWaitDuration: 1.5
+  _maxWaitDuration: 5
 --- !u!224 &1674758351
 RectTransform:
   m_ObjectHideFlags: 0

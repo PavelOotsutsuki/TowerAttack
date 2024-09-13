@@ -2,13 +2,11 @@
 using System.Collections;
 using Cards;
 using Cysharp.Threading.Tasks;
-using Tools;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace GameFields.Persons.Discovers
 {
-    internal class DiscoverCardImitation: DiscoverCard
+    internal class DiscoverCardAI: DiscoverCard
     {
         [SerializeField] private Color _selectedFrameColor;
         [SerializeField] private float _selectedWaitDuration = 1f;

@@ -49,8 +49,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cdcdb8bfd561424e86a159e865a1f95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DiscoverCard: {fileID: 1782732609506747385}
   _rectTransform: {fileID: 1053204204470016089}
-  _discoverCard: {fileID: 1782732609506747385}
 --- !u!1001 &8852503804688143610
 PrefabInstance:
   m_ObjectHideFlags: 0

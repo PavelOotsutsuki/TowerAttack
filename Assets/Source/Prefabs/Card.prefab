@@ -805,7 +805,7 @@ MonoBehaviour:
   _rectTransform: {fileID: 5981172514607463790}
   _cardPaper: {fileID: 5735171853976598656}
   _config: {fileID: 0}
-  _discoverCard: {fileID: 0}
+  _startSelectionCard: {fileID: 0}
   _defaultScaleVector: {x: 1, y: 1, z: 1}
 --- !u!1 &4603742727300818215
 GameObject:

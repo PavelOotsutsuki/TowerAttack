@@ -585,7 +585,7 @@ GameObject:
   - component: {fileID: 8657222796762239159}
   - component: {fileID: 46519879649128297}
   m_Layer: 5
-  m_Name: DiscoverCardOld
+  m_Name: StartSelectionCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -626,10 +626,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cardBack: {fileID: 1371925764441433044}
   _cardFront: {fileID: 0}
-  _cardSO: {fileID: 0}
   _cardDragAndDrop: {fileID: 1843093427145547912}
-  _rectTransform: {fileID: 1799684338697357430}
-  _defaultScaleVector: {x: 1, y: 1, z: 1}
 --- !u!114 &1843093427145547912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1238,7 +1235,7 @@ GameObject:
   - component: {fileID: 2233376912262504514}
   - component: {fileID: 3457385115536272350}
   - component: {fileID: 2681017278546846422}
-  - component: {fileID: 4406060045346935088}
+  - component: {fileID: 7744751188188739362}
   m_Layer: 5
   m_Name: CardFront
   m_TagString: Untagged
@@ -1317,7 +1314,7 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &4406060045346935088
+--- !u!114 &7744751188188739362
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1326,9 +1323,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 6345935816343507037}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8eba6406993704bb9bea3803eaf62d87, type: 3}
+  m_Script: {fileID: 11500000, guid: b0d38aa102f3f4563bad46dd1cc45729, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _scaleFactor: 2
+  _icon: {fileID: 4587822837758158245}
+  _number: {fileID: 2000489508918855799}
+  _name: {fileID: 6811338604897820456}
+  _feature: {fileID: 8158620930177616745}
+  _rectTransform: {fileID: 2212994437563647919}
+  _growDuration: 1
 --- !u!1 &6387285334742141790
 GameObject:
   m_ObjectHideFlags: 0

@@ -23,7 +23,7 @@ namespace GameFields.Persons
         private readonly StartTurnDraw _startTurnDraw;
         private readonly Tower _tower;
         private readonly Queue<ITurnStep> _turnSteps;
-        private readonly IDiscover _discover;
+        private readonly Discover _discover;
         private readonly Hand _hand;// удалить потом
 
         private ITurnStep _currentStep;
@@ -31,7 +31,7 @@ namespace GameFields.Persons
         protected readonly SignalBus Bus;
 
         protected Person(CardPlayingZone playingZone, DrawCardRoot drawCardRoot, Tower tower,
-            StartTurnDraw startTurnDraw, ITurnStep turnProcess, IDiscover discover, SignalBus bus, Hand hand)
+            StartTurnDraw startTurnDraw, ITurnStep turnProcess, Discover discover, SignalBus bus, Hand hand)
         {
             _hand = hand; // удалить потом
             Bus = bus;

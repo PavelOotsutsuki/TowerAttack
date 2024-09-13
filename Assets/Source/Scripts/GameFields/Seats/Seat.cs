@@ -20,14 +20,14 @@ namespace GameFields.Seats
 
         public void Reset() => Card = null;
 
-        public void SetCard(Card card, SideType sideType, float duration)
+        public void SetCard(Card card, SideType sideType, float duration, float scaleFactor = 1f)
         {
             Card = card;
 
             Card.SetSide(sideType);
             Card.transform.SetParent(_transform);
             CardMovement cardMovement = Card.CardMovement;
-            cardMovement.MoveLocalSmoothly(Vector2.zero, Quaternion.identity.eulerAngles, duration, Card.DefaultScaleVector);
+            cardMovement.MoveLocalSmoothly(Vector2.zero, Quaternion.identity.eulerAngles, duration, Card.DefaultScaleVector * scaleFactor);
         }
 
         public bool IsCardEqual(Card card) => Card == card;

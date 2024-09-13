@@ -18,7 +18,7 @@ namespace GameFields.Persons
         [SerializeField] private HandPlayer _playerHand;
         [SerializeField] private Table _playerTable;
         [SerializeField] private Tower _playerTower;
-        [SerializeField] private PlayerDiscover _playerDiscover;
+        [SerializeField] private DiscoverPlayer _playerDiscover;
         [SerializeField] private int _playerCountStartDrawCards = 1;
 
         [Space]
@@ -32,7 +32,7 @@ namespace GameFields.Persons
         [SerializeField] private HandAI _enemyHand;
         [SerializeField] private Table _enemyTable;
         [SerializeField] private Tower _enemyTower;
-        [SerializeField] private DiscoverImitation _enemyDiscoverImitation;
+        [SerializeField] private DiscoverAI _enemyDiscoverImitation;
         [SerializeField] private int _enemyCountStartDrawCards = 1;
         
         [Space]

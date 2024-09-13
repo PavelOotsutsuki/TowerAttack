@@ -17,7 +17,7 @@ namespace GameFields
 
             _fightSteps = new Queue<IFightStep>();
 
-            //_fightSteps.Enqueue(startTowerCardSelections);
+            _fightSteps.Enqueue(startTowerCardSelections);
             _fightSteps.Enqueue(fight);
             _fightSteps.Enqueue(endFight);
         }
