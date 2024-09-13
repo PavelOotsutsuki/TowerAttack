@@ -2,11 +2,10 @@
 using System.Linq;
 using Cards;
 using UnityEngine;
-using Zenject;
 
 namespace GameFields.Persons.Tables
 {
-    public class CardPlayingZone : MonoBehaviour, ICardDropPlace
+    public abstract class CardPlayingZone : MonoBehaviour, ICardDropPlace
     {
         private readonly List<Card> _playedCards = new List<Card>();
         

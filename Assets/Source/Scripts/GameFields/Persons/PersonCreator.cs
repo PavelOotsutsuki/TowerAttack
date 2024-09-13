@@ -14,11 +14,18 @@ namespace GameFields.Persons
     {
         [Header("Player Fields:")]
 
-        [SerializeField] private CardPlayingZone _playerPlayingZone;
-        [SerializeField] private HandPlayer _playerHand;
-        [SerializeField] private Table _playerTable;
-        [SerializeField] private Tower _playerTower;
-        [SerializeField] private DiscoverPlayer _playerDiscover;
+        //[SerializeField] private CardPlayingZone _playerPlayingZone;
+        //[SerializeField] private HandPlayer _playerHand;
+        //[SerializeField] private Table _playerTable;
+        //[SerializeField] private Tower _playerTower;
+        //[SerializeField] private DiscoverPlayer _playerDiscover;
+
+        private CardPlayingZone _playerPlayingZone;
+        private HandPlayer _playerHand;
+        private Table _playerTable;
+        private Tower _playerTower;
+        private DiscoverPlayer _playerDiscover;
+
         [SerializeField] private int _playerCountStartDrawCards = 1;
 
         [Space]
@@ -28,11 +35,18 @@ namespace GameFields.Persons
         [Header("EnemyAI Fields:")]
 
         [SerializeField] private EnemyDragAndDropImitation _enemyDragAndDropImitation;
-        [SerializeField] private CardPlayingZone _enemyPlayingZone;
-        [SerializeField] private HandAI _enemyHand;
-        [SerializeField] private Table _enemyTable;
-        [SerializeField] private Tower _enemyTower;
-        [SerializeField] private DiscoverAI _enemyDiscoverImitation;
+        //[SerializeField] private CardPlayingZone _enemyPlayingZone;
+        //[SerializeField] private HandAI _enemyHand;
+        //[SerializeField] private Table _enemyTable;
+        //[SerializeField] private Tower _enemyTower;
+        //[SerializeField] private DiscoverAI _enemyDiscoverImitation;
+
+        private CardPlayingZone _enemyPlayingZone;
+        private HandAI _enemyHand;
+        private Table _enemyTable;
+        private Tower _enemyTower;
+        private DiscoverAI _enemyDiscoverImitation;
+
         [SerializeField] private int _enemyCountStartDrawCards = 1;
         
         [Space]
@@ -55,6 +69,23 @@ namespace GameFields.Persons
         private SignalBus _bus;
         private Deck _deck;
         private EndTurnButton _endTurnButton;
+
+        [Inject]
+        public void Construct(CardPlayingZonePlayer playerPlayingZone, HandPlayer playerHand, TablePlayer playerTable, TowerPlayer playerTower,
+            DiscoverPlayer playerDiscover, CardPlayingZoneAI enemyPlayingZone, HandAI enemyHand, TableAI enemyTable,
+            TowerAI enemyTower, DiscoverAI enemyDiscoverImitation)
+        {
+            _playerPlayingZone = playerPlayingZone;
+            _playerHand = playerHand;
+            _playerTable = playerTable;
+            _playerTower = playerTower;
+            _playerDiscover = playerDiscover;
+            _enemyPlayingZone = enemyPlayingZone;
+            _enemyHand = enemyHand;
+            _enemyTable = enemyTable;
+            _enemyTower = enemyTower;
+            _enemyDiscoverImitation = enemyDiscoverImitation;
+        }
 
         public void Init(SignalBus bus, Deck deck, EndTurnButton endTurnButton, SeatPool seatPool)
         {

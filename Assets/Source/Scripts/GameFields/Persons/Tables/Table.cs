@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Tables
 {
-    public class Table : MonoBehaviour
+    public abstract class Table : MonoBehaviour
     {
         [SerializeField] private TableSeat[] _cardSeats;
 

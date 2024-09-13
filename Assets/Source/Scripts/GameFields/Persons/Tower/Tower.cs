@@ -1,12 +1,11 @@
 using Cards;
-using GameFields.Persons.Hands;
 using GameFields.Seats;
 using Tools;
 using UnityEngine;
 
 namespace GameFields.Persons.Towers
 {
-    public class Tower : MonoBehaviour, ICardDropPlace
+    public abstract class Tower : MonoBehaviour, ICardDropPlace
     {
         private const SideType DefaultSideType = SideType.Back;
         private const bool IsCardInteraction = false;
