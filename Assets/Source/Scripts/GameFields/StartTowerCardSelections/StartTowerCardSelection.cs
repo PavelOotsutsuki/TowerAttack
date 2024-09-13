@@ -78,7 +78,7 @@ namespace GameFields.StartTowerCardSelections
 
         private void StartEnemyProcess()
         {
-            _enemyCards = _personsState.Deactive.DrawCards(_firstTurnCardsCount, StartEnemyProcess);
+            _enemyCards = _personsState.Deactive.DrawCards(_firstTurnCardsCount, StartingEnemyProcess);
         }
 
         private void StartingEnemyProcess()
