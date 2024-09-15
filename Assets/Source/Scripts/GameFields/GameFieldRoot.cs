@@ -1,3 +1,4 @@
+using GameFields.Persons;
 using Tools;
 using UnityEngine;
 
@@ -7,9 +8,9 @@ namespace GameFields
     {
         [SerializeField] private GameField _fightPVE;
 
-        public void Init(PersonsState personsState)
+        public void Init(PersonsState personsState, Player player, EnemyAI enemyAI)
         {
-            _fightPVE.Init(personsState);
+            _fightPVE.Init(personsState, player, enemyAI);
         }
 
         #region AutomaticFillComponents

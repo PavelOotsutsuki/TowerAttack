@@ -12907,7 +12907,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _towerSeat: {fileID: 1296459755}
-  _seatDuration: 0.5
+  _seatDuration: 1
 --- !u!224 &1951934494 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5981172514607463790, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
@@ -14047,7 +14047,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _towerSeat: {fileID: 340988940}
-  _seatDuration: 0.5
+  _seatDuration: 1
 --- !u!224 &3186079991339361239 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7427442028613516335, guid: 26e4f5faa15d94bb7ad25cf114c93a51, type: 3}

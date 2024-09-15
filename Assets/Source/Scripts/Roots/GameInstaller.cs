@@ -44,13 +44,13 @@ namespace Roots
             Container.Bind<TablePlayer>().FromInstance(_playerTable).AsSingle();
             Container.Bind<TowerPlayer>().FromInstance(_playerTower).AsSingle();
             Container.Bind<DiscoverPlayer>().FromInstance(_playerDiscover).AsSingle();
-            Container.Bind<CardPlayingZonePlayer>().FromInstance(_playerPlayingZone).AsSingle().NonLazy();
+            Container.Bind<CardPlayingZonePlayer>().FromInstance(_playerPlayingZone).AsSingle();
 
             Container.Bind<HandAI>().FromInstance(_enemyHand).AsSingle();
             Container.Bind<TableAI>().FromInstance(_enemyTable).AsSingle();
             Container.Bind<TowerAI>().FromInstance(_enemyTower).AsSingle();
             Container.Bind<DiscoverAI>().FromInstance(_enemyDiscoverImitation).AsSingle();
-            Container.Bind<CardPlayingZoneAI>().FromInstance(_enemyPlayingZone).AsSingle().NonLazy();
+            Container.Bind<CardPlayingZoneAI>().FromInstance(_enemyPlayingZone).AsSingle();
         }
 
         private void DeclareSignals()

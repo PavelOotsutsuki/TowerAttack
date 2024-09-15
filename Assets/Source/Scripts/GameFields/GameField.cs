@@ -3,6 +3,7 @@ using Tools;
 using UnityEngine;
 using GameFields.StartTowerCardSelections;
 using GameFields.Effects;
+using GameFields.Persons;
 
 namespace GameFields
 {
@@ -13,9 +14,9 @@ namespace GameFields
         private EffectFactory _effectFactory;
         private FightStepsController _fightStepsController;
 
-        public void Init(PersonsState personsState)
+        public void Init(PersonsState personsState, Player player, EnemyAI enemyAI)
         {
-            _startTowerCardSelection.Init(personsState);
+            _startTowerCardSelection.Init(player, enemyAI);
 
             FightResult fightResult = new FightResult();
             Fight fight = new Fight(personsState, fightResult);

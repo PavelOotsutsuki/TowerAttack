@@ -30,13 +30,16 @@ namespace Roots
             _endTurnButton.Init();
             _personCreator.Init(bus, deck, _endTurnButton, seatPool);
 
-            _personsState = new PersonsState(_personCreator.CreatePlayer(), _personCreator.CreateEnemyAI());
+            Player player = _personCreator.CreatePlayer();
+            EnemyAI enemyAI = _personCreator.CreateEnemyAI();
+
+            _personsState = new PersonsState(player, enemyAI);
             EffectFactory effectFactory = new EffectFactory(_personsState);
 
             _cardRoot.Init(effectFactory);
             deck.Init(_cardRoot.Cards);
 
-            _gameFieldRoot.Init(_personsState);
+            _gameFieldRoot.Init(_personsState, player, enemyAI);
         }
 
         #region AutomaticFillComponents

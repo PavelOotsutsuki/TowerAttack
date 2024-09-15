@@ -94,6 +94,18 @@ namespace GameFields.Persons.Hands
             return isFind;
         }
 
+        public Card GetLastCard()
+        {
+            Seat lastSeat = _handSeats[_handSeats.Count];
+            Card gettedCard = lastSeat.Card;
+            _handSeats.Remove(lastSeat);
+            lastSeat.Reset();
+
+            SortHandSeats();
+
+            return gettedCard;
+        }
+
         public void ForciblyBlock()
         {
             StartEndDragCard(true);

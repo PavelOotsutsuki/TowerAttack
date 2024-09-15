@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cards;
 using Cysharp.Threading.Tasks;
+using GameFields.Persons.CardTransits;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.DrawCards;
 using GameFields.Persons.Hands;
@@ -15,7 +16,7 @@ using Zenject;
 
 namespace GameFields.Persons
 {
-    public abstract class Person : IStateMachineState
+    public abstract class Person : IStateMachineState, IDrawCardManager, ITowerTransitCheck, ITowerTransitTrySet, IHandTransitGetLast, IHandTransitSet, IHandTransitTryGet
     {
         private readonly ITurnStep _turnProcess;
         private readonly CardPlayingZone _playingZone;
@@ -24,7 +25,7 @@ namespace GameFields.Persons
         private readonly Tower _tower;
         private readonly Queue<ITurnStep> _turnSteps;
         private readonly Discover _discover;
-        private readonly Hand _hand;// удалить потом
+        private readonly Hand _hand;
 
         private ITurnStep _currentStep;
 
@@ -33,7 +34,7 @@ namespace GameFields.Persons
         protected Person(CardPlayingZone playingZone, DrawCardRoot drawCardRoot, Tower tower,
             StartTurnDraw startTurnDraw, ITurnStep turnProcess, Discover discover, SignalBus bus, Hand hand)
         {
-            _hand = hand; // удалить потом
+            _hand = hand;
             Bus = bus;
             _playingZone = playingZone;
             _tower = tower;
@@ -48,7 +49,6 @@ namespace GameFields.Persons
         }
 
         public bool IsComplete { get; private set; }
-        public bool IsTowerFilled => _tower.IsTowerFill;
 
         public void StartStep()
         {
@@ -81,16 +81,6 @@ namespace GameFields.Persons
             }
 
             _discover.Activate(cards, activateMessage, callback);
-        }
-
-        public bool TryGetCard(Card card) // удалить потом
-        {
-            return _hand.TryGetCard(card);
-        }
-
-        public void SetCard(Card card)
-        {
-            _hand.AddCard(card);
         }
 
         protected abstract void OnStartStep();
@@ -126,6 +116,28 @@ namespace GameFields.Persons
             {
                 IsComplete = true;
             }
+        }
+
+        bool ITowerTransitCheck.IsFill => _tower.IsTowerFill;
+
+        bool ITowerTransitTrySet.TrySet(Card card)
+        {
+            return _tower.TrySeatCard(card);
+        }
+
+        bool IHandTransitTryGet.TryGet(Card card)
+        {
+            return _hand.TryGetCard(card);
+        }
+
+        void IHandTransitSet.Set(Card card)
+        {
+            _hand.AddCard(card);
+        }
+
+        Card IHandTransitGetLast.Get()
+        {
+            return _hand.GetLastCard();
         }
     }
 }

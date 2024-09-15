@@ -6,6 +6,8 @@ using GameFields.Seats;
 using System.Collections.Generic;
 using Cards;
 using Zenject;
+using GameFields.Persons.Towers;
+using GameFields.Persons;
 
 namespace GameFields.StartTowerCardSelections
 {
@@ -16,14 +18,14 @@ namespace GameFields.StartTowerCardSelections
         [SerializeField] private Seat[] _seats;
         [SerializeField] private int _firstTurnCardsCount = 3;
 
-        private IPersonsState _personsState;
-        private bool _isCompletePlayer;
-        private bool _isCompleteEnemy;
+        private StartTowerCardSelectionPlayer _selectionPlayer;
+        private StartTowerCardSelectionImitation _selectionImitation;
+
+        //private List<>
+
         private Deck _deck;
 
-        private List<Card> _enemyCards;
-
-        public bool IsComplete { get; private set; }
+        public bool IsComplete => _selectionImitation.IsComplete && _selectionPlayer.IsComplete;
 
         [Inject]
         private void Construct(Deck deck)
@@ -31,16 +33,13 @@ namespace GameFields.StartTowerCardSelections
             _deck = deck;
         }
 
-        public void Init(IPersonsState personsState)
+        public void Init(Player player, EnemyAI enemyAI)
         {
-            _personsState = personsState;
-            
-            IsComplete = false;
-
             _startTowerCardSelectionPanel.Init();
             _startTowerCardSelectionLabel.Init();
 
-            InitSeats();
+            _selectionPlayer = new StartTowerCardSelectionPlayer(_deck, player, _seats);
+            _selectionImitation = new StartTowerCardSelectionImitation(enemyAI, _firstTurnCardsCount);
         }
 
         public void StartStep()
@@ -50,23 +49,10 @@ namespace GameFields.StartTowerCardSelections
             _startTowerCardSelectionPanel.Activate();
             _startTowerCardSelectionLabel.Activate();
 
-            StartPlayerProcess().ToUniTask();
-            StartEnemyProcess();
+            _selectionPlayer.StartProcess();
+            _selectionImitation.StartProcess();
 
             WaitingFillTowers().ToUniTask();
-        }
-
-        private IEnumerator StartPlayerProcess()
-        {
-            yield return new WaitForSeconds(1f);
-
-            for (int i = 0; i < _firstTurnCardsCount; i++)
-            {
-                _seats[i].SetCard(_deck.TakeTopCard(), SideType.Front, 1.5f, 2f);
-                yield return new WaitForSeconds(1f);
-                //card.StartSelection();
-
-            }
         }
 
         private IEnumerator WaitingFillTowers()
@@ -76,39 +62,9 @@ namespace GameFields.StartTowerCardSelections
             Deactivate();
         }
 
-        private void StartEnemyProcess()
-        {
-            _enemyCards = _personsState.Deactive.DrawCards(_firstTurnCardsCount, StartingEnemyProcess);
-        }
-
-        private void StartingEnemyProcess()
-        {
-            StartingEnemyProcess(_enemyCards).ToUniTask();
-        }
-
-        private IEnumerator StartingEnemyProcess(List<Card> enemyCards)
-        {
-            yield return new WaitForSeconds(2f);
-
-            for (int i = 0; i < _firstTurnCardsCount; i++)
-            {
-                yield return new WaitForSeconds(1f);
-            }
-
-            IsComplete = true;
-        }
-
         private void Deactivate()
         {
             _startTowerCardSelectionPanel.Deactivate(() => Destroy(gameObject));
-        }
-
-        private void InitSeats()
-        {
-            foreach (Seat seat in _seats)
-            {
-                seat.Init();
-            }
         }
 
         #region AutomaticFillComponents

@@ -3,6 +3,7 @@ using Cards;
 using GameFields.Persons;
 using System.Collections;
 using System.Collections.Generic;
+using GameFields.Persons.CardTransits;
 
 namespace GameFields.Effects
 {
@@ -12,6 +13,10 @@ namespace GameFields.Effects
         private readonly string _activateDiscoverMessage = "Выберете, какую карту отдадите противнику";
 
         private Person _activePerson;
+
+        private IHandTransitTryGet _handTransitTryGet;
+        private IHandTransitSet _handTransitSet;
+
         private Person _deactivePerson;
         private List<Card> _cards;
         private bool _endPlaying;
@@ -21,13 +26,19 @@ namespace GameFields.Effects
             _activePerson = activePerson;
             _deactivePerson = deactivePerson;
 
+            _handTransitTryGet = activePerson;
+            _handTransitSet = deactivePerson;
+
             Play();
         }
 
         protected override IEnumerator OnPlaying()
         {
             _endPlaying = false;
-            _cards = _activePerson?.DrawCards(_countDrawCards, DiscoverCards);
+            //_cards = _activePerson?.DrawCards(_countDrawCards, DiscoverCards);
+            _cards = _activePerson?.DrawCards(_countDrawCards);
+
+            DiscoverCards();
 
             yield return new WaitUntil(() => _endPlaying);
         }
@@ -56,9 +67,9 @@ namespace GameFields.Effects
 
         private void RechangeCards(Card card)
         {
-            if (_activePerson.TryGetCard(card))
+            if (_handTransitTryGet.TryGet(card))
             {
-                _deactivePerson.SetCard(card);
+                _handTransitSet.Set(card);
             }
 
             _endPlaying = true;

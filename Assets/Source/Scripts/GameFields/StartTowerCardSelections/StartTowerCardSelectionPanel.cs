@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Tools;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,36 +25,6 @@ namespace GameFields.StartTowerCardSelections
             _panel.color = startColor;
         }
 
-        //public IEnumerator Activate()
-        //{
-        //    _panel.raycastTarget = true;
-
-        //    //_panel.DOColor(new Color(_panel.color.r, _panel.color.g, _panel.color.b, ActiveAlpha), _activateDuration);
-
-        //    float startAlpha = _panel.color.a;
-        //    float alphaWay = (ActiveAlpha - startAlpha) / _activateDuration / MaxAlpha;
-
-        //    for (float time = 0f; time < _activateDuration; time += Time.deltaTime)
-        //    {
-        //        _panel.color = new Color(_panel.color.r, _panel.color.g, _panel.color.b, startAlpha + alphaWay * time);
-        //        yield return null;
-        //    }
-        //}
-
-        //public IEnumerator Deactivate()
-        //{
-        //    float startAlpha = _panel.color.a;
-        //    float alphaWay = (DeactiveAlpha - startAlpha) / _deactivateDuration;
-
-        //    for (float time = 0f; time < _deactivateDuration; time += Time.deltaTime)
-        //    {
-        //        _panel.color = new Color(_panel.color.r, _panel.color.g, _panel.color.b, startAlpha + alphaWay * time);
-        //        yield return null;
-        //    }
-
-        //    _panel.raycastTarget = false;
-        //}
-
         public void Activate()
         {
             _panel.raycastTarget = true;
@@ -68,15 +36,7 @@ namespace GameFields.StartTowerCardSelections
 
         public void Deactivate(Action activateCallback)
         {
-            //float startAlpha = _panel.color.a;
-            //float alphaWay = (DeactiveAlpha - startAlpha) / _deactivateDuration;
-
-            //for (float time = 0f; time < _deactivateDuration; time += Time.deltaTime)
-            //{
-            //    _panel.color = new Color(_panel.color.r, _panel.color.g, _panel.color.b, startAlpha + alphaWay * time);
-            //    yield return null;
-            //}
-            Color deactivateColor = new(_panel.color.r, _panel.color.g, _panel.color.b, DeactiveAlpha / MaxAlpha);
+            Color deactivateColor = new Color(_panel.color.r, _panel.color.g, _panel.color.b, DeactiveAlpha / MaxAlpha);
 
             _panel.DOColor(deactivateColor, _deactivateDuration)
             .OnComplete(()=>
@@ -85,6 +45,8 @@ namespace GameFields.StartTowerCardSelections
                 activateCallback.Invoke();
             });
         }
+
+        #region AutomaticFillComponents
 
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
@@ -97,5 +59,7 @@ namespace GameFields.StartTowerCardSelections
         {
             AutomaticFillComponents.DefineComponent(this, ref _panel, ComponentLocationTypes.InThis);
         }
+
+        #endregion
     }
 }
