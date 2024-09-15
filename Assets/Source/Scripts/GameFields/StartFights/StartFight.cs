@@ -9,23 +9,33 @@ using Zenject;
 using GameFields.Persons.Towers;
 using GameFields.Persons;
 
-namespace GameFields.StartTowerCardSelections
+namespace GameFields.StartFights
 {
-    public class StartTowerCardSelection : MonoBehaviour, IFightStep
+    public class StartFight : MonoBehaviour, IFightStep
     {
-        [SerializeField] private StartTowerCardSelectionPanel _startTowerCardSelectionPanel;
-        [SerializeField] private StartTowerCardSelectionLabel _startTowerCardSelectionLabel;
+        [SerializeField] private StartFightPanel _startTowerCardSelectionPanel;
+        [SerializeField] private StartFightLabel _startTowerCardSelectionLabel;
         [SerializeField] private Seat[] _seats;
         [SerializeField] private int _firstTurnCardsCount = 3;
 
-        private StartTowerCardSelectionPlayer _selectionPlayer;
-        private StartTowerCardSelectionImitation _selectionImitation;
-
-        //private List<>
+        private List<StartTowerCardSelection> _startTowerCardSelections;
 
         private Deck _deck;
 
-        public bool IsComplete => _selectionImitation.IsComplete && _selectionPlayer.IsComplete;
+        public bool IsComplete
+        {
+            get
+            {
+                bool isComplete = true;
+
+                foreach (StartTowerCardSelection startTowerCardSelection in _startTowerCardSelections)
+                {
+                    isComplete &= startTowerCardSelection.IsComplete;
+                }
+
+                return isComplete;
+            }
+        }
 
         [Inject]
         private void Construct(Deck deck)
@@ -38,8 +48,11 @@ namespace GameFields.StartTowerCardSelections
             _startTowerCardSelectionPanel.Init();
             _startTowerCardSelectionLabel.Init();
 
-            _selectionPlayer = new StartTowerCardSelectionPlayer(_deck, player, _seats);
-            _selectionImitation = new StartTowerCardSelectionImitation(enemyAI, _firstTurnCardsCount);
+            _startTowerCardSelections = new List<StartTowerCardSelection>
+            {
+                new StartTowerCardSelectionPlayer(_deck, player, _seats),
+                new StartTowerCardSelectionImitation(enemyAI, _firstTurnCardsCount)
+            };
         }
 
         public void StartStep()
@@ -49,8 +62,10 @@ namespace GameFields.StartTowerCardSelections
             _startTowerCardSelectionPanel.Activate();
             _startTowerCardSelectionLabel.Activate();
 
-            _selectionPlayer.StartProcess();
-            _selectionImitation.StartProcess();
+            foreach (StartTowerCardSelection startTowerCardSelection in _startTowerCardSelections)
+            {
+                startTowerCardSelection.StartProcess();
+            }
 
             WaitingFillTowers().ToUniTask();
         }

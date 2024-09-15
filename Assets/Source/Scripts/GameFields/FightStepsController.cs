@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using GameFields.StartTowerCardSelections;
+using GameFields.StartFights;
 
 namespace GameFields
 {
@@ -11,13 +11,13 @@ namespace GameFields
 
         private bool _isComplete;
 
-        public FightStepsController(StartTowerCardSelection startTowerCardSelections, Fight fight, EndFight endFight)
+        public FightStepsController(StartFight startFight, Fight fight, EndFight endFight)
         {
             _isComplete = false;
 
             _fightSteps = new Queue<IFightStep>();
 
-            _fightSteps.Enqueue(startTowerCardSelections);
+            _fightSteps.Enqueue(startFight);
             _fightSteps.Enqueue(fight);
             _fightSteps.Enqueue(endFight);
         }

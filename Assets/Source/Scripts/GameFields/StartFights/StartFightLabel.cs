@@ -4,9 +4,9 @@ using TMPro;
 using Tools;
 using Cysharp.Threading.Tasks;
 
-namespace GameFields.StartTowerCardSelections
+namespace GameFields.StartFights
 {
-    public class StartTowerCardSelectionLabel : MonoBehaviour
+    public class StartFightLabel : MonoBehaviour
     {
         private const float LifeAlpha = 1f;
         private const float EndAlpha = 0f;

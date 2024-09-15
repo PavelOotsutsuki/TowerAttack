@@ -25,6 +25,13 @@ namespace Cards
             gameObject.SetActive(false);
         }
 
+        //[ContextMenu("Test sound")]
+        //private void TestSound()
+        //{
+        //    _audioSource.Play();
+        //    //AudioSource.PlayClipAtPoint(_audioSource.clip, Vector3.zero);
+        //}
+
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()

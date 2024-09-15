@@ -1,34 +1,23 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using Cards;
 using Cysharp.Threading.Tasks;
 using GameFields.Persons;
 using GameFields.Persons.CardTransits;
-using GameFields.Persons.Towers;
 using GameFields.Seats;
 using UnityEngine;
-using Zenject;
 using Random = UnityEngine.Random;
 
-namespace GameFields.StartTowerCardSelections
+namespace GameFields.StartFights
 {
-    public class StartTowerCardSelectionPlayer
+    public class StartTowerCardSelectionPlayer : StartTowerCardSelection
     {
         private Deck _deck;
-        //private Tower _tower;
-        private readonly ITowerTransitCheck _towerTransitCheck;
-        private readonly ITowerTransitTrySet _towerTransitTrySet;
         private readonly IHandTransitSet _handTransitSet;
 
         private readonly Seat[] _seats;
 
-        public bool IsComplete => _towerTransitCheck.IsFill;
-
-        public StartTowerCardSelectionPlayer(Deck deck, Person person, Seat[] seats)
+        public StartTowerCardSelectionPlayer(Deck deck, Person person, Seat[] seats): base(person)
         {
-            _towerTransitCheck = person;
-            _towerTransitTrySet = person;
             _handTransitSet = person;
 
             _seats = seats;
@@ -37,15 +26,7 @@ namespace GameFields.StartTowerCardSelections
             InitSeats();
         }
 
-        //public void Init(Person person, Seat[] seats)
-        //{
-        //    _person = person;
-        //    _seats = seats;
-
-        //    InitSeats();
-        //}
-
-        public void StartProcess()
+        public override void StartProcess()
         {
             StartPlayerProcess().ToUniTask();
         }
@@ -66,7 +47,7 @@ namespace GameFields.StartTowerCardSelections
 
             int selectedCardIndex = Random.Range(0, _seats.Length);
 
-            if (_towerTransitTrySet.TrySet(_seats[selectedCardIndex].Card))
+            if (TowerTransitTrySet.TrySet(_seats[selectedCardIndex].Card))
             {
                 _seats[selectedCardIndex].Reset();
 

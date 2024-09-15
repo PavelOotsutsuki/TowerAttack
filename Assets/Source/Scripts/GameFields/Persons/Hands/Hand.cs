@@ -96,7 +96,7 @@ namespace GameFields.Persons.Hands
 
         public Card GetLastCard()
         {
-            Seat lastSeat = _handSeats[_handSeats.Count];
+            Seat lastSeat = _handSeats[_handSeats.Count - 1];
             Card gettedCard = lastSeat.Card;
             _handSeats.Remove(lastSeat);
             lastSeat.Reset();
@@ -104,6 +104,26 @@ namespace GameFields.Persons.Hands
             SortHandSeats();
 
             return gettedCard;
+        }
+
+        public bool TryGetAllCards(out List<Card> cards)
+        {
+            //ForciblyBlock();
+
+            if (_handSeats.Count <= 0)
+            {
+                cards = null;
+                return false;
+            }
+
+            cards = new List<Card>();
+
+            while (_handSeats.Count > 0)
+            {
+                cards.Add(GetLastCard());
+            }
+
+            return true;
         }
 
         public void ForciblyBlock()

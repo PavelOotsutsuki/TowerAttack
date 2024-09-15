@@ -16,6 +16,7 @@ namespace GameFields.Effects
 
         private IHandTransitTryGet _handTransitTryGet;
         private IHandTransitSet _handTransitSet;
+        private IDrawCardManager _drawCardManager;
 
         private Person _deactivePerson;
         private List<Card> _cards;
@@ -24,8 +25,9 @@ namespace GameFields.Effects
         public PatriarchCorallEffect(Person activePerson, Person deactivePerson): base()
         {
             _activePerson = activePerson;
-            _deactivePerson = deactivePerson;
+            //_deactivePerson = deactivePerson;
 
+            _drawCardManager = activePerson;
             _handTransitTryGet = activePerson;
             _handTransitSet = deactivePerson;
 
@@ -36,7 +38,7 @@ namespace GameFields.Effects
         {
             _endPlaying = false;
             //_cards = _activePerson?.DrawCards(_countDrawCards, DiscoverCards);
-            _cards = _activePerson?.DrawCards(_countDrawCards);
+            _cards = _drawCardManager?.DrawCards(_countDrawCards);
 
             DiscoverCards();
 

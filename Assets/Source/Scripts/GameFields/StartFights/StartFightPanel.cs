@@ -4,9 +4,9 @@ using UnityEngine.UI;
 using DG.Tweening;
 using System;
 
-namespace GameFields.StartTowerCardSelections
+namespace GameFields.StartFights
 {
-    public class StartTowerCardSelectionPanel : MonoBehaviour
+    public class StartFightPanel : MonoBehaviour
     {
         private const float MaxAlpha = 255f;
         private const float DeactiveAlpha = 0f;

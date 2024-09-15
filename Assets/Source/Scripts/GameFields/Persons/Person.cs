@@ -16,7 +16,7 @@ using Zenject;
 
 namespace GameFields.Persons
 {
-    public abstract class Person : IStateMachineState, IDrawCardManager, ITowerTransitCheck, ITowerTransitTrySet, IHandTransitGetLast, IHandTransitSet, IHandTransitTryGet
+    public abstract class Person : IStateMachineState, IDrawCardManager, ITowerTransitCheck, ITowerTransitTrySet, /*IHandTransitGetLast,*/ IHandTransitSet, IHandTransitTryGet, IHandTransitGetAll
     {
         private readonly ITurnStep _turnProcess;
         private readonly CardPlayingZone _playingZone;
@@ -62,9 +62,6 @@ namespace GameFields.Persons
             ProcessingTurn().ToUniTask();
         }
 
-        public List<Card> DrawCards(int countCards, Action callback = null)
-            => _drawCardRoot.DrawCards(countCards, callback);
-
         public void FinishTurn()
         {
             IReadOnlyList<Card> discardedCards = _playingZone.UpdateCards();
@@ -75,9 +72,15 @@ namespace GameFields.Persons
 
         public void DiscoverCards(List<Card> cards, string activateMessage, Action<Card> callback)
         {
+            if (cards is null)
+            {
+                return;
+            }
+
             if (cards.Count > _discover.MaxSeats)
             {
-                throw new Exception("So many cards for discover: " + cards.Count + "/" + _discover.MaxSeats);
+                return;
+                //throw new Exception("So many cards for discover: " + cards.Count + "/" + _discover.MaxSeats);
             }
 
             _discover.Activate(cards, activateMessage, callback);
@@ -118,6 +121,11 @@ namespace GameFields.Persons
             }
         }
 
+        List<Card> IDrawCardManager.DrawCards(int countCards, Action callback = null)
+        { 
+            return _drawCardRoot.DrawCards(countCards, callback);
+        }
+
         bool ITowerTransitCheck.IsFill => _tower.IsTowerFill;
 
         bool ITowerTransitTrySet.TrySet(Card card)
@@ -135,9 +143,21 @@ namespace GameFields.Persons
             _hand.AddCard(card);
         }
 
-        Card IHandTransitGetLast.Get()
+        //Card IHandTransitGetLast.Get()
+        //{
+        //    return _hand.GetLastCard();
+        //}
+
+        List<Card> IHandTransitGetAll.Get()
         {
-            return _hand.GetLastCard();
+            List<Card> cards;
+
+            if (_hand.TryGetAllCards(out cards) == false)
+            {
+                cards = null;
+            }
+
+            return cards;
         }
     }
 }
