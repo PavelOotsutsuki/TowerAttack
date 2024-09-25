@@ -11,6 +11,8 @@ namespace GameFields.Persons.Tables
         
         private Table _table;
 
+        public bool HasFreeSeat => _table.HasFreeSeat;
+
         public void Init(Table table)
         {
             _table = table;
@@ -18,16 +20,14 @@ namespace GameFields.Persons.Tables
 
         public Vector3 GetPosition() => transform.position;
 
-        public bool TrySeatCard(Card card)
+        public void SeatCard(Card card)
         {
-            if (_table.HasFreeSeat == false)
-                return false;
-            
+            if (HasFreeSeat == false)
+                throw new System.Exception("Нет места в " + ToString() + "! Почему не проверил ");
+
             card.Play();
             _table.SeatCard(card);
             _playedCards.Add(card);
-
-            return true;
         }
 
         public IReadOnlyList<Card> UpdateCards()

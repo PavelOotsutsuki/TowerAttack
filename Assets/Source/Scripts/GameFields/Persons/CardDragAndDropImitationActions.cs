@@ -47,8 +47,10 @@ namespace GameFields.Persons
 
         public bool TryPlay(float returnToHandDuration)
         {
-            if (_cardDropPlaceImitation.TrySeatCard(_activeCard))
+            if (_cardDropPlaceImitation.HasFreeSeat)
             {
+                _cardDragAndDropListener.OnCardPlay();
+                _cardDropPlaceImitation.SeatCard(_activeCard);
                 _bus.Fire(new StartEffectSignal(_activeCard));
                 return true;
             }

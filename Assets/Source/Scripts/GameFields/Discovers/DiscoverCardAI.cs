@@ -29,7 +29,7 @@ namespace GameFields.Persons.Discovers
         {
             FrameImage.color = _defaultColor;
 
-            View(cardHeight, cardWidth);
+            ViewLogic.View(cardHeight, cardWidth);
         }
 
         public override void StartClickActions()

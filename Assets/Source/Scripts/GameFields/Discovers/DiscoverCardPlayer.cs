@@ -35,7 +35,7 @@ namespace GameFields.Persons.Discovers
             _name.text = cardViewConfig.Name;
             _feature.text = cardViewConfig.Feature;
 
-            View(cardHeight, cardWidth);
+            ViewLogic.View(cardHeight, cardWidth);
 
             WaitingToUnblock().ToUniTask();
         }
@@ -52,7 +52,7 @@ namespace GameFields.Persons.Discovers
 
         private IEnumerator WaitingToUnblock()
         {
-            yield return new WaitForSeconds(GrowDuration);
+            yield return new WaitForSeconds(ViewDuration);
 
             Unblock();
         }

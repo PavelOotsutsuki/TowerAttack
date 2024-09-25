@@ -15,7 +15,7 @@ namespace GameFields.Persons.Towers
 
         //private IUnbindCardManager _unbindCardManager;
 
-        public bool IsTowerFill => _towerSeat.IsFill();
+        public bool HasFreeSeat => _towerSeat.IsFill() == false;
 
         public void Init(/*IUnbindCardManager unbindCardManager*/)
         {
@@ -29,19 +29,18 @@ namespace GameFields.Persons.Towers
             return transform.position;
         }
 
-        public bool TrySeatCard(Card card)
+        public void SeatCard(Card card)
         {
-            if (_towerSeat.IsFill() == false)
+            if (HasFreeSeat)
             {
                 card.SetActiveInteraction(IsCardInteraction);
                 _towerSeat.SetCard(card, DefaultSideType, _seatDuration);
                 //_unbindCardManager.UnbindDragableCard();
-
-                return true;
             }
-
-            Debug.Log("Если все хорошо этого сообщения не должно быть, вроде как");
-            return false;
+            else
+            {
+                Debug.Log("Если все хорошо этого сообщения не должно быть, вроде как");
+            }
         }
 
         #region AutomaticFillComponents

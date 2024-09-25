@@ -4,7 +4,9 @@ namespace Cards
 {
     public interface ICardDropPlace
     {
-        public bool TrySeatCard(Card card);
+        public bool HasFreeSeat { get; }
+
+        public void SeatCard(Card card);
         public Vector3 GetPosition();
     }
 }

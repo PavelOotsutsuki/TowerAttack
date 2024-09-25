@@ -9,7 +9,7 @@ namespace Cards
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private CardPaper _cardPaper;
         [SerializeField] private CardConfig _config;
-        //[SerializeField] private StartSelectionCard _startSelectionCard;
+        [SerializeField] private StartSelectionCard _startSelectionCard;
         [SerializeField] private Vector3 _defaultScaleVector;
 
         private CardCharacter _character;
@@ -23,18 +23,7 @@ namespace Cards
         public CardMovement CardMovement { get; private set; }
         public Vector3 DefaultScaleVector => _defaultScaleVector;
         public CardViewConfig ViewConfig => _config.CardViewConfig;
-        public bool IsPlayingEffect
-        {
-            get
-            {
-                if (_effect is not null)
-                {
-                    return _effect.IsPlayed;
-                }
-
-                return false;
-            }
-        }
+        public bool IsPlayingEffect => _effect is null ? false : _effect.IsPlayed;
 
         internal void Init(IEffectFactory effectFactory, CardViewService cardViewService, Transform dragContainer)
         {
@@ -44,16 +33,21 @@ namespace Cards
             CardMovement = new CardMovement(_rectTransform);
 
             _cardPaper.Init(this, cardViewService, ViewConfig, dragContainer, _rectTransform);
-            //_startSelectionCard.Init(ViewConfig, _rectTransform, _cardPaper);
+            _startSelectionCard.Init(ViewConfig, _rectTransform);
 
             CreateCardCharacter();
             SetState(_cardPaper);
         }
 
-        //public void StartSelection()
-        //{
-        //    SetState(_startSelectionCard);
-        //}
+        public void StartSelection()
+        {
+            if (_currentState is not CardPaper)
+            {
+                throw new Exception("Try selected card by not CardPaper. Card state: " + _currentState.ToString());
+            }
+
+            SetState(_startSelectionCard);
+        }
 
         public void EndDrag()
         {
@@ -129,6 +123,11 @@ namespace Cards
 
         public void SetSide(SideType sideType)
         {
+            if (_currentState is not CardPaper)
+            {
+                SetState(_cardPaper);
+            }
+
             _cardPaper.SetSide(sideType);
         }
 
@@ -157,5 +156,33 @@ namespace Cards
             _currentState = state;
             _currentState.View();
         }
+
+        #region AutomaticFillComponents
+        [ContextMenu(nameof(DefineAllComponents))]
+        private void DefineAllComponents()
+        {
+            DefineRectTransform();
+            DefineCardPaper();
+            DefineStartSelectionCard();
+        }
+
+        [ContextMenu(nameof(DefineRectTransform))]
+        private void DefineRectTransform()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
+        }
+
+        [ContextMenu(nameof(DefineCardPaper))]
+        private void DefineCardPaper()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _cardPaper, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineStartSelectionCard))]
+        private void DefineStartSelectionCard()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _startSelectionCard, ComponentLocationTypes.InChildren);
+        }
+        #endregion 
     }
 }

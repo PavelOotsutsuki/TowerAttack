@@ -8,6 +8,7 @@ using Cards;
 using Zenject;
 using GameFields.Persons.Towers;
 using GameFields.Persons;
+using GameFields.Persons.Discovers;
 
 namespace GameFields.StartFights
 {
@@ -15,7 +16,8 @@ namespace GameFields.StartFights
     {
         [SerializeField] private StartFightPanel _startTowerCardSelectionPanel;
         [SerializeField] private StartFightLabel _startTowerCardSelectionLabel;
-        [SerializeField] private Seat[] _seats;
+        [SerializeField] private StartTowerCardSelectionSeat[] _seats;
+        [SerializeField] private DiscoverPlayer _discoverPlayer;
         [SerializeField] private int _firstTurnCardsCount = 3;
 
         private List<StartTowerCardSelection> _startTowerCardSelections;
@@ -47,10 +49,11 @@ namespace GameFields.StartFights
         {
             _startTowerCardSelectionPanel.Init();
             _startTowerCardSelectionLabel.Init();
+            _discoverPlayer.Init();
 
             _startTowerCardSelections = new List<StartTowerCardSelection>
             {
-                new StartTowerCardSelectionPlayer(_deck, player, _seats),
+                new StartTowerCardSelectionPlayer(_deck, player, _seats, _discoverPlayer),
                 new StartTowerCardSelectionImitation(enemyAI, _firstTurnCardsCount)
             };
         }

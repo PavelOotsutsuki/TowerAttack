@@ -16,7 +16,7 @@ using Zenject;
 
 namespace GameFields.Persons
 {
-    public abstract class Person : IStateMachineState, IDrawCardManager, ITowerTransitCheck, ITowerTransitTrySet, /*IHandTransitGetLast,*/ IHandTransitSet, IHandTransitTryGet, IHandTransitGetAll
+    public abstract class Person : IStateMachineState, IDrawCardManager, ITowerTransitCheck, ITowerTransitSet, /*IHandTransitGetLast,*/ IHandTransitSet, IHandTransitTryGet, IHandTransitGetAll
     {
         private readonly ITurnStep _turnProcess;
         private readonly CardPlayingZone _playingZone;
@@ -126,11 +126,11 @@ namespace GameFields.Persons
             return _drawCardRoot.DrawCards(countCards, callback);
         }
 
-        bool ITowerTransitCheck.IsFill => _tower.IsTowerFill;
+        bool ITowerTransitCheck.IsFill => _tower.HasFreeSeat == false;
 
-        bool ITowerTransitTrySet.TrySet(Card card)
+        void ITowerTransitSet.Set(Card card)
         {
-            return _tower.TrySeatCard(card);
+            _tower.SeatCard(card);
         }
 
         bool IHandTransitTryGet.TryGet(Card card)

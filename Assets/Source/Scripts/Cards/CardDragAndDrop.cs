@@ -11,6 +11,7 @@ namespace Cards
 
         private Coroutine _viewCardAfterDropInWork;
         private bool _isForciblyDrag;
+        private bool _isNotDraggable;
         private Transform _cardTransform;
 
         private CardDragAndDropActions _cardDragAndDropActions;
@@ -28,6 +29,7 @@ namespace Cards
             _cardDragAndDropActions = cardDragAndDropActions;
             _isForciblyDrag = false;
             IsDragable = false;
+            _isNotDraggable = false;
         }
 
         public void BlockDrag()
@@ -43,6 +45,13 @@ namespace Cards
 
         public void OnBeginDrag(PointerEventData eventData)
         {
+            if (_cardDragAndDropActions.IsCanDrag() == false)
+            {
+                _isNotDraggable = true;
+                _currentEventData?.Reset();
+                return;
+            }
+
             _currentEventData = eventData;
 
             if (IsDragable)
@@ -72,6 +81,12 @@ namespace Cards
 
         public void OnEndDrag(PointerEventData eventData)
         {
+            if (_isNotDraggable)
+            {
+                _isNotDraggable = false;
+                return;
+            }
+
             if (_isForciblyDrag)
             {
                 IsDragable = false;
@@ -82,10 +97,10 @@ namespace Cards
 
             if (EventSystem.current.TryGetComponentInRaycasts(eventData, out ICardDropPlace cardDropPlace))
             {
-                if (_cardDragAndDropActions.TryDrop(cardDropPlace))
+                if (_cardDragAndDropActions.IsCanDrop(cardDropPlace))
                 {
                     IsDragable = false;
-                    _cardDragAndDropActions.PlayCard();
+                    _cardDragAndDropActions.PlayCard(cardDropPlace);
                     return;
                 }
             }

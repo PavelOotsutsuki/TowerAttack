@@ -27,6 +27,8 @@ namespace GameFields.Persons.Hands
         private int _handSeatIndex;
         private SeatPool _handSeatPool;
 
+        public bool IsDraggable => this is HandPlayer;
+
         public void Init(SeatPool seatPool)
         {
             _handSeats = new List<Seat>();
@@ -67,6 +69,8 @@ namespace GameFields.Persons.Hands
 
         public virtual void AddCard(Card card)
         {
+            card.SetDragAndDropListener(this);
+
             Seat handSeat = _handSeatPool.GetSeat();
             handSeat.transform.SetParent(_rectTransform);
             handSeat.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
@@ -109,6 +113,7 @@ namespace GameFields.Persons.Hands
         public bool TryGetAllCards(out List<Card> cards)
         {
             //ForciblyBlock();
+            StartEndDragCard(true);
 
             if (_handSeats.Count <= 0)
             {
@@ -217,7 +222,7 @@ namespace GameFields.Persons.Hands
 
         private bool TryFindHandSeat(out Seat findedHandSeat, Card card)
         {
-            findedHandSeat = _handSeats.FirstOrDefault(seat => seat.IsCardEqual(card));
+            findedHandSeat = _handSeats.FirstOrDefault(seat => seat.Card == card);
 
             return findedHandSeat != null;
         }

@@ -47,9 +47,9 @@ namespace GameFields.StartFights
 
             if (_handTransitTryGet.TryGet(enemyCards[selectedCardIndex]))
             {
-                if (TowerTransitTrySet.TrySet(enemyCards[selectedCardIndex]))
+                if (TowerTransitCheck.IsFill == false)
                 {
-
+                    TowerTransitSet.Set(enemyCards[selectedCardIndex]);
                 }
                 else
                 {

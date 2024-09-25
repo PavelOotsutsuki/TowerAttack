@@ -90,7 +90,6 @@ namespace GameFields.Persons.Discovers
 
         #region AutomaticFillComponents
 
-        [ContextMenu(nameof(DefineAllComponents))]
         protected virtual void DefineAllComponents()
         {
             DefineSeats();

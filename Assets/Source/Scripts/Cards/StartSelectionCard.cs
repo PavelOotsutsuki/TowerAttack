@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace Cards
 {
-    internal class DiscoverCardOld : MonoBehaviour, ICardState
+    internal class StartSelectionCard : MonoBehaviour, ICardState
     {
         [SerializeField, Min(1f)] private float _scaleFactor = 2f;
 
@@ -20,7 +20,6 @@ namespace Cards
         //[SerializeField] private CanvasScaler _canvasScaler;
 
         private RectTransform _cardTransform;
-        private ICardState _cardPaper;
         private Movement _movement;
         private float _bigHeight;
         private float _bigWidth;
@@ -28,13 +27,12 @@ namespace Cards
         //private float _screenFactor;
 
 
-        internal void Init(CardViewConfig cardViewConfig, RectTransform cardTransform, ICardState cardPaper)
+        internal void Init(CardViewConfig cardViewConfig, RectTransform cardTransform)
         {
             _rectTransform.rotation = Quaternion.identity;
             _rectTransform.localPosition = Vector3.zero;
             _canvasHeight = ScreenView.GetFactorX() * Screen.height;
             _cardTransform = cardTransform;
-            _cardPaper = cardPaper;
             _movement = new Movement(_rectTransform);
 
             //_sizeFactor = _cardTransform.sizeDelta.x / _cardTransform.sizeDelta.y;
@@ -57,20 +55,18 @@ namespace Cards
         public void Hide()
         {
             gameObject.SetActive(false);
-            _cardPaper.Hide();
         }
 
         public void View()
         {
             //_rectTransform.position = new Vector2(_rectTransform.position.x, (_bigHeight / 2f + _canvasHeight / 10f) * _screenFactor);
-            _rectTransform.sizeDelta = new Vector2(_bigWidth, _bigHeight);
-            _rectTransform.localPosition = Vector3.zero;
+            //_rectTransform.sizeDelta = new Vector2(_bigWidth, _bigHeight);
+            //_rectTransform.localPosition = Vector3.zero;
             //_rectTransform.sizeDelta = new Vector2(0f, 0f);
             Vector3 defaultScale = _rectTransform.localScale;
-            _movement.MoveInstantly(_rectTransform.position, Quaternion.identity.eulerAngles, Vector3.zero);
-            _movement.MoveSmoothly(_rectTransform.position, Quaternion.identity.eulerAngles, _growDuration, defaultScale);
+            //_movement.MoveInstantly(_rectTransform.position, Quaternion.identity.eulerAngles, Vector3.zero);
+            //_movement.MoveLocalSmoothly(Vector2.zero, Quaternion.identity.eulerAngles, _growDuration, defaultScale);
             gameObject.SetActive(true);
-            _cardPaper.View();
         }
 
         #region AutomaticFillComponents

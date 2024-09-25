@@ -177,6 +177,7 @@ GameObject:
   - component: {fileID: 7560718406258310843}
   - component: {fileID: 5712266261480616510}
   - component: {fileID: 7090883056593843971}
+  - component: {fileID: 5997027203550806854}
   m_Layer: 5
   m_Name: DiscoverCardImitation2
   m_TagString: Untagged
@@ -255,12 +256,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6df8d2b804bf744b7a7a0f4050925f72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GrowDuration: 0.5
+  ViewDuration: 1
   FrameImage: {fileID: 8278571099896121170}
-  _rectTransform: {fileID: 844688072803091307}
-  _scaleFactor: 1.5
+  ViewLogic: {fileID: 5997027203550806854}
   _selectedFrameColor: {r: 0.8509804, g: 0.011764706, b: 0.011764706, a: 1}
   _selectedWaitDuration: 1
+--- !u!114 &5997027203550806854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8387435126504428575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7ff5dd54cc184414bac5accede52b8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RectTransform: {fileID: 844688072803091307}
+  ScaleFactor: 2
 --- !u!1001 &1533160703642616098
 PrefabInstance:
   m_ObjectHideFlags: 0

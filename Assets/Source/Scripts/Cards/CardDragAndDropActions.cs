@@ -42,9 +42,9 @@ namespace Cards
             }
         }
 
-        internal bool TryDrop(ICardDropPlace cardDropPlace)
+        internal bool IsCanDrop(ICardDropPlace cardDropPlace)
         {
-            return cardDropPlace.TrySeatCard(_card);
+            return cardDropPlace.HasFreeSeat;
         }
 
         internal void StartEndDrag()
@@ -52,14 +52,20 @@ namespace Cards
             _cardDragListener.OnCardDrop();
         }
 
-        internal void PlayCard()
+        internal void PlayCard(ICardDropPlace cardDropPlace)
         {
             _cardDragListener.OnCardPlay();
+            cardDropPlace.SeatCard(_card);
         }
 
         internal void ReturnInHand(float duration)
         {
             _card.CardMovement.MoveLocalSmoothly(Vector2.zero, Quaternion.identity.eulerAngles, duration, _card.DefaultScaleVector);
+        }
+
+        internal bool IsCanDrag()
+        {
+            return _cardDragListener.IsDraggable;
         }
     }
 }

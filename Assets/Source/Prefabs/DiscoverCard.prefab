@@ -1102,6 +1102,7 @@ GameObject:
   - component: {fileID: 3209316100976247158}
   - component: {fileID: 1497082094872768830}
   - component: {fileID: 5198153373583702261}
+  - component: {fileID: 8952863285110458061}
   m_Layer: 5
   m_Name: DiscoverCard
   m_TagString: Untagged
@@ -1180,9 +1181,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4af768730aa1a4195ab8fceeeb15259a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GrowDuration: 0.5
+  ViewDuration: 1
   FrameImage: {fileID: 5568063326927377020}
-  _rectTransform: {fileID: 7618827951908783399}
+  ViewLogic: {fileID: 8952863285110458061}
   _icon: {fileID: 566134732455732466}
   _number: {fileID: 4606953827740633675}
   _name: {fileID: 8081553350937781104}
@@ -1202,6 +1203,20 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &8952863285110458061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7771671663013992269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7ff5dd54cc184414bac5accede52b8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RectTransform: {fileID: 7618827951908783399}
+  ScaleFactor: 2
 --- !u!1 &8754653051427584279
 GameObject:
   m_ObjectHideFlags: 0

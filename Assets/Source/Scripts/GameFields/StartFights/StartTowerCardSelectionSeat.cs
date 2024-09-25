@@ -1,10 +1,12 @@
-using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 using Cards;
 using Tools;
+using UnityEngine;
 
-namespace GameFields.Seats
+namespace GameFields.StartFights
 {
-    public class Seat : MonoBehaviour
+    public class StartTowerCardSelectionSeat : MonoBehaviour
     {
         [SerializeField] private Transform _transform;
 
@@ -20,17 +22,16 @@ namespace GameFields.Seats
 
         public void Reset() => Card = null;
 
-        public void SetCard(Card card, SideType sideType, float duration, float scaleFactor = 1f)
+        public void SetCard(Card card, float duration, float scaleFactor = 1f)
         {
             Card = card;
 
-            Card.SetSide(sideType);
+            //Card.StartSelection();
+            Card.SetSide(SideType.Front);
             Card.transform.SetParent(_transform);
             CardMovement cardMovement = Card.CardMovement;
             cardMovement.MoveLocalSmoothly(Vector2.zero, Quaternion.identity.eulerAngles, duration, Card.DefaultScaleVector * scaleFactor);
         }
-
-        //public bool IsCardEqual(Card card) => Card == card;
 
         public bool IsFill() => Card != null;
 

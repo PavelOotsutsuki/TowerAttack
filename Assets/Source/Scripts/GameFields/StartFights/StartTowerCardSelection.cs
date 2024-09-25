@@ -5,15 +5,15 @@ namespace GameFields.StartFights
 {
     public abstract class StartTowerCardSelection
     {
-        protected readonly ITowerTransitTrySet TowerTransitTrySet;
-        private readonly ITowerTransitCheck _towerTransitCheck;
+        protected readonly ITowerTransitSet TowerTransitSet;
+        protected readonly ITowerTransitCheck TowerTransitCheck;
 
-        public bool IsComplete => _towerTransitCheck.IsFill;
+        public bool IsComplete => TowerTransitCheck.IsFill;
 
         public StartTowerCardSelection(Person person)
         {
-            _towerTransitCheck = person;
-            TowerTransitTrySet = person;
+            TowerTransitCheck = person;
+            TowerTransitSet = person;
         }
 
         public abstract void StartProcess();
