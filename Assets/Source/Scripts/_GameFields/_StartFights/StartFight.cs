@@ -16,8 +16,8 @@ namespace GameFields.StartFights
     {
         [SerializeField] private StartFightPanel _startTowerCardSelectionPanel;
         [SerializeField] private StartFightLabel _startTowerCardSelectionLabel;
-        [SerializeField] private StartTowerCardSelectionSeat[] _seats;
-        [SerializeField] private DiscoverPlayer _discoverPlayer;
+        [SerializeField] private Seat[] _seats;
+        [SerializeField] private Discover _discover;
         [SerializeField] private int _firstTurnCardsCount = 3;
 
         private List<StartTowerCardSelection> _startTowerCardSelections;
@@ -49,11 +49,11 @@ namespace GameFields.StartFights
         {
             _startTowerCardSelectionPanel.Init();
             _startTowerCardSelectionLabel.Init();
-            _discoverPlayer.Init();
+            _discover.Init();
 
             _startTowerCardSelections = new List<StartTowerCardSelection>
             {
-                new StartTowerCardSelectionPlayer(_deck, player, _seats, _discoverPlayer),
+                new StartTowerCardSelectionPlayer(_deck, player, _seats, _discover),
                 new StartTowerCardSelectionImitation(enemyAI, _firstTurnCardsCount)
             };
         }
@@ -65,40 +65,52 @@ namespace GameFields.StartFights
             _startTowerCardSelectionPanel.Activate();
             _startTowerCardSelectionLabel.Activate();
 
+            WaitingViewStartLabel().ToUniTask();
+        }
+
+        private IEnumerator WaitingViewStartLabel()
+        {
+            yield return new WaitForSeconds(2f);
+
             foreach (StartTowerCardSelection startTowerCardSelection in _startTowerCardSelections)
             {
                 startTowerCardSelection.StartProcess();
             }
 
-            WaitingFillTowers().ToUniTask();
-        }
-
-        private IEnumerator WaitingFillTowers()
-        {
             yield return new WaitUntil(() => IsComplete);
 
             Deactivate();
         }
 
+        //private IEnumerator WaitingFillTowers()
+        //{
+        //    yield return new WaitUntil(() => IsComplete);
+
+        //    Deactivate();
+        //}
+
         private void Deactivate()
         {
             _startTowerCardSelectionPanel.Deactivate(() => Destroy(gameObject));
+
+            //WaitingToDestroy().ToUniTask();
+            //Destroy(gameObject);
         }
+
+        //private IEnumerator WaitingToDestroy()
+        //{
+        //    yield return new WaitForSeconds(0.5f);
+
+        //    Destroy(gameObject);
+        //}
 
         #region AutomaticFillComponents
 
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
-            DefineFirstTurnPanel();
             DefineFirstTurnLabel();
             DefineSeats();
-        }
-
-        [ContextMenu(nameof(DefineFirstTurnPanel))]
-        private void DefineFirstTurnPanel()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _startTowerCardSelectionPanel, ComponentLocationTypes.InChildren);
         }
 
         [ContextMenu(nameof(DefineFirstTurnLabel))]

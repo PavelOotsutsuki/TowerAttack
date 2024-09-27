@@ -256,7 +256,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6df8d2b804bf744b7a7a0f4050925f72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ViewDuration: 1
+  ViewDuration: 0.5
   FrameImage: {fileID: 8278571099896121170}
   ViewLogic: {fileID: 5997027203550806854}
   _selectedFrameColor: {r: 0.8509804, g: 0.011764706, b: 0.011764706, a: 1}
@@ -274,7 +274,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RectTransform: {fileID: 844688072803091307}
-  ScaleFactor: 2
+  ScaleFactor: 1.5
 --- !u!1001 &1533160703642616098
 PrefabInstance:
   m_ObjectHideFlags: 0

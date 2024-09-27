@@ -30,8 +30,6 @@ namespace GameFields.Seats
             cardMovement.MoveLocalSmoothly(Vector2.zero, Quaternion.identity.eulerAngles, duration, Card.DefaultScaleVector * scaleFactor);
         }
 
-        //public bool IsCardEqual(Card card) => Card == card;
-
         public bool IsFill() => Card != null;
 
         public void SetLocalPositionValues(Vector3 position, Vector3 rotation, float duration = 0f)

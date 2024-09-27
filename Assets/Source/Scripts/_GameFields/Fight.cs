@@ -31,21 +31,29 @@ namespace GameFields
 
         public void StartStep()
         {
-            StartTurn();
+            StartTurn().ToUniTask();
         }
 
-        private void StartTurn()
+        private IEnumerator StartTurn()
         {
-            ActivePerson.StartStep();
-            TurnProcessing().ToUniTask();
+            yield return new WaitForSeconds(3f);
+
+            while (IsComplete == false)
+            {
+                ActivePerson.StartStep();
+
+                yield return new WaitUntil(() => ActivePerson.IsComplete);
+
+                NextTurn();
+            }
         }
 
-        private IEnumerator TurnProcessing()
-        {
-            yield return new WaitUntil(() => ActivePerson.IsComplete);
+        //private IEnumerator TurnProcessing()
+        //{
+        //    yield return new WaitUntil(() => ActivePerson.IsComplete);
 
-            NextTurn();
-        }
+        //    NextTurn();
+        //}
 
         private void NextTurn()
         {
@@ -60,7 +68,7 @@ namespace GameFields
             }
 
             _personsState.Switch();
-            StartTurn();
+            //StartTurn();
         }
     }
 }

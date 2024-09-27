@@ -5,6 +5,7 @@ using GameFields.Persons.Hands;
 using GameFields.Persons.Tables;
 using GameFields.Persons.Towers;
 using GameFields.Seats;
+using GameFields.StartFights;
 using UnityEngine;
 using Zenject;
 
@@ -26,6 +27,7 @@ namespace GameFields.Persons
         private Tower _playerTower;
         private DiscoverPlayer _playerDiscover;
 
+        [SerializeField] private StartPlayerTurnLabel _startPlayerTurnLabel; 
         [SerializeField] private int _playerCountStartDrawCards = 1;
 
         [Space]
@@ -104,9 +106,10 @@ namespace GameFields.Persons
             DrawCardRoot drawCardRoot = new DrawCardRoot(new SimpleDrawCardAnimation(_playerHand, _simpleDrawCardDelay), _deck);
             TurnProcessing turnProcessing = new TurnProcessing(_endTurnButton, _playerHand);
             StartTurnDraw startTurnDraw = new StartTurnDraw(drawCardRoot, simpleDrawCardAnimation, fireDrawCardAnimation, _playerCountStartDrawCards);
+            StartPlayerTurnView startPlayerTurnView = new StartPlayerTurnView(_startPlayerTurnLabel);
 
             return new Player(_tableActivator, _playerHand, _playerPlayingZone, _playerTower, _playerDiscover,
-                drawCardRoot, startTurnDraw, turnProcessing, _bus);
+                drawCardRoot, startTurnDraw, turnProcessing, _bus, startPlayerTurnView);
         }
 
         public EnemyAI CreateEnemyAI()
@@ -130,6 +133,7 @@ namespace GameFields.Persons
             _playerPlayingZone.Init(_playerTable);
             _playerTower.Init();
             _playerDiscover.Init();
+            _startPlayerTurnLabel.Init();
         }
 
         private void InitEnemyData(SeatPool seatPool)

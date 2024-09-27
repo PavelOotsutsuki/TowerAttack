@@ -53,9 +53,11 @@ namespace GameFields.Persons
         public void StartStep()
         {
             IsComplete = false;
-            
-            InitTurnSteps();
+
+            _turnSteps.Clear();
+
             OnStartStep();
+            InitTurnSteps();
 
             _currentStep = _turnSteps.Dequeue();
 
@@ -92,8 +94,6 @@ namespace GameFields.Persons
 
         private void InitTurnSteps()
         {
-            _turnSteps.Clear();
-            
             EnqueueStep(_startTurnDraw);
             EnqueueStep(_turnProcess);
         }
@@ -121,7 +121,7 @@ namespace GameFields.Persons
             }
         }
 
-        List<Card> IDrawCardManager.DrawCards(int countCards, Action callback = null)
+        List<Card> IDrawCardManager.DrawCards(int countCards, Action callback)
         { 
             return _drawCardRoot.DrawCards(countCards, callback);
         }

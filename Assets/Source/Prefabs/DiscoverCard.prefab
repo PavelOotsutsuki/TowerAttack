@@ -1181,7 +1181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4af768730aa1a4195ab8fceeeb15259a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ViewDuration: 1
+  ViewDuration: 0.5
   FrameImage: {fileID: 5568063326927377020}
   ViewLogic: {fileID: 8952863285110458061}
   _icon: {fileID: 566134732455732466}

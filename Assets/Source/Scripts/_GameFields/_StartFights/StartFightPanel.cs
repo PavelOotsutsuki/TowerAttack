@@ -10,11 +10,11 @@ namespace GameFields.StartFights
     {
         private const float MaxAlpha = 255f;
         private const float DeactiveAlpha = 0f;
-        private const float ActiveAlpha = 211f;
+        private const float ActiveAlpha = 248f;
 
         [SerializeField] private Image _panel;
         [SerializeField] private float _activateDuration = 1f;
-        [SerializeField] private float _deactivateDuration = 1f;
+        [SerializeField] private float _deactivateDuration = 2f;
 
         public void Init()
         {
