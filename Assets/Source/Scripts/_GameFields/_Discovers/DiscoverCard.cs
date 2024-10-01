@@ -1,6 +1,5 @@
 using System;
 using Cards;
-using Tools;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +7,7 @@ namespace GameFields.Persons.Discovers
 {
     public abstract class DiscoverCard : MonoBehaviour
     {
-        [SerializeField, Min(0.1f)] protected float ViewDuration = 1f;
+        [SerializeField, Min(0f)] protected float ViewDuration = 0.5f;
         [SerializeField] protected Image FrameImage;
         [SerializeField] protected DiscoverViewLogic ViewLogic;
 
@@ -25,7 +24,8 @@ namespace GameFields.Persons.Discovers
         }
 
         public abstract void Hide();
-        public abstract void Activate(float cardHeight, float cardWidth, CardViewConfig cardViewConfig = null);
+        //public abstract void Activate(float cardHeight, float cardWidth, CardViewConfig cardViewConfig = null);
+        public abstract void Activate(CardViewConfig cardViewConfig = null);
         public abstract void StartClickActions();
     }
 }

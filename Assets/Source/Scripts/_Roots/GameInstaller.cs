@@ -1,6 +1,6 @@
+using Cards;
 using GameFields;
 using GameFields.DiscardPiles;
-using GameFields.Persons;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.Hands;
 using GameFields.Persons.Tables;
@@ -14,6 +14,8 @@ namespace Roots
 {
     public class GameInstaller : MonoInstaller
     {
+        [SerializeField] private CardDescription _cardDescription;
+
         [SerializeField] private Deck _deck;
         [SerializeField] private DiscardPile _discardPile;
         [SerializeField] private SeatPool _seatPool;
@@ -34,6 +36,8 @@ namespace Roots
         public override void InstallBindings()
         {
             DeclareSignals();
+
+            Container.Bind<CardDescription>().FromInstance(_cardDescription).AsSingle();
 
             Container.Bind<Deck>().FromInstance(_deck).AsSingle();
             Container.Bind<DiscardPileConfig>().FromInstance(_discardPileConfig).AsSingle();

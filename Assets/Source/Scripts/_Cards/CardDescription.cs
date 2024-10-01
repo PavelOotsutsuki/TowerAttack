@@ -5,7 +5,7 @@ using Tools;
 
 namespace Cards
 {
-    internal class CardDescription : MonoBehaviour
+    public class CardDescription : MonoBehaviour
     {
         private const string StartText = "";
 
@@ -25,13 +25,13 @@ namespace Cards
             _canvasGroup.alpha = _startAlpha;
         }
 
-        internal void Show(string description)
+        public void Show(string description)
         {
             StartFading(_fadeUpDuration, _maxAlpha);
             _text.text = description;
         }
 
-        internal void Hide()
+        public void Hide()
         {
             StartFading(_fadeOutDuration, _minAlpha);
         }

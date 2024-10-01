@@ -18,28 +18,18 @@ namespace GameFields.StartFights
         [SerializeField] private float _middleDuration = 1f;
         [SerializeField] private float _endDuration = 1f;
 
-        //private Color _startColor;
-
-        //public bool IsComplete { get; private set; }
-
         public void Init()
         {
-            //IsComplete = false;
             gameObject.SetActive(false);
 
-            //_startColor = new Color(_label.color.r, _label.color.g, _label.color.b, LifeAlpha);
             Color startColor = new Color(_label.color.r, _label.color.g, _label.color.b, LifeAlpha);
 
-            //_label.color = _startColor;
             _label.color = startColor;
             _label.fontSize = _startFontSize;
         }
 
         public void Activate()
         {
-            //IsComplete = false;
-            //_label.color = _startColor;
-            //_label.fontSize = _startFontSize;
             Activating().ToUniTask();
         }
 
@@ -72,8 +62,6 @@ namespace GameFields.StartFights
                 yield return null;
             }
 
-            yield return new WaitForSeconds(0.1f);
-            //IsComplete = true;
             gameObject.SetActive(false);
         }
 

@@ -1,5 +1,8 @@
+using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using GameFields.StartFights;
+using UnityEngine;
 
 namespace GameFields
 {
@@ -22,30 +25,62 @@ namespace GameFields
             _fightSteps.Enqueue(endFight);
         }
 
-        public void Update()
+        public void StartStep()
         {
-            if (_isComplete)
+            _currentStep = _fightSteps.Dequeue();
+
+            Starting().ToUniTask();
+        }
+
+        private IEnumerator Starting()
+        {
+            while (_isComplete == false)
             {
-                return;
-            }
-            
-            if (_currentStep.IsComplete)
-            {
+                _currentStep.StartStep();
+                yield return new WaitUntil(() => _currentStep.IsComplete);
+
                 NextStep();
             }
         }
 
-        public void NextStep()
+        private void NextStep()
         {
             if (_fightSteps.Count > 0)
             {
                 _currentStep = _fightSteps.Dequeue();
-                _currentStep.StartStep();
             }
             else
             {
                 _isComplete = true;
             }
         }
+
+        //public void Update()
+        //{
+        //    if (_isComplete)
+        //    {
+        //        return;
+        //    }
+
+        //    if (_currentStep.IsComplete)
+        //    {
+        //        NextStep();
+        //    }
+        //}
+
+        //public void NextStep()
+        //{
+        //    if (_fightSteps.Count > 0)
+        //    {
+        //        _currentStep = _fightSteps.Dequeue();
+        //        _currentStep.StartStep();
+        //    }
+        //    else
+        //    {
+        //        _isComplete = true;
+        //    }
+        //}
+
+
     }
 }

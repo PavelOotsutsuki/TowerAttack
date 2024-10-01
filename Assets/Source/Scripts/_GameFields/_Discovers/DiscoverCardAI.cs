@@ -25,11 +25,12 @@ namespace GameFields.Persons.Discovers
             gameObject.SetActive(false);
         }
 
-        public override void Activate(float cardHeight, float cardWidth, CardViewConfig cardViewConfig = null)
+        public override void Activate(/*float cardHeight, float cardWidth, */CardViewConfig cardViewConfig = null)
         {
             FrameImage.color = _defaultColor;
 
-            ViewLogic.View(cardHeight, cardWidth);
+            //ViewLogic.View(cardHeight, cardWidth);
+            ViewLogic.View();
         }
 
         public override void StartClickActions()

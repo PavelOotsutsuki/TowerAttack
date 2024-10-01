@@ -23,13 +23,14 @@ namespace GameFields
             EndFight endFight = new EndFight(fightResult);
             _fightStepsController = new FightStepsController(_startFight, fight, endFight);
 
-            _fightStepsController.NextStep();
+            //_fightStepsController.NextStep();
+            _fightStepsController.StartStep();
         }
 
-        private void Update()
-        {
-            _fightStepsController.Update();
-        }
+        //private void Update()
+        //{
+        //    _fightStepsController.Update();
+        //}
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents))]

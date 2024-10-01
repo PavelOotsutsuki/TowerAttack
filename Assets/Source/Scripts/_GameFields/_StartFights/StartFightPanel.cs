@@ -10,11 +10,11 @@ namespace GameFields.StartFights
     {
         private const float MaxAlpha = 255f;
         private const float DeactiveAlpha = 0f;
-        private const float ActiveAlpha = 248f;
 
         [SerializeField] private Image _panel;
         [SerializeField] private float _activateDuration = 1f;
         [SerializeField] private float _deactivateDuration = 2f;
+        [SerializeField, Range(DeactiveAlpha, MaxAlpha)] private float _activeAlpha = 248f;
 
         public void Init()
         {
@@ -29,7 +29,7 @@ namespace GameFields.StartFights
         {
             _panel.raycastTarget = true;
 
-            Color activateColor = new(_panel.color.r, _panel.color.g, _panel.color.b, ActiveAlpha / MaxAlpha);
+            Color activateColor = new(_panel.color.r, _panel.color.g, _panel.color.b, _activeAlpha / MaxAlpha);
 
             _panel.DOColor(activateColor, _activateDuration);
         }

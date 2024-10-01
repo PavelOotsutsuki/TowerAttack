@@ -4,9 +4,7 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using GameFields.Seats;
 using System.Collections.Generic;
-using Cards;
 using Zenject;
-using GameFields.Persons.Towers;
 using GameFields.Persons;
 using GameFields.Persons.Discovers;
 
@@ -19,6 +17,7 @@ namespace GameFields.StartFights
         [SerializeField] private Seat[] _seats;
         [SerializeField] private Discover _discover;
         [SerializeField] private int _firstTurnCardsCount = 3;
+        [SerializeField] private float _waitToStartDuration = 2f;
 
         private List<StartTowerCardSelection> _startTowerCardSelections;
 
@@ -70,7 +69,7 @@ namespace GameFields.StartFights
 
         private IEnumerator WaitingViewStartLabel()
         {
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(_waitToStartDuration);
 
             foreach (StartTowerCardSelection startTowerCardSelection in _startTowerCardSelections)
             {
@@ -82,27 +81,10 @@ namespace GameFields.StartFights
             Deactivate();
         }
 
-        //private IEnumerator WaitingFillTowers()
-        //{
-        //    yield return new WaitUntil(() => IsComplete);
-
-        //    Deactivate();
-        //}
-
         private void Deactivate()
         {
             _startTowerCardSelectionPanel.Deactivate(() => Destroy(gameObject));
-
-            //WaitingToDestroy().ToUniTask();
-            //Destroy(gameObject);
         }
-
-        //private IEnumerator WaitingToDestroy()
-        //{
-        //    yield return new WaitForSeconds(0.5f);
-
-        //    Destroy(gameObject);
-        //}
 
         #region AutomaticFillComponents
 

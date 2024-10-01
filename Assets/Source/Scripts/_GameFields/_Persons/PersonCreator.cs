@@ -5,7 +5,6 @@ using GameFields.Persons.Hands;
 using GameFields.Persons.Tables;
 using GameFields.Persons.Towers;
 using GameFields.Seats;
-using GameFields.StartFights;
 using UnityEngine;
 using Zenject;
 
@@ -14,12 +13,6 @@ namespace GameFields.Persons
     public class PersonCreator : MonoBehaviour
     {
         [Header("Player Fields:")]
-
-        //[SerializeField] private CardPlayingZone _playerPlayingZone;
-        //[SerializeField] private HandPlayer _playerHand;
-        //[SerializeField] private Table _playerTable;
-        //[SerializeField] private Tower _playerTower;
-        //[SerializeField] private DiscoverPlayer _playerDiscover;
 
         private CardPlayingZone _playerPlayingZone;
         private HandPlayer _playerHand;
@@ -37,11 +30,6 @@ namespace GameFields.Persons
         [Header("EnemyAI Fields:")]
 
         [SerializeField] private EnemyDragAndDropImitation _enemyDragAndDropImitation;
-        //[SerializeField] private CardPlayingZone _enemyPlayingZone;
-        //[SerializeField] private HandAI _enemyHand;
-        //[SerializeField] private Table _enemyTable;
-        //[SerializeField] private Tower _enemyTower;
-        //[SerializeField] private DiscoverAI _enemyDiscoverImitation;
 
         private CardPlayingZone _enemyPlayingZone;
         private HandAI _enemyHand;

@@ -82,7 +82,6 @@ namespace GameFields.Persons
             if (cards.Count > _discover.MaxSeats)
             {
                 return;
-                //throw new Exception("So many cards for discover: " + cards.Count + "/" + _discover.MaxSeats);
             }
 
             _discover.Activate(cards, activateMessage, callback);

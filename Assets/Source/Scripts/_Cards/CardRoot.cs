@@ -6,17 +6,19 @@ namespace Cards
 {
     public class CardRoot : MonoBehaviour
     {
-        [SerializeField] private CardDescription _cardDescription;
         [SerializeField] private BigCard _bigCard;
         [SerializeField] private Card[] _cards;
         [SerializeField] private Transform _dragContainer;
 
         private CardViewService _cardViewService;
-        
+        private CardDescription _cardDescription;
+
         public IEnumerable<Card> Cards => _cards;
 
-        public void Init(IEffectFactory effectFactory)
+        public void Init(IEffectFactory effectFactory, CardDescription cardDescription)
         {
+            _cardDescription = cardDescription;
+
             InitCardDescription();
             InitBigCard();
 

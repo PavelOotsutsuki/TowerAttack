@@ -7,12 +7,17 @@ using GameFields.Persons.CardTransits;
 using GameFields.Persons.Discovers;
 using GameFields.Seats;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace GameFields.StartFights
 {
     public class StartTowerCardSelectionPlayer : StartTowerCardSelection
     {
+        private const float WaitDurationForEnemyFirstCardsDraw = 1f;
+        private const float DrawCardsDuration = 1.5f;
+        private const float DrawCardsScaleFactor = 2f;
+        private const float WaitDurationBetweenDrawCards = 1f;
+        private const string LabelMessage = "Выберете, какая карта будет в замке";
+
         private readonly Deck _deck;
         private readonly IHandTransitSet _handTransitSet;
         private readonly Discover _discover;
@@ -39,57 +44,31 @@ namespace GameFields.StartFights
         {
             List<Card> cards = new List<Card>();
 
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(WaitDurationForEnemyFirstCardsDraw);
 
             for (int i = 0; i < _seats.Length; i++)
             {
                 Card card = _deck.TakeTopCard();
                 cards.Add(card);
-                _seats[i].SetCard(card, SideType.Front, 1.5f, 2f);
-                yield return new WaitForSeconds(1f);
-                //card.StartSelection();
+                _seats[i].SetCard(card, SideType.Front, DrawCardsDuration, DrawCardsScaleFactor);
 
+                yield return new WaitForSeconds(WaitDurationBetweenDrawCards);
             }
 
-            yield return new WaitForSeconds(0.4f);
-
-            //foreach (StartTowerCardSelectionSeat seat in _seats)
-            //{
-            //    seat.Card.StartSelection();
-            //}
-
-            foreach (Card card in cards)
+            if (DrawCardsDuration - WaitDurationBetweenDrawCards > 0)
             {
-                card.gameObject.SetActive(false);
+                yield return new WaitForSeconds(DrawCardsDuration - WaitDurationBetweenDrawCards);
             }
 
-            _discover.Activate(cards, "Выберете, какая карта будет в замке", End);
-
-
-            //int selectedCardIndex = Random.Range(0, _seats.Length);
-
-            //if (TowerTransitCheck.IsFill == false)
+            //foreach (Card card in cards)
             //{
-            //    TowerTransitSet.Set(_seats[selectedCardIndex].Card);
-            //    _seats[selectedCardIndex].Reset();
-
-            //    for (int i = 0; i < _seats.Length; i++)
-            //    {
-            //        if (i == selectedCardIndex)
-            //            continue;
-
-            //        _handTransitSet.Set(_seats[i].Card);
-            //        _seats[i].Reset();
-            //    }
-            //}
-            //else
-            //{
-            //    throw new System.Exception("Что-то не так, работяги");
+            //    card.gameObject.SetActive(false);
             //}
 
+            _discover.Activate(cards, LabelMessage, OnCardChoiceDone);
         }
 
-        private void End(Card card)
+        private void OnCardChoiceDone(Card card)
         {
             foreach (Seat seat in _seats)
             {

@@ -5,10 +5,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Zenject;
 
 namespace GameFields.Persons.Discovers
 {
-    public class DiscoverCardPlayer : DiscoverCard, IPointerClickHandler
+    public class DiscoverCardPlayer : DiscoverCard, IPointerClickHandler, IPointerExitHandler, IPointerEnterHandler
     {
         [SerializeField] private Image _icon;
         [SerializeField] private TMP_Text _number;
@@ -19,6 +20,15 @@ namespace GameFields.Persons.Discovers
         [SerializeField] private Color _disableFrameColor;
         [SerializeField] private CanvasGroup _canvasGroup;
 
+        private string _descriptionMessage;
+        private CardDescription _description;
+
+        [Inject]
+        public void Construct(CardDescription cardDescription)
+        {
+            _description = cardDescription;
+        }
+
         public override void Hide()
         {
             Block();
@@ -26,7 +36,7 @@ namespace GameFields.Persons.Discovers
             gameObject.SetActive(false);
         }
 
-        public override void Activate(float cardHeight, float cardWidth, CardViewConfig cardViewConfig = null)
+        public override void Activate(/*float cardHeight, float cardWidth, */CardViewConfig cardViewConfig = null)
         {
             Block();
 
@@ -34,10 +44,22 @@ namespace GameFields.Persons.Discovers
             _number.text = cardViewConfig.Number.ToString();
             _name.text = cardViewConfig.Name;
             _feature.text = cardViewConfig.Feature;
+            _descriptionMessage = cardViewConfig.Description;
 
-            ViewLogic.View(cardHeight, cardWidth);
+            //ViewLogic.View(cardHeight, cardWidth);
+            ViewLogic.View();
 
             WaitingToUnblock().ToUniTask();
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            _description.Show(_descriptionMessage);
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            _description.Hide();
         }
 
         public override void StartClickActions()
@@ -54,7 +76,7 @@ namespace GameFields.Persons.Discovers
         {
             yield return new WaitForSeconds(ViewDuration);
 
-            Unblock();
+            //Unblock();
         }
 
         private void Block()

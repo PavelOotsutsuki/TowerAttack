@@ -1,6 +1,5 @@
 using Cards;
 using GameFields;
-using GameFields.DiscardPiles;
 using GameFields.Effects;
 using GameFields.EndTurnButtons;
 using GameFields.Persons;
@@ -22,7 +21,7 @@ namespace Roots
         private PersonsState _personsState;
         
         [Inject]
-        private void Construct(SignalBus bus, Deck deck, SeatPool seatPool)
+        private void Construct(SignalBus bus, Deck deck, SeatPool seatPool, CardDescription cardDescription)
         {
             _screenRoot.Init();
 
@@ -36,7 +35,7 @@ namespace Roots
             _personsState = new PersonsState(player, enemyAI);
             EffectFactory effectFactory = new EffectFactory(_personsState);
 
-            _cardRoot.Init(effectFactory);
+            _cardRoot.Init(effectFactory, cardDescription);
             deck.Init(_cardRoot.Cards);
 
             _gameFieldRoot.Init(_personsState, player, enemyAI);

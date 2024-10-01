@@ -24,6 +24,12 @@ namespace Tools
             _transform.localScale = scaleVector;
         }
 
+        public void MoveLocalInstantly(Vector2 position, Vector3 rotation, float scaleFactor)
+        {
+            _transform.SetLocalPositionAndRotation(position, Quaternion.Euler(rotation));
+            _transform.localScale = _transform.localScale * scaleFactor;
+        }
+
         public void MoveInstantly(Vector2 position, Vector3 rotation, Vector3 scaleVector)
         {
             _transform.SetPositionAndRotation(position, Quaternion.Euler(rotation));
