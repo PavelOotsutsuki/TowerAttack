@@ -7,8 +7,8 @@ namespace GameFields.Persons.Discovers
         public override void SetCard(Card card)
         {
             Card = card;
-            //DiscoverCard.Activate(Card.Transform.sizeDelta.y, Card.Transform.sizeDelta.x);
-            DiscoverCard.Activate();
+            DiscoverCard.Activate(Card.Transform.sizeDelta.y, Card.Transform.sizeDelta.x);
+            //DiscoverCard.Activate();
         }
     }
 }

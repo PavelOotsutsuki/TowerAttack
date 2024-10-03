@@ -36,7 +36,7 @@ namespace GameFields.StartFights
 
         private IEnumerator StartingEnemyProcess(List<Card> enemyCards)
         {
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(8f);
 
             for (int i = 0; i < _firstTurnCardsCount; i++)
             {

@@ -33,10 +33,11 @@ namespace GameFields.Persons.Discovers
         {
             Block();
 
+            //transform.localScale = new Vector3(1, 1, 1);
             gameObject.SetActive(false);
         }
 
-        public override void Activate(/*float cardHeight, float cardWidth, */CardViewConfig cardViewConfig = null)
+        public override void Activate(float cardHeight, float cardWidth, CardViewConfig cardViewConfig = null)
         {
             Block();
 
@@ -46,8 +47,8 @@ namespace GameFields.Persons.Discovers
             _feature.text = cardViewConfig.Feature;
             _descriptionMessage = cardViewConfig.Description;
 
-            //ViewLogic.View(cardHeight, cardWidth);
-            ViewLogic.View();
+            ViewLogic.View(cardHeight, cardWidth);
+            //ViewLogic.View();
 
             WaitingToUnblock().ToUniTask();
         }
@@ -70,13 +71,14 @@ namespace GameFields.Persons.Discovers
         public void OnPointerClick(PointerEventData eventData)
         {
             _discoverClickHandler.StartClick();
+            _description.Hide();
         }
 
         private IEnumerator WaitingToUnblock()
         {
             yield return new WaitForSeconds(ViewDuration);
 
-            //Unblock();
+            Unblock();
         }
 
         private void Block()

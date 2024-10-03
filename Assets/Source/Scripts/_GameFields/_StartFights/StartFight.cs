@@ -3,7 +3,6 @@ using Tools;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using GameFields.Seats;
-using System.Collections.Generic;
 using Zenject;
 using GameFields.Persons;
 using GameFields.Persons.Discovers;
@@ -14,29 +13,20 @@ namespace GameFields.StartFights
     {
         [SerializeField] private StartFightPanel _startTowerCardSelectionPanel;
         [SerializeField] private StartFightLabel _startTowerCardSelectionLabel;
+        [SerializeField] private WaitEnemySolutionLabel _waitEnemySolutionLabel;
         [SerializeField] private Seat[] _seats;
         [SerializeField] private Discover _discover;
-        [SerializeField] private int _firstTurnCardsCount = 3;
-        [SerializeField] private float _waitToStartDuration = 2f;
 
-        private List<StartTowerCardSelection> _startTowerCardSelections;
+        [SerializeField] private StartFightData _data;
+
+        [SerializeField] private StartTowerCardSelectionPlayerData _playerData;
+
+        private StartTowerCardSelection _startTowerCardSelectionPlayer;
+        private StartTowerCardSelection _startTowerCardSelectionImitation;
 
         private Deck _deck;
 
-        public bool IsComplete
-        {
-            get
-            {
-                bool isComplete = true;
-
-                foreach (StartTowerCardSelection startTowerCardSelection in _startTowerCardSelections)
-                {
-                    isComplete &= startTowerCardSelection.IsComplete;
-                }
-
-                return isComplete;
-            }
-        }
+        public bool IsComplete => _startTowerCardSelectionPlayer.IsComplete && _startTowerCardSelectionImitation.IsComplete;
 
         [Inject]
         private void Construct(Deck deck)
@@ -48,13 +38,11 @@ namespace GameFields.StartFights
         {
             _startTowerCardSelectionPanel.Init();
             _startTowerCardSelectionLabel.Init();
+            _waitEnemySolutionLabel.Init();
             _discover.Init();
 
-            _startTowerCardSelections = new List<StartTowerCardSelection>
-            {
-                new StartTowerCardSelectionPlayer(_deck, player, _seats, _discover),
-                new StartTowerCardSelectionImitation(enemyAI, _firstTurnCardsCount)
-            };
+            _startTowerCardSelectionImitation = new StartTowerCardSelectionImitation(enemyAI, _data.FirstTurnCardsCount);
+            _startTowerCardSelectionPlayer = new StartTowerCardSelectionPlayer(_deck, player, _seats, _discover, _playerData);
         }
 
         public void StartStep()
@@ -69,21 +57,45 @@ namespace GameFields.StartFights
 
         private IEnumerator WaitingViewStartLabel()
         {
-            yield return new WaitForSeconds(_waitToStartDuration);
+            yield return new WaitForSeconds(_data.WaitToStartDuration);
 
-            foreach (StartTowerCardSelection startTowerCardSelection in _startTowerCardSelections)
+            _startTowerCardSelectionPlayer.StartProcess();
+            _startTowerCardSelectionImitation.StartProcess();
+
+            yield return new WaitUntil(() => _startTowerCardSelectionPlayer.IsComplete);
+
+            if (_startTowerCardSelectionImitation.IsComplete == false)
             {
-                startTowerCardSelection.StartProcess();
+                yield return new WaitForSeconds(_data.DelayToViewEnemySolutionLabel);
+
+                if (_startTowerCardSelectionImitation.IsComplete == false)
+                {
+                    _waitEnemySolutionLabel.Show();
+                }
             }
 
-            yield return new WaitUntil(() => IsComplete);
+            yield return new WaitUntil(() => _startTowerCardSelectionImitation.IsComplete);
+
+            _waitEnemySolutionLabel.Hide();
 
             Deactivate();
         }
 
         private void Deactivate()
         {
-            _startTowerCardSelectionPanel.Deactivate(() => Destroy(gameObject));
+            _startTowerCardSelectionPanel.Deactivate(WaitToDestroy);
+        }
+
+        private void WaitToDestroy()
+        {
+            WaitingToDestroy().ToUniTask();
+        }
+
+        private IEnumerator WaitingToDestroy()
+        {
+            yield return new WaitUntil(() => _waitEnemySolutionLabel.IsComplete);
+
+            Destroy(gameObject);
         }
 
         #region AutomaticFillComponents

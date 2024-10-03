@@ -20,7 +20,7 @@ namespace GameFields.Persons.Discovers
             Movement = new Movement(RectTransform);
         }
 
-        public abstract void View();
+        public abstract void View(float cardHeight, float cardWidth);
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents))]

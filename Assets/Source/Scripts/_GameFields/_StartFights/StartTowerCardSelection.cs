@@ -1,9 +1,10 @@
 using GameFields.Persons;
 using GameFields.Persons.CardTransits;
+using Tools;
 
 namespace GameFields.StartFights
 {
-    public abstract class StartTowerCardSelection
+    public abstract class StartTowerCardSelection : ICompletable
     {
         protected readonly ITowerTransitSet TowerTransitSet;
         protected readonly ITowerTransitCheck TowerTransitCheck;

@@ -12,21 +12,18 @@ namespace GameFields.StartFights
 {
     public class StartTowerCardSelectionPlayer : StartTowerCardSelection
     {
-        private const float WaitDurationForEnemyFirstCardsDraw = 1f;
-        private const float DrawCardsDuration = 1.5f;
-        private const float DrawCardsScaleFactor = 2f;
-        private const float WaitDurationBetweenDrawCards = 1f;
-        private const string LabelMessage = "Выберете, какая карта будет в замке";
-
         private readonly Deck _deck;
         private readonly IHandTransitSet _handTransitSet;
         private readonly Discover _discover;
 
+        private readonly StartTowerCardSelectionPlayerData _data;
+
         private readonly Seat[] _seats;
 
-        public StartTowerCardSelectionPlayer(Deck deck, Person person, Seat[] seats, Discover discover): base(person)
+        public StartTowerCardSelectionPlayer(Deck deck, Person person, Seat[] seats, Discover discover, StartTowerCardSelectionPlayerData data) : base(person)
         {
             _handTransitSet = person;
+            _data = data;
 
             _seats = seats;
             _deck = deck;
@@ -44,28 +41,28 @@ namespace GameFields.StartFights
         {
             List<Card> cards = new List<Card>();
 
-            yield return new WaitForSeconds(WaitDurationForEnemyFirstCardsDraw);
+            yield return new WaitForSeconds(_data.WaitDurationForEnemyFirstCardsDraw);
 
             for (int i = 0; i < _seats.Length; i++)
             {
                 Card card = _deck.TakeTopCard();
                 cards.Add(card);
-                _seats[i].SetCard(card, SideType.Front, DrawCardsDuration, DrawCardsScaleFactor);
+                _seats[i].SetCard(card, SideType.Front, _data.DrawCardsDuration, _data.DrawCardsScaleFactor);
 
-                yield return new WaitForSeconds(WaitDurationBetweenDrawCards);
+                yield return new WaitForSeconds(_data.WaitDurationBetweenDrawCards);
             }
 
-            if (DrawCardsDuration - WaitDurationBetweenDrawCards > 0)
+            if (_data.DrawCardsDuration - _data.WaitDurationBetweenDrawCards > 0)
             {
-                yield return new WaitForSeconds(DrawCardsDuration - WaitDurationBetweenDrawCards);
+                yield return new WaitForSeconds(_data.DrawCardsDuration - _data.WaitDurationBetweenDrawCards);
             }
 
-            //foreach (Card card in cards)
-            //{
-            //    card.gameObject.SetActive(false);
-            //}
+            foreach (Card card in cards)
+            {
+                card.gameObject.SetActive(false);
+            }
 
-            _discover.Activate(cards, LabelMessage, OnCardChoiceDone);
+            _discover.Activate(cards, _data.LabelMessage, OnCardChoiceDone);
         }
 
         private void OnCardChoiceDone(Card card)
@@ -80,7 +77,7 @@ namespace GameFields.StartFights
 
         private IEnumerator EndProcessing(Card card)
         {
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(_data.DelayAfterCardChoiceDone);
 
             if (TowerTransitCheck.IsFill == false)
             {
@@ -94,7 +91,7 @@ namespace GameFields.StartFights
                     }
                     else
                     {
-                        SeatCardInTower(card, seat).ToUniTask();
+                        SeatCardInTower(seat).ToUniTask();
                     }
                 }
             }
@@ -104,43 +101,41 @@ namespace GameFields.StartFights
             }
         }
 
-        private IEnumerator SeatCardInTower(Card card, Seat mySeat)
+        private IEnumerator SeatCardInTower(Seat mySeat)
         {
-            float invertCardFrontDuration = 0.5f;
-            float invertCardBackDuration = 0.5f;
-            float delayAfterInvert = 0.5f;
+            Card card = mySeat.Card;
 
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(_data.DelayBeforeStartProcessSeatCardInTower);
 
-            InvertCardFront(card, invertCardFrontDuration);
-            yield return new WaitForSeconds(invertCardFrontDuration);
+            InvertCardFront(card);
+            yield return new WaitForSeconds(_data.InvertCardFrontDuration);
 
             card.SetSide(SideType.Back);
 
-            InvertCardBack(card, invertCardBackDuration);
-            yield return new WaitForSeconds(invertCardBackDuration + delayAfterInvert);
+            InvertCardBack(card);
+            yield return new WaitForSeconds(_data.InvertCardBackDuration + _data.DelayAfterInvert);
 
             mySeat.Reset();
             TowerTransitSet.Set(card);
         }
 
-        private void InvertCardFront(Card card, float invertCardFrontDuration)
+        private void InvertCardFront(Card card)
         {
             Vector3 position = card.Transform.position;
 
             CardMovement cardMovement = card.CardMovement;
 
-            cardMovement.MoveLinear(position, new Vector3(0f, -90f, 0f), invertCardFrontDuration);
+            cardMovement.MoveLinear(position, new Vector3(0f, -90f, 0f), _data.InvertCardFrontDuration);
         }
 
-        private void InvertCardBack(Card card, float invertCardBackDuration)
+        private void InvertCardBack(Card card)
         {
             Vector3 endRotationVector = Vector3.zero;
             Vector3 position = card.Transform.position;
 
             CardMovement cardMovement = card.CardMovement;
 
-            cardMovement.MoveSmoothly(position, endRotationVector, invertCardBackDuration, card.Transform.localScale);
+            cardMovement.MoveSmoothly(position, endRotationVector, _data.InvertCardBackDuration, card.Transform.localScale);
         }
 
         private void InitSeats()

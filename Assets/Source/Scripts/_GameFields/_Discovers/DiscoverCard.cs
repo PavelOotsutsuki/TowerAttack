@@ -24,8 +24,8 @@ namespace GameFields.Persons.Discovers
         }
 
         public abstract void Hide();
-        //public abstract void Activate(float cardHeight, float cardWidth, CardViewConfig cardViewConfig = null);
-        public abstract void Activate(CardViewConfig cardViewConfig = null);
+        public abstract void Activate(float cardHeight, float cardWidth, CardViewConfig cardViewConfig = null);
+        //public abstract void Activate(CardViewConfig cardViewConfig = null);
         public abstract void StartClickActions();
     }
 }
