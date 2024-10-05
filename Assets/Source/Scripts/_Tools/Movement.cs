@@ -1,5 +1,6 @@
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 namespace Tools
 {
@@ -128,6 +129,23 @@ namespace Tools
                 Sequence sequence = DOTween.Sequence()
                 .Join(_transform.DOMove(position, duration).SetEase(Ease.Linear))
                 .Join(_transform.DORotate(rotation, duration).SetEase(Ease.Linear));
+
+                _currentSequence = sequence;
+            }
+        }
+
+        public void MoveLinear(Vector3 position, Vector3 rotation, float duration, Action onCompleteCallback)
+        {
+            if (Mathf.Approximately(duration, 0f))
+            {
+                MoveInstantly(position, rotation);
+            }
+            else
+            {
+                Sequence sequence = DOTween.Sequence()
+                .Join(_transform.DOMove(position, duration).SetEase(Ease.Linear))
+                .Join(_transform.DORotate(rotation, duration).SetEase(Ease.Linear))
+                .OnComplete(() => onCompleteCallback.Invoke());
 
                 _currentSequence = sequence;
             }

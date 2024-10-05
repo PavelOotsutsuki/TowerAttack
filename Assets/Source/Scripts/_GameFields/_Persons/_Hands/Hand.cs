@@ -59,14 +59,6 @@ namespace GameFields.Persons.Hands
             card.SetActiveInteraction(_isActiveInteraction);
         }
 
-        private void UnbindDragableCard()
-        {
-            _handSeatPool.ReturnInPool(_dragCardHandSeat);
-
-            SortHandSeats();
-            ResetDragOptions();
-        }
-
         public virtual void AddCard(Card card)
         {
             card.SetDragAndDropListener(this);
@@ -140,6 +132,14 @@ namespace GameFields.Persons.Hands
         public void Unblock()
         {
             UnblockCards();
+        }
+
+        private void UnbindDragableCard()
+        {
+            _handSeatPool.ReturnInPool(_dragCardHandSeat);
+
+            SortHandSeats();
+            ResetDragOptions();
         }
 
         private void UnblockCards()

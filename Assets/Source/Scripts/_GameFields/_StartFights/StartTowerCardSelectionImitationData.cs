@@ -1,21 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
-namespace GameFields
+namespace GameFields.StartFights
 {
-    public class StartTowerCardSelectionImitationData : MonoBehaviour
+    [Serializable]
+    public class StartTowerCardSelectionImitationData
     {
-        // Start is called before the first frame update
-        void Start()
-        {
-        
-        }
+        [SerializeField] private float _minWaitDurationBeforeStartActions = 6f;
+        [SerializeField] private float _maxWaitDurationBeforeStartActions = 12f;
 
-        // Update is called once per frame
-        void Update()
-        {
-        
-        }
+        public float WaitDurationBeforeStartActions => Random.Range(_minWaitDurationBeforeStartActions, _maxWaitDurationBeforeStartActions);
     }
 }

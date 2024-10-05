@@ -20,6 +20,7 @@ namespace GameFields.StartFights
         [SerializeField] private StartFightData _data;
 
         [SerializeField] private StartTowerCardSelectionPlayerData _playerData;
+        [SerializeField] private StartTowerCardSelectionImitationData _imitationData;
 
         private StartTowerCardSelection _startTowerCardSelectionPlayer;
         private StartTowerCardSelection _startTowerCardSelectionImitation;
@@ -41,7 +42,7 @@ namespace GameFields.StartFights
             _waitEnemySolutionLabel.Init();
             _discover.Init();
 
-            _startTowerCardSelectionImitation = new StartTowerCardSelectionImitation(enemyAI, _data.FirstTurnCardsCount);
+            _startTowerCardSelectionImitation = new StartTowerCardSelectionImitation(enemyAI, _data.FirstTurnCardsCount, _imitationData);
             _startTowerCardSelectionPlayer = new StartTowerCardSelectionPlayer(_deck, player, _seats, _discover, _playerData);
         }
 

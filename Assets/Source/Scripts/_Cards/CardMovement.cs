@@ -59,6 +59,11 @@ namespace Cards
             _movement.MoveLinear(position, maxRotationVector, duration);
         }
 
+        public void MoveLinear(Vector3 position, Vector3 maxRotationVector, float duration, Action onCompleteCallback)
+        {
+            _movement.MoveLinear(position, maxRotationVector, duration, onCompleteCallback);
+        }
+
         //private IEnumerator MoveLocalInstantly(Vector2 position, Vector3 rotation, int startNumber)
         //{
         //    int thisNumber = startNumber;
