@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cards;
 using Cysharp.Threading.Tasks;
+using GameFields.Persons.AttackMenues;
 using GameFields.Persons.CardTransits;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.DrawCards;
@@ -26,13 +27,15 @@ namespace GameFields.Persons
         private readonly Queue<ITurnStep> _turnSteps;
         private readonly Discover _discover;
         private readonly Hand _hand;
+        private readonly AttackMenu _attackMenu;
 
         private ITurnStep _currentStep;
 
         protected readonly SignalBus Bus;
 
         protected Person(CardPlayingZone playingZone, DrawCardRoot drawCardRoot, Tower tower,
-            StartTurnDraw startTurnDraw, ITurnStep turnProcess, Discover discover, SignalBus bus, Hand hand)
+            StartTurnDraw startTurnDraw, ITurnStep turnProcess, Discover discover, SignalBus bus,
+            Hand hand, AttackMenu attackMenu)
         {
             _hand = hand;
             Bus = bus;
@@ -42,6 +45,7 @@ namespace GameFields.Persons
             _startTurnDraw = startTurnDraw;
             _turnProcess = turnProcess;
             _discover = discover;
+            _attackMenu = attackMenu;
 
             _turnSteps = new Queue<ITurnStep>();
 
@@ -85,6 +89,16 @@ namespace GameFields.Persons
             }
 
             _discover.Activate(cards, activateMessage, callback);
+        }
+
+        public void AttackActivate()
+        {
+            _attackMenu.Activate();
+        }
+
+        public void AttackDeactivate()
+        {
+            _attackMenu.Deactivate();
         }
 
         protected abstract void OnStartStep();

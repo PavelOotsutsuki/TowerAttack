@@ -1,4 +1,5 @@
 using GameFields.EndTurnButtons;
+using GameFields.Persons.AttackMenues;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.DrawCards;
 using GameFields.Persons.Hands;
@@ -19,6 +20,8 @@ namespace GameFields.Persons
         private Table _playerTable;
         private Tower _playerTower;
         private DiscoverPlayer _playerDiscover;
+
+        [SerializeField] private AttackMenu _attackMenu;
 
         [SerializeField] private StartPlayerTurnLabel _startPlayerTurnLabel; 
         [SerializeField] private int _playerCountStartDrawCards = 1;
@@ -97,7 +100,7 @@ namespace GameFields.Persons
             StartPlayerTurnView startPlayerTurnView = new StartPlayerTurnView(_startPlayerTurnLabel);
 
             return new Player(_tableActivator, _playerHand, _playerPlayingZone, _playerTower, _playerDiscover,
-                drawCardRoot, startTurnDraw, turnProcessing, _bus, startPlayerTurnView);
+                drawCardRoot, startTurnDraw, turnProcessing, _bus, startPlayerTurnView, _attackMenu);
         }
 
         public EnemyAI CreateEnemyAI()
@@ -111,7 +114,7 @@ namespace GameFields.Persons
             _enemyDragAndDropImitation.Init(cardDragAndDropImitationActions, _enemyHand);
 
             return new EnemyAI(_tableActivator, _enemyDragAndDropImitation, _enemyPlayingZone,
-                _enemyTower, drawCardRoot, _enemyDiscoverImitation, startTurnDraw, _bus, _enemyHand);
+                _enemyTower, drawCardRoot, _enemyDiscoverImitation, startTurnDraw, _bus, _enemyHand, _attackMenu);
         }
         
         private void InitPlayersData(SeatPool seatPool)
@@ -122,6 +125,7 @@ namespace GameFields.Persons
             _playerTower.Init();
             _playerDiscover.Init();
             _startPlayerTurnLabel.Init();
+            _attackMenu.Init();
         }
 
         private void InitEnemyData(SeatPool seatPool)

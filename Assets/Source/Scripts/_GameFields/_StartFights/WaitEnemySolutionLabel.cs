@@ -1,24 +1,37 @@
 using Tools;
+using UnityEngine;
 
 namespace GameFields.StartFights
 {
-    public class WaitEnemySolutionLabel : FadableLabel
+    [RequireComponent(typeof(FadableLabel))]
+    public class WaitEnemySolutionLabel : MonoBehaviour, ICompletable
     {
+        [SerializeField] private FadableLabel _fadableLabel;
+
         public bool IsWasStarted { get; private set; }
 
-        public override void Show()
+        public bool IsComplete => _fadableLabel.IsComplete;
+
+        public void Init()
+        {
+            IsWasStarted = false;
+
+            _fadableLabel.Init();
+        }
+
+        public void Show()
         {
             IsWasStarted = true;
 
-            base.Show();
+            _fadableLabel.Show();
         }
 
-        public override void Hide()
+        public void Hide()
         {
             if (IsWasStarted == false)
                 return;
 
-            base.Hide();
+            _fadableLabel.Hide();
 
             IsWasStarted = false;
         }

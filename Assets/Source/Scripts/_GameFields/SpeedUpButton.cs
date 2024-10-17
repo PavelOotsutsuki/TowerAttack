@@ -1,64 +1,43 @@
+using Tools;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace GameFields
 {
-    public class SpeedUpButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
+    public class SpeedUpButton : SelectableButton
     {
         private const float DefaultSpeed = 1f;
 
-        [SerializeField] private Image _image;
-        [SerializeField] private Color _normalColor;
-        [SerializeField] private Color _selectColor;
-        [SerializeField] private Color _activeSpeedColor;
         [SerializeField] private float _activeSpeed = 2f;
-
-        private Color _currentColor;
 
         public void OnEnable()
         {
+            base.Init();
+
             SetNormalSettings();
         }
 
-        public void OnPointerClick(PointerEventData eventData)
+        protected override void OnEnterClick()
         {
-            if (Mathf.Approximately(Time.timeScale, DefaultSpeed))
-            {
-                SetActiveSpeedSettings();
-            }
-            else
-            {
-                SetNormalSettings();
-            }
+            base.OnEnterClick();
+
+            SetActiveSpeedSettings();
         }
 
-        public void OnPointerEnter(PointerEventData eventData)
+        protected override void OnExitClick()
         {
-            _image.color = _selectColor;
-        }
+            base.OnExitClick();
 
-        public void OnPointerExit(PointerEventData eventData)
-        {
-            _image.color = _currentColor;
+            SetNormalSettings();
         }
 
         private void SetNormalSettings()
         {
             Time.timeScale = DefaultSpeed;
-
-            _image.color = _normalColor;
-
-            _currentColor = _image.color;
         }
 
         private void SetActiveSpeedSettings()
         {
             Time.timeScale = _activeSpeed;
-
-            _image.color = _activeSpeedColor;
-
-            _currentColor = _image.color;
         }
     }
 }

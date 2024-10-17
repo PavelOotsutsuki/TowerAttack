@@ -1,88 +1,48 @@
-using System.Collections;
 using TMPro;
 using UnityEngine;
 
 namespace Tools
 {
-    [RequireComponent(typeof(CanvasGroup))]
-    public abstract class FadableLabel : MonoBehaviour, ICompletable
+    [RequireComponent(typeof(FadablePanel))]
+    public class FadableLabel : MonoBehaviour, ICompletable
     {
         [SerializeField] private TMP_Text _text;
-        [SerializeField] private CanvasGroup _canvasGroup;
+        [SerializeField] private FadablePanel _fadablePanel;
 
         [SerializeField] private FadableLableData _data;
 
-        private Coroutine _fadeInWork;
-        private bool _isComplete;
-
-        public bool IsComplete => _isComplete;
+        public bool IsComplete => _fadablePanel.IsComplete;
 
         public void Init()
         {
             _text.text = _data.StartText;
-            _canvasGroup.alpha = _data.StartAlpha;
-            _isComplete = false;
+
+            _fadablePanel.Init();
         }
 
-        public virtual void Show(string description)
+        public void Show(string description)
         {
             Show();
 
             _text.text = description;
         }
 
-        public virtual void Show()
+        public void Show()
         {
-            StartFading(_data.FadeUpDuration, _data.MaxAlpha);
+            _fadablePanel.Show();
         }
 
-        public virtual void Hide()
+        public void Hide()
         {
-            StartFading(_data.FadeOutDuration, _data.MinAlpha);
-        }
-
-        private void StartFading(float duration, float targetAlpha)
-        {
-            _isComplete = false;
-
-            if (_fadeInWork != null)
-            {
-                StopCoroutine(_fadeInWork);
-            }
-
-            _fadeInWork = StartCoroutine(FadeIn(duration, targetAlpha));
-        }
-
-        private IEnumerator FadeIn(float duration, float targetAlpha)
-        {
-            float startAlpha = _canvasGroup.alpha;
-            float timeInWork = 0f;
-            float newAlpha;
-
-            while (timeInWork < duration)
-            {
-                timeInWork += Time.deltaTime;
-
-                if (timeInWork > duration)
-                {
-                    timeInWork = duration;
-                }
-
-                newAlpha = Mathf.Lerp(startAlpha, targetAlpha, timeInWork / duration);
-                _canvasGroup.alpha = newAlpha;
-
-                yield return null;
-            }
-
-            _isComplete = true;
+            _fadablePanel.Hide();
         }
 
         #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents))]
-        private void DefineAllComponents()
+        [ContextMenu(nameof(DefineAllComponentsFadableLabel))]
+        private void DefineAllComponentsFadableLabel()
         {
             DefineText();
-            DefineCanvasGroup();
+            DefineFadablePanel();
         }
 
         [ContextMenu(nameof(DefineText))]
@@ -91,10 +51,10 @@ namespace Tools
             AutomaticFillComponents.DefineComponent(this, ref _text, ComponentLocationTypes.InChildren);
         }
 
-        [ContextMenu(nameof(DefineCanvasGroup))]
-        private void DefineCanvasGroup()
+        [ContextMenu(nameof(DefineFadablePanel))]
+        private void DefineFadablePanel()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _canvasGroup, ComponentLocationTypes.InThis);
+            AutomaticFillComponents.DefineComponent(this, ref _fadablePanel, ComponentLocationTypes.InThis);
         }
         #endregion
     }
