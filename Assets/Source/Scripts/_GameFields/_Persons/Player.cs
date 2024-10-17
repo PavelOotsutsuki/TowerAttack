@@ -12,13 +12,13 @@ namespace GameFields.Persons
     {
         private readonly ITableActivator _tableActivator;
         private readonly IBlockable _handBlockable;
-        private readonly ITurnStep _startPlayerTurnView;
+        private readonly IPersonStep _startPlayerTurnView;
 
         private AttackMenu _attackMenu;
 
         public Player(ITableActivator tableActivator, Hand hand, CardPlayingZone cardPlayingZone, Tower tower,
-            DiscoverPlayer discover, DrawCardRoot drawCardRoot, StartTurnDraw startTurnDraw, ITurnStep turnProcessing,
-            SignalBus bus, ITurnStep startPlayerTurnView, AttackMenu attackMenu) :
+            DiscoverPlayer discover, DrawCardRoot drawCardRoot, StartTurnDraw startTurnDraw, IPersonStep turnProcessing,
+            SignalBus bus, IPersonStep startPlayerTurnView, AttackMenu attackMenu) :
             base(cardPlayingZone, drawCardRoot, tower, startTurnDraw, turnProcessing, discover, bus, hand, attackMenu)
         {
             _startPlayerTurnView = startPlayerTurnView;

@@ -1,4 +1,5 @@
 using Tools;
+using Tools.Utils.FillComponents;
 using UnityEngine;
 
 namespace GameFields.StartFights
@@ -35,5 +36,21 @@ namespace GameFields.StartFights
 
             IsWasStarted = false;
         }
+
+        #region AutomaticFillComponents
+
+        [ContextMenu(nameof(DefineAllComponents))]
+        private void DefineAllComponents()
+        {
+            DefineFadableLabel();
+        }
+
+        [ContextMenu(nameof(DefineFadableLabel))]
+        private void DefineFadableLabel()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _fadableLabel, ComponentLocationTypes.InThis);
+        }
+
+        #endregion
     }
 }

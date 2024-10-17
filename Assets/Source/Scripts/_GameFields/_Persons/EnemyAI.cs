@@ -15,7 +15,7 @@ namespace GameFields.Persons
     {
         private ITableDeactivator _tableDeactivator;
 
-        public EnemyAI(ITableDeactivator tableDeactivator, ITurnStep enemyDragAndDropImitation, CardPlayingZone cardPlayingZone,
+        public EnemyAI(ITableDeactivator tableDeactivator, IPersonStep enemyDragAndDropImitation, CardPlayingZone cardPlayingZone,
             Tower tower, DrawCardRoot drawCardRoot, DiscoverAI discoverImitation, StartTurnDraw startTurnDraw, SignalBus bus,
             Hand hand, AttackMenu attackMenu) :
             base(cardPlayingZone, drawCardRoot, tower, startTurnDraw, enemyDragAndDropImitation,discoverImitation, bus, hand, attackMenu)

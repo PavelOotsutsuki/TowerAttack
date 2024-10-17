@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Tools
+namespace Tools.Utils.FillComponents
 {
     public static class AutomaticFillComponents
     {

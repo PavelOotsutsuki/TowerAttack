@@ -1,8 +1,8 @@
-using Tools;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using System;
+using Tools.Utils.FillComponents;
 
 namespace GameFields.StartFights
 {

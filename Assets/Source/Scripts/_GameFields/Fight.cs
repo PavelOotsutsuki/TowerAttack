@@ -8,6 +8,7 @@ namespace GameFields
     internal class Fight : IFightStep
     {
         private const int MaxTurns = 100;
+        private const float DelayBeforeStartTurn = 3f;
 
         private readonly FightResult _fightResult;
         private readonly PersonsState _personsState;
@@ -36,7 +37,7 @@ namespace GameFields
 
         private IEnumerator StartTurn()
         {
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(DelayBeforeStartTurn);
 
             while (IsComplete == false)
             {

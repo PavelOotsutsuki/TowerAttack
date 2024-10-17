@@ -4,6 +4,7 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
 using Tools;
+using Tools.Utils.FillComponents;
 using UnityEngine;
 
 namespace GameFields.Persons.Discovers

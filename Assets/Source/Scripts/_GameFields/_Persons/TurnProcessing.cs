@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace GameFields.Persons
 {
-    public class TurnProcessing : ITurnStep
+    public class TurnProcessing : IPersonStep
     {
         private bool _isComplete;
         private IButtonActivator _buttonActivator;

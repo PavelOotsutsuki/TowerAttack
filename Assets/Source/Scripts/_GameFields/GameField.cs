@@ -4,6 +4,7 @@ using UnityEngine;
 using GameFields.StartFights;
 using GameFields.Effects;
 using GameFields.Persons;
+using Tools.Utils.FillComponents;
 
 namespace GameFields
 {

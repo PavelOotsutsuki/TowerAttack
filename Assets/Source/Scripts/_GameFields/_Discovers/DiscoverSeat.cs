@@ -1,5 +1,6 @@
 using Cards;
 using Tools;
+using Tools.Utils.FillComponents;
 using UnityEngine;
 
 namespace GameFields.Persons.Discovers
@@ -50,12 +51,19 @@ namespace GameFields.Persons.Discovers
         private void DefineAllComponents()
         {
             DefineRectTransform();
+            DefineDiscoverCard();
         }
 
         [ContextMenu(nameof(DefineRectTransform))]
         private void DefineRectTransform()
         {
             AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
+        }
+
+        [ContextMenu(nameof(DefineDiscoverCard))]
+        private void DefineDiscoverCard()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref DiscoverCard, ComponentLocationTypes.InChildren);
         }
         #endregion
     }

@@ -17,24 +17,24 @@ using Zenject;
 
 namespace GameFields.Persons
 {
-    public abstract class Person : IStateMachineState, IDrawCardManager, ITowerTransitCheck, ITowerTransitSet, /*IHandTransitGetLast,*/ IHandTransitSet, IHandTransitTryGet, IHandTransitGetAll
+    public abstract class Person : ITurnStep, IDrawCardManager, ITowerTransitCheck, ITowerTransitSet, /*IHandTransitGetLast,*/ IHandTransitSet, IHandTransitTryGet, IHandTransitGetAll
     {
-        private readonly ITurnStep _turnProcess;
+        private readonly IPersonStep _turnProcess;
         private readonly CardPlayingZone _playingZone;
         private readonly DrawCardRoot _drawCardRoot;
         private readonly StartTurnDraw _startTurnDraw;
         private readonly Tower _tower;
-        private readonly Queue<ITurnStep> _turnSteps;
+        private readonly Queue<IPersonStep> _personSteps;
         private readonly Discover _discover;
         private readonly Hand _hand;
         private readonly AttackMenu _attackMenu;
 
-        private ITurnStep _currentStep;
+        private IPersonStep _currentStep;
 
         protected readonly SignalBus Bus;
 
         protected Person(CardPlayingZone playingZone, DrawCardRoot drawCardRoot, Tower tower,
-            StartTurnDraw startTurnDraw, ITurnStep turnProcess, Discover discover, SignalBus bus,
+            StartTurnDraw startTurnDraw, IPersonStep turnProcess, Discover discover, SignalBus bus,
             Hand hand, AttackMenu attackMenu)
         {
             _hand = hand;
@@ -47,7 +47,7 @@ namespace GameFields.Persons
             _discover = discover;
             _attackMenu = attackMenu;
 
-            _turnSteps = new Queue<ITurnStep>();
+            _personSteps = new Queue<IPersonStep>();
 
             _discover.Deactivate();
         }
@@ -58,12 +58,12 @@ namespace GameFields.Persons
         {
             IsComplete = false;
 
-            _turnSteps.Clear();
+            _personSteps.Clear();
 
             OnStartStep();
-            InitTurnSteps();
+            InitSteps();
 
-            _currentStep = _turnSteps.Dequeue();
+            _currentStep = _personSteps.Dequeue();
 
             ProcessingTurn().ToUniTask();
         }
@@ -103,9 +103,9 @@ namespace GameFields.Persons
 
         protected abstract void OnStartStep();
 
-        protected void EnqueueStep(ITurnStep turnStep) => _turnSteps.Enqueue(turnStep);
+        protected void EnqueueStep(IPersonStep turnStep) => _personSteps.Enqueue(turnStep);
 
-        private void InitTurnSteps()
+        private void InitSteps()
         {
             EnqueueStep(_startTurnDraw);
             EnqueueStep(_turnProcess);
@@ -124,9 +124,9 @@ namespace GameFields.Persons
 
         private void NextStep()
         {
-            if (_turnSteps.Count > 0)
+            if (_personSteps.Count > 0)
             {
-                _currentStep = _turnSteps.Dequeue();
+                _currentStep = _personSteps.Dequeue();
             }
             else
             {

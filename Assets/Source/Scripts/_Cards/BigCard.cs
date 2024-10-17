@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Tools;
+using Tools.Utils.FillComponents;
 
 namespace Cards
 {

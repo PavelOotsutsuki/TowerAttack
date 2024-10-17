@@ -1,12 +1,13 @@
 using System.Collections;
 using UnityEngine;
 using TMPro;
-using Tools;
 using Cysharp.Threading.Tasks;
+using Tools.Utils.FillComponents;
+using Tools;
 
 namespace GameFields.Persons
 {
-    public class StartPlayerTurnLabel : MonoBehaviour
+    public class StartPlayerTurnLabel : MonoBehaviour, ICompletable
     {
         private const float LifeAlpha = 1f;
         private const float EndAlpha = 0f;

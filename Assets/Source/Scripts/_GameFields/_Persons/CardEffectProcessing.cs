@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace GameFields.Persons
 {
-    public class CardEffectProcessing : ITurnStep
+    public class CardEffectProcessing : IPersonStep
     {
         private Card _currentCard;
 

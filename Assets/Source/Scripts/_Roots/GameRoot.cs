@@ -4,7 +4,7 @@ using GameFields.Effects;
 using GameFields.EndTurnButtons;
 using GameFields.Persons;
 using GameFields.Seats;
-using Tools;
+using Tools.Utils.FillComponents;
 using UnityEngine;
 using Zenject;
 
@@ -46,9 +46,17 @@ namespace Roots
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
+            DefineEndTurnButton();
             DefineCardRoot();
             DefineGameFieldRoot();
             DefineScreenRoot();
+            DefinePersonCreator();
+        }
+
+        [ContextMenu(nameof(DefineEndTurnButton))]
+        private void DefineEndTurnButton()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _endTurnButton, ComponentLocationTypes.InChildren);
         }
 
         [ContextMenu(nameof(DefineCardRoot))]
@@ -67,6 +75,12 @@ namespace Roots
         private void DefineScreenRoot()
         {
             AutomaticFillComponents.DefineComponent(this, ref _screenRoot, ComponentLocationTypes.InThis);
+        }
+
+        [ContextMenu(nameof(DefinePersonCreator))]
+        private void DefinePersonCreator()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _personCreator, ComponentLocationTypes.InThis);
         }
 
         #endregion

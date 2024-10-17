@@ -1,8 +1,8 @@
 using System.Collections;
 using UnityEngine;
 using TMPro;
-using Tools;
 using Cysharp.Threading.Tasks;
+using Tools.Utils.FillComponents;
 
 namespace GameFields.StartFights
 {

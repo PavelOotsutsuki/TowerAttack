@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Tools;
+using Tools.Utils.FillComponents;
 using UnityEngine;
 
 namespace Cards
@@ -50,7 +50,6 @@ namespace Cards
         private void DefineAllComponents()
         {
             DefineAllCards();
-            DefineCardDescription();
             DefineBigCard();
         }
 
@@ -58,12 +57,6 @@ namespace Cards
         private void DefineAllCards()
         {
             AutomaticFillComponents.DefineComponent(this, ref _cards);
-        }
-
-        [ContextMenu(nameof(DefineCardDescription))]
-        private void DefineCardDescription()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _cardDescription, ComponentLocationTypes.InChildren);
         }
 
         [ContextMenu(nameof(DefineBigCard))]

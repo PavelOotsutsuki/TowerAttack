@@ -1,6 +1,7 @@
 using UnityEngine;
 using Cards;
 using Tools;
+using Tools.Utils.FillComponents;
 
 namespace GameFields.Seats
 {

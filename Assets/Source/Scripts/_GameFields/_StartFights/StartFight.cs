@@ -1,11 +1,11 @@
 using System.Collections;
-using Tools;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using GameFields.Seats;
 using Zenject;
 using GameFields.Persons;
 using GameFields.Persons.Discovers;
+using Tools.Utils.FillComponents;
 
 namespace GameFields.StartFights
 {
@@ -104,20 +104,41 @@ namespace GameFields.StartFights
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
-            DefineFirstTurnLabel();
+            DefineStartFightPanel();
+            DefineStartFightLabel();
+            DefineWaitEnemySolutionLabel();
             DefineSeats();
+            DefineDiscover();
         }
 
-        [ContextMenu(nameof(DefineFirstTurnLabel))]
-        private void DefineFirstTurnLabel()
+        [ContextMenu(nameof(DefineStartFightPanel))]
+        private void DefineStartFightPanel()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _startTowerCardSelectionPanel, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineStartFightLabel))]
+        private void DefineStartFightLabel()
         {
             AutomaticFillComponents.DefineComponent(this, ref _startTowerCardSelectionLabel, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineWaitEnemySolutionLabel))]
+        private void DefineWaitEnemySolutionLabel()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _waitEnemySolutionLabel, ComponentLocationTypes.InChildren);
         }
 
         [ContextMenu(nameof(DefineSeats))]
         private void DefineSeats()
         {
             AutomaticFillComponents.DefineComponent(this, ref _seats);
+        }
+
+        [ContextMenu(nameof(DefineDiscover))]
+        private void DefineDiscover()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _discover, ComponentLocationTypes.InChildren);
         }
 
         #endregion 

@@ -1,4 +1,4 @@
-namespace Tools
+namespace Tools.StateMachines
 {
     public interface IStateMachineState : ICompletable
     {

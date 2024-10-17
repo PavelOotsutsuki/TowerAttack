@@ -1,4 +1,4 @@
-﻿namespace Tools
+﻿namespace Tools.Utils.FillComponents
 {
     public enum ComponentLocationTypes
     {

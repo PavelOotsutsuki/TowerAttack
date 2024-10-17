@@ -1,6 +1,5 @@
 using UnityEngine;
-using Tools;
-using System;
+using Tools.Utils.FillComponents;
 
 namespace Cards
 {
