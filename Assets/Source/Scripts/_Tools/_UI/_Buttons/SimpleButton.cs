@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Tools
+namespace Tools.UI.Buttons
 {
     [RequireComponent(typeof(OnEnterColorChanger))]
     public abstract class SimpleButton : MonoBehaviour, IPointerClickHandler, IPointerExitHandler, IPointerUpHandler

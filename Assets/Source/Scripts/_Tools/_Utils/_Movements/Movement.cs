@@ -2,7 +2,7 @@ using UnityEngine;
 using DG.Tweening;
 using System;
 
-namespace Tools
+namespace Tools.Utils.Movements
 {
     public class Movement
     {

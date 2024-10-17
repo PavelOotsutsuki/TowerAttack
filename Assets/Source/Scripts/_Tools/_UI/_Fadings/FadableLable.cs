@@ -2,7 +2,7 @@ using TMPro;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
-namespace Tools
+namespace Tools.UI.Fadings
 {
     [RequireComponent(typeof(FadablePanel))]
     public class FadableLabel : MonoBehaviour, ICompletable

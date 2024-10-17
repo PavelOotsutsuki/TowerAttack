@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
-namespace Tools
+namespace Tools.Extensions
 {
     public static class EventSystemExtensions
     {

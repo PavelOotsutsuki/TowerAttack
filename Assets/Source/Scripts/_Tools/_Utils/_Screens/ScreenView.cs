@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Tools
+namespace Tools.Utils.Screens
 {
     public static class ScreenView
     {

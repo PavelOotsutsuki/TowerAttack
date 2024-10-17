@@ -2,7 +2,7 @@ using System.Collections;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
-namespace Tools
+namespace Tools.UI.Fadings
 {
     [RequireComponent(typeof(CanvasGroup))]
     public class FadablePanel : MonoBehaviour, ICompletable
@@ -80,6 +80,5 @@ namespace Tools
             AutomaticFillComponents.DefineComponent(this, ref _canvasGroup, ComponentLocationTypes.InThis);
         }
         #endregion
-
     }
 }

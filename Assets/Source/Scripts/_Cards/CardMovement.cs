@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using Tools;
+using Tools.Utils.Movements;
 using UnityEngine;
 
 namespace Cards

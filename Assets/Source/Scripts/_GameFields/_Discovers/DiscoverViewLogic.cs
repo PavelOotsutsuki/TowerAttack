@@ -1,5 +1,5 @@
-using Tools;
 using Tools.Utils.FillComponents;
+using Tools.Utils.Movements;
 using UnityEngine;
 
 namespace GameFields.Persons.Discovers

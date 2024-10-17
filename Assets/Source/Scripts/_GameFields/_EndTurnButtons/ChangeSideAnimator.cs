@@ -1,9 +1,9 @@
 using System.Collections;
 using Cysharp.Threading.Tasks;
-using Tools;
 using UnityEngine;
 using System;
 using UnityEngine.UI;
+using Tools.Utils.Movements;
 
 namespace GameFields.EndTurnButtons
 {
