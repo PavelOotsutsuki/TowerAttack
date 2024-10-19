@@ -958,10 +958,11 @@ MonoBehaviour:
   ViewDuration: 0
   FrameImage: {fileID: 1933570509307895844}
   ViewLogic: {fileID: 834788909037085260}
-  _icon: {fileID: 9052300145698190784}
-  _number: {fileID: 8750907043112580180}
-  _name: {fileID: 3991106607841779485}
-  _feature: {fileID: 3927993316039303098}
+  _cardView:
+    _icon: {fileID: 9052300145698190784}
+    _number: {fileID: 8750907043112580180}
+    _name: {fileID: 3991106607841779485}
+    _feature: {fileID: 3927993316039303098}
   _enableFrameColor: {r: 0.05882353, g: 1, b: 0, a: 1}
   _disableFrameColor: {r: 0.8509804, g: 0.011764706, b: 0.011764706, a: 1}
   _canvasGroup: {fileID: 6325254957623709462}

@@ -14,7 +14,7 @@ namespace Cards
             Hide();
         }
 
-        public void View()
+        public void Show()
         {
             AudioSource.PlayClipAtPoint(_audioSource.clip, Vector3.zero);
             gameObject.SetActive(true);

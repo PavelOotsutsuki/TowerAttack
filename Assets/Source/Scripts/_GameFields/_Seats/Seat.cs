@@ -27,7 +27,7 @@ namespace GameFields.Seats
 
             Card.SetSide(sideType);
             Card.transform.SetParent(_transform);
-            CardMovement cardMovement = Card.CardMovement;
+            Movement cardMovement = Card.CardMovement;
             cardMovement.MoveLocalSmoothly(Vector2.zero, Quaternion.identity.eulerAngles, duration, Card.DefaultScaleVector * scaleFactor);
         }
 

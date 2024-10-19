@@ -1,20 +1,15 @@
 using System.Collections;
 using Cards;
 using Cysharp.Threading.Tasks;
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 using Zenject;
 
 namespace GameFields.Persons.Discovers
 {
     public class DiscoverCardPlayer : DiscoverCard, IPointerClickHandler, IPointerExitHandler, IPointerEnterHandler
     {
-        [SerializeField] private Image _icon;
-        [SerializeField] private TMP_Text _number;
-        [SerializeField] private TMP_Text _name;
-        [SerializeField] private TMP_Text _feature;
+        [SerializeField] private CardView _cardView;
 
         [SerializeField] private Color _enableFrameColor;
         [SerializeField] private Color _disableFrameColor;
@@ -33,7 +28,6 @@ namespace GameFields.Persons.Discovers
         {
             Block();
 
-            //transform.localScale = new Vector3(1, 1, 1);
             gameObject.SetActive(false);
         }
 
@@ -41,14 +35,10 @@ namespace GameFields.Persons.Discovers
         {
             Block();
 
-            _icon.sprite = cardViewConfig.Icon;
-            _number.text = cardViewConfig.Number.ToString();
-            _name.text = cardViewConfig.Name;
-            _feature.text = cardViewConfig.Feature;
+            _cardView.FillData(cardViewConfig);
             _descriptionMessage = cardViewConfig.Description;
 
             ViewLogic.View(cardHeight, cardWidth);
-            //ViewLogic.View();
 
             WaitingToUnblock().ToUniTask();
         }

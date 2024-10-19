@@ -5,6 +5,7 @@ using Zenject;
 using GameFields.Signals;
 using System.Collections;
 using Cysharp.Threading.Tasks;
+using Tools.Utils.Movements;
 
 namespace GameFields.Persons
 {
@@ -12,7 +13,7 @@ namespace GameFields.Persons
     {
         private Card _activeCard;
         private RectTransform _cardTransform;
-        private CardMovement _cardMovement;
+        private Movement _cardMovement;
 
         private ICardDragAndDropListener _cardDragAndDropListener;
         private ICardDropPlace _cardDropPlaceImitation;

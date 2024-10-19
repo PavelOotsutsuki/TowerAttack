@@ -1,5 +1,6 @@
 using System;
 using Tools.Utils.FillComponents;
+using Tools.Utils.Movements;
 using UnityEngine;
 
 namespace Cards
@@ -19,7 +20,7 @@ namespace Cards
         private ICardState _currentState;
 
         public RectTransform Transform => _rectTransform;
-        public CardMovement CardMovement { get; private set; }
+        public Movement CardMovement { get; private set; }
         public Vector3 DefaultScaleVector => _defaultScaleVector;
         public CardViewConfig ViewConfig => _config.CardViewConfig;
         public bool IsPlayingEffect => _effect is null ? false : _effect.IsPlayed;
@@ -29,7 +30,7 @@ namespace Cards
             _effectFactory = effectFactory;
 
             _rectTransform.localScale = _defaultScaleVector;
-            CardMovement = new CardMovement(_rectTransform);
+            CardMovement = new Movement(_rectTransform);
 
             _cardPaper.Init(this, cardViewService, ViewConfig, dragContainer, _rectTransform);
 
@@ -135,7 +136,7 @@ namespace Cards
         {
             _currentState?.Hide();
             _currentState = state;
-            _currentState.View();
+            _currentState.Show();
         }
 
         #region AutomaticFillComponents

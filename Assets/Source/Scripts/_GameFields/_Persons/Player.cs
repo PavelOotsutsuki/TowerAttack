@@ -33,7 +33,7 @@ namespace GameFields.Persons
 
             _handBlockable.ForciblyBlock();
             _tableActivator.Activate();
-            _attackMenu.Activate();
+            //_attackMenu.Activate();
         }
     }
 }

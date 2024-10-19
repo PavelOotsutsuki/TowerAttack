@@ -57,7 +57,7 @@ namespace Cards
             }
         }
 
-        public void View()
+        public void Show()
         {
             gameObject.SetActive(true);
         }

@@ -4181,6 +4181,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 489448957}
+  - component: {fileID: 489448959}
   - component: {fileID: 489448958}
   m_Layer: 0
   m_Name: SpeedUpButton
@@ -4223,11 +4224,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ecf413d2807a4504a60986561741a1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _image: {fileID: 44239813}
-  _normalColor: {r: 0.3019608, g: 0.79215693, b: 0.34901962, a: 1}
-  _selectColor: {r: 0.75294125, g: 0.79215693, b: 0.30980393, a: 1}
-  _activeSpeedColor: {r: 0.6784314, g: 0.16862746, b: 0.04705883, a: 1}
+  _enterColorChanger: {fileID: 489448959}
+  Image: {fileID: 44239813}
+  NormalColor: {r: 0.12065028, g: 0.8679245, b: 0.05322181, a: 1}
+  ClickColor: {r: 1, g: 0, b: 0, a: 1}
   _activeSpeed: 2
+--- !u!114 &489448959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 489448956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fcedef29a2514d25a4edecd133f43ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _selectColor: {r: 0.990566, g: 0.8445065, b: 0.032707386, a: 1}
+  _pressedColor: {r: 0.9716981, g: 0.46248156, b: 0.0045834924, a: 1}
 --- !u!224 &495571191 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3988544753164556876, guid: 72cc5ca19a7994600a9e0a918cd8b3a9, type: 3}
@@ -14392,7 +14407,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: BigCard
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 0}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

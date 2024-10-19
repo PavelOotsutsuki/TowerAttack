@@ -1,8 +1,7 @@
+using Tools;
+
 namespace Cards
 {
-    public interface ICardState
-    {
-        public void View();
-        public void Hide();
-    }
+    public interface ICardState: IViewable
+    { }
 }

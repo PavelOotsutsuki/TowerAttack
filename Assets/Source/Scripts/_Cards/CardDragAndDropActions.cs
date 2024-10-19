@@ -1,4 +1,3 @@
-using Tools;
 using UnityEngine;
 
 namespace Cards
@@ -7,6 +6,7 @@ namespace Cards
     {
         private readonly CardFront _cardFront;
         private readonly Card _card;
+
         private ICardDragAndDropListener _cardDragListener;
 
         internal CardDragAndDropActions(CardFront cardFront, Card card)

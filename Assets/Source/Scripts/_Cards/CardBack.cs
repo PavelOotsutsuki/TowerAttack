@@ -5,4 +5,3 @@ namespace Cards
     public class CardBack : MonoBehaviour
     { }
 }
-

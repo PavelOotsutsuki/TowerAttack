@@ -6,6 +6,7 @@ using GameFields.Persons;
 using GameFields.Persons.CardTransits;
 using GameFields.Persons.Discovers;
 using GameFields.Seats;
+using Tools.Utils.Movements;
 using UnityEngine;
 
 namespace GameFields.StartFights
@@ -123,7 +124,7 @@ namespace GameFields.StartFights
         {
             Vector3 position = card.Transform.position;
 
-            CardMovement cardMovement = card.CardMovement;
+            Movement cardMovement = card.CardMovement;
 
             cardMovement.MoveLinear(position, new Vector3(0f, -90f, 0f), _data.InvertCardFrontDuration);
         }
@@ -133,7 +134,7 @@ namespace GameFields.StartFights
             Vector3 endRotationVector = Vector3.zero;
             Vector3 position = card.Transform.position;
 
-            CardMovement cardMovement = card.CardMovement;
+            Movement cardMovement = card.CardMovement;
 
             cardMovement.MoveSmoothly(position, endRotationVector, _data.InvertCardBackDuration, card.Transform.localScale);
         }

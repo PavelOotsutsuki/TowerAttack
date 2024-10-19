@@ -1,6 +1,7 @@
 using UnityEngine;
 using Cards;
 using Tools.Utils.FillComponents;
+using Tools.Utils.Movements;
 
 namespace GameFields.Persons.Tables
 {
@@ -17,7 +18,7 @@ namespace GameFields.Persons.Tables
             _card = card;
             _card.Transform.SetParent(_rectTransform);
             //_card.Transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
-            CardMovement cardMovement = _card.CardMovement;
+            Movement cardMovement = _card.CardMovement;
             //cardMovement.MoveLocalInstantly(Vector2.zero, Quaternion.identity.eulerAngles);
             cardMovement.MoveLocalInstantly(Vector2.zero, Quaternion.identity.eulerAngles);
         }

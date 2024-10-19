@@ -1089,10 +1089,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _width: 150
   _height: 210
-  _icon: {fileID: 3637518566425094200}
-  _number: {fileID: 8887612740147015767}
-  _name: {fileID: 4539111807913271712}
-  _feature: {fileID: 3336148435952527685}
+  _cardView:
+    _icon: {fileID: 3637518566425094200}
+    _number: {fileID: 8887612740147015767}
+    _name: {fileID: 4539111807913271712}
+    _feature: {fileID: 3336148435952527685}
   _canvasGroup: {fileID: 5823099822882136473}
   _frameImage: {fileID: 919996935074158091}
   _enableFrameColor: {r: 0.05724919, g: 1, b: 0, a: 1}

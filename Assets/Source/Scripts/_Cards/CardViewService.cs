@@ -1,12 +1,14 @@
+using Tools;
 using UnityEngine;
 
 namespace Cards
 {
     internal class CardViewService
     {
-        private BigCard _bigCard;
-        private CardDescription _cardDescription;
-        private IShowable _currentCard;
+        private readonly BigCard _bigCard;
+        private readonly CardDescription _cardDescription;
+
+        private IViewable _currentCard;
 
         public CardViewService(BigCard bigCard, CardDescription cardDescription)
         {
@@ -15,14 +17,14 @@ namespace Cards
             _currentCard = null;
         }
 
-        public void SetOverview(IShowable showableCard, Vector2 cardSize, float positionX, CardViewConfig cardViewConfig)
+        public void SetOverview(IViewable showableCard, BigCardShowData bigCardShowData)
         {
             ShowCurrentCard();
 
             _currentCard = showableCard;
 
-            _cardDescription.Show(cardViewConfig.Description);
-            _bigCard.Show(cardSize, positionX, cardViewConfig);
+            _cardDescription.Show(bigCardShowData.CardViewConfig.Description);
+            _bigCard.Show(bigCardShowData);
             _currentCard.Hide();
         }
 

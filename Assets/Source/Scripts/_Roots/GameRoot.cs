@@ -80,7 +80,7 @@ namespace Roots
         [ContextMenu(nameof(DefinePersonCreator))]
         private void DefinePersonCreator()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _personCreator, ComponentLocationTypes.InThis);
+            AutomaticFillComponents.DefineComponent(this, ref _personCreator, ComponentLocationTypes.InChildren);
         }
 
         #endregion

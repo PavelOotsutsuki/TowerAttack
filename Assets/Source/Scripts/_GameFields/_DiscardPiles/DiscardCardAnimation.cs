@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using Cysharp.Threading.Tasks;
 using Tools;
+using Tools.Utils.Movements;
 
 namespace GameFields.DiscardPiles
 {
@@ -11,7 +12,7 @@ namespace GameFields.DiscardPiles
     {
         private Card _card;
         private Transform _cardTransform;
-        private CardMovement _cardMovement;
+        private Movement _cardMovement;
 
         private DiscardCardAnimationData _data;
         private Transform _container;

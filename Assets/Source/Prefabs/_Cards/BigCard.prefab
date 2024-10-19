@@ -1174,7 +1174,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 861536486467568002}
-  - component: {fileID: 5138151820310149012}
   - component: {fileID: 3356165798220764994}
   - component: {fileID: 3906712596106125165}
   m_Layer: 6
@@ -1205,18 +1204,6 @@ RectTransform:
   m_AnchoredPosition: {x: 885, y: 435}
   m_SizeDelta: {x: 150, y: 210}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!225 &5138151820310149012
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8904206795759155246}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!222 &3356165798220764994
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1238,9 +1225,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _scaleFactor: 2
-  _icon: {fileID: 4743130025860573802}
-  _number: {fileID: 5409254634717959927}
-  _name: {fileID: 653279783144416064}
-  _feature: {fileID: 620491575533207409}
+  _cardView:
+    _icon: {fileID: 4743130025860573802}
+    _number: {fileID: 5409254634717959927}
+    _name: {fileID: 653279783144416064}
+    _feature: {fileID: 620491575533207409}
   _rectTransform: {fileID: 861536486467568002}
   _canvasScaler: {fileID: 0}

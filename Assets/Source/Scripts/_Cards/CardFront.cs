@@ -1,4 +1,4 @@
-using TMPro;
+using Tools;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -7,15 +7,12 @@ using UnityEngine.UI;
 namespace Cards
 {
     [RequireComponent(typeof(CanvasGroup))]
-    internal class CardFront : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler, IShowable
+    internal class CardFront : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler, IViewable
     {
         [SerializeField] private float _width = 150f;
         [SerializeField] private float _height = 210f;
 
-        [SerializeField] private Image _icon;
-        [SerializeField] private TMP_Text _number;
-        [SerializeField] private TMP_Text _name;
-        [SerializeField] private TMP_Text _feature;
+        [SerializeField] private CardView _cardView;
         [SerializeField] private CanvasGroup _canvasGroup;
 
         [SerializeField] private Image _frameImage;
@@ -25,26 +22,28 @@ namespace Cards
         private RectTransform _cardRectTransform;
         private CardViewService _cardViewService;
         private Vector2 _cardSize;
-        private CardViewConfig _cardViewConfig;
+        private BigCardShowData _bigCardShowData;
 
         public bool IsBlock { get; private set; }
 
         internal void Init(CardViewConfig cardViewConfig, RectTransform cartRectTransform, CardViewService cardViewService)
         {
-            _cardViewConfig = cardViewConfig;
             _cardRectTransform = cartRectTransform;
             _cardViewService = cardViewService;
             _cardSize = new Vector2(_width, _height);
 
             IsBlock = false;
 
-            DefineViewCharacters();
+            _cardView.FillData(cardViewConfig);
             DefineSmallSize();
+
+            ReadOnlyTransform readOnlyTransform = new ReadOnlyTransform(_cardRectTransform);
+            _bigCardShowData = new BigCardShowData(_cardSize, readOnlyTransform, cardViewConfig);
         }
 
         internal void StartReview()
         {
-            _cardViewService.SetOverview(this, _cardSize, _cardRectTransform.position.x, _cardViewConfig);
+            _cardViewService.SetOverview(this, _bigCardShowData);
         }
 
         internal void EndReview()
@@ -92,14 +91,6 @@ namespace Cards
         public void Hide()
         {
             _canvasGroup.alpha = 0;
-        }
-
-        private void DefineViewCharacters()
-        {
-            _icon.sprite = _cardViewConfig.Icon;
-            _number.text = _cardViewConfig.Number.ToString();
-            _name.text = _cardViewConfig.Name;
-            _feature.text = _cardViewConfig.Feature;
         }
 
         #region AutomaticFillComponents

@@ -10,8 +10,8 @@ namespace Cards
         [SerializeField] private Card[] _cards;
         [SerializeField] private Transform _dragContainer;
 
-        private CardViewService _cardViewService;
         private CardDescription _cardDescription;
+        private CardViewService _cardViewService;
 
         public IEnumerable<Card> Cards => _cards;
 

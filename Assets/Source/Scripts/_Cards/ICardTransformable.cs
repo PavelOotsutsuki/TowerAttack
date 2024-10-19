@@ -1,3 +1,4 @@
+using Tools.Utils.Movements;
 using UnityEngine;
 
 namespace Cards
@@ -5,7 +6,7 @@ namespace Cards
     public interface ICardTransformable
     {
         public RectTransform Transform { get; }
-        public CardMovement CardMovement {get;}
+        public Movement CardMovement {get;}
         public Vector3 DefaultScaleVector { get; }
 
         public void SetSide(SideType sideType);
