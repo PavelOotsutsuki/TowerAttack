@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Cards
 {
-    public class BigCardShowData : IShowableData
+    public class BigCardShowData : IData
     {
         private readonly ReadOnlyTransform _readOnlyTransform;
 

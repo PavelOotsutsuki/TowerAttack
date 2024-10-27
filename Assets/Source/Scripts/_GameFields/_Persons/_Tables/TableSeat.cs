@@ -16,7 +16,7 @@ namespace GameFields.Persons.Tables
         internal void SetCard(Card card)
         {
             _card = card;
-            _card.Transform.SetParent(_rectTransform);
+            _card.ReadOnlyRectTransform.SetParent(_rectTransform);
             //_card.Transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
             Movement cardMovement = _card.CardMovement;
             //cardMovement.MoveLocalInstantly(Vector2.zero, Quaternion.identity.eulerAngles);

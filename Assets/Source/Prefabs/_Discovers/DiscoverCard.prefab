@@ -1182,15 +1182,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ViewDuration: 0.5
-  FrameImage: {fileID: 5568063326927377020}
   ViewLogic: {fileID: 8952863285110458061}
-  _icon: {fileID: 566134732455732466}
-  _number: {fileID: 4606953827740633675}
-  _name: {fileID: 8081553350937781104}
-  _feature: {fileID: 5162270551157492551}
-  _enableFrameColor: {r: 0.05882353, g: 1, b: 0, a: 1}
-  _disableFrameColor: {r: 0.8509804, g: 0.011764706, b: 0.011764706, a: 1}
-  _canvasGroup: {fileID: 5198153373583702261}
+  _cardView:
+    _icon: {fileID: 566134732455732466}
+    _number: {fileID: 4606953827740633675}
+    _name: {fileID: 8081553350937781104}
+    _feature: {fileID: 5162270551157492551}
+  _cardBlock:
+    _frameImage: {fileID: 5568063326927377020}
+    _enableFrameColor: {r: 0.046997316, g: 1, b: 0, a: 255}
+    _disableFrameColor: {r: 255, g: 0, b: 0, a: 255}
+    _canvasGroup: {fileID: 5198153373583702261}
 --- !u!225 &5198153373583702261
 CanvasGroup:
   m_ObjectHideFlags: 0

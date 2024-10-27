@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Tools.UI.Fadings
 {
     [Serializable]
-    public class FadablePanelData
+    public class FadablePanelData: IData
     {
         [field: SerializeField] public float MaxAlpha { get; private set; } = 1f;
         [field: SerializeField] public float MinAlpha { get; private set; } = 0f;

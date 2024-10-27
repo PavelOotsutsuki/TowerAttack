@@ -257,9 +257,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ViewDuration: 0.5
-  FrameImage: {fileID: 8278571099896121170}
   ViewLogic: {fileID: 5997027203550806854}
   _selectedFrameColor: {r: 0.8509804, g: 0.011764706, b: 0.011764706, a: 1}
+  _frameImage: {fileID: 8278571099896121170}
   _selectedWaitDuration: 1
 --- !u!114 &5997027203550806854
 MonoBehaviour:

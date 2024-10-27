@@ -17,21 +17,21 @@ namespace Roots
         [SerializeField] private CardDescription _cardDescription;
 
         [SerializeField] private Deck _deck;
-        [SerializeField] private DiscardPile _discardPile;
-        [SerializeField] private SeatPool _seatPool;
         [SerializeField] private DiscardPileConfig _discardPileConfig;
+        [SerializeField] private SeatPool _seatPool;
+        [SerializeField] private DiscardPile _discardPile;
 
-        [SerializeField] private CardPlayingZonePlayer _playerPlayingZone;
         [SerializeField] private HandPlayer _playerHand;
         [SerializeField] private TablePlayer _playerTable;
         [SerializeField] private TowerPlayer _playerTower;
         [SerializeField] private DiscoverPlayer _playerDiscover;
+        [SerializeField] private CardPlayingZonePlayer _playerPlayingZone;
 
-        [SerializeField] private CardPlayingZoneAI _enemyPlayingZone;
         [SerializeField] private HandAI _enemyHand;
         [SerializeField] private TableAI _enemyTable;
         [SerializeField] private TowerAI _enemyTower;
         [SerializeField] private DiscoverAI _enemyDiscoverImitation;
+        [SerializeField] private CardPlayingZoneAI _enemyPlayingZone;
 
         public override void InstallBindings()
         {

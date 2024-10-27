@@ -1,4 +1,5 @@
 using System;
+using Tools;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Movements;
 using UnityEngine;
@@ -10,24 +11,24 @@ namespace Cards
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private CardPaper _cardPaper;
         [SerializeField] private CardConfig _config;
-        [SerializeField] private Vector3 _defaultScaleVector;
+
+        private readonly Vector3 _defaultScaleVector = new Vector3(1f,1f,1f);
 
         private CardCharacter _character;
-        private int _effectCounter;
-        private IEffectFactory _effectFactory;
-        private Effect _effect;
+        private CardEffectManager _cardEffectManager;
 
         private ICardState _currentState;
 
-        public RectTransform Transform => _rectTransform;
+        public ReadOnlyRectTransform ReadOnlyRectTransform { get; private set; }
         public Movement CardMovement { get; private set; }
         public Vector3 DefaultScaleVector => _defaultScaleVector;
         public CardViewConfig ViewConfig => _config.CardViewConfig;
-        public bool IsPlayingEffect => _effect is null ? false : _effect.IsPlayed;
+        public bool IsPlayingEffect => _cardEffectManager.IsPlayingEffect;
 
         internal void Init(IEffectFactory effectFactory, CardViewService cardViewService, Transform dragContainer)
         {
-            _effectFactory = effectFactory;
+            ReadOnlyRectTransform = new ReadOnlyRectTransform(_rectTransform);
+            _cardEffectManager = new CardEffectManager(_config.Effect, effectFactory);
 
             _rectTransform.localScale = _defaultScaleVector;
             CardMovement = new Movement(_rectTransform);
@@ -48,11 +49,6 @@ namespace Cards
             _cardPaper.SetDragAndDropListener(cardDragAndDropListener);
         }
 
-        public Vector3 GetPosition()
-        {
-            return _rectTransform.position;
-        }
-
         public void Play()
         {
             CheckStateByNull();
@@ -68,8 +64,8 @@ namespace Cards
             }
 
             SetState(_character);
-            _effect = _effectFactory.Create(_config.Effect.Type);
-            _effectCounter = _config.Effect.Duration;
+
+            _cardEffectManager.Play();
         }
 
         public bool TryDiscard()
@@ -79,16 +75,7 @@ namespace Cards
                 throw new Exception("Try discard not CardCharacter. Card state: " + _currentState.ToString());
             }
 
-            _effectCounter--;
-
-            if (_effectCounter <= 0)
-            {
-                _effect?.End();
-                _effect = null;
-                return true;
-            }
-
-            return false;
+            return _cardEffectManager.TryDiscard();
         }
 
         public void SetDiscardSide()

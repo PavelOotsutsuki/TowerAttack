@@ -2,11 +2,12 @@ namespace Cards
 {
     public interface ICardDragAndDropListener
     {
-        public bool IsDraggable { get; }
+        bool IsDraggable { get; }
+        float ReturnInSeatDuration { get; }
 
-        public void OnCardDrag(Card card);
-        public void OnCardDrop();
-        public void OnCardPlay();
-        public void OnCardReturnInHand(Card card);
+        void OnCardDrag(Card card);
+        void OnCardDrop();
+        void OnCardPlay();
+        void OnCardReturnInHand(Card card);
     }
 }

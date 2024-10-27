@@ -17,7 +17,7 @@ namespace GameFields.Persons.Hands
         [SerializeField] private float _handLength = 1175f;
         [SerializeField] private float _startPositionX = 600f;
         [SerializeField] private float _startPositionY = 90f;
-        [SerializeField] private float _startCardTranslateSpeed = 0.5f;
+        [SerializeField] private float _returnInSeatDuration = 0.5f;
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private SideType _sideType;
         [SerializeField] private bool _isActiveInteraction;
@@ -27,7 +27,8 @@ namespace GameFields.Persons.Hands
         private int _handSeatIndex;
         private SeatPool _handSeatPool;
 
-        public bool IsDraggable => this is HandPlayer;
+        bool ICardDragAndDropListener.IsDraggable => this is HandPlayer;
+        float ICardDragAndDropListener.ReturnInSeatDuration => _returnInSeatDuration;
 
         public void Init(SeatPool seatPool)
         {
@@ -37,24 +38,24 @@ namespace GameFields.Persons.Hands
             _handSeatPool = seatPool;
         }
 
-        public void OnCardDrag(Card card)
+        void ICardDragAndDropListener.OnCardDrag(Card card)
         {
             StartDragCard(card);
         }
 
-        public void OnCardDrop()
+        void ICardDragAndDropListener.OnCardDrop()
         {
             UnblockCards();
             StartEndDragCard(false);
         }
 
-        public void OnCardPlay()
+        void ICardDragAndDropListener.OnCardPlay()
         {
             UnblockCards();
             UnbindDragableCard();
         }
 
-        public void OnCardReturnInHand(Card card)
+        void ICardDragAndDropListener.OnCardReturnInHand(Card card)
         {
             card.SetActiveInteraction(_isActiveInteraction);
         }
@@ -67,7 +68,7 @@ namespace GameFields.Persons.Hands
             handSeat.transform.SetParent(_rectTransform);
             handSeat.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
             _handSeats.Add(handSeat);
-            handSeat.SetCard(card, _sideType, _startCardTranslateSpeed);
+            handSeat.SetCard(card, _sideType, _returnInSeatDuration);
             card.SetActiveInteraction(_isActiveInteraction);
 
             SortHandSeats();
@@ -257,7 +258,7 @@ namespace GameFields.Persons.Hands
                 Vector3 positon = new Vector2(positionX + _rectTransform.rect.xMin, _startPositionY + _rectTransform.rect.yMin);
                 Vector3 rotation = new Vector3(0f, 0f, StartRotation);
 
-                _handSeats[i].SetLocalPositionValues(positon, rotation, _startCardTranslateSpeed);
+                _handSeats[i].SetLocalPositionValues(positon, rotation, _returnInSeatDuration);
             }
         }
 

@@ -2,34 +2,37 @@
 using System.Collections;
 using Cards;
 using Cysharp.Threading.Tasks;
+using Tools;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace GameFields.Persons.Discovers
 {
-    internal class DiscoverCardAI: DiscoverCard
+    internal class DiscoverCardAI : DiscoverCard
     {
         [SerializeField] private Color _selectedFrameColor;
+        [SerializeField] private Image _frameImage;
         [SerializeField] private float _selectedWaitDuration = 1f;
 
         private Color _defaultColor;
 
         public override void Init(Action clickCallback, IDiscoverClickHandler discoverClickHandler)
         {
-            _defaultColor = FrameImage.color;
+            _defaultColor = _frameImage.color;
 
             base.Init(clickCallback, discoverClickHandler);
         }
 
-        public override void Hide()
+        public override void Deactivate()
         {
             gameObject.SetActive(false);
         }
 
-        public override void Activate(float cardHeight, float cardWidth, CardViewConfig cardViewConfig = null)
+        public override void Activate(DiscoverCardActivateData data)
         {
-            FrameImage.color = _defaultColor;
+            _frameImage.color = _defaultColor;
 
-            ViewLogic.View(cardHeight, cardWidth);
+            ViewLogic.View(data.CardHeight, data.CardWidth);
             //ViewLogic.View();
         }
 
@@ -40,7 +43,7 @@ namespace GameFields.Persons.Discovers
 
         private IEnumerator ClickingImitation()
         {
-            FrameImage.color = _selectedFrameColor;
+            _frameImage.color = _selectedFrameColor;
 
             yield return new WaitForSeconds(_selectedWaitDuration);
 

@@ -11,7 +11,7 @@ namespace GameFields.DiscardPiles
     public class DiscardCardAnimation
     {
         private Card _card;
-        private Transform _cardTransform;
+        private ReadOnlyTransform _readOnlyCardTransform;
         private Movement _cardMovement;
 
         private DiscardCardAnimationData _data;
@@ -25,7 +25,7 @@ namespace GameFields.DiscardPiles
             _callback = callback;
 
             _card = card;
-            _cardTransform = _card.Transform;
+            _readOnlyCardTransform = _card.ReadOnlyRectTransform;
             _cardMovement = _card.CardMovement;
         }
 
@@ -36,7 +36,7 @@ namespace GameFields.DiscardPiles
 
         private IEnumerator DiscardingCard()
         {
-            _cardTransform.SetParent(_container);
+            _readOnlyCardTransform.SetParent(_container);
             
             _card.SetDiscardSide();
 
@@ -60,7 +60,7 @@ namespace GameFields.DiscardPiles
         private void InvertCardFront()
         {
             Vector3 scaleVector = _card.DefaultScaleVector;
-            Vector3 position = _cardTransform.position;
+            Vector3 position = _readOnlyCardTransform.GetPosition();
 
             _cardMovement.MoveLinear(position, _data.InvertRotation, _data.InvertCardFrontDuration, scaleVector);
         }
@@ -68,17 +68,17 @@ namespace GameFields.DiscardPiles
         private void InvertCardBack()
         {
             Vector3 endRotationVector = Vector3.zero;
-            Vector3 position = _cardTransform.position;
+            Vector3 position = _readOnlyCardTransform.GetPosition();
 
-            _cardMovement.MoveSmoothly(position, endRotationVector, _data.InvertCardBackDuration, _cardTransform.localScale);
+            _cardMovement.MoveSmoothly(position, endRotationVector, _data.InvertCardBackDuration, _readOnlyCardTransform.GetLocalScale());
         }
 
         private void IncreaseCard()
         {
-            Vector3 startPosition = _card.GetPosition();
+            Vector3 startPosition = _readOnlyCardTransform.GetPosition();
 
             _cardMovement.MoveInstantly(startPosition, _data.StartRotation, _data.StartScaleVector);
-            _cardMovement.MoveSmoothly(_cardTransform.position, _cardTransform.rotation.eulerAngles, _data.CardIncreaseDuration, _card.DefaultScaleVector);
+            _cardMovement.MoveSmoothly(_readOnlyCardTransform.GetPosition(), _readOnlyCardTransform.GetRotationVector(), _data.CardIncreaseDuration, _card.DefaultScaleVector);
         }
     }
 }

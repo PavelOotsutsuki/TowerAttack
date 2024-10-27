@@ -1,7 +1,41 @@
 using Tools.UI.Fadings;
+using Tools.Utils.FillComponents;
+using UnityEngine;
 
 namespace Cards
 {
-    public class CardDescription : FadableLabel
-    { }
+    [RequireComponent(typeof(FadableLabel))]
+    public class CardDescription : MonoBehaviour
+    {
+        [SerializeField] private FadableLabel _fadableLabel;
+
+        public void Init()
+        {
+            _fadableLabel.Init();
+        }
+
+        public void Show(string description)
+        {
+            _fadableLabel.Show(description);
+        }
+
+        public void Hide()
+        {
+            _fadableLabel.Hide();
+        }
+
+        #region AutomaticFillComponents
+        [ContextMenu(nameof(DefineAllComponentsFadableLabel))]
+        private void DefineAllComponentsFadableLabel()
+        {
+            DefineFadableLabel();
+        }
+
+        [ContextMenu(nameof(DefineFadableLabel))]
+        private void DefineFadableLabel()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _fadableLabel, ComponentLocationTypes.InThis);
+        }
+        #endregion
+    }
 }

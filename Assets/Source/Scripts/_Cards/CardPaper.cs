@@ -1,5 +1,6 @@
 using UnityEngine;
 using Tools.Utils.FillComponents;
+using Tools;
 
 namespace Cards
 {
@@ -17,7 +18,8 @@ namespace Cards
 
         internal void Init(Card me, CardViewService cardViewService, CardViewConfig cardViewConfig, Transform dragContainer, RectTransform cardTransform)
         {
-            _cardFront.Init(cardViewConfig, cardTransform, cardViewService);
+            ReadOnlyRectTransform readOnlyRectTransform = new ReadOnlyRectTransform(cardTransform);
+            _cardFront.Init(cardViewConfig, readOnlyRectTransform, cardViewService);
 
             _cardDragAndDropActions = new CardDragAndDropActions(_cardFront, me);
             _cardDragAndDrop.Init(cardTransform, _cardDragAndDropActions, dragContainer);
@@ -54,6 +56,10 @@ namespace Cards
             if (_cardDragAndDrop.IsDragable == false)
             {
                 _cardSideFlipper.ActivateInteraction();
+            }
+            else
+            {
+                Debug.Log("Попадаю сюда когда отпустил драгнутую карту, но успел драгнуть и отпустить вторую до того как первая вернулась в руку");
             }
         }
 

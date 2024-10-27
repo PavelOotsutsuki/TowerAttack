@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Tools.UI.Fadings
 {
     [RequireComponent(typeof(FadablePanel))]
-    public class FadableLabel : MonoBehaviour, ICompletable
+    public sealed class FadableLabel : MonoBehaviour, ICompletable, IViewable
     {
         [SerializeField] private TMP_Text _text;
         [SerializeField] private FadablePanel _fadablePanel;
@@ -42,15 +42,15 @@ namespace Tools.UI.Fadings
         [ContextMenu(nameof(DefineAllComponentsFadableLabel))]
         private void DefineAllComponentsFadableLabel()
         {
-            DefineText();
+            //DefineText();
             DefineFadablePanel();
         }
 
-        [ContextMenu(nameof(DefineText))]
-        private void DefineText()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _text, ComponentLocationTypes.InChildren);
-        }
+        //[ContextMenu(nameof(DefineText))]
+        //private void DefineText()
+        //{
+        //    AutomaticFillComponents.DefineComponent(this, ref _text, ComponentLocationTypes.InThis);
+        //}
 
         [ContextMenu(nameof(DefineFadablePanel))]
         private void DefineFadablePanel()

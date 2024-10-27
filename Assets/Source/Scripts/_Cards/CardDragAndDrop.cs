@@ -2,13 +2,12 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections;
 using Tools.Extensions;
+using Tools;
 
 namespace Cards
 {
     internal class CardDragAndDrop : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
     {
-        [SerializeField] private float _returnInHandSpeed = 0.5f;
-
         private Coroutine _viewCardAfterDropInWork;
         private bool _isForciblyDrag;
         private bool _isNotDraggable;
@@ -45,7 +44,7 @@ namespace Cards
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-            if (_cardDragAndDropActions.IsCanDrag() == false)
+            if (_cardDragAndDropActions.CanDrag() == false)
             {
                 _isNotDraggable = true;
                 _currentEventData?.Reset();
@@ -97,7 +96,7 @@ namespace Cards
 
             if (EventSystem.current.TryGetComponentInRaycasts(eventData, out ICardDropPlace cardDropPlace))
             {
-                if (_cardDragAndDropActions.IsCanDrop(cardDropPlace))
+                if (_cardDragAndDropActions.CanDrop(cardDropPlace))
                 {
                     IsDragable = false;
                     _cardDragAndDropActions.PlayCard(cardDropPlace);
@@ -120,8 +119,8 @@ namespace Cards
                 StopCoroutine(_viewCardAfterDropInWork);
             }
 
-            _viewCardAfterDropInWork = StartCoroutine(ViewCardAfterDrop(_returnInHandSpeed, _currentEventData));
-            _cardDragAndDropActions.ReturnInHand(_returnInHandSpeed);
+            _viewCardAfterDropInWork = StartCoroutine(ViewCardAfterDrop(_cardDragAndDropActions.ReturnInHandSpeed, _currentEventData));
+            _cardDragAndDropActions.ReturnInHand(_cardDragAndDropActions.ReturnInHandSpeed);
         }
 
         private IEnumerator ViewCardAfterDrop(float endDuration, PointerEventData eventData)

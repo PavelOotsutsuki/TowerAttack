@@ -490,7 +490,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df5d4bd620aee461aafaed4fbef27125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _returnInHandSpeed: 0.5
 --- !u!222 &6776742393676862376
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1094,10 +1093,12 @@ MonoBehaviour:
     _number: {fileID: 8887612740147015767}
     _name: {fileID: 4539111807913271712}
     _feature: {fileID: 3336148435952527685}
+  _cardBlock:
+    _frameImage: {fileID: 919996935074158091}
+    _enableFrameColor: {r: 0.061807394, g: 1, b: 0, a: 1}
+    _disableFrameColor: {r: 1, g: 0, b: 0, a: 1}
+    _canvasGroup: {fileID: 5823099822882136473}
   _canvasGroup: {fileID: 5823099822882136473}
-  _frameImage: {fileID: 919996935074158091}
-  _enableFrameColor: {r: 0.05724919, g: 1, b: 0, a: 1}
-  _disableFrameColor: {r: 0.8490566, g: 0.01201493, b: 0.01201493, a: 1}
 --- !u!1 &5210918133022376145
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
 using Cards;
+using Tools;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Movements;
 using UnityEngine;
@@ -7,10 +8,10 @@ namespace GameFields.Persons.Discovers
 {
     public abstract class DiscoverSeat : MonoBehaviour, IDiscoverClickHandler
     {
-        [SerializeField] protected DiscoverCard DiscoverCard;
+        [SerializeField] private DiscoverCard _discoverCard;
         [SerializeField] private RectTransform _rectTransform;
 
-        protected Card Card;
+        private Card _card;
 
         private Movement _seatMovement;
         private IDiscoverChoiceHandler _discoverChoiceHandler;
@@ -19,21 +20,28 @@ namespace GameFields.Persons.Discovers
         {
             _seatMovement = new Movement(_rectTransform);
             _discoverChoiceHandler = discoverChoiceHandler;
-            DiscoverCard.Init(OnDiscoverCardClick, this);
+            _discoverCard.Init(OnDiscoverCardClick, this);
             Reset();
         }
 
-        public abstract void SetCard(Card card);
+        //public abstract void SetCard(Card card);
+
+        public void SetCard(Card card)
+        {
+            _card = card;
+            DiscoverCardActivateData data = new DiscoverCardActivateData(_card.ReadOnlyRectTransform.GetSizeDelta(), _card.ViewConfig);
+            _discoverCard.Activate(data);
+        }
 
         public void StartClick()
         {
-            DiscoverCard.StartClickActions();
+            _discoverCard.StartClickActions();
         }
 
         public void Reset()
         {
-            Card = null;
-            DiscoverCard.Hide();
+            _card = null;
+            _discoverCard.Deactivate();
         }
 
         public void SetLocalPositionValues(Vector3 position, Vector3 rotation, float duration = 0f)
@@ -43,7 +51,7 @@ namespace GameFields.Persons.Discovers
 
         private void OnDiscoverCardClick()
         {
-            _discoverChoiceHandler.OnMakeChoice(Card);
+            _discoverChoiceHandler.OnMakeChoice(_card);
         }
 
         #region AutomaticFillComponents
@@ -63,7 +71,7 @@ namespace GameFields.Persons.Discovers
         [ContextMenu(nameof(DefineDiscoverCard))]
         private void DefineDiscoverCard()
         {
-            AutomaticFillComponents.DefineComponent(this, ref DiscoverCard, ComponentLocationTypes.InChildren);
+            AutomaticFillComponents.DefineComponent(this, ref _discoverCard, ComponentLocationTypes.InChildren);
         }
         #endregion
     }

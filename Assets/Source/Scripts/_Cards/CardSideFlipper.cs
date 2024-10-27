@@ -1,12 +1,10 @@
-using UnityEngine;
-
 namespace Cards
 {
-     internal class CardSideFlipper
+    internal class CardSideFlipper
     {
-        private CardFront _front;
-        private CardBack _back;
-        private CardDragAndDrop _cardDragAndDrop;
+        private readonly CardFront _front;
+        private readonly CardBack _back;
+        private readonly CardDragAndDrop _cardDragAndDrop;
 
         public CardSideFlipper(CardFront front, CardBack back, CardDragAndDrop cardDragAndDrop)
         {

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Tools.UI.Fadings
 {
     [RequireComponent(typeof(CanvasGroup))]
-    public class FadablePanel : MonoBehaviour, ICompletable
+    public sealed class FadablePanel : MonoBehaviour, ICompletable, IViewable
     {
         [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private FadablePanelData _data;
@@ -15,18 +15,18 @@ namespace Tools.UI.Fadings
 
         public bool IsComplete => _isComplete;
 
-        public virtual void Init()
+        public void Init()
         {
             _canvasGroup.alpha = _data.StartAlpha;
             _isComplete = false;
         }
 
-        public virtual void Show()
+        public void Show()
         {
             StartFading(_data.FadeUpDuration, _data.MaxAlpha);
         }
 
-        public virtual void Hide()
+        public void Hide()
         {
             StartFading(_data.FadeOutDuration, _data.MinAlpha);
         }

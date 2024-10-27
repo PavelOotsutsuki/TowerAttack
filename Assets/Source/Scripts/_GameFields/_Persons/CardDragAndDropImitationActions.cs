@@ -12,7 +12,7 @@ namespace GameFields.Persons
     public class CardDragAndDropImitationActions
     {
         private Card _activeCard;
-        private RectTransform _cardTransform;
+        private ReadOnlyRectTransform _readOnlyCardTransform;
         private Movement _cardMovement;
 
         private ICardDragAndDropListener _cardDragAndDropListener;
@@ -31,14 +31,14 @@ namespace GameFields.Persons
         internal void SetCard(Card card)
         {
             _activeCard = card;
-            _cardTransform = _activeCard.Transform;
+            _readOnlyCardTransform = _activeCard.ReadOnlyRectTransform;
             _cardMovement = _activeCard.CardMovement;
         }
 
         public void ViewCard(float duration, float yDirection)
         {
-            Vector3 position = _cardTransform.localPosition;
-            position.y += _cardTransform.rect.height / 2 * yDirection;
+            Vector3 position = _readOnlyCardTransform.GetLocalPosition();
+            position.y += _readOnlyCardTransform.GetHeight() / 2 * yDirection;
 
             _cardMovement.MoveLocalSmoothly(position, Vector3.zero, duration, _activeCard.DefaultScaleVector);
         }
@@ -97,7 +97,7 @@ namespace GameFields.Persons
 
         private void MoveOnPlace(Vector3 position, float duration)
         {
-            Vector3 rotation = _cardTransform.rotation.eulerAngles;
+            Vector3 rotation = _readOnlyCardTransform.GetRotationVector();
             Vector3 downWay = position;
 
             _cardMovement.MoveLinear(downWay, rotation, duration, () => _isMoving = false);

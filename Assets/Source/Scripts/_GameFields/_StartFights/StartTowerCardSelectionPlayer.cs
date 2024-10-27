@@ -122,7 +122,7 @@ namespace GameFields.StartFights
 
         private void InvertCardFront(Card card)
         {
-            Vector3 position = card.Transform.position;
+            Vector3 position = card.ReadOnlyRectTransform.GetPosition();
 
             Movement cardMovement = card.CardMovement;
 
@@ -132,11 +132,11 @@ namespace GameFields.StartFights
         private void InvertCardBack(Card card)
         {
             Vector3 endRotationVector = Vector3.zero;
-            Vector3 position = card.Transform.position;
+            Vector3 position = card.ReadOnlyRectTransform.GetPosition();
 
             Movement cardMovement = card.CardMovement;
 
-            cardMovement.MoveSmoothly(position, endRotationVector, _data.InvertCardBackDuration, card.Transform.localScale);
+            cardMovement.MoveSmoothly(position, endRotationVector, _data.InvertCardBackDuration, card.ReadOnlyRectTransform.GetLocalScale());
         }
 
         private void InitSeats()

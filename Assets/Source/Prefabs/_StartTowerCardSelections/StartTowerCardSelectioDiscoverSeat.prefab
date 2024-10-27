@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15b11932703fa4759badfa23b1cc6201, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DiscoverCard: {fileID: 7074818179141576871}
+  _discoverCard: {fileID: 7074818179141576871}
   _rectTransform: {fileID: 5789417150381678204}
 --- !u!1 &190474410711889327
 GameObject:
@@ -956,16 +956,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ViewDuration: 0
-  FrameImage: {fileID: 1933570509307895844}
   ViewLogic: {fileID: 834788909037085260}
   _cardView:
     _icon: {fileID: 9052300145698190784}
     _number: {fileID: 8750907043112580180}
     _name: {fileID: 3991106607841779485}
     _feature: {fileID: 3927993316039303098}
-  _enableFrameColor: {r: 0.05882353, g: 1, b: 0, a: 1}
-  _disableFrameColor: {r: 0.8509804, g: 0.011764706, b: 0.011764706, a: 1}
-  _canvasGroup: {fileID: 6325254957623709462}
+  _cardBlock:
+    _frameImage: {fileID: 1933570509307895844}
+    _enableFrameColor: {r: 0.046997316, g: 1, b: 0, a: 255}
+    _disableFrameColor: {r: 255, g: 0, b: 0, a: 255}
+    _canvasGroup: {fileID: 6325254957623709462}
 --- !u!114 &834788909037085260
 MonoBehaviour:
   m_ObjectHideFlags: 0

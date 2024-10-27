@@ -7,7 +7,7 @@ namespace Cards
         private readonly CardFront _cardFront;
         private readonly Card _card;
 
-        private ICardDragAndDropListener _cardDragListener;
+        private ICardDragAndDropListener _cardDragAndDropListener;
 
         internal CardDragAndDropActions(CardFront cardFront, Card card)
         {
@@ -15,9 +15,12 @@ namespace Cards
             _card = card;
         }
 
-        internal void SetListener(ICardDragAndDropListener cardDragListener)
+        internal float ReturnInHandSpeed => _cardDragAndDropListener.ReturnInSeatDuration;
+        internal bool CanDrag() => _cardDragAndDropListener.IsDraggable;
+
+        internal void SetListener(ICardDragAndDropListener cardDragAndDropListener)
         {
-            _cardDragListener = cardDragListener;
+            _cardDragAndDropListener = cardDragAndDropListener;
         }
 
         internal void StartDrag()
@@ -26,15 +29,19 @@ namespace Cards
             {
                 _cardFront.EndReview();
             }
+            else
+            {
+                Debug.LogWarning("StartDrag when _cardFront.IsBlock");
+            }
 
-            _cardDragListener.OnCardDrag(_card);
+            _cardDragAndDropListener.OnCardDrag(_card);
 
             _cardFront.Block();
         }
 
         internal void OnReturnInHand(bool isPointerOnCard)
         {
-            _cardDragListener.OnCardReturnInHand(_card);
+            _cardDragAndDropListener.OnCardReturnInHand(_card);
 
             if (isPointerOnCard && _cardFront.IsBlock == false)
             {
@@ -42,30 +49,25 @@ namespace Cards
             }
         }
 
-        internal bool IsCanDrop(ICardDropPlace cardDropPlace)
+        internal bool CanDrop(ICardDropPlace cardDropPlace)
         {
             return cardDropPlace.HasFreeSeat;
         }
 
         internal void StartEndDrag()
         {
-            _cardDragListener.OnCardDrop();
+            _cardDragAndDropListener.OnCardDrop();
         }
 
         internal void PlayCard(ICardDropPlace cardDropPlace)
         {
-            _cardDragListener.OnCardPlay();
+            _cardDragAndDropListener.OnCardPlay();
             cardDropPlace.SeatCard(_card);
         }
 
         internal void ReturnInHand(float duration)
         {
             _card.CardMovement.MoveLocalSmoothly(Vector2.zero, Quaternion.identity.eulerAngles, duration, _card.DefaultScaleVector);
-        }
-
-        internal bool IsCanDrag()
-        {
-            return _cardDragListener.IsDraggable;
         }
     }
 }

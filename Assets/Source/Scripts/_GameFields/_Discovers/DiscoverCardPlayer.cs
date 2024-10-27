@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using Cards;
 using Cysharp.Threading.Tasks;
+using Tools;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
@@ -10,10 +12,7 @@ namespace GameFields.Persons.Discovers
     public class DiscoverCardPlayer : DiscoverCard, IPointerClickHandler, IPointerExitHandler, IPointerEnterHandler
     {
         [SerializeField] private CardView _cardView;
-
-        [SerializeField] private Color _enableFrameColor;
-        [SerializeField] private Color _disableFrameColor;
-        [SerializeField] private CanvasGroup _canvasGroup;
+        [SerializeField] private CardBlock _cardBlock;
 
         private string _descriptionMessage;
         private CardDescription _description;
@@ -24,21 +23,21 @@ namespace GameFields.Persons.Discovers
             _description = cardDescription;
         }
 
-        public override void Hide()
+        public override void Deactivate()
         {
             Block();
 
             gameObject.SetActive(false);
         }
 
-        public override void Activate(float cardHeight, float cardWidth, CardViewConfig cardViewConfig = null)
+        public override void Activate(DiscoverCardActivateData data)
         {
             Block();
 
-            _cardView.FillData(cardViewConfig);
-            _descriptionMessage = cardViewConfig.Description;
+            _cardView.FillData(data.CardViewConfig);
+            _descriptionMessage = data.CardViewConfig.Description;
 
-            ViewLogic.View(cardHeight, cardWidth);
+            ViewLogic.View(data.CardHeight, data.CardWidth);
 
             WaitingToUnblock().ToUniTask();
         }
@@ -73,14 +72,12 @@ namespace GameFields.Persons.Discovers
 
         private void Block()
         {
-            FrameImage.color = _disableFrameColor;
-            _canvasGroup.blocksRaycasts = false;
+            _cardBlock.Block();
         }
 
         private void Unblock()
         {
-            FrameImage.color = _enableFrameColor;
-            _canvasGroup.blocksRaycasts = true;
+            _cardBlock.Unblock();
         }
     }
 }
