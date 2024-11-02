@@ -1,7 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using Cards;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -10,16 +7,16 @@ namespace GameFields.Persons.Discovers
 {
     public class DiscoverAI : Discover
     {
-        private const int _countLogics = 1;
+        private const int CountLogics = 1;
 
         [SerializeField] private float _minWaitDuration = 1.5f;
         [SerializeField] private float _maxWaitDuration = 5f;
 
-        public override void Activate(List<Card> cards, string activateMessage, Action<Card> callback)
+        public override void Activate(DiscoverActivateData data)
         {
-            base.Activate(cards, activateMessage, callback);
+            base.Activate(data);
 
-            int logicNumber = Random.Range(1, _countLogics + 1);
+            int logicNumber = Random.Range(1, CountLogics + 1);
 
             if (logicNumber == 1)
             {

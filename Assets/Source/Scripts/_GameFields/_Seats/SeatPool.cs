@@ -40,7 +40,7 @@ namespace GameFields.Seats
         {
             if (_usedPool.Contains(handSeat))
             {
-                handSeat.transform.SetParent(_container);
+                handSeat.ReadOnlyTransform.SetParent(_container);
                 handSeat.Reset();
                 _usedPool.Remove(handSeat);
                 _remainingPool.Enqueue(handSeat);

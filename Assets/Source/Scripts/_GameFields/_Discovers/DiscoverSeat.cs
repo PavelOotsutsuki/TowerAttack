@@ -1,5 +1,4 @@
 using Cards;
-using Tools;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Movements;
 using UnityEngine;
@@ -8,8 +7,8 @@ namespace GameFields.Persons.Discovers
 {
     public abstract class DiscoverSeat : MonoBehaviour, IDiscoverClickHandler
     {
-        [SerializeField] private DiscoverCard _discoverCard;
         [SerializeField] private RectTransform _rectTransform;
+        [SerializeField] private DiscoverCard _discoverCard;
 
         private Card _card;
 
@@ -23,8 +22,6 @@ namespace GameFields.Persons.Discovers
             _discoverCard.Init(OnDiscoverCardClick, this);
             Reset();
         }
-
-        //public abstract void SetCard(Card card);
 
         public void SetCard(Card card)
         {

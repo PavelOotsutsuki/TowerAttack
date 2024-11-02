@@ -6,36 +6,36 @@ using UnityEngine;
 namespace GameFields.StartFights
 {
     [RequireComponent(typeof(FadableLabel))]
-    public class WaitEnemySolutionLabel : MonoBehaviour, ICompletable
+    public class WaitEnemySolutionLabel : MonoBehaviour, ICompletable, IViewable
     {
         [SerializeField] private FadableLabel _fadableLabel;
 
-        public bool IsWasStarted { get; private set; }
+        private bool _isWasStarted;
 
         public bool IsComplete => _fadableLabel.IsComplete;
 
         public void Init()
         {
-            IsWasStarted = false;
+            _isWasStarted = false;
 
             _fadableLabel.Init();
         }
 
         public void Show()
         {
-            IsWasStarted = true;
+            _isWasStarted = true;
 
             _fadableLabel.Show();
         }
 
         public void Hide()
         {
-            if (IsWasStarted == false)
+            if (_isWasStarted == false)
                 return;
 
             _fadableLabel.Hide();
 
-            IsWasStarted = false;
+            _isWasStarted = false;
         }
 
         #region AutomaticFillComponents

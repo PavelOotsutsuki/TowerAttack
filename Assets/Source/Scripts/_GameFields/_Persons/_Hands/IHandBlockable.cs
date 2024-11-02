@@ -1,6 +1,6 @@
 namespace GameFields.Persons.Hands
 {
-    public interface IBlockable
+    public interface IHandBlockable
     {
         public void ForciblyBlock();
         public void Unblock();

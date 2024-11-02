@@ -1,20 +1,14 @@
 using System;
 using Cards;
-using GameFields.Persons;
-using Zenject;
 
 namespace GameFields.Effects
 {
     public class EffectFactory : IEffectFactory
     {
-        //private readonly SignalBus _bus;
-        //private readonly Deck _deck;
         private readonly IPersonsState _personsState;
 
         public EffectFactory(IPersonsState personsState)
         {
-            //_bus = bus;
-            //_deck = deck;
             _personsState = personsState;
         }
 
@@ -29,11 +23,6 @@ namespace GameFields.Effects
             };
 
             return effect;
-            //Person target = effect.Target == EffectTarget.Self
-            //    ? _personsState.Active
-            //    : _personsState.Deactive;
-            
-            //_bus.Fire(new EffectCreatedSignal(target, type));
         }
     }
 }

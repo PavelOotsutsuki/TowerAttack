@@ -7,7 +7,7 @@ namespace GameFields.Effects
 {
     public class ZhyzhaEffect : Effect
     {
-        private Person _deactivePerson;
+        private readonly Person _deactivePerson;
 
         public ZhyzhaEffect(Person deactivePerson) : base()
         {

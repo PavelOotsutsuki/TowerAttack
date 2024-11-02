@@ -5,16 +5,12 @@ namespace GameFields.StartFights
 {
     public class StartTowerCardSelectionViewLogic : DiscoverViewLogic
     {
-        public override void View(float cardHeight, float cardWidth)
+        public override void Show(DiscoverViewLogicData data)
         {
-            //float bigHeight = cardHeight * ScaleFactor;
-            //float bigWidth = cardWidth * ScaleFactor;
-
-            RectTransform.sizeDelta = new Vector2(cardWidth, cardHeight);
+            RectTransform.sizeDelta = new Vector2(data.CardWidth, data.CardHeight);
             RectTransform.localScale = new Vector3(1, 1, 1);
-            //RectTransform.localPosition = Vector3.zero;
-            Movement.MoveLocalInstantly(Vector3.zero, Quaternion.identity.eulerAngles, ScaleFactor);
 
+            Movement.MoveLocalInstantly(Vector3.zero, Quaternion.identity.eulerAngles, ScaleFactor);
 
             gameObject.SetActive(true);
         }

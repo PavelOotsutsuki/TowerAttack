@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using Cards;
 using Cysharp.Threading.Tasks;
@@ -9,19 +8,20 @@ namespace GameFields.Persons.DrawCards
 {
     public class SimpleDrawCardAnimation: IDrawCardAnimation
     {
-        private Hand _hand;
-        private float _delay;
-        private bool _isDone;
+        private readonly Hand _hand;
+        private readonly float _delay;
 
-        public bool IsDone => _isDone;
+        private bool _isComplete;
 
         public SimpleDrawCardAnimation(Hand hand, float delay)
         {
             _hand = hand;
             _delay = delay;
 
-            _isDone = true;
+            _isComplete = true;
         }
+
+        public bool IsComplete => _isComplete;
 
         public void Play(Card card)
         {
@@ -30,12 +30,12 @@ namespace GameFields.Persons.DrawCards
 
         private IEnumerator Playing(Card drawnCard)
         {
-            _isDone = false;
+            _isComplete = false;
 
             yield return new WaitForSeconds(_delay);
 
             _hand.AddCard(drawnCard);
-            _isDone = true;
+            _isComplete = true;
         }
     }
 }

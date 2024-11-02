@@ -1,4 +1,5 @@
 using System.Collections;
+using Cysharp.Threading.Tasks;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
@@ -23,12 +24,16 @@ namespace Tools.UI.Fadings
 
         public void Show()
         {
+            gameObject.SetActive(true);
+
             StartFading(_data.FadeUpDuration, _data.MaxAlpha);
         }
 
         public void Hide()
         {
             StartFading(_data.FadeOutDuration, _data.MinAlpha);
+
+            Deactivating().ToUniTask(); 
         }
 
         private void StartFading(float duration, float targetAlpha)
@@ -41,6 +46,13 @@ namespace Tools.UI.Fadings
             }
 
             _fadeInWork = StartCoroutine(FadeIn(duration, targetAlpha));
+        }
+
+        private IEnumerator Deactivating()
+        {
+            yield return new WaitUntil(() => _isComplete);
+
+            gameObject.SetActive(false);
         }
 
         private IEnumerator FadeIn(float duration, float targetAlpha)

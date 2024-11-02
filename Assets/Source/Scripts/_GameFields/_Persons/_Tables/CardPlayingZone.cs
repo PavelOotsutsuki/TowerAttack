@@ -42,7 +42,7 @@ namespace GameFields.Persons.Tables
                 }
             }
             
-            toDiscard = toDiscard.OrderBy(card => card.transform.position.x).ToList();
+            toDiscard = toDiscard.OrderBy(card => card.ReadOnlyRectTransform.GetPositionX()).ToList();
 
             foreach (Card card in toDiscard)
                 _playedCards.Remove(card);

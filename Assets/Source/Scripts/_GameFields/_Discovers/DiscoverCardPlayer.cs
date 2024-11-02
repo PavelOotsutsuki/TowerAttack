@@ -1,8 +1,7 @@
-using System;
 using System.Collections;
 using Cards;
 using Cysharp.Threading.Tasks;
-using Tools;
+using Tools.UI.Fadings;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
@@ -16,6 +15,7 @@ namespace GameFields.Persons.Discovers
 
         private string _descriptionMessage;
         private CardDescription _description;
+        private FadableLabelActivateData _labelData;
 
         [Inject]
         public void Construct(CardDescription cardDescription)
@@ -36,15 +36,18 @@ namespace GameFields.Persons.Discovers
 
             _cardView.FillData(data.CardViewConfig);
             _descriptionMessage = data.CardViewConfig.Description;
+            _labelData = new FadableLabelActivateData(_descriptionMessage);
 
-            ViewLogic.View(data.CardHeight, data.CardWidth);
+            DiscoverViewLogicData discoverViewLogicData = new DiscoverViewLogicData(data.CardHeight, data.CardWidth);
+
+            ViewLogic.Show(discoverViewLogicData);
 
             WaitingToUnblock().ToUniTask();
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            _description.Show(_descriptionMessage);
+            _description.Show(_labelData);
         }
 
         public void OnPointerExit(PointerEventData eventData)

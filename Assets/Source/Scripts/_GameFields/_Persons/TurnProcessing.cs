@@ -8,11 +8,12 @@ namespace GameFields.Persons
 {
     public class TurnProcessing : IPersonStep
     {
-        private bool _isComplete;
-        private IButtonActivator _buttonActivator;
-        private IBlockable _handBlockable;
+        private readonly IButtonActivator _buttonActivator;
+        private readonly IHandBlockable _handBlockable;
 
-        public TurnProcessing(IButtonActivator buttonActivator, IBlockable handBlockable)
+        private bool _isComplete;
+
+        public TurnProcessing(IButtonActivator buttonActivator, IHandBlockable handBlockable)
         {
             _isComplete = false;
             _buttonActivator = buttonActivator;

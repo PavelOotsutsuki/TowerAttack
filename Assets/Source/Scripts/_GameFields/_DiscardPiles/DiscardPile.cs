@@ -4,7 +4,6 @@ using Cards;
 using Cysharp.Threading.Tasks;
 using GameFields.Seats;
 using GameFields.Signals;
-using Tools;
 using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
@@ -14,16 +13,16 @@ namespace GameFields.DiscardPiles
     public class DiscardPile
     {
         private const float CenterRotation = 90f;
+
         private readonly List<Seat> _seats =  new List<Seat>();
+        private readonly DiscardPileConfig _discardPileConfig;
+        private readonly float _maxCoordinateX;
+        private readonly float _maxCoordinateY;
+        private readonly float _minCoordinateX;
+        private readonly float _minCoordinateY;
+        private readonly SeatPool _discardPileSeatPool;
 
-        private DiscardPileConfig _discardPileConfig;
-        private float _maxCoordinateX;
-        private float _maxCoordinateY;
-        private float _minCoordinateX;
-        private float _minCoordinateY;
-        private SeatPool _discardPileSeatPool;
-
-        private SignalBus _bus;
+        private readonly SignalBus _bus;
 
         public DiscardPile(SeatPool seatPool, SignalBus bus, DiscardPileConfig discardPileConfig)
         {
@@ -61,7 +60,7 @@ namespace GameFields.DiscardPiles
         private Seat GetSeat()
         {
             Seat discardPileSeat = _discardPileSeatPool.GetSeat();
-            discardPileSeat.transform.SetParent(_discardPileConfig.RectTransform);
+            discardPileSeat.ReadOnlyTransform.SetParent(_discardPileConfig.RectTransform);
             discardPileSeat.SetLocalPositionValues(FindCardSeatPosition(), FindCardSeatRotation());
             return discardPileSeat;
         }

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections;
-using Cards;
 using Cysharp.Threading.Tasks;
-using Tools;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,8 +30,9 @@ namespace GameFields.Persons.Discovers
         {
             _frameImage.color = _defaultColor;
 
-            ViewLogic.View(data.CardHeight, data.CardWidth);
-            //ViewLogic.View();
+            DiscoverViewLogicData discoverViewLogicData = new DiscoverViewLogicData(data.CardHeight, data.CardWidth);
+
+            ViewLogic.Show(discoverViewLogicData);
         }
 
         public override void StartClickActions()

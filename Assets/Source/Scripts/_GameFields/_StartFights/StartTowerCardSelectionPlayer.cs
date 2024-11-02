@@ -63,7 +63,8 @@ namespace GameFields.StartFights
                 card.gameObject.SetActive(false);
             }
 
-            _discover.Activate(cards, _data.LabelMessage, OnCardChoiceDone);
+            DiscoverActivateData discoverActivateData = new DiscoverActivateData(cards, _data.LabelMessage, OnCardChoiceDone);
+            _discover.Activate(discoverActivateData);
         }
 
         private void OnCardChoiceDone(Card card)

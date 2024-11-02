@@ -119,8 +119,8 @@ namespace Cards
                 StopCoroutine(_viewCardAfterDropInWork);
             }
 
-            _viewCardAfterDropInWork = StartCoroutine(ViewCardAfterDrop(_cardDragAndDropActions.ReturnInHandSpeed, _currentEventData));
-            _cardDragAndDropActions.ReturnInHand(_cardDragAndDropActions.ReturnInHandSpeed);
+            _viewCardAfterDropInWork = StartCoroutine(ViewCardAfterDrop(_cardDragAndDropActions.ReturnInHandDuration, _currentEventData));
+            _cardDragAndDropActions.ReturnInHand(_cardDragAndDropActions.ReturnInHandDuration);
         }
 
         private IEnumerator ViewCardAfterDrop(float endDuration, PointerEventData eventData)

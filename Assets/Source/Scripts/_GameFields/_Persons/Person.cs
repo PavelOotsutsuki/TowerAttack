@@ -11,7 +11,6 @@ using GameFields.Persons.Hands;
 using GameFields.Persons.Tables;
 using GameFields.Persons.Towers;
 using GameFields.Signals;
-using Tools;
 using UnityEngine;
 using Zenject;
 
@@ -29,9 +28,9 @@ namespace GameFields.Persons
         private readonly Hand _hand;
         private readonly AttackMenu _attackMenu;
 
-        private IPersonStep _currentStep;
-
         protected readonly SignalBus Bus;
+
+        private IPersonStep _currentStep;
 
         protected Person(CardPlayingZone playingZone, DrawCardRoot drawCardRoot, Tower tower,
             StartTurnDraw startTurnDraw, IPersonStep turnProcess, Discover discover, SignalBus bus,
@@ -48,8 +47,6 @@ namespace GameFields.Persons
             _attackMenu = attackMenu;
 
             _personSteps = new Queue<IPersonStep>();
-
-            _discover.Deactivate();
         }
 
         public bool IsComplete { get; private set; }
@@ -88,7 +85,9 @@ namespace GameFields.Persons
                 return;
             }
 
-            _discover.Activate(cards, activateMessage, callback);
+            DiscoverActivateData discoverActivateData = new DiscoverActivateData(cards, activateMessage, callback);
+
+            _discover.Activate(discoverActivateData);
         }
 
         public void AttackActivate()

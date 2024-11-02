@@ -1,16 +1,16 @@
+using Tools;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Movements;
 using UnityEngine;
 
 namespace GameFields.Persons.Discovers
 {
-    public abstract class DiscoverViewLogic: MonoBehaviour
+    public abstract class DiscoverViewLogic: MonoBehaviour, IShowable<DiscoverViewLogicData>
     {
         [SerializeField] protected RectTransform RectTransform;
         [SerializeField, Min(1f)] protected float ScaleFactor = 2f;
 
         protected float Duration;
-
         protected Movement Movement;
 
         public virtual void Init(float duration)
@@ -21,7 +21,7 @@ namespace GameFields.Persons.Discovers
             Movement = new Movement(RectTransform);
         }
 
-        public abstract void View(float cardHeight, float cardWidth);
+        public abstract void Show(DiscoverViewLogicData discoverViewLogicData);
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents))]

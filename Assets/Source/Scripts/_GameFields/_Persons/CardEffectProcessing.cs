@@ -7,7 +7,7 @@ namespace GameFields.Persons
 {
     public class CardEffectProcessing : IPersonStep
     {
-        private Card _currentCard;
+        private readonly Card _currentCard;
 
         public bool IsComplete { get; private set; }
 

@@ -10,13 +10,13 @@ namespace GameFields.DiscardPiles
 {
     public class DiscardCardAnimation
     {
-        private Card _card;
-        private ReadOnlyTransform _readOnlyCardTransform;
-        private Movement _cardMovement;
+        private readonly Card _card;
+        private readonly ReadOnlyTransform _readOnlyCardTransform;
+        private readonly Movement _cardMovement;
 
-        private DiscardCardAnimationData _data;
-        private Transform _container;
-        private Action<Card> _callback;
+        private readonly DiscardCardAnimationData _data;
+        private readonly Transform _container;
+        private readonly Action<Card> _callback;
 
         public DiscardCardAnimation(DiscardCardAnimationData data, Transform container, Card card, Action<Card> callback)
         {

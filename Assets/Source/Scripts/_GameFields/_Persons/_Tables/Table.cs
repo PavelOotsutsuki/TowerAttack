@@ -8,7 +8,7 @@ namespace GameFields.Persons.Tables
 {
     public abstract class Table : MonoBehaviour
     {
-        [SerializeField] private TableSeat[] _cardSeats;
+        [SerializeField] private TableSeat[] _tableSeats;
 
         private TableSeat[] _sortedSeats;
 
@@ -21,7 +21,7 @@ namespace GameFields.Persons.Tables
 
         public void FreeSeats(IEnumerable<Card> seatables)
         {
-            foreach(TableSeat seat in _cardSeats)
+            foreach (TableSeat seat in _tableSeats)
             {
                 if (seatables.Any(card => seat.IsCardEqual(card)))
                 {
@@ -40,13 +40,13 @@ namespace GameFields.Persons.Tables
 
         private void SetCardSeatsIndices()
         {
-            int countSeats = _cardSeats.Length;
+            int countSeats = _tableSeats.Length;
 
             _sortedSeats = new TableSeat[countSeats];
 
             for (int i = 0; i < countSeats; i++)
             {
-                _sortedSeats[i] = _cardSeats[GetSortIndex(i, countSeats)];
+                _sortedSeats[i] = _tableSeats[GetSortIndex(i, countSeats)];
             }
         }
 
@@ -59,13 +59,13 @@ namespace GameFields.Persons.Tables
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
-            DefineAllCardSeats();
+            DefineAllTableSeats();
         }
 
-        [ContextMenu(nameof(DefineAllCardSeats))]
-        private void DefineAllCardSeats()
+        [ContextMenu(nameof(DefineAllTableSeats))]
+        private void DefineAllTableSeats()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _cardSeats);
+            AutomaticFillComponents.DefineComponent(this, ref _tableSeats);
         }
         #endregion 
     }

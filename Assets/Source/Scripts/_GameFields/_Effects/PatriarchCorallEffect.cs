@@ -12,20 +12,19 @@ namespace GameFields.Effects
         private readonly int _countDrawCards = 3;
         private readonly string _activateDiscoverMessage = "Выберете, какую карту отдадите противнику";
 
-        private Person _activePerson;
+        private readonly Person _activePerson;
+        private readonly Person _deactivePerson;
 
-        private IHandTransitTryGet _handTransitTryGet;
-        private IHandTransitSet _handTransitSet;
-        private IDrawCardManager _drawCardManager;
+        private readonly IHandTransitTryGet _handTransitTryGet;
+        private readonly IHandTransitSet _handTransitSet;
+        private readonly IDrawCardManager _drawCardManager;
 
-        private Person _deactivePerson;
         private List<Card> _cards;
         private bool _endPlaying;
 
         public PatriarchCorallEffect(Person activePerson, Person deactivePerson): base()
         {
             _activePerson = activePerson;
-            //_deactivePerson = deactivePerson;
 
             _drawCardManager = activePerson;
             _handTransitTryGet = activePerson;
@@ -37,7 +36,7 @@ namespace GameFields.Effects
         protected override IEnumerator OnPlaying()
         {
             _endPlaying = false;
-            //_cards = _activePerson?.DrawCards(_countDrawCards, DiscoverCards);
+
             _cards = _drawCardManager?.DrawCards(_countDrawCards);
 
             DiscoverCards();

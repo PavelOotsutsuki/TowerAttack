@@ -5,14 +5,16 @@ namespace GameFields.EndTurnButtons
 {
     public class EndTurnButton : MonoBehaviour, IButtonActivator
     {
+        [SerializeField] private ChangeSideAnimatorData _data;
         [SerializeField] private Button _button;
-        [SerializeField] private ChangeSideAnimator _changeSideAnimator;
+
+        private ChangeSideAnimator _changeSideAnimator;
 
         public bool IsActive => _changeSideAnimator.IsActiveSide;
 
         public void Init()
         {
-            _changeSideAnimator.Init(_button);
+            _changeSideAnimator = new ChangeSideAnimator(_data, _button);
             _changeSideAnimator.PlayLockButtonAnimation();
         }
 

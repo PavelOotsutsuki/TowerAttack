@@ -17,9 +17,9 @@ namespace GameFields.Persons.Tables
         {
             _card = card;
             _card.ReadOnlyRectTransform.SetParent(_rectTransform);
-            //_card.Transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
+
             Movement cardMovement = _card.CardMovement;
-            //cardMovement.MoveLocalInstantly(Vector2.zero, Quaternion.identity.eulerAngles);
+
             cardMovement.MoveLocalInstantly(Vector2.zero, Quaternion.identity.eulerAngles);
         }
 

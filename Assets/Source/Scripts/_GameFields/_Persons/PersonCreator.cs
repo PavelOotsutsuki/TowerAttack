@@ -32,7 +32,7 @@ namespace GameFields.Persons
 
         [Header("EnemyAI Fields:")]
 
-        [SerializeField] private EnemyDragAndDropImitation _enemyDragAndDropImitation;
+        [SerializeField] private EnemyDragAndDropImitationData _enemyDragAndDropImitationData;
 
         private CardPlayingZone _enemyPlayingZone;
         private HandAI _enemyHand;
@@ -110,10 +110,9 @@ namespace GameFields.Persons
             DrawCardRoot drawCardRoot = new DrawCardRoot(new SimpleDrawCardAnimation(_enemyHand, _simpleDrawCardDelay), _deck);
             CardDragAndDropImitationActions cardDragAndDropImitationActions = new CardDragAndDropImitationActions(_enemyHand, _enemyPlayingZone, _bus);
             StartTurnDraw startTurnDraw = new StartTurnDraw(drawCardRoot, simpleDrawCardAnimation, fireDrawCardAnimation, _enemyCountStartDrawCards);
-            
-            _enemyDragAndDropImitation.Init(cardDragAndDropImitationActions, _enemyHand);
+            EnemyDragAndDropImitation enemyDragAndDropImitation = new EnemyDragAndDropImitation(cardDragAndDropImitationActions, _enemyDragAndDropImitationData, _enemyHand);
 
-            return new EnemyAI(_tableActivator, _enemyDragAndDropImitation, _enemyPlayingZone,
+            return new EnemyAI(_tableActivator, enemyDragAndDropImitation, _enemyPlayingZone,
                 _enemyTower, drawCardRoot, _enemyDiscoverImitation, startTurnDraw, _bus, _enemyHand, _attackMenu);
         }
         

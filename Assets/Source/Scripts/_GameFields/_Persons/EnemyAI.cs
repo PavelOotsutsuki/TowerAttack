@@ -5,17 +5,16 @@ using GameFields.Persons.Hands;
 using GameFields.Persons.Tables;
 using GameFields.Persons.Towers;
 using GameFields.Signals;
-using UnityEngine;
+using Tools;
 using Zenject;
-
 
 namespace GameFields.Persons
 {
     public class EnemyAI : Person
     {
-        private ITableDeactivator _tableDeactivator;
+        private readonly IDeactivatable _tableDeactivator;
 
-        public EnemyAI(ITableDeactivator tableDeactivator, IPersonStep enemyDragAndDropImitation, CardPlayingZone cardPlayingZone,
+        public EnemyAI(IDeactivatable tableDeactivator, IPersonStep enemyDragAndDropImitation, CardPlayingZone cardPlayingZone,
             Tower tower, DrawCardRoot drawCardRoot, DiscoverAI discoverImitation, StartTurnDraw startTurnDraw, SignalBus bus,
             Hand hand, AttackMenu attackMenu) :
             base(cardPlayingZone, drawCardRoot, tower, startTurnDraw, enemyDragAndDropImitation,discoverImitation, bus, hand, attackMenu)

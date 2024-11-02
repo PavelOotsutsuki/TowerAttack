@@ -1,11 +1,12 @@
 using DG.Tweening;
+using Tools;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace GameFields.Persons.Discovers
 {
-    public class DiscoverPanel : MonoBehaviour
+    public class DiscoverPanel : MonoBehaviour, IWorkable
     {
         private const float MaxAlpha = 255f;
         private const float DeactiveAlpha = 0f;

@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using Cards;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
@@ -19,15 +16,17 @@ namespace GameFields.Persons.Discovers
             base.Init();
         }
 
-        public override void Activate(List<Card> cards, string activateMessage, Action<Card> callback)
+        public override void Activate(DiscoverActivateData data)
         {
-            base.Activate(cards, activateMessage, callback);
+            base.Activate(data);
+
+            DiscoverLabelActivateData labelData = new DiscoverLabelActivateData(data.ActivateMessage);
 
             _discoverPanel.Activate();
-            _discoverLabel.Activate(activateMessage);
+            _discoverLabel.Activate(labelData);
         }
 
-        public override void Deactivate()
+        protected override void Deactivate()
         {
             _discoverPanel.Deactivate();
             _discoverLabel.Deactivate();
@@ -36,7 +35,6 @@ namespace GameFields.Persons.Discovers
         }
 
         #region AutomaticFillComponents
-
         [ContextMenu(nameof(DefineAllComponents))]
         protected override void DefineAllComponents()
         {

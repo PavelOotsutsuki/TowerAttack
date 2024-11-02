@@ -1,6 +1,6 @@
 using Tools.StateMachines;
 
-namespace GameFields
+namespace GameFields.Persons
 {
     public interface ITurnStep : IStateMachineState
     {

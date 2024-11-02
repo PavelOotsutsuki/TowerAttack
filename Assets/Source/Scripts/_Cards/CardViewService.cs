@@ -1,5 +1,4 @@
 using Tools;
-using UnityEngine;
 
 namespace Cards
 {
@@ -23,7 +22,7 @@ namespace Cards
 
             _currentCard = showableCard;
 
-            _cardDescription.Show(bigCardShowData.CardViewConfig.Description);
+            _cardDescription.Show(bigCardShowData.LabelData);
             _bigCard.Show(bigCardShowData);
             _currentCard.Hide();
         }

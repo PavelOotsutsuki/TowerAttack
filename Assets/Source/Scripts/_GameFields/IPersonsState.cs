@@ -1,4 +1,3 @@
-using System;
 using GameFields.Persons;
 
 namespace GameFields

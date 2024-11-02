@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
 using Tools;
@@ -9,7 +6,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Discovers
 {
-    public class DiscoverLabel : MonoBehaviour
+    public class DiscoverLabel : MonoBehaviour, IWorkable<DiscoverLabelActivateData>
     {
         private const float LifeAlpha = 1f;
         private const float EndAlpha = 0f;
@@ -27,10 +24,10 @@ namespace GameFields.Persons.Discovers
             Deactivate();
         }
 
-        public void Activate(string message)
+        public void Activate(DiscoverLabelActivateData data)
         {
             gameObject.SetActive(true);
-            _label.text = message;
+            _label.text = data.Message;
 
             Color endColor = new Color(_label.color.r, _label.color.g, _label.color.b, LifeAlpha);
 
@@ -47,39 +44,6 @@ namespace GameFields.Persons.Discovers
             _label.color = startColor;
             _label.transform.localScale = _startScale;
         }
-
-        //private IEnumerator Activating()
-        //{
-        //    //gameObject.SetActive(true);
-        //    ////_label.text = message;
-
-        //    //float startFontSize = _label.fontSize;
-        //    //float fontSizeWay = (_endFontSize - startFontSize) / _duration;
-
-        //    //for (float time = 0f; time < _duration; time += Time.deltaTime)
-        //    //{
-        //    //    _label.fontSize = startFontSize + fontSizeWay * time;
-        //        yield return null;
-        //    //}
-
-        //    //startFontSize = _label.fontSize;
-        //    //fontSizeWay = (_endFontSize - startFontSize) / _endDuration;
-
-        //    //float startAlpha = _label.color.a;
-        //    //float alphaWay = (EndAlpha - startAlpha) / _endDuration;
-
-        //    //Color color = new(_label.color.r, _label.color.g, _label.color.b, startAlpha);
-
-        //    //for (float time = 0f; time < _endDuration; time += Time.deltaTime)
-        //    //{
-        //    //    color.a = startAlpha + alphaWay * time;
-        //    //    _label.color = color;
-        //    //    _label.fontSize = startFontSize + fontSizeWay * time;
-        //    //    yield return null;
-        //    //}
-
-        //    //gameObject.SetActive(false);
-        //}
 
         #region AutomaticFillComponents
 

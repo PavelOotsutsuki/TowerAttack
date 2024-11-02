@@ -1,49 +1,30 @@
 using UnityEngine;
-using UnityEngine.UI;
-using DG.Tweening;
-using System;
 using Tools.Utils.FillComponents;
+using Tools;
+using Tools.UI.Fadings;
 
 namespace GameFields.StartFights
 {
-    public class StartFightPanel : MonoBehaviour
+    [RequireComponent(typeof(FadablePanel))]
+    public class StartFightPanel : MonoBehaviour, ICompletable, IWorkable
     {
-        private const float MaxAlpha = 255f;
-        private const float DeactiveAlpha = 0f;
+        [SerializeField] private FadablePanel _fadablePanel;
 
-        [SerializeField] private Image _panel;
-        [SerializeField] private float _activateDuration = 1f;
-        [SerializeField] private float _deactivateDuration = 2f;
-        [SerializeField, Range(DeactiveAlpha, MaxAlpha)] private float _activeAlpha = 248f;
+        public bool IsComplete => _fadablePanel.IsComplete;
 
         public void Init()
         {
-            _panel.raycastTarget = false;
-
-            Color startColor = new(_panel.color.r, _panel.color.g, _panel.color.b, DeactiveAlpha);
-
-            _panel.color = startColor;
+            _fadablePanel.Init();
         }
 
         public void Activate()
         {
-            _panel.raycastTarget = true;
-
-            Color activateColor = new(_panel.color.r, _panel.color.g, _panel.color.b, _activeAlpha / MaxAlpha);
-
-            _panel.DOColor(activateColor, _activateDuration);
+            _fadablePanel.Show();
         }
 
-        public void Deactivate(Action activateCallback)
+        public void Deactivate()
         {
-            Color deactivateColor = new Color(_panel.color.r, _panel.color.g, _panel.color.b, DeactiveAlpha / MaxAlpha);
-
-            _panel.DOColor(deactivateColor, _deactivateDuration)
-            .OnComplete(()=>
-            {
-                _panel.raycastTarget = false;
-                activateCallback.Invoke();
-            });
+            _fadablePanel.Hide();
         }
 
         #region AutomaticFillComponents
@@ -51,15 +32,72 @@ namespace GameFields.StartFights
         [ContextMenu(nameof(DefineAllComponents))]
         private void DefineAllComponents()
         {
-            DefinePanel();
+            DefineFadablePanel();
         }
 
-        [ContextMenu(nameof(DefinePanel))]
-        private void DefinePanel()
+        [ContextMenu(nameof(DefineFadablePanel))]
+        private void DefineFadablePanel()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _panel, ComponentLocationTypes.InThis);
+            AutomaticFillComponents.DefineComponent(this, ref _fadablePanel, ComponentLocationTypes.InThis);
         }
 
         #endregion
+        //private const float MaxAlpha = 255f;
+        //private const float DeactiveAlpha = 0f;
+
+        //[SerializeField] private Image _panel;
+        //[SerializeField] private float _activateDuration = 1f;
+        //[SerializeField] private float _deactivateDuration = 2f;
+        //[SerializeField, Range(DeactiveAlpha, MaxAlpha)] private float _activeAlpha = 248f;
+
+        //private Action _deactivateCallback;
+
+        //public void Init(Action deactivateCallback)
+        //{
+        //    _deactivateCallback = deactivateCallback;
+
+        //    _panel.raycastTarget = false;
+
+        //    Color startColor = new Color(_panel.color.r, _panel.color.g, _panel.color.b, DeactiveAlpha);
+
+        //    _panel.color = startColor;
+        //}
+
+        //public void Activate()
+        //{
+        //    _panel.raycastTarget = true;
+
+        //    Color activateColor = new Color(_panel.color.r, _panel.color.g, _panel.color.b, _activeAlpha / MaxAlpha);
+
+        //    _panel.DOColor(activateColor, _activateDuration);
+        //}
+
+        //public void Deactivate()
+        //{
+        //    Color deactivateColor = new Color(_panel.color.r, _panel.color.g, _panel.color.b, DeactiveAlpha / MaxAlpha);
+
+        //    _panel.DOColor(deactivateColor, _deactivateDuration)
+        //    .OnComplete(()=>
+        //    {
+        //        _panel.raycastTarget = false;
+        //        _deactivateCallback?.Invoke();
+        //    });
+        //}
+
+        //#region AutomaticFillComponents
+
+        //[ContextMenu(nameof(DefineAllComponents))]
+        //private void DefineAllComponents()
+        //{
+        //    DefinePanel();
+        //}
+
+        //[ContextMenu(nameof(DefinePanel))]
+        //private void DefinePanel()
+        //{
+        //    AutomaticFillComponents.DefineComponent(this, ref _panel, ComponentLocationTypes.InThis);
+        //}
+
+        //#endregion
     }
 }

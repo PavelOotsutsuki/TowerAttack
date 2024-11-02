@@ -1,10 +1,11 @@
 using System;
+using Tools;
 using UnityEngine;
 
 namespace GameFields.StartFights
 {
     [Serializable]
-    public class StartTowerCardSelectionPlayerData
+    public class StartTowerCardSelectionPlayerData: IData
     {
         [field: SerializeField] public float WaitDurationForEnemyFirstCardsDraw { get; private set; } = 1f;
         [field: SerializeField] public float DrawCardsDuration { get; private set; } = 1.5f;

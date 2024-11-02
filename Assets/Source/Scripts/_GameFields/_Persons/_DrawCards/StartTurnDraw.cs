@@ -6,17 +6,15 @@ namespace GameFields.Persons.DrawCards
 {
     public class StartTurnDraw : IPersonStep
     {
-        private int _countDrawCards;
+        private readonly int _countDrawCards;
+        private readonly DrawCardRoot _drawCardRoot;
+        private readonly SimpleDrawCardAnimation _simpleDrawCardAnimation;
+        private readonly FireDrawCardAnimation _fireDrawCardAnimation;
 
-        private DrawCardRoot _drawCardRoot;
-        private SimpleDrawCardAnimation _simpleDrawCardAnimation;
-        private FireDrawCardAnimation _fireDrawCardAnimation;
         private bool _isComplete;
         private int _countExtraAnimationTurns;
 
         private IDrawCardAnimation _currentAnimation;
-
-        public bool IsComplete => _isComplete;
 
         public StartTurnDraw(DrawCardRoot drawCardRoot, SimpleDrawCardAnimation simpleDrawCardAnimation, FireDrawCardAnimation fireDrawCardAnimation, int countDrawCards)
         {
@@ -28,6 +26,8 @@ namespace GameFields.Persons.DrawCards
             _currentAnimation = _simpleDrawCardAnimation;
             _countExtraAnimationTurns = 0;
         }
+
+        public bool IsComplete => _isComplete;
 
         public void StartStep()
         {

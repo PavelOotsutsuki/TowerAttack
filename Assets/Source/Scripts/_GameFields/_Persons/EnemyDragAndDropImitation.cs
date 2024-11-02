@@ -6,40 +6,29 @@ using Cards;
 
 namespace GameFields.Persons
 {
-    [System.Serializable]
     public class EnemyDragAndDropImitation: IPersonStep
     {
         private const int CountLogics = 1;
         private const float SelectYDirection = 1;
         private const float UnselectYDirection = -1;
 
-        [SerializeField] private float _startDelayMin = 1f;
-        [SerializeField] private float _startDelayMax = 2f;
-        [SerializeField] private float _cardViewTime = 1f;
-        [SerializeField] private float _cardViewDelayMin = 2f;
-        [SerializeField] private float _cardViewDelayMax = 4f;
-        [SerializeField] private float _cardTranslateInDropPlaceTime = 0.5f;
-        [SerializeField] private float _cardReturnInHandTime = 0.5f;
-        [SerializeField] private float _endTurnDelay = 0.5f;
-        [SerializeField] private int _maxCountRepeat = 2;
-        [SerializeField] private int _countDrawCards = 1;
-        [SerializeField] private float _drawCardsDelay = 0.5f;
+        private readonly Hand _hand;
+        private readonly CardDragAndDropImitationActions _cardImitationActions;
+        private readonly EnemyDragAndDropImitationData _data;
 
-        private Hand _hand;
         private bool _isComplete;
-        private CardDragAndDropImitationActions _cardImitationActions;
 
-        public int CountDrawCards => _countDrawCards;
-        public float DrawCardsDelay => _drawCardsDelay;
-
-        public bool IsComplete => _isComplete;
-
-        internal void Init(CardDragAndDropImitationActions cardImitationActions, Hand hand)
+        internal EnemyDragAndDropImitation(CardDragAndDropImitationActions cardImitationActions, EnemyDragAndDropImitationData data, Hand hand)
         {
             _isComplete = false;
+            _data = data;
             _hand = hand;
             _cardImitationActions = cardImitationActions;
         }
+
+        public int CountDrawCards => _data.CountDrawCards;
+        public float DrawCardsDelay => _data.DrawCardsDelay;
+        public bool IsComplete => _isComplete;
 
         public void StartStep()
         {
@@ -62,39 +51,38 @@ namespace GameFields.Persons
 
         private IEnumerator DragAndDropBehaviour1()
         {
-            float startDelay = Random.Range(_startDelayMin, _startDelayMax);
-            float countRepeat = Random.Range(0, _maxCountRepeat + 1);
+            float startDelay = Random.Range(_data.StartDelayMin, _data.StartDelayMax);
+            float countRepeat = Random.Range(0, _data.MaxCountRepeat + 1);
 
             yield return new WaitForSeconds(startDelay);
 
             for (int i = 0; i < countRepeat + 1; i++)
             {
-                float cardViewDelay = Random.Range(_cardViewDelayMin, _cardViewDelayMax);
+                float cardViewDelay = Random.Range(_data.CardViewDelayMin, _data.CardViewDelayMax);
 
-                _cardImitationActions.ViewCard(_cardViewTime, SelectYDirection);
-                yield return new WaitForSeconds(_cardViewTime + cardViewDelay);
+                _cardImitationActions.ViewCard(_data.CardViewTime, SelectYDirection);
+                yield return new WaitForSeconds(_data.CardViewTime + cardViewDelay);
 
                 if (i != countRepeat)
                 {
-                    _cardImitationActions.ViewCard(_cardViewTime, UnselectYDirection);
-                    yield return new WaitForSeconds(_cardViewTime);
+                    _cardImitationActions.ViewCard(_data.CardViewTime, UnselectYDirection);
+                    yield return new WaitForSeconds(_data.CardViewTime);
                 }
             }
 
-            _cardImitationActions.MoveOnPlace(_cardTranslateInDropPlaceTime);
-            //yield return new WaitForSeconds(_cardTranslateInDropPlaceTime + 0.05f);
+            _cardImitationActions.MoveOnPlace(_data.CardTranslateInDropPlaceTime);
 
             if (_cardImitationActions.CanPlay() == false)
             {
-                _cardImitationActions.ReturnInhand(_cardReturnInHandTime);
-                yield return new WaitForSeconds(_cardReturnInHandTime);
+                _cardImitationActions.ReturnInhand(_data.CardReturnInHandTime);
+                yield return new WaitForSeconds(_data.CardReturnInHandTime);
             }
             else
             {
                 yield return _cardImitationActions.Play();
             }
 
-            yield return new WaitForSeconds(_endTurnDelay);
+            yield return new WaitForSeconds(_data.EndTurnDelay);
 
             _isComplete = true;
         }

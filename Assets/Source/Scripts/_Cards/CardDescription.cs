@@ -1,3 +1,4 @@
+using Tools;
 using Tools.UI.Fadings;
 using Tools.Utils.FillComponents;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine;
 namespace Cards
 {
     [RequireComponent(typeof(FadableLabel))]
-    public class CardDescription : MonoBehaviour
+    public class CardDescription : MonoBehaviour, IViewable<FadableLabelActivateData>
     {
         [SerializeField] private FadableLabel _fadableLabel;
 
@@ -14,9 +15,9 @@ namespace Cards
             _fadableLabel.Init();
         }
 
-        public void Show(string description)
+        public void Show(FadableLabelActivateData data)
         {
-            _fadableLabel.Show(description);
+            _fadableLabel.Show(data);
         }
 
         public void Hide()

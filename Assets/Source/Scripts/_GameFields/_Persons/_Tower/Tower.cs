@@ -13,21 +13,14 @@ namespace GameFields.Persons.Towers
         [SerializeField] private Seat _towerSeat;
         [SerializeField, Min(0f)] private float _seatDuration = 0.5f;
 
-        //private IUnbindCardManager _unbindCardManager;
-
         public bool HasFreeSeat => _towerSeat.IsFill() == false;
 
-        public void Init(/*IUnbindCardManager unbindCardManager*/)
+        public void Init()
         {
-            //_unbindCardManager = unbindCardManager;
-
             _towerSeat.Init();
         }
 
-        public Vector3 GetPosition()
-        {
-            return transform.position;
-        }
+        public Vector3 GetPosition() => transform.position;
 
         public void SeatCard(Card card)
         {
@@ -35,7 +28,6 @@ namespace GameFields.Persons.Towers
             {
                 card.SetActiveInteraction(IsCardInteraction);
                 _towerSeat.SetCard(card, DefaultSideType, _seatDuration);
-                //_unbindCardManager.UnbindDragableCard();
             }
             else
             {

@@ -46,7 +46,7 @@ namespace GameFields.Effects
             yield break;
         }
 
-        private void GetCards(List<Card> givenCards, IHandTransitSet gettedHandTransitSet)
+        private void GetCards(IReadOnlyList<Card> givenCards, IHandTransitSet gettedHandTransitSet)
         {
             if (givenCards is not null)
             {

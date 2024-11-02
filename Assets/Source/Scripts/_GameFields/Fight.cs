@@ -27,7 +27,7 @@ namespace GameFields
 
         public bool IsComplete { get; private set; }
 
-        private Person ActivePerson => _personsState.Active;
+        private ITurnStep ActivePerson => _personsState.Active;
         private bool TurnsIsOut => _turnNumber >= MaxTurns;
 
         public void StartStep()
@@ -49,18 +49,11 @@ namespace GameFields
             }
         }
 
-        //private IEnumerator TurnProcessing()
-        //{
-        //    yield return new WaitUntil(() => ActivePerson.IsComplete);
-
-        //    NextTurn();
-        //}
-
         private void NextTurn()
         {
             _turnNumber++;
 
-            _personsState.Active.FinishTurn();
+            ActivePerson.FinishTurn();
 
             if (TurnsIsOut)
             {
@@ -69,7 +62,6 @@ namespace GameFields
             }
 
             _personsState.Switch();
-            //StartTurn();
         }
     }
 }

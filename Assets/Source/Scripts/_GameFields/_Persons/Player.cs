@@ -5,18 +5,19 @@ using GameFields.Persons.Towers;
 using GameFields.Persons.DrawCards;
 using Zenject;
 using GameFields.Persons.AttackMenues;
+using Tools;
 
 namespace GameFields.Persons
 {
     public class Player : Person
     {
-        private readonly ITableActivator _tableActivator;
-        private readonly IBlockable _handBlockable;
+        private readonly IActivatable _tableActivator;
+        private readonly IHandBlockable _handBlockable;
         private readonly IPersonStep _startPlayerTurnView;
 
         private AttackMenu _attackMenu;
 
-        public Player(ITableActivator tableActivator, Hand hand, CardPlayingZone cardPlayingZone, Tower tower,
+        public Player(IActivatable tableActivator, Hand hand, CardPlayingZone cardPlayingZone, Tower tower,
             DiscoverPlayer discover, DrawCardRoot drawCardRoot, StartTurnDraw startTurnDraw, IPersonStep turnProcessing,
             SignalBus bus, IPersonStep startPlayerTurnView, AttackMenu attackMenu) :
             base(cardPlayingZone, drawCardRoot, tower, startTurnDraw, turnProcessing, discover, bus, hand, attackMenu)

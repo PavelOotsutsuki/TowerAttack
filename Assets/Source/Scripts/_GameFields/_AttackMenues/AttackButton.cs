@@ -3,12 +3,14 @@ using Cysharp.Threading.Tasks;
 using Tools;
 using Tools.UI.Buttons;
 using Tools.UI.Fadings;
+using Tools.Utils.FillComponents;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace GameFields.Persons.AttackMenues
 {
-    public class AttackButton : ConfirmableButton, IActivatable
+    [RequireComponent(typeof(FadablePanel))]
+    public class AttackButton : ConfirmableButton, IWorkable
     {
         [SerializeField] private FadablePanel _fadablePanel;
 
@@ -28,7 +30,7 @@ namespace GameFields.Persons.AttackMenues
 
         public void Activate()
         {
-            gameObject.SetActive(true);
+            //gameObject.SetActive(true);
             _fadablePanel.Show();
         }
 
@@ -43,7 +45,22 @@ namespace GameFields.Persons.AttackMenues
 
             yield return new WaitUntil(() => _fadablePanel.IsComplete); 
 
-            gameObject.SetActive(false);
+            //gameObject.SetActive(false);
         }
+
+        #region AutomaticFillComponents
+        protected override void DefineAllComponents()
+        {
+            DefineFadablePanel();
+
+            base.DefineAllComponents();
+        }
+
+        [ContextMenu(nameof(DefineFadablePanel))]
+        private void DefineFadablePanel()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _fadablePanel, ComponentLocationTypes.InThis);
+        }
+        #endregion 
     }
 }

@@ -2,6 +2,7 @@ using UnityEngine;
 using Cards;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Movements;
+using Tools;
 
 namespace GameFields.Seats
 {
@@ -12,10 +13,12 @@ namespace GameFields.Seats
         private Movement _seatMovement;
 
         public Card Card { get; private set; }
+        public ReadOnlyTransform ReadOnlyTransform { get; private set; }
 
-        public virtual void Init()
+        public void Init()
         {
             _seatMovement = new Movement(_transform);
+            ReadOnlyTransform = new ReadOnlyTransform(_transform);
             Reset();
         }
 
@@ -26,7 +29,7 @@ namespace GameFields.Seats
             Card = card;
 
             Card.SetSide(sideType);
-            Card.transform.SetParent(_transform);
+            Card.ReadOnlyRectTransform.SetParent(_transform);
             Movement cardMovement = Card.CardMovement;
             cardMovement.MoveLocalSmoothly(Vector2.zero, Quaternion.identity.eulerAngles, duration, Card.DefaultScaleVector * scaleFactor);
         }

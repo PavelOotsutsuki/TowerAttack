@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using Cards;
 using GameFields.Persons.Discovers;
 using Tools.Utils.FillComponents;
 using UnityEngine;
@@ -18,14 +15,16 @@ namespace GameFields.StartFights
             base.Init();
         }
 
-        public override void Activate(List<Card> cards, string activateMessage, Action<Card> callback)
+        public override void Activate(DiscoverActivateData data)
         {
-            base.Activate(cards, activateMessage, callback);
+            base.Activate(data);
 
-            _discoverLabel.Activate(activateMessage);
+            DiscoverLabelActivateData labelData = new DiscoverLabelActivateData(data.ActivateMessage);
+
+            _discoverLabel.Activate(labelData);
         }
 
-        public override void Deactivate()
+        protected override void Deactivate()
         {
             _discoverLabel.Deactivate();
 

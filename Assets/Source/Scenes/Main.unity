@@ -4775,13 +4775,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05aad99bce339451d98db19bcc8f60fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _data:
+    <ActiveSideRotation>k__BackingField: 90
+    <DeactiveSideRotation>k__BackingField: 0
+    <ActiveView>k__BackingField: {fileID: 363521647}
+    <DeactiveView>k__BackingField: {fileID: 1842023250}
+    <ButtonTransform>k__BackingField: {fileID: 601274533}
+    <ActiveViewInvertDuration>k__BackingField: 0.2
+    <DeactiveViewInvertDuration>k__BackingField: 0.2
   _button: {fileID: 363521649}
-  _changeSideAnimator:
-    _activeView: {fileID: 363521647}
-    _deactiveView: {fileID: 1842023250}
-    _buttonTransform: {fileID: 601274533}
-    _activeViewInvertDuration: 0.2
-    _deactiveViewInvertDuration: 0.2
 --- !u!1 &610687165
 GameObject:
   m_ObjectHideFlags: 0
@@ -4833,18 +4835,18 @@ MonoBehaviour:
   _attackMenu: {fileID: 2070574729}
   _startPlayerTurnLabel: {fileID: 407210860}
   _playerCountStartDrawCards: 1
-  _enemyDragAndDropImitation:
-    _startDelayMin: 1
-    _startDelayMax: 2
-    _cardViewTime: 1
-    _cardViewDelayMin: 2
-    _cardViewDelayMax: 4
-    _cardTranslateInDropPlaceTime: 0.5
-    _cardReturnInHandTime: 0.5
-    _endTurnDelay: 0.5
-    _maxCountRepeat: 2
-    _countDrawCards: 1
-    _drawCardsDelay: 0.5
+  _enemyDragAndDropImitationData:
+    <StartDelayMin>k__BackingField: 1
+    <StartDelayMax>k__BackingField: 2
+    <CardViewTime>k__BackingField: 1
+    <CardViewDelayMin>k__BackingField: 2
+    <CardViewDelayMax>k__BackingField: 4
+    <CardTranslateInDropPlaceTime>k__BackingField: 0.5
+    <CardReturnInHandTime>k__BackingField: 0.5
+    <EndTurnDelay>k__BackingField: 0.5
+    <MaxCountRepeat>k__BackingField: 2
+    <CountDrawCards>k__BackingField: 1
+    <DrawCardsDelay>k__BackingField: 0.5
   _enemyCountStartDrawCards: 1
   _tableActivator: {fileID: 867188514}
   _simpleDrawCardDelay: 0.1
@@ -5679,7 +5681,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad87ede7ff9164bb9a5bff37788edd3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cardSeats:
+  _tableSeats:
   - {fileID: 368091433}
   - {fileID: 1534900755}
   - {fileID: 332900071}
@@ -6268,7 +6270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d32a1c60891e49fba89d97192046045, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cardSeats:
+  _tableSeats:
   - {fileID: 1453413439}
   - {fileID: 39366207}
   - {fileID: 404782276}

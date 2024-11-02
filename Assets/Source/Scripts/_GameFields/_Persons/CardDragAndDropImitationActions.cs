@@ -4,20 +4,20 @@ using UnityEngine;
 using Zenject;
 using GameFields.Signals;
 using System.Collections;
-using Cysharp.Threading.Tasks;
 using Tools.Utils.Movements;
 
 namespace GameFields.Persons
 {
     public class CardDragAndDropImitationActions
     {
+        private readonly ICardDragAndDropListener _cardDragAndDropListener;
+        private readonly ICardDropPlace _cardDropPlaceImitation;
+        private readonly SignalBus _bus;
+
         private Card _activeCard;
         private ReadOnlyRectTransform _readOnlyCardTransform;
         private Movement _cardMovement;
 
-        private ICardDragAndDropListener _cardDragAndDropListener;
-        private ICardDropPlace _cardDropPlaceImitation;
-        private SignalBus _bus;
         private bool _isMoving;
 
         public CardDragAndDropImitationActions(ICardDragAndDropListener cardDragListener, ICardDropPlace cardDropPlaceImitation, SignalBus bus)
@@ -52,24 +52,7 @@ namespace GameFields.Persons
             _cardDragAndDropListener.OnCardDrag(_activeCard);
         }
 
-        //public bool TryPlay(float returnToHandDuration)
-        //{
-        //    if (_cardDropPlaceImitation.HasFreeSeat)
-        //    {
-        //        Playing().ToUniTask();
-        //        return true;
-        //    }
-
-        //    _cardDragAndDropListener.OnCardDrop();
-        //    _cardMovement.MoveLocalSmoothly(Vector2.zero, Vector3.zero, returnToHandDuration, _activeCard.DefaultScaleVector);
-
-        //    return false;
-        //}
-
-        public bool CanPlay()
-        {
-            return _cardDropPlaceImitation.HasFreeSeat;
-        }
+        public bool CanPlay() => _cardDropPlaceImitation.HasFreeSeat;
 
         public IEnumerator Play()
         {
@@ -85,15 +68,6 @@ namespace GameFields.Persons
             _cardDragAndDropListener.OnCardDrop();
             _cardMovement.MoveLocalSmoothly(Vector2.zero, Vector3.zero, returnToHandDuration, _activeCard.DefaultScaleVector);
         }
-
-        //private IEnumerator Playing()
-        //{
-        //    yield return new WaitUntil(() => _isMoving == false);
-
-        //    _cardDragAndDropListener.OnCardPlay();
-        //    _cardDropPlaceImitation.SeatCard(_activeCard);
-        //    _bus.Fire(new StartEffectSignal(_activeCard));
-        //}
 
         private void MoveOnPlace(Vector3 position, float duration)
         {

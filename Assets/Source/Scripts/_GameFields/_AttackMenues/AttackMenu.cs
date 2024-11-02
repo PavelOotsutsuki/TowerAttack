@@ -1,14 +1,13 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using Cards;
+using Cysharp.Threading.Tasks;
 using Tools;
+using Tools.UI.Fadings;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
 namespace GameFields.Persons.AttackMenues
 {
-    public class AttackMenu : MonoBehaviour
+    public class AttackMenu : MonoBehaviour, IWorkable
     {
         [SerializeField] private AttackMenuLabel _attackMenuLabel;
         [SerializeField] private AttackMenuPanel _attackMenuPanel;
@@ -29,7 +28,8 @@ namespace GameFields.Persons.AttackMenues
         {
             gameObject.SetActive(true);
 
-            _attackMenuLabel.Activate("Выберете кого атакуем");
+            FadableLabelActivateData labelData = new FadableLabelActivateData("Выберете кого атакуем");
+            _attackMenuLabel.Activate(labelData);
             _attackMenuPanel.Activate();
             //_attackButton.Activate();
             _attackNumberPanel.Activate();
@@ -40,7 +40,16 @@ namespace GameFields.Persons.AttackMenues
             _attackMenuLabel.Deactivate();
             _attackNumberPanel.Deactivate();
             _attackButton.Deactivate();
-            _attackMenuPanel.Deactivate(() => gameObject.SetActive(false));
+            _attackMenuPanel.Deactivate();
+
+            Deactivating().ToUniTask();
+        }
+
+        private IEnumerator Deactivating()
+        {
+            yield return new WaitUntil(() => _attackMenuPanel.IsComplete && _attackMenuLabel.IsComplete);
+
+            gameObject.SetActive(false);
         }
 
         #region AutomaticFillComponents

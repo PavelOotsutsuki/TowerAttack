@@ -37,14 +37,9 @@ namespace GameFields.StartFights
             StartingEnemyProcess(_enemyCards).ToUniTask();
         }
 
-        private IEnumerator StartingEnemyProcess(List<Card> enemyCards)
+        private IEnumerator StartingEnemyProcess(IReadOnlyList<Card> enemyCards)
         {
             yield return new WaitForSeconds(_data.WaitDurationBeforeStartActions);
-
-            //for (int i = 0; i < _firstTurnCardsCount; i++)
-            //{
-            //    yield return new WaitForSeconds(1f);
-            //}
 
             int selectedCardIndex = Random.Range(0, _firstTurnCardsCount);
 
@@ -64,6 +59,5 @@ namespace GameFields.StartFights
                 throw new System.Exception("Не удалось найти карту в руке");
             }
         }
-
     }
 }

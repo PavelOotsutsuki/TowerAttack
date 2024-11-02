@@ -1,10 +1,11 @@
 using System;
+using Tools;
 using UnityEngine;
 
 namespace GameFields.StartFights
 {
     [Serializable]
-    public class StartFightData
+    public class StartFightData: IData
     {
         [field: SerializeField] public int FirstTurnCardsCount { get; private set; } = 3;
         [field: SerializeField] public float WaitToStartDuration { get; private set; } = 2f;

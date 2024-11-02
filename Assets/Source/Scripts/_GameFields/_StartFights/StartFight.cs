@@ -84,16 +84,20 @@ namespace GameFields.StartFights
 
         private void Deactivate()
         {
-            _startTowerCardSelectionPanel.Deactivate(WaitToDestroy);
-        }
+            _startTowerCardSelectionPanel.Deactivate();
 
-        private void WaitToDestroy()
-        {
             WaitingToDestroy().ToUniTask();
         }
 
+        //private void WaitToDestroy()
+        //{
+        //    WaitingToDestroy().ToUniTask();
+        //}
+
         private IEnumerator WaitingToDestroy()
         {
+            yield return new WaitUntil(() => _startTowerCardSelectionPanel.IsComplete);
+
             yield return new WaitUntil(() => _waitEnemySolutionLabel.IsComplete);
 
             Destroy(gameObject);

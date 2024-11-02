@@ -1,11 +1,10 @@
 using Cards;
+using Tools;
 
 namespace GameFields.Persons.DrawCards
 {
-    public interface IDrawCardAnimation
+    public interface IDrawCardAnimation: ICompletable
     {
-        public bool IsDone { get; }
-
         public void Play(Card card);
     }
 }

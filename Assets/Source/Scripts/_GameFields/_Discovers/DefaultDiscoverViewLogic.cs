@@ -1,16 +1,12 @@
-using Tools;
 using UnityEngine;
 
 namespace GameFields.Persons.Discovers
 {
     public class DefaultDiscoverViewLogic : DiscoverViewLogic
     {
-        public override void View(float cardHeight, float cardWidth)
+        public override void Show(DiscoverViewLogicData data)
         {
-            //float bigHeight = cardHeight * ScaleFactor;
-            //float bigWidth = cardWidth * ScaleFactor;
-
-            RectTransform.sizeDelta = new Vector2(cardWidth, cardHeight);
+            RectTransform.sizeDelta = new Vector2(data.CardWidth, data.CardHeight);
             RectTransform.localPosition = Vector3.zero;
 
             Vector3 endScale = new Vector3(1,1,1) * ScaleFactor;

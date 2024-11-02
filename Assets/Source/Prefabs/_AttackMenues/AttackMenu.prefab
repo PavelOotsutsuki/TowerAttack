@@ -311,8 +311,8 @@ MonoBehaviour:
   _data:
     <MaxAlpha>k__BackingField: 1
     <MinAlpha>k__BackingField: 0
-    <FadeOutDuration>k__BackingField: 0.5
     <FadeUpDuration>k__BackingField: 0.5
+    <FadeOutDuration>k__BackingField: 0.5
     <StartAlpha>k__BackingField: 0
 --- !u!1 &1533601637241328793
 GameObject:
@@ -422,8 +422,8 @@ MonoBehaviour:
   _data:
     <MaxAlpha>k__BackingField: 1
     <MinAlpha>k__BackingField: 0
-    <FadeOutDuration>k__BackingField: 0.3
     <FadeUpDuration>k__BackingField: 0.3
+    <FadeOutDuration>k__BackingField: 0.3
     <StartAlpha>k__BackingField: 0
 --- !u!114 &3984219662837261217
 MonoBehaviour:
@@ -468,6 +468,8 @@ GameObject:
   - component: {fileID: 56739835424457112}
   - component: {fileID: 3393746677912909666}
   - component: {fileID: 2776578674613517535}
+  - component: {fileID: 7381589560412377616}
+  - component: {fileID: 7191479628810230838}
   m_Layer: 0
   m_Name: Panel
   m_TagString: Untagged
@@ -516,7 +518,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 0.972549}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -544,10 +546,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c15c38451fbf342c0b699a778006cdef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _panel: {fileID: 3393746677912909666}
-  _activateDuration: 1
-  _deactivateDuration: 2
-  _activeAlpha: 248
+  _fadablePanel: {fileID: 7191479628810230838}
+--- !u!225 &7381589560412377616
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2594984922898181624}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &7191479628810230838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2594984922898181624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb2c70a28de3c4b74af564a99b4c3dc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canvasGroup: {fileID: 7381589560412377616}
+  _data:
+    <MaxAlpha>k__BackingField: 0.972549
+    <MinAlpha>k__BackingField: 0
+    <FadeUpDuration>k__BackingField: 1
+    <FadeOutDuration>k__BackingField: 2
+    <StartAlpha>k__BackingField: 0
 --- !u!1 &4030730765118987979
 GameObject:
   m_ObjectHideFlags: 0
@@ -561,6 +591,8 @@ GameObject:
   - component: {fileID: 3793919234425156257}
   - component: {fileID: 3400294503663470199}
   - component: {fileID: 7430705091520309073}
+  - component: {fileID: 7843000747181579700}
+  - component: {fileID: 3152963604026264590}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -643,8 +675,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 100
-  m_fontSizeBase: 100
+  m_fontSize: 60
+  m_fontSizeBase: 60
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -709,11 +741,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 388c6cdbe7590402d9e98c46f0d02eb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _label: {fileID: 3793919234425156257}
-  _fontSize: 120
-  _startScale: {x: 0, y: 0}
-  _endScale: {x: 1, y: 1}
-  _duration: 0.3
+  _fadableLabel: {fileID: 3152963604026264590}
+--- !u!114 &7843000747181579700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4030730765118987979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb2c70a28de3c4b74af564a99b4c3dc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canvasGroup: {fileID: 3400294503663470199}
+  _data:
+    <MaxAlpha>k__BackingField: 1
+    <MinAlpha>k__BackingField: 0
+    <FadeUpDuration>k__BackingField: 1.5
+    <FadeOutDuration>k__BackingField: 1.5
+    <StartAlpha>k__BackingField: 0
+--- !u!114 &3152963604026264590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4030730765118987979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f68bdecb2b4148fbb723691ef34a690, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _text: {fileID: 3793919234425156257}
+  _fadablePanel: {fileID: 7843000747181579700}
+  _data:
+    <StartText>k__BackingField: "\u0412\u044B\u0431\u0435\u0440\u0435\u0442\u0435
+      \u043A\u043E\u0433\u043E \u0430\u0442\u0430\u043A\u0443\u0435\u043C"
 --- !u!1 &7142427869402283690
 GameObject:
   m_ObjectHideFlags: 0

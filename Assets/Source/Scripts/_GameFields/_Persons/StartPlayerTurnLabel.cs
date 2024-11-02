@@ -7,7 +7,7 @@ using Tools;
 
 namespace GameFields.Persons
 {
-    public class StartPlayerTurnLabel : MonoBehaviour, ICompletable
+    public class StartPlayerTurnLabel : MonoBehaviour, ICompletable, IActivatable
     {
         private const float LifeAlpha = 1f;
         private const float EndAlpha = 0f;
@@ -29,10 +29,8 @@ namespace GameFields.Persons
             gameObject.SetActive(false);
 
             _startColor = new Color(_label.color.r, _label.color.g, _label.color.b, LifeAlpha);
-            Color startColor = new Color(_label.color.r, _label.color.g, _label.color.b, LifeAlpha);
 
             _label.color = _startColor;
-            _label.color = startColor;
             _label.fontSize = _startFontSize;
         }
 

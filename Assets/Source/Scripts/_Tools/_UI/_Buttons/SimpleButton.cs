@@ -39,8 +39,7 @@ namespace Tools.UI.Buttons
         }
 
         #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponentsSimpleButton))]
-        public void DefineAllComponentsSimpleButton()
+        protected virtual void DefineAllComponents()
         {
             DefineColorChangePointer();
         }
@@ -50,7 +49,6 @@ namespace Tools.UI.Buttons
         {
             AutomaticFillComponents.DefineComponent(this, ref _enterColorChanger, ComponentLocationTypes.InThis);
         }
-
         #endregion 
     }
 }

@@ -7,9 +7,10 @@ using UnityEngine;
 
 namespace GameFields.Persons.Hands
 {
-    public abstract class Hand : MonoBehaviour, ICardDragAndDropListener, IBlockable
+    public abstract class Hand : MonoBehaviour, ICardDragAndDropListener, IHandBlockable
     {
         private const float StartRotation = 0;
+        private const int EmptyIndex = -1;
 
         [SerializeField, Range(-1, 1)] private float _sortDirection;
 
@@ -33,7 +34,7 @@ namespace GameFields.Persons.Hands
         public void Init(SeatPool seatPool)
         {
             _handSeats = new List<Seat>();
-            _handSeatIndex = -1;
+            _handSeatIndex = EmptyIndex;
 
             _handSeatPool = seatPool;
         }
@@ -60,7 +61,7 @@ namespace GameFields.Persons.Hands
             card.SetActiveInteraction(_isActiveInteraction);
         }
 
-        public virtual void AddCard(Card card)
+        public void AddCard(Card card)
         {
             card.SetDragAndDropListener(this);
 
@@ -105,7 +106,6 @@ namespace GameFields.Persons.Hands
 
         public bool TryGetAllCards(out List<Card> cards)
         {
-            //ForciblyBlock();
             StartEndDragCard(true);
 
             if (_handSeats.Count <= 0)
@@ -152,7 +152,7 @@ namespace GameFields.Persons.Hands
 
         private void StartEndDragCard(bool isForced)
         {
-            if (_handSeatIndex == -1)
+            if (_handSeatIndex == EmptyIndex)
                 return;
             
             if (isForced)
@@ -201,7 +201,7 @@ namespace GameFields.Persons.Hands
 
         private void ResetDragOptions()
         {
-            _handSeatIndex = -1;
+            _handSeatIndex = EmptyIndex;
             _dragCardHandSeat = null;
         }
 

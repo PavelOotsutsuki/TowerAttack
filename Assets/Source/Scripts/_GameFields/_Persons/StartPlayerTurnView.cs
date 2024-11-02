@@ -2,7 +2,7 @@ namespace GameFields.Persons
 {
     public class StartPlayerTurnView: IPersonStep
     {
-        private StartPlayerTurnLabel _label;
+        private readonly StartPlayerTurnLabel _label;
 
         public StartPlayerTurnView(StartPlayerTurnLabel label)
         {

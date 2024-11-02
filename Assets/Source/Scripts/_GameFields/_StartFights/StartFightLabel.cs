@@ -3,10 +3,11 @@ using UnityEngine;
 using TMPro;
 using Cysharp.Threading.Tasks;
 using Tools.Utils.FillComponents;
+using Tools;
 
 namespace GameFields.StartFights
 {
-    public class StartFightLabel : MonoBehaviour
+    public class StartFightLabel : MonoBehaviour, IActivatable
     {
         private const float LifeAlpha = 1f;
         private const float EndAlpha = 0f;

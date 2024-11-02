@@ -1,9 +1,11 @@
 using System.Collections;
+using Tools;
+using Tools.Utils.FillComponents;
 using UnityEngine;
 
 namespace GameFields.Persons.Tables
 {
-    public class TableActivator : MonoBehaviour, ITableActivator, ITableDeactivator
+    public class TableActivator : MonoBehaviour, IWorkable
     {
         [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private float _activateDelay = 0.5f;
@@ -38,5 +40,19 @@ namespace GameFields.Persons.Tables
 
             _canvasGroup.blocksRaycasts = false;
         }
+
+        #region AutomaticFillComponents
+        [ContextMenu(nameof(DefineAllComponents))]
+        private void DefineAllComponents()
+        {
+            DefineCanvasGroup();
+        }
+
+        [ContextMenu(nameof(DefineCanvasGroup))]
+        private void DefineCanvasGroup()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _canvasGroup, ComponentLocationTypes.InThis);
+        }
+        #endregion 
     }
 }

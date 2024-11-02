@@ -1,26 +1,22 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameFields
 {
     public class EndFight: IFightStep
     {
-        private IReadonlyFightResult _fightResult;
-        private bool _isComplete;
+        private readonly IReadonlyFightResult _fightResult;
 
-        public bool IsComplete => _isComplete;
+        private bool _isComplete;
 
         public EndFight(IReadonlyFightResult fightResult)
         {
-            _fightResult = fightResult;
             _isComplete = false;
+
+            _fightResult = fightResult;
         }
 
-        //public void PrepareToStart()
-        //{
-        //    _isComplete = false;
-        //}
+        public bool IsComplete => _isComplete;
 
         public void StartStep()
         {

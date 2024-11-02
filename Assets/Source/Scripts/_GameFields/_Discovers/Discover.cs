@@ -7,13 +7,13 @@ using UnityEngine;
 
 namespace GameFields.Persons.Discovers
 {
-    public abstract class Discover : MonoBehaviour, IDiscoverChoiceHandler
+    public abstract class Discover : MonoBehaviour, IDiscoverChoiceHandler, IActivatable<DiscoverActivateData>
     {
         [SerializeField] protected DiscoverSeat[] Seats;
         [SerializeField] private float _offset = 400f;
         [SerializeField] private float _positionY = 0f;
 
-        protected List<Card> Cards;
+        protected IReadOnlyList<Card> Cards;
 
         private Action<Card> _callback;
 
@@ -39,22 +39,22 @@ namespace GameFields.Persons.Discovers
             Deactivate();
         }
 
-        public virtual void Activate(List<Card> cards, string activateMessage, Action<Card> callback)
+        public virtual void Activate(DiscoverActivateData data)
         {
-            Cards = cards;
-            _callback = callback;
+            Cards = data.Cards;
+            _callback = data.Callback;
 
             SortDiscoverSeats();
 
             gameObject.SetActive(true);
 
-            for (int i = 0; i < cards.Count; i++)
+            for (int i = 0; i < Cards.Count; i++)
             {
-                Seats[i].SetCard(cards[i]);
+                Seats[i].SetCard(Cards[i]);
             }
         }
 
-        public virtual void Deactivate()
+        protected virtual void Deactivate()
         {
             gameObject.SetActive(false);
         }
@@ -90,7 +90,6 @@ namespace GameFields.Persons.Discovers
         }
 
         #region AutomaticFillComponents
-
         protected virtual void DefineAllComponents()
         {
             DefineSeats();

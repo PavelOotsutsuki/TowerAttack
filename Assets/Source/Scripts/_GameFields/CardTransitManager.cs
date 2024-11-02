@@ -32,6 +32,5 @@ namespace GameFields
             _deck = deck;
             _discardPile = discardPile;
         }
-
     }
 }

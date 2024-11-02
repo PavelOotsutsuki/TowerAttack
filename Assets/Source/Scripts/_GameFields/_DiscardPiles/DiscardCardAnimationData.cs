@@ -1,10 +1,11 @@
 using UnityEngine;
 using System;
+using Tools;
 
 namespace GameFields.DiscardPiles
 {
     [Serializable]
-    public class DiscardCardAnimationData
+    public class DiscardCardAnimationData: IData
     {
         [field: SerializeField] public Vector3 StartScaleVector { get; private set; } = new Vector3(0.5f, 0.5f, 0.5f);
         [field: SerializeField] public Vector3 StartRotation { get; private set; } = Vector3.zero;

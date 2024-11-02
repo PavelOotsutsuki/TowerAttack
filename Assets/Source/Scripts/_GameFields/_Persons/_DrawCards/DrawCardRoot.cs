@@ -62,7 +62,7 @@ namespace GameFields.Persons.DrawCards
                     Card card = cards[i];
                     _currentDrawCardAnimation.Play(card);
 
-                    yield return new WaitUntil(() => _currentDrawCardAnimation.IsDone);
+                    yield return new WaitUntil(() => _currentDrawCardAnimation.IsComplete);
                 }
             }
             

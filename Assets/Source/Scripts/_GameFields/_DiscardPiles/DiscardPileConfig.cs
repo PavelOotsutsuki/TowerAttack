@@ -1,10 +1,11 @@
 using System;
+using Tools;
 using UnityEngine;
 
 namespace GameFields.DiscardPiles
 {
     [Serializable]
-    public class DiscardPileConfig
+    public class DiscardPileConfig: IData
     {
         [field: SerializeField] public RectTransform RectTransform { get; private set; }
         [field: SerializeField] public float CardRotationOffset { get; private set; } = 30f;
