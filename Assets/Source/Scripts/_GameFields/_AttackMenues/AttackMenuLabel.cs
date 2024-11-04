@@ -3,49 +3,56 @@ using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using Tools;
-using Tools.UI.Fadings;
+using Tools.UI;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
 namespace GameFields.Persons.AttackMenues
 {
-    [RequireComponent(typeof(FadableLabel))]
-    public class AttackMenuLabel : MonoBehaviour, ICompletable, IWorkable<FadableLabelActivateData>
+    //[RequireComponent(typeof(FadableLabel))]
+    public class AttackMenuLabel : FadableNascentLabel
     {
-        [SerializeField] private FadableLabel _fadableLabel;
-
-        public bool IsComplete => _fadableLabel.IsComplete;
-
-        public void Init()
-        {
-            _fadableLabel.Init();
-        }
-
-        public void Activate(FadableLabelActivateData data)
-        {
-            _fadableLabel.Show(data);
-        }
-
-        public void Deactivate()
-        {
-            _fadableLabel.Hide();
-        }
-
         #region AutomaticFillComponents
-
-        [ContextMenu(nameof(DefineAllComponents))]
-        private void DefineAllComponents()
+        [ContextMenu(nameof(DefineAllComponents) + nameof(AttackMenuLabel))]
+        protected override void DefineAllComponents()
         {
-            DefineFadableLabel();
+            base.DefineAllComponents();
         }
+        #endregion 
+        //[SerializeField] private FadableLabel _fadableLabel;
 
-        [ContextMenu(nameof(DefineFadableLabel))]
-        private void DefineFadableLabel()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _fadableLabel, ComponentLocationTypes.InThis);
-        }
+        //public bool IsComplete => _fadableLabel.IsComplete;
 
-        #endregion
+        //public void Init()
+        //{
+        //    _fadableLabel.Init();
+        //}
+
+        //public void Activate(FadableLabelActivateData data)
+        //{
+        //    _fadableLabel.Show(data);
+        //}
+
+        //public void Deactivate()
+        //{
+        //    _fadableLabel.Hide();
+        //}
+
+        //#region AutomaticFillComponents
+
+        //[ContextMenu(nameof(DefineAllComponents))]
+        //private void DefineAllComponents()
+        //{
+        //    DefineFadableLabel();
+        //}
+
+        //[ContextMenu(nameof(DefineFadableLabel))]
+        //private void DefineFadableLabel()
+        //{
+        //    AutomaticFillComponents.DefineComponent(this, ref _fadableLabel, ComponentLocationTypes.InThis);
+        //}
+
+        //#endregion
         //private const float LifeAlpha = 1f;
         //private const float EndAlpha = 0f;
 

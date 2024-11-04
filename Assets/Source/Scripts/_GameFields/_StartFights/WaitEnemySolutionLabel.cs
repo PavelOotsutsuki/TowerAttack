@@ -1,5 +1,5 @@
 using Tools;
-using Tools.UI.Fadings;
+using Tools.UI;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
@@ -12,7 +12,7 @@ namespace GameFields.StartFights
 
         private bool _isWasStarted;
 
-        public bool IsComplete => _fadableLabel.IsComplete;
+        public bool IsComplete => _fadableLabel.IsComplete || _isWasStarted == false;
 
         public void Init()
         {

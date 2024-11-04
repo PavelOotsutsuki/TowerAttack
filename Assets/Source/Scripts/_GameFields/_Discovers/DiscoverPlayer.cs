@@ -1,3 +1,4 @@
+using Tools.UI;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
@@ -20,7 +21,7 @@ namespace GameFields.Persons.Discovers
         {
             base.Activate(data);
 
-            DiscoverLabelActivateData labelData = new DiscoverLabelActivateData(data.ActivateMessage);
+            FadableLabelActivateData labelData = new FadableLabelActivateData(data.ActivateMessage);
 
             _discoverPanel.Activate();
             _discoverLabel.Activate(labelData);

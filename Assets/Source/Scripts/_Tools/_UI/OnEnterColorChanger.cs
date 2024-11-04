@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Tools.UI.Buttons
+namespace Tools.UI
 {
     internal class OnEnterColorChanger : MonoBehaviour, IPointerEnterHandler, IPointerDownHandler
     {

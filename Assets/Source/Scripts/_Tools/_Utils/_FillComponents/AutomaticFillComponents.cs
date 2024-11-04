@@ -8,6 +8,18 @@ namespace Tools.Utils.FillComponents
         {
             string type = GetShortType<T>();
 
+            if (componentType == ComponentLocationTypes.InThisElseChildren)
+            {
+                if (parent.GetComponents<T>().Length < 1)
+                {
+                    componentType = ComponentLocationTypes.InChildren;
+                }
+                else
+                {
+                    componentType = ComponentLocationTypes.InThis;
+                }
+            }
+
             if (componentType == ComponentLocationTypes.InChildren)
             {
                 if (parent.GetComponentsInChildren<T>().Length - parent.GetComponents<T>().Length < 1)

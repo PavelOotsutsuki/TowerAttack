@@ -1,4 +1,5 @@
 using GameFields.Persons.Discovers;
+using Tools.UI;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
@@ -19,7 +20,7 @@ namespace GameFields.StartFights
         {
             base.Activate(data);
 
-            DiscoverLabelActivateData labelData = new DiscoverLabelActivateData(data.ActivateMessage);
+            FadableLabelActivateData labelData = new FadableLabelActivateData(data.ActivateMessage);
 
             _discoverLabel.Activate(labelData);
         }

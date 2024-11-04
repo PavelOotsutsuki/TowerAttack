@@ -1,6 +1,6 @@
 using UnityEngine.EventSystems;
 
-namespace Tools.UI.Buttons
+namespace Tools.UI
 {
     public class SelectableButton : SimpleButton
     {

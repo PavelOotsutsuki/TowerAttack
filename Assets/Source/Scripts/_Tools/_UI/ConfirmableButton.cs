@@ -1,6 +1,7 @@
+using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Tools.UI.Buttons
+namespace Tools.UI
 {
     public class ConfirmableButton : SimpleButton
     {
@@ -9,6 +10,7 @@ namespace Tools.UI.Buttons
             Image.color = ClickColor;
             CurrentColor = Image.color;
             IsClicked = true;
+            CanvasGroup.blocksRaycasts = false;
         }
     }
 }

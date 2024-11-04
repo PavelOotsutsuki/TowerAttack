@@ -1,23 +1,20 @@
-using TMPro;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
-namespace Tools.UI.Fadings
+namespace Tools.UI
 {
     [RequireComponent(typeof(FadablePanel))]
-    public sealed class FadableLabel : MonoBehaviour, ICompletable, IViewable, IShowable<FadableLabelActivateData>
+    [RequireComponent(typeof(Label))]
+    public class FadableLabel : MonoBehaviour, ICompletable, IViewable, IShowable<FadableLabelActivateData>
     {
-        [SerializeField] private TMP_Text _text;
+        [SerializeField] private Label _label;
         [SerializeField] private FadablePanel _fadablePanel;
-
-        [SerializeField] private FadableLableData _data;
 
         public bool IsComplete => _fadablePanel.IsComplete;
 
-        public void Init()
+        public virtual void Init()
         {
-            _text.text = _data.StartText;
-
+            _label.Init();
             _fadablePanel.Init();
         }
 
@@ -25,7 +22,7 @@ namespace Tools.UI.Fadings
         {
             Show();
 
-            _text.text = data.Message;
+            _label.SetText(data.Message);
         }
 
         public void Show()
@@ -39,18 +36,18 @@ namespace Tools.UI.Fadings
         }
 
         #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponentsFadableLabel))]
-        private void DefineAllComponentsFadableLabel()
+        [ContextMenu("DefineAllComponentsFadableLabel")]
+        protected virtual void DefineAllComponents()
         {
-            //DefineText();
+            DefineLabel();
             DefineFadablePanel();
         }
 
-        //[ContextMenu(nameof(DefineText))]
-        //private void DefineText()
-        //{
-        //    AutomaticFillComponents.DefineComponent(this, ref _text, ComponentLocationTypes.InThis);
-        //}
+        [ContextMenu(nameof(DefineLabel))]
+        private void DefineLabel()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _label, ComponentLocationTypes.InThis);
+        }
 
         [ContextMenu(nameof(DefineFadablePanel))]
         private void DefineFadablePanel()

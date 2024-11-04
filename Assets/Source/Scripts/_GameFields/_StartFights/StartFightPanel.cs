@@ -1,7 +1,7 @@
 using UnityEngine;
 using Tools.Utils.FillComponents;
 using Tools;
-using Tools.UI.Fadings;
+using Tools.UI;
 
 namespace GameFields.StartFights
 {

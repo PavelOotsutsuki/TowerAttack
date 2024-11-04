@@ -1,7 +1,7 @@
 using System.Collections;
 using Cards;
 using Cysharp.Threading.Tasks;
-using Tools.UI.Fadings;
+using Tools.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;

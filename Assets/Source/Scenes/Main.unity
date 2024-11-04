@@ -4183,6 +4183,7 @@ GameObject:
   - component: {fileID: 489448957}
   - component: {fileID: 489448959}
   - component: {fileID: 489448958}
+  - component: {fileID: 489448960}
   m_Layer: 0
   m_Name: SpeedUpButton
   m_TagString: Untagged
@@ -4225,6 +4226,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enterColorChanger: {fileID: 489448959}
+  CanvasGroup: {fileID: 0}
   Image: {fileID: 44239813}
   NormalColor: {r: 0.12065028, g: 0.8679245, b: 0.05322181, a: 1}
   ClickColor: {r: 1, g: 0, b: 0, a: 1}
@@ -4243,6 +4245,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _selectColor: {r: 0.990566, g: 0.8445065, b: 0.032707386, a: 1}
   _pressedColor: {r: 0.9716981, g: 0.46248156, b: 0.0045834924, a: 1}
+--- !u!225 &489448960
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 489448956}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!224 &495571191 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3988544753164556876, guid: 72cc5ca19a7994600a9e0a918cd8b3a9, type: 3}
@@ -5707,6 +5721,7 @@ GameObject:
   - component: {fileID: 715708120}
   - component: {fileID: 715708122}
   - component: {fileID: 715708121}
+  - component: {fileID: 715708123}
   m_Layer: 5
   m_Name: CardDescriptionPanel
   m_TagString: Untagged
@@ -5726,7 +5741,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef0e0c7fc677e44bd97ce98855e3522e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fadableLabel: {fileID: 715708122}
+  _label: {fileID: 715708123}
+  _fadablePanel: {fileID: 715708121}
 --- !u!114 &715708117
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5813,8 +5829,8 @@ MonoBehaviour:
   _data:
     <MaxAlpha>k__BackingField: 1
     <MinAlpha>k__BackingField: 0
-    <FadeOutDuration>k__BackingField: 1.5
     <FadeUpDuration>k__BackingField: 1.5
+    <FadeOutDuration>k__BackingField: 1.5
     <StartAlpha>k__BackingField: 0
 --- !u!114 &715708122
 MonoBehaviour:
@@ -5828,8 +5844,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f68bdecb2b4148fbb723691ef34a690, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _text: {fileID: 109854120}
+  _label: {fileID: 715708123}
   _fadablePanel: {fileID: 715708121}
+--- !u!114 &715708123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 715708115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbfb590b85a654763818d541a9a5666e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _text: {fileID: 109854120}
   _data:
     <StartText>k__BackingField: 
 --- !u!1001 &734819811
@@ -6055,6 +6084,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1fe019458c1084723bd6429d7c6126f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &804945937 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1857942163878671529, guid: ce469e9a2005d4176a420699ea699af7, type: 3}
+  m_PrefabInstance: {fileID: 3329968188695102729}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f68bdecb2b4148fbb723691ef34a690, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &817527300 stripped
@@ -7149,6 +7189,8 @@ GameObject:
   - component: {fileID: 1112966541}
   - component: {fileID: 1112966543}
   - component: {fileID: 1112966542}
+  - component: {fileID: 1112966546}
+  - component: {fileID: 1112966545}
   - component: {fileID: 1112966544}
   m_Layer: 0
   m_Name: Panel
@@ -7190,7 +7232,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 0.972549}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -7226,10 +7268,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56564d83db8b2468b8755aef0e9e1a2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _panel: {fileID: 1112966542}
-  _activateDuration: 1
-  _deactivateDuration: 2
-  _activeAlpha: 248
+  _fadablePanel: {fileID: 1112966545}
+--- !u!114 &1112966545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1112966540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb2c70a28de3c4b74af564a99b4c3dc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canvasGroup: {fileID: 1112966546}
+  _data:
+    <MaxAlpha>k__BackingField: 0.972549
+    <MinAlpha>k__BackingField: 0
+    <FadeUpDuration>k__BackingField: 1
+    <FadeOutDuration>k__BackingField: 2
+    <StartAlpha>k__BackingField: 0
+--- !u!225 &1112966546
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1112966540}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!224 &1120571122 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5789417150381678204, guid: 7046cc4047a1d4880a4c03001edb865c, type: 3}
@@ -7560,6 +7630,10 @@ GameObject:
   - component: {fileID: 1140385938}
   - component: {fileID: 1140385937}
   - component: {fileID: 1140385936}
+  - component: {fileID: 1140385941}
+  - component: {fileID: 1140385940}
+  - component: {fileID: 1140385939}
+  - component: {fileID: 1140385942}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -7598,11 +7672,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a6327b329add45abb548efac884a3a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _label: {fileID: 1140385937}
-  _fontSize: 60
-  _startScale: {x: 0, y: 0}
-  _endScale: {x: 1, y: 1}
-  _duration: 0.3
+  _fadableLabel: {fileID: 1140385939}
 --- !u!114 &1140385937
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7650,8 +7720,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 70
-  m_fontSizeBase: 70
+  m_fontSize: 90
+  m_fontSizeBase: 90
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -7700,6 +7770,66 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1140385934}
   m_CullTransparentMesh: 1
+--- !u!114 &1140385939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1140385934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f68bdecb2b4148fbb723691ef34a690, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _label: {fileID: 1140385942}
+  _fadablePanel: {fileID: 1140385940}
+--- !u!114 &1140385940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1140385934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb2c70a28de3c4b74af564a99b4c3dc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canvasGroup: {fileID: 1140385941}
+  _data:
+    <MaxAlpha>k__BackingField: 1
+    <MinAlpha>k__BackingField: 0
+    <FadeUpDuration>k__BackingField: 1.5
+    <FadeOutDuration>k__BackingField: 1.5
+    <StartAlpha>k__BackingField: 0
+--- !u!225 &1140385941
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1140385934}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &1140385942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1140385934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbfb590b85a654763818d541a9a5666e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _text: {fileID: 1140385937}
+  _data:
+    <StartText>k__BackingField: 
 --- !u!1001 &1152119113
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13790,6 +13920,7 @@ GameObject:
   - component: {fileID: 194835768}
   - component: {fileID: 8699828908118837318}
   - component: {fileID: 8699828908118837317}
+  - component: {fileID: 8699828908118837319}
   m_Layer: 0
   m_Name: WaitEnemySolutionLabel
   m_TagString: Untagged
@@ -13805,10 +13936,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1156189548}
     m_Modifications:
+    - target: {fileID: 34317769569075527, guid: ce469e9a2005d4176a420699ea699af7, type: 3}
+      propertyPath: m_fontSize
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 34317769569075527, guid: ce469e9a2005d4176a420699ea699af7, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 60
+      objectReference: {fileID: 0}
     - target: {fileID: 54114753581227465, guid: ce469e9a2005d4176a420699ea699af7, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 2.5
       objectReference: {fileID: 0}
+    - target: {fileID: 1945891193350912214, guid: ce469e9a2005d4176a420699ea699af7, type: 3}
+      propertyPath: _fadableLabel
+      value: 
+      objectReference: {fileID: 804945937}
     - target: {fileID: 4299099919564329194, guid: ce469e9a2005d4176a420699ea699af7, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -14246,6 +14389,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1905208562}
     m_Modifications:
+    - target: {fileID: 266637621526577529, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
+      propertyPath: _data.<Duration>k__BackingField
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191479628810230838, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
+      propertyPath: _data.<FadeUpDuration>k__BackingField
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 7625198449985348171, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -14326,9 +14477,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7843000747181579700, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
+      propertyPath: _data.<StartAlpha>k__BackingField
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7843000747181579700, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
+      propertyPath: _data.<FadeUpDuration>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7843000747181579700, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
+      propertyPath: _data.<FadeOutDuration>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8221689975159483239, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
       propertyPath: m_Name
       value: AttackMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 8221689975159483239, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14668,10 +14835,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f68bdecb2b4148fbb723691ef34a690, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _text: {fileID: 8648506181262644426}
+  _label: {fileID: 8699828908118837319}
   _fadablePanel: {fileID: 8699828908118837318}
-  _data:
-    <StartText>k__BackingField: "\u041E\u0436\u0438\u0434\u0430\u0435\u043C \u043F\u0440\u043E\u0442\u0438\u0432\u043D\u0438\u043A\u0430..."
 --- !u!114 &8699828908118837318
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14688,9 +14853,24 @@ MonoBehaviour:
   _data:
     <MaxAlpha>k__BackingField: 1
     <MinAlpha>k__BackingField: 0
-    <FadeOutDuration>k__BackingField: 0.5
     <FadeUpDuration>k__BackingField: 0.5
+    <FadeOutDuration>k__BackingField: 0.5
     <StartAlpha>k__BackingField: 0
+--- !u!114 &8699828908118837319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1835844569211548431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbfb590b85a654763818d541a9a5666e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _text: {fileID: 8648506181262644426}
+  _data:
+    <StartText>k__BackingField: "\u041E\u0436\u0438\u0434\u0430\u0435\u043C \u043F\u0440\u043E\u0442\u0438\u0432\u043D\u0438\u043A\u0430..."
 --- !u!114 &8736282285176226584 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2156218004283046043, guid: 7046cc4047a1d4880a4c03001edb865c, type: 3}

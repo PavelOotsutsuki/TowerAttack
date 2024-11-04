@@ -1,4 +1,4 @@
-namespace Tools.UI.Fadings
+namespace Tools.UI
 {
     public class FadableLabelActivateData : IData
     {

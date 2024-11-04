@@ -1,7 +1,7 @@
 using System.Collections;
 using Cysharp.Threading.Tasks;
 using Tools;
-using Tools.UI.Fadings;
+using Tools.UI;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
@@ -29,7 +29,7 @@ namespace GameFields.Persons.AttackMenues
             gameObject.SetActive(true);
 
             FadableLabelActivateData labelData = new FadableLabelActivateData("Выберете кого атакуем");
-            _attackMenuLabel.Activate(labelData);
+            _attackMenuLabel.Show(labelData);
             _attackMenuPanel.Activate();
             //_attackButton.Activate();
             _attackNumberPanel.Activate();
@@ -37,7 +37,7 @@ namespace GameFields.Persons.AttackMenues
 
         public void Deactivate()
         {
-            _attackMenuLabel.Deactivate();
+            _attackMenuLabel.Hide();
             _attackNumberPanel.Deactivate();
             _attackButton.Deactivate();
             _attackMenuPanel.Deactivate();

@@ -4,6 +4,7 @@
     {
         InChildren,
         InThis,
-        InScene
+        InScene,
+        InThisElseChildren
     }
 }
