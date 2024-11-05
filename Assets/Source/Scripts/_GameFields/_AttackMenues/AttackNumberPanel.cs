@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.AttackMenues
 {
-    public class AttackNumberPanel : MonoBehaviour
+    public class AttackNumberPanel : MonoBehaviour, ICompletable, IWorkable
     {
         [SerializeField] private FadablePanel _fadablePanel;
         [SerializeField] private RectTransform _rectTransform;
@@ -25,6 +25,8 @@ namespace GameFields.Persons.AttackMenues
         private float _maxHeight;
         private float _maxWidth;
 
+        public bool IsComplete => _fadablePanel.IsComplete;
+
         public void Init(IActivatable attackButton)
         {
             FindColumnsAndRowsCount();
@@ -37,6 +39,12 @@ namespace GameFields.Persons.AttackMenues
         public void Activate()
         {
             gameObject.SetActive(true);
+
+            foreach (AttackNumber attackNumber in _attackNumbers)
+            {
+                attackNumber.Activate();
+            }
+
             _fadablePanel.Show();
         }
 

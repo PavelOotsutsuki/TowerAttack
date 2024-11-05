@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Tools.UI
 {
     [RequireComponent(typeof(CanvasGroup))]
-    public sealed class FadablePanel : MonoBehaviour, ICompletable, IViewable
+    public class FadablePanel : MonoBehaviour, ICompletable, IViewable
     {
         [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private FadablePanelData _data;

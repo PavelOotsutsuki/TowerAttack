@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 506122119193229996}
   - component: {fileID: 920570267858882642}
   - component: {fileID: 5325816532949149152}
+  - component: {fileID: 7958994803675986452}
   m_Layer: 0
   m_Name: Panel
   m_TagString: Untagged
@@ -88,9 +89,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a6e06203202e456ba3ac7dd3201e419, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _panel: {fileID: 920570267858882642}
-  _activateDuration: 0.4
-  _deactivateDuration: 0.4
+  _canvasGroup: {fileID: 7958994803675986452}
+  _data:
+    <MaxAlpha>k__BackingField: 0.9411765
+    <MinAlpha>k__BackingField: 0
+    <FadeUpDuration>k__BackingField: 0.4
+    <FadeOutDuration>k__BackingField: 0.4
+    <StartAlpha>k__BackingField: 0
+--- !u!225 &7958994803675986452
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3942024032858396131}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &6434935935851632493
 GameObject:
   m_ObjectHideFlags: 0
@@ -633,7 +650,7 @@ PrefabInstance:
     - target: {fileID: 7169010305052805801, guid: 10dec77957cd1489284f9af5bc573c63, type: 3}
       propertyPath: _fadableLabel
       value: 
-      objectReference: {fileID: 319797466217415999}
+      objectReference: {fileID: 0}
     - target: {fileID: 8648506181067895608, guid: 10dec77957cd1489284f9af5bc573c63, type: 3}
       propertyPath: m_fontSize
       value: 60
@@ -727,10 +744,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 34317769569075527}
     - target: {fileID: 8938632890586101568, guid: 10dec77957cd1489284f9af5bc573c63, type: 3}
-      propertyPath: _fadablePanel
-      value: 
-      objectReference: {fileID: 8096258791027453733}
-    - target: {fileID: 8938632890586101568, guid: 10dec77957cd1489284f9af5bc573c63, type: 3}
       propertyPath: _data.<StartText>k__BackingField
       value: "\u041A\u0430\u043A\u043E\u0439-\u0442\u043E \u0442\u0435\u043A\u0441\u0442"
       objectReference: {fileID: 0}
@@ -755,17 +768,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8699828907675054006, guid: 10dec77957cd1489284f9af5bc573c63, type: 3}
   m_PrefabInstance: {fileID: 8681886030710993535}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &319797466217415999 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8938632890586101568, guid: 10dec77957cd1489284f9af5bc573c63, type: 3}
-  m_PrefabInstance: {fileID: 8681886030710993535}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f68bdecb2b4148fbb723691ef34a690, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1945891193350912214 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7169010305052805801, guid: 10dec77957cd1489284f9af5bc573c63, type: 3}
@@ -782,14 +784,3 @@ CanvasGroup:
   m_CorrespondingSourceObject: {fileID: 7212083134946692986, guid: 10dec77957cd1489284f9af5bc573c63, type: 3}
   m_PrefabInstance: {fileID: 8681886030710993535}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8096258791027453733 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 587703401105022298, guid: 10dec77957cd1489284f9af5bc573c63, type: 3}
-  m_PrefabInstance: {fileID: 8681886030710993535}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb2c70a28de3c4b74af564a99b4c3dc7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

@@ -28,12 +28,24 @@ namespace GameFields.Persons.AttackMenues
             _attackButton = attackButton;
         }
 
-        public override void OnPointerClick(PointerEventData eventData)
+        //public override void Activate()
+        //{
+        //    base.Activate();
+        //}
+
+        protected override void OnEnterClick()
         {
-            base.OnPointerClick(eventData);
+            base.OnEnterClick();
 
             _attackButton.Activate();
         }
+
+        //public override void OnPointerClick(PointerEventData eventData)
+        //{
+        //    base.OnPointerClick(eventData);
+
+        //    _attackButton.Activate();
+        //}
 
         //public void Unsubscribe()
         //{

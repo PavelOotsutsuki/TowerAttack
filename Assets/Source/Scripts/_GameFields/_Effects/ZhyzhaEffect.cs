@@ -24,10 +24,10 @@ namespace GameFields.Effects
         protected override IEnumerator OnPlaying()
         {
             _deactivePerson.AttackActivate();
+            yield break;
+            //yield return new WaitForSeconds(10f);
 
-            yield return new WaitForSeconds(10f);
-
-            _deactivePerson.AttackDeactivate();
+            //_deactivePerson.AttackDeactivate();
         }
     }
 }

@@ -576,7 +576,7 @@ MonoBehaviour:
   _data:
     <MaxAlpha>k__BackingField: 0.972549
     <MinAlpha>k__BackingField: 0
-    <FadeUpDuration>k__BackingField: 1
+    <FadeUpDuration>k__BackingField: 0.3
     <FadeOutDuration>k__BackingField: 2
     <StartAlpha>k__BackingField: 0
 --- !u!1 &4030730765118987979
@@ -762,9 +762,9 @@ MonoBehaviour:
   _data:
     <MaxAlpha>k__BackingField: 1
     <MinAlpha>k__BackingField: 0
-    <FadeUpDuration>k__BackingField: 1.5
-    <FadeOutDuration>k__BackingField: 1.5
-    <StartAlpha>k__BackingField: 0
+    <FadeUpDuration>k__BackingField: 1
+    <FadeOutDuration>k__BackingField: 1
+    <StartAlpha>k__BackingField: 0.8
 --- !u!114 &5801638844184843595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -896,6 +896,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7625198449985348171}
   - component: {fileID: 2406765651915261315}
+  - component: {fileID: 1304549315998207439}
   m_Layer: 0
   m_Name: AttackMenu
   m_TagString: Untagged
@@ -942,6 +943,19 @@ MonoBehaviour:
   _attackMenuPanel: {fileID: 2776578674613517535}
   _attackButton: {fileID: 3984219662837261217}
   _attackNumberPanel: {fileID: 2981259192611630675}
+  _canvasGroup: {fileID: 1304549315998207439}
+--- !u!225 &1304549315998207439
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8221689975159483239}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &9092218654760227933
 GameObject:
   m_ObjectHideFlags: 0

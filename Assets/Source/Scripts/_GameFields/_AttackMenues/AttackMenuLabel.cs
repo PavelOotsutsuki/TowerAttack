@@ -12,13 +12,13 @@ namespace GameFields.Persons.AttackMenues
     //[RequireComponent(typeof(FadableLabel))]
     public class AttackMenuLabel : FadableNascentLabel
     {
-        #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents) + nameof(AttackMenuLabel))]
-        protected override void DefineAllComponents()
-        {
-            base.DefineAllComponents();
-        }
-        #endregion 
+        //#region AutomaticFillComponents
+        //[ContextMenu(nameof(DefineAllComponents) + nameof(AttackMenuLabel))]
+        //protected override void DefineAllComponents()
+        //{
+        //    base.DefineAllComponents();
+        //}
+        //#endregion 
         //[SerializeField] private FadableLabel _fadableLabel;
 
         //public bool IsComplete => _fadableLabel.IsComplete;

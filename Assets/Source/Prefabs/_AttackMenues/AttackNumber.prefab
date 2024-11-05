@@ -148,6 +148,7 @@ GameObject:
   - component: {fileID: 539297379678633074}
   - component: {fileID: 3487252167409818217}
   - component: {fileID: 1418185624317422340}
+  - component: {fileID: 3784630323517298592}
   m_Layer: 5
   m_Name: AttackNumber
   m_TagString: Untagged
@@ -226,6 +227,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enterColorChanger: {fileID: 1418185624317422340}
+  CanvasGroup: {fileID: 3784630323517298592}
   Image: {fileID: 5142016623048995018}
   NormalColor: {r: 1, g: 1, b: 1, a: 1}
   ClickColor: {r: 1, g: 0, b: 0, a: 1}
@@ -289,3 +291,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _selectColor: {r: 0.16470589, g: 1, b: 0, a: 1}
   _pressedColor: {r: 1, g: 0.88235295, b: 0.015686275, a: 1}
+--- !u!225 &3784630323517298592
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6609448491753350199}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0

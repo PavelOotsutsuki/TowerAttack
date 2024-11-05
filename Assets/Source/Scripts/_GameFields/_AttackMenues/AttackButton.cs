@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Cysharp.Threading.Tasks;
 using Tools.UI;
@@ -7,11 +8,29 @@ namespace GameFields.Persons.AttackMenues
 {
     public class AttackButton : FadableConfirmableButton
     {
+        private Action _onPointerClick;
+
+        public void Init(Action onPointerClick)
+        {
+            _onPointerClick = onPointerClick;
+
+            base.Init();
+
+            gameObject.SetActive(false);
+        }
+
         public override void Activate()
         {
-            base.Activate();
-
             gameObject.SetActive(true);
+
+            base.Activate();
+        }
+
+        protected override void OnEnterClick()
+        {
+            base.OnEnterClick();
+
+            _onPointerClick?.Invoke();
         }
 
         public override void Deactivate()

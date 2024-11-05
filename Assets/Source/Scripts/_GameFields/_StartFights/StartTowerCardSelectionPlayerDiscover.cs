@@ -1,3 +1,5 @@
+using System.Collections;
+using Cysharp.Threading.Tasks;
 using GameFields.Persons.Discovers;
 using Tools.UI;
 using Tools.Utils.FillComponents;
@@ -28,6 +30,13 @@ namespace GameFields.StartFights
         protected override void Deactivate()
         {
             _discoverLabel.Deactivate();
+
+            Deactivating().ToUniTask();
+        }
+
+        private IEnumerator Deactivating()
+        {
+            yield return new WaitUntil(() => _discoverLabel.IsComplete);
 
             base.Deactivate();
         }

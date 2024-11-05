@@ -17,8 +17,10 @@ namespace Tools.UI
             _fadablePanel.Init();
         }
 
-        public virtual void Activate()
+        public override void Activate()
         {
+            base.Activate();
+
             _fadablePanel.Show();
         }
 

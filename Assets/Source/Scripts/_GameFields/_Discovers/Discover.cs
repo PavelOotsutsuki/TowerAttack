@@ -56,6 +56,7 @@ namespace GameFields.Persons.Discovers
 
         protected virtual void Deactivate()
         {
+            Debug.Log("Deactivate");
             gameObject.SetActive(false);
         }
 

@@ -4226,7 +4226,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enterColorChanger: {fileID: 489448959}
-  CanvasGroup: {fileID: 0}
+  CanvasGroup: {fileID: 489448960}
   Image: {fileID: 44239813}
   NormalColor: {r: 0.12065028, g: 0.8679245, b: 0.05322181, a: 1}
   ClickColor: {r: 1, g: 0, b: 0, a: 1}
@@ -13948,6 +13948,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 2.5
       objectReference: {fileID: 0}
+    - target: {fileID: 920570267858882642, guid: ce469e9a2005d4176a420699ea699af7, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1945891193350912214, guid: ce469e9a2005d4176a420699ea699af7, type: 3}
       propertyPath: _fadableLabel
       value: 
@@ -14389,14 +14393,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1905208562}
     m_Modifications:
-    - target: {fileID: 266637621526577529, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
-      propertyPath: _data.<Duration>k__BackingField
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7191479628810230838, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
-      propertyPath: _data.<FadeUpDuration>k__BackingField
-      value: 0.3
-      objectReference: {fileID: 0}
     - target: {fileID: 7625198449985348171, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -14477,25 +14473,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7843000747181579700, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
-      propertyPath: _data.<StartAlpha>k__BackingField
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7843000747181579700, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
-      propertyPath: _data.<FadeUpDuration>k__BackingField
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7843000747181579700, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
-      propertyPath: _data.<FadeOutDuration>k__BackingField
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8221689975159483239, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
       propertyPath: m_Name
       value: AttackMenu
-      objectReference: {fileID: 0}
-    - target: {fileID: 8221689975159483239, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

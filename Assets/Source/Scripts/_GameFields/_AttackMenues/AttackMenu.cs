@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.AttackMenues
 {
+    [RequireComponent(typeof(CanvasGroup))]
     public class AttackMenu : MonoBehaviour, IWorkable
     {
         [SerializeField] private AttackMenuLabel _attackMenuLabel;
@@ -14,29 +15,37 @@ namespace GameFields.Persons.AttackMenues
         [SerializeField] private AttackButton _attackButton;
         [SerializeField] private AttackNumberPanel _attackNumberPanel;
 
+        [SerializeField] private CanvasGroup _canvasGroup;
+
         public void Init()
         {
             gameObject.SetActive(false);
+            _canvasGroup.blocksRaycasts = false;
 
             _attackMenuLabel.Init();
             _attackMenuPanel.Init();
-            _attackButton.Init();
+            _attackButton.Init(Deactivate);
             _attackNumberPanel.Init(_attackButton);
         }
 
         public void Activate()
         {
             gameObject.SetActive(true);
+            _canvasGroup.blocksRaycasts = false;
 
             FadableLabelActivateData labelData = new FadableLabelActivateData("Выберете кого атакуем");
             _attackMenuLabel.Show(labelData);
             _attackMenuPanel.Activate();
             //_attackButton.Activate();
             _attackNumberPanel.Activate();
+
+
         }
 
         public void Deactivate()
         {
+            _canvasGroup.blocksRaycasts = true;
+
             _attackMenuLabel.Hide();
             _attackNumberPanel.Deactivate();
             _attackButton.Deactivate();
@@ -47,7 +56,7 @@ namespace GameFields.Persons.AttackMenues
 
         private IEnumerator Deactivating()
         {
-            yield return new WaitUntil(() => _attackMenuPanel.IsComplete && _attackMenuLabel.IsComplete);
+            yield return new WaitUntil(() => _attackMenuPanel.IsComplete && _attackMenuLabel.IsComplete && _attackButton.IsComplete && _attackNumberPanel.IsComplete);
 
             gameObject.SetActive(false);
         }
@@ -60,6 +69,7 @@ namespace GameFields.Persons.AttackMenues
             DefineAttackMenuPanel();
             DefineAttackButton();
             DefineAttackNumberPanel();
+            DefineCanvasGroup();
         }
 
         [ContextMenu(nameof(DefineAttackMenuLabel))]
@@ -84,6 +94,12 @@ namespace GameFields.Persons.AttackMenues
         private void DefineAttackNumberPanel()
         {
             AutomaticFillComponents.DefineComponent(this, ref _attackNumberPanel, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineCanvasGroup))]
+        private void DefineCanvasGroup()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _canvasGroup, ComponentLocationTypes.InThis);
         }
 
         #endregion 

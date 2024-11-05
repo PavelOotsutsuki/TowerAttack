@@ -1,3 +1,5 @@
+using System.Collections;
+using Cysharp.Threading.Tasks;
 using Tools.UI;
 using Tools.Utils.FillComponents;
 using UnityEngine;
@@ -23,15 +25,23 @@ namespace GameFields.Persons.Discovers
 
             FadableLabelActivateData labelData = new FadableLabelActivateData(data.ActivateMessage);
 
-            _discoverPanel.Activate();
+            _discoverPanel.Show();
             _discoverLabel.Activate(labelData);
         }
 
         protected override void Deactivate()
         {
-            _discoverPanel.Deactivate();
+            _discoverPanel.Hide();
             _discoverLabel.Deactivate();
 
+            Deactivating().ToUniTask();
+        }
+
+        private IEnumerator Deactivating()
+        {
+            yield return new WaitUntil(() => _discoverLabel.IsComplete && _discoverPanel.IsComplete);
+
+            Debug.Log("startDeactivate");
             base.Deactivate();
         }
 

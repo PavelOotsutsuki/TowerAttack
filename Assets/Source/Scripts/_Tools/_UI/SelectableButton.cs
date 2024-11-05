@@ -4,7 +4,7 @@ namespace Tools.UI
 {
     public class SelectableButton : SimpleButton
     {
-        public override void OnPointerClick(PointerEventData eventData)
+        public sealed override void OnPointerClick(PointerEventData eventData)
         {
             if (IsClicked == false)
             {
@@ -19,7 +19,7 @@ namespace Tools.UI
             CurrentColor = Image.color;
         }
 
-        protected virtual void OnEnterClick()
+        protected override void OnEnterClick()
         {
             Image.color = ClickColor;
         }
