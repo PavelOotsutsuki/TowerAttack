@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Discovers
 {
-    public abstract class DiscoverViewLogic: MonoBehaviour, IShowable<DiscoverViewLogicData>
+    public abstract class DiscoverViewLogic: MonoBehaviour, IShowable<DiscoverViewLogicData>, IAutomaticFillComponents
     {
         [SerializeField] protected RectTransform RectTransform;
         [SerializeField, Min(1f)] protected float ScaleFactor = 2f;
@@ -24,8 +24,8 @@ namespace GameFields.Persons.Discovers
         public abstract void Show(DiscoverViewLogicData discoverViewLogicData);
 
         #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents))]
-        private void DefineAllComponents()
+        [ContextMenu(nameof(DefineAllComponents) + nameof(DiscoverViewLogic))]
+        public void DefineAllComponents()
         {
             DefineRectTransform();
         }

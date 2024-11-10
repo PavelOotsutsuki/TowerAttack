@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Discovers
 {
-    public abstract class Discover : MonoBehaviour, IDiscoverChoiceHandler, IActivatable<DiscoverActivateData>
+    public abstract class Discover : MonoBehaviour, IDiscoverChoiceHandler, IActivatable<DiscoverActivateData>, IAutomaticFillComponents
     {
         [SerializeField] protected DiscoverSeat[] Seats;
         [SerializeField] private float _offset = 400f;
@@ -56,7 +56,6 @@ namespace GameFields.Persons.Discovers
 
         protected virtual void Deactivate()
         {
-            Debug.Log("Deactivate");
             gameObject.SetActive(false);
         }
 
@@ -91,7 +90,8 @@ namespace GameFields.Persons.Discovers
         }
 
         #region AutomaticFillComponents
-        protected virtual void DefineAllComponents()
+        [ContextMenu(nameof(DefineAllComponents) + nameof(Discover))]
+        public virtual void DefineAllComponents()
         {
             DefineSeats();
         }

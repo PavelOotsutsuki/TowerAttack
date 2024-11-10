@@ -6,6 +6,11 @@ namespace Tools.Utils.FillComponents
     {
         public static void DefineComponent<T>(MonoBehaviour parent, ref T target, ComponentLocationTypes componentType) where T: class
         {
+            if (target is not null)
+            {
+                return;
+            }
+
             string type = GetShortType<T>();
 
             if (componentType == ComponentLocationTypes.InThisElseChildren)

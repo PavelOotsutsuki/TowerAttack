@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 7212083134946692986}
   - component: {fileID: 8792722304710435526}
   - component: {fileID: 2016220676778456414}
-  - component: {fileID: 7040531210027730646}
   m_Layer: 0
   m_Name: InformationLabel
   m_TagString: Untagged
@@ -30,7 +29,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1835844569050338557}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -97,8 +96,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 70
-  m_fontSizeBase: 70
+  m_fontSize: 60
+  m_fontSizeBase: 60
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -151,7 +150,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a6327b329add45abb548efac884a3a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fadableLabel: {fileID: 7040531210027730646}
+  _label: {fileID: 2016220676778456414}
+  _fadablePanel: {fileID: 8792722304710435526}
 --- !u!225 &7212083134946692986
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -198,17 +198,3 @@ MonoBehaviour:
   _text: {fileID: 8648506181067895608}
   _data:
     <StartText>k__BackingField: 
---- !u!114 &7040531210027730646
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1835844569050338557}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f68bdecb2b4148fbb723691ef34a690, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _label: {fileID: 2016220676778456414}
-  _fadablePanel: {fileID: 8792722304710435526}

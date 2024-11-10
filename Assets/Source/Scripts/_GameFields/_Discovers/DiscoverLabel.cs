@@ -7,43 +7,43 @@ using UnityEngine;
 
 namespace GameFields.Persons.Discovers
 {
-    [RequireComponent(typeof(FadableLabel))]
-    public class DiscoverLabel : MonoBehaviour, ICompletable, IWorkable<FadableLabelActivateData>
+    //[RequireComponent(typeof(FadableLabel))]
+    public class DiscoverLabel : FadableLabel//MonoBehaviour, ICompletable, IWorkable<FadableLabelActivateData>
     {
-        [SerializeField] private FadableLabel _fadableLabel;
+        //[SerializeField] private FadableLabel _fadableLabel;
 
-        public bool IsComplete => _fadableLabel.IsComplete;
+        //public bool IsComplete => _fadableLabel.IsComplete;
 
-        public void Init()
-        {
-            _fadableLabel.Init();
-        }
+        //public void Init()
+        //{
+        //    _fadableLabel.Init();
+        //}
 
-        public void Activate(FadableLabelActivateData data)
-        {
-            _fadableLabel.Show(data);
-        }
+        //public void Activate(FadableLabelActivateData data)
+        //{
+        //    _fadableLabel.Show(data);
+        //}
 
-        public void Deactivate()
-        {
-            _fadableLabel.Hide();
-        }
+        //public void Deactivate()
+        //{
+        //    _fadableLabel.Hide();
+        //}
 
-        #region AutomaticFillComponents
+        //#region AutomaticFillComponents
 
-        [ContextMenu(nameof(DefineAllComponents))]
-        private void DefineAllComponents()
-        {
-            DefineFadableLabel();
-        }
+        //[ContextMenu(nameof(DefineAllComponents))]
+        //private void DefineAllComponents()
+        //{
+        //    DefineFadableLabel();
+        //}
 
-        [ContextMenu(nameof(DefineFadableLabel))]
-        private void DefineFadableLabel()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _fadableLabel, ComponentLocationTypes.InThis);
-        }
+        //[ContextMenu(nameof(DefineFadableLabel))]
+        //private void DefineFadableLabel()
+        //{
+        //    AutomaticFillComponents.DefineComponent(this, ref _fadableLabel, ComponentLocationTypes.InThis);
+        //}
 
-        #endregion
+        //#endregion
         //private const float LifeAlpha = 1f;
         //private const float EndAlpha = 0f;
 

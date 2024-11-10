@@ -30,7 +30,8 @@ namespace Tools.UI
         }
 
         #region AutomaticFillComponents
-        protected override void DefineAllComponents()
+        [ContextMenu(nameof(DefineAllComponents) + nameof(FadableConfirmableButton))]
+        public override void DefineAllComponents()
         {
             DefineFadablePanel();
 

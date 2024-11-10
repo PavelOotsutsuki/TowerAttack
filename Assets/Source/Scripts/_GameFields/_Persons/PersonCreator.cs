@@ -122,9 +122,9 @@ namespace GameFields.Persons
             _playerTable.Init();
             _playerPlayingZone.Init(_playerTable);
             _playerTower.Init();
-            _playerDiscover.Init();
+            _playerDiscover.Init(_playerHand);
             _startPlayerTurnLabel.Init();
-            _attackMenu.Init();
+            _attackMenu.Init(_playerHand);
         }
 
         private void InitEnemyData(SeatPool seatPool)

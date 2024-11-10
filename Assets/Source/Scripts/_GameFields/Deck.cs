@@ -1,11 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Cards;
+using GameFields.StartFights;
+using Tools.Utils.FillComponents;
+using Tools;
+using Tools.Utils.Movements;
 
 namespace GameFields
 {
-    public class Deck : MonoBehaviour
+    public class Deck : MonoBehaviour, IAutomaticFillComponents
     {
+        [SerializeField] private Transform _transform;
+
         private readonly Vector2 _cardAddPosition = new Vector2(0f, 0f);
 
         private List<Card> _cards;
@@ -17,7 +23,7 @@ namespace GameFields
             foreach (Card card in cards)
             {
                 _cards.Add(card);
-                BindCard(card.transform);
+                BindCard(card.ReadOnlyRectTransform, card.CardMovement);
             }
 
             ShuffleCards();
@@ -32,7 +38,7 @@ namespace GameFields
         {
             int position = Random.Range(0, _cards.Count);
             _cards.Insert(position, card);
-            BindCard(card.transform);
+            BindCard(card.ReadOnlyRectTransform, card.CardMovement);
 
             ShuffleCards();
         }
@@ -65,10 +71,24 @@ namespace GameFields
             _cards = shuffleCards;
         }
 
-        private void BindCard(Transform card)
+        private void BindCard(ReadOnlyTransform cardTransform, Movement cardMovement)
         {
-            card.SetParent(transform);
-            card.localPosition = _cardAddPosition;
+            cardTransform.SetParent(_transform);
+            cardMovement.MoveLocalInstantly(_cardAddPosition, cardTransform.GetRotationVector());
         }
+
+        #region AutomaticFillComponents
+        [ContextMenu(nameof(DefineAllComponents) + nameof(Deck))]
+        public void DefineAllComponents()
+        {
+            DefineTransform();
+        }
+
+        [ContextMenu(nameof(DefineTransform))]
+        private void DefineTransform()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _transform, ComponentLocationTypes.InThis);
+        }
+        #endregion 
     }
 }

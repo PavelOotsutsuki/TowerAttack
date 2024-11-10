@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace Roots
 {
-    internal class ScreenRoot : MonoBehaviour
+    internal class ScreenRoot : MonoBehaviour, IAutomaticFillComponents
     {
         [SerializeField] private CanvasScaler[] _allCanvasScalers;
         [SerializeField] private Vector2 _defaultReferenceResolution = new Vector2(1920f, 1080f);
@@ -26,8 +26,8 @@ namespace Roots
         }
 
         #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents))]
-        private void DefineAllComponents()
+        [ContextMenu(nameof(DefineAllComponents) + nameof(ScreenRoot))]
+        public void DefineAllComponents()
         {
             DefineAllCanvasScalers();
         }

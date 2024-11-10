@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 namespace Cards
 {
     [RequireComponent(typeof(CanvasGroup))]
-    internal class CardFront : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler, IViewable
+    internal class CardFront : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler, IViewable, IAutomaticFillComponents
     {
         [SerializeField] private CanvasGroup _canvasGroup;
 
@@ -94,7 +94,7 @@ namespace Cards
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents))]
-        private void DefineAllComponents()
+        public void DefineAllComponents()
         {
             DefineCanvasGroup();
         }

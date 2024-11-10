@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Cards
 {
-    public class CardRoot : MonoBehaviour
+    public class CardRoot : MonoBehaviour, IAutomaticFillComponents
     {
         [SerializeField] private BigCard _bigCard;
         [SerializeField] private Card[] _cards;
@@ -47,7 +47,7 @@ namespace Cards
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents))]
-        private void DefineAllComponents()
+        public void DefineAllComponents()
         {
             DefineAllCards();
             DefineBigCard();

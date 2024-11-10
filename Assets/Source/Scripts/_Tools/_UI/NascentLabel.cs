@@ -3,51 +3,49 @@ using UnityEngine;
 
 namespace Tools.UI
 {
-    [RequireComponent(typeof(FadableLabel))]
+    [RequireComponent(typeof(Label))]
     [RequireComponent(typeof(NascentPanel))]
-    public class FadableNascentLabel : MonoBehaviour, IAutomaticFillComponents
+    public class NascentLabel : MonoBehaviour, IAutomaticFillComponents
     {
-        [SerializeField] private FadableLabel _fadableLabel;
+        [SerializeField] private Label _label;
         [SerializeField] private NascentPanel _nascentPanel;
 
-        public bool IsComplete => _fadableLabel.IsComplete && _nascentPanel.IsComplete;
+        public bool IsComplete => _nascentPanel.IsComplete;
 
         public void Init()
         {
-            _fadableLabel.Init();
+            _label.Init();
             _nascentPanel.Init();
         }
 
         public void Show(FadableLabelActivateData data)
         {
-            _fadableLabel.Show(data);
+            _label.SetText(data.Message);
             _nascentPanel.Activate();
         }
 
         public void Show()
         {
-            _fadableLabel.Show();
             _nascentPanel.Activate();
         }
 
         public void Hide()
         {
-            _fadableLabel.Hide();
             _nascentPanel.Deactivate();
         }
 
         #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents) + nameof(FadableNascentLabel))]
+        [ContextMenu(nameof(DefineAllComponents) + nameof(NascentLabel))]
         public virtual void DefineAllComponents()
         {
-            DefineFadableLabel();
+            DefineLabel();
             DefineNascentPanel();
         }
 
-        [ContextMenu(nameof(DefineFadableLabel))]
-        private void DefineFadableLabel()
+        [ContextMenu(nameof(DefineLabel))]
+        private void DefineLabel()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _fadableLabel, ComponentLocationTypes.InThis);
+            AutomaticFillComponents.DefineComponent(this, ref _label, ComponentLocationTypes.InThis);
         }
 
         [ContextMenu(nameof(DefineNascentPanel))]

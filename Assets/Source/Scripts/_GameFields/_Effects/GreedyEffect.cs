@@ -10,7 +10,7 @@ namespace GameFields.Effects
     public class GreedyEffect : Effect
     {
         //private Person _activePerson;
-        private Person _deactivePerson;
+        //private Person _deactivePerson;
 
         private IHandTransitGetAll _activeHandTransitGetAll;
         private IHandTransitGetAll _deactiveHandTransitGetAll;
@@ -20,7 +20,7 @@ namespace GameFields.Effects
         public GreedyEffect(Person activePerson, Person deactivePerson): base()
         {
             //_activePerson = activePerson;
-            _deactivePerson = deactivePerson;
+            //_deactivePerson = deactivePerson;
 
             _activeHandTransitGetAll = activePerson;
             _deactiveHandTransitGetAll = deactivePerson;
@@ -35,25 +35,25 @@ namespace GameFields.Effects
             Debug.Log("Эффект Жадины закончен");
         }
 
-        protected override IEnumerator OnPlaying()
-        {
-            _deactivePerson.AttackActivate();
-            yield break;
-            //yield return new WaitForSeconds(10f);
-
-            //_deactivePerson.AttackDeactivate();
-        }
-
         //protected override IEnumerator OnPlaying()
         //{
-        //    List<Card> activePersonCards = _activeHandTransitGetAll.Get();
-        //    List<Card> deactivePersonCards = _deactiveHandTransitGetAll.Get();
-
-        //    GetCards(deactivePersonCards, _activeHandTransitSet);
-        //    GetCards(activePersonCards, _deactiveHandTransitSet);
-
+        //    _deactivePerson.AttackActivate();
         //    yield break;
+        //    //yield return new WaitForSeconds(10f);
+
+        //    //_deactivePerson.AttackDeactivate();
         //}
+
+        protected override IEnumerator OnPlaying()
+        {
+            List<Card> activePersonCards = _activeHandTransitGetAll.Get();
+            List<Card> deactivePersonCards = _deactiveHandTransitGetAll.Get();
+
+            GetCards(deactivePersonCards, _activeHandTransitSet);
+            GetCards(activePersonCards, _deactiveHandTransitSet);
+
+            yield break;
+        }
 
         private void GetCards(IReadOnlyList<Card> givenCards, IHandTransitSet gettedHandTransitSet)
         {

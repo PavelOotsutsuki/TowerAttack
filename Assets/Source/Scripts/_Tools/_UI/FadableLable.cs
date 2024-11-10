@@ -5,7 +5,7 @@ namespace Tools.UI
 {
     [RequireComponent(typeof(FadablePanel))]
     [RequireComponent(typeof(Label))]
-    public class FadableLabel : MonoBehaviour, ICompletable, IViewable, IShowable<FadableLabelActivateData>
+    public class FadableLabel : MonoBehaviour, ICompletable, IViewable, IShowable<FadableLabelActivateData>, IAutomaticFillComponents
     {
         [SerializeField] private Label _label;
         [SerializeField] private FadablePanel _fadablePanel;
@@ -36,8 +36,8 @@ namespace Tools.UI
         }
 
         #region AutomaticFillComponents
-        [ContextMenu("DefineAllComponentsFadableLabel")]
-        protected virtual void DefineAllComponents()
+        [ContextMenu(nameof(DefineAllComponents) + nameof(FadableLabel))]
+        public virtual void DefineAllComponents()
         {
             DefineLabel();
             DefineFadablePanel();

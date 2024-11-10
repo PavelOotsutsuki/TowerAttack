@@ -7,7 +7,7 @@ using Tools;
 
 namespace GameFields.Persons
 {
-    public class StartPlayerTurnLabel : MonoBehaviour, ICompletable, IActivatable
+    public class StartPlayerTurnLabel : MonoBehaviour, ICompletable, IActivatable, IAutomaticFillComponents
     {
         private const float LifeAlpha = 1f;
         private const float EndAlpha = 0f;
@@ -81,8 +81,8 @@ namespace GameFields.Persons
 
         #region AutomaticFillComponents
 
-        [ContextMenu(nameof(DefineAllComponents))]
-        private void DefineAllComponents()
+        [ContextMenu(nameof(DefineAllComponents) + nameof(StartPlayerTurnLabel))]
+        public void DefineAllComponents()
         {
             DefineLabel();
         }

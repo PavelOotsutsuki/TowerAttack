@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Towers
 {
-    public abstract class Tower : MonoBehaviour, ICardDropPlace
+    public abstract class Tower : MonoBehaviour, ICardDropPlace, IAutomaticFillComponents
     {
         private const SideType DefaultSideType = SideType.Back;
         private const bool IsCardInteraction = false;
@@ -36,8 +36,8 @@ namespace GameFields.Persons.Towers
         }
 
         #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents))]
-        private void DefineAllComponents()
+        [ContextMenu(nameof(DefineAllComponents) + nameof(Tower))]
+        public void DefineAllComponents()
         {
             DefineTowerSeat();
         }

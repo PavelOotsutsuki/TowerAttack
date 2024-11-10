@@ -46,13 +46,5 @@ namespace GameFields.Persons.AttackMenues
 
             gameObject.SetActive(false);
         }
-
-        #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents))]
-        protected override void DefineAllComponents()
-        {
-            base.DefineAllComponents();
-        }
-        #endregion 
     }
 }

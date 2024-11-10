@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Hands
 {
-    public abstract class Hand : MonoBehaviour, ICardDragAndDropListener, IHandBlockable
+    public abstract class Hand : MonoBehaviour, ICardDragAndDropListener, IHandBlockable, IAutomaticFillComponents
     {
         private const float StartRotation = 0;
         private const int EmptyIndex = -1;
@@ -263,8 +263,8 @@ namespace GameFields.Persons.Hands
         }
 
         #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents))]
-        private void DefineAllComponents()
+        [ContextMenu(nameof(DefineAllComponents) + nameof(Hand))]
+        public void DefineAllComponents()
         {
             DefineRectTransform();
         }

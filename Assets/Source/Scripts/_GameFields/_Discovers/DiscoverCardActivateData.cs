@@ -6,8 +6,8 @@ namespace GameFields.Persons.Discovers
 {
     public class DiscoverCardActivateData: IData
     {
-        private Vector2 _sizeDelta;
-        private CardViewConfig _cardViewConfig;
+        private readonly Vector2 _sizeDelta;
+        private readonly CardViewConfig _cardViewConfig;
 
         public DiscoverCardActivateData(Vector2 sizeDelta, CardViewConfig cardViewConfig)
         {

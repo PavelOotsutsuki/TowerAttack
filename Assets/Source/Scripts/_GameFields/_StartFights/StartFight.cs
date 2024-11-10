@@ -9,7 +9,7 @@ using Tools.Utils.FillComponents;
 
 namespace GameFields.StartFights
 {
-    public class StartFight : MonoBehaviour, IFightStep
+    public class StartFight : MonoBehaviour, IFightStep, IAutomaticFillComponents
     {
         [SerializeField] private StartFightPanel _startTowerCardSelectionPanel;
         [SerializeField] private StartFightLabel _startTowerCardSelectionLabel;
@@ -105,8 +105,8 @@ namespace GameFields.StartFights
 
         #region AutomaticFillComponents
 
-        [ContextMenu(nameof(DefineAllComponents))]
-        private void DefineAllComponents()
+        [ContextMenu(nameof(DefineAllComponents) + nameof(StartFight))]
+        public void DefineAllComponents()
         {
             DefineStartFightPanel();
             DefineStartFightLabel();

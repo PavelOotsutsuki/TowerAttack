@@ -4,7 +4,7 @@ using Tools;
 
 namespace Cards
 {
-    public class CardPaper : MonoBehaviour, ICardState
+    public class CardPaper : MonoBehaviour, ICardState, IAutomaticFillComponents
     {
         private const SideType DefaultSide = SideType.Back;
         private const bool DefaultInteractionActive = false;
@@ -75,7 +75,7 @@ namespace Cards
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents))]
-        private void DefineAllComponents()
+        public void DefineAllComponents()
         {
             DefineCardBack();
             DefineCardFront();

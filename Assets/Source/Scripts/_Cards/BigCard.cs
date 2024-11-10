@@ -5,7 +5,7 @@ using Tools;
 
 namespace Cards
 {
-    internal class BigCard : MonoBehaviour, IViewable<BigCardShowData>
+    internal class BigCard : MonoBehaviour, IViewable<BigCardShowData>, IAutomaticFillComponents
     {
         [SerializeField, Min(1f)] private float _scaleFactor = 2f;
 
@@ -45,8 +45,8 @@ namespace Cards
         }
 
         #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents))]
-        private void DefineAllComponents()
+        [ContextMenu(nameof(DefineAllComponents) + nameof(BigCard))]
+        public void DefineAllComponents()
         {
             DefineRectTransform();
         }

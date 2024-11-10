@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Cards
 {
-    public class Card : MonoBehaviour, ICardTransformable
+    public class Card : MonoBehaviour, ICardTransformable, IAutomaticFillComponents
     {
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private CardPaper _cardPaper;
@@ -127,8 +127,8 @@ namespace Cards
         }
 
         #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents))]
-        private void DefineAllComponents()
+        [ContextMenu(nameof(DefineAllComponents) + nameof(Card))]
+        public void DefineAllComponents()
         {
             DefineRectTransform();
             DefineCardPaper();

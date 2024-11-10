@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Discovers
 {
-    public abstract class DiscoverSeat : MonoBehaviour, IDiscoverClickHandler
+    public abstract class DiscoverSeat : MonoBehaviour, IDiscoverClickHandler, IAutomaticFillComponents
     {
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private DiscoverCard _discoverCard;
@@ -52,8 +52,8 @@ namespace GameFields.Persons.Discovers
         }
 
         #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents))]
-        private void DefineAllComponents()
+        [ContextMenu(nameof(DefineAllComponents) + nameof(DiscoverSeat))]
+        public void DefineAllComponents()
         {
             DefineRectTransform();
             DefineDiscoverCard();

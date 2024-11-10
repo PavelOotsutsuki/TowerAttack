@@ -6,7 +6,7 @@ using Tools.UI;
 namespace GameFields.StartFights
 {
     [RequireComponent(typeof(FadablePanel))]
-    public class StartFightPanel : MonoBehaviour, ICompletable, IWorkable
+    public class StartFightPanel : MonoBehaviour, ICompletable, IWorkable, IAutomaticFillComponents
     {
         [SerializeField] private FadablePanel _fadablePanel;
 
@@ -29,8 +29,8 @@ namespace GameFields.StartFights
 
         #region AutomaticFillComponents
 
-        [ContextMenu(nameof(DefineAllComponents))]
-        private void DefineAllComponents()
+        [ContextMenu(nameof(DefineAllComponents) + nameof(StartFightPanel))]
+        public void DefineAllComponents()
         {
             DefineFadablePanel();
         }

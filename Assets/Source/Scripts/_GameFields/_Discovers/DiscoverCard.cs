@@ -1,10 +1,11 @@
 using System;
 using UnityEngine;
 using Tools;
+using Tools.Utils.FillComponents;
 
 namespace GameFields.Persons.Discovers
 {
-    public abstract class DiscoverCard : MonoBehaviour, IWorkable<DiscoverCardActivateData>
+    public abstract class DiscoverCard : MonoBehaviour, IWorkable<DiscoverCardActivateData>, IAutomaticFillComponents
     {
         [SerializeField, Min(0f)] protected float ViewDuration = 0.5f;
         [SerializeField] protected DiscoverViewLogic ViewLogic;
@@ -24,5 +25,20 @@ namespace GameFields.Persons.Discovers
         public abstract void Deactivate();
         public abstract void Activate(DiscoverCardActivateData data);
         public abstract void StartClickActions();
+
+        #region AutomaticFillComponents
+        [ContextMenu(nameof(DefineAllComponents) + nameof(DiscoverCard))]
+        public virtual void DefineAllComponents()
+        {
+            DefineSeats();
+        }
+
+        [ContextMenu(nameof(DefineSeats))]
+        private void DefineSeats()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref ViewLogic, ComponentLocationTypes.InThis);
+        }
+
+        #endregion
     }
 }

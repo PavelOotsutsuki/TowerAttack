@@ -1,5 +1,6 @@
 using System.Collections;
 using Cysharp.Threading.Tasks;
+using GameFields.Persons.Hands;
 using Tools;
 using Tools.UI;
 using Tools.Utils.FillComponents;
@@ -8,7 +9,7 @@ using UnityEngine;
 namespace GameFields.Persons.AttackMenues
 {
     [RequireComponent(typeof(CanvasGroup))]
-    public class AttackMenu : MonoBehaviour, IWorkable
+    public class AttackMenu : MonoBehaviour, IWorkable, IAutomaticFillComponents
     {
         [SerializeField] private AttackMenuLabel _attackMenuLabel;
         [SerializeField] private AttackMenuPanel _attackMenuPanel;
@@ -17,10 +18,13 @@ namespace GameFields.Persons.AttackMenues
 
         [SerializeField] private CanvasGroup _canvasGroup;
 
-        public void Init()
+        private IHandBlockable _handBlockable;
+
+        public void Init(IHandBlockable handBlockable)
         {
             gameObject.SetActive(false);
             _canvasGroup.blocksRaycasts = false;
+            _handBlockable = handBlockable;
 
             _attackMenuLabel.Init();
             _attackMenuPanel.Init();
@@ -30,8 +34,9 @@ namespace GameFields.Persons.AttackMenues
 
         public void Activate()
         {
+            _handBlockable.ForciblyBlock();
             gameObject.SetActive(true);
-            _canvasGroup.blocksRaycasts = false;
+            _canvasGroup.blocksRaycasts = true;
 
             FadableLabelActivateData labelData = new FadableLabelActivateData("Выберете кого атакуем");
             _attackMenuLabel.Show(labelData);
@@ -44,7 +49,7 @@ namespace GameFields.Persons.AttackMenues
 
         public void Deactivate()
         {
-            _canvasGroup.blocksRaycasts = true;
+            _canvasGroup.blocksRaycasts = false;
 
             _attackMenuLabel.Hide();
             _attackNumberPanel.Deactivate();
@@ -58,12 +63,13 @@ namespace GameFields.Persons.AttackMenues
         {
             yield return new WaitUntil(() => _attackMenuPanel.IsComplete && _attackMenuLabel.IsComplete && _attackButton.IsComplete && _attackNumberPanel.IsComplete);
 
+            _handBlockable.Unblock();
             gameObject.SetActive(false);
         }
 
         #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents))]
-        private void DefineAllComponents()
+        [ContextMenu(nameof(DefineAllComponents) + nameof(AttackMenu))]
+        public void DefineAllComponents()
         {
             DefineAttackMenuLabel();
             DefineAttackMenuPanel();

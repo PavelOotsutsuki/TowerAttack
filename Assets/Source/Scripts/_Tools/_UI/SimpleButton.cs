@@ -7,7 +7,7 @@ namespace Tools.UI
 {
     [RequireComponent(typeof(OnEnterColorChanger))]
     [RequireComponent(typeof(CanvasGroup))]
-    public abstract class SimpleButton : MonoBehaviour, IPointerClickHandler, IPointerExitHandler, IPointerUpHandler, IActivatable
+    public abstract class SimpleButton : MonoBehaviour, IPointerClickHandler, IPointerExitHandler, IPointerUpHandler, IActivatable, IAutomaticFillComponents
     {
         [SerializeField] private OnEnterColorChanger _enterColorChanger;
 
@@ -48,7 +48,7 @@ namespace Tools.UI
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(SimpleButton))]
-        protected virtual void DefineAllComponents()
+        public virtual void DefineAllComponents()
         {
             DefineColorChangePointer();
             DefineCanvasGroup();

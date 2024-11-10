@@ -24,12 +24,12 @@ namespace GameFields.StartFights
 
             FadableLabelActivateData labelData = new FadableLabelActivateData(data.ActivateMessage);
 
-            _discoverLabel.Activate(labelData);
+            _discoverLabel.Show(labelData);
         }
 
         protected override void Deactivate()
         {
-            _discoverLabel.Deactivate();
+            _discoverLabel.Hide();
 
             Deactivating().ToUniTask();
         }
@@ -43,8 +43,8 @@ namespace GameFields.StartFights
 
         #region AutomaticFillComponents
 
-        [ContextMenu(nameof(DefineAllComponents))]
-        protected override void DefineAllComponents()
+        [ContextMenu(nameof(DefineAllComponents) + nameof(StartTowerCardSelectionPlayerDiscover))]
+        public override void DefineAllComponents()
         {
             DefineDiscoverLabel();
 

@@ -6,7 +6,7 @@ using Tools;
 
 namespace GameFields.Seats
 {
-    public class Seat : MonoBehaviour
+    public class Seat : MonoBehaviour, IAutomaticFillComponents
     {
         [SerializeField] private Transform _transform;
 
@@ -43,8 +43,8 @@ namespace GameFields.Seats
 
         #region AutomaticFillComponents
 
-        [ContextMenu(nameof(DefineAllComponents))]
-        private void DefineAllComponents()
+        [ContextMenu(nameof(DefineAllComponents) + nameof(Seat))]
+        public void DefineAllComponents()
         {
             DefineTransform();
         }

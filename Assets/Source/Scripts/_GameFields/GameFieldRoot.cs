@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GameFields
 {
-    public class GameFieldRoot : MonoBehaviour
+    public class GameFieldRoot : MonoBehaviour, IAutomaticFillComponents
     {
         [SerializeField] private GameField _fightPVE;
 
@@ -14,8 +14,8 @@ namespace GameFields
         }
 
         #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents))]
-        private void DefineAllComponents()
+        [ContextMenu(nameof(DefineAllComponents) + nameof(GameFieldRoot))]
+        public void DefineAllComponents()
         {
             DefineFightPVE();
         }

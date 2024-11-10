@@ -8,7 +8,7 @@ using Tools.Utils.FillComponents;
 
 namespace GameFields
 {
-    public class GameField : MonoBehaviour
+    public class GameField : MonoBehaviour, IAutomaticFillComponents
     {
         [SerializeField] private StartFight _startFight;
 
@@ -34,8 +34,8 @@ namespace GameFields
         //}
 
         #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents))]
-        private void DefineAllComponents()
+        [ContextMenu(nameof(DefineAllComponents) + nameof(GameField))]
+        public void DefineAllComponents()
         {
             DefineFirstTurn();
         }

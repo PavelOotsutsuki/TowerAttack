@@ -1,9 +1,10 @@
+using Tools.Utils.FillComponents;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace GameFields.EndTurnButtons
 {
-    public class EndTurnButton : MonoBehaviour, IButtonActivator
+    public class EndTurnButton : MonoBehaviour, IButtonActivator, IAutomaticFillComponents
     {
         [SerializeField] private ChangeSideAnimatorData _data;
         [SerializeField] private Button _button;
@@ -42,5 +43,19 @@ namespace GameFields.EndTurnButtons
         {
             _changeSideAnimator.PlayLockButtonAnimation();
         }
+
+        #region AutomaticFillComponents
+        [ContextMenu(nameof(DefineAllComponents) + nameof(EndTurnButton))]
+        public void DefineAllComponents()
+        {
+            DefineButton();
+        }
+
+        [ContextMenu(nameof(DefineButton))]
+        private void DefineButton()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _button, ComponentLocationTypes.InThisElseChildren);
+        }
+        #endregion 
     }
 }

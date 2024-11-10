@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Tables
 {
-    public abstract class Table : MonoBehaviour
+    public abstract class Table : MonoBehaviour, IAutomaticFillComponents
     {
         [SerializeField] private TableSeat[] _tableSeats;
 
@@ -56,8 +56,8 @@ namespace GameFields.Persons.Tables
         }
 
         #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents))]
-        private void DefineAllComponents()
+        [ContextMenu(nameof(DefineAllComponents) + nameof(Table))]
+        public void DefineAllComponents()
         {
             DefineAllTableSeats();
         }

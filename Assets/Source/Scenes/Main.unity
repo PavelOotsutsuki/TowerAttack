@@ -6086,17 +6086,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fe019458c1084723bd6429d7c6126f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &804945937 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1857942163878671529, guid: ce469e9a2005d4176a420699ea699af7, type: 3}
-  m_PrefabInstance: {fileID: 3329968188695102729}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f68bdecb2b4148fbb723691ef34a690, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &817527300 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5981172514607463790, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
@@ -7632,7 +7621,6 @@ GameObject:
   - component: {fileID: 1140385936}
   - component: {fileID: 1140385941}
   - component: {fileID: 1140385940}
-  - component: {fileID: 1140385939}
   - component: {fileID: 1140385942}
   m_Layer: 0
   m_Name: Label
@@ -7672,7 +7660,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a6327b329add45abb548efac884a3a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fadableLabel: {fileID: 1140385939}
+  _label: {fileID: 1140385942}
+  _fadablePanel: {fileID: 1140385940}
 --- !u!114 &1140385937
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7770,20 +7759,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1140385934}
   m_CullTransparentMesh: 1
---- !u!114 &1140385939
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1140385934}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f68bdecb2b4148fbb723691ef34a690, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _label: {fileID: 1140385942}
-  _fadablePanel: {fileID: 1140385940}
 --- !u!114 &1140385940
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13936,34 +13911,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1156189548}
     m_Modifications:
-    - target: {fileID: 34317769569075527, guid: ce469e9a2005d4176a420699ea699af7, type: 3}
-      propertyPath: m_fontSize
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 34317769569075527, guid: ce469e9a2005d4176a420699ea699af7, type: 3}
-      propertyPath: m_fontSizeBase
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 54114753581227465, guid: ce469e9a2005d4176a420699ea699af7, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 2.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 920570267858882642, guid: ce469e9a2005d4176a420699ea699af7, type: 3}
-      propertyPath: m_Color.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1945891193350912214, guid: ce469e9a2005d4176a420699ea699af7, type: 3}
-      propertyPath: _fadableLabel
-      value: 
-      objectReference: {fileID: 804945937}
-    - target: {fileID: 4299099919564329194, guid: ce469e9a2005d4176a420699ea699af7, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5239092362254062292, guid: ce469e9a2005d4176a420699ea699af7, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5556689976682773808, guid: ce469e9a2005d4176a420699ea699af7, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -14393,6 +14340,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1905208562}
     m_Modifications:
+    - target: {fileID: 266637621526577529, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
+      propertyPath: _transform
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7625198449985348171, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Tools.UI
 {
-    public class Label : MonoBehaviour
+    public class Label : MonoBehaviour, IAutomaticFillComponents
     {
         [SerializeField] private TMP_Text _text;
 
@@ -21,7 +21,7 @@ namespace Tools.UI
         }
 
         #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents) + "Label")]
+        [ContextMenu(nameof(DefineAllComponents) + nameof(Label))]
         public void DefineAllComponents()
         {
             DefineText();

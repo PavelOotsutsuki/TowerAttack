@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Tables
 {
-    public class TableActivator : MonoBehaviour, IWorkable
+    public class TableActivator : MonoBehaviour, IWorkable, IAutomaticFillComponents
     {
         [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private float _activateDelay = 0.5f;
@@ -42,8 +42,8 @@ namespace GameFields.Persons.Tables
         }
 
         #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents))]
-        private void DefineAllComponents()
+        [ContextMenu(nameof(DefineAllComponents) + nameof(TableActivator))]
+        public void DefineAllComponents()
         {
             DefineCanvasGroup();
         }

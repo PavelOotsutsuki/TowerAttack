@@ -6,7 +6,7 @@ using UnityEngine;
 namespace GameFields.Persons.AttackMenues
 {
     [RequireComponent(typeof(FadablePanel))]
-    public class AttackMenuPanel : MonoBehaviour, ICompletable, IWorkable
+    public class AttackMenuPanel : MonoBehaviour, ICompletable, IWorkable, IAutomaticFillComponents
     {
         [SerializeField] private FadablePanel _fadablePanel;
 
@@ -29,8 +29,8 @@ namespace GameFields.Persons.AttackMenues
 
         #region AutomaticFillComponents
 
-        [ContextMenu(nameof(DefineAllComponents))]
-        private void DefineAllComponents()
+        [ContextMenu(nameof(DefineAllComponents) + nameof(AttackMenuPanel))]
+        public void DefineAllComponents()
         {
             DefineFadablePanel();
         }

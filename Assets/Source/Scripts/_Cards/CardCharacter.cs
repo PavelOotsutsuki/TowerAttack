@@ -3,7 +3,7 @@ using Tools.Utils.FillComponents;
 
 namespace Cards
 {
-    public class CardCharacter : MonoBehaviour, ICardState
+    public class CardCharacter : MonoBehaviour, ICardState, IAutomaticFillComponents
     {
         [SerializeField] private AudioSource _audioSource;
 
@@ -33,8 +33,8 @@ namespace Cards
         //}
 
         #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents))]
-        private void DefineAllComponents()
+        [ContextMenu(nameof(DefineAllComponents) + nameof(CardCharacter))]
+        public void DefineAllComponents()
         {
             DefineAudioSource();
         }
@@ -47,5 +47,3 @@ namespace Cards
         #endregion
     }
 }
-
-

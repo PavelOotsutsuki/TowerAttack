@@ -10,16 +10,16 @@ using Zenject;
 
 namespace Roots
 {
-    public class GameRoot : MonoBehaviour
+    public class GameRoot : MonoBehaviour, IAutomaticFillComponents
     {
         [SerializeField] private EndTurnButton _endTurnButton;
         [SerializeField] private CardRoot _cardRoot;
         [SerializeField] private GameFieldRoot _gameFieldRoot;
         [SerializeField] private ScreenRoot _screenRoot;
         [SerializeField] private PersonCreator _personCreator;
-
-        private PersonsState _personsState;
         
+        private PersonsState _personsState;
+
         [Inject]
         private void Construct(SignalBus bus, Deck deck, SeatPool seatPool, CardDescription cardDescription)
         {
@@ -42,9 +42,23 @@ namespace Roots
         }
 
         #region AutomaticFillComponents
+        [ContextMenu(nameof(DefineGameComponents))]
+        private void DefineGameComponents()
+        {
+            IAutomaticFillComponents[] gameComponents = GetComponentsInChildren<IAutomaticFillComponents>(true);
+            int successCounter = 0;
+
+            foreach (IAutomaticFillComponents component in gameComponents)
+            {
+                component.DefineAllComponents();
+                successCounter++;
+            }
+
+            Debug.Log($"Удалось найти {gameComponents.Length} gameObject-ов. Из них автоматически заполнились: {successCounter}");
+        }
 
         [ContextMenu(nameof(DefineAllComponents))]
-        private void DefineAllComponents()
+        public void DefineAllComponents()
         {
             DefineEndTurnButton();
             DefineCardRoot();

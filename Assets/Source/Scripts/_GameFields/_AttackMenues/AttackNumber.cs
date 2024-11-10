@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using TMPro;
 using Tools;
 using Tools.UI;
+using Tools.Utils.FillComponents;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace GameFields.Persons.AttackMenues
 {
-    public class AttackNumber : SelectableButton 
+    public class AttackNumber : SelectableButton
     {
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private TMP_Text _text;
@@ -39,6 +40,29 @@ namespace GameFields.Persons.AttackMenues
 
             _attackButton.Activate();
         }
+
+        #region AutomaticFillComponents
+
+        [ContextMenu(nameof(DefineAllComponents) + nameof(AttackNumber))]
+        public override void DefineAllComponents()
+        {
+            DefineRectTransform();
+            DefineText();
+        }
+
+        [ContextMenu(nameof(DefineRectTransform))]
+        private void DefineRectTransform()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
+        }
+
+        [ContextMenu(nameof(DefineText))]
+        private void DefineText()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _text, ComponentLocationTypes.InThisElseChildren);
+        }
+
+        #endregion
 
         //public override void OnPointerClick(PointerEventData eventData)
         //{

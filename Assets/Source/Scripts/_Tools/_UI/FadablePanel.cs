@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Tools.UI
 {
     [RequireComponent(typeof(CanvasGroup))]
-    public class FadablePanel : MonoBehaviour, ICompletable, IViewable
+    public class FadablePanel : MonoBehaviour, ICompletable, IViewable, IAutomaticFillComponents
     {
         [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private FadablePanelData _data;
@@ -68,7 +68,7 @@ namespace Tools.UI
         }
 
         #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents))]
+        [ContextMenu(nameof(DefineAllComponents) + nameof(FadablePanel))]
         public void DefineAllComponents()
         {
             DefineCanvasGroup();

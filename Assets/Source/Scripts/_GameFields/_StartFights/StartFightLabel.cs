@@ -7,7 +7,7 @@ using Tools;
 
 namespace GameFields.StartFights
 {
-    public class StartFightLabel : MonoBehaviour, IActivatable
+    public class StartFightLabel : MonoBehaviour, IActivatable, IAutomaticFillComponents
     {
         private const float LifeAlpha = 1f;
         private const float EndAlpha = 0f;
@@ -68,8 +68,8 @@ namespace GameFields.StartFights
 
         #region AutomaticFillComponents
 
-        [ContextMenu(nameof(DefineAllComponents))]
-        private void DefineAllComponents()
+        [ContextMenu(nameof(DefineAllComponents) + nameof(StartFightLabel))]
+        public void DefineAllComponents()
         {
             DefineLabel();
         }

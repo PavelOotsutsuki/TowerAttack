@@ -6,7 +6,7 @@ using UnityEngine;
 namespace GameFields.StartFights
 {
     [RequireComponent(typeof(FadableLabel))]
-    public class WaitEnemySolutionLabel : MonoBehaviour, ICompletable, IViewable
+    public class WaitEnemySolutionLabel : MonoBehaviour, ICompletable, IViewable, IAutomaticFillComponents
     {
         [SerializeField] private FadableLabel _fadableLabel;
 
@@ -40,8 +40,8 @@ namespace GameFields.StartFights
 
         #region AutomaticFillComponents
 
-        [ContextMenu(nameof(DefineAllComponents))]
-        private void DefineAllComponents()
+        [ContextMenu(nameof(DefineAllComponents) + nameof(WaitEnemySolutionLabel))]
+        public void DefineAllComponents()
         {
             DefineFadableLabel();
         }

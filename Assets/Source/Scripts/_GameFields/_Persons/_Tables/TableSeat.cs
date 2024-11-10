@@ -5,7 +5,7 @@ using Tools.Utils.Movements;
 
 namespace GameFields.Persons.Tables
 {
-    internal class TableSeat : MonoBehaviour
+    internal class TableSeat : MonoBehaviour, IAutomaticFillComponents
     {
         [SerializeField] private RectTransform _rectTransform;
 
@@ -28,8 +28,8 @@ namespace GameFields.Persons.Tables
         internal bool IsCardEqual(Card card) => card == _card;
 
         #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents))]
-        private void DefineAllComponents()
+        [ContextMenu(nameof(DefineAllComponents) + nameof(TableSeat))]
+        public void DefineAllComponents()
         {
             DefineRectTransform();
         }
