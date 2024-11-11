@@ -1,14 +1,9 @@
-using DG.Tweening;
-using TMPro;
-using Tools;
 using Tools.UI;
-using Tools.Utils.FillComponents;
-using UnityEngine;
 
 namespace GameFields.Persons.Discovers
 {
     //[RequireComponent(typeof(FadableLabel))]
-    public class DiscoverLabel : FadableLabel//MonoBehaviour, ICompletable, IWorkable<FadableLabelActivateData>
+    public class DiscoverLabel : NascentLabel//MonoBehaviour, ICompletable, IWorkable<FadableLabelActivateData>
     {
         //[SerializeField] private FadableLabel _fadableLabel;
 

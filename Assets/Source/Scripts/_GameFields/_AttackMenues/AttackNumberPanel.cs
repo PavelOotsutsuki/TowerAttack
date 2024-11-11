@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.AttackMenues
 {
+    [RequireComponent(typeof(FadablePanel))]
     public class AttackNumberPanel : MonoBehaviour, ICompletable, IWorkable, IAutomaticFillComponents
     {
         [SerializeField] private FadablePanel _fadablePanel;

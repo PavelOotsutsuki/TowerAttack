@@ -40,7 +40,7 @@ namespace GameFields.Persons.AttackMenues
 
             FadableLabelActivateData labelData = new FadableLabelActivateData("Выберете кого атакуем");
             _attackMenuLabel.Show(labelData);
-            _attackMenuPanel.Activate();
+            _attackMenuPanel.Show();
             //_attackButton.Activate();
             _attackNumberPanel.Activate();
 
@@ -54,7 +54,7 @@ namespace GameFields.Persons.AttackMenues
             _attackMenuLabel.Hide();
             _attackNumberPanel.Deactivate();
             _attackButton.Deactivate();
-            _attackMenuPanel.Deactivate();
+            _attackMenuPanel.Hide();
 
             Deactivating().ToUniTask();
         }

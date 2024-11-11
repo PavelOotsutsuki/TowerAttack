@@ -1,9 +1,4 @@
-using DG.Tweening;
-using Tools;
 using Tools.UI;
-using Tools.Utils.FillComponents;
-using UnityEngine;
-using UnityEngine.UI;
 
 namespace GameFields.Persons.Discovers
 {

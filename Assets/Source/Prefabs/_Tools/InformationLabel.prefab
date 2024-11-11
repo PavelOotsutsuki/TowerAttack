@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 8648506181067895608}
   - component: {fileID: 7169010305052805801}
   - component: {fileID: 7212083134946692986}
-  - component: {fileID: 8792722304710435526}
   - component: {fileID: 2016220676778456414}
+  - component: {fileID: 9200324826726379367}
   m_Layer: 0
   m_Name: InformationLabel
   m_TagString: Untagged
@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _label: {fileID: 2016220676778456414}
-  _fadablePanel: {fileID: 8792722304710435526}
+  _nascentPanel: {fileID: 9200324826726379367}
 --- !u!225 &7212083134946692986
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -164,25 +164,6 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &8792722304710435526
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1835844569050338557}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb2c70a28de3c4b74af564a99b4c3dc7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _canvasGroup: {fileID: 7212083134946692986}
-  _data:
-    <MaxAlpha>k__BackingField: 1
-    <MinAlpha>k__BackingField: 0
-    <FadeUpDuration>k__BackingField: 1.5
-    <FadeOutDuration>k__BackingField: 1.5
-    <StartAlpha>k__BackingField: 0
 --- !u!114 &2016220676778456414
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,3 +179,20 @@ MonoBehaviour:
   _text: {fileID: 8648506181067895608}
   _data:
     <StartText>k__BackingField: 
+--- !u!114 &9200324826726379367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1835844569050338557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c104a83bc2b84b6686de3920d0247b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _transform: {fileID: 8699828907675054006}
+  _data:
+    <StartScale>k__BackingField: {x: 0, y: 0}
+    <EndScale>k__BackingField: {x: 1, y: 1}
+    <Duration>k__BackingField: 0.3

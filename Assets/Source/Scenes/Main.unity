@@ -7180,7 +7180,6 @@ GameObject:
   - component: {fileID: 1112966543}
   - component: {fileID: 1112966542}
   - component: {fileID: 1112966546}
-  - component: {fileID: 1112966545}
   - component: {fileID: 1112966544}
   m_Layer: 0
   m_Name: Panel
@@ -7256,19 +7255,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 56564d83db8b2468b8755aef0e9e1a2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _fadablePanel: {fileID: 1112966545}
---- !u!114 &1112966545
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1112966540}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb2c70a28de3c4b74af564a99b4c3dc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _canvasGroup: {fileID: 1112966546}
@@ -7623,6 +7609,7 @@ GameObject:
   - component: {fileID: 1140385941}
   - component: {fileID: 1140385940}
   - component: {fileID: 1140385942}
+  - component: {fileID: 1140385943}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -7662,7 +7649,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _label: {fileID: 1140385942}
-  _fadablePanel: {fileID: 1140385940}
+  _nascentPanel: {fileID: 1140385943}
 --- !u!114 &1140385937
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7806,6 +7793,23 @@ MonoBehaviour:
   _text: {fileID: 1140385937}
   _data:
     <StartText>k__BackingField: 
+--- !u!114 &1140385943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1140385934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c104a83bc2b84b6686de3920d0247b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _transform: {fileID: 1140385935}
+  _data:
+    <StartScale>k__BackingField: {x: 0, y: 0}
+    <EndScale>k__BackingField: {x: 1, y: 1}
+    <Duration>k__BackingField: 0.3
 --- !u!1001 &1152119113
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12329,6 +12333,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8627824004739606331, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
   m_PrefabInstance: {fileID: 5570491857034495026}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1827214320 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5801638844184843595, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
+  m_PrefabInstance: {fileID: 5570491857034495026}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbfb590b85a654763818d541a9a5666e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1842023250
 GameObject:
   m_ObjectHideFlags: 0
@@ -13917,6 +13932,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1156189548}
     m_Modifications:
+    - target: {fileID: 54114753581227465, guid: ce469e9a2005d4176a420699ea699af7, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 2.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5556689976682773808, guid: ce469e9a2005d4176a420699ea699af7, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -14350,6 +14369,18 @@ PrefabInstance:
       propertyPath: _transform
       value: 
       objectReference: {fileID: 1827214317}
+    - target: {fileID: 3793919234425156257, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
+      propertyPath: m_fontSize
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 3793919234425156257, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 7430705091520309073, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
+      propertyPath: _label
+      value: 
+      objectReference: {fileID: 1827214320}
     - target: {fileID: 7625198449985348171, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -14434,7 +14465,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: AttackMenu
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1106531023815682465, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
+    - {fileID: 7843000747181579700, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

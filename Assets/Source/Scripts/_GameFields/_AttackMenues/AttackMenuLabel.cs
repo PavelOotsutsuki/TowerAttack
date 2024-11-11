@@ -1,16 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using DG.Tweening;
-using TMPro;
-using Tools;
 using Tools.UI;
-using Tools.Utils.FillComponents;
-using UnityEngine;
 
 namespace GameFields.Persons.AttackMenues
 {
     //[RequireComponent(typeof(FadableLabel))]
-    public class AttackMenuLabel : FadableNascentLabel
+    public class AttackMenuLabel : NascentLabel//FadableNascentLabel
     {
         //#region AutomaticFillComponents
         //[ContextMenu(nameof(DefineAllComponents) + nameof(AttackMenuLabel))]

@@ -1,47 +1,44 @@
-using UnityEngine;
-using Tools.Utils.FillComponents;
-using Tools;
 using Tools.UI;
 
 namespace GameFields.StartFights
 {
-    [RequireComponent(typeof(FadablePanel))]
-    public class StartFightPanel : MonoBehaviour, ICompletable, IWorkable, IAutomaticFillComponents
+    //[RequireComponent(typeof(FadablePanel))]
+    public class StartFightPanel : FadablePanel//MonoBehaviour, ICompletable, IWorkable, IAutomaticFillComponents
     {
-        [SerializeField] private FadablePanel _fadablePanel;
+        //[SerializeField] private FadablePanel _fadablePanel;
 
-        public bool IsComplete => _fadablePanel.IsComplete;
+        //public bool IsComplete => _fadablePanel.IsComplete;
 
-        public void Init()
-        {
-            _fadablePanel.Init();
-        }
+        //public void Init()
+        //{
+        //    _fadablePanel.Init();
+        //}
 
-        public void Activate()
-        {
-            _fadablePanel.Show();
-        }
+        //public void Activate()
+        //{
+        //    _fadablePanel.Show();
+        //}
 
-        public void Deactivate()
-        {
-            _fadablePanel.Hide();
-        }
+        //public void Deactivate()
+        //{
+        //    _fadablePanel.Hide();
+        //}
 
-        #region AutomaticFillComponents
+        //#region AutomaticFillComponents
 
-        [ContextMenu(nameof(DefineAllComponents) + nameof(StartFightPanel))]
-        public void DefineAllComponents()
-        {
-            DefineFadablePanel();
-        }
+        //[ContextMenu(nameof(DefineAllComponents) + nameof(StartFightPanel))]
+        //public void DefineAllComponents()
+        //{
+        //    DefineFadablePanel();
+        //}
 
-        [ContextMenu(nameof(DefineFadablePanel))]
-        private void DefineFadablePanel()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _fadablePanel, ComponentLocationTypes.InThis);
-        }
+        //[ContextMenu(nameof(DefineFadablePanel))]
+        //private void DefineFadablePanel()
+        //{
+        //    AutomaticFillComponents.DefineComponent(this, ref _fadablePanel, ComponentLocationTypes.InThis);
+        //}
 
-        #endregion
+        //#endregion
         //private const float MaxAlpha = 255f;
         //private const float DeactiveAlpha = 0f;
 

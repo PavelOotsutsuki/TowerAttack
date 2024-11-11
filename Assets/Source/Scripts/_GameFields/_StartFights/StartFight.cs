@@ -50,7 +50,7 @@ namespace GameFields.StartFights
         {
             gameObject.SetActive(true);
 
-            _startTowerCardSelectionPanel.Activate();
+            _startTowerCardSelectionPanel.Show();
             _startTowerCardSelectionLabel.Activate();
 
             WaitingViewStartLabel().ToUniTask();
@@ -84,7 +84,7 @@ namespace GameFields.StartFights
 
         private void Deactivate()
         {
-            _startTowerCardSelectionPanel.Deactivate();
+            _startTowerCardSelectionPanel.Hide();
 
             WaitingToDestroy().ToUniTask();
         }
