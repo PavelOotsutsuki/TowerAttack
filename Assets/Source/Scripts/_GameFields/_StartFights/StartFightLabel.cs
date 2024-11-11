@@ -1,85 +1,85 @@
-using System.Collections;
-using UnityEngine;
-using TMPro;
-using Cysharp.Threading.Tasks;
-using Tools.Utils.FillComponents;
-using Tools;
+using Tools.UI;
 
 namespace GameFields.StartFights
 {
-    public class StartFightLabel : MonoBehaviour, IActivatable, IAutomaticFillComponents
+    public class StartFightLabel : StartLabel
     {
-        private const float LifeAlpha = 1f;
-        private const float EndAlpha = 0f;
+        //private const float LifeAlpha = 1f;
+        //private const float EndAlpha = 0f;
 
-        [SerializeField] private TMP_Text _label;
-        [SerializeField] private float _startFontSize = 0f;
-        [SerializeField] private float _middleFontSize = 120f;
-        [SerializeField] private float _endFontSize = 150f;
-        [SerializeField] private float _middleDuration = 1f;
-        [SerializeField] private float _endDuration = 1f;
+        //[SerializeField] private TMP_Text _label;
+        //[SerializeField] private float _startFontSize = 0f;
+        //[SerializeField] private float _middleFontSize = 120f;
+        //[SerializeField] private float _endFontSize = 150f;
+        //[SerializeField] private float _middleDuration = 1f;
+        //[SerializeField] private float _endDuration = 1f;
 
-        public void Init()
-        {
-            gameObject.SetActive(false);
+        ////private Color _startColor;
 
-            Color startColor = new Color(_label.color.r, _label.color.g, _label.color.b, LifeAlpha);
+        //public bool IsComplete { get; private set; }
 
-            _label.color = startColor;
-            _label.fontSize = _startFontSize;
-        }
+        //public void Init()
+        //{
+        //    IsComplete = false;
+        //    gameObject.SetActive(false);
 
-        public void Activate()
-        {
-            Activating().ToUniTask();
-        }
+        //    Color startColor = new Color(_label.color.r, _label.color.g, _label.color.b, LifeAlpha);
 
-        private IEnumerator Activating()
-        {
-            gameObject.SetActive(true);
+        //    _label.color = startColor;
+        //    _label.fontSize = _startFontSize;
+        //}
 
-            float startFontSize = _label.fontSize;
-            float fontSizeWay = (_middleFontSize - startFontSize) / _middleDuration;
+        //public void Activate()
+        //{
+        //    Activating().ToUniTask();
+        //}
 
-            for (float time = 0f; time < _middleDuration; time += Time.deltaTime)
-            {
-                _label.fontSize = startFontSize + fontSizeWay * time;
-                yield return null;
-            }
+        //private IEnumerator Activating()
+        //{
+        //    gameObject.SetActive(true);
 
-            startFontSize = _label.fontSize;
-            fontSizeWay = (_endFontSize - startFontSize) / _endDuration;
+        //    float startFontSize = _label.fontSize;
+        //    float fontSizeWay = (_middleFontSize - startFontSize) / _middleDuration;
 
-            float startAlpha = _label.color.a;
-            float alphaWay = (EndAlpha - startAlpha) / _endDuration;
+        //    for (float time = 0f; time < _middleDuration; time += Time.deltaTime)
+        //    {
+        //        _label.fontSize = startFontSize + fontSizeWay * time;
+        //        yield return null;
+        //    }
 
-            Color color = new Color(_label.color.r, _label.color.g, _label.color.b, startAlpha);
+        //    startFontSize = _label.fontSize;
+        //    fontSizeWay = (_endFontSize - startFontSize) / _endDuration;
 
-            for (float time = 0f; time < _endDuration; time += Time.deltaTime)
-            {
-                color.a = startAlpha + alphaWay * time;
-                _label.color = color;
-                _label.fontSize = startFontSize + fontSizeWay * time;
-                yield return null;
-            }
+        //    float startAlpha = _label.color.a;
+        //    float alphaWay = (EndAlpha - startAlpha) / _endDuration;
 
-            gameObject.SetActive(false);
-        }
+        //    Color color = new Color(_label.color.r, _label.color.g, _label.color.b, startAlpha);
 
-        #region AutomaticFillComponents
+        //    for (float time = 0f; time < _endDuration; time += Time.deltaTime)
+        //    {
+        //        color.a = startAlpha + alphaWay * time;
+        //        _label.color = color;
+        //        _label.fontSize = startFontSize + fontSizeWay * time;
+        //        yield return null;
+        //    }
 
-        [ContextMenu(nameof(DefineAllComponents) + nameof(StartFightLabel))]
-        public void DefineAllComponents()
-        {
-            DefineLabel();
-        }
+        //    gameObject.SetActive(false);
+        //}
 
-        [ContextMenu(nameof(DefineLabel))]
-        private void DefineLabel()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _label, ComponentLocationTypes.InThis);
-        }
+        //#region AutomaticFillComponents
 
-        #endregion 
+        //[ContextMenu(nameof(DefineAllComponents) + nameof(StartFightLabel))]
+        //public void DefineAllComponents()
+        //{
+        //    DefineLabel();
+        //}
+
+        //[ContextMenu(nameof(DefineLabel))]
+        //private void DefineLabel()
+        //{
+        //    AutomaticFillComponents.DefineComponent(this, ref _label, ComponentLocationTypes.InThis);
+        //}
+
+        //#endregion 
     }
 }

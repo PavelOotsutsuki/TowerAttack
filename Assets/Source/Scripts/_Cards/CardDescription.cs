@@ -1,7 +1,4 @@
-using Tools;
 using Tools.UI;
-using Tools.Utils.FillComponents;
-using UnityEngine;
 
 namespace Cards
 {

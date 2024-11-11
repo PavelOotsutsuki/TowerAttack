@@ -1894,6 +1894,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48d005a120ce344a1b7ce74e88a552bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _transform: {fileID: 250433509}
 --- !u!1001 &280659701
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12323,6 +12324,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1823305066}
   m_CullTransparentMesh: 1
+--- !u!224 &1827214317 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 8627824004739606331, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
+  m_PrefabInstance: {fileID: 5570491857034495026}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1842023250
 GameObject:
   m_ObjectHideFlags: 0
@@ -14343,7 +14349,7 @@ PrefabInstance:
     - target: {fileID: 266637621526577529, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
       propertyPath: _transform
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1827214317}
     - target: {fileID: 7625198449985348171, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

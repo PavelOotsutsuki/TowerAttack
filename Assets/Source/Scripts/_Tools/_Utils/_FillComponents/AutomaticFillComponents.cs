@@ -8,7 +8,8 @@ namespace Tools.Utils.FillComponents
         {
             if (target is not null)
             {
-                return;
+                if (target.ToString().Equals("null") == false)
+                    return;
             }
 
             string type = GetShortType<T>();
@@ -29,13 +30,13 @@ namespace Tools.Utils.FillComponents
             {
                 if (parent.GetComponentsInChildren<T>().Length - parent.GetComponents<T>().Length < 1)
                 {
-                    Debug.LogError($"{type} is not found");
+                    Debug.LogError($"{type} is not found. Parent: " + parent.ToString());
                 }
                 else
                 {
                     if (parent.GetComponentsInChildren<T>().Length - parent.GetComponents<T>().Length > 1)
                     {
-                        Debug.LogWarning($"{type} is too much! {type} length is {parent.GetComponentsInChildren<T>().Length - parent.GetComponents<T>().Length}");
+                        Debug.LogWarning($"{type} is too much! {type} length is {parent.GetComponentsInChildren<T>().Length - parent.GetComponents<T>().Length}. Parent: {parent.ToString()}");
                     }
 
                     if (parent.GetComponentsInChildren<T>().Length != 1)
@@ -59,7 +60,7 @@ namespace Tools.Utils.FillComponents
                             if (isInThis == false)
                             {
                                 target = variant;
-                                ShowSuccessMessage(type);
+                                ShowSuccessMessage(type, parent);
                                 break;
                             }
                         }
@@ -67,7 +68,7 @@ namespace Tools.Utils.FillComponents
                     else
                     {
                         target = parent.GetComponentInChildren<T>();
-                        ShowSuccessMessage(type);
+                        ShowSuccessMessage(type, parent);
                     }
                 }
             }
@@ -76,17 +77,17 @@ namespace Tools.Utils.FillComponents
             {
                 if (parent.GetComponents<T>().Length < 1)
                 {
-                    Debug.LogError($"{type} is not found");
+                    Debug.LogError($"{type} is not found. Parent: " + parent.ToString());
                 }
                 else
                 {
                     if (parent.GetComponents<T>().Length > 1)
                     {
-                        Debug.LogWarning($"{type} is too much! {type} length is {parent.GetComponents<T>().Length}");
+                        Debug.LogWarning($"{type} is too much! {type} length is {parent.GetComponents<T>().Length}.  Parent: " + parent.ToString());
                     }
 
                     target = parent.GetComponent<T>();
-                    ShowSuccessMessage(type);
+                    ShowSuccessMessage(type, parent);
                 }
             }
 
@@ -96,17 +97,17 @@ namespace Tools.Utils.FillComponents
 
                 if (targets.Length < 1)
                 {
-                    Debug.LogError($"{type} is not found");
+                    Debug.LogError($"{type} is not found.  Parent: " + parent.ToString());
                 }
                 else
                 {
                     if (targets.Length > 1)
                     {
-                        Debug.LogWarning($"{type} is too much! {type} length is {targets.Length}");
+                        Debug.LogWarning($"{type} is too much! {type} length is {targets.Length}. Parent: " + parent.ToString());
                     }
 
                     target = targets[0] as T;
-                    ShowSuccessMessage(type);
+                    ShowSuccessMessage(type, parent);
                 }
             }
         }
@@ -117,11 +118,11 @@ namespace Tools.Utils.FillComponents
 
             if (parent.GetComponentsInChildren<T>().Length < 1)
             {
-                Debug.LogError($"{type} is not found");
+                Debug.LogError($"{type} is not found. Parent: " + parent.ToString());
             }
 
             targets = parent.GetComponentsInChildren<T>();
-            ShowSuccessMessage(type);
+            ShowSuccessMessage(type, parent);
         }
 
         private static string GetShortType<T>()
@@ -132,9 +133,9 @@ namespace Tools.Utils.FillComponents
             return splitStrings[splitLenght - 1];
         }
 
-        private static void ShowSuccessMessage(string type)
+        private static void ShowSuccessMessage(string type, MonoBehaviour parent)
         {
-            Debug.Log($"{type} successfully found !");
+            Debug.Log($"{type} successfully found ! Parent: " + parent.ToString());
         }
     }
 }
