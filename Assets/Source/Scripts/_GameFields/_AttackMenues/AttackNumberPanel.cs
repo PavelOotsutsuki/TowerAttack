@@ -7,7 +7,7 @@ using UnityEngine;
 namespace GameFields.Persons.AttackMenues
 {
     [RequireComponent(typeof(FadablePanel))]
-    public class AttackNumberPanel : MonoBehaviour, ICompletable, IWorkable, IAutomaticFillComponents
+    public class AttackNumberPanel : MonoBehaviour, ICompletable, IWorkable<AttackNumberPanelActivateData>, IAutomaticFillComponents
     {
         [SerializeField] private FadablePanel _fadablePanel;
         [SerializeField] private RectTransform _rectTransform;
@@ -26,19 +26,35 @@ namespace GameFields.Persons.AttackMenues
         private float _maxHeight;
         private float _maxWidth;
 
-        public bool IsComplete => _fadablePanel.IsComplete;
+        private int _activateCounter;
+        private int _needToActivate;
+        private IWorkable _attackButton;
 
-        public void Init(IActivatable attackButton)
+        public bool IsComplete => _fadablePanel.IsComplete;
+        public bool? IsActive { get; private set; } = null;
+
+        public void Init(IWorkable attackButton)
         {
+            _attackButton = attackButton;
+            _activateCounter = 0;
+
             FindColumnsAndRowsCount();
             FindIndents();
-            InitNumbers(attackButton);
+            InitNumbers();
 
             _fadablePanel.Init();
         }
 
-        public void Activate()
+        public void Activate(AttackNumberPanelActivateData data)
         {
+            if (IsActive == true)
+                return;
+
+            IsActive = true;
+
+            _needToActivate = data.NeedToActivate;
+            _activateCounter = 0;
+
             gameObject.SetActive(true);
 
             foreach (AttackNumber attackNumber in _attackNumbers)
@@ -51,6 +67,11 @@ namespace GameFields.Persons.AttackMenues
 
         public void Deactivate()
         {
+            if (IsActive == false)
+                return;
+
+            IsActive = false;
+
             _fadablePanel.Hide();
             //gameObject.SetActive(false);
         }
@@ -62,14 +83,27 @@ namespace GameFields.Persons.AttackMenues
         //        attackNumber.Unsubscribe();
         //    }
         //}
+        private void OnAttackNumberClick(bool isActive)
+        {
+            _activateCounter += isActive ? 1 : -1;
 
-        private void InitNumbers(IActivatable attackButton)
+            if (_activateCounter == _needToActivate)
+            {
+                _attackButton.Activate();
+            }
+            else
+            {
+                _attackButton.Deactivate();
+            }
+        }
+
+        private void InitNumbers()
         {
             int number = 1;
 
             foreach (AttackNumber attackNumber in _attackNumbers)
             {
-                attackNumber.Init(number, CalcNumberPosition(number), new Vector2(_numberWidht, _numberHeight), attackButton);
+                attackNumber.Init(number, CalcNumberPosition(number), new Vector2(_numberWidht, _numberHeight), OnAttackNumberClick);
                 number++;
             }
         }

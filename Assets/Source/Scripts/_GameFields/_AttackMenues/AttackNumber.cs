@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using Tools;
 using Tools.UI;
@@ -11,9 +12,9 @@ namespace GameFields.Persons.AttackMenues
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private TMP_Text _text;
 
-        private IActivatable _attackButton;
+        private Action<bool> _clickCallback;
 
-        public void Init(int number, Vector3 position, Vector2 size, IActivatable attackButton)
+        public void Init(int number, Vector3 position, Vector2 size, Action<bool> clickCallback)
         {
             base.Init();
 
@@ -21,7 +22,7 @@ namespace GameFields.Persons.AttackMenues
             _rectTransform.SetLocalPositionAndRotation(position, Quaternion.identity);
             _text.text = number.ToString();
 
-            _attackButton = attackButton;
+            _clickCallback = clickCallback;
         }
 
         //public override void Activate()
@@ -33,7 +34,14 @@ namespace GameFields.Persons.AttackMenues
         {
             base.OnEnterClick();
 
-            _attackButton.Activate();
+            _clickCallback.Invoke(true);
+        }
+
+        protected override void OnExitClick()
+        {
+            base.OnExitClick();
+
+            _clickCallback.Invoke(false);
         }
 
         #region AutomaticFillComponents

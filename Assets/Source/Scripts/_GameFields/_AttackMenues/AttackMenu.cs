@@ -20,6 +20,8 @@ namespace GameFields.Persons.AttackMenues
 
         private IHandBlockable _handBlockable;
 
+        public bool? IsActive { get; private set; } = null;
+
         public void Init(IHandBlockable handBlockable)
         {
             gameObject.SetActive(false);
@@ -34,6 +36,11 @@ namespace GameFields.Persons.AttackMenues
 
         public void Activate()
         {
+            if (IsActive == true)
+                return;
+
+            IsActive = true;
+
             _handBlockable.ForciblyBlock();
             gameObject.SetActive(true);
             _canvasGroup.blocksRaycasts = true;
@@ -42,13 +49,18 @@ namespace GameFields.Persons.AttackMenues
             _attackMenuLabel.Show(labelData);
             _attackMenuPanel.Show();
             //_attackButton.Activate();
-            _attackNumberPanel.Activate();
 
-
+            AttackNumberPanelActivateData numberPanelActivateData = new AttackNumberPanelActivateData(1);
+            _attackNumberPanel.Activate(numberPanelActivateData);
         }
 
         public void Deactivate()
         {
+            if (IsActive == false)
+                return;
+
+            IsActive = false;
+
             _canvasGroup.blocksRaycasts = false;
 
             _attackMenuLabel.Hide();

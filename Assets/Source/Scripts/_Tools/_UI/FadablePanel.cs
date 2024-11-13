@@ -14,20 +14,29 @@ namespace Tools.UI
         private bool _isComplete;
 
         public bool IsComplete => _isComplete;
+        public bool? IsShown { get; private set; } = null;
 
         public void Init()
         {
             _canvasGroup.alpha = _data.StartAlpha;
-            _isComplete = false;
+            _isComplete = true;
         }
 
         public void Show()
         {
+            if (IsShown == true)
+                return;
+
+            IsShown = true;
             StartFading(_data.FadeUpDuration, _data.MaxAlpha);
         }
 
         public void Hide()
         {
+            if (IsShown == false)
+                return;
+
+            IsShown = false;
             StartFading(_data.FadeOutDuration, _data.MinAlpha);
         }
 

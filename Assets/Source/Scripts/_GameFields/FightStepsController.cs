@@ -8,10 +8,9 @@ namespace GameFields
 {
     internal class FightStepsController
     {
-        private Queue<IFightStep> _fightSteps;
+        private readonly Queue<IFightStep> _fightSteps;
 
         private IFightStep _currentStep;
-
         private bool _isComplete;
 
         public FightStepsController(StartFight startFight, Fight fight, EndFight endFight)
@@ -80,7 +79,5 @@ namespace GameFields
         //        _isComplete = true;
         //    }
         //}
-
-
     }
 }

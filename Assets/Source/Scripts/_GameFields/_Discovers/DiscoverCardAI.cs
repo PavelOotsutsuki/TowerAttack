@@ -23,11 +23,21 @@ namespace GameFields.Persons.Discovers
 
         public override void Deactivate()
         {
+            if (IsActive == false)
+                return;
+
+            IsActive = false;
+
             gameObject.SetActive(false);
         }
 
         public override void Activate(DiscoverCardActivateData data)
         {
+            if (IsActive == true)
+                return;
+
+            IsActive = true;
+
             _frameImage.color = _defaultColor;
 
             DiscoverViewLogicData discoverViewLogicData = new DiscoverViewLogicData(data.CardHeight, data.CardWidth);

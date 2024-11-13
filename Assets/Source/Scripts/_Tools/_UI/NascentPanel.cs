@@ -11,6 +11,7 @@ namespace Tools.UI
         [SerializeField] private NascentData _data;
 
         public bool IsComplete { get; private set; }
+        public bool? IsActive { get; private set; } = null;
 
         public void Init()
         {
@@ -21,6 +22,10 @@ namespace Tools.UI
 
         public void Activate()
         {
+            if (IsActive == true)
+                return;
+
+            IsActive = true;
             IsComplete = false;
 
             _transform.DOScale(_data.EndScale, _data.Duration).OnComplete(() => IsComplete = true);
@@ -28,6 +33,10 @@ namespace Tools.UI
 
         public void Deactivate()
         {
+            if (IsActive == false)
+                return;
+
+            IsActive = false;
             _transform.localScale = _data.StartScale;
         }
 

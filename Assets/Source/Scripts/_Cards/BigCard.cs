@@ -19,6 +19,8 @@ namespace Cards
         private float _canvasHeight;
         private float _screenFactor;
 
+        public bool? IsShown { get; private set; } = null;
+
         internal void Init()
         {
             _rectTransform.rotation = Quaternion.identity;
@@ -29,11 +31,21 @@ namespace Cards
 
         public void Hide()
         {
+            if (IsShown == false)
+                return;
+
+            IsShown = false;
+
             gameObject.SetActive(false);
         }
 
         public void Show(BigCardShowData data)
         {
+            if (IsShown == true)
+                return;
+
+            IsShown = true;
+
             _cardView.FillData(data.CardViewConfig);
             _sizeFactor = data.CardSize.x / data.CardSize.y;
             _bigHeight = _canvasHeight / _scaleFactor;

@@ -7,21 +7,35 @@ namespace Cards
     {
         [SerializeField] private AudioSource _audioSource;
 
+        public bool? IsShown { get; private set; } = null;
+
         public void Init(AudioClip awakeSound)
         {
             _audioSource.clip = awakeSound;
             transform.localPosition = Vector2.zero;
+
+            IsShown = true;
             Hide();
         }
 
         public void Show()
         {
+            if (IsShown == true)
+                return;
+
+            IsShown = true;
+
             AudioSource.PlayClipAtPoint(_audioSource.clip, Vector3.zero);
             gameObject.SetActive(true);
         }
 
         public void Hide()
         {
+            if (IsShown == false)
+                return;
+
+            IsShown = false;
+
             gameObject.SetActive(false);
         }
 

@@ -1,5 +1,3 @@
-using System;
-using Tools;
 using UnityEngine;
 using GameFields.StartFights;
 using GameFields.Effects;

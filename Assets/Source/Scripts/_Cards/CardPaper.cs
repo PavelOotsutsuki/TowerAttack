@@ -16,6 +16,8 @@ namespace Cards
         private CardDragAndDropActions _cardDragAndDropActions;
         private CardSideFlipper _cardSideFlipper;
 
+        public bool? IsShown { get; private set; } = null;
+
         internal void Init(Card me, CardViewService cardViewService, CardViewConfig cardViewConfig, Transform dragContainer, RectTransform cardTransform)
         {
             ReadOnlyRectTransform readOnlyRectTransform = new ReadOnlyRectTransform(cardTransform);
@@ -65,11 +67,21 @@ namespace Cards
 
         public void Show()
         {
+            if (IsShown == true)
+                return;
+
+            IsShown = true;
+
             gameObject.SetActive(true);
         }
 
         public void Hide()
         {
+            if (IsShown == false)
+                return;
+
+            IsShown = false;
+
             gameObject.SetActive(false);
         }
 

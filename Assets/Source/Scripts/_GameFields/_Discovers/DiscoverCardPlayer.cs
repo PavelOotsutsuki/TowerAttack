@@ -25,6 +25,11 @@ namespace GameFields.Persons.Discovers
 
         public override void Deactivate()
         {
+            if (IsActive == false)
+                return;
+
+            IsActive = false;
+
             Block();
 
             gameObject.SetActive(false);
@@ -32,6 +37,11 @@ namespace GameFields.Persons.Discovers
 
         public override void Activate(DiscoverCardActivateData data)
         {
+            if (IsActive == true)
+                return;
+
+            IsActive = true;
+
             Block();
 
             _cardView.FillData(data.CardViewConfig);

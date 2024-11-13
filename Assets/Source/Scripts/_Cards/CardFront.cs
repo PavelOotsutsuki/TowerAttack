@@ -22,6 +22,7 @@ namespace Cards
         private BigCardShowData _bigCardShowData;
 
         public bool IsBlock { get; private set; }
+        public bool? IsShown { get; private set; } = null;
 
         internal void Init(CardViewConfig cardViewConfig, ReadOnlyRectTransform readOnlyCartRectTransform, CardViewService cardViewService)
         {
@@ -84,11 +85,21 @@ namespace Cards
 
         public void Show()
         {
+            if (IsShown == true)
+                return;
+
+            IsShown = true;
+
             _canvasGroup.alpha = 1;
         }
 
         public void Hide()
         {
+            if (IsShown == false)
+                return;
+
+            IsShown = false;
+
             _canvasGroup.alpha = 0;
         }
 

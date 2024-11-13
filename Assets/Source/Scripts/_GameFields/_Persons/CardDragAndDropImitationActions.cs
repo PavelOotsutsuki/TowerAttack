@@ -63,7 +63,7 @@ namespace GameFields.Persons
             _bus.Fire(new StartEffectSignal(_activeCard));
         }
 
-        public void ReturnInhand(float returnToHandDuration)
+        public void ReturnInHand(float returnToHandDuration)
         {
             _cardDragAndDropListener.OnCardDrop();
             _cardMovement.MoveLocalSmoothly(Vector2.zero, Vector3.zero, returnToHandDuration, _activeCard.DefaultScaleVector);

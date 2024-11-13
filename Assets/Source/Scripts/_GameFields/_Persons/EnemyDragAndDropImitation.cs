@@ -74,7 +74,7 @@ namespace GameFields.Persons
 
             if (_cardImitationActions.CanPlay() == false)
             {
-                _cardImitationActions.ReturnInhand(_data.CardReturnInHandTime);
+                _cardImitationActions.ReturnInHand(_data.CardReturnInHandTime);
                 yield return new WaitForSeconds(_data.CardReturnInHandTime);
             }
             else

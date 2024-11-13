@@ -5,53 +5,55 @@ using UnityEngine;
 
 namespace GameFields.StartFights
 {
-    [RequireComponent(typeof(FadableLabel))]
-    public class WaitEnemySolutionLabel : MonoBehaviour, ICompletable, IViewable, IAutomaticFillComponents
+    //[RequireComponent(typeof(FadableLabel))]
+    public class WaitEnemySolutionLabel : FadableLabel//MonoBehaviour, ICompletable, IViewable, IAutomaticFillComponents
     {
-        [SerializeField] private FadableLabel _fadableLabel;
+        //[SerializeField] private FadableLabel _fadableLabel;
 
-        private bool _isWasStarted;
+        //private bool _isWasStarted;
 
-        public bool IsComplete => _fadableLabel.IsComplete || _isWasStarted == false;
+        //public bool IsComplete => _fadableLabel.IsComplete || _isWasStarted == false;
 
-        public void Init()
-        {
-            _isWasStarted = false;
+        //public bool? IsShown => throw new System.NotImplementedException();
 
-            _fadableLabel.Init();
-        }
+        //public void Init()
+        //{
+        //    _isWasStarted = false;
 
-        public void Show()
-        {
-            _isWasStarted = true;
+        //    _fadableLabel.Init();
+        //}
 
-            _fadableLabel.Show();
-        }
+        //public void Show()
+        //{
+        //    _isWasStarted = true;
 
-        public void Hide()
-        {
-            if (_isWasStarted == false)
-                return;
+        //    _fadableLabel.Show();
+        //}
 
-            _fadableLabel.Hide();
+        //public void Hide()
+        //{
+        //    if (_isWasStarted == false)
+        //        return;
 
-            _isWasStarted = false;
-        }
+        //    _fadableLabel.Hide();
 
-        #region AutomaticFillComponents
+        //    _isWasStarted = false;
+        //}
 
-        [ContextMenu(nameof(DefineAllComponents) + nameof(WaitEnemySolutionLabel))]
-        public void DefineAllComponents()
-        {
-            DefineFadableLabel();
-        }
+        //#region AutomaticFillComponents
 
-        [ContextMenu(nameof(DefineFadableLabel))]
-        private void DefineFadableLabel()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _fadableLabel, ComponentLocationTypes.InThis);
-        }
+        //[ContextMenu(nameof(DefineAllComponents) + nameof(WaitEnemySolutionLabel))]
+        //public void DefineAllComponents()
+        //{
+        //    DefineFadableLabel();
+        //}
 
-        #endregion
+        //[ContextMenu(nameof(DefineFadableLabel))]
+        //private void DefineFadableLabel()
+        //{
+        //    AutomaticFillComponents.DefineComponent(this, ref _fadableLabel, ComponentLocationTypes.InThis);
+        //}
+
+        //#endregion
     }
 }

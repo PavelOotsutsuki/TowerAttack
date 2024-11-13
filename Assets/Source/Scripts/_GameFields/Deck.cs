@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Cards;
-using GameFields.StartFights;
 using Tools.Utils.FillComponents;
 using Tools;
 using Tools.Utils.Movements;

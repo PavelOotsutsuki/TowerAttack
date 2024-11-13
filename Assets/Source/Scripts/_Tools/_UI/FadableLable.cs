@@ -11,6 +11,7 @@ namespace Tools.UI
         [SerializeField] private FadablePanel _fadablePanel;
 
         public bool IsComplete => _fadablePanel.IsComplete;
+        public bool? IsShown => _fadablePanel.IsShown;
 
         public virtual void Init()
         {

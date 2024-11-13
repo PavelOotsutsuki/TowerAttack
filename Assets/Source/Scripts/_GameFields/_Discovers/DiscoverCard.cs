@@ -13,6 +13,8 @@ namespace GameFields.Persons.Discovers
         protected Action ClickCallback;
         protected IDiscoverClickHandler _discoverClickHandler;
 
+        public bool? IsActive { get; protected set; } = null;
+
         public virtual void Init(Action clickCallback, IDiscoverClickHandler discoverClickHandler)
         {
             ViewLogic.Init(ViewDuration);
