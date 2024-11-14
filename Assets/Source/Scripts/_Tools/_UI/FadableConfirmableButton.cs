@@ -9,7 +9,6 @@ namespace Tools.UI
         [SerializeField] private FadablePanel _fadablePanel;
 
         public bool IsComplete => _fadablePanel.IsComplete;
-        public bool? IsActive => _fadablePanel.IsShown;
 
         public override void Init()
         {
@@ -20,13 +19,15 @@ namespace Tools.UI
 
         public override void Activate()
         {
-            _fadablePanel.Show();
-
             base.Activate();
+
+            _fadablePanel.Show();
         }
 
-        public virtual void Deactivate()
+        public override void Deactivate()
         {
+            base.Deactivate();
+
             _fadablePanel.Hide();
         }
 

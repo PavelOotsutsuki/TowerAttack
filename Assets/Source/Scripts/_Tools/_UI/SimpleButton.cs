@@ -7,7 +7,7 @@ namespace Tools.UI
 {
     [RequireComponent(typeof(OnEnterColorChanger))]
     [RequireComponent(typeof(CanvasGroup))]
-    public abstract class SimpleButton : MonoBehaviour, IPointerClickHandler, IPointerExitHandler, IPointerUpHandler, IActivatable, IAutomaticFillComponents
+    public abstract class SimpleButton : MonoBehaviour, IPointerClickHandler, IPointerExitHandler, IPointerUpHandler, IWorkable, IAutomaticFillComponents
     {
         [SerializeField] private OnEnterColorChanger _enterColorChanger;
 
@@ -20,6 +20,8 @@ namespace Tools.UI
 
         public bool IsClicked { get; protected set; }
 
+        public bool? IsActive { get; protected set; } = null;
+
         public virtual void Init()
         {
             _enterColorChanger.Init(Image);
@@ -27,10 +29,25 @@ namespace Tools.UI
 
         public virtual void Activate()
         {
+            if (IsActive == true)
+                return;
+
+            IsActive = true;
+
             Image.color = NormalColor;
             CurrentColor = Image.color;
             IsClicked = false;
             CanvasGroup.blocksRaycasts = true;
+        }
+
+        public virtual void Deactivate()
+        {
+            if (IsActive == false)
+                return;
+
+            IsActive = false;
+
+            CanvasGroup.blocksRaycasts = false;
         }
 
         public abstract void OnPointerClick(PointerEventData eventData);

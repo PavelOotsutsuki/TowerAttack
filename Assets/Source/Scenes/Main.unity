@@ -1323,7 +1323,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b32a7fc07203c45caa5ed2836eac610d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fadableLabel: {fileID: 8699828908118837317}
+  _label: {fileID: 8699828908118837319}
+  _fadablePanel: {fileID: 8699828908118837318}
 --- !u!225 &194835768
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -4847,7 +4848,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d66d23be042c4e229a8dd403965d201, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackMenu: {fileID: 2070574729}
+  _attackMenu: {fileID: 2070574731}
   _startPlayerTurnLabel: {fileID: 407210860}
   _playerCountStartDrawCards: 1
   _enemyDragAndDropImitationData:
@@ -13641,15 +13642,15 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7625198449985348171, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
   m_PrefabInstance: {fileID: 5570491857034495026}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2070574729 stripped
+--- !u!114 &2070574731 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2406765651915261315, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
+  m_CorrespondingSourceObject: {fileID: 2753717777370600218, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
   m_PrefabInstance: {fileID: 5570491857034495026}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44f1bf3be3464445bb120cda6b47ce2f, type: 3}
+  m_Script: {fileID: 11500000, guid: f5ec8b62cb5924f65b05b45cc2576c49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &2100830624 stripped
@@ -13915,7 +13916,6 @@ GameObject:
   - component: {fileID: 194835765}
   - component: {fileID: 194835768}
   - component: {fileID: 8699828908118837318}
-  - component: {fileID: 8699828908118837317}
   - component: {fileID: 8699828908118837319}
   m_Layer: 0
   m_Name: WaitEnemySolutionLabel
@@ -14793,20 +14793,6 @@ RectTransform:
   m_AnchoredPosition: {x: 2.5, y: -0.5}
   m_SizeDelta: {x: 8.697571, y: 4.0407104}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &8699828908118837317
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1835844569211548431}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f68bdecb2b4148fbb723691ef34a690, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _label: {fileID: 8699828908118837319}
-  _fadablePanel: {fileID: 8699828908118837318}
 --- !u!114 &8699828908118837318
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14823,8 +14809,8 @@ MonoBehaviour:
   _data:
     <MaxAlpha>k__BackingField: 1
     <MinAlpha>k__BackingField: 0
-    <FadeUpDuration>k__BackingField: 0.5
-    <FadeOutDuration>k__BackingField: 0.5
+    <FadeUpDuration>k__BackingField: 1
+    <FadeOutDuration>k__BackingField: 1
     <StartAlpha>k__BackingField: 0
 --- !u!114 &8699828908118837319
 MonoBehaviour:
