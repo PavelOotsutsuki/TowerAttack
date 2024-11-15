@@ -10,6 +10,7 @@ namespace GameFields.Persons.AttackMenues
     {
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private TMP_Text _text;
+        [SerializeField] private Animator _animator;
 
         private Action<bool> _clickCallback;
 
@@ -20,6 +21,8 @@ namespace GameFields.Persons.AttackMenues
             _rectTransform.sizeDelta = size;
             _rectTransform.SetLocalPositionAndRotation(position, Quaternion.identity);
             _text.text = number.ToString();
+
+            //_animator.gameObject.SetActive(false);
 
             _clickCallback = clickCallback;
         }
@@ -33,6 +36,9 @@ namespace GameFields.Persons.AttackMenues
         {
             base.OnEnterClick();
 
+            //_animator.Play("Cross");
+            _animator.SetBool("IsActivate", true);
+            //_animator.gameObject.SetActive(true);
             _clickCallback.Invoke(true);
         }
 
@@ -40,6 +46,8 @@ namespace GameFields.Persons.AttackMenues
         {
             base.OnExitClick();
 
+            _animator.SetBool("IsActivate", false);
+            //_animator.gameObject.SetActive(false);
             _clickCallback.Invoke(false);
         }
 
@@ -50,6 +58,7 @@ namespace GameFields.Persons.AttackMenues
         {
             DefineRectTransform();
             DefineText();
+            DefineAnimator();
 
             base.DefineAllComponents();
         }
@@ -64,6 +73,12 @@ namespace GameFields.Persons.AttackMenues
         private void DefineText()
         {
             AutomaticFillComponents.DefineComponent(this, ref _text, ComponentLocationTypes.InThisElseChildren);
+        }
+
+        [ContextMenu(nameof(DefineAnimator))]
+        private void DefineAnimator()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _animator, ComponentLocationTypes.InChildren);
         }
 
         #endregion

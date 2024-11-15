@@ -14369,6 +14369,18 @@ PrefabInstance:
       propertyPath: _transform
       value: 
       objectReference: {fileID: 1827214317}
+    - target: {fileID: 330977220267687174, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 330977220267687174, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
+      propertyPath: m_Animation
+      value: 
+      objectReference: {fileID: 7400000, guid: b5bf13da34b804361a3c2e575927db81, type: 2}
+    - target: {fileID: 330977220267687174, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
+      propertyPath: m_Animations.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3793919234425156257, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
       propertyPath: m_fontSize
       value: 90
