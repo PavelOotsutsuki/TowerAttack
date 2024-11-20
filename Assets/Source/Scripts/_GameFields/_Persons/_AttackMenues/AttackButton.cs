@@ -13,6 +13,7 @@ namespace GameFields.Persons.AttackMenues
         public void Init(Action onPointerClick)
         {
             _onPointerClick = onPointerClick;
+            IsActive = false;
 
             base.Init();
 
@@ -21,9 +22,14 @@ namespace GameFields.Persons.AttackMenues
 
         public override void Activate()
         {
+            if (IsActive == true)
+                return;
+
             gameObject.SetActive(true);
 
             base.Activate();
+
+            IsActive = true;
         }
 
         protected override void OnEnterClick()
@@ -35,7 +41,12 @@ namespace GameFields.Persons.AttackMenues
 
         public override void Deactivate()
         {
+            if (IsActive == false)
+                return;
+
             base.Deactivate();
+
+            IsActive = false;
 
             Deactivating().ToUniTask();
         }

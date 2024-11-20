@@ -145,7 +145,6 @@ GameObject:
   - component: {fileID: 3669634487137597190}
   - component: {fileID: 946288796664757162}
   - component: {fileID: 5142016623048995018}
-  - component: {fileID: 3487252167409818217}
   - component: {fileID: 8417766150878009007}
   - component: {fileID: 1418185624317422340}
   - component: {fileID: 3784630323517298592}
@@ -215,50 +214,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3487252167409818217
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6609448491753350199}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 1, g: 0.8812808, b: 0.0141509175, a: 1}
-    m_PressedColor: {r: 1, g: 0, b: 0, a: 1}
-    m_SelectedColor: {r: 0.1649735, g: 1, b: 0, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 5142016623048995018}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &8417766150878009007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -278,7 +233,8 @@ MonoBehaviour:
   ClickColor: {r: 1, g: 0, b: 0, a: 1}
   _rectTransform: {fileID: 3669634487137597190}
   _text: {fileID: 2087396044155683403}
-  _animator: {fileID: 6304972592423717224}
+  _disableColor: {r: 0.4716981, g: 0.3982734, b: 0.3982734, a: 0.8156863}
+  _stateView: {fileID: 4499932583769618876}
 --- !u!114 &1418185624317422340
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -315,23 +271,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1693730594387480848, guid: 42ed51bb7737948b183a60bba48e833e, type: 3}
       propertyPath: m_Name
-      value: Cross
-      objectReference: {fileID: 0}
-    - target: {fileID: 7219900947810355648, guid: 42ed51bb7737948b183a60bba48e833e, type: 3}
-      propertyPath: m_Animation
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7219900947810355648, guid: 42ed51bb7737948b183a60bba48e833e, type: 3}
-      propertyPath: m_Animations.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7219900947810355648, guid: 42ed51bb7737948b183a60bba48e833e, type: 3}
-      propertyPath: m_Animations.Array.data[0]
-      value: 
-      objectReference: {fileID: 7400000, guid: b5bf13da34b804361a3c2e575927db81, type: 2}
-    - target: {fileID: 7407321866059612678, guid: 42ed51bb7737948b183a60bba48e833e, type: 3}
-      propertyPath: m_RaycastTarget
-      value: 0
+      value: StateView
       objectReference: {fileID: 0}
     - target: {fileID: 7431411670720130853, guid: 42ed51bb7737948b183a60bba48e833e, type: 3}
       propertyPath: m_Pivot.x
@@ -418,11 +358,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 42ed51bb7737948b183a60bba48e833e, type: 3}
---- !u!95 &6304972592423717224 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 6352605124592054952, guid: 42ed51bb7737948b183a60bba48e833e, type: 3}
+--- !u!114 &4499932583769618876 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3541455798353052284, guid: 42ed51bb7737948b183a60bba48e833e, type: 3}
   m_PrefabInstance: {fileID: 1105422185144515520}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f0210994d40642b283d1fddd8063a9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &7527364443616367845 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7431411670720130853, guid: 42ed51bb7737948b183a60bba48e833e, type: 3}

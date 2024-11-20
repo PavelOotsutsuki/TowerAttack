@@ -1,6 +1,8 @@
 using System.Collections;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using GameFields.Persons.Hands;
+using GameFields.Persons.Towers;
 using Tools;
 using Tools.UI;
 using Tools.Utils.FillComponents;
@@ -19,14 +21,26 @@ namespace GameFields.Persons.AttackMenues
         [SerializeField] private CanvasGroup _canvasGroup;
 
         private IHandBlockable _handBlockable;
+        private ICardNumberKeeper _cardNumberKeeper;
 
         public bool? IsActive { get; private set; } = null;
 
-        public void Init(IHandBlockable handBlockable)
+        //private ICardNumberKeeper _cardNumberKeeper;
+
+        //public void Init(IHandBlockable handBlockable, ICardNumberKeeper cardNumberKeeper)
+        //{
+        //    _cardNumberKeeper = cardNumberKeeper;
+
+        //    Init(handBlockable);
+        //}
+
+        public void Init(IHandBlockable handBlockable, ICardNumberKeeper cardNumberKeeper)
         {
             gameObject.SetActive(false);
             _canvasGroup.blocksRaycasts = false;
+
             _handBlockable = handBlockable;
+            _cardNumberKeeper = cardNumberKeeper;
 
             _attackMenuLabel.Init();
             _attackMenuPanel.Init();
@@ -63,16 +77,19 @@ namespace GameFields.Persons.AttackMenues
 
             _canvasGroup.blocksRaycasts = false;
 
-            _attackMenuLabel.Hide();
-            _attackNumberPanel.Deactivate();
-            _attackButton.Deactivate();
-            _attackMenuPanel.Hide();
-
             Deactivating().ToUniTask();
         }
 
         private IEnumerator Deactivating()
         {
+            _attackButton.Deactivate();
+            _attackNumberPanel.Deactivate();
+
+            yield return new WaitUntil(() => _attackNumberPanel.IsComplete);
+
+            _attackMenuLabel.Hide();
+            _attackMenuPanel.Hide();
+
             yield return new WaitUntil(() => _attackMenuPanel.IsComplete && _attackMenuLabel.IsComplete && _attackButton.IsComplete && _attackNumberPanel.IsComplete);
 
             _handBlockable.Unblock();

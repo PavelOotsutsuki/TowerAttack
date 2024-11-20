@@ -1,16 +1,18 @@
+using System.Collections;
+using System.Collections.Generic;
 using Tools;
 
 namespace GameFields.Persons.AttackMenues
 {
     public class AttackNumberPanelActivateData: IData
     {
-        private readonly int _needToActivate;
+        private readonly int _needForActivate;
 
-        public AttackNumberPanelActivateData(int needToActivate)
+        public AttackNumberPanelActivateData(int needForActivate)
         {
-            _needToActivate = needToActivate;
+            _needForActivate = needForActivate;
         }
 
-        public int NeedToActivate => _needToActivate;
+        public int NeedForActivate => _needForActivate;
     }
 }

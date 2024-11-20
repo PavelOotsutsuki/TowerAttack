@@ -5,19 +5,20 @@ using UnityEngine;
 
 namespace GameFields.Persons.Towers
 {
-    public abstract class Tower : MonoBehaviour, ICardDropPlace, IAutomaticFillComponents
+    public abstract class Tower : MonoBehaviour, ICardDropPlace, ICardNumberKeeper, IAutomaticFillComponents
     {
         private const SideType DefaultSideType = SideType.Back;
         private const bool IsCardInteraction = false;
 
-        [SerializeField] private Seat _towerSeat;
+        [SerializeField] protected Seat TowerSeat;
         [SerializeField, Min(0f)] private float _seatDuration = 0.5f;
 
-        public bool HasFreeSeat => _towerSeat.IsFill() == false;
+        public bool HasFreeSeat => TowerSeat.IsFill() == false;
+        public ICardNumber Card => TowerSeat.Card;
 
         public void Init()
         {
-            _towerSeat.Init();
+            TowerSeat.Init();
         }
 
         public Vector3 GetPosition() => transform.position;
@@ -27,7 +28,7 @@ namespace GameFields.Persons.Towers
             if (HasFreeSeat)
             {
                 card.SetActiveInteraction(IsCardInteraction);
-                _towerSeat.SetCard(card, DefaultSideType, _seatDuration);
+                TowerSeat.SetCard(card, DefaultSideType, _seatDuration);
             }
             else
             {
@@ -45,7 +46,7 @@ namespace GameFields.Persons.Towers
         [ContextMenu(nameof(DefineTowerSeat))]
         private void DefineTowerSeat()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _towerSeat, ComponentLocationTypes.InChildren);
+            AutomaticFillComponents.DefineComponent(this, ref TowerSeat, ComponentLocationTypes.InChildren);
         }
         #endregion
     }

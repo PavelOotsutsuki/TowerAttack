@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Cards
 {
-    public class Card : MonoBehaviour, ICardTransformable, IAutomaticFillComponents
+    public class Card : MonoBehaviour, ICardTransformable, ICardNumber, IAutomaticFillComponents
     {
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private CardPaper _cardPaper;
@@ -37,6 +37,11 @@ namespace Cards
 
             CreateCardCharacter();
             SetState(_cardPaper);
+        }
+
+        public bool IsSuccessAttack(int number)
+        {
+            return _config.CardViewConfig.Number == number;
         }
 
         public void EndDrag()

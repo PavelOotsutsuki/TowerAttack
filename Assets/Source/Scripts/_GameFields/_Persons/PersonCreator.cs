@@ -20,8 +20,7 @@ namespace GameFields.Persons
         private Table _playerTable;
         private Tower _playerTower;
         private DiscoverPlayer _playerDiscover;
-
-        [SerializeField] private AttackMenu _attackMenu;
+        private AttackMenuPlayer _playerAttackMenu;
 
         [SerializeField] private StartPlayerTurnLabel _startPlayerTurnLabel; 
         [SerializeField] private int _playerCountStartDrawCards = 1;
@@ -39,6 +38,8 @@ namespace GameFields.Persons
         private Table _enemyTable;
         private Tower _enemyTower;
         private DiscoverAI _enemyDiscoverImitation;
+        private AttackMenuImitation _enemyAttackMenu;
+        private CardAttackZone _enemyCardAttackZone;
 
         [SerializeField] private int _enemyCountStartDrawCards = 1;
         
@@ -65,19 +66,24 @@ namespace GameFields.Persons
 
         [Inject]
         public void Construct(CardPlayingZonePlayer playerPlayingZone, HandPlayer playerHand, TablePlayer playerTable, TowerPlayer playerTower,
-            DiscoverPlayer playerDiscover, CardPlayingZoneAI enemyPlayingZone, HandAI enemyHand, TableAI enemyTable,
-            TowerAI enemyTower, DiscoverAI enemyDiscoverImitation)
+            DiscoverPlayer playerDiscover, AttackMenuPlayer playerAttackMenu, CardPlayingZoneAI enemyPlayingZone, HandAI enemyHand,
+            TableAI enemyTable, TowerAI enemyTower, DiscoverAI enemyDiscoverImitation, AttackMenuImitation enemyAttackMenu,
+            CardAttackZone enemyCardAttackZone)
         {
             _playerPlayingZone = playerPlayingZone;
             _playerHand = playerHand;
             _playerTable = playerTable;
             _playerTower = playerTower;
             _playerDiscover = playerDiscover;
+            _playerAttackMenu = playerAttackMenu;
+
             _enemyPlayingZone = enemyPlayingZone;
             _enemyHand = enemyHand;
             _enemyTable = enemyTable;
             _enemyTower = enemyTower;
             _enemyDiscoverImitation = enemyDiscoverImitation;
+            _enemyAttackMenu = enemyAttackMenu;
+            _enemyCardAttackZone = enemyCardAttackZone;
         }
 
         public void Init(SignalBus bus, Deck deck, EndTurnButton endTurnButton, SeatPool seatPool)
@@ -100,7 +106,7 @@ namespace GameFields.Persons
             StartPlayerTurnView startPlayerTurnView = new StartPlayerTurnView(_startPlayerTurnLabel);
 
             return new Player(_tableActivator, _playerHand, _playerPlayingZone, _playerTower, _playerDiscover,
-                drawCardRoot, startTurnDraw, turnProcessing, _bus, startPlayerTurnView, _attackMenu);
+                drawCardRoot, startTurnDraw, turnProcessing, _bus, startPlayerTurnView, _playerAttackMenu);
         }
 
         public EnemyAI CreateEnemyAI()
@@ -113,7 +119,7 @@ namespace GameFields.Persons
             EnemyDragAndDropImitation enemyDragAndDropImitation = new EnemyDragAndDropImitation(cardDragAndDropImitationActions, _enemyDragAndDropImitationData, _enemyHand);
 
             return new EnemyAI(_tableActivator, enemyDragAndDropImitation, _enemyPlayingZone,
-                _enemyTower, drawCardRoot, _enemyDiscoverImitation, startTurnDraw, _bus, _enemyHand, _attackMenu);
+                _enemyTower, drawCardRoot, _enemyDiscoverImitation, startTurnDraw, _bus, _enemyHand, _playerAttackMenu);
         }
         
         private void InitPlayersData(SeatPool seatPool)
@@ -124,7 +130,7 @@ namespace GameFields.Persons
             _playerTower.Init();
             _playerDiscover.Init(_playerHand);
             _startPlayerTurnLabel.Init();
-            _attackMenu.Init(_playerHand);
+            _playerAttackMenu.Init(_playerHand, _enemyTower);
         }
 
         private void InitEnemyData(SeatPool seatPool)
@@ -134,6 +140,9 @@ namespace GameFields.Persons
             _enemyPlayingZone.Init(_enemyTable);
             _enemyTower.Init();
             _enemyDiscoverImitation.Init();
+            _enemyAttackMenu.Init(_enemyHand, _playerTower);
+
+            _enemyCardAttackZone.Init(_playerAttackMenu);
         }
     }
 }

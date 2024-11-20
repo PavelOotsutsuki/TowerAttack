@@ -1,4 +1,8 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Cysharp.Threading.Tasks;
 using Tools;
 using Tools.UI;
 using Tools.Utils.FillComponents;
@@ -16,6 +20,8 @@ namespace GameFields.Persons.AttackMenues
         [SerializeField] private float _numberHeight = 100f;
         [SerializeField] private float _indent = 50f;
 
+        //[SerializeField] private Sprite _disableSprite;
+
         private int _columnsCount;
         private int _rowsCount;
         private int _lastRowColumnsCount;
@@ -27,15 +33,21 @@ namespace GameFields.Persons.AttackMenues
         private float _maxWidth;
 
         private int _activateCounter;
-        private int _needToActivate;
+        private int _needForActivate;
         private IWorkable _attackButton;
+        private ConfirmableNumbers _confirmableNumbers;
 
-        public bool IsComplete => _fadablePanel.IsComplete;
+        private bool _isComplete;
+
+        public bool IsComplete => _isComplete && _fadablePanel.IsComplete;
         public bool? IsActive { get; private set; } = null;
 
         public void Init(IWorkable attackButton)
         {
             _attackButton = attackButton;
+
+            _confirmableNumbers = new ConfirmableNumbers();
+
             _activateCounter = 0;
 
             FindColumnsAndRowsCount();
@@ -50,19 +62,32 @@ namespace GameFields.Persons.AttackMenues
             if (IsActive == true)
                 return;
 
-            IsActive = true;
+            _isComplete = false;
 
-            _needToActivate = data.NeedToActivate;
+            _needForActivate = data.NeedForActivate;
             _activateCounter = 0;
 
             gameObject.SetActive(true);
 
             foreach (AttackNumber attackNumber in _attackNumbers)
             {
-                attackNumber.Activate();
+                //if (data.DisableNumbers.Contains(attackNumber))
+                //{
+                //    attackNumber.Activate(new AttackNumberActivateData(true));
+                //}
+                //else
+                //{
+                //    attackNumber.Activate(new AttackNumberActivateData(false));
+                //}
+                AttackNumberStateViewActivateData stateViewData = new AttackNumberStateViewActivateData(_confirmableNumbers.Contains(attackNumber));
+                AttackNumberActivateData attackNumberData = new AttackNumberActivateData(stateViewData);
+                attackNumber.Activate(attackNumberData);
             }
 
             _fadablePanel.Show();
+
+            IsActive = true;
+            _isComplete = true;
         }
 
         public void Deactivate()
@@ -70,10 +95,52 @@ namespace GameFields.Persons.AttackMenues
             if (IsActive == false)
                 return;
 
+            _isComplete = false;
+
+            Deactivating().ToUniTask();
+
             IsActive = false;
+            //gameObject.SetActive(false);
+        }
+
+        private IEnumerator Deactivating()
+        {
+            List<AttackNumber> selectedNumbers = new List<AttackNumber>(); // Можно заменить на LINQ
+
+            foreach (AttackNumber attackNumber in _attackNumbers)
+            {
+                if (attackNumber.IsClicked)
+                {
+                    selectedNumbers.Add(attackNumber);
+                }
+            }
+            //Debug.Log("Длина: " + _attackNumbers.Length);
+
+            //for (int i = 0; i < _attackNumbers.Length; i++)
+            //{
+            //    if (_attackNumbers[i].IsClicked)
+            //    {
+            //        Debug.Log(i+1);
+            //        selectedNumbers.Add(_attackNumbers[i]);
+            //    }
+            //}
+
+            foreach (AttackNumber selectedNumber in selectedNumbers)
+            {
+                selectedNumber.Disable();
+                yield return new WaitForSeconds(0.8f);
+            }
+
+            yield return new WaitForSeconds(1f);
+
+            foreach (AttackNumber attackNumber in _attackNumbers)
+            {
+                attackNumber.Deactivate();
+            }
 
             _fadablePanel.Hide();
-            //gameObject.SetActive(false);
+
+            _isComplete = true;
         }
 
         //public void Unsubscribe()
@@ -87,7 +154,7 @@ namespace GameFields.Persons.AttackMenues
         {
             _activateCounter += isActive ? 1 : -1;
 
-            if (_activateCounter == _needToActivate)
+            if (_activateCounter == _needForActivate)
             {
                 _attackButton.Activate();
             }
@@ -103,7 +170,7 @@ namespace GameFields.Persons.AttackMenues
 
             foreach (AttackNumber attackNumber in _attackNumbers)
             {
-                attackNumber.Init(number, CalcNumberPosition(number), new Vector2(_numberWidht, _numberHeight), OnAttackNumberClick);
+                attackNumber.Init(number, CalcNumberPosition(number), new Vector2(_numberWidht, _numberHeight), OnAttackNumberClick, _confirmableNumbers);
                 number++;
             }
         }

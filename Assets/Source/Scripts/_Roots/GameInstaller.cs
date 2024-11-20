@@ -1,6 +1,7 @@
 using Cards;
 using GameFields;
 using GameFields.DiscardPiles;
+using GameFields.Persons.AttackMenues;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.Hands;
 using GameFields.Persons.Tables;
@@ -26,12 +27,15 @@ namespace Roots
         [SerializeField] private TowerPlayer _playerTower;
         [SerializeField] private DiscoverPlayer _playerDiscover;
         [SerializeField] private CardPlayingZonePlayer _playerPlayingZone;
+        [SerializeField] private AttackMenuPlayer _attackMenuPlayer;
 
         [SerializeField] private HandAI _enemyHand;
         [SerializeField] private TableAI _enemyTable;
         [SerializeField] private TowerAI _enemyTower;
         [SerializeField] private DiscoverAI _enemyDiscoverImitation;
         [SerializeField] private CardPlayingZoneAI _enemyPlayingZone;
+        [SerializeField] private AttackMenuImitation _enemyAttackMenu;
+        [SerializeField] private CardAttackZone _enemyCardAttackZone;
 
         public override void InstallBindings()
         {
@@ -49,12 +53,15 @@ namespace Roots
             Container.Bind<TowerPlayer>().FromInstance(_playerTower).AsSingle();
             Container.Bind<DiscoverPlayer>().FromInstance(_playerDiscover).AsSingle();
             Container.Bind<CardPlayingZonePlayer>().FromInstance(_playerPlayingZone).AsSingle();
+            Container.Bind<AttackMenuPlayer>().FromInstance(_attackMenuPlayer).AsSingle();
 
             Container.Bind<HandAI>().FromInstance(_enemyHand).AsSingle();
             Container.Bind<TableAI>().FromInstance(_enemyTable).AsSingle();
             Container.Bind<TowerAI>().FromInstance(_enemyTower).AsSingle();
             Container.Bind<DiscoverAI>().FromInstance(_enemyDiscoverImitation).AsSingle();
             Container.Bind<CardPlayingZoneAI>().FromInstance(_enemyPlayingZone).AsSingle();
+            Container.Bind<AttackMenuImitation>().FromInstance(_enemyAttackMenu).AsSingle();
+            Container.Bind<CardAttackZone>().FromInstance(_enemyCardAttackZone).AsSingle();
         }
 
         private void DeclareSignals()
