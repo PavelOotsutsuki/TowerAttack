@@ -5,7 +5,7 @@ using Cysharp.Threading.Tasks;
 
 namespace GameFields
 {
-    internal class Fight : IFightStep
+    internal class Fight : IFightStep, IWinnerSetter
     {
         private const int MaxTurns = 100;
         private const float DelayBeforeStartTurn = 3f;
@@ -33,6 +33,24 @@ namespace GameFields
         public void StartStep()
         {
             StartTurn().ToUniTask();
+        }
+
+        public void SetWinner(Person winner)
+        {
+            if (winner is Player)
+            {
+                _fightResult.SetPlayerWin();
+            }
+            else if (winner is EnemyAI)
+            {
+                _fightResult.SetEnemyWin();
+            }
+            else
+            {
+                throw new System.Exception("Unknown winner");
+            }
+
+            IsComplete = true;
         }
 
         private IEnumerator StartTurn()

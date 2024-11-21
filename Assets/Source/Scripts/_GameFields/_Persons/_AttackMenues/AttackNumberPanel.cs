@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using GameFields.Persons.Towers;
 using Tools;
 using Tools.UI;
 using Tools.Utils.FillComponents;
@@ -35,6 +36,8 @@ namespace GameFields.Persons.AttackMenues
         private int _activateCounter;
         private int _needForActivate;
         private IWorkable _attackButton;
+        private ICardNumberKeeper _cardNumberKeeper;
+
         private ConfirmableNumbers _confirmableNumbers;
 
         private bool _isComplete;
@@ -42,9 +45,10 @@ namespace GameFields.Persons.AttackMenues
         public bool IsComplete => _isComplete && _fadablePanel.IsComplete;
         public bool? IsActive { get; private set; } = null;
 
-        public void Init(IWorkable attackButton)
+        public void Init(IWorkable attackButton, ICardNumberKeeper cardNumberKeeper)
         {
             _attackButton = attackButton;
+            _cardNumberKeeper = cardNumberKeeper;
 
             _confirmableNumbers = new ConfirmableNumbers();
 
@@ -127,6 +131,11 @@ namespace GameFields.Persons.AttackMenues
 
             foreach (AttackNumber selectedNumber in selectedNumbers)
             {
+                if (_cardNumberKeeper.Card.IsSuccessAttack(selectedNumber.Number))
+                {
+
+                }
+
                 selectedNumber.Disable();
                 yield return new WaitForSeconds(0.8f);
             }

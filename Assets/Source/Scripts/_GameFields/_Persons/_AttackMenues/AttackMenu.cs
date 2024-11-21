@@ -45,7 +45,7 @@ namespace GameFields.Persons.AttackMenues
             _attackMenuLabel.Init();
             _attackMenuPanel.Init();
             _attackButton.Init(Deactivate);
-            _attackNumberPanel.Init(_attackButton);
+            _attackNumberPanel.Init(_attackButton, cardNumberKeeper);
         }
 
         public void Activate()

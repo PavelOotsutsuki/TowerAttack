@@ -26,14 +26,17 @@ namespace GameFields.Persons.AttackMenues
         private Action<bool> _clickCallback;
         private ConfirmableNumbers _confirmableNumbers;
 
+        public int Number { get; private set; }
+
         public void Init(int number, Vector3 position, Vector2 size, Action<bool> clickCallback, ConfirmableNumbers confirmableNumbers)
         {
             base.Init();
 
+            Number = number;
             //Image.sprite = _defaultView;
             _rectTransform.sizeDelta = size;
             _rectTransform.SetLocalPositionAndRotation(position, Quaternion.identity);
-            _text.text = number.ToString();
+            _text.text = Number.ToString();
 
             _stateView.Init();
             //_animator.gameObject.SetActive(false);
