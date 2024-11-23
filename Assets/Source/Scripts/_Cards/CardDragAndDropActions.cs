@@ -65,6 +65,12 @@ namespace Cards
             cardDropPlace.SeatCard(_card);
         }
 
+        internal void Attack(IAttackable cardAttackZone)
+        {
+            cardAttackZone.Attack(_card);
+            _cardDragAndDropListener.OnCardPlay();
+        }
+
         internal void ReturnInHand(float duration)
         {
             _card.CardMovement.MoveLocalSmoothly(Vector2.zero, Quaternion.identity.eulerAngles, duration, _card.DefaultScaleVector);

@@ -2,6 +2,6 @@ namespace Cards
 {
     public interface IAttackable
     {
-        public void Attack();
+        public void Attack(Card card);
     }
 }

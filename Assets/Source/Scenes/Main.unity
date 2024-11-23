@@ -5674,8 +5674,8 @@ CanvasGroup:
   m_GameObject: {fileID: 704143071}
   m_Enabled: 1
   m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
 --- !u!114 &704143080
 MonoBehaviour:
@@ -5689,6 +5689,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4c85515f534341608c5c19a0ac69ba2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rectTransform: {fileID: 0}
 --- !u!114 &704143081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6334,6 +6335,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4705491aa9bf148fe9e899cac7d729b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rectTransform: {fileID: 0}
 --- !u!1 &875847379
 GameObject:
   m_ObjectHideFlags: 0
@@ -9225,6 +9227,10 @@ PrefabInstance:
       propertyPath: _towerSeat
       value: 
       objectReference: {fileID: 1296459755}
+    - target: {fileID: 2404349201422248753, guid: 72cc5ca19a7994600a9e0a918cd8b3a9, type: 3}
+      propertyPath: m_BlocksRaycasts
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3988544753164556876, guid: 72cc5ca19a7994600a9e0a918cd8b3a9, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -11019,8 +11025,8 @@ CanvasGroup:
   m_GameObject: {fileID: 1502786293}
   m_Enabled: 1
   m_Alpha: 1
-  m_Interactable: 0
-  m_BlocksRaycasts: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
 --- !u!1 &1504469768
 GameObject:
@@ -13225,6 +13231,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TowerSeat: {fileID: 1296459755}
+  _rectTransform: {fileID: 1939013307}
   _seatDuration: 1
 --- !u!114 &1939013321
 MonoBehaviour:
@@ -14288,6 +14295,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TowerSeat: {fileID: 340988940}
+  _rectTransform: {fileID: 495571191}
   _seatDuration: 1
 --- !u!1 &1835844569211548431
 GameObject:

@@ -104,6 +104,15 @@ namespace Cards
                 }
             }
 
+            if (EventSystem.current.TryGetComponentInRaycasts(eventData, out IAttackable cardAttackZone))
+            {
+
+                IsDragable = false;
+                enabled = false;
+                _cardDragAndDropActions.Attack(cardAttackZone);
+                return;
+            }
+
             enabled = false;
             _cardDragAndDropActions.StartEndDrag();
 
@@ -133,5 +142,10 @@ namespace Cards
 
             _cardDragAndDropActions.OnReturnInHand(cardDragAndDrop == this);
         }
+
+        //private IEnumerator StartingAttack()
+        //{
+
+        //}
     }
 }

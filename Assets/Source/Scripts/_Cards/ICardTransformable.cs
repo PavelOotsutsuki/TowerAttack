@@ -4,9 +4,8 @@ using UnityEngine;
 
 namespace Cards
 {
-    public interface ICardTransformable
+    public interface ICardTransformable: IReadOnlyRectTransformable
     {
-        public ReadOnlyRectTransform ReadOnlyRectTransform { get; }
         public Movement CardMovement {get;}
         public Vector3 DefaultScaleVector { get; }
 

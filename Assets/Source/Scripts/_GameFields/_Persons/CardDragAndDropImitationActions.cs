@@ -47,7 +47,7 @@ namespace GameFields.Persons
         {
             _isMoving = true;
 
-            MoveOnPlace(_cardDropPlaceImitation.GetPosition(), duration);
+            MoveOnPlace(_cardDropPlaceImitation.ReadOnlyRectTransform.GetPosition(), duration);
 
             _cardDragAndDropListener.OnCardDrag(_activeCard);
         }

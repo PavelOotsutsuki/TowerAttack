@@ -3,7 +3,7 @@ using Tools.UI;
 namespace GameFields.Persons.AttackMenues
 {
     //[RequireComponent(typeof(FadableLabel))]
-    public class AttackMenuLabel : NascentLabel//FadableNascentLabel
+    public class AttackMenuLabel : NascentLabel //FadableNascentLabel
     {
         //#region AutomaticFillComponents
         //[ContextMenu(nameof(DefineAllComponents) + nameof(AttackMenuLabel))]

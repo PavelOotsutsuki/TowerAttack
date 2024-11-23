@@ -4,7 +4,7 @@ namespace Tools
 {
     public class ReadOnlyTransform
     {
-        private Transform _transform;
+        private readonly Transform _transform;
 
         public ReadOnlyTransform(Transform transform)
         {

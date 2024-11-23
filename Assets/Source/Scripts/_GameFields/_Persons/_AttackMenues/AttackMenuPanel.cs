@@ -3,7 +3,7 @@ using Tools.UI;
 namespace GameFields.Persons.AttackMenues
 {
     //[RequireComponent(typeof(FadablePanel))]
-    public class AttackMenuPanel : FadablePanel//MonoBehaviour, ICompletable, IWorkable, IAutomaticFillComponents
+    public class AttackMenuPanel : FadablePanel //MonoBehaviour, ICompletable, IWorkable, IAutomaticFillComponents
     {
         //[SerializeField] private FadablePanel _fadablePanel;
 
