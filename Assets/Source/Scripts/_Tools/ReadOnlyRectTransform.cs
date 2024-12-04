@@ -21,6 +21,11 @@ namespace Tools
             return _rectTransform.rect.width;
         }
 
+        public Vector2 GetRect()
+        {
+            return new Vector2(_rectTransform.rect.width, _rectTransform.rect.height);
+        }
+
         public Vector2 GetSizeDelta()
         {
             return _rectTransform.sizeDelta;

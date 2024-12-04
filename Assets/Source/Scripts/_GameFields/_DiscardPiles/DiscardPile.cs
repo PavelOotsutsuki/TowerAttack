@@ -46,7 +46,8 @@ namespace GameFields.DiscardPiles
             DiscardingCards(signal.Cards).ToUniTask();
         }
 
-        private void SeatCard(Card card)
+        //private void SeatCard(Card card)
+        public void SeatCard(Card card)
         {
             card.SetActiveInteraction(false);
             

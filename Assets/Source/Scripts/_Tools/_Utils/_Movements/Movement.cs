@@ -150,5 +150,39 @@ namespace Tools.Utils.Movements
                 _currentSequence = sequence;
             }
         }
+
+        public void MoveInBack(Vector3 position, Vector3 rotation, float duration, Vector3 scaleVector)
+        {
+            if (Mathf.Approximately(duration, 0f))
+            {
+                MoveInstantly(position, rotation, scaleVector);
+            }
+            else
+            {
+                Sequence sequence = DOTween.Sequence()
+                .Join(_transform.DOMove(position, duration).SetEase(Ease.InBack))
+                .Join(_transform.DORotate(rotation, duration).SetEase(Ease.InBack))
+                .Join(_transform.DOScale(scaleVector, duration).SetEase(Ease.InBack));
+
+                _currentSequence = sequence;
+            }
+        }
+
+        public void MoveInOutBack(Vector3 position, Vector3 rotation, float duration, Vector3 scaleVector)
+        {
+            if (Mathf.Approximately(duration, 0f))
+            {
+                MoveInstantly(position, rotation, scaleVector);
+            }
+            else
+            {
+                Sequence sequence = DOTween.Sequence()
+                .Join(_transform.DOMove(position, duration).SetEase(Ease.InOutBack))
+                .Join(_transform.DORotate(rotation, duration).SetEase(Ease.InOutBack))
+                .Join(_transform.DOScale(scaleVector, duration).SetEase(Ease.InOutBack));
+
+                _currentSequence = sequence;
+            }
+        }
     }
 }

@@ -11,7 +11,7 @@ using UnityEngine;
 namespace GameFields.Persons.AttackMenues
 {
     [RequireComponent(typeof(CanvasGroup))]
-    public class AttackMenu : MonoBehaviour, IWorkable, IAutomaticFillComponents
+    public class AttackMenu : MonoBehaviour, IWorkable, ICompletable, IAutomaticFillComponents
     {
         [SerializeField] private AttackMenuLabel _attackMenuLabel;
         [SerializeField] private AttackMenuPanel _attackMenuPanel;
@@ -24,6 +24,7 @@ namespace GameFields.Persons.AttackMenues
         private ICardNumberKeeper _cardNumberKeeper;
 
         public bool? IsActive { get; private set; } = null;
+        public bool IsComplete { get; private set; }
 
         //private ICardNumberKeeper _cardNumberKeeper;
 
@@ -37,6 +38,7 @@ namespace GameFields.Persons.AttackMenues
         public void Init(IHandBlockable handBlockable, ICardNumberKeeper cardNumberKeeper)
         {
             gameObject.SetActive(false);
+            IsComplete = false;
             _canvasGroup.blocksRaycasts = false;
 
             _handBlockable = handBlockable;
@@ -53,6 +55,7 @@ namespace GameFields.Persons.AttackMenues
             if (IsActive == true)
                 return;
 
+            IsComplete = false;
             IsActive = true;
 
             _handBlockable.ForciblyBlock();
@@ -94,6 +97,7 @@ namespace GameFields.Persons.AttackMenues
 
             _handBlockable.Unblock();
             gameObject.SetActive(false);
+            IsComplete = true;
         }
 
         #region AutomaticFillComponents

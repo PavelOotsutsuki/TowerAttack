@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Tables
 {
-    public abstract class CardPlayingZone : MonoBehaviour, ICardDropPlace
+    public abstract class CardPlayingZone : MonoBehaviour, ICardDropPlace, IAutomaticFillComponents
     {
         private readonly List<Card> _playedCards = new List<Card>();
 
