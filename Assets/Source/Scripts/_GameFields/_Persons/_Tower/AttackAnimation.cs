@@ -50,24 +50,14 @@ namespace GameFields.Persons.Towers
             Vector2 atTheReadyPosition = FindAtTheReadyPosition();
             Vector3 rotation = FindAtTheReadyRotation();
 
-            _cardMovement.MoveSmoothly(atTheReadyPosition, rotation, 1f, CardScale);
+            _cardMovement.MoveSmoothly(atTheReadyPosition, rotation, _data.AtTheReadyMoveDuration, CardScale);
+            yield return new WaitForSeconds(_data.AtTheReadyMoveDuration + _data.AfterAtTheReadyMoveDelay);
 
-            yield return new WaitForSeconds(1f);
-            yield return new WaitForSeconds(0.5f);
-
-            //Vector2 backPosition = FindBackPosition();
-
-            //_currentCardMovement.MoveLinear(backPosition, firstRotation, 2f, _currentCardTransform.GetLocalScale());
-
-            //yield return new WaitForSeconds(2f);
-
-            //Vector2 endPosition = FindEndPosition();
-
-            //_currentCardMovement.MoveLinear(endPosition, firstRotation, 0.5f, _currentCardTransform.GetLocalScale());
 
             Vector2 endPosition = FindEndPosition();
-            _cardMovement.MoveInOutBack(endPosition, rotation, 1f, CardScale);
-            yield return new WaitForSeconds(0.6f);
+
+            _cardMovement.MoveInOutBack(endPosition, rotation, _data.EndMoveDuration, CardScale);
+            yield return new WaitForSeconds(_data.EndMoveDuration * _data.InOutBackFactor);
         }
 
         private Vector2 FindAtTheReadyPosition()
@@ -79,7 +69,6 @@ namespace GameFields.Persons.Towers
             _yOffset = _yPeekToFirstCardPositionOffset;
 
             bool isFullX = Convert.ToBoolean(Random.Range(0, 2));
-            //_xSide = Random.Range(0, 2) * 2 - 1;
 
             if (isFullX)
             {
@@ -90,9 +79,6 @@ namespace GameFields.Persons.Towers
                 _xOffset = Random.Range(0, _xOffset);
             }
 
-            //_xOffset *= _xSide;
-
-
             return new Vector2(_towerPosition.x + _xOffset, _towerPosition.y - _yOffset);
         }
 
@@ -100,8 +86,6 @@ namespace GameFields.Persons.Towers
         {
             Vector2 currentRotation = CardRotation;
 
-
-            //if (_xOffset - CardSize.x/2 > _towerSize.x/2 && _yOffset - CardSize.x/2 > _towerSize.y/2)
             if (_xOffset > _towerSize.x / 2 && _yOffset > _towerSize.y / 2)
             {
                 _cardAngle = Mathf.Atan((_xOffset - _towerSize.x / 2) / (_yOffset - _towerSize.y / 2)) * 180 / Mathf.PI;
