@@ -142,7 +142,7 @@ namespace GameFields.Persons
             _enemyDiscoverImitation.Init();
             _enemyAttackMenu.Init(_enemyHand, _playerTower);
 
-            _enemyCardAttackZone.Init(_playerAttackMenu, _enemyTower);
+            _enemyCardAttackZone.Init(_playerAttackMenu, _enemyTower.ReadOnlyRectTransform);
         }
     }
 }

@@ -29,10 +29,10 @@ namespace GameFields.Persons.Towers
             _discardPile = discardPile;
         }
 
-        public void Init(AttackMenu attackMenu, IReadOnlyRectTransformable tower)
+        public void Init(AttackMenu attackMenu, ReadOnlyRectTransform towerTransform)
         {
             _attackMenu = attackMenu;
-            _towerTransform = tower.ReadOnlyRectTransform;
+            _towerTransform = towerTransform;
 
             //_towerPosition = _towerTransform.GetPosition();
             //_towerSize = _towerTransform.GetRect();
