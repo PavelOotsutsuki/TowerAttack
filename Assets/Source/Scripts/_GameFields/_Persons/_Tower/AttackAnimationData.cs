@@ -7,11 +7,11 @@ namespace GameFields.Persons.Towers
     [Serializable]
     public class AttackAnimationData: IData
     {
-        [field: SerializeField] public float OffsetXCardFactor { get; } = 0.35f;
-        [field: SerializeField] public float OffsetYCardFactor { get; } = 0.35f;
-        [field: SerializeField] public float AtTheReadyMoveDuration { get; } = 1f;
-        [field: SerializeField] public float AfterAtTheReadyMoveDelay { get; } = 0.5f;
-        [field: SerializeField] public float EndMoveDuration { get; } = 1f;
-        [field: SerializeField] public float InOutBackFactor { get; } = 0.6f;
+        [field: SerializeField] public float OffsetXCardFactor { get; private set; } = 0.35f;
+        [field: SerializeField] public float OffsetYCardFactor { get; private set; } = 0.35f;
+        [field: SerializeField] public float AtTheReadyMoveDuration { get; private set; } = 1f;
+        [field: SerializeField] public float AfterAtTheReadyMoveDelay { get; private set; } = 0.5f;
+        [field: SerializeField] public float EndMoveDuration { get; private set; } = 1f;
+        [field: SerializeField] public float InOutBackFactor { get; private set; } = 0.5f;
     }
 }

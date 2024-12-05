@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Tools;
 using Tools.Utils.Movements;
@@ -9,7 +8,7 @@ using Random = UnityEngine.Random;
 
 namespace GameFields.Persons.Towers
 {
-    public class AttackAnimation
+    public class AttackAnimation: ICompletable
     {
         private readonly Movement _cardMovement;
         private readonly ReadOnlyRectTransform _cardTransform;
@@ -23,7 +22,6 @@ namespace GameFields.Persons.Towers
         private float _yOffset;
 
         private float _cardAngle;
-        private float _translateFactor;
 
         public AttackAnimation(Movement cardMovement, ReadOnlyRectTransform cardTransform, Vector3 towerPosition
             , Vector2 towerSize, AttackAnimationData data)
@@ -35,6 +33,8 @@ namespace GameFields.Persons.Towers
             _data = data;
         }
 
+        public bool IsComplete { get; private set; }
+
         private Vector2 CardSize => _cardTransform.GetRect();
         private Vector2 CardPosition => _cardTransform.GetPosition();
         private Vector3 CardScale => _cardTransform.GetLocalScale();
@@ -42,6 +42,8 @@ namespace GameFields.Persons.Towers
 
         public void Play()
         {
+            IsComplete = false;
+
             Playing().ToUniTask();
         }
 
@@ -58,6 +60,8 @@ namespace GameFields.Persons.Towers
 
             _cardMovement.MoveInOutBack(endPosition, rotation, _data.EndMoveDuration, CardScale);
             yield return new WaitForSeconds(_data.EndMoveDuration * _data.InOutBackFactor);
+
+            IsComplete = true;
         }
 
         private Vector2 FindAtTheReadyPosition()

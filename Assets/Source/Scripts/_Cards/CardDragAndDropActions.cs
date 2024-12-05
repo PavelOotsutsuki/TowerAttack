@@ -68,7 +68,7 @@ namespace Cards
         internal void Attack(IAttackable cardAttackZone)
         {
             cardAttackZone.Attack(_card);
-            _cardDragAndDropListener.OnCardPlay();
+            _cardDragAndDropListener.OnCardAttack();
         }
 
         internal void ReturnInHand(float duration)

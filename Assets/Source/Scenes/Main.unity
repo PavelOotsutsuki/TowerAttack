@@ -1382,6 +1382,7 @@ RectTransform:
   - {fileID: 1000203020}
   - {fileID: 1504469770}
   - {fileID: 1487169830}
+  - {fileID: 2070574728}
   - {fileID: 165532016}
   - {fileID: 1173604841}
   - {fileID: 1156189548}
@@ -5689,7 +5690,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4c85515f534341608c5c19a0ac69ba2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rectTransform: {fileID: 0}
+  _rectTransform: {fileID: 704143072}
 --- !u!114 &704143081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6335,7 +6336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4705491aa9bf148fe9e899cac7d729b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rectTransform: {fileID: 0}
+  _rectTransform: {fileID: 867188509}
 --- !u!1 &875847379
 GameObject:
   m_ObjectHideFlags: 0
@@ -9325,6 +9326,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4707179963278497091, guid: 72cc5ca19a7994600a9e0a918cd8b3a9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1939013321}
+    - targetCorrespondingSourceObject: {fileID: 4707179963278497091, guid: 72cc5ca19a7994600a9e0a918cd8b3a9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1939013325}
   m_SourcePrefab: {fileID: 100100000, guid: 72cc5ca19a7994600a9e0a918cd8b3a9, type: 3}
 --- !u!114 &1296459755 stripped
 MonoBehaviour:
@@ -13046,7 +13050,6 @@ RectTransform:
   - {fileID: 1332597214}
   - {fileID: 867188509}
   - {fileID: 407210856}
-  - {fileID: 2070574728}
   m_Father: {fileID: 200841573}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -13245,6 +13248,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47de0030f477343ea904b2be42d77bae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _cameraTransform: {fileID: 1395967277}
+--- !u!61 &1939013325
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1054946224}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!224 &1951934494 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5981172514607463790, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
@@ -14758,7 +14807,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1905208562}
+    m_TransformParent: {fileID: 200841573}
     m_Modifications:
     - target: {fileID: 266637621526577529, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
       propertyPath: _transform
@@ -14854,15 +14903,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7625198449985348171, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7625198449985348171, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7625198449985348171, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7625198449985348171, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
       propertyPath: m_AnchoredPosition.x

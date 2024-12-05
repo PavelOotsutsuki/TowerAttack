@@ -56,6 +56,12 @@ namespace GameFields.Persons.Hands
             UnbindDragableCard();
         }
 
+        void ICardDragAndDropListener.OnCardAttack()
+        {
+            BlockCards();
+            UnbindDragableCard();
+        }
+
         void ICardDragAndDropListener.OnCardReturnInHand(Card card)
         {
             card.SetActiveInteraction(_isActiveInteraction);
@@ -135,6 +141,13 @@ namespace GameFields.Persons.Hands
             UnblockCards();
         }
 
+        private void BlockCards()
+        {
+            _isActiveInteraction = false;
+
+            SetCardsInteraction();
+        }
+
         private void UnbindDragableCard()
         {
             _handSeatPool.ReturnInPool(_dragCardHandSeat);
@@ -181,13 +194,6 @@ namespace GameFields.Persons.Hands
                 BlockCards();
                 SortHandSeats();
             }
-        }
-
-        private void BlockCards()
-        {
-            _isActiveInteraction = false;
-
-            SetCardsInteraction();
         }
 
         private void SetCardsInteraction()
@@ -274,6 +280,6 @@ namespace GameFields.Persons.Hands
         {
             AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
         }
-        #endregion 
+        #endregion
     }
 }
