@@ -1,4 +1,5 @@
 using System;
+using GameFields.CommonAnimations;
 using Tools;
 using UnityEngine;
 
@@ -13,9 +14,10 @@ namespace GameFields.StartFights
         [field: SerializeField] public float WaitDurationBetweenDrawCards { get; private set; } = 1f;
         [field: SerializeField] public string LabelMessage { get; private set; } = "Выберете, какая карта будет в замке";
         [field: SerializeField] public float DelayAfterCardChoiceDone { get; private set; } = 0.5f;
-        [field: SerializeField] public float InvertCardFrontDuration { get; private set; } = 0.5f;
-        [field: SerializeField] public float InvertCardBackDuration { get; private set; } = 0.5f;
-        [field: SerializeField] public float DelayAfterInvert { get; private set; } = 0.5f;
+        [field: SerializeField] public InvertCardAnimationData InvertCardAnimationData { get; private set; }
+        //[field: SerializeField] public float InvertCardFrontDuration { get; private set; } = 0.5f;
+        //[field: SerializeField] public float InvertCardBackDuration { get; private set; } = 0.5f;
+        //[field: SerializeField] public float DelayAfterInvert { get; private set; } = 0.5f;
         [field: SerializeField] public float DelayBeforeStartProcessSeatCardInTower { get; private set; } = 1f;
     }
 }

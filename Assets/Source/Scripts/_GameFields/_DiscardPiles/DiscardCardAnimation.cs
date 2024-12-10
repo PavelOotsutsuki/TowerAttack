@@ -5,6 +5,7 @@ using System;
 using Cysharp.Threading.Tasks;
 using Tools;
 using Tools.Utils.Movements;
+using GameFields.CommonAnimations;
 
 namespace GameFields.DiscardPiles
 {
@@ -13,6 +14,8 @@ namespace GameFields.DiscardPiles
         private readonly Card _card;
         private readonly ReadOnlyTransform _readOnlyCardTransform;
         private readonly Movement _cardMovement;
+
+        private readonly InvertCardAnimation _invertCardAnimation;
 
         private readonly DiscardCardAnimationData _data;
         private readonly Transform _container;
@@ -23,6 +26,8 @@ namespace GameFields.DiscardPiles
             _data = data;
             _container = container;
             _callback = callback;
+
+            _invertCardAnimation = new InvertCardAnimation(_data.InvertCardAnimationData);
 
             _card = card;
             _readOnlyCardTransform = _card.ReadOnlyRectTransform;
@@ -46,32 +51,37 @@ namespace GameFields.DiscardPiles
             IncreaseCard();
             yield return new WaitForSeconds(_data.CardIncreaseDuration + _data.DelayAfterIncrease);
 
-            InvertCardFront();
-            yield return new WaitForSeconds(_data.InvertCardFrontDuration);
+            _invertCardAnimation.Play(_card);
 
-            _card.SetSide(SideType.Back);
+            //InvertCardFront();
+            //yield return new WaitForSeconds(_data.InvertCardFrontDuration);
 
-            InvertCardBack();
-            yield return new WaitForSeconds(_data.InvertCardBackDuration + _data.DelayAfterInvert);
+            //_card.SetSide(SideType.Back);
+
+            //InvertCardBack();
+            //yield return new WaitForSeconds(_data.InvertCardBackDuration + _data.DelayAfterInvert);
+
+            yield return new WaitUntil(() => _invertCardAnimation.IsComplete);
 
             _callback?.Invoke(_card);
         }
 
-        private void InvertCardFront()
-        {
-            Vector3 scaleVector = _card.DefaultScaleVector;
-            Vector3 position = _readOnlyCardTransform.GetPosition();
+        //private void InvertCardFront()
+        //{
+        //    Vector3 scaleVector = _card.DefaultScaleVector;
+        //    Vector3 position = _readOnlyCardTransform.GetPosition();
 
-            _cardMovement.MoveLinear(position, _data.InvertRotation, _data.InvertCardFrontDuration, scaleVector);
-        }
+        //    //_cardMovement.MoveLinear(position, _data.InvertRotation, _data.InvertCardFrontDuration, scaleVector);
+        //    _cardMovement.MoveLinear(position, new Vector3(0f, -45f, 0f), _data.InvertCardFrontDuration, scaleVector);
+        //}
 
-        private void InvertCardBack()
-        {
-            Vector3 endRotationVector = Vector3.zero;
-            Vector3 position = _readOnlyCardTransform.GetPosition();
+        //private void InvertCardBack()
+        //{
+        //    Vector3 endRotationVector = Vector3.zero;
+        //    Vector3 position = _readOnlyCardTransform.GetPosition();
 
-            _cardMovement.MoveSmoothly(position, endRotationVector, _data.InvertCardBackDuration, _readOnlyCardTransform.GetLocalScale());
-        }
+        //    _cardMovement.MoveSmoothly(position, endRotationVector, _data.InvertCardBackDuration, _readOnlyCardTransform.GetLocalScale());
+        //}
 
         private void IncreaseCard()
         {

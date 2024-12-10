@@ -13248,7 +13248,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47de0030f477343ea904b2be42d77bae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cameraTransform: {fileID: 1395967277}
+  _data:
+    <AttackAnimationData>k__BackingField:
+      <OffsetXCardFactor>k__BackingField: 0.35
+      <OffsetYCardFactor>k__BackingField: 0.35
+      <AtTheReadyMoveDuration>k__BackingField: 1
+      <AfterAtTheReadyMoveDelay>k__BackingField: 0.5
+      <EndMoveDuration>k__BackingField: 1
+      <InOutBackFactor>k__BackingField: 0.5
+    <InvertCardAnimationData>k__BackingField:
+      <InvertCardFrontDuration>k__BackingField: 0.5
+      <InvertCardBackDuration>k__BackingField: 0.5
+      <DelayAfterInvert>k__BackingField: 0.5
+    <ShakeAnimationConfig>k__BackingField:
+      <Data>k__BackingField:
+        <Duration>k__BackingField: 0.2
+        <MaxOffsetX>k__BackingField: 0.3
+        <MaxOffsetY>k__BackingField: 0.3
+        <MinOffsetX>k__BackingField: -0.3
+        <MinOffsetY>k__BackingField: -0.3
+        <Delay>k__BackingField: 0.025
+      <TargetTransform>k__BackingField: {fileID: 1395967277}
 --- !u!61 &1939013325
 BoxCollider2D:
   m_ObjectHideFlags: 0

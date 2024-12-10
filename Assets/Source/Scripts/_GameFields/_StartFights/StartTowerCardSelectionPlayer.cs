@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cards;
 using Cysharp.Threading.Tasks;
+using GameFields.CommonAnimations;
 using GameFields.Persons;
 using GameFields.Persons.CardTransits;
 using GameFields.Persons.Discovers;
@@ -18,6 +19,7 @@ namespace GameFields.StartFights
         private readonly Discover _discover;
 
         private readonly StartTowerCardSelectionPlayerData _data;
+        private readonly InvertCardAnimation _invertCardAnimation;
 
         private readonly Seat[] _seats;
 
@@ -29,6 +31,8 @@ namespace GameFields.StartFights
             _seats = seats;
             _deck = deck;
             _discover = discover;
+
+            _invertCardAnimation = new InvertCardAnimation(_data.InvertCardAnimationData);
 
             InitSeats();
         }
@@ -109,36 +113,40 @@ namespace GameFields.StartFights
 
             yield return new WaitForSeconds(_data.DelayBeforeStartProcessSeatCardInTower);
 
-            InvertCardFront(card);
-            yield return new WaitForSeconds(_data.InvertCardFrontDuration);
+            _invertCardAnimation.Play(card);
 
-            card.SetSide(SideType.Back);
+            yield return new WaitUntil(() => _invertCardAnimation.IsComplete);
 
-            InvertCardBack(card);
-            yield return new WaitForSeconds(_data.InvertCardBackDuration + _data.DelayAfterInvert);
+            //InvertCardFront(card);
+            //yield return new WaitForSeconds(_data.InvertCardFrontDuration);
+
+            //card.SetSide(SideType.Back);
+
+            //InvertCardBack(card);
+            //yield return new WaitForSeconds(_data.InvertCardBackDuration + _data.DelayAfterInvert);
 
             mySeat.Reset();
             TowerTransitSet.Set(card);
         }
 
-        private void InvertCardFront(Card card)
-        {
-            Vector3 position = card.ReadOnlyRectTransform.GetPosition();
+        //private void InvertCardFront(Card card)
+        //{
+        //    Vector3 position = card.ReadOnlyRectTransform.GetPosition();
 
-            Movement cardMovement = card.CardMovement;
+        //    Movement cardMovement = card.CardMovement;
 
-            cardMovement.MoveLinear(position, new Vector3(0f, -90f, 0f), _data.InvertCardFrontDuration);
-        }
+        //    cardMovement.MoveLinear(position, new Vector3(0f, -90f, 0f), _data.InvertCardFrontDuration);
+        //}
 
-        private void InvertCardBack(Card card)
-        {
-            Vector3 endRotationVector = Vector3.zero;
-            Vector3 position = card.ReadOnlyRectTransform.GetPosition();
+        //private void InvertCardBack(Card card)
+        //{
+        //    Vector3 endRotationVector = Vector3.zero;
+        //    Vector3 position = card.ReadOnlyRectTransform.GetPosition();
 
-            Movement cardMovement = card.CardMovement;
+        //    Movement cardMovement = card.CardMovement;
 
-            cardMovement.MoveSmoothly(position, endRotationVector, _data.InvertCardBackDuration, card.ReadOnlyRectTransform.GetLocalScale());
-        }
+        //    cardMovement.MoveSmoothly(position, endRotationVector, _data.InvertCardBackDuration, card.ReadOnlyRectTransform.GetLocalScale());
+        //}
 
         private void InitSeats()
         {

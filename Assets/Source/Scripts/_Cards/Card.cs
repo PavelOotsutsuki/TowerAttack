@@ -151,6 +151,11 @@ namespace Cards
             AutomaticFillComponents.DefineComponent(this, ref _cardPaper, ComponentLocationTypes.InChildren);
         }
 
-        #endregion 
+        public object ToUniTask()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }
