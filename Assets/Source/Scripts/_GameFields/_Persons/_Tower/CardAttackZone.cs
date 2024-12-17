@@ -25,8 +25,6 @@ namespace GameFields.Persons.Towers
 
         private DiscardPile _discardPile;
 
-        private Card _card;
-
         [Inject]
         public void Construct(DiscardPile discardPile)
         {
@@ -46,7 +44,6 @@ namespace GameFields.Persons.Towers
 
         public void Attack(Card card)
         {
-            _card = card;
             //_cardMovement = _card.CardMovement;
             //_cardTransform = _card.ReadOnlyRectTransform;
             //_handBlockable.BlockCards();
@@ -54,12 +51,12 @@ namespace GameFields.Persons.Towers
             //AttackAnimation attackAnimation = new AttackAnimation(_card.CardMovement, _card.ReadOnlyRectTransform,
             //    _towerTransform.GetPosition(), _towerTransform.GetRect(), _data.AttackAnimationData);
 
-            StartCoroutine(ActivatingAttack());
+            StartCoroutine(ActivatingAttack(card));
         }
 
-        private IEnumerator ActivatingAttack()
+        private IEnumerator ActivatingAttack(Card card)
         {
-            AttackAnimation attackAnimation = new AttackAnimation(_card.CardMovement, _card.ReadOnlyRectTransform,
+            AttackAnimation attackAnimation = new AttackAnimation(card.CardMovement, card.ReadOnlyRectTransform,
                 _towerTransform.GetPosition(), _towerTransform.GetRect(), _data.AttackAnimationData);
 
             attackAnimation.Play();
@@ -73,11 +70,11 @@ namespace GameFields.Persons.Towers
             yield return new WaitUntil(() => _attackMenu.IsComplete);
 
             //StartCoroutine(Discarding());
-            _invertCardAnimation.Play(_card);
+            _invertCardAnimation.Play(card);
 
             yield return new WaitUntil(() => _invertCardAnimation.IsComplete);
 
-            _discardPile.SeatCard(_card);
+            _discardPile.SeatCard(card);
         }
 
         //private IEnumerator Discarding()

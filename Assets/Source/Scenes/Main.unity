@@ -4756,6 +4756,7 @@ GameObject:
   m_Component:
   - component: {fileID: 601274533}
   - component: {fileID: 601274534}
+  - component: {fileID: 601274535}
   m_Layer: 0
   m_Name: EndTurnButton
   m_TagString: Untagged
@@ -4806,6 +4807,18 @@ MonoBehaviour:
     <ActiveViewInvertDuration>k__BackingField: 0.2
     <DeactiveViewInvertDuration>k__BackingField: 0.2
   _button: {fileID: 363521649}
+--- !u!225 &601274535
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 601274532}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &610687165
 GameObject:
   m_ObjectHideFlags: 0
@@ -4870,6 +4883,7 @@ MonoBehaviour:
     <DrawCardsDelay>k__BackingField: 0.5
   _enemyCountStartDrawCards: 1
   _tableActivator: {fileID: 867188514}
+  _towerActivator: {fileID: 1939013329}
   _simpleDrawCardDelay: 0.1
   _fireDrawCardDelay: 2
 --- !u!224 &612459455 stripped
@@ -8450,9 +8464,10 @@ MonoBehaviour:
       \u043A\u0430\u043A\u0430\u044F \u043A\u0430\u0440\u0442\u0430 \u0431\u0443\u0434\u0435\u0442
       \u0432 \u0437\u0430\u043C\u043A\u0435"
     <DelayAfterCardChoiceDone>k__BackingField: 0.5
-    <InvertCardFrontDuration>k__BackingField: 0.5
-    <InvertCardBackDuration>k__BackingField: 0.5
-    <DelayAfterInvert>k__BackingField: 0.5
+    <InvertCardAnimationData>k__BackingField:
+      <InvertCardFrontDuration>k__BackingField: 0.5
+      <InvertCardBackDuration>k__BackingField: 0.5
+      <DelayAfterInvert>k__BackingField: 0.5
     <DelayBeforeStartProcessSeatCardInTower>k__BackingField: 1
   _imitationData:
     _minWaitDurationBeforeStartActions: 6
@@ -9328,7 +9343,7 @@ PrefabInstance:
       addedObject: {fileID: 1939013321}
     - targetCorrespondingSourceObject: {fileID: 4707179963278497091, guid: 72cc5ca19a7994600a9e0a918cd8b3a9, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1939013325}
+      addedObject: {fileID: 1939013329}
   m_SourcePrefab: {fileID: 100100000, guid: 72cc5ca19a7994600a9e0a918cd8b3a9, type: 3}
 --- !u!114 &1296459755 stripped
 MonoBehaviour:
@@ -10376,12 +10391,12 @@ MonoBehaviour:
     <DiscardCardAnimationData>k__BackingField:
       <StartScaleVector>k__BackingField: {x: 0.5, y: 0.5, z: 0.5}
       <StartRotation>k__BackingField: {x: 0, y: 0, z: 0}
-      <InvertRotation>k__BackingField: {x: 0, y: -90, z: 0}
       <CardIncreaseDuration>k__BackingField: 0.5
       <DelayAfterIncrease>k__BackingField: 0.5
-      <InvertCardFrontDuration>k__BackingField: 0.5
-      <InvertCardBackDuration>k__BackingField: 0.5
-      <DelayAfterInvert>k__BackingField: 0.5
+      <InvertCardAnimationData>k__BackingField:
+        <InvertCardFrontDuration>k__BackingField: 0.5
+        <InvertCardBackDuration>k__BackingField: 0.5
+        <DelayAfterInvert>k__BackingField: 0.5
   _seatPool: {fileID: 1504469769}
   _playerHand: {fileID: 2141903759}
   _playerTable: {fileID: 867188518}
@@ -13269,51 +13284,24 @@ MonoBehaviour:
         <MinOffsetY>k__BackingField: -0.3
         <Delay>k__BackingField: 0.025
       <TargetTransform>k__BackingField: {fileID: 1395967277}
---- !u!61 &1939013325
-BoxCollider2D:
+--- !u!225 &1939013327 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 2404349201422248753, guid: 72cc5ca19a7994600a9e0a918cd8b3a9, type: 3}
+  m_PrefabInstance: {fileID: 1296459754}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1939013329
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1054946224}
   m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5dfd37ee48f994fb28080469f6fdc207, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canvasGroup: {fileID: 1939013327}
 --- !u!224 &1951934494 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5981172514607463790, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}

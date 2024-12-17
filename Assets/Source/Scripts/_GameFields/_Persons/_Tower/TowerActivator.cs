@@ -1,21 +1,47 @@
-using System.Collections;
-using System.Collections.Generic;
+using Tools;
+using Tools.Utils.FillComponents;
 using UnityEngine;
 
-namespace GameFields
+namespace GameFields.Persons.Towers
 {
-    public class TowerActivator : MonoBehaviour
+    public class TowerActivator : MonoBehaviour, IWorkable, IAutomaticFillComponents
     {
-        // Start is called before the first frame update
-        void Start()
+        [SerializeField] private CanvasGroup _canvasGroup;
+
+        public bool? IsActive { get; private set; } = null;
+
+        public void Activate()
         {
-        
+            if (IsActive == true)
+                return;
+
+            IsActive = true;
+
+            _canvasGroup.blocksRaycasts = true;
         }
 
-        // Update is called once per frame
-        void Update()
+        public void Deactivate()
         {
-        
+            if (IsActive == false)
+                return;
+
+            IsActive = false;
+
+            _canvasGroup.blocksRaycasts = false;
         }
+
+        #region AutomaticFillComponents
+        [ContextMenu(nameof(DefineAllComponents) + nameof(TowerActivator))]
+        public void DefineAllComponents()
+        {
+            DefineCanvasGroup();
+        }
+
+        [ContextMenu(nameof(DefineCanvasGroup))]
+        private void DefineCanvasGroup()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _canvasGroup, ComponentLocationTypes.InThis);
+        }
+        #endregion 
     }
 }

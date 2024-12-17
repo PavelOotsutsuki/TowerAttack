@@ -12,30 +12,38 @@ namespace GameFields.Persons
 {
     public class EnemyAI : Person
     {
-        private readonly IDeactivatable _tableDeactivator;
+        //private readonly IDeactivatable _gameFieldObjectsActivator;
 
-        public EnemyAI(IDeactivatable tableDeactivator, IPersonStep enemyDragAndDropImitation, CardPlayingZone cardPlayingZone,
+        public EnemyAI(GameFieldObjectsActivator gameFieldObjectsActivator, PersonStep enemyDragAndDropImitation, CardPlayingZone cardPlayingZone,
             Tower tower, DrawCardRoot drawCardRoot, DiscoverAI discoverImitation, StartTurnDraw startTurnDraw, SignalBus bus,
             Hand hand, AttackMenu attackMenu) :
-            base(cardPlayingZone, drawCardRoot, tower, startTurnDraw, enemyDragAndDropImitation,discoverImitation, bus, hand, attackMenu)
+            base(cardPlayingZone, drawCardRoot, tower, startTurnDraw, enemyDragAndDropImitation,discoverImitation, bus, hand,
+                attackMenu, gameFieldObjectsActivator)
         {
-            _tableDeactivator = tableDeactivator;
-            Bus.Subscribe<StartEffectSignal>(SetCardEffectProcess);
+            //_gameFieldObjectsActivator = gameFieldObjectsActivator;
+            //Bus.Subscribe<StartEffectSignal>(SetCardEffectProcess);
         }
 
-        ~EnemyAI()
+        protected override void InitSteps()
         {
-            Bus.Unsubscribe<StartEffectSignal>(SetCardEffectProcess);
+            EnqueueStep(StartTurnDraw);
+            EnqueueStep(TurnProcess);
+            EnqueueStep(CardEffectProcessing);
         }
+
+        //~EnemyAI()
+        //{
+        //    Bus.Unsubscribe<StartEffectSignal>(SetCardEffectProcess);
+        //}
 
         protected override void OnStartStep()
         {
-            _tableDeactivator.Deactivate();
+            //GameFieldObjectsActivator.Deactivate();
         }
 
-        private void SetCardEffectProcess(StartEffectSignal signal)
-        {
-            EnqueueStep(new CardEffectProcessing(signal.Card));
-        }
+        //private void SetCardEffectProcess(StartEffectSignal signal)
+        //{
+        //    EnqueueStep(new CardEffectProcessing(signal.Card));
+        //}
     }
 }

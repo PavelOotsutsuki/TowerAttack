@@ -1,17 +1,18 @@
 namespace GameFields.Persons
 {
-    public class StartPlayerTurnView: IPersonStep
+    public class StartPlayerTurnView: PersonStep
     {
         private readonly StartPlayerTurnLabel _label;
 
-        public StartPlayerTurnView(StartPlayerTurnLabel label)
+        public StartPlayerTurnView(GameFieldObjectsActivator gameFieldObjectsActivator, StartPlayerTurnLabel label)
+            :base(gameFieldObjectsActivator)
         {
             _label = label;
         }
 
-        public bool IsComplete => _label.IsComplete;
+        public override bool IsComplete => _label.IsComplete;
 
-        public void StartStep()
+        protected override void OnStartStep()
         {
             _label.Activate();
         }

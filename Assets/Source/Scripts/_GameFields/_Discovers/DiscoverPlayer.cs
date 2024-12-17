@@ -15,11 +15,11 @@ namespace GameFields.Persons.Discovers
 
         [SerializeField] private CanvasGroup _canvasGroup;
 
-        private IHandBlockable _handBlockable;
+        //private IHandBlockable _handBlockable;
 
-        public void Init(IHandBlockable handBlockable)
+        public override void Init(/*IHandBlockable handBlockable*/)
         {
-            _handBlockable = handBlockable;
+            //_handBlockable = handBlockable;
 
             _canvasGroup.blocksRaycasts = true;
 
@@ -31,7 +31,7 @@ namespace GameFields.Persons.Discovers
 
         public override void Activate(DiscoverActivateData data)
         {
-            _handBlockable.ForciblyBlock();
+            //_handBlockable.ForciblyBlock();
             _canvasGroup.blocksRaycasts = true;
 
             base.Activate(data);
@@ -56,7 +56,7 @@ namespace GameFields.Persons.Discovers
         {
             yield return new WaitUntil(() => _discoverLabel.IsComplete && _discoverPanel.IsComplete);
 
-            _handBlockable.Unblock();
+            //_handBlockable.Unblock();
             base.Deactivate();
         }
 
@@ -66,6 +66,7 @@ namespace GameFields.Persons.Discovers
         {
             DefineDiscoverPanel();
             DefineDiscoverLabel();
+            DefineCanvasGroup();
 
             base.DefineAllComponents();
         }
@@ -80,6 +81,12 @@ namespace GameFields.Persons.Discovers
         private void DefineDiscoverLabel()
         {
             AutomaticFillComponents.DefineComponent(this, ref _discoverLabel, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineCanvasGroup))]
+        private void DefineCanvasGroup()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _canvasGroup, ComponentLocationTypes.InThis);
         }
 
         #endregion

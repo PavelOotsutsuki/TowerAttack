@@ -4,11 +4,17 @@ namespace GameFields.Signals
 {
     public struct StartEffectSignal
     {
-        public readonly Card Card;
+        //public readonly Card Card;
 
-        public StartEffectSignal(Card card)
+        //public StartEffectSignal(Card card)
+        //{
+        //    Card = card;
+        //}
+        public readonly Effect Effect;
+
+        public StartEffectSignal(Effect effect)
         {
-            Card = card;
+            Effect = effect;
         }
     }
 }

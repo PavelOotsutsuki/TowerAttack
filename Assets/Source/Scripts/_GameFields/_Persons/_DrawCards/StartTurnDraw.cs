@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.DrawCards
 {
-    public class StartTurnDraw : IPersonStep
+    public abstract class StartTurnDraw : PersonStep
     {
         private readonly int _countDrawCards;
         private readonly DrawCardRoot _drawCardRoot;
@@ -16,7 +16,9 @@ namespace GameFields.Persons.DrawCards
 
         private IDrawCardAnimation _currentAnimation;
 
-        public StartTurnDraw(DrawCardRoot drawCardRoot, SimpleDrawCardAnimation simpleDrawCardAnimation, FireDrawCardAnimation fireDrawCardAnimation, int countDrawCards)
+        public StartTurnDraw(GameFieldObjectsActivator gameFieldObjectsActivator, DrawCardRoot drawCardRoot,
+            SimpleDrawCardAnimation simpleDrawCardAnimation, FireDrawCardAnimation fireDrawCardAnimation,
+            int countDrawCards) :base(gameFieldObjectsActivator)
         {
             _drawCardRoot = drawCardRoot;
             _simpleDrawCardAnimation = simpleDrawCardAnimation;
@@ -27,9 +29,9 @@ namespace GameFields.Persons.DrawCards
             _countExtraAnimationTurns = 0;
         }
 
-        public bool IsComplete => _isComplete;
+        public override bool IsComplete => _isComplete;
 
-        public void StartStep()
+        protected override void OnStartStep()
         {
             _isComplete = false;
             DrawingCards().ToUniTask();

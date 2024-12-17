@@ -2,38 +2,38 @@ using System.Collections;
 using Cysharp.Threading.Tasks;
 using GameFields.EndTurnButtons;
 using GameFields.Persons.Hands;
+using Tools;
 using UnityEngine;
 
 namespace GameFields.Persons
 {
-    public class TurnProcessing : IPersonStep
+    public class TurnProcessing : PersonStep
     {
-        private readonly IButtonActivator _buttonActivator;
-        private readonly IHandBlockable _handBlockable;
-
         private bool _isComplete;
 
-        public TurnProcessing(IButtonActivator buttonActivator, IHandBlockable handBlockable)
+        public TurnProcessing(GameFieldObjectsActivator gameFieldObjectsActivator): base(gameFieldObjectsActivator)
         {
             _isComplete = false;
-            _buttonActivator = buttonActivator;
-            _handBlockable = handBlockable;
         }
 
-        public bool IsComplete => _isComplete;
+        public override bool IsComplete => _isComplete;
 
-        public void StartStep()
+        protected override void OnStartStep()
         {
             _isComplete = false;
-            _buttonActivator.SetActiveSide();
-            _handBlockable.Unblock();
 
             WaitingEndTurnButtonClick().ToUniTask();
         }
 
+        public void Completed()
+        {
+            _isComplete = true;
+        }
+
         private IEnumerator WaitingEndTurnButtonClick()
         {
-            yield return new WaitUntil(() => _buttonActivator.IsActive == false);
+            //yield return new WaitUntil(() => _buttonActivator.EndTurnClicked == false);
+            yield return new WaitUntil(() => _isComplete);
 
             _isComplete = true;
         }

@@ -7,11 +7,11 @@ namespace GameFields.Persons.Discovers
 {
     public class DiscoverActivateData : IData
     {
-        private readonly List<Card> _cards;
+        private readonly IReadOnlyList<Card> _cards;
         private readonly string _activateMessage;
         private readonly Action<Card> _callback;
 
-        public DiscoverActivateData(List<Card> cards, string activateMessage, Action<Card> callback)
+        public DiscoverActivateData(IReadOnlyList<Card> cards, string activateMessage, Action<Card> callback)
         {
             _cards = cards;
             _activateMessage = activateMessage;

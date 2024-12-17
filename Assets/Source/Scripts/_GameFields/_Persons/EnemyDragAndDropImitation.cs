@@ -6,7 +6,7 @@ using Cards;
 
 namespace GameFields.Persons
 {
-    public class EnemyDragAndDropImitation: IPersonStep
+    public class EnemyDragAndDropImitation: PersonStep
     {
         private const int CountLogics = 1;
         private const float SelectYDirection = 1;
@@ -18,7 +18,8 @@ namespace GameFields.Persons
 
         private bool _isComplete;
 
-        internal EnemyDragAndDropImitation(CardDragAndDropImitationActions cardImitationActions, EnemyDragAndDropImitationData data, Hand hand)
+        internal EnemyDragAndDropImitation(CardDragAndDropImitationActions cardImitationActions, EnemyDragAndDropImitationData data,
+            GameFieldObjectsActivator gameFieldObjectsActivator, Hand hand): base(gameFieldObjectsActivator)
         {
             _isComplete = false;
             _data = data;
@@ -28,9 +29,9 @@ namespace GameFields.Persons
 
         public int CountDrawCards => _data.CountDrawCards;
         public float DrawCardsDelay => _data.DrawCardsDelay;
-        public bool IsComplete => _isComplete;
+        public override bool IsComplete => _isComplete;
 
-        public void StartStep()
+        protected override void OnStartStep()
         {
             _isComplete = false;
             int logicNumber = Random.Range(1, CountLogics + 1);

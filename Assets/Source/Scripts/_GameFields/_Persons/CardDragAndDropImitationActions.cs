@@ -60,7 +60,7 @@ namespace GameFields.Persons
 
             _cardDragAndDropListener.OnCardPlay();
             _cardDropPlaceImitation.SeatCard(_activeCard);
-            _bus.Fire(new StartEffectSignal(_activeCard));
+            //_bus.Fire(new StartEffectSignal(_activeCard));
         }
 
         public void ReturnInHand(float returnToHandDuration)

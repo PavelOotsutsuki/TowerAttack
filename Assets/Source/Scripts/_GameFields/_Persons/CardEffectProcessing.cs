@@ -1,34 +1,45 @@
 using System.Collections;
+using System.Collections.Generic;
 using Cards;
 using Cysharp.Threading.Tasks;
+using Tools;
 using UnityEngine;
 
 namespace GameFields.Persons
 {
-    public class CardEffectProcessing : IPersonStep
-    {
-        private readonly Card _currentCard;
+    public class CardEffectProcessing : PersonStep
+    {   
+        private Effect _currentEffect;
+        private bool _isComplete;
 
-        public bool IsComplete { get; private set; }
-
-        public CardEffectProcessing(Card card)
+        public CardEffectProcessing(GameFieldObjectsActivator gameFieldObjectsActivator): base(gameFieldObjectsActivator)
         {
-            IsComplete = false;
-            _currentCard = card;
+            _isComplete = false;
+
+            _currentEffect = null;
         }
 
-        public void StartStep()
+        public void SetEffect(Effect effect)
         {
-            IsComplete = false;
+            _currentEffect = effect;
+        }
+
+        public override bool IsComplete => _isComplete;
+
+        private bool IsEndEffect => _currentEffect is null ? true : _currentEffect.IsComplete;
+
+        protected override void OnStartStep()
+        {
+            _isComplete = false;
 
             WaitingEndEffect().ToUniTask();
         }
 
         private IEnumerator WaitingEndEffect()
         {
-            yield return new WaitUntil(() => _currentCard.IsPlayingEffect);
+            yield return new WaitUntil(() => IsEndEffect);
 
-            IsComplete = true;
+            _isComplete = true;
         }
     }
 }

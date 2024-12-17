@@ -11,29 +11,39 @@ namespace GameFields.Persons
 {
     public class Player : Person
     {
-        private readonly IActivatable _tableActivator;
+        //private readonly IActivatable _gameFieldObjectsActivator;
         private readonly IHandBlockable _handBlockable;
-        private readonly IPersonStep _startPlayerTurnView;
+        private readonly PersonStep _startPlayerTurnView;
+        private readonly EndTurnProcessing _endTurnProcessing;
 
         private AttackMenu _attackMenu;
 
-        public Player(IActivatable tableActivator, Hand hand, CardPlayingZone cardPlayingZone, Tower tower,
-            DiscoverPlayer discover, DrawCardRoot drawCardRoot, StartTurnDraw startTurnDraw, IPersonStep turnProcessing,
-            SignalBus bus, IPersonStep startPlayerTurnView, AttackMenu attackMenu) :
-            base(cardPlayingZone, drawCardRoot, tower, startTurnDraw, turnProcessing, discover, bus, hand, attackMenu)
+        public Player(GameFieldObjectsActivator gameFieldObjectsActivator, Hand hand, CardPlayingZone cardPlayingZone, Tower tower,
+            DiscoverPlayer discover, DrawCardRoot drawCardRoot, StartTurnDraw startTurnDraw, PersonStep turnProcessing,
+            SignalBus bus, PersonStep startPlayerTurnView, AttackMenu attackMenu, EndTurnProcessing endTurnProcessing) :
+            base(cardPlayingZone, drawCardRoot, tower, startTurnDraw, turnProcessing, discover, bus, hand,
+                attackMenu, gameFieldObjectsActivator)
         {
             _startPlayerTurnView = startPlayerTurnView;
-            _tableActivator = tableActivator;
+            _endTurnProcessing = endTurnProcessing;
+            //_gameFieldObjectsActivator = gameFieldObjectsActivator;
             _handBlockable = hand;
             _attackMenu = attackMenu;
         }
 
-        protected override void OnStartStep()
+        protected override void InitSteps()
         {
             EnqueueStep(_startPlayerTurnView);
+            EnqueueStep(StartTurnDraw);
+            EnqueueStep(TurnProcess);
+            EnqueueStep(CardEffectProcessing);
+            EnqueueStep(_endTurnProcessing);
+        }
 
-            _handBlockable.ForciblyBlock();
-            _tableActivator.Activate();
+        protected override void OnStartStep()
+        {
+            //_handBlockable.ForciblyBlock();
+            //GameFieldObjectsActivator.Activate();
             //_attackMenu.Activate();
         }
     }
