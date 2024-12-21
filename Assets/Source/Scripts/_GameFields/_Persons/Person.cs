@@ -27,7 +27,7 @@ namespace GameFields.Persons
         private readonly Hand _hand;
         private readonly AttackMenu _attackMenu;
 
-        private readonly PersonStep _lastStep;
+        //private readonly PersonStep _lastStep;
 
         //protected readonly PersonStep TurnProcess;
         protected readonly StartTurnDraw StartTurnDraw;
@@ -38,7 +38,7 @@ namespace GameFields.Persons
         private PersonStep _currentStep;
 
         protected Person(CardPlayingZone playingZone, DrawCardRoot drawCardRoot, Tower tower,
-            StartTurnDraw startTurnDraw, Discover discover, SignalBus bus, PersonStep lastStep,
+            StartTurnDraw startTurnDraw, Discover discover, SignalBus bus, /*PersonStep lastStep,*/
             Hand hand, AttackMenu attackMenu, InteractionActivator gameFieldObjectsActivator)
         {
             _hand = hand;
@@ -50,7 +50,7 @@ namespace GameFields.Persons
             //TurnProcess = turnProcess;
             _discover = discover;
             _attackMenu = attackMenu;
-            _lastStep = lastStep;
+            //_lastStep = lastStep;
             InteractionActivator = gameFieldObjectsActivator;
 
             _personSteps = new Stack<PersonStep>();
@@ -130,7 +130,7 @@ namespace GameFields.Persons
             {
                 _currentStep.StartStep();
                 Debug.Log(_currentStep.ToString() + ": " + this.ToString());
-                yield return new WaitUntil(() => _currentStep.IsComplete || _hand.CountCards == 0);
+                yield return new WaitUntil(() => _currentStep.IsComplete);
 
                 NextStep();
             }
@@ -138,12 +138,12 @@ namespace GameFields.Persons
 
         private void NextStep()
         {
-            if (_hand.CountCards == 0)
-            {
-                _personSteps.Clear();
-                _currentStep = _lastStep;
-                return;
-            }
+            //if (_hand.CountCards == 0)
+            //{
+            //    _personSteps.Clear();
+            //    _currentStep = _lastStep;
+            //    return;
+            //}
 
             if (_personSteps.Count > 0 )
             {

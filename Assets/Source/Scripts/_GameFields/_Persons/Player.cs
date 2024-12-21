@@ -24,7 +24,7 @@ namespace GameFields.Persons
         public Player(InteractionActivator interactionActivator, Hand hand, CardPlayingZone cardPlayingZone, Tower tower,
             DiscoverPlayer discover, DrawCardRoot drawCardRoot, StartTurnDraw startTurnDraw, TurnProcessing turnProcessing,
             SignalBus bus, PersonStep startPlayerTurnView, AttackMenu attackMenu, EndTurnProcessing endTurnProcessing) :
-            base(cardPlayingZone, drawCardRoot, tower, startTurnDraw, discover, bus, endTurnProcessing, hand,
+            base(cardPlayingZone, drawCardRoot, tower, startTurnDraw, discover, bus, hand,
                 attackMenu, interactionActivator)
         {
             _startPlayerTurnView = startPlayerTurnView;
