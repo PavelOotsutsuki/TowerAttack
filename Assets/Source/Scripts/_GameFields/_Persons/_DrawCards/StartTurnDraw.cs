@@ -16,9 +16,9 @@ namespace GameFields.Persons.DrawCards
 
         private IDrawCardAnimation _currentAnimation;
 
-        public StartTurnDraw(GameFieldObjectsActivator gameFieldObjectsActivator, DrawCardRoot drawCardRoot,
+        public StartTurnDraw(InteractionActivator interactionActivator, DrawCardRoot drawCardRoot,
             SimpleDrawCardAnimation simpleDrawCardAnimation, FireDrawCardAnimation fireDrawCardAnimation,
-            int countDrawCards) :base(gameFieldObjectsActivator)
+            int countDrawCards) :base(interactionActivator)
         {
             _drawCardRoot = drawCardRoot;
             _simpleDrawCardAnimation = simpleDrawCardAnimation;

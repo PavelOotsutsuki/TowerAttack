@@ -15,7 +15,7 @@ namespace GameFields.Persons
         private bool _isComplete;
 
         public EndTurnProcessing(IEndTurnButtonStateWatcher endTurnButtonStateWatcher,// IHandBlockable handBlockable,
-            GameFieldObjectsActivator gameFieldObjectsActivator): base(gameFieldObjectsActivator)
+            InteractionActivator interactionActivator): base(interactionActivator)
         {
             _isComplete = false;
             _endTurnButtonStateWatcher = endTurnButtonStateWatcher;

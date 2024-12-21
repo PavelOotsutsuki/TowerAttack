@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Hands
 {
-    public abstract class Hand : MonoBehaviour, ICardDragAndDropListener, IHandBlockable, IAutomaticFillComponents
+    public abstract class Hand : MonoBehaviour, ICardDragAndDropListener, IHandBlockable, IReadOnlyHand, IAutomaticFillComponents
     {
         private const float StartRotation = 0;
         private const int EmptyIndex = -1;
@@ -30,6 +30,8 @@ namespace GameFields.Persons.Hands
 
         bool ICardDragAndDropListener.IsDraggable => this is HandPlayer;
         float ICardDragAndDropListener.ReturnInSeatDuration => _returnInSeatDuration;
+
+        public int CountCards => _handSeats.Count;
 
         public void Init(SeatPool seatPool)
         {

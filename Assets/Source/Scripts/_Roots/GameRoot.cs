@@ -33,7 +33,7 @@ namespace Roots
             EnemyAI enemyAI = _personCreator.CreateEnemyAI();
 
             _personsState = new PersonsState(player, enemyAI);
-            EffectFactory effectFactory = new EffectFactory(_personsState, bus);
+            EffectFactory effectFactory = new EffectFactory(_personsState);
 
             _cardRoot.Init(effectFactory, cardDescription);
             deck.Init(_cardRoot.Cards);

@@ -4,8 +4,8 @@ namespace GameFields.Persons
     {
         private readonly StartPlayerTurnLabel _label;
 
-        public StartPlayerTurnView(GameFieldObjectsActivator gameFieldObjectsActivator, StartPlayerTurnLabel label)
-            :base(gameFieldObjectsActivator)
+        public StartPlayerTurnView(InteractionActivator interactionActivator, StartPlayerTurnLabel label)
+            :base(interactionActivator)
         {
             _label = label;
         }

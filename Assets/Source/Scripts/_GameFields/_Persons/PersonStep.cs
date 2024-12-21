@@ -4,18 +4,18 @@ namespace GameFields.Persons
 {
     public abstract class PersonStep : IStateMachineState
     {
-        private readonly GameFieldObjectsActivator _gameFieldObjectsActivator;
+        private readonly InteractionActivator _interactionActivator;
 
-        public PersonStep(GameFieldObjectsActivator gameFieldObjectsActivator)
+        public PersonStep(InteractionActivator interactionActivator)
         {
-            _gameFieldObjectsActivator = gameFieldObjectsActivator;
+            _interactionActivator = interactionActivator;
         }
 
         public abstract bool IsComplete { get; }
 
         public void StartStep()
         {
-            _gameFieldObjectsActivator.SetObjectsStates(this);
+            _interactionActivator.SetObjectsStates(this);
 
             OnStartStep();
         }

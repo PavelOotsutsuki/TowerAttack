@@ -8,12 +8,12 @@ namespace GameFields.Effects
     public class EffectFactory : IEffectFactory
     {
         private readonly IPersonsState _personsState;
-        private readonly SignalBus _bus;
+        //private readonly SignalBus _bus;
 
-        public EffectFactory(IPersonsState personsState, SignalBus bus)
+        public EffectFactory(IPersonsState personsState/*, SignalBus bus*/)
         {
             _personsState = personsState;
-            _bus = bus;
+            //_bus = bus;
         }
 
         public Effect Create(EffectType type)
@@ -26,7 +26,7 @@ namespace GameFields.Effects
                 _ => throw new NullReferenceException("Effect is not founded"),
             };
 
-            _personsState.Active.SetEffect(effect);
+            _personsState.Active.StartEffect(effect);
             //_bus.Fire(new StartEffectSignal(effect));
 
             return effect;

@@ -9,10 +9,14 @@ namespace GameFields.Persons
 {
     public class TurnProcessing : PersonStep
     {
+        private readonly IReadOnlyHand _hand;
+
         private bool _isComplete;
 
-        public TurnProcessing(GameFieldObjectsActivator gameFieldObjectsActivator): base(gameFieldObjectsActivator)
+        public TurnProcessing(InteractionActivator interactionActivator, IReadOnlyHand hand): base(interactionActivator)
         {
+            _hand = hand;
+
             _isComplete = false;
         }
 
@@ -20,9 +24,11 @@ namespace GameFields.Persons
 
         protected override void OnStartStep()
         {
+            int startCountCards = _hand.CountCards;
+
             _isComplete = false;
 
-            WaitingEndTurnButtonClick().ToUniTask();
+            WaitingEndTurnButtonClick(startCountCards).ToUniTask();
         }
 
         public void Completed()
@@ -30,10 +36,10 @@ namespace GameFields.Persons
             _isComplete = true;
         }
 
-        private IEnumerator WaitingEndTurnButtonClick()
+        private IEnumerator WaitingEndTurnButtonClick(int startCountCards)
         {
             //yield return new WaitUntil(() => _buttonActivator.EndTurnClicked == false);
-            yield return new WaitUntil(() => _isComplete);
+            yield return new WaitUntil(() => startCountCards == 0 || _isComplete == true);
 
             _isComplete = true;
         }

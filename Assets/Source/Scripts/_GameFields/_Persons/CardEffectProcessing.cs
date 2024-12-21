@@ -7,26 +7,21 @@ using UnityEngine;
 
 namespace GameFields.Persons
 {
-    public class CardEffectProcessing : PersonStep
+    public abstract class CardEffectProcessing : PersonStep
     {   
-        private Effect _currentEffect;
+        private readonly Effect _effect;
         private bool _isComplete;
 
-        public CardEffectProcessing(GameFieldObjectsActivator gameFieldObjectsActivator): base(gameFieldObjectsActivator)
+        public CardEffectProcessing(InteractionActivator interactionActivator, Effect effect): base(interactionActivator)
         {
             _isComplete = false;
 
-            _currentEffect = null;
-        }
-
-        public void SetEffect(Effect effect)
-        {
-            _currentEffect = effect;
+            _effect = effect;
         }
 
         public override bool IsComplete => _isComplete;
 
-        private bool IsEndEffect => _currentEffect is null ? true : _currentEffect.IsComplete;
+        private bool IsEndEffect => _effect is null ? true : _effect.IsComplete;
 
         protected override void OnStartStep()
         {

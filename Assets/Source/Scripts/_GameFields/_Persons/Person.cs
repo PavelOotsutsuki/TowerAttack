@@ -22,23 +22,24 @@ namespace GameFields.Persons
         private readonly CardPlayingZone _playingZone;
         private readonly DrawCardRoot _drawCardRoot;
         private readonly Tower _tower;
-        private readonly Queue<PersonStep> _personSteps;
+        private readonly Stack<PersonStep> _personSteps;
         private readonly Discover _discover;
         private readonly Hand _hand;
         private readonly AttackMenu _attackMenu;
 
-        protected readonly PersonStep TurnProcess;
+        private readonly PersonStep _lastStep;
+
+        //protected readonly PersonStep TurnProcess;
         protected readonly StartTurnDraw StartTurnDraw;
-        protected readonly CardEffectProcessing CardEffectProcessing;
 
         protected readonly SignalBus Bus;
-        protected readonly GameFieldObjectsActivator GameFieldObjectsActivator;
+        protected readonly InteractionActivator InteractionActivator;
 
         private PersonStep _currentStep;
 
         protected Person(CardPlayingZone playingZone, DrawCardRoot drawCardRoot, Tower tower,
-            StartTurnDraw startTurnDraw, PersonStep turnProcess, Discover discover, SignalBus bus,
-            Hand hand, AttackMenu attackMenu, GameFieldObjectsActivator gameFieldObjectsActivator)
+            StartTurnDraw startTurnDraw, Discover discover, SignalBus bus, PersonStep lastStep,
+            Hand hand, AttackMenu attackMenu, InteractionActivator gameFieldObjectsActivator)
         {
             _hand = hand;
             Bus = bus;
@@ -46,13 +47,13 @@ namespace GameFields.Persons
             _tower = tower;
             _drawCardRoot = drawCardRoot;
             StartTurnDraw = startTurnDraw;
-            TurnProcess = turnProcess;
+            //TurnProcess = turnProcess;
             _discover = discover;
             _attackMenu = attackMenu;
-            GameFieldObjectsActivator = gameFieldObjectsActivator;
-            CardEffectProcessing = new CardEffectProcessing(gameFieldObjectsActivator);
+            _lastStep = lastStep;
+            InteractionActivator = gameFieldObjectsActivator;
 
-            _personSteps = new Queue<PersonStep>();
+            _personSteps = new Stack<PersonStep>();
             //Bus.Subscribe<StartEffectSignal>(SetCardEffectProcess);
         }
 
@@ -72,7 +73,7 @@ namespace GameFields.Persons
             OnStartStep();
             InitSteps();
 
-            _currentStep = _personSteps.Dequeue();
+            _currentStep = _personSteps.Pop();
 
             ProcessingTurn().ToUniTask();
         }
@@ -114,7 +115,7 @@ namespace GameFields.Persons
 
         protected abstract void OnStartStep();
 
-        protected void EnqueueStep(PersonStep turnStep) => _personSteps.Enqueue(turnStep);
+        protected void PushStep(PersonStep turnStep) => _personSteps.Push(turnStep);
 
         protected abstract void InitSteps();
         //{
@@ -127,9 +128,9 @@ namespace GameFields.Persons
         {
             while (IsComplete == false)
             {
-                ((Tools.StateMachines.IStateMachineState)_currentStep).StartStep();
+                _currentStep.StartStep();
                 Debug.Log(_currentStep.ToString() + ": " + this.ToString());
-                yield return new WaitUntil(() => _currentStep.IsComplete);
+                yield return new WaitUntil(() => _currentStep.IsComplete || _hand.CountCards == 0);
 
                 NextStep();
             }
@@ -137,9 +138,16 @@ namespace GameFields.Persons
 
         private void NextStep()
         {
-            if (_personSteps.Count > 0)
+            if (_hand.CountCards == 0)
             {
-                _currentStep = _personSteps.Dequeue();
+                _personSteps.Clear();
+                _currentStep = _lastStep;
+                return;
+            }
+
+            if (_personSteps.Count > 0 )
+            {
+                _currentStep = _personSteps.Pop();
             }
             else
             {
@@ -147,15 +155,17 @@ namespace GameFields.Persons
             }
         }
 
-        public void SetEffect(Effect effect)
-        {
-            CardEffectProcessing.SetEffect(effect);
+        public abstract void StartEffect(Effect effect);
 
-            if (TurnProcess is TurnProcessing)
-            {
-                ((TurnProcessing)TurnProcess).Completed();
-            }
-        }
+        //public void StartEffect(Effect effect)
+        //{
+        //    CardEffectProcessing.SetEffect(effect);
+
+        //    if (TurnProcess is TurnProcessing)
+        //    {
+        //        ((TurnProcessing)TurnProcess).Completed();
+        //    }
+        //}
 
         //private void SetCardEffectProcess(StartEffectSignal signal)
         //{

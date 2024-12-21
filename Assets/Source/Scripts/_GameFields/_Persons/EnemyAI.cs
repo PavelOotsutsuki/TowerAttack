@@ -1,3 +1,4 @@
+using Cards;
 using GameFields.Persons.AttackMenues;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.DrawCards;
@@ -13,22 +14,29 @@ namespace GameFields.Persons
     public class EnemyAI : Person
     {
         //private readonly IDeactivatable _gameFieldObjectsActivator;
+        private readonly EnemyDragAndDropImitation _enemyDragAndDropImitation;
 
-        public EnemyAI(GameFieldObjectsActivator gameFieldObjectsActivator, PersonStep enemyDragAndDropImitation, CardPlayingZone cardPlayingZone,
+        public EnemyAI(InteractionActivator interactionActivator, EnemyDragAndDropImitation enemyDragAndDropImitation, CardPlayingZone cardPlayingZone,
             Tower tower, DrawCardRoot drawCardRoot, DiscoverAI discoverImitation, StartTurnDraw startTurnDraw, SignalBus bus,
             Hand hand, AttackMenu attackMenu) :
-            base(cardPlayingZone, drawCardRoot, tower, startTurnDraw, enemyDragAndDropImitation,discoverImitation, bus, hand,
-                attackMenu, gameFieldObjectsActivator)
+            base(cardPlayingZone, drawCardRoot, tower, startTurnDraw,discoverImitation, bus, enemyDragAndDropImitation,
+                hand, attackMenu, interactionActivator)
         {
             //_gameFieldObjectsActivator = gameFieldObjectsActivator;
             //Bus.Subscribe<StartEffectSignal>(SetCardEffectProcess);
+            _enemyDragAndDropImitation = enemyDragAndDropImitation;
+        }
+
+        public override void StartEffect(Effect effect)
+        {
+            PushStep(new CardEffectProcessingEnemyAI(InteractionActivator, effect));
         }
 
         protected override void InitSteps()
         {
-            EnqueueStep(StartTurnDraw);
-            EnqueueStep(TurnProcess);
-            EnqueueStep(CardEffectProcessing);
+            //PushStep(CardEffectProcessing);
+            PushStep(_enemyDragAndDropImitation);
+            PushStep(StartTurnDraw);
         }
 
         //~EnemyAI()

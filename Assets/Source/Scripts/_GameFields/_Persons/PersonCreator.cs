@@ -66,7 +66,7 @@ namespace GameFields.Persons
         private Deck _deck;
         private EndTurnButton _endTurnButton;
 
-        private GameFieldObjectsActivator _gameFieldObjectsActivator;
+        private InteractionActivator _interactionActivator;
 
         [Inject]
         public void Construct(CardPlayingZonePlayer playerPlayingZone, HandPlayer playerHand, TablePlayer playerTable, TowerPlayer playerTower,
@@ -96,7 +96,7 @@ namespace GameFields.Persons
             _deck = deck;
             _endTurnButton = endTurnButton;
 
-            _gameFieldObjectsActivator = new GameFieldObjectsActivator(_playerHand, _towerActivator, _tableActivator, endTurnButton);
+            _interactionActivator = new InteractionActivator(_playerHand, _towerActivator, _tableActivator, endTurnButton);
 
             InitPlayersData(seatPool);
             InitEnemyData(seatPool);
@@ -107,13 +107,13 @@ namespace GameFields.Persons
             SimpleDrawCardAnimation simpleDrawCardAnimation = new SimpleDrawCardAnimation(_playerHand, _simpleDrawCardDelay);
             FireDrawCardAnimation fireDrawCardAnimation = new FireDrawCardAnimation(_playerHand, _fireDrawCardDelay);
             DrawCardRoot drawCardRoot = new DrawCardRoot(new SimpleDrawCardAnimation(_playerHand, _simpleDrawCardDelay), _deck);
-            TurnProcessing turnProcessing = new TurnProcessing(_gameFieldObjectsActivator);
-            StartTurnDrawPlayer startTurnDraw = new StartTurnDrawPlayer(_gameFieldObjectsActivator, drawCardRoot, simpleDrawCardAnimation,
+            TurnProcessing turnProcessing = new TurnProcessing(_interactionActivator, _playerHand);
+            StartTurnDrawPlayer startTurnDraw = new StartTurnDrawPlayer(_interactionActivator, drawCardRoot, simpleDrawCardAnimation,
                 fireDrawCardAnimation, _playerCountStartDrawCards);
-            StartPlayerTurnView startPlayerTurnView = new StartPlayerTurnView(_gameFieldObjectsActivator, _startPlayerTurnLabel);
-            EndTurnProcessing endTurnProcessing = new EndTurnProcessing(_endTurnButton, _gameFieldObjectsActivator);
+            StartPlayerTurnView startPlayerTurnView = new StartPlayerTurnView(_interactionActivator, _startPlayerTurnLabel);
+            EndTurnProcessing endTurnProcessing = new EndTurnProcessing(_endTurnButton, _interactionActivator);
 
-            return new Player(_gameFieldObjectsActivator, _playerHand, _playerPlayingZone, _playerTower, _playerDiscover,
+            return new Player(_interactionActivator, _playerHand, _playerPlayingZone, _playerTower, _playerDiscover,
                 drawCardRoot, startTurnDraw, turnProcessing, _bus, startPlayerTurnView, _playerAttackMenu, endTurnProcessing);
         }
 
@@ -123,12 +123,12 @@ namespace GameFields.Persons
             FireDrawCardAnimation fireDrawCardAnimation = new FireDrawCardAnimation(_enemyHand, _fireDrawCardDelay);
             DrawCardRoot drawCardRoot = new DrawCardRoot(new SimpleDrawCardAnimation(_enemyHand, _simpleDrawCardDelay), _deck);
             CardDragAndDropImitationActions cardDragAndDropImitationActions = new CardDragAndDropImitationActions(_enemyHand, _enemyPlayingZone, _bus);
-            StartTurnDrawEnemyAI startTurnDraw = new StartTurnDrawEnemyAI(_gameFieldObjectsActivator, drawCardRoot, simpleDrawCardAnimation,
+            StartTurnDrawEnemyAI startTurnDraw = new StartTurnDrawEnemyAI(_interactionActivator, drawCardRoot, simpleDrawCardAnimation,
                 fireDrawCardAnimation, _enemyCountStartDrawCards);
             EnemyDragAndDropImitation enemyDragAndDropImitation = new EnemyDragAndDropImitation(cardDragAndDropImitationActions,
-                _enemyDragAndDropImitationData, _gameFieldObjectsActivator, _enemyHand);
+                _enemyDragAndDropImitationData, _interactionActivator, _enemyHand);
 
-            return new EnemyAI(_gameFieldObjectsActivator, enemyDragAndDropImitation, _enemyPlayingZone,
+            return new EnemyAI(_interactionActivator, enemyDragAndDropImitation, _enemyPlayingZone,
                 _enemyTower, drawCardRoot, _enemyDiscoverImitation, startTurnDraw, _bus, _enemyHand, _playerAttackMenu);
         }
         

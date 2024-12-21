@@ -19,7 +19,7 @@ namespace GameFields.Persons
         private bool _isComplete;
 
         internal EnemyDragAndDropImitation(CardDragAndDropImitationActions cardImitationActions, EnemyDragAndDropImitationData data,
-            GameFieldObjectsActivator gameFieldObjectsActivator, Hand hand): base(gameFieldObjectsActivator)
+            InteractionActivator interactionActivator, Hand hand): base(interactionActivator)
         {
             _isComplete = false;
             _data = data;
