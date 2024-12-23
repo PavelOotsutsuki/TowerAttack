@@ -11,7 +11,7 @@ namespace GameFields.Persons.AttackMenues
     public class AttackNumberStateView : MonoBehaviour, IWorkable<AttackNumberStateViewActivateData>, IAutomaticFillComponents
     {
         [SerializeField] private Image _image;
-        [SerializeField] private List<Sprite> _animSprites;
+        [SerializeField] private List<Sprite> _animSprites; //Возможно, стоит заменить на массив
         [SerializeField] private float _duration;
 
         private Sprite _defaultView;
@@ -64,7 +64,7 @@ namespace GameFields.Persons.AttackMenues
 
         private IEnumerator StartingAnimation()
         {
-            WaitForSeconds wait = new WaitForSeconds(_duration / _animSprites.Count);
+            WaitForSeconds wait = new WaitForSeconds(_duration / _animSprites.Count * Time.deltaTime);
 
             foreach (Sprite sprite in _animSprites)
             {

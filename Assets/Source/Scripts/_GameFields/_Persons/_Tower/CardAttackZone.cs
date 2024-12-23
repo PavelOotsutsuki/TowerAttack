@@ -4,6 +4,7 @@ using GameFields.CommonAnimations;
 using GameFields.DiscardPiles;
 using GameFields.Persons.AttackMenues;
 using GameFields.Persons.Hands;
+using GameFields.Signals;
 using Tools;
 using Tools.CommonAnimations;
 using Tools.Utils.Movements;
@@ -13,7 +14,7 @@ using Random = UnityEngine.Random;
 
 namespace GameFields.Persons.Towers
 {
-    public class CardAttackZone : MonoBehaviour, IAttackable
+    public class CardAttackZone : MonoBehaviour, IAttackable, ICompletable
     {
         [SerializeField] private CardAttackZoneData _data;
 
@@ -24,11 +25,19 @@ namespace GameFields.Persons.Towers
         private ReadOnlyRectTransform _towerTransform;
 
         private DiscardPile _discardPile;
+        private SignalBus _bus;
+
+        private bool _isComplete;
+
+        public bool IsComplete => _isComplete;
 
         [Inject]
-        public void Construct(DiscardPile discardPile)
+        public void Construct(DiscardPile discardPile, SignalBus bus)
         {
             _discardPile = discardPile;
+            _bus = bus;
+
+            _isComplete = false;
         }
 
         public void Init(AttackMenu attackMenu, ReadOnlyRectTransform towerTransform)
@@ -44,12 +53,15 @@ namespace GameFields.Persons.Towers
 
         public void Attack(Card card)
         {
+            _isComplete = false;
+            Debug.Log("_isComplete: " + _isComplete);
             //_cardMovement = _card.CardMovement;
             //_cardTransform = _card.ReadOnlyRectTransform;
             //_handBlockable.BlockCards();
 
             //AttackAnimation attackAnimation = new AttackAnimation(_card.CardMovement, _card.ReadOnlyRectTransform,
             //    _towerTransform.GetPosition(), _towerTransform.GetRect(), _data.AttackAnimationData);
+            _bus.Fire(new AttackSignal(this));
 
             StartCoroutine(ActivatingAttack(card));
         }
@@ -75,6 +87,9 @@ namespace GameFields.Persons.Towers
             yield return new WaitUntil(() => _invertCardAnimation.IsComplete);
 
             _discardPile.SeatCard(card);
+
+            _isComplete = true;
+            Debug.Log("_isComplete: " + _isComplete);
         }
 
         //private IEnumerator Discarding()

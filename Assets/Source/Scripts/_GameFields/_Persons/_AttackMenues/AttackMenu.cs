@@ -20,7 +20,7 @@ namespace GameFields.Persons.AttackMenues
 
         [SerializeField] private CanvasGroup _canvasGroup;
 
-        private IHandBlockable _handBlockable;
+        //private IHandBlockable _handBlockable;
         private ICardNumberKeeper _cardNumberKeeper;
 
         public bool? IsActive { get; private set; } = null;
@@ -41,7 +41,7 @@ namespace GameFields.Persons.AttackMenues
             IsComplete = false;
             _canvasGroup.blocksRaycasts = false;
 
-            _handBlockable = handBlockable;
+            //_handBlockable = handBlockable;
             _cardNumberKeeper = cardNumberKeeper;
 
             _attackMenuLabel.Init();
@@ -58,7 +58,7 @@ namespace GameFields.Persons.AttackMenues
             IsComplete = false;
             IsActive = true;
 
-            _handBlockable.ForciblyBlock();
+            //_handBlockable.ForciblyBlock();
             gameObject.SetActive(true);
             _canvasGroup.blocksRaycasts = true;
 
@@ -95,7 +95,7 @@ namespace GameFields.Persons.AttackMenues
 
             yield return new WaitUntil(() => _attackMenuPanel.IsComplete && _attackMenuLabel.IsComplete && _attackButton.IsComplete && _attackNumberPanel.IsComplete);
 
-            _handBlockable.Unblock();
+            //_handBlockable.Unblock();
             gameObject.SetActive(false);
             IsComplete = true;
         }

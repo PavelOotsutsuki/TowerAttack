@@ -7,6 +7,7 @@ using Zenject;
 using GameFields.Persons.AttackMenues;
 using Tools;
 using Cards;
+using GameFields.Signals;
 
 namespace GameFields.Persons
 {
@@ -33,6 +34,13 @@ namespace GameFields.Persons
             _handBlockable = hand;
             _attackMenu = attackMenu;
             _turnProcessing = turnProcessing;
+
+            Bus.Subscribe<AttackSignal>(StartAttack);
+        }
+
+        ~Player()
+        {
+            Bus.Unsubscribe<AttackSignal>(StartAttack);
         }
 
         public override void StartEffect(Effect effect)
@@ -55,6 +63,13 @@ namespace GameFields.Persons
             //_handBlockable.ForciblyBlock();
             //GameFieldObjectsActivator.Activate();
             //_attackMenu.Activate();
+        }
+
+        private void StartAttack(AttackSignal signal)
+        {
+            PushStep(new CardAttackProcessing(InteractionActivator, signal.Completable));
+
+            _turnProcessing.Completed();
         }
     }
 }

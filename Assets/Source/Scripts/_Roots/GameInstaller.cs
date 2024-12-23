@@ -69,7 +69,7 @@ namespace Roots
             SignalBusInstaller.Install(Container);
 
             Container.DeclareSignal<DiscardCardsSignal>();
-            Container.DeclareSignal<StartEffectSignal>();
+            Container.DeclareSignal<AttackSignal>();
         }
     }
 }

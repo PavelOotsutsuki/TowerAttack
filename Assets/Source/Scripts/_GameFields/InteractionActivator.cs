@@ -35,7 +35,7 @@ namespace GameFields
                     SetTurnProcessingStates();
                     break;
                 case CardEffectProcessingPlayer:
-                    SetCardEffectProcessingPlayerStates();
+                    SetCardActionProcessingPlayerStates();
                     break;
                 case EndTurnProcessing:
                     SetEndTurnProcessingStates();
@@ -49,6 +49,11 @@ namespace GameFields
                 case CardEffectProcessingEnemyAI:
                     SetEnemyAIStates();
                     break;
+                case CardAttackProcessing:
+                    SetCardActionProcessingPlayerStates();
+                    break;
+                default:
+                    throw new System.Exception("Неизветное состояние PersonStep" + personStep);
             }
         }
 
@@ -76,7 +81,7 @@ namespace GameFields
             _endTurnButton.Deactivate();
         }
 
-        private void SetCardEffectProcessingPlayerStates()
+        private void SetCardActionProcessingPlayerStates()
         {
             _hand.ForciblyBlock();
             _tower.Deactivate();
