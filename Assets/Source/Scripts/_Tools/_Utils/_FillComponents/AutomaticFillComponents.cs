@@ -1,15 +1,27 @@
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 namespace Tools.Utils.FillComponents
 {
     public static class AutomaticFillComponents
     {
-        public static void DefineComponent<T>(MonoBehaviour parent, ref T target, ComponentLocationTypes componentType) where T: class
+        // Возвращаемое значение:
+        //  0 - компонент уже задан (не пуст), нет смысла брыкаться
+        //  1 - успешно найдено
+        // -1 - ошибка
+        //  2 - успешно найдено, по компоненотов много, не факт что применился тот что задумывался, прикрепился первый попавшийся
+        // -2 - компонент не найден ВО ВСЕЙ СЦЕНЕ
+        //  3 - массив компонентов успешно задан (проигнорены уже заданные значения, задались заного (значения 0 для массива нет))
+        // -3 - компилятор не хочет компилиться без полного return на метод, до сюда дойти никогда не должно
+        public static ComponentAttachInfo DefineComponent<T>(MonoBehaviour parent, ref T target, ComponentLocationTypes componentType) where T: class
         {
+            Debug.Log(parent.ToString());
+            Debug.Log(target.ToString());
+
             if (target is not null)
             {
                 if (target.ToString().Equals("null") == false)
-                    return;
+                    return new ComponentAttachInfo(parent.ToString(), target.ToString(), 0);
             }
 
             string type = GetShortType<T>();
@@ -31,12 +43,16 @@ namespace Tools.Utils.FillComponents
                 if (parent.GetComponentsInChildren<T>(true).Length - parent.GetComponents<T>().Length < 1)
                 {
                     Debug.LogError($"{type} is not found. Parent: " + parent.ToString());
+                    return new ComponentAttachInfo(parent.ToString(), target.ToString(), -1);
                 }
                 else
                 {
+                    int warningReturnSuccess = 1;
+
                     if (parent.GetComponentsInChildren<T>(true).Length - parent.GetComponents<T>().Length > 1)
                     {
                         Debug.LogWarning($"{type} is too much! {type} length is {parent.GetComponentsInChildren<T>(true).Length - parent.GetComponents<T>().Length}. Parent: {parent.ToString()}");
+                        warningReturnSuccess = 2;
                     }
 
                     if (parent.GetComponentsInChildren<T>(true).Length != 1)
@@ -61,7 +77,7 @@ namespace Tools.Utils.FillComponents
                             {
                                 target = variant;
                                 ShowSuccessMessage(type, parent);
-                                break;
+                                return new ComponentAttachInfo(parent.ToString(), target.ToString(), warningReturnSuccess);
                             }
                         }
                     }
@@ -69,6 +85,7 @@ namespace Tools.Utils.FillComponents
                     {
                         target = parent.GetComponentInChildren<T>(true);
                         ShowSuccessMessage(type, parent);
+                        return new ComponentAttachInfo(parent.ToString(), target.ToString(), 1);
                     }
                 }
             }
@@ -78,16 +95,21 @@ namespace Tools.Utils.FillComponents
                 if (parent.GetComponents<T>().Length < 1)
                 {
                     Debug.LogError($"{type} is not found. Parent: " + parent.ToString());
+                    return new ComponentAttachInfo(parent.ToString(), target.ToString(), -1);
                 }
                 else
                 {
+                    int warningReturnSuccess = 1;
+
                     if (parent.GetComponents<T>().Length > 1)
                     {
                         Debug.LogWarning($"{type} is too much! {type} length is {parent.GetComponents<T>().Length}.  Parent: " + parent.ToString());
+                        warningReturnSuccess = 2;
                     }
 
                     target = parent.GetComponent<T>();
                     ShowSuccessMessage(type, parent);
+                    return new ComponentAttachInfo(parent.ToString(), target.ToString(), warningReturnSuccess);
                 }
             }
 
@@ -98,31 +120,52 @@ namespace Tools.Utils.FillComponents
                 if (targets.Length < 1)
                 {
                     Debug.LogError($"{type} is not found.  Parent: " + parent.ToString());
+                    return new ComponentAttachInfo(parent.ToString(), target.ToString(), -2);
                 }
                 else
                 {
+                    int warningReturnSuccess = 1;
+
                     if (targets.Length > 1)
                     {
                         Debug.LogWarning($"{type} is too much! {type} length is {targets.Length}. Parent: " + parent.ToString());
+                        warningReturnSuccess = 2;
                     }
 
                     target = targets[0] as T;
                     ShowSuccessMessage(type, parent);
+                    return new ComponentAttachInfo(parent.ToString(), target.ToString(), warningReturnSuccess);
                 }
             }
+
+            return new ComponentAttachInfo(parent.ToString(), target.ToString(), -3);
         }
 
-        public static void DefineComponent<T>(MonoBehaviour parent, ref T[] targets)
+        public static ComponentAttachInfo DefineComponent<T>(MonoBehaviour parent, ref T[] targets)
         {
-            string type = GetShortType<T>();
-
-            if (parent.GetComponentsInChildren<T>(true).Length < 1)
+            if (targets is null)
             {
-                Debug.LogError($"{type} is not found. Parent: " + parent.ToString());
+                Debug.LogError($"targets is null. Parent: " + parent.ToString());
+                return new ComponentAttachInfo(parent.ToString(), targets.ToString(), -1);
             }
 
-            targets = parent.GetComponentsInChildren<T>(true);
+            if (targets.Length < 1)
+            {
+                Debug.LogError($"targets.Length < 1. Parent: " + parent.ToString());
+                return new ComponentAttachInfo(parent.ToString(), targets.ToString(), -1);
+            }
+
+            string type = GetShortType<T>();
+
+            if (parent.GetComponentsInChildren<T>().Length < 1)
+            {
+                Debug.LogError($"{type} is not found. Parent: " + parent.ToString());
+                return new ComponentAttachInfo(parent.ToString(), targets.ToString(), -1);
+            }
+
+            targets = parent.GetComponentsInChildren<T>();
             ShowSuccessMessage(type, parent);
+            return new ComponentAttachInfo(parent.ToString(), targets.ToString(), 3);
         }
 
         private static string GetShortType<T>()
