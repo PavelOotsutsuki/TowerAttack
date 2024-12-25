@@ -28,20 +28,20 @@ namespace Tools.Utils.FillComponents
 
             if (componentType == ComponentLocationTypes.InChildren)
             {
-                if (parent.GetComponentsInChildren<T>().Length - parent.GetComponents<T>().Length < 1)
+                if (parent.GetComponentsInChildren<T>(true).Length - parent.GetComponents<T>().Length < 1)
                 {
                     Debug.LogError($"{type} is not found. Parent: " + parent.ToString());
                 }
                 else
                 {
-                    if (parent.GetComponentsInChildren<T>().Length - parent.GetComponents<T>().Length > 1)
+                    if (parent.GetComponentsInChildren<T>(true).Length - parent.GetComponents<T>().Length > 1)
                     {
-                        Debug.LogWarning($"{type} is too much! {type} length is {parent.GetComponentsInChildren<T>().Length - parent.GetComponents<T>().Length}. Parent: {parent.ToString()}");
+                        Debug.LogWarning($"{type} is too much! {type} length is {parent.GetComponentsInChildren<T>(true).Length - parent.GetComponents<T>().Length}. Parent: {parent.ToString()}");
                     }
 
-                    if (parent.GetComponentsInChildren<T>().Length != 1)
+                    if (parent.GetComponentsInChildren<T>(true).Length != 1)
                     {
-                        T[] targets = parent.GetComponentsInChildren<T>();
+                        T[] targets = parent.GetComponentsInChildren<T>(true);
                         T[] inThisTargets = parent.GetComponents<T>();
                         bool isInThis;
 
@@ -67,7 +67,7 @@ namespace Tools.Utils.FillComponents
                     }
                     else
                     {
-                        target = parent.GetComponentInChildren<T>();
+                        target = parent.GetComponentInChildren<T>(true);
                         ShowSuccessMessage(type, parent);
                     }
                 }
@@ -116,12 +116,12 @@ namespace Tools.Utils.FillComponents
         {
             string type = GetShortType<T>();
 
-            if (parent.GetComponentsInChildren<T>().Length < 1)
+            if (parent.GetComponentsInChildren<T>(true).Length < 1)
             {
                 Debug.LogError($"{type} is not found. Parent: " + parent.ToString());
             }
 
-            targets = parent.GetComponentsInChildren<T>();
+            targets = parent.GetComponentsInChildren<T>(true);
             ShowSuccessMessage(type, parent);
         }
 

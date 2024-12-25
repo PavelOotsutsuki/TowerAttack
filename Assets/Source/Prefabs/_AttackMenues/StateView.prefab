@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7431411670720130853}
   - component: {fileID: 1284459295637485079}
+  - component: {fileID: 4910853088391146014}
   m_Layer: 0
   m_Name: StateView
   m_TagString: Untagged
@@ -46,6 +47,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1693730594387480848}
   m_CullTransparentMesh: 1
+--- !u!114 &4910853088391146014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1693730594387480848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0dfc8ef0280db46bfbc163c598502ce6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _errorAnimation: {fileID: 691053414787514692}
+  _successAnimation: {fileID: 2555776350526587568}
 --- !u!1 &4077205706736582873
 GameObject:
   m_ObjectHideFlags: 0
@@ -282,8 +297,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -4, y: 3.6}
-  m_SizeDelta: {x: 110, y: 110}
+  m_AnchoredPosition: {x: -3.01, y: 1.62}
+  m_SizeDelta: {x: 103, y: 103}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3184136734950650623
 CanvasRenderer:

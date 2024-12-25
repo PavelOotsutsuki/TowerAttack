@@ -83,9 +83,7 @@ namespace GameFields.Persons.AttackMenues
                 //{
                 //    attackNumber.Activate(new AttackNumberActivateData(false));
                 //}
-                AttackNumberAnimationActivateData attackNumberAnimationData = new AttackNumberAnimationActivateData(_confirmableNumbers.Contains(attackNumber));
-                AttackNumberActivateData attackNumberData = new AttackNumberActivateData(attackNumberAnimationData);
-                attackNumber.Activate(attackNumberData);
+                attackNumber.Activate();
             }
 
             _fadablePanel.Show();

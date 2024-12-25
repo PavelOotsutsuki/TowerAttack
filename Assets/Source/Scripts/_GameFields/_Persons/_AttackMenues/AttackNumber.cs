@@ -11,12 +11,13 @@ using UnityEngine.UI;
 
 namespace GameFields.Persons.AttackMenues
 {
-    public class AttackNumber : SelectableButton, IActivatable<AttackNumberActivateData>
+    public class AttackNumber : SelectableButton
     {
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private TMP_Text _text;
         //[SerializeField] private Animator _animator;
-        [SerializeField] private Color _disableColor;
+        [SerializeField] private Color _errorColor;
+        [SerializeField] private Color _successColor;
         //[SerializeField] private Sprite _defaultView;
         //[SerializeField] private AttackNumberAnimation _attackNumberAnimation;
         [SerializeField] private AttackNumberAnimator _animator;
@@ -27,6 +28,8 @@ namespace GameFields.Persons.AttackMenues
         private Action<bool> _clickCallback;
         private ConfirmableNumbers _confirmableNumbers;
 
+        private Color? _blockColor;
+
         public int Number { get; private set; }
 
         public void Init(int number, Vector3 position, Vector2 size, Action<bool> clickCallback, ConfirmableNumbers confirmableNumbers)
@@ -34,6 +37,7 @@ namespace GameFields.Persons.AttackMenues
             base.Init();
 
             Number = number;
+            _blockColor = null;
             //Image.sprite = _defaultView;
             _rectTransform.sizeDelta = size;
             _rectTransform.SetLocalPositionAndRotation(position, Quaternion.identity);
@@ -67,17 +71,22 @@ namespace GameFields.Persons.AttackMenues
         //    //_animator.SetTrigger("Deactivate");
         //}
 
-        public void Activate(AttackNumberActivateData data)
+        public override void Activate()
         {
             base.Activate();
 
-            if (data.AttackNumberAnimationData.IsActiveView)
+            if (_blockColor is not null)
             {
-                SetDisableView();
+                SetDisableView((Color)_blockColor);
             }
 
+            //if (data.AttackNumberAnimationData.IsActiveView)
+            //{
+            //    SetDisableView();
+            //}
+
             //_attackNumberAnimation.Activate(data.AttackNumberAnimationData);
-            _animator.Activate(data.AttackNumberAnimationData);
+            _animator.Activate();
 
             //_animator.SetBool("IsActivate", false);
             //_animator.SetTrigger("Deactivate");
@@ -97,15 +106,15 @@ namespace GameFields.Persons.AttackMenues
 
         public void SuccessChoice()
         {
-            SetDisableView();
-            _confirmableNumbers.Add(this);
+            SetDisableView(_successColor);
+            //_confirmableNumbers.Add(this);
 
             _animator.PlaySuccessAnimation();
         }
 
         public void ErrorChoice()
         {
-            SetDisableView();
+            SetDisableView(_errorColor);
             _confirmableNumbers.Add(this);
 
             //_attackNumberAnimation.Play();
@@ -115,9 +124,11 @@ namespace GameFields.Persons.AttackMenues
             //_animator.SetTrigger("Activate");
         }
 
-        private void SetDisableView()
+        private void SetDisableView(Color color)
         {
-            Image.color = _disableColor;
+            _blockColor = color;
+
+            Image.color = color;
             CanvasGroup.blocksRaycasts = false;
         }
 
@@ -158,7 +169,7 @@ namespace GameFields.Persons.AttackMenues
         {
             DefineRectTransform();
             DefineText();
-            //DefineAttackNumberStateView();
+            DefineAttackNumberAnimator();
 
             base.DefineAllComponents();
         }
@@ -175,11 +186,11 @@ namespace GameFields.Persons.AttackMenues
             AutomaticFillComponents.DefineComponent(this, ref _text, ComponentLocationTypes.InThisElseChildren);
         }
 
-        //[ContextMenu(nameof(DefineAttackNumberStateView))]
-        //private void DefineAttackNumberStateView()
-        //{
-        //    AutomaticFillComponents.DefineComponent(this, ref _attackNumberAnimation, ComponentLocationTypes.InChildren);
-        //}
+        [ContextMenu(nameof(DefineAttackNumberAnimator))]
+        private void DefineAttackNumberAnimator()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _animator, ComponentLocationTypes.InChildren);
+        }
 
         #endregion
 

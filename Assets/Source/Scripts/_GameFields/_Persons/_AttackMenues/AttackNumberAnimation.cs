@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace GameFields.Persons.AttackMenues
 {
-    public abstract class AttackNumberAnimation : MonoBehaviour, IWorkable<AttackNumberAnimationActivateData>, IAutomaticFillComponents
+    public abstract class AttackNumberAnimation : MonoBehaviour, IWorkable, IAutomaticFillComponents
     {
         [SerializeField] private Image _image;
         [SerializeField] private List<Sprite> _animSprites; //Возможно, стоит заменить на массив
@@ -29,7 +29,7 @@ namespace GameFields.Persons.AttackMenues
             _image.sprite = _defaultView;
         }
 
-        public void Activate(AttackNumberAnimationActivateData data)
+        public void Activate()
         {
             if (IsActive == true)
                 return;
@@ -65,6 +65,8 @@ namespace GameFields.Persons.AttackMenues
 
         public void Play()
         {
+            Activate();
+
             StartingAnimation().ToUniTask();
         }
 

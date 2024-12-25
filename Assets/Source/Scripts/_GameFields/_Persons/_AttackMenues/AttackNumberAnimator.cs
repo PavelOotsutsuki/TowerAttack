@@ -2,15 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Tools;
+using Tools.Utils.FillComponents;
 using UnityEngine;
 
 namespace GameFields.Persons.AttackMenues
 {
-    [Serializable]
-    public class AttackNumberAnimator: IWorkable<AttackNumberAnimationActivateData> 
+    public class AttackNumberAnimator: MonoBehaviour, IWorkable, IAutomaticFillComponents
     {
-        [SerializeField] private AttackNumberAnimation _errorAnimation;
-        [SerializeField] private AttackNumberAnimation _successAnimation;
+        [SerializeField] private ErrorAttackNumberAnimation _errorAnimation;
+        [SerializeField] private SuccessAttackNumberAnimation _successAnimation;
 
         private AttackNumberAnimation _currentAnimation;
 
@@ -22,7 +22,7 @@ namespace GameFields.Persons.AttackMenues
             _successAnimation.Init();
         }
 
-        public void Activate(AttackNumberAnimationActivateData data)
+        public void Activate()
         {
             if (IsActive == true)
                 return;
@@ -31,12 +31,12 @@ namespace GameFields.Persons.AttackMenues
 
             if (_currentAnimation is not null)
             {
-                _currentAnimation.Activate(data);
+                _currentAnimation.Activate();
             }
             else
             {
-                _errorAnimation.Activate(data);
-                _successAnimation.Activate(data);
+                _errorAnimation.Activate();
+                _successAnimation.Activate();
             }
         }
 
@@ -64,5 +64,28 @@ namespace GameFields.Persons.AttackMenues
 
             _currentAnimation.Play();
         }
+
+        #region AutomaticFillComponents
+
+        [ContextMenu(nameof(DefineAllComponents) + nameof(AttackNumberAnimator))]
+        public void DefineAllComponents()
+        {
+            DefineErrorAttackNumberAnimation();
+            DefineSuccessAttackNumberAnimation();
+        }
+
+        [ContextMenu(nameof(DefineErrorAttackNumberAnimation))]
+        private void DefineErrorAttackNumberAnimation()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _errorAnimation, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineSuccessAttackNumberAnimation))]
+        private void DefineSuccessAttackNumberAnimation()
+        {
+            AutomaticFillComponents.DefineComponent(this, ref _successAnimation, ComponentLocationTypes.InChildren);
+        }
+
+        #endregion
     }
 }
