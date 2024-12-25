@@ -83,8 +83,8 @@ namespace GameFields.Persons.AttackMenues
                 //{
                 //    attackNumber.Activate(new AttackNumberActivateData(false));
                 //}
-                AttackNumberStateViewActivateData stateViewData = new AttackNumberStateViewActivateData(_confirmableNumbers.Contains(attackNumber));
-                AttackNumberActivateData attackNumberData = new AttackNumberActivateData(stateViewData);
+                AttackNumberAnimationActivateData attackNumberAnimationData = new AttackNumberAnimationActivateData(_confirmableNumbers.Contains(attackNumber));
+                AttackNumberActivateData attackNumberData = new AttackNumberActivateData(attackNumberAnimationData);
                 attackNumber.Activate(attackNumberData);
             }
 
@@ -133,21 +133,24 @@ namespace GameFields.Persons.AttackMenues
             {
                 if (_cardNumberKeeper.Card.IsSuccessAttack(selectedNumber.Number))
                 {
-
+                    selectedNumber.SuccessChoice();
+                }
+                else
+                {
+                    selectedNumber.ErrorChoice();
                 }
 
-                selectedNumber.Disable();
                 yield return new WaitForSeconds(0.8f);
             }
 
             yield return new WaitForSeconds(1f);
 
+            _fadablePanel.Hide();
+
             foreach (AttackNumber attackNumber in _attackNumbers)
             {
                 attackNumber.Deactivate();
             }
-
-            _fadablePanel.Hide();
 
             _isComplete = true;
         }

@@ -54,7 +54,6 @@ namespace GameFields.Persons.Towers
         public void Attack(Card card)
         {
             _isComplete = false;
-            Debug.Log("_isComplete: " + _isComplete);
             //_cardMovement = _card.CardMovement;
             //_cardTransform = _card.ReadOnlyRectTransform;
             //_handBlockable.BlockCards();
@@ -89,7 +88,6 @@ namespace GameFields.Persons.Towers
             _discardPile.SeatCard(card);
 
             _isComplete = true;
-            Debug.Log("_isComplete: " + _isComplete);
         }
 
         //private IEnumerator Discarding()

@@ -18,7 +18,8 @@ namespace GameFields.Persons.AttackMenues
         //[SerializeField] private Animator _animator;
         [SerializeField] private Color _disableColor;
         //[SerializeField] private Sprite _defaultView;
-        [SerializeField] private AttackNumberStateView _stateView;
+        //[SerializeField] private AttackNumberAnimation _attackNumberAnimation;
+        [SerializeField] private AttackNumberAnimator _animator;
         //[SerializeField] private Image _anim;
         //[SerializeField] private List<Sprite> _animSprites;
         //[SerializeField] private float _duration;
@@ -38,7 +39,8 @@ namespace GameFields.Persons.AttackMenues
             _rectTransform.SetLocalPositionAndRotation(position, Quaternion.identity);
             _text.text = Number.ToString();
 
-            _stateView.Init();
+            //_attackNumberAnimation.Init();
+            _animator.Init();
             //_animator.gameObject.SetActive(false);
 
             _clickCallback = clickCallback;
@@ -69,12 +71,13 @@ namespace GameFields.Persons.AttackMenues
         {
             base.Activate();
 
-            if (data.StateViewData.IsActiveView)
+            if (data.AttackNumberAnimationData.IsActiveView)
             {
                 SetDisableView();
             }
 
-            _stateView.Activate(data.StateViewData);
+            //_attackNumberAnimation.Activate(data.AttackNumberAnimationData);
+            _animator.Activate(data.AttackNumberAnimationData);
 
             //_animator.SetBool("IsActivate", false);
             //_animator.SetTrigger("Deactivate");
@@ -84,19 +87,29 @@ namespace GameFields.Persons.AttackMenues
         {
             base.Deactivate();
 
-            _stateView.Deactivate();
+            //_attackNumberAnimation.Deactivate();
+            _animator.Deactivate();
 
             //_animator.SetTrigger("Deactivate");
 
             //Deactivating().ToUniTask();
         }
 
-        public void Disable()
+        public void SuccessChoice()
         {
             SetDisableView();
             _confirmableNumbers.Add(this);
 
-            _stateView.Disable();
+            _animator.PlaySuccessAnimation();
+        }
+
+        public void ErrorChoice()
+        {
+            SetDisableView();
+            _confirmableNumbers.Add(this);
+
+            //_attackNumberAnimation.Play();
+            _animator.PlayErrorAnimation();
             //StartingAnimation().ToUniTask();
             //_animator.SetBool("IsActivate", true);
             //_animator.SetTrigger("Activate");
@@ -145,7 +158,7 @@ namespace GameFields.Persons.AttackMenues
         {
             DefineRectTransform();
             DefineText();
-            DefineAttackNumberStateView();
+            //DefineAttackNumberStateView();
 
             base.DefineAllComponents();
         }
@@ -162,11 +175,11 @@ namespace GameFields.Persons.AttackMenues
             AutomaticFillComponents.DefineComponent(this, ref _text, ComponentLocationTypes.InThisElseChildren);
         }
 
-        [ContextMenu(nameof(DefineAttackNumberStateView))]
-        private void DefineAttackNumberStateView()
-        {
-            AutomaticFillComponents.DefineComponent(this, ref _stateView, ComponentLocationTypes.InChildren);
-        }
+        //[ContextMenu(nameof(DefineAttackNumberStateView))]
+        //private void DefineAttackNumberStateView()
+        //{
+        //    AutomaticFillComponents.DefineComponent(this, ref _attackNumberAnimation, ComponentLocationTypes.InChildren);
+        //}
 
         #endregion
 

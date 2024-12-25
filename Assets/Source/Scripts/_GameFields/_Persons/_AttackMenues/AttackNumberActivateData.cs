@@ -21,13 +21,13 @@ namespace GameFields.Persons.AttackMenues
         //}
 
         //public bool IsActiveView => _isActiveView;
-        private readonly AttackNumberStateViewActivateData _stateViewData;
+        private readonly AttackNumberAnimationActivateData _attackNumberAnimationData;
 
-        public AttackNumberActivateData(AttackNumberStateViewActivateData stateViewData)
+        public AttackNumberActivateData(AttackNumberAnimationActivateData attackNumberAnimationData)
         {
-            _stateViewData = stateViewData;
+            _attackNumberAnimationData = attackNumberAnimationData;
         }
 
-        public AttackNumberStateViewActivateData StateViewData => _stateViewData;
+        public AttackNumberAnimationActivateData AttackNumberAnimationData => _attackNumberAnimationData;
     }
 }

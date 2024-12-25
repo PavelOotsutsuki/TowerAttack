@@ -662,8 +662,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 60
-  m_fontSizeBase: 60
+  m_fontSize: 90
+  m_fontSizeBase: 90
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -847,8 +847,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7625198449985348171}
-  - component: {fileID: 2753717777370600218}
   - component: {fileID: 1304549315998207439}
+  - component: {fileID: 7376310284672276219}
   m_Layer: 0
   m_Name: AttackMenu
   m_TagString: Untagged
@@ -879,23 +879,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1940, y: 1100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2753717777370600218
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8221689975159483239}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5ec8b62cb5924f65b05b45cc2576c49, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _attackMenuLabel: {fileID: 3069007933992474960}
-  _attackMenuPanel: {fileID: 5650547021258361813}
-  _attackButton: {fileID: 1814945152834285062}
-  _attackNumberPanel: {fileID: 7731136859598833907}
-  _canvasGroup: {fileID: 1304549315998207439}
 --- !u!225 &1304549315998207439
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -908,6 +891,23 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &7376310284672276219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8221689975159483239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34741ca53a5194e8b87179da0e4c4832, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _attackMenuLabel: {fileID: 3069007933992474960}
+  _attackMenuPanel: {fileID: 5650547021258361813}
+  _attackButton: {fileID: 1814945152834285062}
+  _attackNumberPanel: {fileID: 7731136859598833907}
+  _canvasGroup: {fileID: 1304549315998207439}
 --- !u!1 &9092218654760227933
 GameObject:
   m_ObjectHideFlags: 0

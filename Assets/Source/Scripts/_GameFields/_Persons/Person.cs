@@ -108,10 +108,10 @@ namespace GameFields.Persons
             _attackMenu.Activate();
         }
 
-        public void AttackDeactivate()
-        {
-            _attackMenu.Deactivate();
-        }
+        //public void AttackDeactivate()
+        //{
+        //    _attackMenu.Deactivate();
+        //}
 
         protected abstract void OnStartStep();
 
@@ -129,7 +129,7 @@ namespace GameFields.Persons
             while (IsComplete == false)
             {
                 _currentStep.StartStep();
-                Debug.Log(_currentStep.ToString() + ": " + this.ToString());
+                //Debug.Log(_currentStep.ToString() + ": " + this.ToString());
                 yield return new WaitUntil(() => _currentStep.IsComplete);
 
                 NextStep();
