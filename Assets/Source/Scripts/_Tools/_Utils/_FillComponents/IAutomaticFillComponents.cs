@@ -1,7 +1,9 @@
+using System.Collections.Generic;
+
 namespace Tools.Utils.FillComponents
 {
     public interface IAutomaticFillComponents
     {
-        public void DefineAllComponents();
+        public List<ComponentAttachInfo> DefineAllComponents();
     }
 }

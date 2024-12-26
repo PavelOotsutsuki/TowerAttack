@@ -15,9 +15,6 @@ namespace Tools.Utils.FillComponents
         // -3 - компилятор не хочет компилиться без полного return на метод, до сюда дойти никогда не должно
         public static ComponentAttachInfo DefineComponent<T>(MonoBehaviour parent, ref T target, ComponentLocationTypes componentType) where T: class
         {
-            Debug.Log(parent.ToString());
-            Debug.Log(target.ToString());
-
             if (target is not null)
             {
                 if (target.ToString().Equals("null") == false)

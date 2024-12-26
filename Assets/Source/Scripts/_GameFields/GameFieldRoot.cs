@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using GameFields.Persons;
 using Tools.Utils.FillComponents;
 using UnityEngine;
@@ -15,15 +16,20 @@ namespace GameFields
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(GameFieldRoot))]
-        public void DefineAllComponents()
+        public List<ComponentAttachInfo> DefineAllComponents()
         {
-            DefineFightPVE();
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineFightPVE()
+            };
+
+            return list;
         }
 
         [ContextMenu(nameof(DefineFightPVE))]
-        private void DefineFightPVE()
+        private ComponentAttachInfo DefineFightPVE()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _fightPVE, ComponentLocationTypes.InChildren);
+           return AutomaticFillComponents.DefineComponent(this, ref _fightPVE, ComponentLocationTypes.InChildren);
         }
         #endregion 
     }

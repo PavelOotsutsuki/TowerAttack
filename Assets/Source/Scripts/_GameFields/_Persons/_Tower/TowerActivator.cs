@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Tools;
 using Tools.Utils.FillComponents;
 using UnityEngine;
@@ -32,15 +33,20 @@ namespace GameFields.Persons.Towers
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(TowerActivator))]
-        public void DefineAllComponents()
+        public List<ComponentAttachInfo> DefineAllComponents()
         {
-            DefineCanvasGroup();
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineCanvasGroup()
+            };
+
+            return list;
         }
 
         [ContextMenu(nameof(DefineCanvasGroup))]
-        private void DefineCanvasGroup()
+        private ComponentAttachInfo DefineCanvasGroup()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _canvasGroup, ComponentLocationTypes.InThis);
+            return AutomaticFillComponents.DefineComponent(this, ref _canvasGroup, ComponentLocationTypes.InThis);
         }
         #endregion 
     }

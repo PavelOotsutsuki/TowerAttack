@@ -3,6 +3,7 @@ using Cards;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Movements;
 using Tools;
+using System.Collections.Generic;
 
 namespace GameFields.Seats
 {
@@ -44,15 +45,20 @@ namespace GameFields.Seats
         #region AutomaticFillComponents
 
         [ContextMenu(nameof(DefineAllComponents) + nameof(Seat))]
-        public void DefineAllComponents()
+        public List<ComponentAttachInfo> DefineAllComponents()
         {
-            DefineTransform();
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineTransform()
+            };
+
+            return list;
         }
 
         [ContextMenu(nameof(DefineTransform))]
-        private void DefineTransform()
+        private ComponentAttachInfo DefineTransform()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _transform, ComponentLocationTypes.InThis);
+           return AutomaticFillComponents.DefineComponent(this, ref _transform, ComponentLocationTypes.InThis);
         }
 
         #endregion 

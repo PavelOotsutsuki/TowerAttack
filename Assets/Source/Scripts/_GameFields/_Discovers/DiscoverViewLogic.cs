@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Tools;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Movements;
@@ -25,15 +26,20 @@ namespace GameFields.Persons.Discovers
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(DiscoverViewLogic))]
-        public void DefineAllComponents()
+        public List<ComponentAttachInfo> DefineAllComponents()
         {
-            DefineRectTransform();
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineRectTransform()
+            };
+
+            return list;
         }
 
         [ContextMenu(nameof(DefineRectTransform))]
-        private void DefineRectTransform()
+        private ComponentAttachInfo DefineRectTransform()
         {
-            AutomaticFillComponents.DefineComponent(this, ref RectTransform, ComponentLocationTypes.InThis);
+            return AutomaticFillComponents.DefineComponent(this, ref RectTransform, ComponentLocationTypes.InThis);
         }
         #endregion 
     }

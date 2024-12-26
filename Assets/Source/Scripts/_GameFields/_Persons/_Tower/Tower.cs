@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Cards;
 using GameFields.Seats;
 using Tools;
@@ -42,22 +43,27 @@ namespace GameFields.Persons.Towers
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(Tower))]
-        public void DefineAllComponents()
+        public List<ComponentAttachInfo> DefineAllComponents()
         {
-            DefineTowerSeat();
-            DefineRectTransform();
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineTowerSeat(),
+                DefineRectTransform()
+            };
+
+            return list;
         }
 
         [ContextMenu(nameof(DefineTowerSeat))]
-        private void DefineTowerSeat()
+        private ComponentAttachInfo DefineTowerSeat()
         {
-            AutomaticFillComponents.DefineComponent(this, ref TowerSeat, ComponentLocationTypes.InChildren);
+           return AutomaticFillComponents.DefineComponent(this, ref TowerSeat, ComponentLocationTypes.InChildren);
         }
 
         [ContextMenu(nameof(DefineRectTransform))]
-        private void DefineRectTransform()
+        private ComponentAttachInfo DefineRectTransform()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
+           return AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
         }
         #endregion
     }

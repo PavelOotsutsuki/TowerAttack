@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Tools;
 using Tools.Utils.FillComponents;
 using UnityEngine;
@@ -71,16 +72,20 @@ namespace GameFields.EndTurnButtons
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(EndTurnButton))]
-        public void DefineAllComponents()
+        public List<ComponentAttachInfo> DefineAllComponents()
         {
-            DefineButton();
-            //DefineCanvasGroup();
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineButton()
+            };
+
+            return list;
         }
 
         [ContextMenu(nameof(DefineButton))]
-        private void DefineButton()
+        private ComponentAttachInfo DefineButton()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _button, ComponentLocationTypes.InThisElseChildren);
+            return AutomaticFillComponents.DefineComponent(this, ref _button, ComponentLocationTypes.InThisElseChildren);
         }
 
         //[ContextMenu(nameof(DefineCanvasGroup))]

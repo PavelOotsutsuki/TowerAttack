@@ -273,29 +273,34 @@ namespace GameFields.Persons.AttackMenues
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(AttackNumberPanel))]
-        public void DefineAllComponents()
+        public List<ComponentAttachInfo> DefineAllComponents()
         {
-            DefineFadablePanel();
-            DefineRectTransform();
-            DefineAttackNumbers();
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineFadablePanel(),
+                DefineRectTransform(),
+                DefineAttackNumbers()
+            };
+
+            return list;
         }
 
         [ContextMenu(nameof(DefineFadablePanel))]
-        private void DefineFadablePanel()
+        private ComponentAttachInfo DefineFadablePanel()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _fadablePanel, ComponentLocationTypes.InThis);
+           return AutomaticFillComponents.DefineComponent(this, ref _fadablePanel, ComponentLocationTypes.InThis);
         }
 
         [ContextMenu(nameof(DefineRectTransform))]
-        private void DefineRectTransform()
+        private ComponentAttachInfo DefineRectTransform()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
+           return AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
         }
 
         [ContextMenu(nameof(DefineAttackNumbers))]
-        private void DefineAttackNumbers()
+        private ComponentAttachInfo DefineAttackNumbers()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _attackNumbers);
+           return AutomaticFillComponents.DefineComponent(this, ref _attackNumbers);
         }
 
         #endregion 

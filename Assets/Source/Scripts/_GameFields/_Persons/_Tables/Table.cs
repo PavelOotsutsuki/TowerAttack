@@ -57,15 +57,20 @@ namespace GameFields.Persons.Tables
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(Table))]
-        public void DefineAllComponents()
+        public List<ComponentAttachInfo> DefineAllComponents()
         {
-            DefineAllTableSeats();
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineAllTableSeats()
+            };
+
+            return list;
         }
 
         [ContextMenu(nameof(DefineAllTableSeats))]
-        private void DefineAllTableSeats()
+        private ComponentAttachInfo DefineAllTableSeats()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _tableSeats);
+           return AutomaticFillComponents.DefineComponent(this, ref _tableSeats);
         }
         #endregion 
     }

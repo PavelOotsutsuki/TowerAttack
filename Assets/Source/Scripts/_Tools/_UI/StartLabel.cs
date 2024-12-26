@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using Tools.Utils.FillComponents;
@@ -81,15 +82,20 @@ namespace Tools.UI
         #region AutomaticFillComponents
 
         [ContextMenu(nameof(DefineAllComponents) + nameof(StartLabel))]
-        public void DefineAllComponents()
+        public List<ComponentAttachInfo> DefineAllComponents()
         {
-            DefineLabel();
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineLabel()
+            };
+
+            return list;
         }
 
         [ContextMenu(nameof(DefineLabel))]
-        private void DefineLabel()
+        private ComponentAttachInfo DefineLabel()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _label, ComponentLocationTypes.InThis);
+           return AutomaticFillComponents.DefineComponent(this, ref _label, ComponentLocationTypes.InThis);
         }
 
         #endregion

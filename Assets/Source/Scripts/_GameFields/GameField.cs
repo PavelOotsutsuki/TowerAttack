@@ -3,6 +3,7 @@ using GameFields.StartFights;
 using GameFields.Effects;
 using GameFields.Persons;
 using Tools.Utils.FillComponents;
+using System.Collections.Generic;
 
 namespace GameFields
 {
@@ -33,15 +34,20 @@ namespace GameFields
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(GameField))]
-        public void DefineAllComponents()
+        public List<ComponentAttachInfo> DefineAllComponents()
         {
-            DefineFirstTurn();
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineFirstTurn()
+            };
+
+            return list;
         }
 
         [ContextMenu(nameof(DefineFirstTurn))]
-        private void DefineFirstTurn()
+        private ComponentAttachInfo DefineFirstTurn()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _startFight, ComponentLocationTypes.InChildren);
+           return AutomaticFillComponents.DefineComponent(this, ref _startFight, ComponentLocationTypes.InChildren);
         }
         #endregion 
     }

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using GameFields.Persons.Discovers;
 using Tools.UI;
@@ -44,17 +45,22 @@ namespace GameFields.StartFights
         #region AutomaticFillComponents
 
         [ContextMenu(nameof(DefineAllComponents) + nameof(StartTowerCardSelectionPlayerDiscover))]
-        public override void DefineAllComponents()
+        public override List<ComponentAttachInfo> DefineAllComponents()
         {
-            DefineDiscoverLabel();
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineDiscoverLabel()
+            };
 
-            base.DefineAllComponents();
+            list.AddRange(base.DefineAllComponents());
+
+            return list;
         }
 
         [ContextMenu(nameof(DefineDiscoverLabel))]
-        private void DefineDiscoverLabel()
+        private ComponentAttachInfo DefineDiscoverLabel()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _discoverLabel, ComponentLocationTypes.InChildren);
+           return AutomaticFillComponents.DefineComponent(this, ref _discoverLabel, ComponentLocationTypes.InChildren);
         }
 
         #endregion

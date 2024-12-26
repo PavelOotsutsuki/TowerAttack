@@ -6,6 +6,7 @@ using Zenject;
 using GameFields.Persons;
 using GameFields.Persons.Discovers;
 using Tools.Utils.FillComponents;
+using System.Collections.Generic;
 
 namespace GameFields.StartFights
 {
@@ -106,43 +107,48 @@ namespace GameFields.StartFights
         #region AutomaticFillComponents
 
         [ContextMenu(nameof(DefineAllComponents) + nameof(StartFight))]
-        public void DefineAllComponents()
+        public List<ComponentAttachInfo> DefineAllComponents()
         {
-            DefineStartFightPanel();
-            DefineStartFightLabel();
-            DefineWaitEnemySolutionLabel();
-            DefineSeats();
-            DefineDiscover();
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineStartFightPanel(),
+                DefineStartFightLabel(),
+                DefineWaitEnemySolutionLabel(),
+                DefineSeats(),
+                DefineDiscover()
+            };
+
+            return list;
         }
 
         [ContextMenu(nameof(DefineStartFightPanel))]
-        private void DefineStartFightPanel()
+        private ComponentAttachInfo DefineStartFightPanel()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _startTowerCardSelectionPanel, ComponentLocationTypes.InChildren);
+           return AutomaticFillComponents.DefineComponent(this, ref _startTowerCardSelectionPanel, ComponentLocationTypes.InChildren);
         }
 
         [ContextMenu(nameof(DefineStartFightLabel))]
-        private void DefineStartFightLabel()
+        private ComponentAttachInfo DefineStartFightLabel()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _startTowerCardSelectionLabel, ComponentLocationTypes.InChildren);
+           return AutomaticFillComponents.DefineComponent(this, ref _startTowerCardSelectionLabel, ComponentLocationTypes.InChildren);
         }
 
         [ContextMenu(nameof(DefineWaitEnemySolutionLabel))]
-        private void DefineWaitEnemySolutionLabel()
+        private ComponentAttachInfo DefineWaitEnemySolutionLabel()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _waitEnemySolutionLabel, ComponentLocationTypes.InChildren);
+           return AutomaticFillComponents.DefineComponent(this, ref _waitEnemySolutionLabel, ComponentLocationTypes.InChildren);
         }
 
         [ContextMenu(nameof(DefineSeats))]
-        private void DefineSeats()
+        private ComponentAttachInfo DefineSeats()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _seats);
+           return AutomaticFillComponents.DefineComponent(this, ref _seats);
         }
 
         [ContextMenu(nameof(DefineDiscover))]
-        private void DefineDiscover()
+        private ComponentAttachInfo DefineDiscover()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _discover, ComponentLocationTypes.InChildren);
+           return AutomaticFillComponents.DefineComponent(this, ref _discover, ComponentLocationTypes.InChildren);
         }
 
         #endregion 

@@ -2,6 +2,7 @@ using UnityEngine;
 using Cards;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Movements;
+using System.Collections.Generic;
 
 namespace GameFields.Persons.Tables
 {
@@ -29,15 +30,20 @@ namespace GameFields.Persons.Tables
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(TableSeat))]
-        public void DefineAllComponents()
+        public List<ComponentAttachInfo> DefineAllComponents()
         {
-            DefineRectTransform();
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineRectTransform()
+            };
+
+            return list;
         }
 
         [ContextMenu(nameof(DefineRectTransform))]
-        private void DefineRectTransform()
+        private ComponentAttachInfo DefineRectTransform()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
+            return AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
         }
         #endregion 
     }

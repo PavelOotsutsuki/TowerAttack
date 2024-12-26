@@ -60,15 +60,20 @@ namespace GameFields.Persons.Tables
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(CardPlayingZone))]
-        public virtual void DefineAllComponents()
+        public virtual List<ComponentAttachInfo> DefineAllComponents()
         {
-            DefineRectTransform();
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineRectTransform()
+            };
+
+            return list;
         }
 
         [ContextMenu(nameof(DefineRectTransform))]
-        private void DefineRectTransform()
+        private ComponentAttachInfo DefineRectTransform()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
+            return AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
         }
         #endregion
     }

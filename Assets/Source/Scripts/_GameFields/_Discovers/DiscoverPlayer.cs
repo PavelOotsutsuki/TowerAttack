@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using GameFields.Persons.Hands;
 using Tools.UI;
@@ -62,31 +63,36 @@ namespace GameFields.Persons.Discovers
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(DiscoverPlayer))]
-        public override void DefineAllComponents()
+        public override List<ComponentAttachInfo> DefineAllComponents()
         {
-            DefineDiscoverPanel();
-            DefineDiscoverLabel();
-            DefineCanvasGroup();
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineDiscoverPanel(),
+                DefineDiscoverLabel(),
+                DefineCanvasGroup()
+            };
 
-            base.DefineAllComponents();
+            list.AddRange(base.DefineAllComponents());
+
+            return list;
         }
 
         [ContextMenu(nameof(DefineDiscoverPanel))]
-        private void DefineDiscoverPanel()
+        private ComponentAttachInfo DefineDiscoverPanel()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _discoverPanel, ComponentLocationTypes.InChildren);
+            return AutomaticFillComponents.DefineComponent(this, ref _discoverPanel, ComponentLocationTypes.InChildren);
         }
 
         [ContextMenu(nameof(DefineDiscoverLabel))]
-        private void DefineDiscoverLabel()
+        private ComponentAttachInfo DefineDiscoverLabel()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _discoverLabel, ComponentLocationTypes.InChildren);
+           return AutomaticFillComponents.DefineComponent(this, ref _discoverLabel, ComponentLocationTypes.InChildren);
         }
 
         [ContextMenu(nameof(DefineCanvasGroup))]
-        private void DefineCanvasGroup()
+        private ComponentAttachInfo DefineCanvasGroup()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _canvasGroup, ComponentLocationTypes.InThis);
+           return AutomaticFillComponents.DefineComponent(this, ref _canvasGroup, ComponentLocationTypes.InThis);
         }
 
         #endregion

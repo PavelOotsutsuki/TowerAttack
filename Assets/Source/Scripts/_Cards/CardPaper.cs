@@ -1,6 +1,7 @@
 using UnityEngine;
 using Tools.Utils.FillComponents;
 using Tools;
+using System.Collections.Generic;
 
 namespace Cards
 {
@@ -87,29 +88,34 @@ namespace Cards
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents))]
-        public void DefineAllComponents()
+        public List<ComponentAttachInfo> DefineAllComponents()
         {
-            DefineCardBack();
-            DefineCardFront();
-            DefineCardDragAndDrop();
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineCardBack(),
+                DefineCardFront(),
+                DefineCardDragAndDrop()
+            };
+
+            return list;
         }
 
         [ContextMenu(nameof(DefineCardDragAndDrop))]
-        private void DefineCardDragAndDrop()
+        private ComponentAttachInfo DefineCardDragAndDrop()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _cardDragAndDrop, ComponentLocationTypes.InThis);
+            return AutomaticFillComponents.DefineComponent(this, ref _cardDragAndDrop, ComponentLocationTypes.InThis);
         }
 
         [ContextMenu(nameof(DefineCardBack))]
-        private void DefineCardBack()
+        private ComponentAttachInfo DefineCardBack()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _cardBack, ComponentLocationTypes.InChildren);
+            return AutomaticFillComponents.DefineComponent(this, ref _cardBack, ComponentLocationTypes.InChildren);
         }
 
         [ContextMenu(nameof(DefineCardFront))]
-        private void DefineCardFront()
+        private ComponentAttachInfo DefineCardFront()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _cardFront, ComponentLocationTypes.InChildren);
+            return AutomaticFillComponents.DefineComponent(this, ref _cardFront, ComponentLocationTypes.InChildren);
         }
         #endregion 
     }

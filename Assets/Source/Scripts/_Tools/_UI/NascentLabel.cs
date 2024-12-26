@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
@@ -36,22 +37,27 @@ namespace Tools.UI
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(NascentLabel))]
-        public virtual void DefineAllComponents()
+        public virtual List<ComponentAttachInfo> DefineAllComponents()
         {
-            DefineLabel();
-            DefineNascentPanel();
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineLabel(),
+                DefineNascentPanel()
+            };
+
+            return list;
         }
 
         [ContextMenu(nameof(DefineLabel))]
-        private void DefineLabel()
+        private ComponentAttachInfo DefineLabel()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _label, ComponentLocationTypes.InThis);
+           return AutomaticFillComponents.DefineComponent(this, ref _label, ComponentLocationTypes.InThis);
         }
 
         [ContextMenu(nameof(DefineNascentPanel))]
-        private void DefineNascentPanel()
+        private ComponentAttachInfo DefineNascentPanel()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _nascentPanel, ComponentLocationTypes.InThis);
+           return AutomaticFillComponents.DefineComponent(this, ref _nascentPanel, ComponentLocationTypes.InThis);
         }
         #endregion
     }

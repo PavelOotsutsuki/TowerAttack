@@ -91,15 +91,20 @@ namespace GameFields.Persons.Discovers
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(Discover))]
-        public virtual void DefineAllComponents()
+        public virtual List<ComponentAttachInfo> DefineAllComponents()
         {
-            DefineSeats();
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineSeats()
+            };
+
+            return list;
         }
 
         [ContextMenu(nameof(DefineSeats))]
-        private void DefineSeats()
+        private ComponentAttachInfo DefineSeats()
         {
-            AutomaticFillComponents.DefineComponent(this, ref Seats);
+           return AutomaticFillComponents.DefineComponent(this, ref Seats);
         }
 
         #endregion

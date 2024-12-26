@@ -102,43 +102,48 @@ namespace GameFields.Persons.AttackMenues
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(AttackMenu))]
-        public void DefineAllComponents()
+        public List<ComponentAttachInfo> DefineAllComponents()
         {
-            DefineAttackMenuLabel();
-            DefineAttackMenuPanel();
-            DefineAttackButton();
-            DefineAttackNumberPanel();
-            DefineCanvasGroup();
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineAttackMenuLabel(),
+                DefineAttackMenuPanel(),
+                DefineAttackButton(),
+                DefineAttackNumberPanel(),
+                DefineCanvasGroup()
+            };
+
+            return list;
         }
 
         [ContextMenu(nameof(DefineAttackMenuLabel))]
-        private void DefineAttackMenuLabel()
+        private ComponentAttachInfo DefineAttackMenuLabel()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _attackMenuLabel, ComponentLocationTypes.InChildren);
+           return AutomaticFillComponents.DefineComponent(this, ref _attackMenuLabel, ComponentLocationTypes.InChildren);
         }
 
         [ContextMenu(nameof(DefineAttackMenuPanel))]
-        private void DefineAttackMenuPanel()
+        private ComponentAttachInfo DefineAttackMenuPanel()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _attackMenuPanel, ComponentLocationTypes.InChildren);
+           return AutomaticFillComponents.DefineComponent(this, ref _attackMenuPanel, ComponentLocationTypes.InChildren);
         }
 
         [ContextMenu(nameof(DefineAttackButton))]
-        private void DefineAttackButton()
+        private ComponentAttachInfo DefineAttackButton()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _attackButton, ComponentLocationTypes.InChildren);
+           return AutomaticFillComponents.DefineComponent(this, ref _attackButton, ComponentLocationTypes.InChildren);
         }
 
         [ContextMenu(nameof(DefineAttackNumberPanel))]
-        private void DefineAttackNumberPanel()
+        private ComponentAttachInfo DefineAttackNumberPanel()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _attackNumberPanel, ComponentLocationTypes.InChildren);
+           return AutomaticFillComponents.DefineComponent(this, ref _attackNumberPanel, ComponentLocationTypes.InChildren);
         }
 
         [ContextMenu(nameof(DefineCanvasGroup))]
-        private void DefineCanvasGroup()
+        private ComponentAttachInfo DefineCanvasGroup()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _canvasGroup, ComponentLocationTypes.InThis);
+           return AutomaticFillComponents.DefineComponent(this, ref _canvasGroup, ComponentLocationTypes.InThis);
         }
 
         #endregion 

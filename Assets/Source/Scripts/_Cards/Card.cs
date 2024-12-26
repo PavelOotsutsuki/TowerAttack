@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Tools;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Movements;
@@ -133,27 +134,27 @@ namespace Cards
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(Card))]
-        public void DefineAllComponents()
+        public List<ComponentAttachInfo> DefineAllComponents()
         {
-            DefineRectTransform();
-            DefineCardPaper();
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineRectTransform(),
+                DefineCardPaper()
+            };
+
+            return list;
         }
 
         [ContextMenu(nameof(DefineRectTransform))]
-        private void DefineRectTransform()
+        private ComponentAttachInfo DefineRectTransform()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
+           return AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
         }
 
         [ContextMenu(nameof(DefineCardPaper))]
-        private void DefineCardPaper()
+        private ComponentAttachInfo DefineCardPaper()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _cardPaper, ComponentLocationTypes.InChildren);
-        }
-
-        public object ToUniTask()
-        {
-            throw new NotImplementedException();
+           return AutomaticFillComponents.DefineComponent(this, ref _cardPaper, ComponentLocationTypes.InChildren);
         }
 
         #endregion

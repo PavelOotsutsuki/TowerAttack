@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using DG.Tweening;
 using Tools.Utils.FillComponents;
 using UnityEngine;
@@ -42,15 +43,20 @@ namespace Tools.UI
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(NascentPanel))]
-        public void DefineAllComponents()
+        public List<ComponentAttachInfo> DefineAllComponents()
         {
-            DefineTransform();
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineTransform()
+            };
+
+            return list;
         }
 
         [ContextMenu(nameof(DefineTransform))]
-        private void DefineTransform()
+        private ComponentAttachInfo DefineTransform()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _transform, ComponentLocationTypes.InThis);
+            return AutomaticFillComponents.DefineComponent(this, ref _transform, ComponentLocationTypes.InThis);
         }
         #endregion
     }

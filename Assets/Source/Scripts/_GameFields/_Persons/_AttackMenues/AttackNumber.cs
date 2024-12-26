@@ -165,31 +165,36 @@ namespace GameFields.Persons.AttackMenues
         #region AutomaticFillComponents
 
         [ContextMenu(nameof(DefineAllComponents) + nameof(AttackNumber))]
-        public override void DefineAllComponents()
+        public override List<ComponentAttachInfo> DefineAllComponents()
         {
-            DefineRectTransform();
-            DefineText();
-            DefineAttackNumberAnimator();
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineRectTransform(),
+                DefineText(),
+                DefineAttackNumberAnimator()
+            };
 
-            base.DefineAllComponents();
+            list.AddRange(base.DefineAllComponents());
+
+            return list;
         }
 
         [ContextMenu(nameof(DefineRectTransform))]
-        private void DefineRectTransform()
+        private ComponentAttachInfo DefineRectTransform()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
+           return AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
         }
 
         [ContextMenu(nameof(DefineText))]
-        private void DefineText()
+        private ComponentAttachInfo DefineText()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _text, ComponentLocationTypes.InThisElseChildren);
+           return AutomaticFillComponents.DefineComponent(this, ref _text, ComponentLocationTypes.InThisElseChildren);
         }
 
         [ContextMenu(nameof(DefineAttackNumberAnimator))]
-        private void DefineAttackNumberAnimator()
+        private ComponentAttachInfo DefineAttackNumberAnimator()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _animator, ComponentLocationTypes.InChildren);
+           return AutomaticFillComponents.DefineComponent(this, ref _animator, ComponentLocationTypes.InChildren);
         }
 
         #endregion

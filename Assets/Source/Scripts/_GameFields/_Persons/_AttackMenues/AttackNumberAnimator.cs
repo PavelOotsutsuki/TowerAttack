@@ -68,22 +68,27 @@ namespace GameFields.Persons.AttackMenues
         #region AutomaticFillComponents
 
         [ContextMenu(nameof(DefineAllComponents) + nameof(AttackNumberAnimator))]
-        public void DefineAllComponents()
+        public List<ComponentAttachInfo> DefineAllComponents()
         {
-            DefineErrorAttackNumberAnimation();
-            DefineSuccessAttackNumberAnimation();
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineErrorAttackNumberAnimation(),
+                DefineSuccessAttackNumberAnimation()
+            };
+
+            return list;
         }
 
         [ContextMenu(nameof(DefineErrorAttackNumberAnimation))]
-        private void DefineErrorAttackNumberAnimation()
+        private ComponentAttachInfo DefineErrorAttackNumberAnimation()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _errorAnimation, ComponentLocationTypes.InChildren);
+           return AutomaticFillComponents.DefineComponent(this, ref _errorAnimation, ComponentLocationTypes.InChildren);
         }
 
         [ContextMenu(nameof(DefineSuccessAttackNumberAnimation))]
-        private void DefineSuccessAttackNumberAnimation()
+        private ComponentAttachInfo DefineSuccessAttackNumberAnimation()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _successAnimation, ComponentLocationTypes.InChildren);
+           return AutomaticFillComponents.DefineComponent(this, ref _successAnimation, ComponentLocationTypes.InChildren);
         }
 
         #endregion

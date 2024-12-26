@@ -78,15 +78,20 @@ namespace GameFields
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(Deck))]
-        public void DefineAllComponents()
+        public List<ComponentAttachInfo> DefineAllComponents()
         {
-            DefineTransform();
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineTransform()
+            };
+
+            return list;
         }
 
         [ContextMenu(nameof(DefineTransform))]
-        private void DefineTransform()
+        private ComponentAttachInfo DefineTransform()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _transform, ComponentLocationTypes.InThis);
+           return AutomaticFillComponents.DefineComponent(this, ref _transform, ComponentLocationTypes.InThis);
         }
         #endregion 
     }

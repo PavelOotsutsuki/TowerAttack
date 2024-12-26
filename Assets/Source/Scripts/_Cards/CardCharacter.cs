@@ -1,5 +1,6 @@
 using UnityEngine;
 using Tools.Utils.FillComponents;
+using System.Collections.Generic;
 
 namespace Cards
 {
@@ -48,15 +49,20 @@ namespace Cards
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(CardCharacter))]
-        public void DefineAllComponents()
+        public List<ComponentAttachInfo> DefineAllComponents()
         {
-            DefineAudioSource();
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineAudioSource()
+            };
+
+            return list;
         }
 
         [ContextMenu(nameof(DefineAudioSource))]
-        private void DefineAudioSource()
+        private ComponentAttachInfo DefineAudioSource()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _audioSource, ComponentLocationTypes.InThis);
+           return AutomaticFillComponents.DefineComponent(this, ref _audioSource, ComponentLocationTypes.InThis);
         }
         #endregion
     }

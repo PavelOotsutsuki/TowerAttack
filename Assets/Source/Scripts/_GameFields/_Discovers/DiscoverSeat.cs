@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Cards;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Movements;
@@ -53,22 +54,27 @@ namespace GameFields.Persons.Discovers
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(DiscoverSeat))]
-        public void DefineAllComponents()
+        public List<ComponentAttachInfo> DefineAllComponents()
         {
-            DefineRectTransform();
-            DefineDiscoverCard();
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineRectTransform(),
+                DefineDiscoverCard()
+            };
+
+            return list;
         }
 
         [ContextMenu(nameof(DefineRectTransform))]
-        private void DefineRectTransform()
+        private ComponentAttachInfo DefineRectTransform()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
+           return AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
         }
 
         [ContextMenu(nameof(DefineDiscoverCard))]
-        private void DefineDiscoverCard()
+        private ComponentAttachInfo DefineDiscoverCard()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _discoverCard, ComponentLocationTypes.InChildren);
+           return AutomaticFillComponents.DefineComponent(this, ref _discoverCard, ComponentLocationTypes.InChildren);
         }
         #endregion
     }

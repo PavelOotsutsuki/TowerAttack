@@ -47,22 +47,27 @@ namespace Cards
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents))]
-        public void DefineAllComponents()
+        public List<ComponentAttachInfo> DefineAllComponents()
         {
-            DefineAllCards();
-            DefineBigCard();
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineAllCards(),
+                DefineBigCard()
+            };
+
+            return list;
         }
 
         [ContextMenu(nameof(DefineAllCards))]
-        private void DefineAllCards()
+        private ComponentAttachInfo DefineAllCards()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _cards);
+           return AutomaticFillComponents.DefineComponent(this, ref _cards);
         }
 
         [ContextMenu(nameof(DefineBigCard))]
-        private void DefineBigCard()
+        private ComponentAttachInfo DefineBigCard()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _bigCard, ComponentLocationTypes.InChildren);
+           return AutomaticFillComponents.DefineComponent(this, ref _bigCard, ComponentLocationTypes.InChildren);
         }
         #endregion 
     }

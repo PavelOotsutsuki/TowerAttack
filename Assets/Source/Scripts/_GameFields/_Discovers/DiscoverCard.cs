@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using Tools;
 using Tools.Utils.FillComponents;
+using System.Collections.Generic;
 
 namespace GameFields.Persons.Discovers
 {
@@ -30,15 +31,20 @@ namespace GameFields.Persons.Discovers
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(DiscoverCard))]
-        public virtual void DefineAllComponents()
+        public virtual List<ComponentAttachInfo> DefineAllComponents()
         {
-            DefineSeats();
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineDiscoverViewLogic()
+            };
+
+            return list;
         }
 
-        [ContextMenu(nameof(DefineSeats))]
-        private void DefineSeats()
+        [ContextMenu(nameof(DefineDiscoverViewLogic))]
+        private ComponentAttachInfo DefineDiscoverViewLogic()
         {
-            AutomaticFillComponents.DefineComponent(this, ref ViewLogic, ComponentLocationTypes.InThis);
+            return AutomaticFillComponents.DefineComponent(this, ref ViewLogic, ComponentLocationTypes.InThis);
         }
 
         #endregion

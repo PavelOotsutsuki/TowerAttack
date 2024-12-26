@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using Tools.Utils.FillComponents;
 using UnityEngine;
@@ -22,15 +23,20 @@ namespace Tools.UI
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(Label))]
-        public void DefineAllComponents()
+        public List<ComponentAttachInfo> DefineAllComponents()
         {
-            DefineText();
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineText()
+            };
+
+            return list;
         }
 
         [ContextMenu(nameof(DefineText))]
-        private void DefineText()
+        private ComponentAttachInfo DefineText()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _text, ComponentLocationTypes.InThisElseChildren);
+            return AutomaticFillComponents.DefineComponent(this, ref _text, ComponentLocationTypes.InThisElseChildren);
         }
         #endregion
     }

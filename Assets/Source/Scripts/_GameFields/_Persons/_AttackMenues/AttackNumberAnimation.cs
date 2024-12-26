@@ -95,15 +95,20 @@ namespace GameFields.Persons.AttackMenues
         #region AutomaticFillComponents
 
         [ContextMenu(nameof(DefineAllComponents) + nameof(AttackNumberAnimation))]
-        public void DefineAllComponents()
+        public List<ComponentAttachInfo> DefineAllComponents()
         {
-            DefineImage();
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineImage()
+            };
+
+            return list;
         }
 
         [ContextMenu(nameof(DefineImage))]
-        private void DefineImage()
+        private ComponentAttachInfo DefineImage()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _image, ComponentLocationTypes.InThis);
+           return AutomaticFillComponents.DefineComponent(this, ref _image, ComponentLocationTypes.InThis);
         }
 
         #endregion

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -65,22 +66,27 @@ namespace Tools.UI
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(SimpleButton))]
-        public virtual void DefineAllComponents()
+        public virtual List<ComponentAttachInfo> DefineAllComponents()
         {
-            DefineColorChangePointer();
-            DefineCanvasGroup();
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineColorChangePointer(),
+                DefineCanvasGroup()
+            };
+
+            return list;
         }
 
         [ContextMenu(nameof(DefineColorChangePointer))]
-        private void DefineColorChangePointer()
+        private ComponentAttachInfo DefineColorChangePointer()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _enterColorChanger, ComponentLocationTypes.InThis);
+           return AutomaticFillComponents.DefineComponent(this, ref _enterColorChanger, ComponentLocationTypes.InThis);
         }
 
         [ContextMenu(nameof(DefineCanvasGroup))]
-        private void DefineCanvasGroup()
+        private ComponentAttachInfo DefineCanvasGroup()
         {
-            AutomaticFillComponents.DefineComponent(this, ref CanvasGroup, ComponentLocationTypes.InThis);
+           return AutomaticFillComponents.DefineComponent(this, ref CanvasGroup, ComponentLocationTypes.InThis);
         }
         #endregion 
     }

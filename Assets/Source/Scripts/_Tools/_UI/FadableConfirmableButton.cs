@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
@@ -33,17 +34,22 @@ namespace Tools.UI
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(FadableConfirmableButton))]
-        public override void DefineAllComponents()
+        public override List<ComponentAttachInfo> DefineAllComponents()
         {
-            DefineFadablePanel();
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineFadablePanel()
+            };
 
-            base.DefineAllComponents();
+            list.AddRange(base.DefineAllComponents());
+
+            return list;
         }
 
         [ContextMenu(nameof(DefineFadablePanel))]
-        private void DefineFadablePanel()
+        private ComponentAttachInfo DefineFadablePanel()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _fadablePanel, ComponentLocationTypes.InThis);
+           return AutomaticFillComponents.DefineComponent(this, ref _fadablePanel, ComponentLocationTypes.InThis);
         }
         #endregion 
     }

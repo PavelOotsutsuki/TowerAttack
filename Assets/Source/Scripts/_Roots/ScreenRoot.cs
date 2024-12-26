@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Screens;
 using UnityEngine;
@@ -27,15 +28,20 @@ namespace Roots
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(ScreenRoot))]
-        public void DefineAllComponents()
+        public List<ComponentAttachInfo> DefineAllComponents()
         {
-            DefineAllCanvasScalers();
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineAllCanvasScalers()
+            };
+
+            return list;
         }
 
         [ContextMenu(nameof(DefineAllCanvasScalers))]
-        private void DefineAllCanvasScalers()
+        private ComponentAttachInfo DefineAllCanvasScalers()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _allCanvasScalers);
+           return AutomaticFillComponents.DefineComponent(this, ref _allCanvasScalers);
         }
         #endregion
     }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Cards;
 using GameFields;
 using GameFields.Effects;
@@ -45,56 +46,136 @@ namespace Roots
         [ContextMenu(nameof(DefineGameComponents))]
         private void DefineGameComponents()
         {
+            List<ComponentAttachInfo> infos = new List<ComponentAttachInfo>();
+
+            List<ComponentAttachInfo> exists = new List<ComponentAttachInfo>();
+            List<ComponentAttachInfo> success = new List<ComponentAttachInfo>();
+            List<ComponentAttachInfo> error = new List<ComponentAttachInfo>();
+            List<ComponentAttachInfo> successButSoMuch = new List<ComponentAttachInfo>();
+            List<ComponentAttachInfo> sceneNotExists = new List<ComponentAttachInfo>();
+            List<ComponentAttachInfo> successForArray = new List<ComponentAttachInfo>();
+            List<ComponentAttachInfo> noWay = new List<ComponentAttachInfo>();
+
             IAutomaticFillComponents[] gameComponents = GetComponentsInChildren<IAutomaticFillComponents>(true);
-            int successCounter = 0;
+            int allComponents = 0;
 
             foreach (IAutomaticFillComponents component in gameComponents)
             {
-                component.DefineAllComponents();
-                successCounter++;
+                infos.AddRange(component.DefineAllComponents());
+                allComponents++;
             }
 
-            Debug.Log($"Удалось найти {gameComponents.Length} gameObject-ов. Из них автоматически заполнились: {successCounter}");
+            foreach (ComponentAttachInfo info in infos)
+            {
+                switch (info.ReturnValue)
+                {
+                    case 0:
+                        exists.Add(info);
+                        break;
+                    case 1:
+                        success.Add(info);
+                        break;
+                    case -1:
+                        error.Add(info);
+                        break;
+                    case 2:
+                        successButSoMuch.Add(info);
+                        break;
+                    case -2:
+                        sceneNotExists.Add(info);
+                        break;
+                    case 3:
+                        successForArray.Add(info);
+                        break;
+                    case -3:
+                        noWay.Add(info);
+                        break;
+                    default:
+                        throw new System.Exception("Неизвестный тип возвращаемого значения в ComponentAttachInfo: " + info.ReturnValue);
+                }
+            }
+
+            Debug.Log($"Всего найдено {allComponents} компонентов");
+            Debug.Log("------------------------------------------");
+            ShowInfoByList("Уже заполнено", exists);
+            ShowInfoByList("Успешно заполнены", success);
+            ShowInfoByList("Произошла ошибка", error);
+            ShowInfoByList("Заполнено, но возможно не то", successButSoMuch);
+            ShowInfoByList("Нет на сцене", sceneNotExists);
+            ShowInfoByList("Заполнены массивы", successForArray);
+            ShowInfoByList("Сюда невозможно прийти", noWay);
+
+            Debug.Log("ИТОГО:");
+            Debug.Log("------------------------------------------");
+            ShowResults("Уже заполнено", exists);
+            ShowResults("Успешно заполнены", success);
+            ShowResults("Произошла ошибка", error);
+            ShowResults("Заполнено, но возможно не то", successButSoMuch);
+            ShowResults("Нет на сцене", sceneNotExists);
+            ShowResults("Заполнены массивы", successForArray);
+            ShowResults("Сюда невозможно прийти", noWay);            //Debug.Log($"Удалось найти {gameComponents.Length} gameObject-ов. Из них автоматически заполнились: {allComponents}");
+        }
+
+        private void ShowResults(string allMessage, List<ComponentAttachInfo> currentList)
+        {
+            Debug.Log($"{allMessage}: {currentList.Count}:");
+        }
+
+        private void ShowInfoByList(string allMessage, List<ComponentAttachInfo> currentList)
+        {
+            Debug.Log($"{allMessage}: {currentList.Count}:");
+
+            foreach (ComponentAttachInfo info in currentList)
+            {
+                Debug.Log(info.ComponentInfo);
+            }
+
+            Debug.Log("------------------------------------------");
         }
 
         [ContextMenu(nameof(DefineAllComponents))]
-        public void DefineAllComponents()
+        public List<ComponentAttachInfo> DefineAllComponents()
         {
-            DefineEndTurnButton();
-            DefineCardRoot();
-            DefineGameFieldRoot();
-            DefineScreenRoot();
-            DefinePersonCreator();
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineEndTurnButton(),
+                DefineCardRoot(),
+                DefineGameFieldRoot(),
+                DefineScreenRoot(),
+                DefinePersonCreator()
+            };
+
+            return list;
         }
 
         [ContextMenu(nameof(DefineEndTurnButton))]
-        private void DefineEndTurnButton()
+        private ComponentAttachInfo DefineEndTurnButton()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _endTurnButton, ComponentLocationTypes.InChildren);
+            return AutomaticFillComponents.DefineComponent(this, ref _endTurnButton, ComponentLocationTypes.InChildren);
         }
 
         [ContextMenu(nameof(DefineCardRoot))]
-        private void DefineCardRoot()
+        private ComponentAttachInfo DefineCardRoot()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _cardRoot, ComponentLocationTypes.InThis);
+            return AutomaticFillComponents.DefineComponent(this, ref _cardRoot, ComponentLocationTypes.InThis);
         }
 
         [ContextMenu(nameof(DefineGameFieldRoot))]
-        private void DefineGameFieldRoot()
+        private ComponentAttachInfo DefineGameFieldRoot()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _gameFieldRoot, ComponentLocationTypes.InThis);
+            return AutomaticFillComponents.DefineComponent(this, ref _gameFieldRoot, ComponentLocationTypes.InThis);
         }
 
         [ContextMenu(nameof(DefineScreenRoot))]
-        private void DefineScreenRoot()
+        private ComponentAttachInfo DefineScreenRoot()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _screenRoot, ComponentLocationTypes.InThis);
+            return AutomaticFillComponents.DefineComponent(this, ref _screenRoot, ComponentLocationTypes.InThis);
         }
 
         [ContextMenu(nameof(DefinePersonCreator))]
-        private void DefinePersonCreator()
+        private ComponentAttachInfo DefinePersonCreator()
         {
-            AutomaticFillComponents.DefineComponent(this, ref _personCreator, ComponentLocationTypes.InChildren);
+            return AutomaticFillComponents.DefineComponent(this, ref _personCreator, ComponentLocationTypes.InChildren);
         }
 
         #endregion
