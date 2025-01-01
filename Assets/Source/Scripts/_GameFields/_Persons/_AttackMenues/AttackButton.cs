@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Cysharp.Threading.Tasks;
 using GameFields.Persons.Towers;
+using Tools;
 using Tools.UI;
 using UnityEngine;
 
@@ -9,11 +10,11 @@ namespace GameFields.Persons.AttackMenues
 {
     public class AttackButton : FadableConfirmableButton
     {
-        private Action _onPointerClick;
+        private IDeactivatable _clickCallback;
 
-        public void Init(Action onPointerClick)
+        public void Init(IDeactivatable clickCallback)
         {
-            _onPointerClick = onPointerClick;
+            _clickCallback = clickCallback;
             IsActive = false;
 
             base.Init();
@@ -37,7 +38,7 @@ namespace GameFields.Persons.AttackMenues
         {
             base.OnEnterClick();
 
-            _onPointerClick?.Invoke();
+            _clickCallback.Deactivate();
         }
 
         public override void Deactivate()

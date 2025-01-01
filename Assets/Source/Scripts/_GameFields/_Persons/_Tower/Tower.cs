@@ -1,13 +1,15 @@
 using System.Collections.Generic;
 using Cards;
 using GameFields.Seats;
+using GameFields.Signals;
 using Tools;
 using Tools.Utils.FillComponents;
 using UnityEngine;
+using Zenject;
 
 namespace GameFields.Persons.Towers
 {
-    public abstract class Tower : MonoBehaviour, ICardDropPlace, ICardNumberKeeper, IAutomaticFillComponents
+    public abstract class Tower : MonoBehaviour, ICardDropPlace, IAttackResultHandler, IPersonObject, IAutomaticFillComponents
     {
         private const SideType DefaultSideType = SideType.Back;
         private const bool IsCardInteraction = false;
@@ -16,12 +18,16 @@ namespace GameFields.Persons.Towers
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField, Min(0f)] private float _seatDuration = 0.5f;
 
+        private SignalBus _bus;
+
         public ReadOnlyRectTransform ReadOnlyRectTransform { get; private set; }
         public bool HasFreeSeat => TowerSeat.IsFill() == false;
         public ICardNumber Card => TowerSeat.Card;
 
-        public void Init()
+        public void Init(SignalBus bus)
         {
+            _bus = bus;
+
             TowerSeat.Init();
             ReadOnlyRectTransform = new ReadOnlyRectTransform(_rectTransform);
         }
@@ -39,6 +45,13 @@ namespace GameFields.Persons.Towers
             {
                 Debug.Log("Если все хорошо этого сообщения не должно быть, вроде как");
             }
+        }
+
+        void IAttackResultHandler.SuccessAttack()
+        {
+            Debug.Log("Победа!");
+
+            _bus.Fire(new PersonWinSignal(this));
         }
 
         #region AutomaticFillComponents

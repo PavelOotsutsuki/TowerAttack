@@ -2,20 +2,23 @@ using GameFields.Persons;
 using System.Collections;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
+using Zenject;
+using GameFields.Signals;
 
 namespace GameFields
 {
-    internal class Fight : IFightStep, IWinnerSetter
+    internal class Fight : IFightStep//, IWinnerSetter
     {
         private const int MaxTurns = 100;
         private const float DelayBeforeStartTurn = 3f;
 
         private readonly FightResult _fightResult;
         private readonly PersonsState _personsState;
+        private readonly SignalBus _bus;
 
         private int _turnNumber;
 
-        public Fight(PersonsState personsState, FightResult fightResult)
+        public Fight(PersonsState personsState, FightResult fightResult, SignalBus bus)
         {
             _personsState = personsState;
             _fightResult = fightResult;
@@ -23,6 +26,14 @@ namespace GameFields
             _turnNumber = 1;
 
             IsComplete = false;
+
+            _bus = bus;
+            _bus.Subscribe<PersonWinSignal>(SetWinner);
+        }
+
+        ~Fight()
+        {
+            _bus.Unsubscribe<PersonWinSignal>(SetWinner);
         }
 
         public bool IsComplete { get; private set; }
@@ -35,13 +46,15 @@ namespace GameFields
             StartTurn().ToUniTask();
         }
 
-        public void SetWinner(Person winner)
+        private void SetWinner(PersonWinSignal signal)
         {
-            if (winner is Player)
+            IPersonObject winner = signal.WinnerType;
+
+            if (winner is IPlayerObject)
             {
                 _fightResult.SetPlayerWin();
             }
-            else if (winner is EnemyAI)
+            else if (winner is IEnemyAIObject)
             {
                 _fightResult.SetEnemyWin();
             }

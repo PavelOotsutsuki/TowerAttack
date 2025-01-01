@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using GameFields.Persons;
 using Tools.Utils.FillComponents;
 using UnityEngine;
+using Zenject;
 
 namespace GameFields
 {
@@ -9,9 +10,9 @@ namespace GameFields
     {
         [SerializeField] private GameField _fightPVE;
 
-        public void Init(PersonsState personsState, Player player, EnemyAI enemyAI)
+        public void Init(PersonsState personsState, Player player, EnemyAI enemyAI, SignalBus bus)
         {
-            _fightPVE.Init(personsState, player, enemyAI);
+            _fightPVE.Init(personsState, player, enemyAI, bus);
         }
 
         #region AutomaticFillComponents

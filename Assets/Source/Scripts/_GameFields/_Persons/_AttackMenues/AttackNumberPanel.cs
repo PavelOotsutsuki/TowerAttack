@@ -35,8 +35,10 @@ namespace GameFields.Persons.AttackMenues
 
         private int _activateCounter;
         private int _needForActivate;
+
         private IWorkable _attackButton;
         private ICardNumberKeeper _cardNumberKeeper;
+        private AttackResult _attackResult;
 
         private ConfirmableNumbers _confirmableNumbers;
 
@@ -45,10 +47,11 @@ namespace GameFields.Persons.AttackMenues
         public bool IsComplete => _isComplete && _fadablePanel.IsComplete;
         public bool? IsActive { get; private set; } = null;
 
-        public void Init(IWorkable attackButton, ICardNumberKeeper cardNumberKeeper)
+        public void Init(IWorkable attackButton, ICardNumberKeeper cardNumberKeeper, AttackResult attackResult)
         {
             _attackButton = attackButton;
             _cardNumberKeeper = cardNumberKeeper;
+            _attackResult = attackResult;
 
             _confirmableNumbers = new ConfirmableNumbers();
 
@@ -132,6 +135,7 @@ namespace GameFields.Persons.AttackMenues
                 if (_cardNumberKeeper.Card.IsSuccessAttack(selectedNumber.Number))
                 {
                     selectedNumber.SuccessChoice();
+                    _attackResult.SuccessChoice();
                 }
                 else
                 {

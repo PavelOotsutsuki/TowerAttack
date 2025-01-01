@@ -39,7 +39,7 @@ namespace Roots
             _cardRoot.Init(effectFactory, cardDescription);
             deck.Init(_cardRoot.Cards);
 
-            _gameFieldRoot.Init(_personsState, player, enemyAI);
+            _gameFieldRoot.Init(_personsState, player, enemyAI, bus);
         }
 
         #region AutomaticFillComponents

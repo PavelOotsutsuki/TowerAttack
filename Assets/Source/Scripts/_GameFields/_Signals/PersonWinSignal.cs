@@ -4,11 +4,11 @@ namespace GameFields.Signals
 {
     public struct PersonWinSignal
     {
-        public readonly Person Winner;
+        public readonly IPersonObject WinnerType;
 
-        public PersonWinSignal(Person winner)
+        public PersonWinSignal(IPersonObject winnerType)
         {
-            Winner = winner;
+            WinnerType = winnerType;
         }
     }
 }

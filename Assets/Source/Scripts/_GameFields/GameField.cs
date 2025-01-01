@@ -4,6 +4,7 @@ using GameFields.Effects;
 using GameFields.Persons;
 using Tools.Utils.FillComponents;
 using System.Collections.Generic;
+using Zenject;
 
 namespace GameFields
 {
@@ -14,12 +15,12 @@ namespace GameFields
         private EffectFactory _effectFactory;
         private FightStepsController _fightStepsController;
 
-        public void Init(PersonsState personsState, Player player, EnemyAI enemyAI)
+        public void Init(PersonsState personsState, Player player, EnemyAI enemyAI, SignalBus bus)
         {
             _startFight.Init(player, enemyAI);
 
             FightResult fightResult = new FightResult();
-            Fight fight = new Fight(personsState, fightResult);
+            Fight fight = new Fight(personsState, fightResult, bus);
             EndFight endFight = new EndFight(fightResult);
             _fightStepsController = new FightStepsController(_startFight, fight, endFight);
 

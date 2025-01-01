@@ -21,7 +21,8 @@ namespace GameFields.Persons.AttackMenues
         [SerializeField] private CanvasGroup _canvasGroup;
 
         //private IHandBlockable _handBlockable;
-        private ICardNumberKeeper _cardNumberKeeper;
+        private IAttackResultHandler _attackResultHandler;
+        private AttackResult _attackResult;
 
         public bool? IsActive { get; private set; } = null;
         public bool IsComplete { get; private set; }
@@ -35,19 +36,20 @@ namespace GameFields.Persons.AttackMenues
         //    Init(handBlockable);
         //}
 
-        public void Init(IHandBlockable handBlockable, ICardNumberKeeper cardNumberKeeper)
+        public void Init(IAttackResultHandler attackResultHandler)
         {
             gameObject.SetActive(false);
             IsComplete = false;
             _canvasGroup.blocksRaycasts = false;
 
             //_handBlockable = handBlockable;
-            _cardNumberKeeper = cardNumberKeeper;
+            _attackResultHandler = attackResultHandler;
+            _attackResult = new AttackResult();
 
             _attackMenuLabel.Init();
             _attackMenuPanel.Init();
-            _attackButton.Init(Deactivate);
-            _attackNumberPanel.Init(_attackButton, cardNumberKeeper);
+            _attackButton.Init(this);
+            _attackNumberPanel.Init(_attackButton, attackResultHandler, _attackResult);
         }
 
         public void Activate()
@@ -97,7 +99,15 @@ namespace GameFields.Persons.AttackMenues
 
             //_handBlockable.Unblock();
             gameObject.SetActive(false);
-            IsComplete = true;
+
+            if (_attackResult.IsAttackSuccess)
+            {
+                _attackResultHandler.SuccessAttack();
+            }
+            else
+            {
+                IsComplete = true;
+            }
         }
 
         #region AutomaticFillComponents

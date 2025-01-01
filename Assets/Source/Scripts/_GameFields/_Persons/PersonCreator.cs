@@ -137,10 +137,10 @@ namespace GameFields.Persons
             _playerHand.Init(seatPool);
             _playerTable.Init();
             _playerPlayingZone.Init(_playerTable);
-            _playerTower.Init();
+            _playerTower.Init(_bus);
             _playerDiscover.Init();
             _startPlayerTurnLabel.Init();
-            _playerAttackMenu.Init(_playerHand, _enemyTower);
+            _playerAttackMenu.Init(_enemyTower);
         }
 
         private void InitEnemyData(SeatPool seatPool)
@@ -148,9 +148,9 @@ namespace GameFields.Persons
             _enemyHand.Init(seatPool);
             _enemyTable.Init();
             _enemyPlayingZone.Init(_enemyTable);
-            _enemyTower.Init();
+            _enemyTower.Init(_bus);
             _enemyDiscoverImitation.Init();
-            _enemyAttackMenu.Init(_enemyHand, _playerTower);
+            _enemyAttackMenu.Init(_playerTower);
 
             _enemyCardAttackZone.Init(_playerAttackMenu, _enemyTower.ReadOnlyRectTransform);
         }

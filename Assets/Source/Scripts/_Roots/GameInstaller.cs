@@ -70,6 +70,7 @@ namespace Roots
 
             Container.DeclareSignal<DiscardCardsSignal>();
             Container.DeclareSignal<AttackSignal>();
+            Container.DeclareSignal<PersonWinSignal>();
         }
     }
 }

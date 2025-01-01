@@ -1,5 +1,5 @@
 namespace GameFields.Persons.Towers
 {
-    public class TowerAI : Tower
+    public class TowerAI : Tower, IEnemyAIObject
     { }
 }

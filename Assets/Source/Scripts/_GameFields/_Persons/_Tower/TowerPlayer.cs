@@ -1,5 +1,5 @@
 namespace GameFields.Persons.Towers
 {
-    public class TowerPlayer : Tower
+    public class TowerPlayer : Tower, IPlayerObject
     { }
 }
