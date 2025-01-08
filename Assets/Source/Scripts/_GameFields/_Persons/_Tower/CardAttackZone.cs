@@ -14,7 +14,7 @@ using Random = UnityEngine.Random;
 
 namespace GameFields.Persons.Towers
 {
-    public class CardAttackZone : MonoBehaviour, IAttackable, ICompletable
+    public abstract class CardAttackZone : MonoBehaviour, IAttackable, ICompletable, IPersonObject, IAttackResultHandler
     {
         [SerializeField] private CardAttackZoneData _data;
 
@@ -22,10 +22,12 @@ namespace GameFields.Persons.Towers
         private ShakeAnimation _shakeAnimation;
 
         private AttackMenu _attackMenu;
-        private ReadOnlyRectTransform _towerTransform;
+        private IReadOnlyRectTransformable _towerTransformable;
 
         private DiscardPile _discardPile;
         private SignalBus _bus;
+
+        private Card _currentCard;
 
         private bool _isComplete;
 
@@ -40,10 +42,10 @@ namespace GameFields.Persons.Towers
             _isComplete = false;
         }
 
-        public void Init(AttackMenu attackMenu, ReadOnlyRectTransform towerTransform)
+        public void Init(AttackMenu attackMenu, IReadOnlyRectTransformable towerTransformable)
         {
             _attackMenu = attackMenu;
-            _towerTransform = towerTransform;
+            _towerTransformable = towerTransformable;
 
             _invertCardAnimation = new InvertCardAnimation(_data.InvertCardAnimationData);
             _shakeAnimation = new ShakeAnimation(_data.ShakeAnimationConfig);
@@ -67,8 +69,12 @@ namespace GameFields.Persons.Towers
 
         private IEnumerator ActivatingAttack(Card card)
         {
+            _currentCard = card;
+
+            ReadOnlyRectTransform towerTransform = _towerTransformable.ReadOnlyRectTransform;
+
             AttackAnimation attackAnimation = new AttackAnimation(card.CardMovement, card.ReadOnlyRectTransform,
-                _towerTransform.GetPosition(), _towerTransform.GetRect(), _data.AttackAnimationData);
+                towerTransform.GetPosition(), towerTransform.GetRect(), _data.AttackAnimationData);
 
             attackAnimation.Play();
 
@@ -78,16 +84,48 @@ namespace GameFields.Persons.Towers
 
             _attackMenu.Activate();
 
-            yield return new WaitUntil(() => _attackMenu.IsComplete);
+            //yield return new WaitUntil(() => _attackMenu.IsComplete);
 
-            //StartCoroutine(Discarding());
-            _invertCardAnimation.Play(card);
+            ////StartCoroutine(Discarding());
+            //_invertCardAnimation.Play(card);
+
+            //yield return new WaitUntil(() => _invertCardAnimation.IsComplete);
+
+            //_discardPile.SeatCard(card);
+
+            //_isComplete = true;
+        }
+
+        void IAttackResultHandler.SuccessAttack()
+        {
+            StartCoroutine(SuccessAttackProcessing());
+        }
+
+        void IAttackResultHandler.FalledAttack()
+        {
+            StartCoroutine(FalledAttackProcessing());
+        }
+
+        private IEnumerator FalledAttackProcessing()
+        {
+            Debug.Log("Мимо!");
+
+            _invertCardAnimation.Play(_currentCard);
 
             yield return new WaitUntil(() => _invertCardAnimation.IsComplete);
 
-            _discardPile.SeatCard(card);
+            _discardPile.SeatCard(_currentCard);
 
             _isComplete = true;
+        }
+
+        private IEnumerator SuccessAttackProcessing()
+        {
+            Debug.Log("Победа!");
+
+            yield return new WaitForSeconds(5f);
+
+            _bus.Fire(new PersonWinSignal(this));
         }
 
         //private IEnumerator Discarding()

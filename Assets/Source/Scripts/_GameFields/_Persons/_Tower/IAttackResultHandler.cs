@@ -1,7 +1,8 @@
 namespace GameFields.Persons.Towers
 {
-    public interface IAttackResultHandler: ICardNumberKeeper
+    public interface IAttackResultHandler
     {
         void SuccessAttack();
+        void FalledAttack();
     }
 }

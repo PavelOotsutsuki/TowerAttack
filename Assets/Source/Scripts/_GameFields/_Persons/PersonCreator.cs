@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using GameFields.EndTurnButtons;
 using GameFields.Persons.AttackMenues;
 using GameFields.Persons.Discovers;
@@ -7,12 +8,13 @@ using GameFields.Persons.Tables;
 using GameFields.Persons.Towers;
 using GameFields.Seats;
 using Tools;
+using Tools.Utils.FillComponents;
 using UnityEngine;
 using Zenject;
 
 namespace GameFields.Persons
 {
-    public class PersonCreator : MonoBehaviour
+    public class PersonCreator : MonoBehaviour, IAutomaticFillComponents
     {
         [Header("Player Fields:")]
 
@@ -22,6 +24,7 @@ namespace GameFields.Persons
         private Tower _playerTower;
         private DiscoverPlayer _playerDiscover;
         private AttackMenuPlayer _playerAttackMenu;
+        private CardAttackZonePlayer _playerCardAttackZone;
 
         [SerializeField] private StartPlayerTurnLabel _startPlayerTurnLabel; 
         [SerializeField] private int _playerCountStartDrawCards = 1;
@@ -40,7 +43,7 @@ namespace GameFields.Persons
         private Tower _enemyTower;
         private DiscoverAI _enemyDiscoverImitation;
         private AttackMenuImitation _enemyAttackMenu;
-        private CardAttackZone _enemyCardAttackZone;
+        private CardAttackZoneEnemyAI _enemyCardAttackZone;
 
         [SerializeField] private int _enemyCountStartDrawCards = 1;
         
@@ -72,7 +75,7 @@ namespace GameFields.Persons
         public void Construct(CardPlayingZonePlayer playerPlayingZone, HandPlayer playerHand, TablePlayer playerTable, TowerPlayer playerTower,
             DiscoverPlayer playerDiscover, AttackMenuPlayer playerAttackMenu, CardPlayingZoneAI enemyPlayingZone, HandAI enemyHand,
             TableAI enemyTable, TowerAI enemyTower, DiscoverAI enemyDiscoverImitation, AttackMenuImitation enemyAttackMenu,
-            CardAttackZone enemyCardAttackZone)
+            CardAttackZonePlayer playerCardAttackZone, CardAttackZoneEnemyAI enemyCardAttackZone)
         {
             _playerPlayingZone = playerPlayingZone;
             _playerHand = playerHand;
@@ -80,6 +83,7 @@ namespace GameFields.Persons
             _playerTower = playerTower;
             _playerDiscover = playerDiscover;
             _playerAttackMenu = playerAttackMenu;
+            _playerCardAttackZone = playerCardAttackZone;
 
             _enemyPlayingZone = enemyPlayingZone;
             _enemyHand = enemyHand;
@@ -100,6 +104,7 @@ namespace GameFields.Persons
 
             InitPlayersData(seatPool);
             InitEnemyData(seatPool);
+            //InitCommonData();
         }
 
         public Player CreatePlayer()
@@ -140,7 +145,9 @@ namespace GameFields.Persons
             _playerTower.Init(_bus);
             _playerDiscover.Init();
             _startPlayerTurnLabel.Init();
-            _playerAttackMenu.Init(_enemyTower);
+            _playerAttackMenu.Init(_enemyTower, _playerCardAttackZone);
+
+            _playerCardAttackZone.Init(_playerAttackMenu, _enemyTower);
         }
 
         private void InitEnemyData(SeatPool seatPool)
@@ -150,9 +157,48 @@ namespace GameFields.Persons
             _enemyPlayingZone.Init(_enemyTable);
             _enemyTower.Init(_bus);
             _enemyDiscoverImitation.Init();
-            _enemyAttackMenu.Init(_playerTower);
+            _enemyAttackMenu.Init(_playerTower, _enemyCardAttackZone);
 
-            _enemyCardAttackZone.Init(_playerAttackMenu, _enemyTower.ReadOnlyRectTransform);
+            _enemyCardAttackZone.Init(_enemyAttackMenu, _playerTower);
         }
+
+        //private void InitCommonData()
+        //{
+        //    _playerCardAttackZone.Init(_playerAttackMenu, _enemyTower);
+        //    _enemyCardAttackZone.Init(_enemyAttackMenu, _playerTower);
+        //}
+        #region AutomaticFillComponents
+        [ContextMenu(nameof(DefineAllComponents) + nameof(PersonCreator))]
+        public List<ComponentAttachInfo> DefineAllComponents()
+        {
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineStartPlayerTurnLabel(),
+                DefineTableActivator(),
+                DefineTowerActivator(),
+            };
+
+            return list;
+        }
+
+        [ContextMenu(nameof(DefineStartPlayerTurnLabel))]
+        private ComponentAttachInfo DefineStartPlayerTurnLabel()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _startPlayerTurnLabel, ComponentLocationTypes.InScene);
+        }
+
+        [ContextMenu(nameof(DefineTableActivator))]
+        private ComponentAttachInfo DefineTableActivator()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _tableActivator, ComponentLocationTypes.InScene);
+        }
+
+        [ContextMenu(nameof(DefineTowerActivator))]
+        private ComponentAttachInfo DefineTowerActivator()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _towerActivator, ComponentLocationTypes.InScene);
+        }
+
+        #endregion 
     }
 }

@@ -47,11 +47,11 @@ namespace GameFields.Persons.AttackMenues
         public bool IsComplete => _isComplete && _fadablePanel.IsComplete;
         public bool? IsActive { get; private set; } = null;
 
-        public void Init(IWorkable attackButton, ICardNumberKeeper cardNumberKeeper, AttackResult attackResult)
+        public void Init(IWorkable attackButton, ICardNumberKeeper cardNumberKeeper)
         {
             _attackButton = attackButton;
             _cardNumberKeeper = cardNumberKeeper;
-            _attackResult = attackResult;
+            _attackResult = null;
 
             _confirmableNumbers = new ConfirmableNumbers();
 
@@ -72,6 +72,7 @@ namespace GameFields.Persons.AttackMenues
             _isComplete = false;
 
             _needForActivate = data.NeedForActivate;
+            _attackResult = data.AttackResult;
             _activateCounter = 0;
 
             gameObject.SetActive(true);

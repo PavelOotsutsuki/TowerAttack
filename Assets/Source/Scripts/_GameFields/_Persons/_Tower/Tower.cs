@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Cards;
 using GameFields.Seats;
@@ -9,7 +10,7 @@ using Zenject;
 
 namespace GameFields.Persons.Towers
 {
-    public abstract class Tower : MonoBehaviour, ICardDropPlace, IAttackResultHandler, IPersonObject, IAutomaticFillComponents
+    public abstract class Tower : MonoBehaviour, ICardDropPlace, ICardNumberKeeper, IReadOnlyRectTransformable, IPersonObject, IAutomaticFillComponents
     {
         private const SideType DefaultSideType = SideType.Back;
         private const bool IsCardInteraction = false;
@@ -26,6 +27,7 @@ namespace GameFields.Persons.Towers
 
         public void Init(SignalBus bus)
         {
+            Debug.Log("tower init");
             _bus = bus;
 
             TowerSeat.Init();
@@ -45,13 +47,6 @@ namespace GameFields.Persons.Towers
             {
                 Debug.Log("Если все хорошо этого сообщения не должно быть, вроде как");
             }
-        }
-
-        void IAttackResultHandler.SuccessAttack()
-        {
-            Debug.Log("Победа!");
-
-            _bus.Fire(new PersonWinSignal(this));
         }
 
         #region AutomaticFillComponents

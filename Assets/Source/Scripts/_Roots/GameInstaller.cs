@@ -28,6 +28,7 @@ namespace Roots
         [SerializeField] private DiscoverPlayer _playerDiscover;
         [SerializeField] private CardPlayingZonePlayer _playerPlayingZone;
         [SerializeField] private AttackMenuPlayer _attackMenuPlayer;
+        [SerializeField] private CardAttackZonePlayer _playerCardAttackZone;
 
         [SerializeField] private HandAI _enemyHand;
         [SerializeField] private TableAI _enemyTable;
@@ -35,7 +36,7 @@ namespace Roots
         [SerializeField] private DiscoverAI _enemyDiscoverImitation;
         [SerializeField] private CardPlayingZoneAI _enemyPlayingZone;
         [SerializeField] private AttackMenuImitation _enemyAttackMenu;
-        [SerializeField] private CardAttackZone _enemyCardAttackZone;
+        [SerializeField] private CardAttackZoneEnemyAI _enemyCardAttackZone;
 
         public override void InstallBindings()
         {
@@ -54,6 +55,7 @@ namespace Roots
             Container.Bind<DiscoverPlayer>().FromInstance(_playerDiscover).AsSingle();
             Container.Bind<CardPlayingZonePlayer>().FromInstance(_playerPlayingZone).AsSingle();
             Container.Bind<AttackMenuPlayer>().FromInstance(_attackMenuPlayer).AsSingle();
+            Container.Bind<CardAttackZonePlayer>().FromInstance(_playerCardAttackZone).AsSingle();
 
             Container.Bind<HandAI>().FromInstance(_enemyHand).AsSingle();
             Container.Bind<TableAI>().FromInstance(_enemyTable).AsSingle();
@@ -61,7 +63,7 @@ namespace Roots
             Container.Bind<DiscoverAI>().FromInstance(_enemyDiscoverImitation).AsSingle();
             Container.Bind<CardPlayingZoneAI>().FromInstance(_enemyPlayingZone).AsSingle();
             Container.Bind<AttackMenuImitation>().FromInstance(_enemyAttackMenu).AsSingle();
-            Container.Bind<CardAttackZone>().FromInstance(_enemyCardAttackZone).AsSingle();
+            Container.Bind<CardAttackZoneEnemyAI>().FromInstance(_enemyCardAttackZone).AsSingle();
         }
 
         private void DeclareSignals()

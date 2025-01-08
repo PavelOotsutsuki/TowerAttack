@@ -36,7 +36,7 @@ namespace GameFields.Persons.AttackMenues
         //    Init(handBlockable);
         //}
 
-        public void Init(IAttackResultHandler attackResultHandler)
+        public void Init(ICardNumberKeeper cardNumberKeeper, IAttackResultHandler attackResultHandler)
         {
             gameObject.SetActive(false);
             IsComplete = false;
@@ -44,12 +44,12 @@ namespace GameFields.Persons.AttackMenues
 
             //_handBlockable = handBlockable;
             _attackResultHandler = attackResultHandler;
-            _attackResult = new AttackResult();
+            _attackResult = null;
 
             _attackMenuLabel.Init();
             _attackMenuPanel.Init();
             _attackButton.Init(this);
-            _attackNumberPanel.Init(_attackButton, attackResultHandler, _attackResult);
+            _attackNumberPanel.Init(_attackButton, cardNumberKeeper);
         }
 
         public void Activate()
@@ -69,7 +69,9 @@ namespace GameFields.Persons.AttackMenues
             _attackMenuPanel.Show();
             //_attackButton.Activate();
 
-            AttackNumberPanelActivateData numberPanelActivateData = new AttackNumberPanelActivateData(1);
+            _attackResult = new AttackResult();
+
+            AttackNumberPanelActivateData numberPanelActivateData = new AttackNumberPanelActivateData(1, _attackResult);
             _attackNumberPanel.Activate(numberPanelActivateData);
         }
 
@@ -103,9 +105,11 @@ namespace GameFields.Persons.AttackMenues
             if (_attackResult.IsAttackSuccess)
             {
                 _attackResultHandler.SuccessAttack();
+                IsComplete = true;
             }
             else
             {
+                _attackResultHandler.FalledAttack();
                 IsComplete = true;
             }
         }
