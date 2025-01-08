@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Hands
 {
-    public abstract class Hand : MonoBehaviour, ICardDragAndDropListener, IHandBlockable, IReadOnlyHand, IAutomaticFillComponents
+    public abstract class Hand : MonoBehaviour, ICardDragAndDropHandHandler, IHandBlockable, IReadOnlyHand, IAutomaticFillComponents
     {
         private const float StartRotation = 0;
         private const int EmptyIndex = -1;
@@ -28,8 +28,8 @@ namespace GameFields.Persons.Hands
         private int _handSeatIndex;
         private SeatPool _handSeatPool;
 
-        bool ICardDragAndDropListener.IsDraggable => this is HandPlayer;
-        float ICardDragAndDropListener.ReturnInSeatDuration => _returnInSeatDuration;
+        bool ICardDragAndDropHandHandler.IsDraggable => this is HandPlayer;
+        float ICardDragAndDropHandHandler.ReturnInSeatDuration => _returnInSeatDuration;
 
         public int CountCards => _handSeats.Count;
 
@@ -41,37 +41,37 @@ namespace GameFields.Persons.Hands
             _handSeatPool = seatPool;
         }
 
-        void ICardDragAndDropListener.OnCardDrag(Card card)
+        void ICardDragAndDropHandHandler.OnCardDrag(Card card)
         {
             StartDragCard(card);
         }
 
-        void ICardDragAndDropListener.OnCardDrop()
+        void ICardDragAndDropHandHandler.OnCardDrop()
         {
             UnblockCards();
             StartEndDragCard(false);
         }
 
-        void ICardDragAndDropListener.OnCardPlay()
+        void ICardDragAndDropHandHandler.OnCardPlay()
         {
             UnblockCards();
             UnbindDragableCard();
         }
 
-        void ICardDragAndDropListener.OnCardAttack()
+        void ICardDragAndDropHandHandler.OnCardAttack()
         {
             BlockCards();
             UnbindDragableCard();
         }
 
-        void ICardDragAndDropListener.OnCardReturnInHand(Card card)
+        void ICardDragAndDropHandHandler.OnCardReturnInHand(Card card)
         {
             card.SetActiveInteraction(_isActiveInteraction);
         }
 
         public void AddCard(Card card)
         {
-            card.SetDragAndDropListener(this);
+            //card.SetDragAndDropListener(this);
 
             Seat handSeat = _handSeatPool.GetSeat();
             handSeat.transform.SetParent(_rectTransform);

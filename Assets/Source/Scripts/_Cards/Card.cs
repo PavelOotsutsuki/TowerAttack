@@ -26,7 +26,8 @@ namespace Cards
         public CardViewConfig ViewConfig => _config.CardViewConfig;
         public bool IsPlayingEffect => _cardEffectManager.IsPlayingEffect;
 
-        internal void Init(IEffectFactory effectFactory, CardViewService cardViewService, Transform dragContainer)
+        internal void Init(IEffectFactory effectFactory, CardViewService cardViewService, Transform dragContainer,
+            ICardDragAndDropHandler cardDragAndDropHandler)
         {
             ReadOnlyRectTransform = new ReadOnlyRectTransform(_rectTransform);
             _cardEffectManager = new CardEffectManager(_config.Effect, effectFactory);
@@ -34,7 +35,7 @@ namespace Cards
             _rectTransform.localScale = _defaultScaleVector;
             CardMovement = new Movement(_rectTransform);
 
-            _cardPaper.Init(this, cardViewService, ViewConfig, dragContainer, _rectTransform);
+            _cardPaper.Init(this, cardViewService, ViewConfig, dragContainer, _rectTransform, cardDragAndDropHandler);
 
             CreateCardCharacter();
             SetState(_cardPaper);
@@ -50,10 +51,10 @@ namespace Cards
             _cardPaper.EndDrag();
         }
 
-        public void SetDragAndDropListener(ICardDragAndDropListener cardDragAndDropListener)
-        {
-            _cardPaper.SetDragAndDropListener(cardDragAndDropListener);
-        }
+        //public void SetDragAndDropHandler(ICardDragAndDropHandler cardDragAndDropHandler)
+        //{
+        //    _cardPaper.SetDragAndDropHandler(cardDragAndDropHandler);
+        //}
 
         public void Play()
         {

@@ -5,12 +5,13 @@ using Zenject;
 using GameFields.Signals;
 using System.Collections;
 using Tools.Utils.Movements;
+using GameFields.Persons.Hands;
 
 namespace GameFields.Persons
 {
     public class CardDragAndDropImitationActions
     {
-        private readonly ICardDragAndDropListener _cardDragAndDropListener;
+        private readonly ICardDragAndDropHandHandler _hand;
         private readonly ICardDropPlace _cardDropPlaceImitation;
         private readonly SignalBus _bus;
 
@@ -20,9 +21,9 @@ namespace GameFields.Persons
 
         private bool _isMoving;
 
-        public CardDragAndDropImitationActions(ICardDragAndDropListener cardDragListener, ICardDropPlace cardDropPlaceImitation, SignalBus bus)
+        public CardDragAndDropImitationActions(ICardDragAndDropHandHandler hand, ICardDropPlace cardDropPlaceImitation, SignalBus bus)
         {
-            _cardDragAndDropListener = cardDragListener;
+            _hand = hand;
             _cardDropPlaceImitation = cardDropPlaceImitation;
             _bus = bus;
             _isMoving = false;
@@ -49,7 +50,7 @@ namespace GameFields.Persons
 
             MoveOnPlace(_cardDropPlaceImitation.ReadOnlyRectTransform.GetPosition(), duration);
 
-            _cardDragAndDropListener.OnCardDrag(_activeCard);
+            _hand.OnCardDrag(_activeCard);
         }
 
         public bool CanPlay() => _cardDropPlaceImitation.HasFreeSeat;
@@ -58,14 +59,14 @@ namespace GameFields.Persons
         {
             yield return new WaitUntil(() => _isMoving == false);
 
-            _cardDragAndDropListener.OnCardPlay();
+            _hand.OnCardPlay();
             _cardDropPlaceImitation.SeatCard(_activeCard);
             //_bus.Fire(new StartEffectSignal(_activeCard));
         }
 
         public void ReturnInHand(float returnToHandDuration)
         {
-            _cardDragAndDropListener.OnCardDrop();
+            _hand.OnCardDrop();
             _cardMovement.MoveLocalSmoothly(Vector2.zero, Vector3.zero, returnToHandDuration, _activeCard.DefaultScaleVector);
         }
 

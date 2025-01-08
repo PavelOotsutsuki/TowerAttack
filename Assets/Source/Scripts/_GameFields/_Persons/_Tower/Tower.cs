@@ -27,7 +27,6 @@ namespace GameFields.Persons.Towers
 
         public void Init(SignalBus bus)
         {
-            Debug.Log("tower init");
             _bus = bus;
 
             TowerSeat.Init();

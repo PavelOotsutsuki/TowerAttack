@@ -3,7 +3,9 @@ using Cards;
 using GameFields;
 using GameFields.Effects;
 using GameFields.EndTurnButtons;
+using GameFields.LightControls;
 using GameFields.Persons;
+using GameFields.Persons.Hands;
 using GameFields.Seats;
 using Tools.Utils.FillComponents;
 using UnityEngine;
@@ -18,11 +20,12 @@ namespace Roots
         [SerializeField] private GameFieldRoot _gameFieldRoot;
         [SerializeField] private ScreenRoot _screenRoot;
         [SerializeField] private PersonCreator _personCreator;
-        
+        [SerializeField] private ObjectsLightControlsCreator _lightControlsCreator;
+
         private PersonsState _personsState;
 
         [Inject]
-        private void Construct(SignalBus bus, Deck deck, SeatPool seatPool, CardDescription cardDescription)
+        private void Construct(SignalBus bus, Deck deck, SeatPool seatPool, CardDescription cardDescription, HandPlayer handPlayer)
         {
             _screenRoot.Init();
 
@@ -36,7 +39,12 @@ namespace Roots
             _personsState = new PersonsState(player, enemyAI);
             EffectFactory effectFactory = new EffectFactory(_personsState);
 
-            _cardRoot.Init(effectFactory, cardDescription);
+            _lightControlsCreator.Init();
+
+            CardDragAndDropLightController cardDragAndDropLightController = _lightControlsCreator.CreateDragAndDropLightController();
+            CardDragAndDropHandler cardDragAndDropHandler = new CardDragAndDropHandler(handPlayer, cardDragAndDropLightController);
+
+            _cardRoot.Init(effectFactory, cardDescription, cardDragAndDropHandler);
             deck.Init(_cardRoot.Cards);
 
             _gameFieldRoot.Init(_personsState, player, enemyAI, bus);

@@ -19,12 +19,13 @@ namespace Cards
 
         public bool? IsShown { get; private set; } = null;
 
-        internal void Init(Card me, CardViewService cardViewService, CardViewConfig cardViewConfig, Transform dragContainer, RectTransform cardTransform)
+        internal void Init(Card me, CardViewService cardViewService, CardViewConfig cardViewConfig, Transform dragContainer,
+            RectTransform cardTransform, ICardDragAndDropHandler cardDragAndDropHandler)
         {
             ReadOnlyRectTransform readOnlyRectTransform = new ReadOnlyRectTransform(cardTransform);
             _cardFront.Init(cardViewConfig, readOnlyRectTransform, cardViewService);
 
-            _cardDragAndDropActions = new CardDragAndDropActions(_cardFront, me);
+            _cardDragAndDropActions = new CardDragAndDropActions(_cardFront, me, cardDragAndDropHandler);
             _cardDragAndDrop.Init(cardTransform, _cardDragAndDropActions, dragContainer);
 
             _cardSideFlipper = new CardSideFlipper(_cardFront, _cardBack, _cardDragAndDrop);
@@ -38,10 +39,10 @@ namespace Cards
             _cardDragAndDrop.BlockDrag();
         }
 
-        public void SetDragAndDropListener(ICardDragAndDropListener cardDragAndDropListener)
-        {
-            _cardDragAndDropActions.SetListener(cardDragAndDropListener);
-        }
+        //public void SetDragAndDropHandler(ICardDragAndDropHandler cardDragAndDropHandler)
+        //{
+        //    _cardDragAndDropActions.SetListener(cardDragAndDropHandler);
+        //}
 
         public void SetSide(SideType sideType)
         {

@@ -1,0 +1,52 @@
+using System.Collections;
+using System.Collections.Generic;
+using Cards;
+using GameFields.Persons.Hands;
+using GameFields.Persons.Towers;
+using GameFields.LightControls;
+using UnityEngine;
+
+namespace GameFields
+{
+    public class CardDragAndDropHandler : ICardDragAndDropHandler
+    {
+        private readonly ICardDragAndDropHandHandler _handPlayer;
+        private readonly LightController _lightController;
+
+        public CardDragAndDropHandler(ICardDragAndDropHandHandler handPlayer, CardDragAndDropLightController lightController)
+        {
+            _handPlayer = handPlayer;
+            _lightController = lightController;
+        }
+
+        public bool IsDraggable => _handPlayer.IsDraggable;
+        public float ReturnInSeatDuration => _handPlayer.ReturnInSeatDuration;
+
+        public void OnCardAttack()
+        {
+            _handPlayer.OnCardAttack();
+        }
+
+        public void OnCardDrag(Card card)
+        {
+            _handPlayer.OnCardDrag(card);
+            _lightController.Activate();
+        }
+
+        public void OnCardDrop()
+        {
+            _handPlayer.OnCardDrop();
+            _lightController.Deactivate();
+        }
+
+        public void OnCardPlay()
+        {
+            _handPlayer.OnCardPlay();
+        }
+
+        public void OnCardReturnInHand(Card card)
+        {
+            _handPlayer.OnCardReturnInHand(card);
+        }
+    }
+}

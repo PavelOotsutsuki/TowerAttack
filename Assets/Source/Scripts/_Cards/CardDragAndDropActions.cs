@@ -6,22 +6,22 @@ namespace Cards
     {
         private readonly CardFront _cardFront;
         private readonly Card _card;
+        private readonly ICardDragAndDropHandler _cardDragAndDropHandler;
 
-        private ICardDragAndDropListener _cardDragAndDropListener;
-
-        internal CardDragAndDropActions(CardFront cardFront, Card card)
+        internal CardDragAndDropActions(CardFront cardFront, Card card, ICardDragAndDropHandler cardDragAndDropHandler)
         {
             _cardFront = cardFront;
             _card = card;
+            _cardDragAndDropHandler = cardDragAndDropHandler;
         }
 
-        internal float ReturnInHandDuration => _cardDragAndDropListener.ReturnInSeatDuration;
-        internal bool CanDrag() => _cardDragAndDropListener.IsDraggable;
+        internal float ReturnInHandDuration => _cardDragAndDropHandler.ReturnInSeatDuration;
+        internal bool CanDrag() => _cardDragAndDropHandler.IsDraggable;
 
-        internal void SetListener(ICardDragAndDropListener cardDragAndDropListener)
-        {
-            _cardDragAndDropListener = cardDragAndDropListener;
-        }
+        //internal void SetListener(ICardDragAndDropHandler cardDragAndDropHandler)
+        //{
+        //    _cardDragAndDropHandler = cardDragAndDropHandler;
+        //}
 
         internal void StartDrag()
         {
@@ -34,14 +34,14 @@ namespace Cards
                 Debug.LogWarning("StartDrag when _cardFront.IsBlock");
             }
 
-            _cardDragAndDropListener.OnCardDrag(_card);
+            _cardDragAndDropHandler.OnCardDrag(_card);
 
             _cardFront.Block();
         }
 
         internal void OnReturnInHand(bool isPointerOnCard)
         {
-            _cardDragAndDropListener.OnCardReturnInHand(_card);
+            _cardDragAndDropHandler.OnCardReturnInHand(_card);
 
             if (isPointerOnCard && _cardFront.IsBlock == false)
             {
@@ -56,19 +56,19 @@ namespace Cards
 
         internal void StartEndDrag()
         {
-            _cardDragAndDropListener.OnCardDrop();
+            _cardDragAndDropHandler.OnCardDrop();
         }
 
         internal void PlayCard(ICardDropPlace cardDropPlace)
         {
-            _cardDragAndDropListener.OnCardPlay();
+            _cardDragAndDropHandler.OnCardPlay();
             cardDropPlace.SeatCard(_card);
         }
 
         internal void Attack(IAttackable cardAttackZone)
         {
             cardAttackZone.Attack(_card);
-            _cardDragAndDropListener.OnCardAttack();
+            _cardDragAndDropHandler.OnCardAttack();
         }
 
         internal void ReturnInHand(float duration)

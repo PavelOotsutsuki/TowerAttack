@@ -1,6 +1,6 @@
 namespace Cards
 {
-    public interface ICardDragAndDropListener
+    public interface ICardDragAndDropHandler
     {
         bool IsDraggable { get; }
         float ReturnInSeatDuration { get; }
