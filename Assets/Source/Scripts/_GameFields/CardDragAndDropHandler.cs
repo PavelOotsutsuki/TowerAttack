@@ -25,6 +25,7 @@ namespace GameFields
         public void OnCardAttack()
         {
             _handPlayer.OnCardAttack();
+            _lightController.Deactivate();
         }
 
         public void OnCardDrag(Card card)
@@ -42,6 +43,7 @@ namespace GameFields
         public void OnCardPlay()
         {
             _handPlayer.OnCardPlay();
+            _lightController.Deactivate();
         }
 
         public void OnCardReturnInHand(Card card)

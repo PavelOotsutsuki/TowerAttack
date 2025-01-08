@@ -150,7 +150,8 @@ namespace Roots
                 DefineCardRoot(),
                 DefineGameFieldRoot(),
                 DefineScreenRoot(),
-                DefinePersonCreator()
+                DefinePersonCreator(),
+                DefineObjectsLightControlsCreator()
             };
 
             return list;
@@ -184,6 +185,12 @@ namespace Roots
         private ComponentAttachInfo DefinePersonCreator()
         {
             return AutomaticFillComponents.DefineComponent(this, ref _personCreator, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineObjectsLightControlsCreator))]
+        private ComponentAttachInfo DefineObjectsLightControlsCreator()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _lightControlsCreator, ComponentLocationTypes.InChildren);
         }
 
         #endregion
