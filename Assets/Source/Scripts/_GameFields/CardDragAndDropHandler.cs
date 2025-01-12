@@ -49,6 +49,7 @@ namespace GameFields
         public void OnCardReturnInHand(Card card)
         {
             _handPlayer.OnCardReturnInHand(card);
+            _lightController.Deactivate();
         }
     }
 }
