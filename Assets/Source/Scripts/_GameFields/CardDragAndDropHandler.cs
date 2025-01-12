@@ -13,7 +13,7 @@ namespace GameFields
         private readonly ICardDragAndDropHandHandler _handPlayer;
         private readonly LightController _lightController;
 
-        public CardDragAndDropHandler(ICardDragAndDropHandHandler handPlayer, CardDragAndDropLightController lightController)
+        public CardDragAndDropHandler(ICardDragAndDropHandHandler handPlayer, LightController lightController)
         {
             _handPlayer = handPlayer;
             _lightController = lightController;

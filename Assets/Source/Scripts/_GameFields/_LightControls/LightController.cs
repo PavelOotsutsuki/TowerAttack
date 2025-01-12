@@ -1,17 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using Tools;
-using UnityEngine;
 
 namespace GameFields.LightControls
 {
-    public abstract class LightController : IWorkable
+    public class LightController : IWorkable
     {
-        private readonly IViewable _lightPanel;
+        private readonly LightPanel _lightPanel;
+        private readonly LightableObject[] _lightableObjects;
 
-        public LightController(LightPanel lightPanel)
+        public LightController(LightPanel lightPanel, LightableObject[] lightableObjects)
         {
             _lightPanel = lightPanel;
+            _lightableObjects = lightableObjects;
         }
 
         public bool? IsActive { get; private set; } = null;
@@ -23,9 +22,12 @@ namespace GameFields.LightControls
 
             IsActive = true;
 
-            _lightPanel.Show();
+            foreach (LightableObject lightableObject in _lightableObjects)
+            {
+                lightableObject.Show();
+            }
 
-            OnActivate();
+            _lightPanel.Show();
         }
 
         public void Deactivate()
@@ -35,12 +37,12 @@ namespace GameFields.LightControls
 
             IsActive = false;
 
+            foreach (LightableObject lightableObject in _lightableObjects)
+            {
+                lightableObject.Hide();
+            }
+
             _lightPanel.Hide();
-
-            OnDeactivate();
         }
-
-        protected abstract void OnActivate();
-        protected abstract void OnDeactivate();
     }
 }

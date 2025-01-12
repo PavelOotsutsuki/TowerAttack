@@ -12,8 +12,8 @@ namespace GameFields.LightControls
     {
         [SerializeField] private LightPanel _lightPanel;
 
-        [SerializeField] private CardAttackZoneEnemyAILightFrame _cardAttackZoneEnemyAI;
-        [SerializeField] private CardPlayingZonePlayerLightFrame _cardPlayingZonePlayer;
+        [SerializeField] private CardAttackZoneEnemyAILightableObject _cardAttackZoneEnemyAI;
+        [SerializeField] private CardPlayingZonePlayerLightableObject _cardPlayingZonePlayer;
 
         public void Init()
         {
@@ -23,9 +23,15 @@ namespace GameFields.LightControls
             _cardPlayingZonePlayer.Init();
         }
 
-        public CardDragAndDropLightController CreateDragAndDropLightController()
+        public LightController CreateDragAndDropLightController()
         {
-            return new CardDragAndDropLightController(_lightPanel, _cardAttackZoneEnemyAI, _cardPlayingZonePlayer);
+            LightableObject[] lightableObjects = new LightableObject[]
+            {
+                _cardAttackZoneEnemyAI,
+                _cardPlayingZonePlayer
+            };
+
+            return new LightController(_lightPanel, lightableObjects);
         }
 
         #region AutomaticFillComponents
@@ -35,8 +41,8 @@ namespace GameFields.LightControls
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
                 DefineLightPanel(),
-                DefineCardAttackZoneEnemyAILightFrame(),
-                DefineCardPlayingZonePlayerLightFrame()
+                DefineCardAttackZoneEnemyAILightableObject(),
+                DefineCardPlayingZonePlayerLightableObject()
             };
 
             return list;
@@ -48,14 +54,14 @@ namespace GameFields.LightControls
             return AutomaticFillComponents.DefineComponent(this, ref _lightPanel, ComponentLocationTypes.InChildren);
         }
 
-        [ContextMenu(nameof(DefineCardAttackZoneEnemyAILightFrame))]
-        private ComponentAttachInfo DefineCardAttackZoneEnemyAILightFrame()
+        [ContextMenu(nameof(DefineCardAttackZoneEnemyAILightableObject))]
+        private ComponentAttachInfo DefineCardAttackZoneEnemyAILightableObject()
         {
             return AutomaticFillComponents.DefineComponent(this, ref _cardAttackZoneEnemyAI, ComponentLocationTypes.InScene);
         }
 
-        [ContextMenu(nameof(DefineCardPlayingZonePlayerLightFrame))]
-        private ComponentAttachInfo DefineCardPlayingZonePlayerLightFrame()
+        [ContextMenu(nameof(DefineCardPlayingZonePlayerLightableObject))]
+        private ComponentAttachInfo DefineCardPlayingZonePlayerLightableObject()
         {
             return AutomaticFillComponents.DefineComponent(this, ref _cardPlayingZonePlayer, ComponentLocationTypes.InScene);
         }

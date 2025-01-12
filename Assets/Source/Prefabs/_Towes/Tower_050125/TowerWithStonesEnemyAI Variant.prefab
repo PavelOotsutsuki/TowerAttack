@@ -9,6 +9,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 872651557169807773, guid: 18ed44affb7b8444fa2c742695e01553, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 872651557169807773, guid: 18ed44affb7b8444fa2c742695e01553, type: 3}
       propertyPath: m_BlocksRaycasts
       value: 1
       objectReference: {fileID: 0}
@@ -62,15 +66,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1881266016476410080, guid: 18ed44affb7b8444fa2c742695e01553, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1881266016476410080, guid: 18ed44affb7b8444fa2c742695e01553, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1881266016476410080, guid: 18ed44affb7b8444fa2c742695e01553, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1881266016476410080, guid: 18ed44affb7b8444fa2c742695e01553, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -133,6 +137,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7787552887248601071, guid: 18ed44affb7b8444fa2c742695e01553, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2665966989060328589}
+    - targetCorrespondingSourceObject: {fileID: 7787552887248601071, guid: 18ed44affb7b8444fa2c742695e01553, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8653752429433659970}
     - targetCorrespondingSourceObject: {fileID: 8389781741930046242, guid: 18ed44affb7b8444fa2c742695e01553, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5867814492686421431}
@@ -263,3 +270,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canvasGroup: {fileID: 1384060176833744887}
+--- !u!114 &8653752429433659970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8303404633468563845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dd0eb8e5027b41c2be20f047cb4cef9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _transform: {fileID: 374632112687152778}
+  _lightFrame: {fileID: 5867814492686421431}
+  _lightObjectsParent: {fileID: 0}

@@ -41,7 +41,7 @@ namespace Roots
 
             _lightControlsCreator.Init();
 
-            CardDragAndDropLightController cardDragAndDropLightController = _lightControlsCreator.CreateDragAndDropLightController();
+            LightController cardDragAndDropLightController = _lightControlsCreator.CreateDragAndDropLightController();
             CardDragAndDropHandler cardDragAndDropHandler = new CardDragAndDropHandler(handPlayer, cardDragAndDropLightController);
 
             _cardRoot.Init(effectFactory, cardDescription, cardDragAndDropHandler);
