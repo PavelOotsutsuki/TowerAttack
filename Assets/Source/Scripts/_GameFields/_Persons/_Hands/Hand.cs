@@ -28,7 +28,6 @@ namespace GameFields.Persons.Hands
         private int _handSeatIndex;
         private SeatPool _handSeatPool;
 
-        bool ICardDragAndDropHandHandler.IsDraggable => this is HandPlayer;
         float ICardDragAndDropHandHandler.ReturnInSeatDuration => _returnInSeatDuration;
 
         public int CountCards => _handSeats.Count;
@@ -40,6 +39,8 @@ namespace GameFields.Persons.Hands
 
             _handSeatPool = seatPool;
         }
+
+        bool ICardDragAndDropHandHandler.IsDraggable(Card card) => TryFindHandSeat(out Seat seat, card);
 
         void ICardDragAndDropHandHandler.OnCardDrag(Card card)
         {
@@ -172,6 +173,7 @@ namespace GameFields.Persons.Hands
             
             if (isForced)
             {
+                Debug.Log("Forcibly");
                 Card dragCard = _dragCardHandSeat.Card;
 
                 dragCard.EndDrag();

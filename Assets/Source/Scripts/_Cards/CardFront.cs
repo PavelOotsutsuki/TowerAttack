@@ -39,6 +39,21 @@ namespace Cards
             _bigCardShowData = new BigCardShowData(_cardSize, _readOnlyCardRectTransform, cardViewConfig);
         }
 
+        private void OnDisable()
+        {
+            if (_cardViewService.IsView(this))
+                EndReview();
+            //if (_cardViewService.IsView(this))
+            //{
+            //    EndReview();
+            //    Debug.Log("Эта карта");
+            //}
+            //else
+            //{
+            //    Debug.Log("Не эта карта");
+            //}
+        }
+
         internal void StartReview()
         {
             _cardViewService.SetOverview(this, _bigCardShowData);

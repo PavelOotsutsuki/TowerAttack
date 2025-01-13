@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Tools;
 using Tools.Utils.FillComponents;
@@ -14,12 +15,16 @@ namespace GameFields.LightControls
         private Transform _defaultParent;
         private Transform _lightParent;
 
+        private Coroutine _currentCoroutine;
+
         public bool? IsShown { get; private set; } = null;
 
         public void Init()
         {
             _defaultParent = _transform.parent;
             _lightParent = _lightObjectsParent.GetTransform();
+
+            _currentCoroutine = null;
 
             _lightFrame.Init();
         }
@@ -30,6 +35,9 @@ namespace GameFields.LightControls
                 return;
 
             IsShown = true;
+
+            if (_currentCoroutine != null)
+                StopCoroutine(_currentCoroutine);
 
             _lightFrame.Show();
             _transform.SetParent(_lightParent);
@@ -43,7 +51,16 @@ namespace GameFields.LightControls
             IsShown = false;
 
             _lightFrame.Hide();
-            _transform.SetParent(_defaultParent);
+
+            _currentCoroutine = StartCoroutine(Hiding());
+        }
+
+        private IEnumerator Hiding()
+        {
+            yield return new WaitUntil(() => _lightFrame.IsComplete);
+
+            //if (IsShown == false)
+                _transform.SetParent(_defaultParent);
         }
 
         #region AutomaticFillComponents

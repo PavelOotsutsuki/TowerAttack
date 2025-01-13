@@ -19,8 +19,9 @@ namespace GameFields
             _lightController = lightController;
         }
 
-        public bool IsDraggable => _handPlayer.IsDraggable;
         public float ReturnInSeatDuration => _handPlayer.ReturnInSeatDuration;
+
+        public bool IsDraggable(Card card) => _handPlayer.IsDraggable(card);
 
         public void OnCardAttack()
         {
@@ -49,7 +50,7 @@ namespace GameFields
         public void OnCardReturnInHand(Card card)
         {
             _handPlayer.OnCardReturnInHand(card);
-            _lightController.Deactivate();
+            //_lightController.Deactivate();
         }
     }
 }

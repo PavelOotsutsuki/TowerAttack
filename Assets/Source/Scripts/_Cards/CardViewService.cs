@@ -1,4 +1,5 @@
 using Tools;
+using UnityEngine;
 
 namespace Cards
 {
@@ -14,6 +15,11 @@ namespace Cards
             _bigCard = bigCard;
             _cardDescription = cardDescription;
             _currentCard = null;
+        }
+
+        public bool IsView(IViewable viewable)
+        {
+            return _currentCard == viewable;
         }
 
         public void SetOverview(IViewable showableCard, BigCardShowData bigCardShowData)

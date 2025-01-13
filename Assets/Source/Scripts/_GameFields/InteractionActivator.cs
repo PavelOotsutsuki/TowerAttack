@@ -2,6 +2,7 @@ using GameFields.Persons;
 using GameFields.Persons.DrawCards;
 using GameFields.Persons.Hands;
 using Tools;
+using UnityEngine;
 
 namespace GameFields
 {
@@ -23,6 +24,8 @@ namespace GameFields
 
         public void SetObjectsStates(PersonStep personStep)
         {
+            //Debug.Log(personStep.ToString());
+
             switch (personStep)
             {
                 case StartPlayerTurnView:
@@ -40,17 +43,14 @@ namespace GameFields
                 case EndTurnProcessing:
                     SetEndTurnProcessingStates();
                     break;
+                case CardAttackProcessing:
+                    SetCardActionProcessingPlayerStates();
+                    break;
                 case StartTurnDrawEnemyAI:
                     SetEnemyAIStates();
                     break;
                 case EnemyDragAndDropImitation:
-                    SetEnemyAIStates();
-                    break;
                 case CardEffectProcessingEnemyAI:
-                    SetEnemyAIStates();
-                    break;
-                case CardAttackProcessing:
-                    SetCardActionProcessingPlayerStates();
                     break;
                 default:
                     throw new System.Exception("Неизветное состояние PersonStep" + personStep);

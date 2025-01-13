@@ -4,9 +4,9 @@ namespace GameFields.Persons.Hands
 {
     public interface ICardDragAndDropHandHandler
     {
-        bool IsDraggable { get; }
         float ReturnInSeatDuration { get; }
 
+        bool IsDraggable(Card card);
         void OnCardDrag(Card card);
         void OnCardDrop();
         void OnCardPlay();
