@@ -8,49 +8,61 @@ using UnityEngine;
 
 namespace GameFields
 {
-    public class CardDragAndDropHandler : ICardDragAndDropHandler
+    public class CardDragAndDropHandler : ICardDragAndDropHandler, ICardDragAndDropBlockable
     {
-        private readonly ICardDragAndDropHandHandler _handPlayer;
+        private readonly ICardDragAndDropHandHandler _cardDragAndDropHandPlayer;
+        private readonly IHandBlockable _handPlayerBlockable; 
         private readonly LightController _lightController;
 
-        public CardDragAndDropHandler(ICardDragAndDropHandHandler handPlayer, LightController lightController)
+        public CardDragAndDropHandler(ICardDragAndDropHandHandler cardDragAndDropHandPlayer, IHandBlockable handPlayerBlockable, LightController lightController)
         {
-            _handPlayer = handPlayer;
+            _cardDragAndDropHandPlayer = cardDragAndDropHandPlayer;
+            _handPlayerBlockable = handPlayerBlockable;
             _lightController = lightController;
         }
 
-        public float ReturnInSeatDuration => _handPlayer.ReturnInSeatDuration;
+        public float ReturnInSeatDuration => _cardDragAndDropHandPlayer.ReturnInSeatDuration;
 
-        public bool IsDraggable(Card card) => _handPlayer.IsDraggable(card);
+        public bool IsDraggable(Card card) => _cardDragAndDropHandPlayer.IsDraggable(card);
 
         public void OnCardAttack()
         {
-            _handPlayer.OnCardAttack();
+            _cardDragAndDropHandPlayer.OnCardAttack();
             _lightController.Deactivate();
         }
 
         public void OnCardDrag(Card card)
         {
-            _handPlayer.OnCardDrag(card);
+            _cardDragAndDropHandPlayer.OnCardDrag(card);
             _lightController.Activate();
         }
 
         public void OnCardDrop()
         {
-            _handPlayer.OnCardDrop();
+            _cardDragAndDropHandPlayer.OnCardDrop();
             _lightController.Deactivate();
         }
 
         public void OnCardPlay()
         {
-            _handPlayer.OnCardPlay();
+            _cardDragAndDropHandPlayer.OnCardPlay();
             _lightController.Deactivate();
         }
 
         public void OnCardReturnInHand(Card card)
         {
-            _handPlayer.OnCardReturnInHand(card);
-            //_lightController.Deactivate();
+            _cardDragAndDropHandPlayer.OnCardReturnInHand(card);
+        }
+
+        public void ForciblyBlock()
+        {
+            _handPlayerBlockable.ForciblyBlock();
+            _lightController.Deactivate();
+        }
+
+        public void Unblock()
+        {
+            _handPlayerBlockable.Unblock();
         }
     }
 }

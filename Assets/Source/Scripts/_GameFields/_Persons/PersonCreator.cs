@@ -94,13 +94,13 @@ namespace GameFields.Persons
             _enemyCardAttackZone = enemyCardAttackZone;
         }
 
-        public void Init(SignalBus bus, Deck deck, EndTurnButton endTurnButton, SeatPool seatPool)
+        public void Init(SignalBus bus, Deck deck, EndTurnButton endTurnButton, SeatPool seatPool, CardDragAndDropHandler cardDragAndDropHandler)
         {
             _bus = bus;
             _deck = deck;
             _endTurnButton = endTurnButton;
 
-            _interactionActivator = new InteractionActivator(_playerHand, _towerActivator, _tableActivator, endTurnButton);
+            _interactionActivator = new InteractionActivator(cardDragAndDropHandler, _towerActivator, _tableActivator, endTurnButton);
 
             InitPlayersData(seatPool);
             InitEnemyData(seatPool);

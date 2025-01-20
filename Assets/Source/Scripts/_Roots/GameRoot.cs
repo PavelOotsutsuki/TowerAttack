@@ -31,18 +31,19 @@ namespace Roots
 
             seatPool.Init();
             _endTurnButton.Init();
-            _personCreator.Init(bus, deck, _endTurnButton, seatPool);
+
+            _lightControlsCreator.Init();
+
+            LightController cardDragAndDropLightController = _lightControlsCreator.CreateDragAndDropLightController();
+            CardDragAndDropHandler cardDragAndDropHandler = new CardDragAndDropHandler(handPlayer, handPlayer, cardDragAndDropLightController);
+
+            _personCreator.Init(bus, deck, _endTurnButton, seatPool, cardDragAndDropHandler);
 
             Player player = _personCreator.CreatePlayer();
             EnemyAI enemyAI = _personCreator.CreateEnemyAI();
 
             _personsState = new PersonsState(player, enemyAI);
             EffectFactory effectFactory = new EffectFactory(_personsState);
-
-            _lightControlsCreator.Init();
-
-            LightController cardDragAndDropLightController = _lightControlsCreator.CreateDragAndDropLightController();
-            CardDragAndDropHandler cardDragAndDropHandler = new CardDragAndDropHandler(handPlayer, cardDragAndDropLightController);
 
             _cardRoot.Init(effectFactory, cardDescription, cardDragAndDropHandler);
             deck.Init(_cardRoot.Cards);

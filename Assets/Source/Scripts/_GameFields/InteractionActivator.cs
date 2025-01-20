@@ -8,15 +8,15 @@ namespace GameFields
 {
     public class InteractionActivator
     {
-        private readonly IHandBlockable _hand;
+        private readonly ICardDragAndDropBlockable _dragAndDropBlockable;
         private readonly IWorkable _tower;
         private readonly IWorkable _table;
         private readonly IWorkable _endTurnButton;
 
-        public InteractionActivator(IHandBlockable handPlayer, IWorkable towerEnemy, IWorkable tablePlayer,
+        public InteractionActivator(ICardDragAndDropBlockable dragAndDropBlockable, IWorkable towerEnemy, IWorkable tablePlayer,
             IWorkable endTurnButton)
         {
-            _hand = handPlayer;
+            _dragAndDropBlockable = dragAndDropBlockable;
             _tower = towerEnemy;
             _table = tablePlayer;
             _endTurnButton = endTurnButton;
@@ -59,7 +59,7 @@ namespace GameFields
 
         private void SetStartPlayerTurnViewStates()
         {
-            _hand.ForciblyBlock();
+            _dragAndDropBlockable.ForciblyBlock();
             _tower.Deactivate();
             _table.Deactivate();
             _endTurnButton.Deactivate();
@@ -67,7 +67,7 @@ namespace GameFields
 
         private void SetStartTurnDrawPlayerStates()
         {
-            _hand.ForciblyBlock();
+            _dragAndDropBlockable.ForciblyBlock();
             _tower.Deactivate();
             _table.Deactivate();
             _endTurnButton.Deactivate();
@@ -75,7 +75,7 @@ namespace GameFields
 
         private void SetTurnProcessingStates()
         {
-            _hand.Unblock();
+            _dragAndDropBlockable.Unblock();
             _tower.Activate();
             _table.Activate();
             _endTurnButton.Deactivate();
@@ -83,7 +83,7 @@ namespace GameFields
 
         private void SetCardActionProcessingPlayerStates()
         {
-            _hand.ForciblyBlock();
+            _dragAndDropBlockable.ForciblyBlock();
             _tower.Deactivate();
             _table.Deactivate();
             _endTurnButton.Deactivate();
@@ -91,7 +91,7 @@ namespace GameFields
 
         private void SetEndTurnProcessingStates()
         {
-            _hand.Unblock();
+            _dragAndDropBlockable.Unblock();
             _tower.Deactivate();
             _table.Deactivate();
             _endTurnButton.Activate();
@@ -99,7 +99,7 @@ namespace GameFields
 
         private void SetEnemyAIStates()
         {
-            _hand.Unblock();
+            _dragAndDropBlockable.Unblock();
             _tower.Deactivate();
             _table.Deactivate();
             _endTurnButton.Deactivate();
