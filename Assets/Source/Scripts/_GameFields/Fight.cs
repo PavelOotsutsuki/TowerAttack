@@ -52,11 +52,11 @@ namespace GameFields
 
             if (towerAttackedType is IEnemyAIObject)
             {
-                _fightResult.SetPlayerWin();
+                _fightResult.SetEnemyWin();
             }
             else if (towerAttackedType is IPlayerObject)
             {
-                _fightResult.SetEnemyWin();
+                _fightResult.SetPlayerWin();
             }
             else
             {

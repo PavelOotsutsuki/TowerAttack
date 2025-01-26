@@ -140,17 +140,17 @@ namespace Tools.Utils.FillComponents
 
         public static ComponentAttachInfo DefineComponent<T>(MonoBehaviour parent, ref T[] targets)
         {
-            if (targets is null)
-            {
-                Debug.LogError($"targets is null. Parent: " + parent.ToString());
-                return new ComponentAttachInfo(parent.ToString(), targets.ToString(), -1);
-            }
+            //if (targets is null)
+            //{
+            //    Debug.LogError($"targets is null. Parent: " + parent.ToString());
+            //    return new ComponentAttachInfo(parent.ToString(), targets.ToString(), -1);
+            //}
 
-            if (targets.Length < 1)
-            {
-                Debug.LogError($"targets.Length < 1. Parent: " + parent.ToString());
-                return new ComponentAttachInfo(parent.ToString(), targets.ToString(), -1);
-            }
+            //if (targets.Length < 1)
+            //{
+            //    Debug.LogError($"targets.Length < 1. Parent: " + parent.ToString());
+            //    return new ComponentAttachInfo(parent.ToString(), targets.ToString(), -1);
+            //}
 
             string type = GetShortType<T>();
 

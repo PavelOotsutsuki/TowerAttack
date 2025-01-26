@@ -804,7 +804,7 @@ MonoBehaviour:
   _rectTransform: {fileID: 5981172514607463790}
   _cardPaper: {fileID: 5735171853976598656}
   _config: {fileID: 0}
-  _defaultScaleVector: {x: 1, y: 1, z: 1}
+  _background: {fileID: 9005597812930443901}
 --- !u!1 &4603742727300818215
 GameObject:
   m_ObjectHideFlags: 0
@@ -1086,6 +1086,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a38bf3ff6a8a8468680ff4e2792b57ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _canvasGroup: {fileID: 5823099822882136473}
   _width: 150
   _height: 210
   _cardView:
@@ -1098,7 +1099,6 @@ MonoBehaviour:
     _enableFrameColor: {r: 0.061807394, g: 1, b: 0, a: 1}
     _disableFrameColor: {r: 1, g: 0, b: 0, a: 1}
     _canvasGroup: {fileID: 5823099822882136473}
-  _canvasGroup: {fileID: 5823099822882136473}
 --- !u!1 &5210918133022376145
 GameObject:
   m_ObjectHideFlags: 0

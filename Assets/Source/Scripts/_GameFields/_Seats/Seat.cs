@@ -45,7 +45,7 @@ namespace GameFields.Seats
         #region AutomaticFillComponents
 
         [ContextMenu(nameof(DefineAllComponents) + nameof(Seat))]
-        public List<ComponentAttachInfo> DefineAllComponents()
+        public virtual List<ComponentAttachInfo> DefineAllComponents()
         {
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {

@@ -4,6 +4,7 @@ using Tools;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Movements;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Cards
 {
@@ -12,6 +13,7 @@ namespace Cards
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private CardPaper _cardPaper;
         [SerializeField] private CardConfig _config;
+        [SerializeField] private Image _background;
 
         private readonly Vector3 _defaultScaleVector = new Vector3(1f,1f,1f);
 
@@ -25,6 +27,7 @@ namespace Cards
         public Vector3 DefaultScaleVector => _defaultScaleVector;
         public CardViewConfig ViewConfig => _config.CardViewConfig;
         public bool IsPlayingEffect => _cardEffectManager.IsPlayingEffect;
+        public Image Background => _background;
 
         internal void Init(IEffectFactory effectFactory, CardViewService cardViewService, Transform dragContainer,
             ICardDragAndDropHandler cardDragAndDropHandler)

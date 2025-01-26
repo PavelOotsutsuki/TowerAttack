@@ -22,7 +22,7 @@ namespace GameFields.Persons.Towers
         private ShakeAnimation _shakeAnimation;
 
         private AttackMenu _attackMenu;
-        private IReadOnlyRectTransformable _towerTransformable;
+        private Tower _tower;
 
         private DiscardPile _discardPile;
         private SignalBus _bus;
@@ -42,10 +42,10 @@ namespace GameFields.Persons.Towers
             _isComplete = false;
         }
 
-        public void Init(AttackMenu attackMenu, IReadOnlyRectTransformable towerTransformable)
+        public void Init(AttackMenu attackMenu, Tower tower)
         {
             _attackMenu = attackMenu;
-            _towerTransformable = towerTransformable;
+            _tower = tower;
 
             _invertCardAnimation = new InvertCardAnimation(_data.InvertCardAnimationData);
             _shakeAnimation = new ShakeAnimation(_data.ShakeAnimationConfig);
@@ -71,7 +71,7 @@ namespace GameFields.Persons.Towers
         {
             _currentCard = card;
 
-            ReadOnlyRectTransform towerTransform = _towerTransformable.ReadOnlyRectTransform;
+            ReadOnlyRectTransform towerTransform = _tower.ReadOnlyRectTransform;
 
             AttackAnimation attackAnimation = new AttackAnimation(card.CardMovement, card.ReadOnlyRectTransform,
                 towerTransform.GetPosition(), towerTransform.GetRect(), _data.AttackAnimationData);
@@ -110,11 +110,16 @@ namespace GameFields.Persons.Towers
         {
             Debug.Log("Мимо!");
 
-            _invertCardAnimation.Play(_currentCard);
+            if (_currentCard is not null)
+            {
+                _invertCardAnimation.Play(_currentCard);
 
-            yield return new WaitUntil(() => _invertCardAnimation.IsComplete);
+                yield return new WaitUntil(() => _invertCardAnimation.IsComplete);
 
-            _discardPile.SeatCard(_currentCard);
+                _discardPile.SeatCard(_currentCard);
+
+                _currentCard = null;
+            }
 
             _isComplete = true;
         }
@@ -122,6 +127,23 @@ namespace GameFields.Persons.Towers
         private IEnumerator SuccessAttackProcessing()
         {
             Debug.Log("Победа!");
+
+            if (_currentCard is not null)
+            {
+                _invertCardAnimation.Play(_currentCard);
+
+                yield return new WaitUntil(() => _invertCardAnimation.IsComplete);
+
+                _discardPile.SeatCard(_currentCard);
+
+                _currentCard = null;
+            }
+            else
+            {
+
+            }
+
+            _tower.Boom();
 
             yield return new WaitForSeconds(5f);
 
