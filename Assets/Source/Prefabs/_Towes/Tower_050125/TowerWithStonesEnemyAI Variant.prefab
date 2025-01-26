@@ -25,6 +25,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8306392650464272511}
     - target: {fileID: 872651557169807773, guid: 18ed44affb7b8444fa2c742695e01553, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 872651557169807773, guid: 18ed44affb7b8444fa2c742695e01553, type: 3}
       propertyPath: m_Interactable
       value: 0
       objectReference: {fileID: 0}
@@ -709,10 +713,10 @@ MonoBehaviour:
   _shakeAnimationConfig:
     <Data>k__BackingField:
       <Duration>k__BackingField: 0.2
-      <MaxOffsetX>k__BackingField: 0.3
-      <MaxOffsetY>k__BackingField: 0.3
-      <MinOffsetX>k__BackingField: -0.3
-      <MinOffsetY>k__BackingField: -0.3
+      <MaxOffsetX>k__BackingField: 30
+      <MaxOffsetY>k__BackingField: 30
+      <MinOffsetX>k__BackingField: -30
+      <MinOffsetY>k__BackingField: -30
       <Delay>k__BackingField: 0.025
     <TargetTransform>k__BackingField: {fileID: 0}
 --- !u!114 &7218435328850816452
@@ -742,10 +746,10 @@ MonoBehaviour:
     <ShakeAnimationConfig>k__BackingField:
       <Data>k__BackingField:
         <Duration>k__BackingField: 0.2
-        <MaxOffsetX>k__BackingField: 0.3
-        <MaxOffsetY>k__BackingField: 0.3
-        <MinOffsetX>k__BackingField: -0.3
-        <MinOffsetY>k__BackingField: -0.3
+        <MaxOffsetX>k__BackingField: 30
+        <MaxOffsetY>k__BackingField: 30
+        <MinOffsetX>k__BackingField: -30
+        <MinOffsetY>k__BackingField: -30
         <Delay>k__BackingField: 0.025
       <TargetTransform>k__BackingField: {fileID: 0}
 --- !u!114 &2665966989060328589

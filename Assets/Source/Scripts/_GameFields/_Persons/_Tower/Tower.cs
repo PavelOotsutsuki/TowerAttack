@@ -27,6 +27,7 @@ namespace GameFields.Persons.Towers
 
         private SignalBus _bus;
         private ShakeAnimation _shakeAnimation;
+        private ShakeAnimation _shakeAnimationCamera;
 
         public ReadOnlyRectTransform ReadOnlyRectTransform { get; private set; }
         public bool HasFreeSeat => TowerSeat.IsFill() == false;
@@ -39,6 +40,7 @@ namespace GameFields.Persons.Towers
             TowerSeat.Init();
             ReadOnlyRectTransform = new ReadOnlyRectTransform(_rectTransform);
             _shakeAnimation = new ShakeAnimation(_shakeAnimationConfig);
+            _shakeAnimationCamera = new ShakeAnimation();
         }
 
         //public Vector3 GetPosition() => transform.position;
@@ -86,6 +88,7 @@ namespace GameFields.Persons.Towers
             }
 
             _shakeAnimation.Play();
+            _shakeAnimationCamera.Play();
             TowerSeat.Card.gameObject.SetActive(false);
             //targetImage.color = new Color(0f, 0f, 0f, 0f);
             Image tower = TowerSeat.gameObject.GetComponent<Image>();

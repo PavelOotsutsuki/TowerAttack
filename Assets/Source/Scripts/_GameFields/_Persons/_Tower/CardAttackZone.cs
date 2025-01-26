@@ -20,6 +20,7 @@ namespace GameFields.Persons.Towers
 
         private InvertCardAnimation _invertCardAnimation;
         private ShakeAnimation _shakeAnimation;
+        private ShakeAnimation _shakeAnimationCamera;
 
         private AttackMenu _attackMenu;
         private Tower _tower;
@@ -49,6 +50,7 @@ namespace GameFields.Persons.Towers
 
             _invertCardAnimation = new InvertCardAnimation(_data.InvertCardAnimationData);
             _shakeAnimation = new ShakeAnimation(_data.ShakeAnimationConfig);
+            _shakeAnimationCamera = new ShakeAnimation();
             //_towerPosition = _towerTransform.GetPosition();
             //_towerSize = _towerTransform.GetRect();
         }
@@ -81,6 +83,7 @@ namespace GameFields.Persons.Towers
             yield return new WaitUntil(() => attackAnimation.IsComplete);
 
             _shakeAnimation.Play();
+            _shakeAnimationCamera.Play();
 
             _attackMenu.Activate();
 

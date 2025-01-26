@@ -15,6 +15,13 @@ namespace Tools.CommonAnimations
             _targetTransform = config.TargetTransform;
         }
 
+        public ShakeAnimation()
+        {
+            _data = new ShakeAnimationData();
+
+            _targetTransform = Camera.main.transform;
+        }
+
         public void Play()
         {
             Shaking().ToUniTask();
@@ -24,6 +31,7 @@ namespace Tools.CommonAnimations
         {
             float duration = _data.Duration;
             Vector3 originalPosition = _targetTransform.position;
+
             WaitForSeconds delay = new WaitForSeconds(_data.Delay);
 
             float x;
@@ -35,7 +43,8 @@ namespace Tools.CommonAnimations
                 x = Random.Range(_data.MinOffsetX, _data.MaxOffsetX);
                 y = Random.Range(_data.MinOffsetY, _data.MaxOffsetY);
 
-                _targetTransform.position = new Vector3(x, y, originalPosition.z);
+                _targetTransform.position = new Vector3(originalPosition.x + x, originalPosition.y + y, originalPosition.z);
+
                 yield return delay;
             }
 
