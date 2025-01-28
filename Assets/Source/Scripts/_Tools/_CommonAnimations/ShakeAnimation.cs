@@ -9,10 +9,15 @@ namespace Tools.CommonAnimations
         private readonly ShakeAnimationData _data;
         private readonly Transform _targetTransform;
 
-        public ShakeAnimation(ShakeAnimationConfig config)
+        private readonly ShakeAnimation _cameraShakeAnimation;
+
+        public ShakeAnimation(ShakeAnimationConfig config, bool isIncludeCamera = true)
         {
             _data = config.Data;
             _targetTransform = config.TargetTransform;
+
+            if (isIncludeCamera)
+                _cameraShakeAnimation = new ShakeAnimation();
         }
 
         public ShakeAnimation()
@@ -24,6 +29,8 @@ namespace Tools.CommonAnimations
 
         public void Play()
         {
+            _cameraShakeAnimation?.Play();
+
             Shaking().ToUniTask();
         }
 

@@ -15176,6 +15176,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 86832529}
     - target: {fileID: 6945050975539224431, guid: 26655d9d557b34e418f9d04fbb7b4e22, type: 3}
+      propertyPath: _towerSeat
+      value: 
+      objectReference: {fileID: 86832529}
+    - target: {fileID: 6945050975539224431, guid: 26655d9d557b34e418f9d04fbb7b4e22, type: 3}
       propertyPath: _stones.Array.size
       value: 23
       objectReference: {fileID: 0}
@@ -15273,6 +15277,10 @@ PrefabInstance:
       objectReference: {fileID: 220932480}
     - target: {fileID: 6945050975539224431, guid: 26655d9d557b34e418f9d04fbb7b4e22, type: 3}
       propertyPath: _shakeAnimationConfig.<TargetTransform>k__BackingField
+      value: 
+      objectReference: {fileID: 1341265454}
+    - target: {fileID: 6945050975539224431, guid: 26655d9d557b34e418f9d04fbb7b4e22, type: 3}
+      propertyPath: _boomAnimationData.<ShakeAnimationConfig>k__BackingField.<TargetTransform>k__BackingField
       value: 
       objectReference: {fileID: 1341265454}
     - target: {fileID: 7218435328850816452, guid: 26655d9d557b34e418f9d04fbb7b4e22, type: 3}
@@ -16105,6 +16113,10 @@ PrefabInstance:
       propertyPath: _shakeAnimationConfig.<Data>k__BackingField.<MaxOffsetY>k__BackingField
       value: 30
       objectReference: {fileID: 0}
+    - target: {fileID: 6742648668901085939, guid: 96b6035ccb2634526b97688d28a35abe, type: 3}
+      propertyPath: _boomAnimationData.<ShakeAnimationConfig>k__BackingField.<TargetTransform>k__BackingField
+      value: 
+      objectReference: {fileID: 1341265454}
     - target: {fileID: 6861091813803544759, guid: 96b6035ccb2634526b97688d28a35abe, type: 3}
       propertyPath: _data.<ShakeAnimationConfig>k__BackingField.<TargetTransform>k__BackingField
       value: 

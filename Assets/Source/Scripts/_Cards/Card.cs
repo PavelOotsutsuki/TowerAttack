@@ -54,6 +54,11 @@ namespace Cards
             _cardPaper.EndDrag();
         }
 
+        public void Kill()
+        {
+            Destroy(gameObject);
+        }
+
         //public void SetDragAndDropHandler(ICardDragAndDropHandler cardDragAndDropHandler)
         //{
         //    _cardPaper.SetDragAndDropHandler(cardDragAndDropHandler);

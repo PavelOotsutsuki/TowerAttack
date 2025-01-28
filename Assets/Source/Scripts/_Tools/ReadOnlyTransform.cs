@@ -16,6 +16,16 @@ namespace Tools
             return _transform.position.x;
         }
 
+        public float GetPositionY()
+        {
+            return _transform.position.y;
+        }
+
+        public float GetPositionZ()
+        {
+            return _transform.position.z;
+        }
+
         public Vector3 GetPosition()
         {
             return _transform.position;

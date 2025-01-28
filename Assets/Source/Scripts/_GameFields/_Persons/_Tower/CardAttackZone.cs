@@ -20,10 +20,10 @@ namespace GameFields.Persons.Towers
 
         private InvertCardAnimation _invertCardAnimation;
         private ShakeAnimation _shakeAnimation;
-        private ShakeAnimation _shakeAnimationCamera;
+        //private ShakeAnimation _shakeAnimationCamera;
 
         private AttackMenu _attackMenu;
-        private Tower _tower;
+        private IBoomTower _tower;
 
         private DiscardPile _discardPile;
         private SignalBus _bus;
@@ -43,14 +43,14 @@ namespace GameFields.Persons.Towers
             _isComplete = false;
         }
 
-        public void Init(AttackMenu attackMenu, Tower tower)
+        public void Init(AttackMenu attackMenu, IBoomTower tower)
         {
             _attackMenu = attackMenu;
             _tower = tower;
 
             _invertCardAnimation = new InvertCardAnimation(_data.InvertCardAnimationData);
             _shakeAnimation = new ShakeAnimation(_data.ShakeAnimationConfig);
-            _shakeAnimationCamera = new ShakeAnimation();
+            //_shakeAnimationCamera = new ShakeAnimation();
             //_towerPosition = _towerTransform.GetPosition();
             //_towerSize = _towerTransform.GetRect();
         }
@@ -83,7 +83,7 @@ namespace GameFields.Persons.Towers
             yield return new WaitUntil(() => attackAnimation.IsComplete);
 
             _shakeAnimation.Play();
-            _shakeAnimationCamera.Play();
+            //_shakeAnimationCamera.Play();
 
             _attackMenu.Activate();
 
@@ -140,10 +140,6 @@ namespace GameFields.Persons.Towers
                 _discardPile.SeatCard(_currentCard);
 
                 _currentCard = null;
-            }
-            else
-            {
-
             }
 
             _tower.Boom();

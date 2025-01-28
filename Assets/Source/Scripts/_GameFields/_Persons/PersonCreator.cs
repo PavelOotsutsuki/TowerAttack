@@ -142,7 +142,7 @@ namespace GameFields.Persons
             _playerHand.Init(seatPool);
             _playerTable.Init();
             _playerPlayingZone.Init(_playerTable);
-            _playerTower.Init(_bus);
+            _playerTower.Init();
             _playerDiscover.Init();
             _startPlayerTurnLabel.Init();
             _playerAttackMenu.Init(_enemyTower, _playerCardAttackZone);
@@ -155,7 +155,7 @@ namespace GameFields.Persons
             _enemyHand.Init(seatPool);
             _enemyTable.Init();
             _enemyPlayingZone.Init(_enemyTable);
-            _enemyTower.Init(_bus);
+            _enemyTower.Init();
             _enemyDiscoverImitation.Init();
             _enemyAttackMenu.Init(_playerTower, _enemyCardAttackZone);
 

@@ -9,7 +9,7 @@ namespace GameFields.Persons.Towers
 {
     public class Stone : MonoBehaviour, IAutomaticFillComponents
     {
-        private const float BoomDuration = 1f;
+        private const float BoomDuration = 0.8f;
         private const float Offset = 3f;
         private const Ease BoomEase = Ease.InQuint;
 

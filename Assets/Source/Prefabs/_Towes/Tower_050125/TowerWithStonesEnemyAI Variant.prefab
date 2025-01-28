@@ -683,7 +683,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fdf13596620e49f0b6c7ea5b539822c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TowerSeat: {fileID: 6933871761765756799}
+  _towerSeat: {fileID: 6933871761765756799}
   _rectTransform: {fileID: 374632112687152778}
   _seatDuration: 1
   _stones:
@@ -719,6 +719,13 @@ MonoBehaviour:
       <MinOffsetY>k__BackingField: -30
       <Delay>k__BackingField: 0.025
     <TargetTransform>k__BackingField: {fileID: 0}
+  _boomAnimationData:
+    <Duration>k__BackingField: 2
+    <NewCardColor>k__BackingField: {r: 1, g: 0, b: 0, a: 1}
+    <TowerImageColor>k__BackingField: {r: 0, g: 0, b: 0, a: 1}
+    <DelayAfterBoomCard>k__BackingField: 0.2
+    <DurationAshesDisappear>k__BackingField: 1
+    <DelayBetweenStonesBoom>k__BackingField: 0.01
 --- !u!114 &7218435328850816452
 MonoBehaviour:
   m_ObjectHideFlags: 0
