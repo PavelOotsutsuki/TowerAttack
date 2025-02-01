@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using GameFields.EndTurnButtons;
+using GameFields.LightControls;
 using GameFields.Persons.AttackMenues;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.DrawCards;
@@ -94,13 +95,14 @@ namespace GameFields.Persons
             _enemyCardAttackZone = enemyCardAttackZone;
         }
 
-        public void Init(SignalBus bus, Deck deck, EndTurnButton endTurnButton, SeatPool seatPool, CardDragAndDropHandler cardDragAndDropHandler)
+        public void Init(SignalBus bus, Deck deck, EndTurnButton endTurnButton, SeatPool seatPool
+            , CardDragAndDropHandler cardDragAndDropHandler, LightController cardDragAndDropLightController)
         {
             _bus = bus;
             _deck = deck;
             _endTurnButton = endTurnButton;
 
-            _interactionActivator = new InteractionActivator(cardDragAndDropHandler, _towerActivator, _tableActivator, endTurnButton);
+            _interactionActivator = new InteractionActivator(cardDragAndDropHandler, _towerActivator, _tableActivator, endTurnButton, cardDragAndDropLightController);
 
             InitPlayersData(seatPool);
             InitEnemyData(seatPool);

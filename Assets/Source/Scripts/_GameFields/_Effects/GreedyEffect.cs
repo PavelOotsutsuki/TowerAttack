@@ -32,7 +32,7 @@ namespace GameFields.Effects
 
         public override void End()
         {
-            Debug.Log("Эффект Жадины закончен");
+            //Debug.Log("Эффект Жадины закончен");
         }
 
         //protected override IEnumerator OnPlaying()

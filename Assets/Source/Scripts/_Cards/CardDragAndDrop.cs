@@ -35,8 +35,14 @@ namespace Cards
         {
             if (_currentEventData is null)
                 return;
-            
-            _currentEventData?.Reset();
+
+            if (_currentEventData != null)
+            {
+                Debug.Log("Reset!");
+                _currentEventData.Reset();
+            }
+            //_currentEventData?.Reset();
+
             _isForciblyDrag = true;
 
             StartEndDragActions();
@@ -47,7 +53,13 @@ namespace Cards
             if (_cardDragAndDropActions.CanDrag() == false)
             {
                 _isNotDraggable = true;
-                _currentEventData?.Reset();
+
+                if (_currentEventData != null)
+                {
+                    Debug.Log("Reset!");
+                    _currentEventData.Reset();
+                }
+                //_currentEventData?.Reset();
                 return;
             }
 

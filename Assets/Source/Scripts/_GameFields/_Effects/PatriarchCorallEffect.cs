@@ -46,7 +46,7 @@ namespace GameFields.Effects
 
         public override void End()
         {
-            Debug.Log("End patriarch corall effect");
+            //Debug.Log("End patriarch corall effect");
         }
 
         private void DiscoverCards()

@@ -111,7 +111,7 @@ namespace GameFields.Persons.Towers
 
         private IEnumerator FalledAttackProcessing()
         {
-            Debug.Log("Мимо!");
+            //Debug.Log("Мимо!");
 
             if (_currentCard is not null)
             {

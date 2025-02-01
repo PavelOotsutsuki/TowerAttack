@@ -12,14 +12,16 @@ namespace GameFields
         private readonly IWorkable _tower;
         private readonly IWorkable _table;
         private readonly IWorkable _endTurnButton;
+        private readonly IBlockable _cardDragAndDropLightController;
 
         public InteractionActivator(ICardDragAndDropBlockable dragAndDropBlockable, IWorkable towerEnemy, IWorkable tablePlayer,
-            IWorkable endTurnButton)
+            IWorkable endTurnButton, IBlockable cardDragAndDropLightController)
         {
             _dragAndDropBlockable = dragAndDropBlockable;
             _tower = towerEnemy;
             _table = tablePlayer;
             _endTurnButton = endTurnButton;
+            _cardDragAndDropLightController = cardDragAndDropLightController;
         }
 
         public void SetObjectsStates(PersonStep personStep)
@@ -63,6 +65,7 @@ namespace GameFields
             _tower.Deactivate();
             _table.Deactivate();
             _endTurnButton.Deactivate();
+            _cardDragAndDropLightController.Block();
         }
 
         private void SetStartTurnDrawPlayerStates()
@@ -71,6 +74,7 @@ namespace GameFields
             _tower.Deactivate();
             _table.Deactivate();
             _endTurnButton.Deactivate();
+            _cardDragAndDropLightController.Block();
         }
 
         private void SetTurnProcessingStates()
@@ -79,6 +83,7 @@ namespace GameFields
             _tower.Activate();
             _table.Activate();
             _endTurnButton.Deactivate();
+            _cardDragAndDropLightController.Unblock();
         }
 
         private void SetCardActionProcessingPlayerStates()
@@ -87,6 +92,7 @@ namespace GameFields
             _tower.Deactivate();
             _table.Deactivate();
             _endTurnButton.Deactivate();
+            _cardDragAndDropLightController.Block();
         }
 
         private void SetEndTurnProcessingStates()
@@ -95,6 +101,7 @@ namespace GameFields
             _tower.Deactivate();
             _table.Deactivate();
             _endTurnButton.Activate();
+            _cardDragAndDropLightController.Block();
         }
 
         private void SetEnemyAIStates()
@@ -103,6 +110,7 @@ namespace GameFields
             _tower.Deactivate();
             _table.Deactivate();
             _endTurnButton.Deactivate();
+            _cardDragAndDropLightController.Block();
         }
     }
 }

@@ -37,7 +37,7 @@ namespace Roots
             LightController cardDragAndDropLightController = _lightControlsCreator.CreateDragAndDropLightController();
             CardDragAndDropHandler cardDragAndDropHandler = new CardDragAndDropHandler(handPlayer, handPlayer, cardDragAndDropLightController);
 
-            _personCreator.Init(bus, deck, _endTurnButton, seatPool, cardDragAndDropHandler);
+            _personCreator.Init(bus, deck, _endTurnButton, seatPool, cardDragAndDropHandler, cardDragAndDropLightController);
 
             Player player = _personCreator.CreatePlayer();
             EnemyAI enemyAI = _personCreator.CreateEnemyAI();

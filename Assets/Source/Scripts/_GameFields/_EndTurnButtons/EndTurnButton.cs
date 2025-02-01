@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Tools;
 using Tools.Utils.FillComponents;
@@ -20,7 +21,8 @@ namespace GameFields.EndTurnButtons
         public void Init()
         {
             _changeSideAnimator = new ChangeSideAnimator(_data, _button);
-            _changeSideAnimator.PlayLockButtonAnimation();
+
+            Deactivate();
         }
 
         //public void Activate()
@@ -47,11 +49,30 @@ namespace GameFields.EndTurnButtons
 
         public void Activate()
         {
+            if (IsActive == true)
+                return;
+
+            IsActive = true;
+
             _changeSideAnimator.PlayUnlockButtonAnimation();
+
+            //StartCoroutine(WaitingTest());
         }
+
+        //private IEnumerator WaitingTest()
+        //{
+        //    yield return new WaitForSeconds(15f);
+
+        //    Deactivate();
+        //}
 
         public void Deactivate()
         {
+            if (IsActive == false)
+                return;
+
+            IsActive = false;
+
             _changeSideAnimator.PlayLockButtonAnimation();
         }
 
