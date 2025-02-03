@@ -135,6 +135,7 @@ MonoBehaviour:
       <AfterAtTheReadyMoveDelay>k__BackingField: 0.5
       <EndMoveDuration>k__BackingField: 1
       <InOutBackFactor>k__BackingField: 0.5
+      <IsDown>k__BackingField: 0
     <InvertCardAnimationData>k__BackingField:
       <InvertCardFrontDuration>k__BackingField: 0.5
       <InvertCardBackDuration>k__BackingField: 0.5
@@ -187,15 +188,6 @@ MonoBehaviour:
   - {fileID: 4572616838702828147}
   - {fileID: 6846948084428970833}
   - {fileID: 6549281879024336055}
-  _shakeAnimationConfig:
-    <Data>k__BackingField:
-      <Duration>k__BackingField: 0.2
-      <MaxOffsetX>k__BackingField: 30
-      <MaxOffsetY>k__BackingField: 30
-      <MinOffsetX>k__BackingField: -30
-      <MinOffsetY>k__BackingField: -30
-      <Delay>k__BackingField: 0.025
-    <TargetTransform>k__BackingField: {fileID: 0}
   _boomAnimationData:
     <Duration>k__BackingField: 2
     <NewCardColor>k__BackingField: {r: 1, g: 0, b: 0, a: 1}
@@ -203,6 +195,15 @@ MonoBehaviour:
     <DelayAfterBoomCard>k__BackingField: 0.2
     <DurationAshesDisappear>k__BackingField: 1
     <DelayBetweenStonesBoom>k__BackingField: 0.01
+    <ShakeAnimationConfig>k__BackingField:
+      <Data>k__BackingField:
+        <Duration>k__BackingField: 0.2
+        <MaxOffsetX>k__BackingField: 0.3
+        <MaxOffsetY>k__BackingField: 0.3
+        <MinOffsetX>k__BackingField: -0.3
+        <MinOffsetY>k__BackingField: -0.3
+        <Delay>k__BackingField: 0.025
+      <TargetTransform>k__BackingField: {fileID: 0}
 --- !u!114 &205805103557912531 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7991868163049967286, guid: 18ed44affb7b8444fa2c742695e01553, type: 3}

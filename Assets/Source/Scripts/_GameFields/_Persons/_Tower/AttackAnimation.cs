@@ -40,6 +40,9 @@ namespace GameFields.Persons.Towers
         private Vector3 CardScale => _cardTransform.GetLocalScale();
         private Vector3 CardRotation => _cardTransform.GetRotationVector();
 
+        private float DownOrUpVector => Convert.ToInt32(_data.IsDown) * 2 - 1;
+        private float DownOrUpRotation => _data.IsDown ? 0f : 180f;
+
         public void Play()
         {
             IsComplete = false;
@@ -83,7 +86,9 @@ namespace GameFields.Persons.Towers
                 _xOffset = Random.Range(0, _xOffset);
             }
 
-            return new Vector2(_towerPosition.x + _xOffset, _towerPosition.y - _yOffset);
+            //return new Vector2(_towerPosition.x + _xOffset, _towerPosition.y - _yOffset);
+            return new Vector2(_towerPosition.x + _xOffset, _towerPosition.y - _yOffset * DownOrUpVector);
+            //return new Vector2(_towerPosition.x + _xOffset, _towerPosition.y + _yOffset);
         }
 
         private Vector3 FindAtTheReadyRotation()
@@ -92,7 +97,9 @@ namespace GameFields.Persons.Towers
 
             if (_xOffset > _towerSize.x / 2 && _yOffset > _towerSize.y / 2)
             {
-                _cardAngle = Mathf.Atan((_xOffset - _towerSize.x / 2) / (_yOffset - _towerSize.y / 2)) * 180 / Mathf.PI;
+                //_cardAngle = Mathf.Atan((_xOffset - _towerSize.x / 2) / (_yOffset - _towerSize.y / 2)) * 180 / Mathf.PI;
+                _cardAngle = DownOrUpRotation + DownOrUpVector * (Mathf.Atan((_xOffset - _towerSize.x / 2) / (_yOffset - _towerSize.y / 2)) * 180 / Mathf.PI);
+                //_cardAngle = 180f - (Mathf.Atan((_xOffset - _towerSize.x / 2) / (_yOffset - _towerSize.y / 2)) * 180 / Mathf.PI);
             }
             else
             {
@@ -102,7 +109,9 @@ namespace GameFields.Persons.Towers
                 }
                 else if (Mathf.Approximately(_yPeekToFirstCardPositionOffset, _yOffset))
                 {
-                    _cardAngle = 0f;
+                    //_cardAngle = 0f;
+                    _cardAngle = DownOrUpRotation;
+                    //_cardAngle = 180f;
                 }
                 else
                 {
@@ -121,13 +130,19 @@ namespace GameFields.Persons.Towers
             {
                 return new Vector2(_towerPosition.x + _towerSize.x / 2, CardPosition.y);
             }
-            else if (_cardAngle == 0f)
+            //else if (_cardAngle == 0f)
+            else if (_cardAngle == DownOrUpRotation)
+            //else if (_cardAngle == 180f)
             {
-                return new Vector2(CardPosition.x, _towerPosition.y - _towerSize.y / 2);
+                //return new Vector2(CardPosition.x, _towerPosition.y - _towerSize.y / 2);
+                return new Vector2(CardPosition.x, _towerPosition.y - DownOrUpVector * _towerSize.y / 2);
+                //return new Vector2(CardPosition.x, _towerPosition.y + _towerSize.y / 2);
             }
             else
             {
-                return new Vector2(_towerPosition.x + _towerSize.x / 2, _towerPosition.y - _towerSize.y / 2);
+                //return new Vector2(_towerPosition.x + _towerSize.x / 2, _towerPosition.y - _towerSize.y / 2);
+                return new Vector2(_towerPosition.x + _towerSize.x / 2, _towerPosition.y - DownOrUpVector * _towerSize.y / 2);
+                //return new Vector2(_towerPosition.x + _towerSize.x / 2, _towerPosition.y + _towerSize.y / 2);
             }
         }
     }

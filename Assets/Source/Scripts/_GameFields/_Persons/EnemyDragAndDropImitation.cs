@@ -48,9 +48,62 @@ namespace GameFields.Persons
                     _isComplete = true;
                 }
             }
+
+            if (logicNumber == 2)
+            {
+                if (_hand.TryGetCard(out Card card))
+                {
+                    _cardImitationActions.SetCard(card);
+                    DragAndDropBehaviour2().ToUniTask();
+                }
+                else
+                {
+                    _isComplete = true;
+                }
+            }
         }
 
         private IEnumerator DragAndDropBehaviour1()
+        {
+            float startDelay = Random.Range(_data.StartDelayMin, _data.StartDelayMax);
+            float countRepeat = Random.Range(0, _data.MaxCountRepeat + 1);
+
+            yield return new WaitForSeconds(startDelay);
+
+            for (int i = 0; i < countRepeat + 1; i++)
+            {
+                float cardViewDelay = Random.Range(_data.CardViewDelayMin, _data.CardViewDelayMax);
+
+                _cardImitationActions.ViewCard(_data.CardViewTime, SelectYDirection);
+                yield return new WaitForSeconds(_data.CardViewTime + cardViewDelay);
+
+                if (i != countRepeat)
+                {
+                    _cardImitationActions.ViewCard(_data.CardViewTime, UnselectYDirection);
+                    yield return new WaitForSeconds(_data.CardViewTime);
+                }
+            }
+
+            //_cardImitationActions.MoveOnPlace(_data.CardTranslateInDropPlaceTime);
+
+            //if (_cardImitationActions.CanPlay() == false)
+            //{
+            //    _cardImitationActions.ReturnInHand(_data.CardReturnInHandTime);
+            //    yield return new WaitForSeconds(_data.CardReturnInHandTime);
+            //}
+            //else
+            //{
+            //    yield return _cardImitationActions.Play();
+            //}
+
+            _cardImitationActions.Attack();
+
+            yield return new WaitForSeconds(_data.EndTurnDelay);
+
+            _isComplete = true;
+        }
+
+        private IEnumerator DragAndDropBehaviour2()
         {
             float startDelay = Random.Range(_data.StartDelayMin, _data.StartDelayMax);
             float countRepeat = Random.Range(0, _data.MaxCountRepeat + 1);
