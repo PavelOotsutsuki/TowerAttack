@@ -6,28 +6,28 @@ namespace GameFields.Persons.AttackMenues
 {
     public class ConfirmableNumbers
     {
-        private readonly List<AttackNumber> _acceptNumbers;
+        private readonly List<IAttackNumber> _acceptNumbers;
 
         public ConfirmableNumbers()
         {
-            _acceptNumbers = new List<AttackNumber>();
+            _acceptNumbers = new List<IAttackNumber>();
         }
 
-        public IReadOnlyList<AttackNumber> AcceptNumbers => _acceptNumbers;
+        public IReadOnlyList<IAttackNumber> AcceptNumbers => _acceptNumbers;
 
-        public void Add(AttackNumber attackNumber)
+        public void Add(IAttackNumber attackNumber)
         {
             if (_acceptNumbers.Contains(attackNumber) == false)
                 _acceptNumbers.Add(attackNumber);
         }
 
-        public void Remove(AttackNumber attackNumber)
+        public void Remove(IAttackNumber attackNumber)
         {
             if (_acceptNumbers.Contains(attackNumber) == false)
                 _acceptNumbers.Remove(attackNumber);
         }
 
-        public bool Contains(AttackNumber attackNumber)
+        public bool Contains(IAttackNumber attackNumber)
         {
             return _acceptNumbers.Contains(attackNumber);
         }

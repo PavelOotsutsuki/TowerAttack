@@ -11,7 +11,7 @@ using UnityEngine.UI;
 
 namespace GameFields.Persons.AttackMenues
 {
-    public class AttackNumber : SelectableButton
+    public class AttackNumber : SelectableButton, IAttackNumber
     {
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private TMP_Text _text;
@@ -26,13 +26,13 @@ namespace GameFields.Persons.AttackMenues
         //[SerializeField] private float _duration;
 
         private Action<bool> _clickCallback;
-        private ConfirmableNumbers _confirmableNumbers;
+        //private ConfirmableNumbers _confirmableNumbers;
 
         private Color? _blockColor;
 
         public int Number { get; private set; }
 
-        public void Init(int number, Vector3 position, Vector2 size, Action<bool> clickCallback, ConfirmableNumbers confirmableNumbers)
+        public void Init(int number, Vector3 position, Vector2 size, Action<bool> clickCallback)
         {
             base.Init();
 
@@ -48,7 +48,7 @@ namespace GameFields.Persons.AttackMenues
             //_animator.gameObject.SetActive(false);
 
             _clickCallback = clickCallback;
-            _confirmableNumbers = confirmableNumbers;
+            //_confirmableNumbers = confirmableNumbers;
         }
 
         //public override void Activate()
@@ -115,7 +115,7 @@ namespace GameFields.Persons.AttackMenues
         public void ErrorChoice()
         {
             SetDisableView(_errorColor);
-            _confirmableNumbers.Add(this);
+            //_confirmableNumbers.Add(this);
 
             //_attackNumberAnimation.Play();
             _animator.PlayErrorAnimation();

@@ -18,7 +18,7 @@ namespace GameFields.Persons
 
         public EnemyAI(InteractionActivator interactionActivator, EnemyDragAndDropImitation enemyDragAndDropImitation, CardPlayingZone cardPlayingZone,
             Tower tower, DrawCardRoot drawCardRoot, DiscoverAI discoverImitation, StartTurnDraw startTurnDraw, SignalBus bus,
-            Hand hand, AttackMenu attackMenu) :
+            Hand hand, IAttackMenu attackMenu) :
             base(cardPlayingZone, drawCardRoot, tower, startTurnDraw,discoverImitation, bus,
                 hand, attackMenu, interactionActivator)
         {

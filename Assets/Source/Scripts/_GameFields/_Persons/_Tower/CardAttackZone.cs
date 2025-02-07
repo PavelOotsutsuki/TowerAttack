@@ -22,7 +22,7 @@ namespace GameFields.Persons.Towers
         private ShakeAnimation _shakeAnimation;
         //private ShakeAnimation _shakeAnimationCamera;
 
-        private AttackMenu _attackMenu;
+        private IAttackMenu _attackMenu;
         private IBoomTower _tower;
 
         private DiscardPile _discardPile;
@@ -43,7 +43,7 @@ namespace GameFields.Persons.Towers
             _isComplete = false;
         }
 
-        public void Init(AttackMenu attackMenu, IBoomTower tower)
+        public void Init(IAttackMenu attackMenu, IBoomTower tower)
         {
             _attackMenu = attackMenu;
             _tower = tower;

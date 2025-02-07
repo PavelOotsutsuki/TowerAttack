@@ -12,7 +12,7 @@ using UnityEngine;
 namespace GameFields.Persons.AttackMenues
 {
     [RequireComponent(typeof(FadablePanel))]
-    public class AttackNumberPanel : MonoBehaviour, ICompletable, IWorkable<AttackNumberPanelActivateData>, IAutomaticFillComponents
+    public class AttackNumberPanelPlayer : MonoBehaviour, ICompletable, IWorkable<AttackNumberPanelActivateData>, IAutomaticFillComponents
     {
         [SerializeField] private FadablePanel _fadablePanel;
         [SerializeField] private RectTransform _rectTransform;
@@ -297,19 +297,19 @@ namespace GameFields.Persons.AttackMenues
         [ContextMenu(nameof(DefineFadablePanel))]
         private ComponentAttachInfo DefineFadablePanel()
         {
-           return AutomaticFillComponents.DefineComponent(this, ref _fadablePanel, ComponentLocationTypes.InThis);
+            return AutomaticFillComponents.DefineComponent(this, ref _fadablePanel, ComponentLocationTypes.InThis);
         }
 
         [ContextMenu(nameof(DefineRectTransform))]
         private ComponentAttachInfo DefineRectTransform()
         {
-           return AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
+            return AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
         }
 
         [ContextMenu(nameof(DefineAttackNumbers))]
         private ComponentAttachInfo DefineAttackNumbers()
         {
-           return AutomaticFillComponents.DefineComponent(this, ref _attackNumbers);
+            return AutomaticFillComponents.DefineComponent(this, ref _attackNumbers);
         }
 
         #endregion 
