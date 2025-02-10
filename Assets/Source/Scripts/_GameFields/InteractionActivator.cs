@@ -45,7 +45,7 @@ namespace GameFields
                 case EndTurnProcessing:
                     SetEndTurnProcessingStates();
                     break;
-                case CardAttackProcessing:
+                case CardAttackProcessingPlayer:
                     SetCardActionProcessingPlayerStates();
                     break;
                 case StartTurnDrawEnemyAI:
@@ -53,6 +53,7 @@ namespace GameFields
                     break;
                 case EnemyDragAndDropImitation:
                 case CardEffectProcessingEnemyAI:
+                case CardAttackProcessingEnemyAI:
                     break;
                 default:
                     throw new System.Exception("Неизветное состояние PersonStep" + personStep);

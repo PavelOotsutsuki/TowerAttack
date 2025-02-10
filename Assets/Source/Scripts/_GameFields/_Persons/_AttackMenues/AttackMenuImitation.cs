@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using GameFields.Persons.Hands;
 using GameFields.Persons.Towers;
+using GameFields.Signals;
 using Tools;
 using Tools.UI;
 using Tools.Utils.FillComponents;
 using UnityEngine;
+using Zenject;
 
 namespace GameFields.Persons.AttackMenues
 {
@@ -14,7 +16,7 @@ namespace GameFields.Persons.AttackMenues
     public class AttackMenuImitation : MonoBehaviour, IAttackMenu, IActivatable, ICompletable, IAutomaticFillComponents
     {
         [SerializeField] private AttackMenuLabel _attackMenuLabel;
-        //[SerializeField] private AttackMenuPanel _attackMenuPanel;
+        [SerializeField] private AttackMenuPanel _attackMenuPanel;
         //[SerializeField] private AttackButton _attackButton;
         [SerializeField] private AttackNumberPanelEnemyAI _attackNumberPanel;
 
@@ -40,7 +42,7 @@ namespace GameFields.Persons.AttackMenues
             _attackResult = null;
 
             _attackMenuLabel.Init();
-            //_attackMenuPanel.Init();
+            _attackMenuPanel.Init();
             //_attackButton.Init(this);
             //_attackNumberPanel.Init(_attackButton, cardNumberKeeper);
             _attackNumberPanel.Init(cardNumberKeeper, _countNumbers);
@@ -59,7 +61,7 @@ namespace GameFields.Persons.AttackMenues
 
             FadableLabelActivateData labelData = new FadableLabelActivateData("Ожидаем противника...");
             _attackMenuLabel.Show(labelData);
-            //_attackMenuPanel.Show();
+            _attackMenuPanel.Show();
 
             _attackResult = new AttackResult();
 
@@ -76,9 +78,39 @@ namespace GameFields.Persons.AttackMenues
 
         //    IsActive = false;
 
-        //    _canvasGroup.blocksRaycasts = false;
+        //    //_canvasGroup.blocksRaycasts = false;
 
         //    Deactivating().ToUniTask();
+        //}
+
+        //private IEnumerator Attacking()
+        //{
+        //    //_attackButton.Deactivate();
+        //    //_attackNumberPanel.Deactivate();
+
+        //    yield return new WaitUntil(() => _attackNumberPanel.IsComplete);
+
+        //    _attackMenuLabel.Hide();
+        //    //_attackMenuPanel.Hide();
+
+        //    //yield return new WaitUntil(() => _attackMenuPanel.IsComplete && _attackMenuLabel.IsComplete && _attackButton.IsComplete && _attackNumberPanel.IsComplete);
+        //    yield return new WaitForSeconds(0.1f);
+        //    yield return new WaitUntil(() => _attackMenuLabel.IsComplete);
+
+        //    gameObject.SetActive(false);
+
+        //    if (_attackResult.IsAttackSuccess)
+        //    {
+        //        _attackResultHandler.SuccessAttack();
+        //        IsComplete = true;
+        //    }
+        //    else
+        //    {
+        //        _attackResultHandler.FalledAttack();
+        //        IsComplete = true;
+        //    }
+
+        //    IsActive = false;
         //}
 
         private IEnumerator Deactivating()
@@ -86,14 +118,18 @@ namespace GameFields.Persons.AttackMenues
             //_attackButton.Deactivate();
             //_attackNumberPanel.Deactivate();
 
+
+
+
             yield return new WaitUntil(() => _attackNumberPanel.IsComplete);
+            yield return new WaitForSeconds(1f);
 
             _attackMenuLabel.Hide();
-            //_attackMenuPanel.Hide();
+            _attackMenuPanel.Hide();
+            _attackNumberPanel.Deactivate();
 
-            //yield return new WaitUntil(() => _attackMenuPanel.IsComplete && _attackMenuLabel.IsComplete && _attackButton.IsComplete && _attackNumberPanel.IsComplete);
             yield return new WaitForSeconds(0.1f);
-            yield return new WaitUntil(() => _attackMenuLabel.IsComplete);
+            yield return new WaitUntil(() => _attackMenuPanel.IsComplete && _attackMenuLabel.IsComplete && _attackNumberPanel.IsComplete);
 
             gameObject.SetActive(false);
 
@@ -107,6 +143,8 @@ namespace GameFields.Persons.AttackMenues
                 _attackResultHandler.FalledAttack();
                 IsComplete = true;
             }
+
+            IsActive = false;
         }
 
         #region AutomaticFillComponents
@@ -117,7 +155,8 @@ namespace GameFields.Persons.AttackMenues
             {
                 DefineAttackMenuLabel(),
                 DefineAttackNumberPanel(),
-                DefineCanvasGroup()
+                DefineCanvasGroup(),
+                DefineAttackMenuPanel()
             };
 
             return list;
@@ -139,6 +178,12 @@ namespace GameFields.Persons.AttackMenues
         private ComponentAttachInfo DefineCanvasGroup()
         {
             return AutomaticFillComponents.DefineComponent(this, ref _canvasGroup, ComponentLocationTypes.InThis);
+        }
+
+        [ContextMenu(nameof(DefineAttackMenuPanel))]
+        private ComponentAttachInfo DefineAttackMenuPanel()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _attackMenuPanel, ComponentLocationTypes.InChildren);
         }
 
         #endregion 

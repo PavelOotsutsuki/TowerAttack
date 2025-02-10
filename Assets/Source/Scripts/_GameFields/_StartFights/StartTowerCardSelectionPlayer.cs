@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Cards;
 using Cysharp.Threading.Tasks;
 using GameFields.CommonAnimations;
+using GameFields.Decks;
 using GameFields.Persons;
 using GameFields.Persons.CardTransits;
 using GameFields.Persons.Discovers;

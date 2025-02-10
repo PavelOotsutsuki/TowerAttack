@@ -35,12 +35,12 @@ namespace GameFields.Persons
             _attackMenu = attackMenu;
             _turnProcessing = turnProcessing;
 
-            Bus.Subscribe<AttackSignal>(StartAttack);
+            Bus.Subscribe<AttackSignalPlayer>(StartAttack);
         }
 
         ~Player()
         {
-            Bus.Unsubscribe<AttackSignal>(StartAttack);
+            Bus.Unsubscribe<AttackSignalPlayer>(StartAttack);
         }
 
         public override void StartEffect(Effect effect)
@@ -65,9 +65,9 @@ namespace GameFields.Persons
             //_attackMenu.Activate();
         }
 
-        private void StartAttack(AttackSignal signal)
+        private void StartAttack(AttackSignalPlayer signal)
         {
-            PushStep(new CardAttackProcessing(InteractionActivator, signal.Completable));
+            PushStep(new CardAttackProcessingPlayer(InteractionActivator, signal.Completable));
 
             _turnProcessing.Completed();
         }

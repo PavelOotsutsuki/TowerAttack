@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace GameFields.Persons
 {
-    public class CardAttackProcessing : PersonStep
+    public abstract class CardAttackProcessing : PersonStep
     {
         private readonly ICompletable _completable;
         private bool _isComplete;

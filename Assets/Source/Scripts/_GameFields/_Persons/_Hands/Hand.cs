@@ -22,9 +22,11 @@ namespace GameFields.Persons.Hands
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private SideType _sideType;
         [SerializeField] private bool _isActiveInteraction;
+        [SerializeField] private Transform _container; //IPS
 
         private List<Seat> _handSeats;
         private Seat _dragCardHandSeat;
+        private Transform _dragCardParent; // IPS
         private int _handSeatIndex;
         private SeatPool _handSeatPool;
 
@@ -171,15 +173,17 @@ namespace GameFields.Persons.Hands
             if (_handSeatIndex == EmptyIndex)
                 return;
             
+            Card dragCard = _dragCardHandSeat.Card;
+
             if (isForced)
             {
                 Debug.Log("Forcibly");
-                Card dragCard = _dragCardHandSeat.Card;
 
                 dragCard.EndDrag();
                 dragCard.SetActiveInteraction(false);
             }
 
+            dragCard.ReadOnlyRectTransform.SetParent(_dragCardParent); // IPS
             _handSeats.Insert(_handSeatIndex, _dragCardHandSeat);
 
             SortHandSeats();
@@ -190,6 +194,8 @@ namespace GameFields.Persons.Hands
         {
             if (TryFindHandSeat(out Seat handSeat, card))
             {
+                _dragCardParent = card.transform.parent; // IPS
+                card.ReadOnlyRectTransform.SetParent(_container); // IPS
                 _dragCardHandSeat = handSeat;
 
                 _handSeatIndex = _handSeats.IndexOf(_dragCardHandSeat);

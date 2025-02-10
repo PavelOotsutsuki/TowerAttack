@@ -15,7 +15,7 @@ namespace Cards
 
         private CardDragAndDropActions _cardDragAndDropActions;
         private Transform _container;
-        private Transform _defaultParent;
+        //private Transform _defaultParent; ///IPS
 
         private PointerEventData _currentEventData;
 
@@ -73,8 +73,8 @@ namespace Cards
             IsDragable = true;
             _isForciblyDrag = false;
 
-            _defaultParent = _cardTransform.parent;
-            _cardTransform.SetParent(_container);
+            //_defaultParent = _cardTransform.parent; ///IPS
+            //_cardTransform.SetParent(_container); ///IPS
             _cardDragAndDropActions.StartDrag();
         }
 
@@ -133,7 +133,7 @@ namespace Cards
 
         private void StartEndDragActions()
         {
-            _cardTransform.SetParent(_defaultParent);
+            //_cardTransform.SetParent(_defaultParent); ///IPS
 
             if (_viewCardAfterDropInWork != null)
             {

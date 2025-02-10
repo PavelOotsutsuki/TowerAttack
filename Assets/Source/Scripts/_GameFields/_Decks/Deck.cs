@@ -5,19 +5,23 @@ using Tools.Utils.FillComponents;
 using Tools;
 using Tools.Utils.Movements;
 
-namespace GameFields
+namespace GameFields.Decks
 {
     public class Deck : MonoBehaviour, IAutomaticFillComponents
     {
-        [SerializeField] private Transform _transform;
+        [SerializeField] private DeckCardContainer _cardContainer;
+        [SerializeField] private DeckCardBackViewer _cardBackViewer;
+        [SerializeField] private int _countCardsInGroup = 10;
 
-        private readonly Vector2 _cardAddPosition = new Vector2(0f, 0f);
+        private readonly float _startCardAddPositionX = 0f;
+        private readonly float _startCardAddPositionY = 0f;
 
         private List<Card> _cards;
 
         public void Init(IEnumerable<Card> cards)
         {
             _cards = new List<Card>();
+            _cardBackViewer.Init(_startCardAddPositionX, _startCardAddPositionY);
 
             foreach (Card card in cards)
             {
@@ -51,7 +55,7 @@ namespace GameFields
         {
             Card card = _cards[index];
 
-            _cards.Remove(card);
+            RemoveCard(card);
 
             return card;
         }
@@ -70,10 +74,28 @@ namespace GameFields
             _cards = shuffleCards;
         }
 
+        private void RemoveCard(Card card)
+        {
+            _cards.Remove(card);
+
+            if (_cards.Count % _countCardsInGroup == 0)
+            {
+                _cardBackViewer.Remove();
+            }
+        }
+
         private void BindCard(ReadOnlyTransform cardTransform, Movement cardMovement)
         {
-            cardTransform.SetParent(_transform);
-            cardMovement.MoveLocalInstantly(_cardAddPosition, cardTransform.GetRotationVector());
+            cardTransform.SetParent(_cardContainer.GetTransform());
+
+            Vector2 cardAddPosition = new Vector2(_startCardAddPositionX, _startCardAddPositionY);
+
+            cardMovement.MoveLocalInstantly(cardAddPosition, cardTransform.GetRotationVector());
+
+            if (_cards.Count % _countCardsInGroup == 1)
+            {
+                _cardBackViewer.Add();
+            }
         }
 
         #region AutomaticFillComponents
@@ -82,16 +104,23 @@ namespace GameFields
         {
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
-                DefineTransform()
+                DefineDeckCardContainer(),
+                DeckCardBackViewer()
             };
 
             return list;
         }
 
-        [ContextMenu(nameof(DefineTransform))]
-        private ComponentAttachInfo DefineTransform()
+        [ContextMenu(nameof(DefineDeckCardContainer))]
+        private ComponentAttachInfo DefineDeckCardContainer()
         {
-           return AutomaticFillComponents.DefineComponent(this, ref _transform, ComponentLocationTypes.InThis);
+            return AutomaticFillComponents.DefineComponent(this, ref _cardContainer, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DeckCardBackViewer))]
+        private ComponentAttachInfo DeckCardBackViewer()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _cardBackViewer, ComponentLocationTypes.InChildren);
         }
         #endregion 
     }

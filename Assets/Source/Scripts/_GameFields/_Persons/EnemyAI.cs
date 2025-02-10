@@ -25,11 +25,23 @@ namespace GameFields.Persons
             //_gameFieldObjectsActivator = gameFieldObjectsActivator;
             //Bus.Subscribe<StartEffectSignal>(SetCardEffectProcess);
             _enemyDragAndDropImitation = enemyDragAndDropImitation;
+
+            Bus.Subscribe<AttackSignalEnemyAI>(StartAttack);
+        }
+
+        ~EnemyAI()
+        {
+            Bus.Unsubscribe<AttackSignalEnemyAI>(StartAttack);
         }
 
         public override void StartEffect(Effect effect)
         {
             PushStep(new CardEffectProcessingEnemyAI(InteractionActivator, effect));
+        }
+
+        private void StartAttack(AttackSignalEnemyAI signal)
+        {
+            PushStep(new CardAttackProcessingEnemyAI(InteractionActivator, signal.Completable));
         }
 
         protected override void InitSteps()

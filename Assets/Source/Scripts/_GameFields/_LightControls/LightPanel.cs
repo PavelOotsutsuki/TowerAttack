@@ -16,6 +16,7 @@ namespace GameFields.LightControls
 
         public void Init()
         {
+            gameObject.SetActive(true);
             _fadablePanel.Init();
         }
 

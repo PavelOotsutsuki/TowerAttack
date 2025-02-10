@@ -72,7 +72,7 @@ namespace GameFields.Persons
         public void Attack()
         {
             _hand.OnCardDrag(_activeCard);
-            //_hand.OnCardAttack();
+            _hand.OnCardAttack();
             _attackZone.Attack(_activeCard);
         }
 

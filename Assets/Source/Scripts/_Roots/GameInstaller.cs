@@ -1,5 +1,6 @@
 using Cards;
 using GameFields;
+using GameFields.Decks;
 using GameFields.DiscardPiles;
 using GameFields.Persons.AttackMenues;
 using GameFields.Persons.Discovers;
@@ -71,7 +72,8 @@ namespace Roots
             SignalBusInstaller.Install(Container);
 
             Container.DeclareSignal<DiscardCardsSignal>();
-            Container.DeclareSignal<AttackSignal>();
+            Container.DeclareSignal<AttackSignalPlayer>();
+            Container.DeclareSignal<AttackSignalEnemyAI>();
             Container.DeclareSignal<PersonWinSignal>();
         }
     }

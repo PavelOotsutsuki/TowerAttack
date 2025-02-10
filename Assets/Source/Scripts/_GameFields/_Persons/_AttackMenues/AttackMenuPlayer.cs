@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using GameFields.Persons.Hands;
 using GameFields.Persons.Towers;
+using GameFields.Signals;
 using Tools;
 using Tools.UI;
 using Tools.Utils.FillComponents;
 using UnityEngine;
+using Zenject;
 
 namespace GameFields.Persons.AttackMenues
 {

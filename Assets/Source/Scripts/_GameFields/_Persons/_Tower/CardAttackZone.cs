@@ -26,7 +26,7 @@ namespace GameFields.Persons.Towers
         private IBoomTower _tower;
 
         private DiscardPile _discardPile;
-        private SignalBus _bus;
+        protected SignalBus Bus;
 
         private Card _currentCard;
 
@@ -38,7 +38,7 @@ namespace GameFields.Persons.Towers
         public void Construct(DiscardPile discardPile, SignalBus bus)
         {
             _discardPile = discardPile;
-            _bus = bus;
+            Bus = bus;
 
             _isComplete = false;
         }
@@ -61,13 +61,14 @@ namespace GameFields.Persons.Towers
             //_cardMovement = _card.CardMovement;
             //_cardTransform = _card.ReadOnlyRectTransform;
             //_handBlockable.BlockCards();
-
+            AttackProcessingActivate();
             //AttackAnimation attackAnimation = new AttackAnimation(_card.CardMovement, _card.ReadOnlyRectTransform,
             //    _towerTransform.GetPosition(), _towerTransform.GetRect(), _data.AttackAnimationData);
-            _bus.Fire(new AttackSignal(this));
 
             StartCoroutine(ActivatingAttack(card));
         }
+
+        protected abstract void AttackProcessingActivate();
 
         private IEnumerator ActivatingAttack(Card card)
         {
@@ -146,7 +147,7 @@ namespace GameFields.Persons.Towers
 
             yield return new WaitForSeconds(5f);
 
-            _bus.Fire(new PersonWinSignal(this));
+            Bus.Fire(new PersonWinSignal(this));
         }
 
         //private IEnumerator Discarding()

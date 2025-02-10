@@ -7,6 +7,7 @@ using GameFields.Persons;
 using GameFields.Persons.Discovers;
 using Tools.Utils.FillComponents;
 using System.Collections.Generic;
+using GameFields.Decks;
 
 namespace GameFields.StartFights
 {

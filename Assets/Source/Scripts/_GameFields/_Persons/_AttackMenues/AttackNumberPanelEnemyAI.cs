@@ -14,7 +14,7 @@ using Random = UnityEngine.Random;
 namespace GameFields.Persons.AttackMenues
 {
     [RequireComponent(typeof(FadablePanel))]
-    public class AttackNumberPanelEnemyAI : MonoBehaviour, ICompletable, IActivatable<AttackNumberPanelActivateData>, IAutomaticFillComponents
+    public class AttackNumberPanelEnemyAI : MonoBehaviour, ICompletable, IWorkable<AttackNumberPanelActivateData>, IAutomaticFillComponents
     {
         [SerializeField] private FadablePanel _fadablePanel;
         //[SerializeField] private RectTransform _rectTransform;
@@ -51,6 +51,8 @@ namespace GameFields.Persons.AttackMenues
 
         public bool IsComplete => _isComplete && _fadablePanel.IsComplete;
 
+        public bool? IsActive { get; private set; }
+
         public void Init(/*IWorkable attackButton, */ICardNumberKeeper cardNumberKeeper, int countNumbers)
         {
             //_attackButton = attackButton;
@@ -71,13 +73,19 @@ namespace GameFields.Persons.AttackMenues
 
         public void Activate(AttackNumberPanelActivateData data)
         {
+            if (IsActive == true)
+                return;
+
+            IsActive = true;
+
             _isComplete = false;
+
 
             _attackResult = data.AttackResult;
             gameObject.SetActive(true);
 
             _fadablePanel.Show();
-            Deactivating().ToUniTask();
+            Attacking().ToUniTask();
         }
 
         //public void Activate(AttackNumberPanelActivateData data)
@@ -112,20 +120,65 @@ namespace GameFields.Persons.AttackMenues
         //    _isComplete = true;
         //}
 
-        //public void Deactivate()
-        //{
-        //    if (IsActive == false)
-        //        return;
+        public void Deactivate()
+        {
+            if (IsActive == false)
+                return;
 
-        //    _isComplete = false;
+            IsActive = false;
+            _isComplete = false;
 
-        //    Deactivating().ToUniTask();
+            Deactivating().ToUniTask();
 
-        //    IsActive = false;
-        //    //gameObject.SetActive(false);
-        //}
+            //gameObject.SetActive(false);
+        }
 
         private IEnumerator Deactivating()
+        {
+            //List<AttackNumber> selectedNumbers = new List<AttackNumber>(); // Можно заменить на LINQ
+
+            //foreach (AttackNumber attackNumber in _attackNumbers)
+            //{
+            //    if (attackNumber.IsClicked)
+            //    {
+            //        selectedNumbers.Add(attackNumber);
+            //    }
+            //}
+            //Debug.Log("Длина: " + _attackNumbers.Length);
+
+            //for (int i = 0; i < _attackNumbers.Length; i++)
+            //{
+            //    if (_attackNumbers[i].IsClicked)
+            //    {
+            //        Debug.Log(i+1);
+            //        selectedNumbers.Add(_attackNumbers[i]);
+            //    }
+            //}
+
+            //foreach (AttackNumber selectedNumber in selectedNumbers)
+            //{
+            //    if (_cardNumberKeeper.Card.IsSuccessAttack(selectedNumber.Number))
+            //    {
+            //        selectedNumber.SuccessChoice();
+            //        _attackResult.SuccessChoice();
+            //    }
+            //    else
+            //    {
+            //        selectedNumber.ErrorChoice();
+            //    }
+
+            //    yield return new WaitForSeconds(0.8f);
+            //}
+
+            _fadablePanel.Hide();
+
+            yield return new WaitForSeconds(0.1f);
+            yield return new WaitUntil(() => _fadablePanel.IsComplete);
+
+            _isComplete = true;
+        }
+
+        private IEnumerator Attacking()
         {
             //List<AttackNumber> selectedNumbers = new List<AttackNumber>(); // Можно заменить на LINQ
 
@@ -151,6 +204,7 @@ namespace GameFields.Persons.AttackMenues
             yield return new WaitForSeconds(8f); // Типа думает
 
             IAttackNumber attackedNumber = GetAttackedNumber() ?? throw new Exception("Ошибка нахождения номера для имитации атаки");
+            Debug.Log("Выбран номер: " + attackedNumber.Number);
 
             if (_cardNumberKeeper.Card.IsSuccessAttack(attackedNumber.Number))
             {
@@ -175,13 +229,6 @@ namespace GameFields.Persons.AttackMenues
 
             //    yield return new WaitForSeconds(0.8f);
             //}
-
-            yield return new WaitForSeconds(1f);
-
-            _fadablePanel.Hide();
-
-            yield return new WaitForSeconds(0.1f);
-            yield return new WaitUntil(() => _fadablePanel.IsComplete);
 
             _isComplete = true;
         }
@@ -232,7 +279,7 @@ namespace GameFields.Persons.AttackMenues
 
             foreach (int number in shuffleNumbers)
             {
-                IAttackNumber attackNumber = _attackNumbers[number];
+                IAttackNumber attackNumber = _attackNumbers[number - 1];
 
                 if (_confirmableNumbers.Contains(attackNumber) == false)
                 {
@@ -372,6 +419,6 @@ namespace GameFields.Persons.AttackMenues
         //    return AutomaticFillComponents.DefineComponent(this, ref _attackNumbers);
         //}
 
-        #endregion 
+        #endregion
     }
 }
