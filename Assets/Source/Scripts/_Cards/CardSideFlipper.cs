@@ -6,6 +6,8 @@ namespace Cards
         private readonly CardBack _back;
         private readonly CardDragAndDrop _cardDragAndDrop;
 
+        private SideType _currentSide;
+
         public CardSideFlipper(CardFront front, CardBack back, CardDragAndDrop cardDragAndDrop)
         {
             _front = front;
@@ -13,10 +15,14 @@ namespace Cards
             _cardDragAndDrop = cardDragAndDrop;
         }
 
+        public SideType CurrentSide => _currentSide;
+
         public void SetSide(SideType side)
         {
             _front.gameObject.SetActive(side == SideType.Front);
             _back.gameObject.SetActive(side == SideType.Back);
+
+            _currentSide = side;
         }
 
         public void DeactivateInteraction()

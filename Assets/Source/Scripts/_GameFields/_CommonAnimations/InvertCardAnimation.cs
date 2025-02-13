@@ -37,8 +37,11 @@ namespace GameFields.CommonAnimations
 
         private IEnumerator Playing()
         {
-            InvertCardFront();
-            yield return new WaitForSeconds(_data.InvertCardFrontDuration);
+            if (_data.IsIgnoreStartSide == true || _card.CurrentSide == SideType.Front)
+            {
+                InvertCardFront();
+                yield return new WaitForSeconds(_data.InvertCardFrontDuration);
+            }
 
             _card.SetSide(SideType.Back);
 

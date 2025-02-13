@@ -18,6 +18,7 @@ namespace Cards
         private CardSideFlipper _cardSideFlipper;
 
         public bool? IsShown { get; private set; } = null;
+        public SideType CurrentSide => _cardSideFlipper.CurrentSide;
 
         internal void Init(Card me, CardViewService cardViewService, CardViewConfig cardViewConfig, Transform dragContainer,
             RectTransform cardTransform, ICardDragAndDropHandler cardDragAndDropHandler)

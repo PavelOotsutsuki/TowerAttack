@@ -83,7 +83,8 @@ namespace GameFields.Persons.AttackMenues
 
         private IEnumerator StartingAnimation()
         {
-            WaitForSeconds wait = new WaitForSeconds(_duration / _animSprites.Count * Time.deltaTime);
+            //WaitForSeconds wait = new WaitForSeconds(_duration / _animSprites.Count * Time.deltaTime);
+            WaitForSeconds wait = new WaitForSeconds(_duration / _animSprites.Count);
 
             foreach (Sprite sprite in _animSprites)
             {
