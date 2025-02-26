@@ -14,16 +14,14 @@ namespace Cards
         private Transform _cardTransform;
 
         private CardDragAndDropActions _cardDragAndDropActions;
-        private Transform _container;
         //private Transform _defaultParent; ///IPS
 
         private PointerEventData _currentEventData;
 
         public bool IsDragable { get; private set; }
 
-        internal void Init(Transform cardTransform, CardDragAndDropActions cardDragAndDropActions, Transform container)
+        internal void Init(Transform cardTransform, CardDragAndDropActions cardDragAndDropActions)
         {
-            _container = container;
             _cardTransform = cardTransform;
             _cardDragAndDropActions = cardDragAndDropActions;
             _isForciblyDrag = false;
@@ -154,10 +152,5 @@ namespace Cards
 
             _cardDragAndDropActions.OnReturnInHand(cardDragAndDrop == this);
         }
-
-        //private IEnumerator StartingAttack()
-        //{
-
-        //}
     }
 }

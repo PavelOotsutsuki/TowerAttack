@@ -8,8 +8,6 @@ namespace GameFields.LightControls
 {
     public class LightController : IWorkable, IBlockable
     {
-        private const float DelayForActivate = 5f;
-
         private readonly LightPanel _lightPanel;
         private readonly LightableObject[] _lightableObjects;
         private readonly WaitForSeconds _WFS_DelayForActivate;
@@ -18,11 +16,11 @@ namespace GameFields.LightControls
         private UniTask _activating;
         private bool _isActivatable;
 
-        public LightController(LightPanel lightPanel, LightableObject[] lightableObjects)
+        public LightController(LightPanel lightPanel, LightableObject[] lightableObjects, float delayForActivate)
         {
             _lightPanel = lightPanel;
             _lightableObjects = lightableObjects;
-            _WFS_DelayForActivate = new WaitForSeconds(DelayForActivate);
+            _WFS_DelayForActivate = new WaitForSeconds(delayForActivate);
 
             _isActivatable = true;
         }

@@ -20,14 +20,14 @@ namespace Cards
         public bool? IsShown { get; private set; } = null;
         public SideType CurrentSide => _cardSideFlipper.CurrentSide;
 
-        internal void Init(Card me, CardViewService cardViewService, CardViewConfig cardViewConfig, Transform dragContainer,
+        internal void Init(Card me, CardViewService cardViewService, CardViewConfig cardViewConfig,
             RectTransform cardTransform, ICardDragAndDropHandler cardDragAndDropHandler)
         {
             ReadOnlyRectTransform readOnlyRectTransform = new ReadOnlyRectTransform(cardTransform);
             _cardFront.Init(cardViewConfig, readOnlyRectTransform, cardViewService);
 
             _cardDragAndDropActions = new CardDragAndDropActions(_cardFront, me, cardDragAndDropHandler);
-            _cardDragAndDrop.Init(cardTransform, _cardDragAndDropActions, dragContainer);
+            _cardDragAndDrop.Init(cardTransform, _cardDragAndDropActions);
 
             _cardSideFlipper = new CardSideFlipper(_cardFront, _cardBack, _cardDragAndDrop);
 

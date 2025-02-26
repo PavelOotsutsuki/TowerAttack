@@ -11,6 +11,7 @@ using GameFields.Seats;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 using Zenject;
+using CanvasSortOrders;
 
 namespace Roots
 {
@@ -22,6 +23,7 @@ namespace Roots
         [SerializeField] private ScreenRoot _screenRoot;
         [SerializeField] private PersonCreator _personCreator;
         [SerializeField] private ObjectsLightControlsCreator _lightControlsCreator;
+        [SerializeField] private SpeedUpButtonSortOrder _speedUpButtonSortOrder;
 
         private PersonsState _personsState;
 
@@ -34,9 +36,11 @@ namespace Roots
             _endTurnButton.Init();
 
             _lightControlsCreator.Init();
+            _speedUpButtonSortOrder.Init();
 
             LightController cardDragAndDropLightController = _lightControlsCreator.CreateDragAndDropLightController();
-            CardDragAndDropHandler cardDragAndDropHandler = new CardDragAndDropHandler(handPlayer, handPlayer, cardDragAndDropLightController);
+            CardDragAndDropHandler cardDragAndDropHandler = new CardDragAndDropHandler(handPlayer, handPlayer,
+                cardDragAndDropLightController, _speedUpButtonSortOrder);
 
             _personCreator.Init(bus, deck, _endTurnButton, seatPool, cardDragAndDropHandler, cardDragAndDropLightController);
 

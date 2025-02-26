@@ -43,8 +43,10 @@ namespace GameFields.Persons.AttackMenues
         private ConfirmableNumbers _confirmableNumbers;
 
         private bool _isComplete;
+        private bool _isCompleteNumbersHide;
 
         public bool IsComplete => _isComplete && _fadablePanel.IsComplete;
+        public bool IsCompleteNumbersHide => _isCompleteNumbersHide;
         public bool? IsActive { get; private set; } = null;
 
         public void Init(IWorkable attackButton, ICardNumberKeeper cardNumberKeeper, int countNumbers)
@@ -104,6 +106,7 @@ namespace GameFields.Persons.AttackMenues
             if (IsActive == false)
                 return;
 
+            _isCompleteNumbersHide = false;
             _isComplete = false;
 
             Deactivating().ToUniTask();
@@ -152,12 +155,16 @@ namespace GameFields.Persons.AttackMenues
 
             yield return new WaitForSeconds(1f);
 
+            _isCompleteNumbersHide = true;
+
             _fadablePanel.Hide();
 
             foreach (AttackNumber attackNumber in _attackNumbers)
             {
                 attackNumber.Deactivate();
             }
+
+            yield return new WaitUntil(() => _fadablePanel.IsComplete);
 
             _isComplete = true;
         }

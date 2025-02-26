@@ -1,14 +1,8 @@
 {
-    "name": "GameFields",
-    "rootNamespace": "GameFields",
+    "name": "CanvasSortOrders",
+    "rootNamespace": "CanvasSortOrders",
     "references": [
-        "Unity.TextMeshPro",
-        "DOTween.Modules",
-        "UniTask",
-        "Zenject",
-        "Cards",
-        "Tools",
-        "CanvasSortOrders"
+        "GUID:802f65728030c443591527c69c93fe23"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

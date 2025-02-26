@@ -30,7 +30,7 @@ namespace Cards
         public Image Background => _background;
         public SideType CurrentSide => _cardPaper.CurrentSide;
 
-        internal void Init(IEffectFactory effectFactory, CardViewService cardViewService, Transform dragContainer,
+        internal void Init(IEffectFactory effectFactory, CardViewService cardViewService,
             ICardDragAndDropHandler cardDragAndDropHandler)
         {
             ReadOnlyRectTransform = new ReadOnlyRectTransform(_rectTransform);
@@ -39,7 +39,7 @@ namespace Cards
             _rectTransform.localScale = _defaultScaleVector;
             CardMovement = new Movement(_rectTransform);
 
-            _cardPaper.Init(this, cardViewService, ViewConfig, dragContainer, _rectTransform, cardDragAndDropHandler);
+            _cardPaper.Init(this, cardViewService, ViewConfig, _rectTransform, cardDragAndDropHandler);
 
             CreateCardCharacter();
             SetState(_cardPaper);

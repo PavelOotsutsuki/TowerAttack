@@ -97,7 +97,7 @@ namespace GameFields.Persons.AttackMenues
             base.Deactivate();
 
             //_attackNumberAnimation.Deactivate();
-            _animator.Deactivate();
+            ////_animator.Deactivate();
 
             //_animator.SetTrigger("Deactivate");
 

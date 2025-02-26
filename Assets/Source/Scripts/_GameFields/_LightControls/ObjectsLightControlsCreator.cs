@@ -14,6 +14,7 @@ namespace GameFields.LightControls
 
         [SerializeField] private CardAttackZoneEnemyAILightableObject _cardAttackZoneEnemyAI;
         [SerializeField] private CardPlayingZonePlayerLightableObject _cardPlayingZonePlayer;
+        [SerializeField] private float _dragAndDropDelayForActivate = 3f;
 
         public void Init()
         {
@@ -31,7 +32,7 @@ namespace GameFields.LightControls
                 _cardPlayingZonePlayer
             };
 
-            return new LightController(_lightPanel, lightableObjects);
+            return new LightController(_lightPanel, lightableObjects, _dragAndDropDelayForActivate);
         }
 
         #region AutomaticFillComponents

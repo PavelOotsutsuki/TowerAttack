@@ -85,7 +85,7 @@ namespace GameFields.Persons.AttackMenues
             _attackButton.Deactivate();
             _attackNumberPanel.Deactivate();
 
-            yield return new WaitUntil(() => _attackNumberPanel.IsComplete);
+            yield return new WaitUntil(() => _attackNumberPanel.IsCompleteNumbersHide);
 
             _attackMenuLabel.Hide();
             _attackMenuPanel.Hide();

@@ -579,7 +579,7 @@ GameObject:
   - component: {fileID: 3400294503663470199}
   - component: {fileID: 3069007933992474960}
   - component: {fileID: 5801638844184843595}
-  - component: {fileID: 266637621526577529}
+  - component: {fileID: 1331748911235633808}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -729,7 +729,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _label: {fileID: 5801638844184843595}
-  _nascentPanel: {fileID: 266637621526577529}
+  _fadablePanel: {fileID: 1331748911235633808}
 --- !u!114 &5801638844184843595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -746,7 +746,7 @@ MonoBehaviour:
   _data:
     <StartText>k__BackingField: "\u0412\u044B\u0431\u0435\u0440\u0435\u0442\u0435
       \u043A\u043E\u0433\u043E \u0430\u0442\u0430\u043A\u0443\u0435\u043C"
---- !u!114 &266637621526577529
+--- !u!114 &1331748911235633808
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -755,14 +755,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 4030730765118987979}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c104a83bc2b84b6686de3920d0247b2, type: 3}
+  m_Script: {fileID: 11500000, guid: eb2c70a28de3c4b74af564a99b4c3dc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _transform: {fileID: 8627824004739606331}
+  _canvasGroup: {fileID: 3400294503663470199}
   _data:
-    <StartScale>k__BackingField: {x: 0, y: 0}
-    <EndScale>k__BackingField: {x: 1, y: 1}
-    <Duration>k__BackingField: 0.3
+    <MaxAlpha>k__BackingField: 1
+    <MinAlpha>k__BackingField: 0
+    <FadeUpDuration>k__BackingField: 1.5
+    <FadeOutDuration>k__BackingField: 1.5
+    <StartAlpha>k__BackingField: 0
 --- !u!1 &7142427869402283690
 GameObject:
   m_ObjectHideFlags: 0
@@ -906,7 +908,7 @@ MonoBehaviour:
   _attackMenuLabel: {fileID: 3069007933992474960}
   _attackMenuPanel: {fileID: 5650547021258361813}
   _attackButton: {fileID: 1814945152834285062}
-  _attackNumberPanel: {fileID: 7731136859598833907}
+  _attackNumberPanel: {fileID: 0}
   _canvasGroup: {fileID: 1304549315998207439}
 --- !u!1 &9092218654760227933
 GameObject:
