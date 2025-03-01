@@ -23,7 +23,7 @@ namespace GameFields.Effects
                 EffectType.ZhyzhaEffect => new ZhyzhaEffect(_personsState.Active),
                 EffectType.GreedyEffect => new GreedyEffect(_personsState.Active, _personsState.Deactive),
                 EffectType.PatriarchCorallEffect => new PatriarchCorallEffect(_personsState.Active, _personsState.Deactive),
-                _ => throw new NullReferenceException("Effect is not founded"),
+                _ => throw new NullReferenceException("Effect is not founded")
             };
 
             _personsState.Active.StartEffect(effect);

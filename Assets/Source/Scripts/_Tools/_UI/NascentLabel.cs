@@ -19,7 +19,7 @@ namespace Tools.UI
             _nascentPanel.Init();
         }
 
-        public void Show(FadableLabelActivateData data)
+        public void Show(LabelActivateData data)
         {
             _label.SetText(data.Message);
             _nascentPanel.Activate();

@@ -1,6 +1,6 @@
 using System;
 
-namespace GameFields
+namespace GameFields.EndFights
 {
     public class FightResult : IReadonlyFightResult
     {

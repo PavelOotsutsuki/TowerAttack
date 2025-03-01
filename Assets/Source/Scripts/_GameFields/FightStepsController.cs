@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using GameFields.EndFights;
 using GameFields.StartFights;
 using UnityEngine;
 

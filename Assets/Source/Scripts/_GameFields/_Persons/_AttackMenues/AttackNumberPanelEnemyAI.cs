@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Cards;
 using Cysharp.Threading.Tasks;
+using GameFields.InformationLabels;
 using GameFields.Persons.Towers;
 using Tools;
 using Tools.UI;
 using Tools.Utils.FillComponents;
 using UnityEngine;
+using Zenject;
 using Random = UnityEngine.Random;
 
 namespace GameFields.Persons.AttackMenues
@@ -43,6 +45,7 @@ namespace GameFields.Persons.AttackMenues
 
         private ICardNumberKeeper _cardNumberKeeper;
         private AttackResult _attackResult;
+        private InformationLableRoot _informationLableRoot;
 
         private ConfirmableNumbers _confirmableNumbers;
         private int _countNumbers;
@@ -52,6 +55,13 @@ namespace GameFields.Persons.AttackMenues
         public bool IsComplete => _isComplete && _fadablePanel.IsComplete;
 
         public bool? IsActive { get; private set; }
+
+        [Inject]
+        public void Construct(InformationLableRoot informationLableRoot)
+        {
+            _informationLableRoot = informationLableRoot;
+            _informationLableRoot.Init();
+        }
 
         public void Init(/*IWorkable attackButton, */ICardNumberKeeper cardNumberKeeper, int countNumbers)
         {
@@ -204,7 +214,15 @@ namespace GameFields.Persons.AttackMenues
             yield return new WaitForSeconds(8f); // Типа думает
 
             IAttackNumber attackedNumber = GetAttackedNumber() ?? throw new Exception("Ошибка нахождения номера для имитации атаки");
-            Debug.Log("Выбран номер: " + attackedNumber.Number);
+
+            LabelActivateData informationLableData = new LabelActivateData("Противник выбрал номер: " + attackedNumber.Number);
+            _informationLableRoot.Activate(informationLableData);
+
+            yield return new WaitForSeconds(4f);
+            _informationLableRoot.Deactivate();
+
+            yield return new WaitUntil(() => _informationLableRoot.IsComplete);
+            //Debug.Log("Выбран номер: " + attackedNumber.Number);
 
             if (_cardNumberKeeper.Card.IsSuccessAttack(attackedNumber.Number))
             {

@@ -4,6 +4,7 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using Zenject;
 using GameFields.Signals;
+using GameFields.EndFights;
 
 namespace GameFields
 {

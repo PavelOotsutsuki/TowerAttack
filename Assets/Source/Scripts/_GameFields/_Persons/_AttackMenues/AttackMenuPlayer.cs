@@ -58,7 +58,7 @@ namespace GameFields.Persons.AttackMenues
             gameObject.SetActive(true);
             _canvasGroup.blocksRaycasts = true;
 
-            FadableLabelActivateData labelData = new FadableLabelActivateData("Выберете кого атакуем");
+            LabelActivateData labelData = new LabelActivateData("Выберете кого атакуем");
             _attackMenuLabel.Show(labelData);
             _attackMenuPanel.Show();
 

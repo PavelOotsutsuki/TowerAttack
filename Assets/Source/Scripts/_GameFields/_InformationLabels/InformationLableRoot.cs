@@ -6,12 +6,15 @@ using UnityEngine;
 
 namespace GameFields.InformationLabels
 {
-    public class InformationLableRoot : MonoBehaviour, IWorkable<FadableLabelActivateData>, IAutomaticFillComponents
+    public class InformationLableRoot : MonoBehaviour, IWorkable<LabelActivateData>, ICompletable, IAutomaticFillComponents
     {
         [SerializeField] private InformationLabel _informationLabel;
         [SerializeField] private InformationLabelPanel _panel;
 
+        private bool _isComplete;
+
         public bool? IsActive { get; private set; } = null;
+        public bool IsComplete => _isComplete && _informationLabel.IsComplete && _panel.IsComplete;
 
         public void Init()
         {
@@ -19,16 +22,34 @@ namespace GameFields.InformationLabels
             _panel.Init();
         }
 
-        public void Activate(FadableLabelActivateData data)
+        public void Activate(LabelActivateData data)
         {
+            if (IsActive == true)
+                return;
+
+            IsActive = true;
+
+            _isComplete = false;
+
             _informationLabel.Show(data);
             _panel.Show();
+
+            _isComplete = true;
         }
 
         public void Deactivate()
         {
+            if (IsActive == false)
+                return;
+
+            IsActive = false;
+
+            _isComplete = false;
+
             _informationLabel.Hide();
             _panel.Hide();
+
+            _isComplete = true;
         }
 
         #region AutomaticFillComponents

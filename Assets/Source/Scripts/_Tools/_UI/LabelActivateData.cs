@@ -1,10 +1,10 @@
 namespace Tools.UI
 {
-    public class FadableLabelActivateData : IData
+    public class LabelActivateData : IData
     {
         private readonly string _message;
 
-        public FadableLabelActivateData(string message)
+        public LabelActivateData(string message)
         {
             _message = message;
         }

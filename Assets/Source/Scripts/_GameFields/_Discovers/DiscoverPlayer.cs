@@ -37,7 +37,7 @@ namespace GameFields.Persons.Discovers
 
             base.Activate(data);
 
-            FadableLabelActivateData labelData = new FadableLabelActivateData(data.ActivateMessage);
+            LabelActivateData labelData = new LabelActivateData(data.ActivateMessage);
 
             _discoverPanel.Show();
             _discoverLabel.Show(labelData);

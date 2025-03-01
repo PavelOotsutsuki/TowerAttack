@@ -15,7 +15,7 @@ namespace GameFields.Persons.Discovers
 
         private string _descriptionMessage;
         private CardDescription _description;
-        private FadableLabelActivateData _labelData;
+        private LabelActivateData _labelData;
 
         [Inject]
         public void Construct(CardDescription cardDescription)
@@ -46,7 +46,7 @@ namespace GameFields.Persons.Discovers
 
             _cardView.FillData(data.CardViewConfig);
             _descriptionMessage = data.CardViewConfig.Description;
-            _labelData = new FadableLabelActivateData(_descriptionMessage);
+            _labelData = new LabelActivateData(_descriptionMessage);
 
             DiscoverViewLogicData discoverViewLogicData = new DiscoverViewLogicData(data.CardHeight, data.CardWidth);
 

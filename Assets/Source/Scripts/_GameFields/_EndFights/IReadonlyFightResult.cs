@@ -1,4 +1,4 @@
-﻿namespace GameFields
+﻿namespace GameFields.EndFights
 {
     public interface IReadonlyFightResult
     {

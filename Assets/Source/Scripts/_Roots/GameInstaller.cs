@@ -2,6 +2,7 @@ using Cards;
 using GameFields;
 using GameFields.Decks;
 using GameFields.DiscardPiles;
+using GameFields.InformationLabels;
 using GameFields.Persons.AttackMenues;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.Hands;
@@ -17,6 +18,8 @@ namespace Roots
     public class GameInstaller : MonoInstaller
     {
         [SerializeField] private CardDescription _cardDescription;
+
+        [SerializeField] private InformationLableRoot _informationLableRoot;
 
         [SerializeField] private Deck _deck;
         [SerializeField] private DiscardPileConfig _discardPileConfig;
@@ -44,6 +47,8 @@ namespace Roots
             DeclareSignals();
 
             Container.Bind<CardDescription>().FromInstance(_cardDescription).AsSingle();
+
+            Container.Bind<InformationLableRoot>().FromInstance(_informationLableRoot).AsSingle();
 
             Container.Bind<Deck>().FromInstance(_deck).AsSingle();
             Container.Bind<DiscardPileConfig>().FromInstance(_discardPileConfig).AsSingle();

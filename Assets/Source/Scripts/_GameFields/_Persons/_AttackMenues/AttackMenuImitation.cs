@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using GameFields.InformationLabels;
 using GameFields.Persons.Hands;
 using GameFields.Persons.Towers;
 using GameFields.Signals;
@@ -59,7 +60,7 @@ namespace GameFields.Persons.AttackMenues
             gameObject.SetActive(true);
             _canvasGroup.blocksRaycasts = true;
 
-            FadableLabelActivateData labelData = new FadableLabelActivateData("Ожидаем противника...");
+            LabelActivateData labelData = new LabelActivateData("Ожидаем противника...");
             _attackMenuLabel.Show(labelData);
             _attackMenuPanel.Show();
 

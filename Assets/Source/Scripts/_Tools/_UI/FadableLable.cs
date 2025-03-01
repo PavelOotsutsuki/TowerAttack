@@ -6,7 +6,7 @@ namespace Tools.UI
 {
     [RequireComponent(typeof(FadablePanel))]
     [RequireComponent(typeof(Label))]
-    public class FadableLabel : MonoBehaviour, ICompletable, IViewable, IShowable<FadableLabelActivateData>, IAutomaticFillComponents
+    public class FadableLabel : MonoBehaviour, ICompletable, IViewable, IShowable<LabelActivateData>, IAutomaticFillComponents
     {
         [SerializeField] private Label _label;
         [SerializeField] private FadablePanel _fadablePanel;
@@ -20,7 +20,7 @@ namespace Tools.UI
             _fadablePanel.Init();
         }
 
-        public void Show(FadableLabelActivateData data)
+        public void Show(LabelActivateData data)
         {
             Show();
 

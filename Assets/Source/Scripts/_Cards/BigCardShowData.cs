@@ -12,14 +12,14 @@ namespace Cards
         {
             CardSize = cardSize;
             CardViewConfig = cardViewConfig;
-            LabelData = new FadableLabelActivateData(CardViewConfig.Description);
+            LabelData = new LabelActivateData(CardViewConfig.Description);
 
             _readOnlyTransform = readOnlyTransform;
         }
 
         public Vector2 CardSize { get; private set; }
         public CardViewConfig CardViewConfig { get; private set; }
-        public FadableLabelActivateData LabelData { get; private set; }
+        public LabelActivateData LabelData { get; private set; }
 
         public float PositionX => _readOnlyTransform.GetPositionX();
     }

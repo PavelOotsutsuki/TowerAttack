@@ -23,7 +23,7 @@ namespace GameFields.StartFights
         {
             base.Activate(data);
 
-            FadableLabelActivateData labelData = new FadableLabelActivateData(data.ActivateMessage);
+            LabelActivateData labelData = new LabelActivateData(data.ActivateMessage);
 
             _discoverLabel.Show(labelData);
         }
