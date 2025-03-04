@@ -8,14 +8,14 @@ namespace GameFields.Persons.AttackMenues
 {
     public class AttackMenuImitation : AttackMenu
     {
-        [SerializeField] private AttackNumberPanelEnemyAI _attackNumberPanel;
+        [SerializeField] private AttackNumberPanelEnemyAI _attackNumberPanelEnemyAI;
         [SerializeField] private AttackMenuImitationData _data;
 
         public void Init(ICardNumberKeeper cardNumberKeeper, IAttackResultHandler attackResultHandler, int countNumbers)
         {
-            _attackNumberPanel.Init(cardNumberKeeper, countNumbers);
+            _attackNumberPanelEnemyAI.Init(cardNumberKeeper, countNumbers);
 
-            base.Init(attackResultHandler, _data, _attackNumberPanel);
+            base.Init(attackResultHandler, _data, _attackNumberPanelEnemyAI);
         }
 
         public override void Activate(AttackMenuActivateData activateData)
@@ -29,12 +29,12 @@ namespace GameFields.Persons.AttackMenues
         {
             yield return new WaitForSeconds(_data.DelayAfterChoiceNumberDone);
 
-            _attackNumberPanel.Deactivate();
+            _attackNumberPanelEnemyAI.Deactivate();
         }
 
         private IEnumerator WaitingUntilDeactivate()
         {
-            yield return new WaitUntil(() => _attackNumberPanel.IsComplete);
+            yield return new WaitUntil(() => _attackNumberPanelEnemyAI.IsComplete);
 
             Deactivate();
         }
@@ -57,7 +57,7 @@ namespace GameFields.Persons.AttackMenues
         [ContextMenu(nameof(DefineAttackNumberPanel))]
         private ComponentAttachInfo DefineAttackNumberPanel()
         {
-            return AutomaticFillComponents.DefineComponent(this, ref _attackNumberPanel, ComponentLocationTypes.InChildren);
+            return AutomaticFillComponents.DefineComponent(this, ref _attackNumberPanelEnemyAI, ComponentLocationTypes.InChildren);
         }
         #endregion 
     }

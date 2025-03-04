@@ -71,6 +71,7 @@ namespace GameFields.Persons.AttackMenues
             gameObject.SetActive(true);
             _canvasGroup.blocksRaycasts = _data.IsInteractable;
 
+
             //LabelActivateData labelData = new LabelActivateData("Ожидаем противника...");
             //LabelActivateData labelData = new LabelActivateData("Выберете кого атакуем");
             LabelActivateData labelData = new LabelActivateData(_data.AttackMenuLabelText);

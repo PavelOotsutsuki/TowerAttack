@@ -29,6 +29,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3682636687790245326}
     - target: {fileID: 7376310284672276219, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
+      propertyPath: _attackNumberPanelPlayer
+      value: 
+      objectReference: {fileID: 3682636687790245326}
+    - target: {fileID: 7376310284672276219, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
       propertyPath: _data.<IsInteractable>k__BackingField
       value: 1
       objectReference: {fileID: 0}
