@@ -60,7 +60,7 @@ namespace GameFields.Persons.AttackMenues
             _completableElements = FillCompletableElements();
         }
 
-        public void Activate(AttackMenuActivateData activateData)
+        public virtual void Activate(AttackMenuActivateData activateData)
         {
             if (IsActive == true)
                 return;
@@ -109,7 +109,7 @@ namespace GameFields.Persons.AttackMenues
 
         private IEnumerator Deactivating()
         {
-            OnDeactivating();
+            yield return OnDeactivating();
 
             _attackMenuLabel.Hide();
             _attackMenuPanel.Hide();

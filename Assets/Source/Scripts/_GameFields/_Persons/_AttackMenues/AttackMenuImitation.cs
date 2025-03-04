@@ -18,13 +18,27 @@ namespace GameFields.Persons.AttackMenues
             base.Init(attackResultHandler, _data, _attackNumberPanel);
         }
 
+        public override void Activate(AttackMenuActivateData activateData)
+        {
+            base.Activate(activateData);
+
+            StartCoroutine(WaitingUntilDeactivate());
+        }
+
         protected override IEnumerator OnDeactivating()
         {
-            yield return new WaitUntil(() => _attackNumberPanel.IsComplete);
             yield return new WaitForSeconds(_data.DelayAfterChoiceNumberDone);
 
             _attackNumberPanel.Deactivate();
         }
+
+        private IEnumerator WaitingUntilDeactivate()
+        {
+            yield return new WaitUntil(() => _attackNumberPanel.IsComplete);
+
+            Deactivate();
+        }
+
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(AttackMenuImitation))]
