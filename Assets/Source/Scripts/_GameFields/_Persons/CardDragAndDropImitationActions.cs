@@ -14,7 +14,6 @@ namespace GameFields.Persons
     {
         private readonly ICardDragAndDropHandHandler _hand;
         private readonly ICardDropPlace _cardDropPlaceImitation;
-        private readonly SignalBus _bus;
         private readonly IAttackable _attackZone;
 
         private Card _activeCard;
@@ -23,12 +22,10 @@ namespace GameFields.Persons
 
         private bool _isMoving;
 
-        public CardDragAndDropImitationActions(ICardDragAndDropHandHandler hand, ICardDropPlace cardDropPlaceImitation, SignalBus bus//)
-            , IAttackable attackZone)//, ICardDropPlace tower)
+        public CardDragAndDropImitationActions(ICardDragAndDropHandHandler hand, ICardDropPlace cardDropPlaceImitation, IAttackable attackZone)
         {
             _hand = hand;
             _cardDropPlaceImitation = cardDropPlaceImitation;
-            _bus = bus;
             _attackZone = attackZone;
 
             _isMoving = false;
@@ -66,7 +63,6 @@ namespace GameFields.Persons
 
             _hand.OnCardPlay();
             _cardDropPlaceImitation.SeatCard(_activeCard);
-            //_bus.Fire(new StartEffectSignal(_activeCard));
         }
 
         public void Attack()

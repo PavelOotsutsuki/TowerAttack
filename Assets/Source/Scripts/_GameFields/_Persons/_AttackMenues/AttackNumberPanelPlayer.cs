@@ -12,9 +12,8 @@ using UnityEngine;
 namespace GameFields.Persons.AttackMenues
 {
     [RequireComponent(typeof(FadablePanel))]
-    public class AttackNumberPanelPlayer : MonoBehaviour, ICompletable, IWorkable<AttackNumberPanelActivateData>, IAutomaticFillComponents
+    public class AttackNumberPanelPlayer : AttackNumberPanel
     {
-        [SerializeField] private FadablePanel _fadablePanel;
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private AttackNumber[] _attackNumbers;
         [SerializeField] private float _numberWidht = 100f;
@@ -34,20 +33,12 @@ namespace GameFields.Persons.AttackMenues
         private float _maxWidth;
 
         private int _activateCounter;
-        private int _needForActivate;
 
         private IWorkable _attackButton;
-        private ICardNumberKeeper _cardNumberKeeper;
-        private AttackResult _attackResult;
 
-        private ConfirmableNumbers _confirmableNumbers;
-
-        private bool _isComplete;
         private bool _isCompleteNumbersHide;
 
-        public bool IsComplete => _isComplete && _fadablePanel.IsComplete;
         public bool IsCompleteNumbersHide => _isCompleteNumbersHide;
-        public bool? IsActive { get; private set; } = null;
 
         public void Init(IWorkable attackButton, ICardNumberKeeper cardNumberKeeper, int countNumbers)
         {
@@ -55,67 +46,46 @@ namespace GameFields.Persons.AttackMenues
                 throw new Exception("Несовпадение заданного кол-ва номеров и кол-ва объектов AttackNumber");
 
             _attackButton = attackButton;
-            _cardNumberKeeper = cardNumberKeeper;
-            _attackResult = null;
 
-            _confirmableNumbers = new ConfirmableNumbers();
+            base.Init(cardNumberKeeper, countNumbers);
+        }
 
+        protected override void InitNumbers()
+        {
             _activateCounter = 0;
 
             FindColumnsAndRowsCount();
             FindIndents();
-            InitNumbers();
 
-            _fadablePanel.Init();
-        }
-
-        public void Activate(AttackNumberPanelActivateData data)
-        {
-            if (IsActive == true)
-                return;
-
-            _isComplete = false;
-
-            _needForActivate = data.NeedForActivate;
-            _attackResult = data.AttackResult;
-            _activateCounter = 0;
-
-            gameObject.SetActive(true);
+            int number = 1;
 
             foreach (AttackNumber attackNumber in _attackNumbers)
             {
-                //if (data.DisableNumbers.Contains(attackNumber))
-                //{
-                //    attackNumber.Activate(new AttackNumberActivateData(true));
-                //}
-                //else
-                //{
-                //    attackNumber.Activate(new AttackNumberActivateData(false));
-                //}
+                attackNumber.Init(number, CalcNumberPosition(number), new Vector2(_numberWidht, _numberHeight), OnAttackNumberClick);
+                number++;
+            }
+        }
+
+        protected override void OnActivate()
+        {
+            _activateCounter = 0;
+
+            foreach (AttackNumber attackNumber in _attackNumbers)
+            {
                 attackNumber.Activate();
             }
 
-            _fadablePanel.Show();
-
-            IsActive = true;
-            _isComplete = true;
+            IsCompleteThis = true;
         }
 
-        public void Deactivate()
+        protected override void OnDeactivate()
         {
-            if (IsActive == false)
-                return;
-
             _isCompleteNumbersHide = false;
-            _isComplete = false;
 
-            Deactivating().ToUniTask();
-
-            IsActive = false;
-            //gameObject.SetActive(false);
+            base.OnDeactivate();
         }
 
-        private IEnumerator Deactivating()
+        protected override IEnumerator Deactivating()
         {
             List<AttackNumber> selectedNumbers = new List<AttackNumber>(); // Можно заменить на LINQ
 
@@ -139,15 +109,15 @@ namespace GameFields.Persons.AttackMenues
 
             foreach (AttackNumber selectedNumber in selectedNumbers)
             {
-                if (_cardNumberKeeper.Card.IsSuccessAttack(selectedNumber.Number))
+                if (CardNumberKeeper.Card.IsSuccessAttack(selectedNumber.Number))
                 {
                     selectedNumber.SuccessChoice();
-                    _attackResult.SuccessChoice();
+                    AttackResult.SuccessChoice();
                 }
                 else
                 {
                     selectedNumber.ErrorChoice();
-                    _confirmableNumbers.Add(selectedNumber);
+                    ConfirmableNumbers.Add(selectedNumber);
                 }
 
                 yield return new WaitForSeconds(0.8f);
@@ -157,47 +127,29 @@ namespace GameFields.Persons.AttackMenues
 
             _isCompleteNumbersHide = true;
 
-            _fadablePanel.Hide();
+            FadablePanel.Hide();
 
             foreach (AttackNumber attackNumber in _attackNumbers)
             {
                 attackNumber.Deactivate();
             }
 
-            yield return new WaitUntil(() => _fadablePanel.IsComplete);
+            yield return new WaitUntil(() => FadablePanel.IsComplete);
 
-            _isComplete = true;
+            IsCompleteThis = true;
         }
 
-        //public void Unsubscribe()
-        //{
-        //    foreach (AttackNumber attackNumber in _attackNumbers)
-        //    {
-        //        attackNumber.Unsubscribe();
-        //    }
-        //}
         private void OnAttackNumberClick(bool isActive)
         {
             _activateCounter += isActive ? 1 : -1;
 
-            if (_activateCounter == _needForActivate)
+            if (_activateCounter == NeedForActivate)
             {
                 _attackButton.Activate();
             }
             else
             {
                 _attackButton.Deactivate();
-            }
-        }
-
-        private void InitNumbers()
-        {
-            int number = 1;
-
-            foreach (AttackNumber attackNumber in _attackNumbers)
-            {
-                attackNumber.Init(number, CalcNumberPosition(number), new Vector2(_numberWidht, _numberHeight), OnAttackNumberClick);
-                number++;
             }
         }
 
@@ -288,23 +240,18 @@ namespace GameFields.Persons.AttackMenues
         }
 
         #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents) + nameof(AttackNumberPanel))]
-        public List<ComponentAttachInfo> DefineAllComponents()
+        [ContextMenu(nameof(DefineAllComponents) + nameof(AttackNumberPanelPlayer))]
+        public override List<ComponentAttachInfo> DefineAllComponents()
         {
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
-                DefineFadablePanel(),
                 DefineRectTransform(),
                 DefineAttackNumbers()
             };
 
-            return list;
-        }
+            list.AddRange(base.DefineAllComponents());
 
-        [ContextMenu(nameof(DefineFadablePanel))]
-        private ComponentAttachInfo DefineFadablePanel()
-        {
-            return AutomaticFillComponents.DefineComponent(this, ref _fadablePanel, ComponentLocationTypes.InThis);
+            return list;
         }
 
         [ContextMenu(nameof(DefineRectTransform))]

@@ -105,7 +105,9 @@ namespace GameFields.Persons
 
         public void AttackActivate()
         {
-            _attackMenu.Activate();
+            AttackMenuActivateData data = new AttackMenuActivateData(1);
+
+            _attackMenu.Activate(data);
         }
 
         //public void AttackDeactivate()

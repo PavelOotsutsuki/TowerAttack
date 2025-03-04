@@ -27,7 +27,6 @@ namespace GameFields.Effects
             };
 
             _personsState.Active.StartEffect(effect);
-            //_bus.Fire(new StartEffectSignal(effect));
 
             return effect;
         }

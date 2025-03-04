@@ -1,0 +1,168 @@
+using System.Collections;
+using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
+using GameFields.Persons.Towers;
+using Tools;
+using Tools.UI;
+using Tools.Utils.FillComponents;
+using UnityEngine;
+
+namespace GameFields.Persons.AttackMenues
+{
+    [RequireComponent(typeof(CanvasGroup))]
+    public abstract class AttackMenu : MonoBehaviour, IAttackMenu, IWorkable<AttackMenuActivateData>, ICompletable, IAutomaticFillComponents
+    {
+        [SerializeField] private AttackMenuLabel _attackMenuLabel;
+        [SerializeField] private AttackMenuPanel _attackMenuPanel;
+
+        [SerializeField] private CanvasGroup _canvasGroup;
+
+        private IAttackResultHandler _attackResultHandler;
+        private AttackResult _attackResult;
+        private AttackMenuData _data;
+        private AttackNumberPanel _attackNumberPanel;
+
+        private IEnumerable<ICompletable> _completableElements;
+
+        public bool? IsActive { get; private set; } = null;
+        public bool IsComplete { get; private set; }
+
+        private bool IsElementsComplete
+        {
+            get
+            {
+                foreach (ICompletable completableElement in _completableElements)
+                {
+                    if (completableElement.IsComplete == false)
+                        return false;
+                }
+
+                return true;
+            }
+        }
+
+        public void Init(IAttackResultHandler attackResultHandler, AttackMenuData data, AttackNumberPanel attackNumberPanel)
+        {
+            gameObject.SetActive(false);
+            IsComplete = false;
+            _canvasGroup.blocksRaycasts = false;
+
+            _data = data;
+            _attackNumberPanel = attackNumberPanel;
+
+            _attackResultHandler = attackResultHandler;
+            _attackResult = null;
+
+            _attackMenuLabel.Init();
+            _attackMenuPanel.Init();
+            //_attackNumberPanel.Init(cardNumberKeeper, _countNumbers);
+
+            _completableElements = FillCompletableElements();
+        }
+
+        public void Activate(AttackMenuActivateData activateData)
+        {
+            if (IsActive == true)
+                return;
+
+            IsComplete = false;
+            IsActive = true;
+
+            gameObject.SetActive(true);
+            _canvasGroup.blocksRaycasts = _data.IsInteractable;
+
+            //LabelActivateData labelData = new LabelActivateData("Ожидаем противника...");
+            //LabelActivateData labelData = new LabelActivateData("Выберете кого атакуем");
+            LabelActivateData labelData = new LabelActivateData(_data.AttackMenuLabelText);
+            _attackMenuLabel.Show(labelData);
+            _attackMenuPanel.Show();
+
+            _attackResult = new AttackResult();
+
+            AttackNumberPanelActivateData numberPanelActivateData = new AttackNumberPanelActivateData(activateData.NeedSelect, _attackResult);
+            _attackNumberPanel.Activate(numberPanelActivateData);
+        }
+
+        public void Deactivate()
+        {
+            if (IsActive == false)
+                return;
+
+            IsActive = false;
+
+            _canvasGroup.blocksRaycasts = false;
+
+            Deactivating().ToUniTask();
+        }
+
+        protected virtual List<ICompletable> FillCompletableElements()
+        {
+            List<ICompletable> completables = new List<ICompletable>
+            {
+                _attackMenuLabel,
+                _attackMenuPanel,
+                _attackNumberPanel
+            };
+
+            return completables;
+        }
+
+        private IEnumerator Deactivating()
+        {
+            OnDeactivating();
+
+            _attackMenuLabel.Hide();
+            _attackMenuPanel.Hide();
+
+            yield return new WaitUntil(() => IsElementsComplete);
+
+            gameObject.SetActive(false);
+
+            if (_attackResult.IsAttackSuccess)
+            {
+                _attackResultHandler.SuccessAttack();
+            }
+            else
+            {
+                _attackResultHandler.FalledAttack();
+            }
+
+            IsComplete = true;
+        }
+
+        protected abstract IEnumerator OnDeactivating();
+
+        #region AutomaticFillComponents
+        [ContextMenu(nameof(DefineAllComponents) + nameof(AttackMenu))]
+        public virtual List<ComponentAttachInfo> DefineAllComponents()
+        {
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineAttackMenuLabel(),
+                DefineAttackNumberPanel(),
+                DefineCanvasGroup()
+            };
+
+            return list;
+        }
+
+        [ContextMenu(nameof(DefineAttackMenuLabel))]
+        private ComponentAttachInfo DefineAttackMenuLabel()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _attackMenuLabel, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineAttackNumberPanel))]
+        private ComponentAttachInfo DefineAttackNumberPanel()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _attackNumberPanel, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineCanvasGroup))]
+        private ComponentAttachInfo DefineCanvasGroup()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _canvasGroup, ComponentLocationTypes.InThis);
+        }
+        #endregion 
+    }
+}

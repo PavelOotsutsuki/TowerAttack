@@ -28,6 +28,15 @@ PrefabInstance:
       propertyPath: _attackNumberPanel
       value: 
       objectReference: {fileID: 3682636687790245326}
+    - target: {fileID: 7376310284672276219, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
+      propertyPath: _data.<IsInteractable>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7376310284672276219, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
+      propertyPath: _data.<AttackMenuLabelText>k__BackingField
+      value: "\u0412\u044B\u0431\u0435\u0440\u0435\u0442\u0435 \u043A\u043E\u0433\u043E
+        \u0430\u0442\u0430\u043A\u0443\u0435\u043C"
+      objectReference: {fileID: 0}
     - target: {fileID: 7625198449985348171, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -275,7 +284,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cea0d3cff7fe401db47fa0fa212647e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fadablePanel: {fileID: 3072264674552995786}
+  FadablePanel: {fileID: 3072264674552995786}
   _rectTransform: {fileID: 7694732489989048230}
   _attackNumbers:
   - {fileID: 2811355391128784564}
