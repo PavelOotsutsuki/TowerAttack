@@ -284,7 +284,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cea0d3cff7fe401db47fa0fa212647e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FadablePanel: {fileID: 3072264674552995786}
+  _fadablePanel: {fileID: 3072264674552995786}
   _rectTransform: {fileID: 7694732489989048230}
   _attackNumbers:
   - {fileID: 2811355391128784564}

@@ -18,9 +18,22 @@ namespace GameFields.Persons.AttackMenues
     [RequireComponent(typeof(FadablePanel))]
     public class AttackNumberPanelEnemyAI : AttackNumberPanel
     {
+        [SerializeField] private FadablePanel _fadablePanel;
+
         private AttackNumberImitation[] _attackNumbers;
 
+        private ICardNumberKeeper _cardNumberKeeper;
+        private AttackResult _attackResult;
         private InformationLableRoot _informationLableRoot;
+
+        private ConfirmableNumbers _confirmableNumbers;
+        private int _countNumbers;
+
+        private bool _isComplete;
+
+        public override bool IsComplete => _isComplete && _fadablePanel.IsComplete;
+
+        public override bool? IsActive { get; protected set; }
 
         [Inject]
         public void Construct(InformationLableRoot informationLableRoot)
@@ -29,36 +42,61 @@ namespace GameFields.Persons.AttackMenues
             _informationLableRoot.Init();
         }
 
-        protected override void InitNumbers()
+        public void Init(ICardNumberKeeper cardNumberKeeper, int countNumbers)
         {
-            _attackNumbers = new AttackNumberImitation[CountNumbers];
+            _cardNumberKeeper = cardNumberKeeper;
+            _countNumbers = countNumbers;
+            _attackResult = null;
 
-            for (int i = 0; i < CountNumbers; i++)
-            {
-                AttackNumberImitation attackNumber = new AttackNumberImitation(i + 1);
-                _attackNumbers[i] = attackNumber;
-            }
+            _confirmableNumbers = new ConfirmableNumbers();
+
+            InitNumbers();
+
+            _fadablePanel.Init();
         }
 
-        protected override void OnActivate()
+        public override void Activate(AttackNumberPanelActivateData data)
         {
+            if (IsActive == true)
+                return;
+
+            IsActive = true;
+
+            _isComplete = false;
+
+
+            _attackResult = data.AttackResult;
+            gameObject.SetActive(true);
+
+            _fadablePanel.Show();
             Attacking().ToUniTask();
         }
 
-        protected override IEnumerator Deactivating()
+        public override void Deactivate()
         {
-            FadablePanel.Hide();
+            if (IsActive == false)
+                return;
+
+            IsActive = false;
+            _isComplete = false;
+
+            Deactivating().ToUniTask();
+        }
+
+        private IEnumerator Deactivating()
+        {
+            _fadablePanel.Hide();
 
             yield return new WaitForSeconds(0.1f);
-            yield return new WaitUntil(() => FadablePanel.IsComplete);
+            yield return new WaitUntil(() => _fadablePanel.IsComplete);
 
-            IsCompleteThis = true;
+            _isComplete = true;
         }
 
         private IEnumerator Attacking()
         {
             yield return new WaitForSeconds(0.1f);
-            yield return new WaitUntil(() => FadablePanel.IsComplete);
+            yield return new WaitUntil(() => _fadablePanel.IsComplete);
             yield return new WaitForSeconds(8f); // Типа думает
 
             IAttackNumber attackedNumber = GetAttackedNumber() ?? throw new Exception("Ошибка нахождения номера для имитации атаки");
@@ -71,21 +109,21 @@ namespace GameFields.Persons.AttackMenues
 
             yield return new WaitUntil(() => _informationLableRoot.IsComplete);
 
-            if (CardNumberKeeper.Card.IsSuccessAttack(attackedNumber.Number))
+            if (_cardNumberKeeper.Card.IsSuccessAttack(attackedNumber.Number))
             {
-                AttackResult.SuccessChoice();
+                _attackResult.SuccessChoice();
             }
             else
             {
-                ConfirmableNumbers.Add(attackedNumber);
+                _confirmableNumbers.Add(attackedNumber);
             }
 
-            IsCompleteThis = true;
+            _isComplete = true;
         }
 
         private IAttackNumber GetAttackedNumber()
         {
-            if (ConfirmableNumbers.AcceptNumbers.Count == _attackNumbers.Length)
+            if (_confirmableNumbers.AcceptNumbers.Count == _attackNumbers.Length)
             {
                 throw new Exception("Не осталось непроверенных (неатакованных) номеров!");
             }
@@ -93,7 +131,7 @@ namespace GameFields.Persons.AttackMenues
             List<int> shuffleNumbers = new List<int>();
             List<int> allNumbers = new List<int>();
 
-            for (int i = 0; i < CountNumbers; i++)
+            for (int i = 0; i < _countNumbers; i++)
             {
                 allNumbers.Add(i + 1);
             }
@@ -110,7 +148,7 @@ namespace GameFields.Persons.AttackMenues
             {
                 IAttackNumber attackNumber = _attackNumbers[number - 1];
 
-                if (ConfirmableNumbers.Contains(attackNumber) == false)
+                if (_confirmableNumbers.Contains(attackNumber) == false)
                 {
                     return attackNumber;
                 }
@@ -119,38 +157,34 @@ namespace GameFields.Persons.AttackMenues
             return null;
         }
 
-        //#region AutomaticFillComponents
-        //[ContextMenu(nameof(DefineAllComponents) + nameof(AttackNumberPanel))]
-        //public List<ComponentAttachInfo> DefineAllComponents()
-        //{
-        //    List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
-        //    {
-        //        DefineFadablePanel()//,
-        //        //DefineRectTransform(),
-        //        //DefineAttackNumbers()
-        //    };
+        private void InitNumbers()
+        {
+            _attackNumbers = new AttackNumberImitation[_countNumbers];
 
-        //    return list;
-        //}
+            for (int i = 0; i < _countNumbers; i++)
+            {
+                AttackNumberImitation attackNumber = new AttackNumberImitation(i + 1);
+                _attackNumbers[i] = attackNumber;
+            }
+        }
 
-        //[ContextMenu(nameof(DefineFadablePanel))]
-        //private ComponentAttachInfo DefineFadablePanel()
-        //{
-        //    return AutomaticFillComponents.DefineComponent(this, ref _fadablePanel, ComponentLocationTypes.InThis);
-        //}
+        #region AutomaticFillComponents
+        [ContextMenu(nameof(DefineAllComponents) + nameof(AttackNumberPanel))]
+        public override List<ComponentAttachInfo> DefineAllComponents()
+        {
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineFadablePanel()
+            };
 
-        ////[ContextMenu(nameof(DefineRectTransform))]
-        ////private ComponentAttachInfo DefineRectTransform()
-        ////{
-        ////    return AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
-        ////}
+            return list;
+        }
 
-        ////[ContextMenu(nameof(DefineAttackNumbers))]
-        ////private ComponentAttachInfo DefineAttackNumbers()
-        ////{
-        ////    return AutomaticFillComponents.DefineComponent(this, ref _attackNumbers);
-        ////}
-
-        //#endregion
+        [ContextMenu(nameof(DefineFadablePanel))]
+        private ComponentAttachInfo DefineFadablePanel()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _fadablePanel, ComponentLocationTypes.InThis);
+        }
+        #endregion
     }
 }

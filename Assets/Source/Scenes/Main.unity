@@ -13722,7 +13722,6 @@ MonoBehaviour:
   - {fileID: 200841575}
   - {fileID: 1317657962}
   - {fileID: 1925789444}
-  - {fileID: 1546112987}
   _defaultReferenceResolution: {x: 1920, y: 1080}
 --- !u!224 &1278673203 stripped
 RectTransform:
@@ -22128,8 +22127,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _attackMenuLabel: {fileID: 1344044507}
   _attackMenuPanel: {fileID: 165140313}
-  _attackNumberPanel: {fileID: 7809984763803172876}
   _canvasGroup: {fileID: 3059478249198338952}
+  _attackNumberPanel: {fileID: 7809984763803172876}
+  _data:
+    <IsInteractable>k__BackingField: 0
+    <AttackMenuLabelText>k__BackingField: "\u041E\u0436\u0438\u0434\u0430\u0435\u043C
+      \u043F\u0440\u043E\u0442\u0438\u0432\u043D\u0438\u043A\u0430..."
+    <DelayAfterChoiceNumberDone>k__BackingField: 1
 --- !u!225 &3059478249198338952
 CanvasGroup:
   m_ObjectHideFlags: 0
