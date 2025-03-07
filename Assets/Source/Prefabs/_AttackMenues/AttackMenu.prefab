@@ -839,9 +839,8 @@ MonoBehaviour:
   _attackMenuLabel: {fileID: 3069007933992474960}
   _attackMenuPanel: {fileID: 5650547021258361813}
   _canvasGroup: {fileID: 1304549315998207439}
-  _attackNumberPanel: {fileID: 0}
+  _attackNumberPanelPlayer: {fileID: 0}
   _data:
-    <IsInteractable>k__BackingField: 0
     <AttackMenuLabelText>k__BackingField: 
   _attackButton: {fileID: 1814945152834285062}
 --- !u!1 &9092218654760227933

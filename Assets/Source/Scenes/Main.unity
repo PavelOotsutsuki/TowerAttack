@@ -13614,6 +13614,7 @@ MonoBehaviour:
   - {fileID: 200841575}
   - {fileID: 1317657962}
   - {fileID: 1925789444}
+  - {fileID: 1546112987}
   _defaultReferenceResolution: {x: 1920, y: 1080}
 --- !u!224 &1278673203 stripped
 RectTransform:

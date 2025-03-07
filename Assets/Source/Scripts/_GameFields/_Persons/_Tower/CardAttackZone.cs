@@ -18,7 +18,7 @@ namespace GameFields.Persons.Towers
         private InvertCardAnimation _invertCardAnimation;
         private ShakeAnimation _shakeAnimation;
 
-        private IAttackMenu _attackMenu;
+        private IAttackMenuActivator _attackMenu;
         private IBoomTower _tower;
 
         private DiscardPile _discardPile;
@@ -39,7 +39,7 @@ namespace GameFields.Persons.Towers
             _isComplete = false;
         }
 
-        public void Init(IAttackMenu attackMenu, IBoomTower tower)
+        public void Init(IAttackMenuActivator attackMenu, IBoomTower tower)
         {
             _attackMenu = attackMenu;
             _tower = tower;
@@ -75,6 +75,7 @@ namespace GameFields.Persons.Towers
             _shakeAnimation.Play();
 
             AttackMenuActivateData attackMenuActivateData = new AttackMenuActivateData(_data.NeedSelectForAttack);
+            //AttackMenuActivateData attackMenuActivateData = new AttackMenuActivateData(49);
 
             _attackMenu.Activate(attackMenuActivateData);
         }

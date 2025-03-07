@@ -20,11 +20,11 @@ namespace GameFields.Persons
 
         private readonly TurnProcessing _turnProcessing;
 
-        private IAttackMenu _attackMenu;
+        private IAttackMenuActivator _attackMenu;
 
         public Player(InteractionActivator interactionActivator, Hand hand, CardPlayingZone cardPlayingZone, Tower tower,
             DiscoverPlayer discover, DrawCardRoot drawCardRoot, StartTurnDraw startTurnDraw, TurnProcessing turnProcessing,
-            SignalBus bus, PersonStep startPlayerTurnView, IAttackMenu attackMenu, EndTurnProcessing endTurnProcessing) :
+            SignalBus bus, PersonStep startPlayerTurnView, IAttackMenuActivator attackMenu, EndTurnProcessing endTurnProcessing) :
             base(cardPlayingZone, drawCardRoot, tower, startTurnDraw, discover, bus, hand,
                 attackMenu, interactionActivator)
         {

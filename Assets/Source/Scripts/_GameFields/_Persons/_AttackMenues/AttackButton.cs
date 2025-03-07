@@ -11,6 +11,7 @@ namespace GameFields.Persons.AttackMenues
     public class AttackButton : FadableConfirmableButton
     {
         private IDeactivatable _clickCallback;
+        private Coroutine _workableCoroutine;
 
         public void Init(IDeactivatable clickCallback)
         {
@@ -26,6 +27,9 @@ namespace GameFields.Persons.AttackMenues
         {
             if (IsActive == true)
                 return;
+
+            if (_workableCoroutine != null)
+                StopCoroutine(_workableCoroutine);
 
             gameObject.SetActive(true);
 
@@ -50,7 +54,10 @@ namespace GameFields.Persons.AttackMenues
 
             IsActive = false;
 
-            Deactivating().ToUniTask();
+            if (_workableCoroutine != null)
+                StopCoroutine(_workableCoroutine);
+
+            _workableCoroutine = StartCoroutine(Deactivating());
         }
 
         private IEnumerator Deactivating()

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace GameFields.Persons.AttackMenues
         private Sprite _defaultView;
         private Sprite _activeView;
 
+        public float Duration => _duration;
         public bool? IsActive { get; private set; } = null;
 
         public void Init()
@@ -36,15 +38,6 @@ namespace GameFields.Persons.AttackMenues
 
             IsActive = true;
 
-            //if (data.IsActiveView == false)
-            //{
-            //    _image.sprite = _defaultView;
-            //}
-            //else
-            //{
-            //    _image.sprite = _activeView;
-            //}
-
             gameObject.SetActive(true);
         }
 
@@ -58,16 +51,12 @@ namespace GameFields.Persons.AttackMenues
             gameObject.SetActive(false);
         }
 
-        //public void StartSuccessChoiceAnimation()
-        //{
-        //    StartingSuccessAnimation().ToUniTask();
-        //}
-
         public void Play()
         {
             Activate();
 
             StartingAnimation().ToUniTask();
+            //PlayAnimation().ToUniTask();
         }
 
         //private IEnumerator StartingSuccessAnimation()
@@ -81,9 +70,74 @@ namespace GameFields.Persons.AttackMenues
         //    }
         //}
 
+        //private IEnumerator StartingAnimation()
+        //{
+        //    //WaitForSeconds wait = new WaitForSeconds(_duration / _animSprites.Count);
+        //    TimeSpan startTime = DateTime.Now.TimeOfDay;
+        //    //WaitForSeconds wait = new WaitForSeconds(_duration / _animSprites.Count * Time.deltaTime);
+        //    //int counter = 0;
+        //    //float fullTime = 0f;
+
+        //    //float duration = Convert.ToSingle((DateTime.Now.TimeOfDay - startTime).TotalSeconds);
+
+        //    while (Convert.ToSingle((DateTime.Now.TimeOfDay - startTime).TotalSeconds) < _duration)
+        //    {
+        //        int index = Convert.ToInt32(Convert.ToSingle((DateTime.Now.TimeOfDay - startTime).TotalSeconds) / (_duration / _animSprites.Count));
+
+        //        if (index > 109)
+        //        {
+        //            index = 109;
+        //        }
+
+        //        if (index < 0)
+        //        {
+        //            index = 0;
+        //        }
+
+        //        _image.sprite = _animSprites[index];
+        //        //Debug.Log((_image == null).ToString());
+        //        //Debug.Log((_image.sprite == null).ToString());
+        //        //Debug.Log(index.ToString());
+        //        //Debug.Log(_animSprites[index]);
+        //        Debug.Log(_duration + ": TimeSpan: " + Convert.ToSingle((DateTime.Now.TimeOfDay - startTime).TotalSeconds));
+        //        yield return null;
+        //    }
+
+        //    //foreach (Sprite sprite in _animSprites)
+        //    //{
+        //    //    counter++;
+        //    //    //float delay = _duration / _animSprites.Count * Time.deltaTime;
+        //    //    //WaitForSeconds wait = new WaitForSeconds(delay);
+        //    //    //fullTime += delay;
+        //    //    fullTime += _duration / _animSprites.Count;
+        //    //    Debug.Log(counter + ". FullTime: " + fullTime + " TimeSpan: " + (DateTime.Now.TimeOfDay - startTime).TotalSeconds);
+
+        //    //    _image.sprite = sprite;
+        //    //    //yield return wait;
+        //    //}
+
+        //    Debug.Log((DateTime.Now.TimeOfDay - startTime).TotalSeconds);
+        //    yield break;
+        //}
+
+
+        //private IEnumerator PlayAnimation()
+        //{
+        //    float timePerFrame = _duration / _animSprites.Count;
+        //    int currentSpriteIndex = 0;
+
+        //    while (currentSpriteIndex < _animSprites.Count)
+        //    {
+        //        _image.sprite = _animSprites[currentSpriteIndex];
+
+        //        currentSpriteIndex++;
+
+        //        yield return new WaitForSeconds(timePerFrame);
+        //    }
+        //}
+
         private IEnumerator StartingAnimation()
         {
-            //WaitForSeconds wait = new WaitForSeconds(_duration / _animSprites.Count * Time.deltaTime);
             WaitForSeconds wait = new WaitForSeconds(_duration / _animSprites.Count);
 
             foreach (Sprite sprite in _animSprites)

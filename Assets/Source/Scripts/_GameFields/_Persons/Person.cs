@@ -25,7 +25,7 @@ namespace GameFields.Persons
         private readonly Stack<PersonStep> _personSteps;
         private readonly Discover _discover;
         private readonly Hand _hand;
-        private readonly IAttackMenu _attackMenu;
+        private readonly IAttackMenuActivator _attackMenu;
 
         //private readonly PersonStep _lastStep;
 
@@ -39,7 +39,7 @@ namespace GameFields.Persons
 
         protected Person(CardPlayingZone playingZone, DrawCardRoot drawCardRoot, Tower tower,
             StartTurnDraw startTurnDraw, Discover discover, SignalBus bus, /*PersonStep lastStep,*/
-            Hand hand, IAttackMenu attackMenu, InteractionActivator gameFieldObjectsActivator)
+            Hand hand, IAttackMenuActivator attackMenu, InteractionActivator gameFieldObjectsActivator)
         {
             _hand = hand;
             Bus = bus;

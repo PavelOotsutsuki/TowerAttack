@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1164626161076580882, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1331748911235633808, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
       propertyPath: _data.<FadeUpDuration>k__BackingField
       value: 0.3
@@ -288,7 +292,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cea0d3cff7fe401db47fa0fa212647e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fadablePanel: {fileID: 3072264674552995786}
+  FadablePanel: {fileID: 3072264674552995786}
+  _canvasGroup: {fileID: 4722913405414379822}
   _rectTransform: {fileID: 7694732489989048230}
   _attackNumbers:
   - {fileID: 2811355391128784564}
@@ -341,9 +346,12 @@ MonoBehaviour:
   - {fileID: 9160838530474197512}
   - {fileID: 8958940707703822563}
   - {fileID: 5084484339826169249}
-  _numberWidht: 100
-  _numberHeight: 100
-  _indent: 50
+  _data:
+    <NumberWidht>k__BackingField: 100
+    <NumberHeight>k__BackingField: 100
+    <Indent>k__BackingField: 50
+    <NextAnimationStartPercent>k__BackingField: 0.8
+    <DelayAfterAllNumbersAnimationsPlayed>k__BackingField: 1.6
 --- !u!114 &3228037677974253605 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1219506249804015416, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
@@ -399,6 +407,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44c2a431b3d5f4b6db20a823e2cf29d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!225 &4722913405414379822 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 9055593070463223347, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}
+  m_PrefabInstance: {fileID: 4332679803310479133}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &4808008246140168906 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9122532896261930455, guid: fd6ac3db6fcde4dee8a9ce3fa004de1f, type: 3}

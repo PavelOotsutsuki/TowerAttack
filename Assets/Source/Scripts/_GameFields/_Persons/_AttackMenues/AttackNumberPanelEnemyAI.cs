@@ -1,16 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Cards;
 using Cysharp.Threading.Tasks;
 using GameFields.InformationLabels;
-using GameFields.Persons.Towers;
-using Tools;
 using Tools.UI;
-using Tools.Utils.FillComponents;
 using UnityEngine;
 using Zenject;
+using System.Linq;
 using Random = UnityEngine.Random;
 
 namespace GameFields.Persons.AttackMenues
@@ -18,22 +14,11 @@ namespace GameFields.Persons.AttackMenues
     [RequireComponent(typeof(FadablePanel))]
     public class AttackNumberPanelEnemyAI : AttackNumberPanel
     {
-        [SerializeField] private FadablePanel _fadablePanel;
+        [SerializeField] private AttackNumberPanelEnemyAIData _data;
 
         private AttackNumberImitation[] _attackNumbers;
 
-        private ICardNumberKeeper _cardNumberKeeper;
-        private AttackResult _attackResult;
         private InformationLableRoot _informationLableRoot;
-
-        private ConfirmableNumbers _confirmableNumbers;
-        private int _countNumbers;
-
-        private bool _isComplete;
-
-        public override bool IsComplete => _isComplete && _fadablePanel.IsComplete;
-
-        public override bool? IsActive { get; protected set; }
 
         [Inject]
         public void Construct(InformationLableRoot informationLableRoot)
@@ -42,88 +27,94 @@ namespace GameFields.Persons.AttackMenues
             _informationLableRoot.Init();
         }
 
-        public void Init(ICardNumberKeeper cardNumberKeeper, int countNumbers)
+        protected override void InitNumbers()
         {
-            _cardNumberKeeper = cardNumberKeeper;
-            _countNumbers = countNumbers;
-            _attackResult = null;
+            _attackNumbers = new AttackNumberImitation[CountNumbers];
 
-            _confirmableNumbers = new ConfirmableNumbers();
-
-            InitNumbers();
-
-            _fadablePanel.Init();
+            for (int i = 0; i < CountNumbers; i++)
+            {
+                AttackNumberImitation attackNumber = new AttackNumberImitation(i + 1);
+                _attackNumbers[i] = attackNumber;
+            }
         }
 
-        public override void Activate(AttackNumberPanelActivateData data)
+        protected override void OnActivate()
         {
-            if (IsActive == true)
-                return;
-
-            IsActive = true;
-
-            _isComplete = false;
-
-
-            _attackResult = data.AttackResult;
-            gameObject.SetActive(true);
-
-            _fadablePanel.Show();
             Attacking().ToUniTask();
         }
 
-        public override void Deactivate()
+        protected override IEnumerator Deactivating()
         {
-            if (IsActive == false)
-                return;
+            FadablePanel.Hide();
 
-            IsActive = false;
-            _isComplete = false;
+            //yield return new WaitForSeconds(0.1f);
+            yield return new WaitUntil(() => FadablePanel.IsComplete);
 
-            Deactivating().ToUniTask();
-        }
-
-        private IEnumerator Deactivating()
-        {
-            _fadablePanel.Hide();
-
-            yield return new WaitForSeconds(0.1f);
-            yield return new WaitUntil(() => _fadablePanel.IsComplete);
-
-            _isComplete = true;
+            IsCompleteThis = true;
         }
 
         private IEnumerator Attacking()
         {
-            yield return new WaitForSeconds(0.1f);
-            yield return new WaitUntil(() => _fadablePanel.IsComplete);
-            yield return new WaitForSeconds(8f); // Типа думает
+            //yield return new WaitForSeconds(0.1f);
+            yield return new WaitUntil(() => FadablePanel.IsComplete);
+            yield return new WaitForSeconds(_data.DelayThinkImitation);
 
-            IAttackNumber attackedNumber = GetAttackedNumber() ?? throw new Exception("Ошибка нахождения номера для имитации атаки");
+            List<IAttackNumber> selectedNumbers = new List<IAttackNumber>();
 
-            LabelActivateData informationLableData = new LabelActivateData("Противник выбрал номер: " + attackedNumber.Number);
+            for (int i = 0; i < NeedForActivate; i++)
+            {
+                IAttackNumber attackedNumber = GetAttackedNumber() ?? throw new Exception("Ошибка нахождения номера для имитации атаки");
+                ConfirmableNumbers.Add(attackedNumber);
+                selectedNumbers.Add(attackedNumber);
+            }
+
+            string labelText = _data.DefaultInformationLabelText;
+
+            for (int i = 0; i < selectedNumbers.Count; i++)
+            {
+                if (i != 0)
+                    labelText += ",";
+
+                labelText += selectedNumbers[i].Number.ToString();
+            }
+
+            LabelActivateData informationLableData = new LabelActivateData(labelText);
             _informationLableRoot.Activate(informationLableData);
 
-            yield return new WaitForSeconds(4f);
+            yield return new WaitForSeconds(_data.TimeViewInformationLabel);
             _informationLableRoot.Deactivate();
 
             yield return new WaitUntil(() => _informationLableRoot.IsComplete);
 
-            if (_cardNumberKeeper.Card.IsSuccessAttack(attackedNumber.Number))
+            foreach (IAttackNumber selectedNumber in selectedNumbers)
             {
-                _attackResult.SuccessChoice();
-            }
-            else
-            {
-                _confirmableNumbers.Add(attackedNumber);
+                if (CardNumberKeeper.Card.IsSuccessAttack(selectedNumber.Number))
+                {
+                    AttackResult.SuccessChoice();
+                    break;
+                }
             }
 
-            _isComplete = true;
+            //
+            string debugMsg = "";
+
+            foreach (IAttackNumber attackNumber in ConfirmableNumbers.AcceptNumbers.OrderByDescending(n => n.Number))
+            {
+                if (debugMsg != "")
+                    debugMsg += ",";
+
+                debugMsg += attackNumber.Number.ToString();
+            }
+
+            Debug.Log(debugMsg);
+            //
+
+            IsCompleteThis = true;
         }
 
         private IAttackNumber GetAttackedNumber()
         {
-            if (_confirmableNumbers.AcceptNumbers.Count == _attackNumbers.Length)
+            if (ConfirmableNumbers.AcceptNumbers.Count == _attackNumbers.Length)
             {
                 throw new Exception("Не осталось непроверенных (неатакованных) номеров!");
             }
@@ -131,60 +122,26 @@ namespace GameFields.Persons.AttackMenues
             List<int> shuffleNumbers = new List<int>();
             List<int> allNumbers = new List<int>();
 
-            for (int i = 0; i < _countNumbers; i++)
+            for (int i = 0; i < CountNumbers; i++)
             {
                 allNumbers.Add(i + 1);
             }
-
             while (allNumbers.Count > 0)
             {
                 int attackNumber = allNumbers[Random.Range(0, allNumbers.Count)];
                 shuffleNumbers.Add(attackNumber);
                 allNumbers.Remove(attackNumber);
             }
-
-
             foreach (int number in shuffleNumbers)
             {
                 IAttackNumber attackNumber = _attackNumbers[number - 1];
 
-                if (_confirmableNumbers.Contains(attackNumber) == false)
+                if (ConfirmableNumbers.Contains(attackNumber) == false)
                 {
                     return attackNumber;
                 }
             }
-
             return null;
         }
-
-        private void InitNumbers()
-        {
-            _attackNumbers = new AttackNumberImitation[_countNumbers];
-
-            for (int i = 0; i < _countNumbers; i++)
-            {
-                AttackNumberImitation attackNumber = new AttackNumberImitation(i + 1);
-                _attackNumbers[i] = attackNumber;
-            }
-        }
-
-        #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents) + nameof(AttackNumberPanel))]
-        public override List<ComponentAttachInfo> DefineAllComponents()
-        {
-            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
-            {
-                DefineFadablePanel()
-            };
-
-            return list;
-        }
-
-        [ContextMenu(nameof(DefineFadablePanel))]
-        private ComponentAttachInfo DefineFadablePanel()
-        {
-            return AutomaticFillComponents.DefineComponent(this, ref _fadablePanel, ComponentLocationTypes.InThis);
-        }
-        #endregion
     }
 }

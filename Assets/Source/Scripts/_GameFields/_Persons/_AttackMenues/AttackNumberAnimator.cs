@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using Tools;
 using Tools.Utils.FillComponents;
@@ -14,6 +12,7 @@ namespace GameFields.Persons.AttackMenues
 
         private AttackNumberAnimation _currentAnimation;
 
+        public float AnimationDuration => _currentAnimation.Duration;
         public bool? IsActive { get; private set; } = null;
 
         public void Init()

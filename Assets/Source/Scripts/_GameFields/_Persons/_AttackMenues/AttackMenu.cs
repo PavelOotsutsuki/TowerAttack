@@ -10,7 +10,7 @@ using UnityEngine;
 namespace GameFields.Persons.AttackMenues
 {
     [RequireComponent(typeof(CanvasGroup))]
-    public abstract class AttackMenu : MonoBehaviour, IAttackMenu, IWorkable<AttackMenuActivateData>, ICompletable, IAutomaticFillComponents
+    public abstract class AttackMenu : MonoBehaviour, IAttackMenuActivator, IWorkable<AttackMenuActivateData>, ICompletable, IAutomaticFillComponents
     {
         [SerializeField] private AttackMenuLabel _attackMenuLabel;
         [SerializeField] private AttackMenuPanel _attackMenuPanel;
@@ -45,7 +45,8 @@ namespace GameFields.Persons.AttackMenues
         {
             gameObject.SetActive(false);
             IsComplete = false;
-            _canvasGroup.blocksRaycasts = false;
+            //_canvasGroup.blocksRaycasts = false;
+            _canvasGroup.blocksRaycasts = true;
 
             _data = data;
             _attackNumberPanel = attackNumberPanel;
@@ -69,8 +70,7 @@ namespace GameFields.Persons.AttackMenues
             IsActive = true;
 
             gameObject.SetActive(true);
-            _canvasGroup.blocksRaycasts = _data.IsInteractable;
-
+            //_canvasGroup.blocksRaycasts = _data.IsInteractable;
 
             //LabelActivateData labelData = new LabelActivateData("Ожидаем противника...");
             //LabelActivateData labelData = new LabelActivateData("Выберете кого атакуем");
@@ -91,7 +91,7 @@ namespace GameFields.Persons.AttackMenues
 
             IsActive = false;
 
-            _canvasGroup.blocksRaycasts = false;
+            //_canvasGroup.blocksRaycasts = false;
 
             Deactivating().ToUniTask();
         }
@@ -140,7 +140,7 @@ namespace GameFields.Persons.AttackMenues
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
                 DefineAttackMenuLabel(),
-                DefineAttackNumberPanel(),
+                DefineAttackMenuPanel(),
                 DefineCanvasGroup()
             };
 
@@ -153,10 +153,10 @@ namespace GameFields.Persons.AttackMenues
             return AutomaticFillComponents.DefineComponent(this, ref _attackMenuLabel, ComponentLocationTypes.InChildren);
         }
 
-        [ContextMenu(nameof(DefineAttackNumberPanel))]
-        private ComponentAttachInfo DefineAttackNumberPanel()
+        [ContextMenu(nameof(DefineAttackMenuPanel))]
+        private ComponentAttachInfo DefineAttackMenuPanel()
         {
-            return AutomaticFillComponents.DefineComponent(this, ref _attackNumberPanel, ComponentLocationTypes.InChildren);
+            return AutomaticFillComponents.DefineComponent(this, ref _attackMenuPanel, ComponentLocationTypes.InChildren);
         }
 
         [ContextMenu(nameof(DefineCanvasGroup))]
