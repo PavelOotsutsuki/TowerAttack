@@ -39,7 +39,7 @@ namespace GameFields.Persons
         private IEnumerator WaitingEndTurnButtonClick(int startCountCards)
         {
             //yield return new WaitUntil(() => _buttonActivator.EndTurnClicked == false);
-            yield return new WaitUntil(() => startCountCards == 0 || _isComplete == true);
+            yield return new WaitUntil(() => startCountCards == 0 || _hand.IsSlimeEffectCountZero || _isComplete == true);
 
             _isComplete = true;
         }

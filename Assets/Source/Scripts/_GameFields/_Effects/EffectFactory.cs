@@ -20,7 +20,7 @@ namespace GameFields.Effects
         {
             Effect effect = type switch
             {
-                EffectType.ZhyzhaEffect => new ZhyzhaEffect(_personsState.Active),
+                EffectType.ZhyzhaEffect => new ZhyzhaEffect(_personsState.Deactive),
                 EffectType.GreedyEffect => new GreedyEffect(_personsState.Active, _personsState.Deactive),
                 EffectType.PatriarchCorallEffect => new PatriarchCorallEffect(_personsState.Active, _personsState.Deactive),
                 _ => throw new NullReferenceException("Effect is not founded")

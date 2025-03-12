@@ -7,7 +7,8 @@ using UnityEngine;
 
 namespace GameFields.Persons.Hands
 {
-    public abstract class Hand : MonoBehaviour, ICardDragAndDropHandHandler, IHandBlockable, IReadOnlyHand, IAutomaticFillComponents
+    public abstract class Hand : MonoBehaviour, ICardDragAndDropHandHandler, IHandBlockable, IReadOnlyHand, IDrawCardWatcher,
+        IPersonObject, IAutomaticFillComponents
     {
         private const float StartRotation = 0;
         private const int EmptyIndex = -1;
@@ -30,13 +31,18 @@ namespace GameFields.Persons.Hands
         private int _handSeatIndex;
         private SeatPool _handSeatPool;
 
+        private List<Card> _turnCardsFromDeck;
+        private int _countSlimeEffect = 0;
+
         float ICardDragAndDropHandHandler.ReturnInSeatDuration => _returnInSeatDuration;
 
         public int CountCards => _handSeats.Count;
+        public bool IsSlimeEffectCountZero => _turnCardsFromDeck.Count == 0 && _countSlimeEffect > 0;
 
         public void Init(SeatPool seatPool)
         {
             _handSeats = new List<Seat>();
+            _turnCardsFromDeck = new List<Card>();
             _handSeatIndex = EmptyIndex;
 
             _handSeatPool = seatPool;
@@ -72,6 +78,11 @@ namespace GameFields.Persons.Hands
             card.SetActiveInteraction(_isActiveInteraction);
         }
 
+        void IDrawCardWatcher.SetCard(Card card)
+        {
+            _turnCardsFromDeck.Add(card);
+        }
+
         public void AddCard(Card card)
         {
             //card.SetDragAndDropListener(this);
@@ -88,7 +99,16 @@ namespace GameFields.Persons.Hands
 
         public bool TryGetCard(out Card card)
         {
-            return TryGetRandomCard(out card);
+            card = null;
+
+            if (_countSlimeEffect > 0)
+            {
+                return TryGetRandomCardFromDrawnCards(out card);
+            }
+            else
+            {
+                return TryGetRandomCard(out card);
+            }
         }
 
         public bool TryGetCard(Card card)
@@ -103,7 +123,7 @@ namespace GameFields.Persons.Hands
             return isFind;
         }
 
-        public Card GetLastCard()
+        public Card UnbindLastCard()
         {
             Seat lastSeat = _handSeats[_handSeats.Count - 1];
             Card gettedCard = lastSeat.Card;
@@ -129,7 +149,7 @@ namespace GameFields.Persons.Hands
 
             while (_handSeats.Count > 0)
             {
-                cards.Add(GetLastCard());
+                cards.Add(UnbindLastCard());
             }
 
             return true;
@@ -144,6 +164,24 @@ namespace GameFields.Persons.Hands
         public void Unblock()
         {
             UnblockCards();
+        }
+
+        public void ActivateSlimeEffect(int countTurns)
+        {
+            _countSlimeEffect = countTurns;
+        }
+
+        public void OnStartTurn()
+        {
+            _turnCardsFromDeck.Clear();
+        }
+
+        public void OnFinishTurn()
+        {
+            _turnCardsFromDeck.Clear();
+
+            if (_countSlimeEffect > 0)
+                _countSlimeEffect--;
         }
 
         private void BlockCards()
@@ -208,10 +246,25 @@ namespace GameFields.Persons.Hands
 
         private void SetCardsInteraction()
         {
+            //bool isActiveInteraction = _isActiveInteraction;
+
+            //if (_countSlimeEffect > 0)
+            //{
+            //    isActiveInteraction = false;
+            //}
+
             foreach (Seat seat in _handSeats)
             {
                 Card card = seat.Card;
-                card.SetActiveInteraction(_isActiveInteraction);
+
+                if (_countSlimeEffect > 0 && _turnCardsFromDeck.Contains(card) == false)
+                {
+                    card.SetActiveInteraction(false);
+                }
+                else
+                {
+                    card.SetActiveInteraction(_isActiveInteraction);
+                }
             }
         }
 
@@ -233,6 +286,22 @@ namespace GameFields.Persons.Hands
             int randomIndex = Random.Range(0, _handSeats.Count);
 
             card = _handSeats[randomIndex].Card;
+
+            return true;
+        }
+
+        private bool TryGetRandomCardFromDrawnCards(out Card card)
+        {
+            card = null;
+
+            if (_turnCardsFromDeck.Count <= 0)
+            {
+                return false;
+            }
+
+            int randomIndex = Random.Range(0, _turnCardsFromDeck.Count);
+
+            card = _turnCardsFromDeck[randomIndex];
 
             return true;
         }

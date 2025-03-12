@@ -49,6 +49,7 @@ namespace Roots
             Container.Bind<CardDescription>().FromInstance(_cardDescription).AsSingle();
 
             Container.Bind<InformationLableRoot>().FromInstance(_informationLableRoot).AsSingle();
+            _informationLableRoot.Init();
 
             Container.Bind<Deck>().FromInstance(_deck).AsSingle();
             Container.Bind<DiscardPileConfig>().FromInstance(_discardPileConfig).AsSingle();

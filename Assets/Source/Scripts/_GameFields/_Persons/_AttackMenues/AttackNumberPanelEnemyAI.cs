@@ -24,7 +24,6 @@ namespace GameFields.Persons.AttackMenues
         public void Construct(InformationLableRoot informationLableRoot)
         {
             _informationLableRoot = informationLableRoot;
-            _informationLableRoot.Init();
         }
 
         protected override void InitNumbers()

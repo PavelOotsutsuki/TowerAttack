@@ -1,5 +1,5 @@
 namespace GameFields.Persons.Hands
 {
-    public class HandPlayer : Hand
+    public class HandPlayer : Hand, IPlayerObject
     { }
 }

@@ -67,6 +67,8 @@ namespace GameFields
             _table.Deactivate();
             _endTurnButton.Deactivate();
             _cardDragAndDropLightController.Block();
+
+            //Debug.Log("SetStartPlayerTurnViewStates");
         }
 
         private void SetStartTurnDrawPlayerStates()
@@ -76,6 +78,9 @@ namespace GameFields
             _table.Deactivate();
             _endTurnButton.Deactivate();
             _cardDragAndDropLightController.Block();
+
+            //Debug.Log("SetStartTurnDrawPlayerStates");
+
         }
 
         private void SetTurnProcessingStates()
@@ -85,6 +90,8 @@ namespace GameFields
             _table.Activate();
             _endTurnButton.Deactivate();
             _cardDragAndDropLightController.Unblock();
+
+            //Debug.Log("SetTurnProcessingStates");
         }
 
         private void SetCardActionProcessingPlayerStates()
@@ -94,6 +101,8 @@ namespace GameFields
             _table.Deactivate();
             _endTurnButton.Deactivate();
             _cardDragAndDropLightController.Block();
+
+            //Debug.Log("SetCardActionProcessingPlayerStates");
         }
 
         private void SetEndTurnProcessingStates()
@@ -103,6 +112,8 @@ namespace GameFields
             _table.Deactivate();
             _endTurnButton.Activate();
             _cardDragAndDropLightController.Block();
+
+            //Debug.Log("SetEndTurnProcessingStates");
         }
 
         private void SetEnemyAIStates()
@@ -112,6 +123,8 @@ namespace GameFields
             _table.Deactivate();
             _endTurnButton.Deactivate();
             _cardDragAndDropLightController.Block();
+
+            //Debug.Log("SetEnemyAIStates");
         }
     }
 }

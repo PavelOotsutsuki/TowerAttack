@@ -10,6 +10,7 @@ namespace GameFields.Persons.DrawCards
     {
         private readonly Hand _hand;
         private readonly float _delay;
+        private readonly IDrawCardWatcher _drawCardWatcher;
 
         private bool _isComplete;
 
@@ -17,6 +18,7 @@ namespace GameFields.Persons.DrawCards
         {
             _hand = hand;
             _delay = delay;
+            _drawCardWatcher = hand;
 
             _isComplete = true;
         }
@@ -35,6 +37,7 @@ namespace GameFields.Persons.DrawCards
             yield return new WaitForSeconds(_delay);
 
             _hand.AddCard(drawnCard);
+            _drawCardWatcher.SetCard(drawnCard);
             _isComplete = true;
         }
     }

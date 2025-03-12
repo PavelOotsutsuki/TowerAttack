@@ -70,6 +70,7 @@ namespace GameFields.Persons
 
             _personSteps.Clear();
 
+            _hand.OnStartTurn();
             OnStartStep();
             InitSteps();
 
@@ -80,6 +81,8 @@ namespace GameFields.Persons
 
         public void FinishTurn()
         {
+            _hand.OnFinishTurn();
+
             IReadOnlyList<Card> discardedCards = _playingZone.UpdateCards();
 
             if (discardedCards.Count > 0)
@@ -217,5 +220,15 @@ namespace GameFields.Persons
 
             return cards;
         }
+
+        public void ActivateSlimeEffect(int countTurns)
+        {
+            _hand.ActivateSlimeEffect(countTurns);
+        }
+
+        //public void DeactivateSlimeEffect()
+        //{
+
+        //}
     }
 }
