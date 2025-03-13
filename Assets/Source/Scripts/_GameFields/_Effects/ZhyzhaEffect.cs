@@ -8,11 +8,12 @@ namespace GameFields.Effects
     public class ZhyzhaEffect : Effect
     {
         private readonly Person _deactivePerson;
-        private readonly int _countTurns = 2;
+        private readonly int _countTurns;
 
-        public ZhyzhaEffect(Person deactivePerson) : base()
+        public ZhyzhaEffect(Person deactivePerson, int countTurns) : base()
         {
             _deactivePerson = deactivePerson;
+            _countTurns = countTurns;
 
             Play();
         }

@@ -16,12 +16,13 @@ namespace GameFields.Effects
             //_bus = bus;
         }
 
-        public Effect Create(EffectType type)
+        public Effect Create(CardEffectConfig effectConfig)
         {
-            Effect effect = type switch
+            Effect effect = effectConfig.Type switch
             {
-                EffectType.ZhyzhaEffect => new ZhyzhaEffect(_personsState.Deactive),
+                EffectType.ZhyzhaEffect => new ZhyzhaEffect(_personsState.Deactive, effectConfig.Duration),
                 EffectType.GreedyEffect => new GreedyEffect(_personsState.Active, _personsState.Deactive),
+                EffectType.PyromancerEffect => new ZhyzhaEffect(_personsState.Deactive, effectConfig.Duration),
                 EffectType.PatriarchCorallEffect => new PatriarchCorallEffect(_personsState.Active, _personsState.Deactive),
                 _ => throw new NullReferenceException("Effect is not founded")
             };
