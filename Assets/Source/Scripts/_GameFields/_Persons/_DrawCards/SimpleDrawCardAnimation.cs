@@ -14,10 +14,10 @@ namespace GameFields.Persons.DrawCards
 
         private bool _isComplete;
 
-        public SimpleDrawCardAnimation(Hand hand, float delay)
+        public SimpleDrawCardAnimation(Hand hand, SimpleDrawCardAnimationData data)
         {
             _hand = hand;
-            _delay = delay;
+            _delay = data.Delay;
             _drawCardWatcher = hand;
 
             _isComplete = true;

@@ -226,6 +226,11 @@ namespace GameFields.Persons
             _hand.ActivateSlimeEffect(countTurns);
         }
 
+        public void ActivateFireDraw(int countTurns)
+        {
+            StartTurnDraw.SetFireMode(countTurns);
+        }
+
         //public void DeactivateSlimeEffect()
         //{
 

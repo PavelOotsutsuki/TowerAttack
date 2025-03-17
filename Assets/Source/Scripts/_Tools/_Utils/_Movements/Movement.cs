@@ -101,6 +101,39 @@ namespace Tools.Utils.Movements
         //    _currentSequence = sequence;
         //}
 
+        public void MoveLocalLinear(Vector3 position, Vector3 rotation, float duration, Vector3 scaleVector)
+        {
+            if (Mathf.Approximately(duration, 0f))
+            {
+                MoveLocalInstantly(position, rotation, scaleVector);
+            }
+            else
+            {
+                Sequence sequence = DOTween.Sequence()
+                .Join(_transform.DOLocalMove(position, duration).SetEase(Ease.Linear))
+                .Join(_transform.DOLocalRotate(rotation, duration).SetEase(Ease.Linear))
+                .Join(_transform.DOScale(scaleVector, duration).SetEase(Ease.Linear));
+
+                _currentSequence = sequence;
+            }
+        }
+
+        public void MoveLocalLinear(Vector3 position, Vector3 rotation, float duration)
+        {
+            if (Mathf.Approximately(duration, 0f))
+            {
+                MoveLocalInstantly(position, rotation);
+            }
+            else
+            {
+                Sequence sequence = DOTween.Sequence()
+                .Join(_transform.DOLocalMove(position, duration).SetEase(Ease.Linear))
+                .Join(_transform.DOLocalRotate(rotation, duration).SetEase(Ease.Linear));
+
+                _currentSequence = sequence;
+            }
+        }
+
         public void MoveLinear(Vector3 position, Vector3 rotation, float duration, Vector3 scaleVector)
         {
             if (Mathf.Approximately(duration, 0f))

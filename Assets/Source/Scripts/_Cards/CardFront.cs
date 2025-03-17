@@ -11,9 +11,6 @@ namespace Cards
     {
         [SerializeField] private CanvasGroup _canvasGroup;
 
-        [SerializeField] private float _width = 150f;
-        [SerializeField] private float _height = 210f;
-
         [SerializeField] private CardView _cardView;
         [SerializeField] private CardBlock _cardBlock;
 
@@ -25,11 +22,12 @@ namespace Cards
         public bool IsBlock { get; private set; }
         public bool? IsShown { get; private set; } = null;
 
-        internal void Init(CardViewConfig cardViewConfig, ReadOnlyRectTransform readOnlyCartRectTransform, CardViewService cardViewService)
+        internal void Init(CardViewConfig cardViewConfig, ReadOnlyRectTransform readOnlyCartRectTransform,
+            CardViewService cardViewService, Vector2 cardSize)
         {
             _readOnlyCardRectTransform = readOnlyCartRectTransform;
             _cardViewService = cardViewService;
-            _cardSize = new Vector2(_width, _height);
+            _cardSize = cardSize;
 
             IsBlock = false;
 

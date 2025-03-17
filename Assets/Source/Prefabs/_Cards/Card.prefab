@@ -475,6 +475,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5aac0c557266f4746a62198e7061fee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _width: 150
+  _height: 210
+  _backSizeFactor: 1.0641
   _cardBack: {fileID: 7343953678776589404}
   _cardFront: {fileID: 2805773735245598067}
   _cardDragAndDrop: {fileID: 7947053024734069809}
@@ -908,6 +911,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 894c86c0e79f7454ea71fddb4ec936a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rectTransform: {fileID: 8502844890379667406}
 --- !u!1 &4730135370658826164
 GameObject:
   m_ObjectHideFlags: 0
@@ -1087,8 +1091,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canvasGroup: {fileID: 5823099822882136473}
-  _width: 150
-  _height: 210
   _cardView:
     _icon: {fileID: 3637518566425094200}
     _number: {fileID: 8887612740147015767}

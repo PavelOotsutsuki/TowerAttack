@@ -1,4 +1,5 @@
 using System;
+using Cards;
 using Tools;
 using UnityEngine;
 
@@ -29,5 +30,8 @@ namespace GameFields.CommonAnimations
         [field: SerializeField] public float InvertCardBackDuration { get; private set; } = 0.5f;
         [field: SerializeField] public float DelayAfterInvert { get; private set; } = 0.5f;
         [field: SerializeField] public bool IsIgnoreStartSide { get; private set; } = false;
+        [field: SerializeField] public SideType StartSide { get; private set; } = SideType.Front;
+
+        public SideType FinishSide => StartSide == SideType.Front ? SideType.Back : SideType.Front;
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.DrawCards
 {
-    public abstract class StartTurnDraw : PersonStep
+    public abstract class StartTurnDraw : PersonStep, IPersonObject
     {
         private readonly int _countDrawCards;
         private readonly DrawCardRoot _drawCardRoot;

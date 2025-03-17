@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using GameFields.CommonAnimations;
 using GameFields.Decks;
 using GameFields.EndTurnButtons;
 using GameFields.LightControls;
@@ -66,8 +67,12 @@ namespace GameFields.Persons
 
         [Header("Draw Card Animation's data:")]
 
-        [SerializeField] private float _simpleDrawCardDelay = 0.1f;
-        [SerializeField] private float _fireDrawCardDelay = 2f;
+        [SerializeField] private SimpleDrawCardAnimationData _playerSimpleDrawCardAnimationData;
+        [SerializeField] private SimpleDrawCardAnimationData _enemyAISimpleDrawCardAnimationData;
+        [SerializeField] private FireDrawCardAnimationData _playerFireDrawCardAnimationData;
+        [SerializeField] private FireDrawCardAnimationData _enemyAIFireDrawCardAnimationData;
+        //[SerializeField] private float _fireDrawCardDelay = 2f;
+        //[SerializeField] private InvertCardAnimationData _fireAnimationInvertData;
 
         private SignalBus _bus;
         private Deck _deck;
@@ -114,9 +119,9 @@ namespace GameFields.Persons
 
         public Player CreatePlayer()
         {
-            SimpleDrawCardAnimation simpleDrawCardAnimation = new SimpleDrawCardAnimation(_playerHand, _simpleDrawCardDelay);
-            FireDrawCardAnimation fireDrawCardAnimation = new FireDrawCardAnimation(_playerHand, _fireDrawCardDelay);
-            DrawCardRoot drawCardRoot = new DrawCardRoot(new SimpleDrawCardAnimation(_playerHand, _simpleDrawCardDelay), _deck);
+            SimpleDrawCardAnimation simpleDrawCardAnimation = new SimpleDrawCardAnimation(_playerHand, _playerSimpleDrawCardAnimationData);
+            FireDrawCardAnimation fireDrawCardAnimation = new FireDrawCardAnimation(_playerFireDrawCardAnimationData);
+            DrawCardRoot drawCardRoot = new DrawCardRoot(new SimpleDrawCardAnimation(_playerHand, _playerSimpleDrawCardAnimationData), _deck);
             TurnProcessing turnProcessing = new TurnProcessing(_interactionActivator, _playerHand);
             StartTurnDrawPlayer startTurnDraw = new StartTurnDrawPlayer(_interactionActivator, drawCardRoot, simpleDrawCardAnimation,
                 fireDrawCardAnimation, _playerCountStartDrawCards);
@@ -129,9 +134,9 @@ namespace GameFields.Persons
 
         public EnemyAI CreateEnemyAI()
         {
-            SimpleDrawCardAnimation simpleDrawCardAnimation = new SimpleDrawCardAnimation(_enemyHand, _simpleDrawCardDelay);
-            FireDrawCardAnimation fireDrawCardAnimation = new FireDrawCardAnimation(_enemyHand, _fireDrawCardDelay);
-            DrawCardRoot drawCardRoot = new DrawCardRoot(new SimpleDrawCardAnimation(_enemyHand, _simpleDrawCardDelay), _deck);
+            SimpleDrawCardAnimation simpleDrawCardAnimation = new SimpleDrawCardAnimation(_enemyHand, _enemyAISimpleDrawCardAnimationData);
+            FireDrawCardAnimation fireDrawCardAnimation = new FireDrawCardAnimation(_enemyAIFireDrawCardAnimationData);
+            DrawCardRoot drawCardRoot = new DrawCardRoot(new SimpleDrawCardAnimation(_enemyHand, _enemyAISimpleDrawCardAnimationData), _deck);
             CardDragAndDropImitationActions cardDragAndDropImitationActions = new CardDragAndDropImitationActions(_enemyHand, _enemyPlayingZone, _enemyCardAttackZone);
             //CardDragAndDropImitationActions cardDragAndDropImitationActions = new CardDragAndDropImitationActions(_enemyHand, _playerTower, _enemyCardAttackZone);
             StartTurnDrawEnemyAI startTurnDraw = new StartTurnDrawEnemyAI(_interactionActivator, drawCardRoot, simpleDrawCardAnimation,

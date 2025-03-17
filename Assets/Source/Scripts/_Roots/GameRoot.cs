@@ -47,6 +47,8 @@ namespace Roots
             Player player = _personCreator.CreatePlayer();
             EnemyAI enemyAI = _personCreator.CreateEnemyAI();
 
+            Destroy(_personCreator.gameObject);
+
             _personsState = new PersonsState(player, enemyAI);
             EffectFactory effectFactory = new EffectFactory(_personsState);
 

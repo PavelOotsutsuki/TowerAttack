@@ -1,6 +1,6 @@
 namespace GameFields.Persons.DrawCards
 {
-    public class StartTurnDrawPlayer : StartTurnDraw
+    public class StartTurnDrawPlayer : StartTurnDraw, IPlayerObject
     {
         public StartTurnDrawPlayer(InteractionActivator gameFieldObjectsActivator, DrawCardRoot drawCardRoot,
             SimpleDrawCardAnimation simpleDrawCardAnimation, FireDrawCardAnimation fireDrawCardAnimation,

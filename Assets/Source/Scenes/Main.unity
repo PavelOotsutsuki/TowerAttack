@@ -6671,8 +6671,26 @@ MonoBehaviour:
   _enemyCountStartDrawCards: 1
   _tableActivator: {fileID: 867188514}
   _towerActivator: {fileID: 2072956765}
-  _simpleDrawCardDelay: 0.1
-  _fireDrawCardDelay: 2
+  _playerSimpleDrawCardAnimationData:
+    <Delay>k__BackingField: 0.1
+  _enemyAISimpleDrawCardAnimationData:
+    <Delay>k__BackingField: 0.1
+  _playerFireDrawCardAnimationData:
+    <InvertCardAnimationData>k__BackingField:
+      <InvertCardFrontDuration>k__BackingField: 0.5
+      <InvertCardBackDuration>k__BackingField: 0.5
+      <DelayAfterInvert>k__BackingField: 0.5
+      <IsIgnoreStartSide>k__BackingField: 0
+      <StartSide>k__BackingField: 1
+    <FireDrawCardDelay>k__BackingField: 2
+  _enemyAIFireDrawCardAnimationData:
+    <InvertCardAnimationData>k__BackingField:
+      <InvertCardFrontDuration>k__BackingField: 0.5
+      <InvertCardBackDuration>k__BackingField: 0.5
+      <DelayAfterInvert>k__BackingField: 0.5
+      <IsIgnoreStartSide>k__BackingField: 0
+      <StartSide>k__BackingField: 1
+    <FireDrawCardDelay>k__BackingField: 2
 --- !u!224 &612459455 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5789417150381678204, guid: 7046cc4047a1d4880a4c03001edb865c, type: 3}
@@ -12097,6 +12115,7 @@ MonoBehaviour:
       <InvertCardBackDuration>k__BackingField: 0.5
       <DelayAfterInvert>k__BackingField: 0.5
       <IsIgnoreStartSide>k__BackingField: 0
+      <StartSide>k__BackingField: 0
     <DelayBeforeStartProcessSeatCardInTower>k__BackingField: 1
   _imitationData:
     _minWaitDurationBeforeStartActions: 6
@@ -14977,6 +14996,7 @@ MonoBehaviour:
         <InvertCardBackDuration>k__BackingField: 0.5
         <DelayAfterInvert>k__BackingField: 0.5
         <IsIgnoreStartSide>k__BackingField: 0
+        <StartSide>k__BackingField: 0
   _seatPool: {fileID: 1504469769}
   _playerHand: {fileID: 2141903759}
   _playerTable: {fileID: 867188518}

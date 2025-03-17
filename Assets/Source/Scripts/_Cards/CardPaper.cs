@@ -2,6 +2,7 @@ using UnityEngine;
 using Tools.Utils.FillComponents;
 using Tools;
 using System.Collections.Generic;
+using Tools.Settings;
 
 namespace Cards
 {
@@ -10,6 +11,7 @@ namespace Cards
         private const SideType DefaultSide = SideType.Back;
         private const bool DefaultInteractionActive = false;
 
+        [SerializeField] private float _backSizeFactor = 1.0641f;
         [SerializeField] private CardBack _cardBack;
         [SerializeField] private CardFront _cardFront;
         [SerializeField] private CardDragAndDrop _cardDragAndDrop;
@@ -24,7 +26,12 @@ namespace Cards
             RectTransform cardTransform, ICardDragAndDropHandler cardDragAndDropHandler)
         {
             ReadOnlyRectTransform readOnlyRectTransform = new ReadOnlyRectTransform(cardTransform);
-            _cardFront.Init(cardViewConfig, readOnlyRectTransform, cardViewService);
+
+            Vector2 cardSizeFront = Settings.CardSize;
+            Vector2 cardSizeBack = new Vector2(cardSizeFront.x * _backSizeFactor, cardSizeFront.y * _backSizeFactor);
+
+            _cardFront.Init(cardViewConfig, readOnlyRectTransform, cardViewService, cardSizeFront);
+            _cardBack.Init(cardSizeBack);
 
             _cardDragAndDropActions = new CardDragAndDropActions(_cardFront, me, cardDragAndDropHandler);
             _cardDragAndDrop.Init(cardTransform, _cardDragAndDropActions);

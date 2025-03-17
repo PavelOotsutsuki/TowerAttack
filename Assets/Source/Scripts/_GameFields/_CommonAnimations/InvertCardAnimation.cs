@@ -16,6 +16,8 @@ namespace GameFields.CommonAnimations
         private Movement _cardMovement;
         private ReadOnlyRectTransform _readOnlyCardTransform;
 
+        private InvertCardAnimationPlayData _playData;
+
         public InvertCardAnimation(InvertCardAnimationData data)
         {
             IsComplete = false;
@@ -24,7 +26,7 @@ namespace GameFields.CommonAnimations
 
         public bool IsComplete { get; private set; }
 
-        public void Play(Card card)
+        public void Play(Card card, InvertCardAnimationPlayData data = null)
         {
             IsComplete = false;
 
@@ -32,40 +34,44 @@ namespace GameFields.CommonAnimations
             _cardMovement = _card.CardMovement;
             _readOnlyCardTransform = _card.ReadOnlyRectTransform;
 
+            _playData = data ?? new InvertCardAnimationPlayData(_readOnlyCardTransform.GetLocalPosition(), _readOnlyCardTransform.GetLocalScale(), _readOnlyCardTransform.GetLocalPosition(), _readOnlyCardTransform.GetLocalScale());
+
             Playing().ToUniTask();
         }
 
         private IEnumerator Playing()
         {
-            if (_data.IsIgnoreStartSide == true || _card.CurrentSide == SideType.Front)
+            if (_data.IsIgnoreStartSide == true || _card.CurrentSide == _data.StartSide)
             {
-                InvertCardFront();
+                InvertCardStartSide();
                 yield return new WaitForSeconds(_data.InvertCardFrontDuration);
             }
 
-            _card.SetSide(SideType.Back);
+            _card.SetSide(_data.FinishSide);
 
-            InvertCardBack();
+            InvertCardFinishSide();
             yield return new WaitForSeconds(_data.InvertCardBackDuration + _data.DelayAfterInvert);
 
             IsComplete = true;
         }
 
-        private void InvertCardFront()
+        private void InvertCardStartSide()
         {
             Vector3 invertRotation = new Vector3(0f, -90f, 0f);
             //Vector3 scaleVector = _card.DefaultScaleVector;
-            Vector3 position = _readOnlyCardTransform.GetPosition();
+            Vector3 position = _playData.StartSidePosition;
 
-            _cardMovement.MoveLinear(position, invertRotation, _data.InvertCardFrontDuration, _readOnlyCardTransform.GetLocalScale());
+            //_cardMovement.MoveLinear(position, invertRotation, _data.InvertCardFrontDuration, _playData.StartSideScale);
+            _cardMovement.MoveLocalLinear(position, invertRotation, _data.InvertCardFrontDuration, _playData.StartSideScale);
         }
 
-        private void InvertCardBack()
+        private void InvertCardFinishSide()
         {
             Vector3 endRotationVector = Vector3.zero;
-            Vector3 position = _readOnlyCardTransform.GetPosition();
+            Vector3 position = _playData.FinishSidePosition;
 
-            _cardMovement.MoveSmoothly(position, endRotationVector, _data.InvertCardBackDuration, _readOnlyCardTransform.GetLocalScale());
+            //_cardMovement.MoveSmoothly(position, endRotationVector, _data.InvertCardBackDuration, _playData.FinishSideScale);
+            _cardMovement.MoveLocalSmoothly(position, endRotationVector, _data.InvertCardBackDuration, _playData.FinishSideScale);
         }
     }
 }
