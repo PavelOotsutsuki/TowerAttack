@@ -12,12 +12,13 @@ namespace Cards
         [SerializeField] private CanvasGroup _canvasGroup;
 
         [SerializeField] private CardView _cardView;
-        [SerializeField] private CardBlock _cardBlock;
+        //[SerializeField] private CardBlock _cardBlock;
 
         private ReadOnlyRectTransform _readOnlyCardRectTransform;
         private CardViewService _cardViewService;
         private Vector2 _cardSize;
         private BigCardShowData _bigCardShowData;
+        //private ICardBlockable _cardBlockable;
 
         public bool IsBlock { get; private set; }
         public bool? IsShown { get; private set; } = null;
@@ -28,6 +29,9 @@ namespace Cards
             _readOnlyCardRectTransform = readOnlyCartRectTransform;
             _cardViewService = cardViewService;
             _cardSize = cardSize;
+            //_cardBlockable = cardBlockable;
+
+            //_cardFrame.Init();
 
             IsBlock = false;
 
@@ -41,15 +45,6 @@ namespace Cards
         {
             if (_cardViewService.IsView(this))
                 EndReview();
-            //if (_cardViewService.IsView(this))
-            //{
-            //    EndReview();
-            //    Debug.Log("Эта карта");
-            //}
-            //else
-            //{
-            //    Debug.Log("Не эта карта");
-            //}
         }
 
         internal void StartReview()
@@ -78,16 +73,23 @@ namespace Cards
             EndReview();
         }
 
+        //public void Fire()
+        //{
+        //    _cardFrame.Fire();
+        //}
+
         internal void Block()
         {
-            _cardBlock.Block();
+            //_cardBlock.Block();
+            //_cardBlockable.Block();
 
             IsBlock = true;
         }
 
         internal void Unblock()
         {
-            _cardBlock.Unblock();
+            //_cardBlock.Unblock();
+            //_cardBlockable.Unblock();
 
             IsBlock = false;
         }
@@ -105,6 +107,7 @@ namespace Cards
             IsShown = true;
 
             _canvasGroup.alpha = 1;
+            //_cardBlockable.Show();
         }
 
         public void Hide()
@@ -115,15 +118,17 @@ namespace Cards
             IsShown = false;
 
             _canvasGroup.alpha = 0;
+            //_cardBlockable.Hide();
         }
 
         #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents))]
+        [ContextMenu(nameof(DefineAllComponents) + nameof(CardFront))]
         public List<ComponentAttachInfo> DefineAllComponents()
         {
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
-                DefineCanvasGroup()
+                DefineCanvasGroup(),
+                //DefineCardFrame()
             };
 
             return list;
@@ -134,6 +139,12 @@ namespace Cards
         {
            return AutomaticFillComponents.DefineComponent(this, ref _canvasGroup, ComponentLocationTypes.InThis);
         }
+
+        //[ContextMenu(nameof(DefineCardFrame))]
+        //private ComponentAttachInfo DefineCardFrame()
+        //{
+        //    return AutomaticFillComponents.DefineComponent(this, ref _cardFrame, ComponentLocationTypes.InChildren);
+        //}
         #endregion 
     }
 }

@@ -39,6 +39,9 @@ namespace Roots
             _speedUpButtonSortOrder.Init();
 
             LightController cardDragAndDropLightController = _lightControlsCreator.CreateDragAndDropLightController();
+
+            //Destroy(_lightControlsCreator.gameObject);
+
             CardDragAndDropHandler cardDragAndDropHandler = new CardDragAndDropHandler(handPlayer, handPlayer,
                 cardDragAndDropLightController, _speedUpButtonSortOrder);
 

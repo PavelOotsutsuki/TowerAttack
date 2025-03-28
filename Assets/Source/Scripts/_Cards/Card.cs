@@ -142,6 +142,16 @@ namespace Cards
             _currentState.Show();
         }
 
+        public void Fire()
+        {
+            if (_currentState is not CardPaper)
+            {
+                throw new Exception("Try fire not CardPaper. Card state: " + _currentState.ToString());
+            }
+
+            _cardPaper.Fire();
+        }
+
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(Card))]
         public List<ComponentAttachInfo> DefineAllComponents()

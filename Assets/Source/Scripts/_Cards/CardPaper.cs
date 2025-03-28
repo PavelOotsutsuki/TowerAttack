@@ -11,10 +11,13 @@ namespace Cards
         private const SideType DefaultSide = SideType.Back;
         private const bool DefaultInteractionActive = false;
 
-        [SerializeField] private float _backSizeFactor = 1.0641f;
+        //[SerializeField] private float _backSizeFactor = 1.0641f;
+        //[SerializeField] private float _backSizeFactor = 1f;
         [SerializeField] private CardBack _cardBack;
         [SerializeField] private CardFront _cardFront;
         [SerializeField] private CardDragAndDrop _cardDragAndDrop;
+        [SerializeField] private CardFrame _cardFrame;
+        //[SerializeField] private CardFire _cardFire;
 
         private CardDragAndDropActions _cardDragAndDropActions;
         private CardSideFlipper _cardSideFlipper;
@@ -28,7 +31,7 @@ namespace Cards
             ReadOnlyRectTransform readOnlyRectTransform = new ReadOnlyRectTransform(cardTransform);
 
             Vector2 cardSizeFront = Settings.CardSize;
-            Vector2 cardSizeBack = new Vector2(cardSizeFront.x * _backSizeFactor, cardSizeFront.y * _backSizeFactor);
+            Vector2 cardSizeBack = Settings.CardSize;
 
             _cardFront.Init(cardViewConfig, readOnlyRectTransform, cardViewService, cardSizeFront);
             _cardBack.Init(cardSizeBack);
@@ -36,7 +39,8 @@ namespace Cards
             _cardDragAndDropActions = new CardDragAndDropActions(_cardFront, me, cardDragAndDropHandler);
             _cardDragAndDrop.Init(cardTransform, _cardDragAndDropActions);
 
-            _cardSideFlipper = new CardSideFlipper(_cardFront, _cardBack, _cardDragAndDrop);
+            _cardFrame.Init();
+            _cardSideFlipper = new CardSideFlipper(_cardFront, _cardBack, _cardDragAndDrop, _cardFrame);
 
             SetSide(DefaultSide);
             SetActiveInteraction(DefaultInteractionActive);
@@ -51,6 +55,23 @@ namespace Cards
         //{
         //    _cardDragAndDropActions.SetListener(cardDragAndDropHandler);
         //}
+
+        public void Fire()
+        {
+            //switch (_cardSideFlipper.CurrentSide)
+            //{
+            //    case SideType.Front:
+            //        _cardFront.Fire();
+            //        break;
+            //    case SideType.Back:
+            //        _cardFront.Fire();
+            //        break;
+            //    default:
+            //        throw new System.Exception("Неизвестный тип side карты");
+            //}
+
+            _cardFrame.Fire();
+        }
 
         public void SetSide(SideType sideType)
         {
@@ -96,14 +117,15 @@ namespace Cards
         }
 
         #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents))]
+        [ContextMenu(nameof(DefineAllComponents) + nameof(CardPaper))]
         public List<ComponentAttachInfo> DefineAllComponents()
         {
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
                 DefineCardBack(),
                 DefineCardFront(),
-                DefineCardDragAndDrop()
+                DefineCardDragAndDrop(),
+                DefineCardFrame()
             };
 
             return list;
@@ -126,6 +148,12 @@ namespace Cards
         {
             return AutomaticFillComponents.DefineComponent(this, ref _cardFront, ComponentLocationTypes.InChildren);
         }
-        #endregion 
+
+        [ContextMenu(nameof(DefineCardFrame))]
+        private ComponentAttachInfo DefineCardFrame()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _cardFrame, ComponentLocationTypes.InChildren);
+        }
+        #endregion
     }
 }
