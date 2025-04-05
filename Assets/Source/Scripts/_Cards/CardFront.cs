@@ -19,18 +19,19 @@ namespace Cards
         private Vector2 _cardSize;
         private BigCardShowData _bigCardShowData;
         //private ICardBlockable _cardBlockable;
+        private CardFrame _cardFrame;
 
         public bool IsBlock { get; private set; }
         public bool? IsShown { get; private set; } = null;
 
         internal void Init(CardViewConfig cardViewConfig, ReadOnlyRectTransform readOnlyCartRectTransform,
-            CardViewService cardViewService, Vector2 cardSize)
+            CardViewService cardViewService, Vector2 cardSize, CardFrame cardFrame)
         {
             _readOnlyCardRectTransform = readOnlyCartRectTransform;
             _cardViewService = cardViewService;
             _cardSize = cardSize;
             //_cardBlockable = cardBlockable;
-
+            _cardFrame = cardFrame;
             //_cardFrame.Init();
 
             IsBlock = false;
@@ -49,7 +50,7 @@ namespace Cards
 
         internal void StartReview()
         {
-            _cardViewService.SetOverview(this, _bigCardShowData);
+            _cardViewService.SetOverview(this, _bigCardShowData, _cardFrame);
         }
 
         internal void EndReview()
@@ -61,7 +62,7 @@ namespace Cards
         {
             if (IsBlock)
             {
-                Debug.Log("После canvas group.blockRaycasts это не должно вызываться");
+                //Debug.Log("После canvas group.blockRaycasts это не должно вызываться");
                 return;
             }
 
@@ -82,6 +83,8 @@ namespace Cards
         {
             //_cardBlock.Block();
             //_cardBlockable.Block();
+            if (gameObject.activeSelf)
+                _cardFrame.Block();
 
             IsBlock = true;
         }
@@ -90,6 +93,8 @@ namespace Cards
         {
             //_cardBlock.Unblock();
             //_cardBlockable.Unblock();
+            if (gameObject.activeSelf)
+                _cardFrame.Unblock();
 
             IsBlock = false;
         }

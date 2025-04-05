@@ -17,7 +17,7 @@ namespace Cards
         [SerializeField] private CardFront _cardFront;
         [SerializeField] private CardDragAndDrop _cardDragAndDrop;
         [SerializeField] private CardFrame _cardFrame;
-        //[SerializeField] private CardFire _cardFire;
+        [SerializeField] private CardFireAnimator _cardFireAnimator;
 
         private CardDragAndDropActions _cardDragAndDropActions;
         private CardSideFlipper _cardSideFlipper;
@@ -33,8 +33,9 @@ namespace Cards
             Vector2 cardSizeFront = Settings.CardSize;
             Vector2 cardSizeBack = Settings.CardSize;
 
-            _cardFront.Init(cardViewConfig, readOnlyRectTransform, cardViewService, cardSizeFront);
+            _cardFront.Init(cardViewConfig, readOnlyRectTransform, cardViewService, cardSizeFront, _cardFrame);
             _cardBack.Init(cardSizeBack);
+            _cardFireAnimator.Init();
 
             _cardDragAndDropActions = new CardDragAndDropActions(_cardFront, me, cardDragAndDropHandler);
             _cardDragAndDrop.Init(cardTransform, _cardDragAndDropActions);
@@ -70,7 +71,7 @@ namespace Cards
             //        throw new System.Exception("Неизвестный тип side карты");
             //}
 
-            _cardFrame.Fire();
+            _cardFireAnimator.Play();
         }
 
         public void SetSide(SideType sideType)
@@ -125,7 +126,8 @@ namespace Cards
                 DefineCardBack(),
                 DefineCardFront(),
                 DefineCardDragAndDrop(),
-                DefineCardFrame()
+                DefineCardFrame(),
+                DefineCardFire()
             };
 
             return list;
@@ -153,6 +155,12 @@ namespace Cards
         private ComponentAttachInfo DefineCardFrame()
         {
             return AutomaticFillComponents.DefineComponent(this, ref _cardFrame, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineCardFire))]
+        private ComponentAttachInfo DefineCardFire()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _cardFireAnimator, ComponentLocationTypes.InThis);
         }
         #endregion
     }

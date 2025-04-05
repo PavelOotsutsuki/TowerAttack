@@ -48,10 +48,10 @@ namespace Cards
             //        throw new System.Exception("Неизвестный SideType карты: " + _currentSide.ToString());
             //}
 
-            if (_currentSide == SideType.Front)
-            {
-                _cardFrame.Block();
-            }
+            //if (_currentSide == SideType.Front)
+            //{
+            //    _cardFrame.Block();
+            //}
 
             //if (_currentSide == SideType.Back)
             //{
@@ -64,10 +64,10 @@ namespace Cards
             _cardDragAndDrop.enabled = true;
             _front.Unblock();
 
-            if (_currentSide == SideType.Front)
-            {
-                _cardFrame.Unblock();
-            }
+            //if (_currentSide == SideType.Front)
+            //{
+            //    _cardFrame.Unblock();
+            //}
         }
     }
 }

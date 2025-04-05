@@ -57,6 +57,7 @@ namespace GameFields.Persons.DrawCards
             //Vector3 centerScaleVector = new Vector3(CenterScale, CenterScale, CenterScale);
 
             //Vector2 firstPosition = new Vector2(-400f, 200f);
+            drawnCard.ReadOnlyRectTransform.SetParent(_data.FireCardParent);
 
             drawnCard.CardMovement.MoveLocalLinear(_data.EndStartMovePosition, drawnCard.ReadOnlyRectTransform.GetRotationVector(),
                 _data.StartMoveDuration);
