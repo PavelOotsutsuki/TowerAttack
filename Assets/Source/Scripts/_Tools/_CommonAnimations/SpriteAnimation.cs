@@ -138,11 +138,19 @@ namespace Tools.CommonAnimations
         {
             WaitForSeconds wait = new WaitForSeconds(_duration / _animSprites.Count);
 
+            Debug.Log("Начало " + _animSprites.Count);
+
+            int counter = -1;
+
             foreach (Sprite sprite in _animSprites)
             {
+                counter++;
                 _image.sprite = sprite;
+                Debug.Log("Процесс " + counter + "/" + _animSprites.Count);
                 yield return wait;
             }
+
+            Debug.Log("Конец " + _animSprites.Count);
         }
 
         #region AutomaticFillComponents
