@@ -42,6 +42,24 @@ namespace Tools.Utils.Movements
             _transform.SetPositionAndRotation(position, Quaternion.Euler(rotation));
         }
 
+        public void MoveLocalSmoothly(Vector2 position, Vector3 rotation, float duration, Vector3 scaleVector, Action onCompleteCallback)
+        {
+            if (Mathf.Approximately(duration, 0f))
+            {
+                MoveLocalInstantly(position, rotation, scaleVector);
+            }
+            else
+            {
+                Sequence sequence = DOTween.Sequence()
+                .Join(_transform.DOLocalMove(position, duration))
+                .Join(_transform.DOLocalRotate(rotation, duration))
+                .Join(_transform.DOScale(scaleVector, duration))
+                .OnComplete(() => onCompleteCallback.Invoke());
+
+                _currentSequence = sequence;
+            }
+        }
+
         public void MoveLocalSmoothly(Vector2 position, Vector3 rotation, float duration, Vector3 scaleVector)
         {
             if (Mathf.Approximately(duration, 0f))

@@ -1365,7 +1365,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: ab45bf6b67c16448aab75457ffef58b0, type: 3}
   - {fileID: 21300000, guid: be2f4841759124a099c442efb81daa67, type: 3}
   - {fileID: 21300000, guid: 0b9257c8a428a4ddfae55e66b9338d5c, type: 3}
-  _duration: 0.2
+  _duration: 0.6
 --- !u!1 &4147016789588735738
 GameObject:
   m_ObjectHideFlags: 0
@@ -3196,7 +3196,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 96e499c6164df49149f6f6394fd505ef, type: 3}
   - {fileID: 21300000, guid: 23a60db51365c4ef6a596ddb1bfc5189, type: 3}
   - {fileID: 21300000, guid: 8d01a3b665bdb43e9acd731d8c589d7a, type: 3}
-  _duration: 0.4
+  _duration: 0.6
 --- !u!224 &5465227592386852336 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2358086133688165771, guid: 911caac680bd84954b17217d4b53c7f2, type: 3}

@@ -12,7 +12,7 @@ namespace GameFields.StartFights
 
             Movement.MoveLocalInstantly(Vector3.zero, Quaternion.identity.eulerAngles, ScaleFactor);
 
-            gameObject.SetActive(true);
+            IsComplete = true;
         }
     }
 }

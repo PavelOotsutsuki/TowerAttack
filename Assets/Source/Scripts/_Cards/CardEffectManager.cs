@@ -24,14 +24,14 @@ namespace Cards
 
         public bool TryDiscard()
         {
-            _effectCounter--;
-
             if (_effectCounter <= 0)
             {
                 _effect?.End();
                 _effect = null;
                 return true;
             }
+
+            _effectCounter--;
 
             return false;
         }

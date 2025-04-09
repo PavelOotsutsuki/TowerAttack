@@ -43,6 +43,8 @@ namespace GameFields.Persons.Discovers
             DiscoverViewLogicData discoverViewLogicData = new DiscoverViewLogicData(data.CardHeight, data.CardWidth);
 
             ViewLogic.Show(discoverViewLogicData);
+
+            gameObject.SetActive(true);
         }
 
         public override void StartClickActions()

@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
 namespace Tools.CommonAnimations
 {
@@ -136,21 +138,29 @@ namespace Tools.CommonAnimations
 
         private IEnumerator StartingAnimation()
         {
-            WaitForSeconds wait = new WaitForSeconds(_duration / _animSprites.Count);
+            TimeSpan startTime = DateTime.Now.TimeOfDay;
+            //WaitForSeconds wait = new WaitForSeconds(Time.deltaTime - _duration / _animSprites.Count);
 
-            Debug.Log("Начало " + _animSprites.Count);
+            //Debug.Log("Начало " + _animSprites.Count + "задержка " + _duration / _animSprites.Count);
+            float delay = _duration / _animSprites.Count;
 
-            int counter = -1;
+            int counter = 0;
 
             foreach (Sprite sprite in _animSprites)
             {
                 counter++;
+
                 _image.sprite = sprite;
-                Debug.Log("Процесс " + counter + "/" + _animSprites.Count);
-                yield return wait;
+
+                int addFullTime = Convert.ToInt32(delay * counter * 1000);
+                int addSeconds = addFullTime / 1000;
+                int addMilliseconds = addFullTime % 1000;
+                //Debug.Log("Процесс " + counter++ + "/" + _animSprites.Count);
+                yield return new WaitUntil(() => DateTime.Now.TimeOfDay >= startTime.Add(new TimeSpan(0,0,0, addSeconds, addMilliseconds)));
+                //yield return new WaitForSeconds((_duration / _animSprites.Count) - Time.deltaTime);
             }
 
-            Debug.Log("Конец " + _animSprites.Count);
+            Debug.Log("Конец " + _animSprites.Count + " . Время: " + (DateTime.Now.TimeOfDay - startTime));
         }
 
         #region AutomaticFillComponents

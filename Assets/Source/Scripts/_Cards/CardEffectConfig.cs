@@ -6,6 +6,6 @@ namespace Cards
     public class CardEffectConfig : ScriptableObject
     {
         [field: SerializeField] public EffectType Type { get; private set; }
-        [field: SerializeField, Min(1)] public int Duration { get; private set; }
+        [field: SerializeField, Min(0)] public int Duration { get; private set; }
     }
 }

@@ -34,6 +34,7 @@ namespace GameFields.Persons.DrawCards
         protected override void OnStartStep()
         {
             _isComplete = false;
+
             DrawingCards().ToUniTask();
 
             if (_countExtraAnimationTurns > 0)

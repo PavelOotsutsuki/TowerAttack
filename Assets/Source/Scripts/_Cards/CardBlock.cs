@@ -12,6 +12,8 @@ namespace Cards
         [SerializeField] private Color _disableFrameColor;
         [SerializeField] private CanvasGroup _canvasGroup;
 
+        public bool IsBlock => _canvasGroup.blocksRaycasts == false;
+
         public void Block()
         {
             _frameImage.color = _disableFrameColor;

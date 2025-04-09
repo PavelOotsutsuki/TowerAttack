@@ -11,9 +11,7 @@ namespace GameFields.Persons.Discovers
 
             Vector3 endScale = new Vector3(1,1,1) * ScaleFactor;
             Movement.MoveLocalInstantly(Vector3.zero, Quaternion.identity.eulerAngles, Vector3.zero);
-            Movement.MoveLocalSmoothly(Vector3.zero, Quaternion.identity.eulerAngles, Duration, endScale);
-
-            gameObject.SetActive(true);
+            Movement.MoveLocalSmoothly(Vector3.zero, Quaternion.identity.eulerAngles, Duration, endScale, () => IsComplete = true);
         }
     }
 }

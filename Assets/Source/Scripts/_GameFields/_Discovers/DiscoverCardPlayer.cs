@@ -53,6 +53,8 @@ namespace GameFields.Persons.Discovers
             ViewLogic.Show(discoverViewLogicData);
 
             WaitingToUnblock().ToUniTask();
+
+            gameObject.SetActive(true);
         }
 
         public void OnPointerEnter(PointerEventData eventData)
@@ -78,7 +80,8 @@ namespace GameFields.Persons.Discovers
 
         private IEnumerator WaitingToUnblock()
         {
-            yield return new WaitForSeconds(ViewDuration);
+            //yield return new WaitForSeconds(ViewDuration);
+            yield return new WaitUntil(() => ViewLogic.IsComplete);
 
             Unblock();
         }
@@ -90,6 +93,10 @@ namespace GameFields.Persons.Discovers
 
         private void Unblock()
         {
+            if (gameObject.activeSelf == true && _cardBlock.IsBlock)
+                Debug.Log("Заблочен + активен");
+
+
             _cardBlock.Unblock();
         }
     }
