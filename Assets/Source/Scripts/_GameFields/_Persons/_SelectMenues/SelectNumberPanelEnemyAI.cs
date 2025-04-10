@@ -9,14 +9,14 @@ using Zenject;
 using System.Linq;
 using Random = UnityEngine.Random;
 
-namespace GameFields.Persons.AttackMenues
+namespace GameFields.Persons.SelectMenues
 {
     [RequireComponent(typeof(FadablePanel))]
-    public class AttackNumberPanelEnemyAI : AttackNumberPanel
+    public class SelectNumberPanelEnemyAI : SelectNumberPanel
     {
-        [SerializeField] private AttackNumberPanelEnemyAIData _data;
+        [SerializeField] private SelectNumberPanelEnemyAIData _data;
 
-        private AttackNumberImitation[] _attackNumbers;
+        private SelectNumberImitation[] _selectNumbers;
 
         private InformationLableRoot _informationLableRoot;
 
@@ -28,12 +28,12 @@ namespace GameFields.Persons.AttackMenues
 
         protected override void InitNumbers()
         {
-            _attackNumbers = new AttackNumberImitation[CountNumbers];
+            _selectNumbers = new SelectNumberImitation[CountNumbers];
 
             for (int i = 0; i < CountNumbers; i++)
             {
-                AttackNumberImitation attackNumber = new AttackNumberImitation(i + 1);
-                _attackNumbers[i] = attackNumber;
+                SelectNumberImitation attackNumber = new SelectNumberImitation(i + 1);
+                _selectNumbers[i] = attackNumber;
             }
         }
 
@@ -58,12 +58,12 @@ namespace GameFields.Persons.AttackMenues
             yield return new WaitUntil(() => FadablePanel.IsComplete);
             yield return new WaitForSeconds(_data.DelayThinkImitation);
 
-            List<IAttackNumber> selectedNumbers = new List<IAttackNumber>();
+            List<ISelectNumber> selectedNumbers = new List<ISelectNumber>();
 
             for (int i = 0; i < NeedForActivate; i++)
             {
-                IAttackNumber attackedNumber = GetAttackedNumber() ?? throw new Exception("Ошибка нахождения номера для имитации атаки");
-                ConfirmableNumbers.AddAccept(attackedNumber);
+                ISelectNumber attackedNumber = GetAttackedNumber() ?? throw new Exception("Ошибка нахождения номера для имитации атаки");
+                ConfirmableNumbers.AddSelect(attackedNumber);
                 selectedNumbers.Add(attackedNumber);
             }
 
@@ -85,11 +85,11 @@ namespace GameFields.Persons.AttackMenues
 
             yield return new WaitUntil(() => _informationLableRoot.IsComplete);
 
-            foreach (IAttackNumber selectedNumber in selectedNumbers)
+            foreach (ISelectNumber selectedNumber in selectedNumbers)
             {
                 if (CardNumberKeeper.Card.IsSuccessAttack(selectedNumber.Number))
                 {
-                    AttackResult.SuccessChoice();
+                    SelectResult.SuccessChoice();
                     break;
                 }
             }
@@ -97,12 +97,12 @@ namespace GameFields.Persons.AttackMenues
             //
             string debugMsg = "";
 
-            foreach (IAttackNumber attackNumber in ConfirmableNumbers.AcceptNumbers.OrderByDescending(n => n.Number))
+            foreach (ISelectNumber selectNumber in ConfirmableNumbers.SelectedNumbers.OrderByDescending(n => n.Number))
             {
                 if (debugMsg != "")
                     debugMsg += ",";
 
-                debugMsg += attackNumber.Number.ToString();
+                debugMsg += selectNumber.Number.ToString();
             }
 
             Debug.Log(debugMsg);
@@ -111,9 +111,9 @@ namespace GameFields.Persons.AttackMenues
             IsCompleteThis = true;
         }
 
-        private IAttackNumber GetAttackedNumber()
+        private ISelectNumber GetAttackedNumber()
         {
-            if (ConfirmableNumbers.AcceptNumbers.Count == _attackNumbers.Length)
+            if (ConfirmableNumbers.SelectedNumbers.Count == _selectNumbers.Length)
             {
                 throw new Exception("Не осталось непроверенных (неатакованных) номеров!");
             }
@@ -127,17 +127,17 @@ namespace GameFields.Persons.AttackMenues
             }
             while (allNumbers.Count > 0)
             {
-                int attackNumber = allNumbers[Random.Range(0, allNumbers.Count)];
-                shuffleNumbers.Add(attackNumber);
-                allNumbers.Remove(attackNumber);
+                int selectNumber = allNumbers[Random.Range(0, allNumbers.Count)];
+                shuffleNumbers.Add(selectNumber);
+                allNumbers.Remove(selectNumber);
             }
             foreach (int number in shuffleNumbers)
             {
-                IAttackNumber attackNumber = _attackNumbers[number - 1];
+                ISelectNumber selectNumber = _selectNumbers[number - 1];
 
-                if (ConfirmableNumbers.ContainsAccept(attackNumber) == false)
+                if (ConfirmableNumbers.ContainsSelect(selectNumber) == false)
                 {
-                    return attackNumber;
+                    return selectNumber;
                 }
             }
             return null;

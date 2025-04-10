@@ -3,9 +3,9 @@ using Tools;
 using Tools.UI;
 using UnityEngine;
 
-namespace GameFields.Persons.AttackMenues
+namespace GameFields.Persons.SelectMenues
 {
-    public class AttackButton : FadableConfirmableButton
+    public class SelectButton : FadableConfirmableButton
     {
         private IDeactivatable _clickCallback;
         private Coroutine _workableCoroutine;

@@ -6,11 +6,12 @@ using Tools;
 using Tools.UI;
 using Tools.Utils.FillComponents;
 using UnityEngine;
-namespace GameFields.Persons.AttackMenues
+
+namespace GameFields.Persons.SelectMenues
 {
     [RequireComponent(typeof(FadablePanel))]
     [RequireComponent(typeof(CanvasGroup))]
-    public abstract class AttackNumberPanel : MonoBehaviour, ICompletable, IWorkable<AttackNumberPanelActivateData>, IAutomaticFillComponents
+    public abstract class SelectNumberPanel : MonoBehaviour, ICompletable, IWorkable<SelectNumberPanelActivateData>, IAutomaticFillComponents
     {
         [SerializeField] protected FadablePanel FadablePanel;
         [SerializeField] private CanvasGroup _canvasGroup;
@@ -18,7 +19,7 @@ namespace GameFields.Persons.AttackMenues
         protected int NeedForActivate;
 
         protected ICardNumberKeeper CardNumberKeeper;
-        protected AttackResult AttackResult;
+        protected SelectResult SelectResult;
 
         protected ConfirmableNumbers ConfirmableNumbers;
         protected int CountNumbers;
@@ -33,7 +34,7 @@ namespace GameFields.Persons.AttackMenues
         {
             CardNumberKeeper = cardNumberKeeper;
             CountNumbers = countNumbers;
-            AttackResult = null;
+            SelectResult = null;
 
             ConfirmableNumbers = confirmableNumbers;
 
@@ -42,7 +43,7 @@ namespace GameFields.Persons.AttackMenues
             FadablePanel.Init();
         }
 
-        public void Activate(AttackNumberPanelActivateData data)
+        public void Activate(SelectNumberPanelActivateData data)
         {
             if (IsActive == true)
                 return;
@@ -52,7 +53,7 @@ namespace GameFields.Persons.AttackMenues
             IsCompleteThis = false;
             _canvasGroup.blocksRaycasts = true;
 
-            AttackResult = data.AttackResult;
+            SelectResult = data.SelectResult;
             NeedForActivate = data.NeedForActivate;
 
             gameObject.SetActive(true);
@@ -85,7 +86,7 @@ namespace GameFields.Persons.AttackMenues
         protected abstract void InitNumbers();
 
         #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents) + nameof(AttackNumberPanel))]
+        [ContextMenu(nameof(DefineAllComponents) + nameof(SelectNumberPanel))]
         public virtual List<ComponentAttachInfo> DefineAllComponents()
         {
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>

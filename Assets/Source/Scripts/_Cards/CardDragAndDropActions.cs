@@ -16,7 +16,7 @@ namespace Cards
         }
 
         internal float ReturnInHandDuration => _cardDragAndDropHandler.ReturnInSeatDuration;
-        internal bool CanDrag() => _cardDragAndDropHandler.IsDraggable(_card);
+        internal bool CanDrag() => _cardDragAndDropHandler.IsDraggable(_card) && _cardFront.IsBlock == false;
 
         //internal void SetListener(ICardDragAndDropHandler cardDragAndDropHandler)
         //{

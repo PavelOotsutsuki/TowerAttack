@@ -6,7 +6,7 @@ using Tools;
 
 namespace Cards
 {
-    internal class CardDragAndDrop : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
+    internal class CardDragAndDrop : MonoBehaviour, /*IDragBlockable,*/ IDragHandler, IBeginDragHandler, IEndDragHandler
     {
         private Coroutine _viewCardAfterDropInWork;
         private bool _isForciblyDrag;
@@ -90,6 +90,9 @@ namespace Cards
 
         public void OnEndDrag(PointerEventData eventData)
         {
+            if (IsDragable == false)
+                return;
+
             if (_isNotDraggable)
             {
                 _isNotDraggable = false;

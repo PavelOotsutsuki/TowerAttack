@@ -156,7 +156,9 @@ namespace GameFields.Persons
             _playerTower.Init();
             _playerDiscover.Init();
             _startPlayerTurnLabel.Init();
-            _playerAttackMenu.Init(_enemyTower, _playerCardAttackZone, CountNumbers);
+
+            ConfirmableNumbers confirmableNumbersPlayer = new ConfirmableNumbers();
+            _playerAttackMenu.Init(_enemyTower, _playerCardAttackZone, CountNumbers, confirmableNumbersPlayer);
 
             _playerCardAttackZone.Init(_playerAttackMenu, _enemyTower);
         }
@@ -168,7 +170,9 @@ namespace GameFields.Persons
             _enemyPlayingZone.Init(_enemyTable);
             _enemyTower.Init();
             _enemyDiscoverImitation.Init();
-            _enemyAttackMenu.Init(_playerTower, _enemyCardAttackZone, CountNumbers);
+
+            ConfirmableNumbers confirmableNumbersEnemyAI = new ConfirmableNumbers();
+            _enemyAttackMenu.Init(_playerTower, _enemyCardAttackZone, CountNumbers, confirmableNumbersEnemyAI);
 
             _enemyCardAttackZone.Init(_enemyAttackMenu, _playerTower);
         }

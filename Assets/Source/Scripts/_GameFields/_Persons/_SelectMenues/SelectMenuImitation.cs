@@ -4,22 +4,22 @@ using GameFields.Persons.Towers;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
-namespace GameFields.Persons.AttackMenues
+namespace GameFields.Persons.SelectMenues
 {
-    public class AttackMenuImitation : AttackMenu
+    public class SelectMenuImitation : SelectMenu
     {
-        [SerializeField] private AttackNumberPanelEnemyAI _attackNumberPanelEnemyAI;
-        [SerializeField] private AttackMenuImitationData _data;
+        [SerializeField] private SelectNumberPanelEnemyAI _selectNumberPanelEnemyAI;
+        [SerializeField] private SelectMenuImitationData _data;
 
         public void Init(ICardNumberKeeper cardNumberKeeper, IAttackResultHandler attackResultHandler, int countNumbers,
             ConfirmableNumbers confirmableNumbers)
         {
-            _attackNumberPanelEnemyAI.Init(cardNumberKeeper, countNumbers, confirmableNumbers);
+            _selectNumberPanelEnemyAI.Init(cardNumberKeeper, countNumbers, confirmableNumbers);
 
-            base.Init(attackResultHandler, _data, _attackNumberPanelEnemyAI);
+            base.Init(attackResultHandler, _data, _selectNumberPanelEnemyAI);
         }
 
-        public override void Activate(AttackMenuActivateData activateData)
+        public override void Activate(SelectMenuActivateData activateData)
         {
             base.Activate(activateData);
 
@@ -30,24 +30,24 @@ namespace GameFields.Persons.AttackMenues
         {
             yield return new WaitForSeconds(_data.DelayAfterChoiceNumberDone);
 
-            _attackNumberPanelEnemyAI.Deactivate();
+            _selectNumberPanelEnemyAI.Deactivate();
         }
 
         private IEnumerator WaitingUntilDeactivate()
         {
-            yield return new WaitUntil(() => _attackNumberPanelEnemyAI.IsComplete);
+            yield return new WaitUntil(() => _selectNumberPanelEnemyAI.IsComplete);
 
             Deactivate();
         }
 
 
         #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents) + nameof(AttackMenuImitation))]
+        [ContextMenu(nameof(DefineAllComponents) + nameof(SelectMenuImitation))]
         public override List<ComponentAttachInfo> DefineAllComponents()
         {
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
-                DefineAttackNumberPanel()
+                DefineSelectNumberPanel()
             };
 
             list.AddRange(base.DefineAllComponents());
@@ -55,10 +55,10 @@ namespace GameFields.Persons.AttackMenues
             return list;
         }
 
-        [ContextMenu(nameof(DefineAttackNumberPanel))]
-        private ComponentAttachInfo DefineAttackNumberPanel()
+        [ContextMenu(nameof(DefineSelectNumberPanel))]
+        private ComponentAttachInfo DefineSelectNumberPanel()
         {
-            return AutomaticFillComponents.DefineComponent(this, ref _attackNumberPanelEnemyAI, ComponentLocationTypes.InChildren);
+            return AutomaticFillComponents.DefineComponent(this, ref _selectNumberPanelEnemyAI, ComponentLocationTypes.InChildren);
         }
         #endregion 
     }

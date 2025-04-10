@@ -13,10 +13,11 @@ namespace GameFields.Persons.AttackMenues
         [SerializeField] private AttackMenuPlayerData _data;
         [SerializeField] private AttackButton _attackButton;
 
-        public void Init(ICardNumberKeeper cardNumberKeeper, IAttackResultHandler attackResultHandler, int countNumbers)
+        public void Init(ICardNumberKeeper cardNumberKeeper, IAttackResultHandler attackResultHandler, int countNumbers,
+            ConfirmableNumbers confirmableNumbers)
         {
             _attackButton.Init(this);
-            _attackNumberPanelPlayer.Init(_attackButton, cardNumberKeeper, countNumbers);
+            _attackNumberPanelPlayer.Init(_attackButton, cardNumberKeeper, countNumbers, confirmableNumbers);
 
             base.Init(attackResultHandler, _data, _attackNumberPanelPlayer);
         }

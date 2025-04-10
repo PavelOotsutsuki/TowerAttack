@@ -8,7 +8,7 @@ namespace GameFields.Persons
 {
     public class EnemyDragAndDropImitation: PersonStep
     {
-        private const int CountLogics = 2;
+        private const int CountLogics = 1;
         private const float SelectYDirection = 1;
         private const float UnselectYDirection = -1;
 
@@ -41,8 +41,8 @@ namespace GameFields.Persons
                 if (_hand.TryGetCard(out Card card))
                 {
                     _cardImitationActions.SetCard(card);
-                    //DragAndDropBehaviour1().ToUniTask();
-                    DragAndDropBehaviour2().ToUniTask();
+                    DragAndDropBehaviour1().ToUniTask();
+                    //DragAndDropBehaviour2().ToUniTask();
                 }
                 else
                 {

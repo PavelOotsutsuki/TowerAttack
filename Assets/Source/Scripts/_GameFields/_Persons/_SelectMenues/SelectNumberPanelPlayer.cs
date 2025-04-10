@@ -7,14 +7,14 @@ using Tools.UI;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
-namespace GameFields.Persons.AttackMenues
+namespace GameFields.Persons.SelectMenues
 {
     [RequireComponent(typeof(FadablePanel))]
-    public class AttackNumberPanelPlayer : AttackNumberPanel
+    public class SelectNumberPanelPlayer : SelectNumberPanel
     {
         [SerializeField] private RectTransform _rectTransform;
-        [SerializeField] private AttackNumber[] _attackNumbers;
-        [SerializeField] private AttackNumberPanelPlayerData _data;
+        [SerializeField] private SelectNumber[] _selectNumbers;
+        [SerializeField] private SelectNumberPanelPlayerData _data;
 
         private int _columnsCount;
         private int _rowsCount;
@@ -26,19 +26,19 @@ namespace GameFields.Persons.AttackMenues
 
         private int _activateCounter;
 
-        private IWorkable _attackButton;
+        private IWorkable _selectButton;
 
         private bool _isCompleteNumbersHide;
 
         public bool IsCompleteNumbersHide => _isCompleteNumbersHide;
 
-        public void Init(IWorkable attackButton, ICardNumberKeeper cardNumberKeeper, int countNumbers,
+        public void Init(IWorkable selectButton, ICardNumberKeeper cardNumberKeeper, int countNumbers,
             ConfirmableNumbers confirmableNumbers)
         {
-            if (_attackNumbers.Length != countNumbers)
+            if (_selectNumbers.Length != countNumbers)
                 throw new Exception("Несовпадение заданного кол-ва номеров и кол-ва объектов AttackNumber");
 
-            _attackButton = attackButton;
+            _selectButton = selectButton;
 
             base.Init(cardNumberKeeper, countNumbers, confirmableNumbers);
         }
@@ -52,9 +52,9 @@ namespace GameFields.Persons.AttackMenues
 
             int number = 1;
 
-            foreach (AttackNumber attackNumber in _attackNumbers)
+            foreach (SelectNumber selectNumber in _selectNumbers)
             {
-                attackNumber.Init(number, CalcNumberPosition(number), new Vector2(_data.NumberWidht, _data.NumberHeight), OnAttackNumberClick);
+                selectNumber.Init(number, CalcNumberPosition(number), new Vector2(_data.NumberWidht, _data.NumberHeight), OnSelectNumberClick);
                 number++;
             }
         }
@@ -63,9 +63,9 @@ namespace GameFields.Persons.AttackMenues
         {
             _activateCounter = 0;
 
-            foreach (AttackNumber attackNumber in _attackNumbers)
+            foreach (SelectNumber selectNumber in _selectNumbers)
             {
-                attackNumber.Activate();
+                selectNumber.Activate();
             }
 
             IsCompleteThis = true;
@@ -80,13 +80,13 @@ namespace GameFields.Persons.AttackMenues
 
         protected override IEnumerator Deactivating()
         {
-            List<AttackNumber> selectedNumbers = new List<AttackNumber>(); // Можно заменить на LINQ
+            List<SelectNumber> selectedNumbers = new List<SelectNumber>(); // Можно заменить на LINQ
 
-            foreach (AttackNumber attackNumber in _attackNumbers)
+            foreach (SelectNumber selectNumber in _selectNumbers)
             {
-                if (attackNumber.IsClicked)
+                if (selectNumber.IsClicked)
                 {
-                    selectedNumbers.Add(attackNumber);
+                    selectedNumbers.Add(selectNumber);
                 }
             }
             //Debug.Log("Длина: " + _attackNumbers.Length);
@@ -99,17 +99,17 @@ namespace GameFields.Persons.AttackMenues
             //    }
             //}
 
-            foreach (AttackNumber selectedNumber in selectedNumbers)
+            foreach (SelectNumber selectedNumber in selectedNumbers)
             {
                 if (CardNumberKeeper.Card.IsSuccessAttack(selectedNumber.Number))
                 {
                     selectedNumber.SuccessChoice();
-                    AttackResult.SuccessChoice();
+                    SelectResult.SuccessChoice();
                 }
                 else
                 {
                     selectedNumber.ErrorChoice();
-                    ConfirmableNumbers.AddAccept(selectedNumber);
+                    ConfirmableNumbers.AddSelect(selectedNumber);
                 }
 
                 float delayUntilPlayNextSelectedNumberAnimation = selectedNumber.AnimationDuration * _data.NextAnimationStartPercent;
@@ -124,9 +124,9 @@ namespace GameFields.Persons.AttackMenues
 
             FadablePanel.Hide();
 
-            foreach (AttackNumber attackNumber in _attackNumbers)
+            foreach (SelectNumber selectNumber in _selectNumbers)
             {
-                attackNumber.Deactivate();
+                selectNumber.Deactivate();
             }
 
             yield return new WaitUntil(() => FadablePanel.IsComplete);
@@ -134,25 +134,25 @@ namespace GameFields.Persons.AttackMenues
             IsCompleteThis = true;
         }
 
-        private void OnAttackNumberClick(bool isActive)
+        private void OnSelectNumberClick(bool isActive)
         {
             _activateCounter += isActive ? 1 : -1;
 
             if (_activateCounter == NeedForActivate)
             {
-                _attackButton.Activate();
+                _selectButton.Activate();
             }
             else
             {
-                _attackButton.Deactivate();
+                _selectButton.Deactivate();
             }
         }
 
         private Vector2 CalcNumberPosition(int number)
         {
-            if (number < 1 && number > _attackNumbers.Length)
+            if (number < 1 && number > _selectNumbers.Length)
             {
-                throw new ArgumentOutOfRangeException($"Такого number-a нет! Number: {number}. MaxLenght: {_attackNumbers.Length}");
+                throw new ArgumentOutOfRangeException($"Такого number-a нет! Number: {number}. MaxLenght: {_selectNumbers.Length}");
             }
             int row = (number - 1) / _columnsCount + 1;
             int column = ((number - 1) % _columnsCount) + 1;
@@ -175,7 +175,7 @@ namespace GameFields.Persons.AttackMenues
         }
         private void FindColumnsAndRowsCount()
         {
-            int countAll = _attackNumbers.Length;
+            int countAll = _selectNumbers.Length;
             int qnty = Convert.ToInt32(Math.Sqrt(countAll));
             int firstSize;
             int secondSize;
@@ -211,20 +211,20 @@ namespace GameFields.Persons.AttackMenues
         }
         private void CheckRightCalcColumnsAndRows()
         {
-            if ((_rowsCount - 1) * _columnsCount + _lastRowColumnsCount != _attackNumbers.Length)
+            if ((_rowsCount - 1) * _columnsCount + _lastRowColumnsCount != _selectNumbers.Length)
             {
-                throw new Exception($"Ошибка расчетов. Всего мест: {_attackNumbers.Length}. Columns = {_columnsCount}. Rows = {_rowsCount}. LastRowColumns = {_lastRowColumnsCount}");
+                throw new Exception($"Ошибка расчетов. Всего мест: {_selectNumbers.Length}. Columns = {_columnsCount}. Rows = {_rowsCount}. LastRowColumns = {_lastRowColumnsCount}");
             }
         }
 
         #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents) + nameof(AttackNumberPanelPlayer))]
+        [ContextMenu(nameof(DefineAllComponents) + nameof(SelectNumberPanelPlayer))]
         public override List<ComponentAttachInfo> DefineAllComponents()
         {
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
                 DefineRectTransform(),
-                DefineAttackNumbers()
+                DefineSelectNumbers()
             };
 
             list.AddRange(base.DefineAllComponents());
@@ -237,10 +237,10 @@ namespace GameFields.Persons.AttackMenues
         {
             return AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
         }
-        [ContextMenu(nameof(DefineAttackNumbers))]
-        private ComponentAttachInfo DefineAttackNumbers()
+        [ContextMenu(nameof(DefineSelectNumbers))]
+        private ComponentAttachInfo DefineSelectNumbers()
         {
-            return AutomaticFillComponents.DefineComponent(this, ref _attackNumbers);
+            return AutomaticFillComponents.DefineComponent(this, ref _selectNumbers);
         }
         #endregion 
     }
