@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7465c289317d843598acc156c84e4215, type: 3}
   m_Name: CoolBookmaker_4
   m_EditorClassIdentifier: 
-  <CardViewConfig>k__BackingField: {fileID: 0}
-  <CardCharacter>k__BackingField: {fileID: 0}
-  <AwakeSound>k__BackingField: {fileID: 0}
-  <Effect>k__BackingField: {fileID: 0}
+  <CardViewConfig>k__BackingField: {fileID: 11400000, guid: 5b6e7722154de4eaaa5cd40c395e1595, type: 2}
+  <CardCharacter>k__BackingField: {fileID: 7233767571375303125, guid: ef63134ca2cff467589c5e301a67a745, type: 3}
+  <AwakeSound>k__BackingField: {fileID: 8300000, guid: 7c4337a16763e4787b04959e064bf912, type: 3}
+  <Effect>k__BackingField: {fileID: 11400000, guid: e723773fbe8994dd48d549e7609268f2, type: 2}
