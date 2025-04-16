@@ -29,6 +29,7 @@ namespace GameFields.Persons
         private Table _playerTable;
         private Tower _playerTower;
         private DiscoverPlayer _playerDiscover;
+        private SelectMenuPlayer _playerSelectMenu;
         private AttackMenuPlayer _playerAttackMenu;
         private CardAttackZonePlayer _playerCardAttackZone;
 
@@ -48,6 +49,7 @@ namespace GameFields.Persons
         private Table _enemyTable;
         private Tower _enemyTower;
         private DiscoverAI _enemyDiscoverImitation;
+        private SelectMenuImitation _enemySelectMenu;
         private AttackMenuImitation _enemyAttackMenu;
         private CardAttackZoneEnemyAI _enemyCardAttackZone;
 
@@ -85,13 +87,15 @@ namespace GameFields.Persons
         public void Construct(CardPlayingZonePlayer playerPlayingZone, HandPlayer playerHand, TablePlayer playerTable, TowerPlayer playerTower,
             DiscoverPlayer playerDiscover, AttackMenuPlayer playerAttackMenu, CardPlayingZoneAI enemyPlayingZone, HandAI enemyHand,
             TableAI enemyTable, TowerAI enemyTower, DiscoverAI enemyDiscoverImitation, AttackMenuImitation enemyAttackMenu,
-            CardAttackZonePlayer playerCardAttackZone, CardAttackZoneEnemyAI enemyCardAttackZone)
+            CardAttackZonePlayer playerCardAttackZone, CardAttackZoneEnemyAI enemyCardAttackZone, SelectMenuPlayer playerSelectMenu,
+            SelectMenuImitation enemySelectMenu)
         {
             _playerPlayingZone = playerPlayingZone;
             _playerHand = playerHand;
             _playerTable = playerTable;
             _playerTower = playerTower;
             _playerDiscover = playerDiscover;
+            _playerSelectMenu = playerSelectMenu;
             _playerAttackMenu = playerAttackMenu;
             _playerCardAttackZone = playerCardAttackZone;
 
@@ -100,6 +104,7 @@ namespace GameFields.Persons
             _enemyTable = enemyTable;
             _enemyTower = enemyTower;
             _enemyDiscoverImitation = enemyDiscoverImitation;
+            _enemySelectMenu = enemySelectMenu;
             _enemyAttackMenu = enemyAttackMenu;
             _enemyCardAttackZone = enemyCardAttackZone;
         }
@@ -163,6 +168,7 @@ namespace GameFields.Persons
 
             ConfirmableNumbers confirmableNumbersPlayer = new ConfirmableNumbers(attackedNumbers, choicedNumbers);
             _playerAttackMenu.Init(_enemyTower, _playerCardAttackZone, CountNumbers, confirmableNumbersPlayer);
+            _playerSelectMenu.Init(_enemyTower, _playerCardAttackZone, CountNumbers, choicedNumbers);
 
             _playerCardAttackZone.Init(_playerAttackMenu, _enemyTower);
         }
@@ -180,6 +186,7 @@ namespace GameFields.Persons
 
             ConfirmableNumbers confirmableNumbersEnemyAI = new ConfirmableNumbers(attackedNumbers, choicedNumbers);
             _enemyAttackMenu.Init(_playerTower, _enemyCardAttackZone, CountNumbers, confirmableNumbersEnemyAI);
+            _enemySelectMenu.Init(_playerTower, _enemyCardAttackZone, CountNumbers, choicedNumbers);
 
             _enemyCardAttackZone.Init(_enemyAttackMenu, _playerTower);
         }

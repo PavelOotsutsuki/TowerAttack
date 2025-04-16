@@ -12,6 +12,7 @@ using GameFields.Seats;
 using GameFields.Signals;
 using UnityEngine;
 using Zenject;
+using GameFields.Persons.SelectMenues.Commons;
 
 namespace Roots
 {
@@ -31,6 +32,7 @@ namespace Roots
         [SerializeField] private TowerPlayer _playerTower;
         [SerializeField] private DiscoverPlayer _playerDiscover;
         [SerializeField] private CardPlayingZonePlayer _playerPlayingZone;
+        [SerializeField] private SelectMenuPlayer _selectMenuPlayer;
         [SerializeField] private AttackMenuPlayer _attackMenuPlayer;
         [SerializeField] private CardAttackZonePlayer _playerCardAttackZone;
 
@@ -39,6 +41,7 @@ namespace Roots
         [SerializeField] private TowerAI _enemyTower;
         [SerializeField] private DiscoverAI _enemyDiscoverImitation;
         [SerializeField] private CardPlayingZoneAI _enemyPlayingZone;
+        [SerializeField] private SelectMenuImitation _enemySelectMenu;
         [SerializeField] private AttackMenuImitation _enemyAttackMenu;
         [SerializeField] private CardAttackZoneEnemyAI _enemyCardAttackZone;
 
@@ -61,6 +64,7 @@ namespace Roots
             Container.Bind<TowerPlayer>().FromInstance(_playerTower).AsSingle();
             Container.Bind<DiscoverPlayer>().FromInstance(_playerDiscover).AsSingle();
             Container.Bind<CardPlayingZonePlayer>().FromInstance(_playerPlayingZone).AsSingle();
+            Container.Bind<SelectMenuPlayer>().FromInstance(_selectMenuPlayer).AsSingle();
             Container.Bind<AttackMenuPlayer>().FromInstance(_attackMenuPlayer).AsSingle();
             Container.Bind<CardAttackZonePlayer>().FromInstance(_playerCardAttackZone).AsSingle();
 
@@ -69,6 +73,7 @@ namespace Roots
             Container.Bind<TowerAI>().FromInstance(_enemyTower).AsSingle();
             Container.Bind<DiscoverAI>().FromInstance(_enemyDiscoverImitation).AsSingle();
             Container.Bind<CardPlayingZoneAI>().FromInstance(_enemyPlayingZone).AsSingle();
+            Container.Bind<SelectMenuImitation>().FromInstance(_enemySelectMenu).AsSingle();
             Container.Bind<AttackMenuImitation>().FromInstance(_enemyAttackMenu).AsSingle();
             Container.Bind<CardAttackZoneEnemyAI>().FromInstance(_enemyCardAttackZone).AsSingle();
         }
