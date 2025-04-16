@@ -4,7 +4,7 @@ using GameFields.Persons.Hands;
 using GameFields.Persons.Towers;
 using GameFields.Persons.DrawCards;
 using Zenject;
-using GameFields.Persons.AttackMenues;
+using GameFields.Persons.SelectMenues.Attacks;
 using Tools;
 using Cards;
 using GameFields.Signals;

@@ -3,7 +3,7 @@ using GameFields.CommonAnimations;
 using GameFields.Decks;
 using GameFields.EndTurnButtons;
 using GameFields.LightControls;
-using GameFields.Persons.AttackMenues;
+using GameFields.Persons.SelectMenues.Attacks;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.DrawCards;
 using GameFields.Persons.Hands;
@@ -14,6 +14,7 @@ using Tools;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 using Zenject;
+using GameFields.Persons.SelectMenues.Commons;
 
 namespace GameFields.Persons
 {
@@ -157,7 +158,10 @@ namespace GameFields.Persons
             _playerDiscover.Init();
             _startPlayerTurnLabel.Init();
 
-            ConfirmableNumbers confirmableNumbersPlayer = new ConfirmableNumbers();
+            SelectNumbersList attackedNumbers = new SelectNumbersList();
+            SelectNumbersList choicedNumbers = new SelectNumbersList();
+
+            ConfirmableNumbers confirmableNumbersPlayer = new ConfirmableNumbers(attackedNumbers, choicedNumbers);
             _playerAttackMenu.Init(_enemyTower, _playerCardAttackZone, CountNumbers, confirmableNumbersPlayer);
 
             _playerCardAttackZone.Init(_playerAttackMenu, _enemyTower);
@@ -171,7 +175,10 @@ namespace GameFields.Persons
             _enemyTower.Init();
             _enemyDiscoverImitation.Init();
 
-            ConfirmableNumbers confirmableNumbersEnemyAI = new ConfirmableNumbers();
+            SelectNumbersList attackedNumbers = new SelectNumbersList();
+            SelectNumbersList choicedNumbers = new SelectNumbersList();
+
+            ConfirmableNumbers confirmableNumbersEnemyAI = new ConfirmableNumbers(attackedNumbers, choicedNumbers);
             _enemyAttackMenu.Init(_playerTower, _enemyCardAttackZone, CountNumbers, confirmableNumbersEnemyAI);
 
             _enemyCardAttackZone.Init(_enemyAttackMenu, _playerTower);

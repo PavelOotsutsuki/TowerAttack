@@ -1,5 +1,5 @@
 using Cards;
-using GameFields.Persons.AttackMenues;
+using GameFields.Persons.SelectMenues.Attacks;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.DrawCards;
 using GameFields.Persons.Hands;

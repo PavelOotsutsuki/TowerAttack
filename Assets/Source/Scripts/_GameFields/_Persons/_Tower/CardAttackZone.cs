@@ -2,7 +2,7 @@ using System.Collections;
 using Cards;
 using GameFields.CommonAnimations;
 using GameFields.DiscardPiles;
-using GameFields.Persons.AttackMenues;
+using GameFields.Persons.SelectMenues.Attacks;
 using GameFields.Signals;
 using Tools;
 using Tools.CommonAnimations;
@@ -80,12 +80,12 @@ namespace GameFields.Persons.Towers
             _attackMenu.Activate(attackMenuActivateData);
         }
 
-        void IAttackResultHandler.SuccessAttack()
+        void IAttackResultHandler.SuccessChoice()
         {
             StartCoroutine(SuccessAttackProcessing());
         }
 
-        void IAttackResultHandler.FalledAttack()
+        void IAttackResultHandler.FalledChoice()
         {
             StartCoroutine(FalledAttackProcessing());
         }

@@ -3,7 +3,7 @@ using GameFields;
 using GameFields.Decks;
 using GameFields.DiscardPiles;
 using GameFields.InformationLabels;
-using GameFields.Persons.AttackMenues;
+using GameFields.Persons.SelectMenues.Attacks;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.Hands;
 using GameFields.Persons.Tables;

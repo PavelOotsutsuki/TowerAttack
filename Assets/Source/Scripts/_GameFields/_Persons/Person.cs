@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cards;
 using Cysharp.Threading.Tasks;
-using GameFields.Persons.AttackMenues;
+using GameFields.Persons.SelectMenues.Attacks;
 using GameFields.Persons.CardTransits;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.DrawCards;
