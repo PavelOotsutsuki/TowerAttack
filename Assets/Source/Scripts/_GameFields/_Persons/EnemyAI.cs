@@ -8,6 +8,7 @@ using GameFields.Persons.Towers;
 using GameFields.Signals;
 using Tools;
 using Zenject;
+using GameFields.Persons.SelectMenues.Commons;
 
 namespace GameFields.Persons
 {
@@ -18,9 +19,9 @@ namespace GameFields.Persons
 
         public EnemyAI(InteractionActivator interactionActivator, EnemyDragAndDropImitation enemyDragAndDropImitation, CardPlayingZone cardPlayingZone,
             Tower tower, DrawCardRoot drawCardRoot, DiscoverAI discoverImitation, StartTurnDraw startTurnDraw, SignalBus bus,
-            Hand hand, IAttackMenuActivator attackMenu) :
+            Hand hand, ISelectMenuActivator attackMenu, ISelectMenuActivator selectMenu) :
             base(cardPlayingZone, drawCardRoot, tower, startTurnDraw,discoverImitation, bus,
-                hand, attackMenu, interactionActivator)
+                hand, attackMenu, interactionActivator, selectMenu)
         {
             //_gameFieldObjectsActivator = gameFieldObjectsActivator;
             //Bus.Subscribe<StartEffectSignal>(SetCardEffectProcess);

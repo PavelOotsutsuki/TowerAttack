@@ -10,9 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 619758162470512851}
   - component: {fileID: 5577819701189920887}
-  - component: {fileID: 8129010165889583060}
   m_Layer: 0
-  m_Name: SelectMenuEnemyAI
+  m_Name: SelectMenuEnemyAI (abstract)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -52,26 +51,6 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &8129010165889583060
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 69155512725157507}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27179d2c43a3b439298bd12081ff3a36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _selectMenuLabel: {fileID: 3060589396387905795}
-  _selectMenuPanel: {fileID: 8049581424146438593}
-  _canvasGroup: {fileID: 5577819701189920887}
-  _selectNumberPanelEnemyAI: {fileID: 4717355099986923545}
-  _data:
-    <SelectMenuLabelText>k__BackingField: "\u041E\u0436\u0438\u0434\u0430\u0435\u043C
-      \u043F\u0440\u043E\u0442\u0438\u0432\u043D\u0438\u043A\u0430..."
-    <DelayAfterChoiceNumberDone>k__BackingField: 1
 --- !u!1 &4552821819937944240
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,7 +11,7 @@ namespace GameFields.Persons.SelectMenues.Commons
         [SerializeField] private SelectNumberPanelEnemyAI _selectNumberPanelEnemyAI;
         [SerializeField] private SelectMenuImitationData _data;
 
-        public void Init(ICardNumberKeeper cardNumberKeeper, IAttackResultHandler attackResultHandler, int countNumbers,
+        public void Init(ICardNumberKeeper cardNumberKeeper, ISelectResultHandler attackResultHandler, int countNumbers,
             SelectNumbersList selectedNumbers)
         {
             _selectNumberPanelEnemyAI.Init(cardNumberKeeper, countNumbers, selectedNumbers);

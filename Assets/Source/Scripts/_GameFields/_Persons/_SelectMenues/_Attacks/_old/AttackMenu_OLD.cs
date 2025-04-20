@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using GameFields.Persons.SelectMenues.Commons;
 using GameFields.Persons.Towers;
 using Tools;
 using Tools.UI;
@@ -11,14 +12,14 @@ using UnityEngine;
 namespace GameFields.Persons.SelectMenues.Attacks
 {
     [RequireComponent(typeof(CanvasGroup))]
-    public abstract class AttackMenu : MonoBehaviour, IAttackMenuActivator, IWorkable<AttackMenuActivateData>, ICompletable, IAutomaticFillComponents
+    public abstract class AttackMenu_OLD : MonoBehaviour, IAttackMenuActivator, IWorkable<AttackMenuActivateData>, ICompletable, IAutomaticFillComponents
     {
         [SerializeField] private AttackMenuLabel _attackMenuLabel;
         [SerializeField] private AttackMenuPanel _attackMenuPanel;
 
         [SerializeField] private CanvasGroup _canvasGroup;
 
-        private IAttackResultHandler _attackResultHandler;
+        private ISelectResultHandler _attackResultHandler;
         private AttackResult _attackResult;
         private AttackMenuData _data;
         private AttackNumberPanel _attackNumberPanel;
@@ -42,7 +43,7 @@ namespace GameFields.Persons.SelectMenues.Attacks
         //    }
         //}
 
-        public void Init(IAttackResultHandler attackResultHandler, AttackMenuData data, AttackNumberPanel attackNumberPanel)
+        public void Init(ISelectResultHandler attackResultHandler, AttackMenuData data, AttackNumberPanel attackNumberPanel)
         {
             gameObject.SetActive(false);
             IsComplete = false;
@@ -135,7 +136,7 @@ namespace GameFields.Persons.SelectMenues.Attacks
         protected abstract IEnumerator OnDeactivating();
 
         #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents) + nameof(AttackMenu))]
+        [ContextMenu(nameof(DefineAllComponents) + nameof(AttackMenu_OLD))]
         public virtual List<ComponentAttachInfo> DefineAllComponents()
         {
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>

@@ -15,6 +15,8 @@ using Tools.Utils.FillComponents;
 using UnityEngine;
 using Zenject;
 using GameFields.Persons.SelectMenues.Commons;
+using GameFields.Persons.SelectMenues.Choices;
+using GameFields.InformationLabels;
 
 namespace GameFields.Persons
 {
@@ -29,7 +31,7 @@ namespace GameFields.Persons
         private Table _playerTable;
         private Tower _playerTower;
         private DiscoverPlayer _playerDiscover;
-        private SelectMenuPlayer _playerSelectMenu;
+        private ChoiceMenuPlayer _playerChoiceMenu;
         private AttackMenuPlayer _playerAttackMenu;
         private CardAttackZonePlayer _playerCardAttackZone;
 
@@ -49,7 +51,7 @@ namespace GameFields.Persons
         private Table _enemyTable;
         private Tower _enemyTower;
         private DiscoverAI _enemyDiscoverImitation;
-        private SelectMenuImitation _enemySelectMenu;
+        private ChoiceMenuImitation _enemyChoiceMenu;
         private AttackMenuImitation _enemyAttackMenu;
         private CardAttackZoneEnemyAI _enemyCardAttackZone;
 
@@ -82,20 +84,21 @@ namespace GameFields.Persons
         private EndTurnButton _endTurnButton;
 
         private InteractionActivator _interactionActivator;
+        private InformationLabel _informationLabel;
 
         [Inject]
         public void Construct(CardPlayingZonePlayer playerPlayingZone, HandPlayer playerHand, TablePlayer playerTable, TowerPlayer playerTower,
             DiscoverPlayer playerDiscover, AttackMenuPlayer playerAttackMenu, CardPlayingZoneAI enemyPlayingZone, HandAI enemyHand,
             TableAI enemyTable, TowerAI enemyTower, DiscoverAI enemyDiscoverImitation, AttackMenuImitation enemyAttackMenu,
-            CardAttackZonePlayer playerCardAttackZone, CardAttackZoneEnemyAI enemyCardAttackZone, SelectMenuPlayer playerSelectMenu,
-            SelectMenuImitation enemySelectMenu)
+            CardAttackZonePlayer playerCardAttackZone, CardAttackZoneEnemyAI enemyCardAttackZone, ChoiceMenuPlayer playerChoiceMenu,
+            ChoiceMenuImitation enemyChoiceMenu, InformationLabel informationLabel)
         {
             _playerPlayingZone = playerPlayingZone;
             _playerHand = playerHand;
             _playerTable = playerTable;
             _playerTower = playerTower;
             _playerDiscover = playerDiscover;
-            _playerSelectMenu = playerSelectMenu;
+            _playerChoiceMenu = playerChoiceMenu;
             _playerAttackMenu = playerAttackMenu;
             _playerCardAttackZone = playerCardAttackZone;
 
@@ -104,9 +107,11 @@ namespace GameFields.Persons
             _enemyTable = enemyTable;
             _enemyTower = enemyTower;
             _enemyDiscoverImitation = enemyDiscoverImitation;
-            _enemySelectMenu = enemySelectMenu;
+            _enemyChoiceMenu = enemyChoiceMenu;
             _enemyAttackMenu = enemyAttackMenu;
             _enemyCardAttackZone = enemyCardAttackZone;
+
+            _informationLabel = informationLabel;
         }
 
         public void Init(SignalBus bus, Deck deck, EndTurnButton endTurnButton, SeatPool seatPool
@@ -135,7 +140,8 @@ namespace GameFields.Persons
             EndTurnProcessing endTurnProcessing = new EndTurnProcessing(_endTurnButton, _interactionActivator);
 
             return new Player(_interactionActivator, _playerHand, _playerPlayingZone, _playerTower, _playerDiscover,
-                drawCardRoot, startTurnDraw, turnProcessing, _bus, startPlayerTurnView, _playerAttackMenu, endTurnProcessing);
+                drawCardRoot, startTurnDraw, turnProcessing, _bus, startPlayerTurnView, _playerAttackMenu, endTurnProcessing,
+                _playerChoiceMenu);
         }
 
         public EnemyAI CreateEnemyAI()
@@ -151,7 +157,8 @@ namespace GameFields.Persons
                 _enemyDragAndDropImitationData, _interactionActivator, _enemyHand);
 
             return new EnemyAI(_interactionActivator, enemyDragAndDropImitation, _enemyPlayingZone,
-                _enemyTower, drawCardRoot, _enemyDiscoverImitation, startTurnDraw, _bus, _enemyHand, _playerAttackMenu);
+                _enemyTower, drawCardRoot, _enemyDiscoverImitation, startTurnDraw, _bus, _enemyHand, _playerAttackMenu,
+                _enemyChoiceMenu);
         }
         
         private void InitPlayersData(SeatPool seatPool)
@@ -167,10 +174,11 @@ namespace GameFields.Persons
             SelectNumbersList choicedNumbers = new SelectNumbersList();
 
             ConfirmableNumbers confirmableNumbersPlayer = new ConfirmableNumbers(attackedNumbers, choicedNumbers);
-            _playerAttackMenu.Init(_enemyTower, _playerCardAttackZone, CountNumbers, confirmableNumbersPlayer);
-            _playerSelectMenu.Init(_enemyTower, _playerCardAttackZone, CountNumbers, choicedNumbers);
+            _playerAttackMenu.Init(_enemyTower, _playerCardAttackZone, CountNumbers, attackedNumbers);
+            _playerChoiceMenu.Init(_enemyTower, _playerCardAttackZone, CountNumbers, choicedNumbers);
 
-            _playerCardAttackZone.Init(_playerAttackMenu, _enemyTower);
+            //_playerCardAttackZone.Init(_playerAttackMenu, _enemyTower);
+            _playerCardAttackZone.Init(_playerChoiceMenu, _enemyTower);
         }
 
         private void InitEnemyData(SeatPool seatPool)
@@ -185,8 +193,8 @@ namespace GameFields.Persons
             SelectNumbersList choicedNumbers = new SelectNumbersList();
 
             ConfirmableNumbers confirmableNumbersEnemyAI = new ConfirmableNumbers(attackedNumbers, choicedNumbers);
-            _enemyAttackMenu.Init(_playerTower, _enemyCardAttackZone, CountNumbers, confirmableNumbersEnemyAI);
-            _enemySelectMenu.Init(_playerTower, _enemyCardAttackZone, CountNumbers, choicedNumbers);
+            _enemyAttackMenu.Init(_playerTower, _enemyCardAttackZone, CountNumbers, attackedNumbers);
+            _enemyChoiceMenu.Init(_playerTower, _enemyCardAttackZone, CountNumbers, choicedNumbers);
 
             _enemyCardAttackZone.Init(_enemyAttackMenu, _playerTower);
         }

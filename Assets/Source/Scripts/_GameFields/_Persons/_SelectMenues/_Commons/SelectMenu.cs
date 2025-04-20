@@ -18,7 +18,7 @@ namespace GameFields.Persons.SelectMenues.Commons
 
         [SerializeField] private CanvasGroup _canvasGroup;
 
-        private IAttackResultHandler _attackResultHandler;
+        private ISelectResultHandler _selectResultHandler;
         private SelectResult _selectResult;
         private SelectMenuData _data;
         private SelectNumberPanel _selectNumberPanel;
@@ -30,7 +30,7 @@ namespace GameFields.Persons.SelectMenues.Commons
 
         private bool IsElementsComplete => _completableElements.Any(e => e.IsComplete == false) == false;
 
-        public void Init(IAttackResultHandler attackResultHandler, SelectMenuData data, SelectNumberPanel selectNumberPanel)
+        public void Init(ISelectResultHandler selectResultHandler, SelectMenuData data, SelectNumberPanel selectNumberPanel)
         {
             gameObject.SetActive(false);
             IsComplete = false;
@@ -40,7 +40,7 @@ namespace GameFields.Persons.SelectMenues.Commons
             _data = data;
             _selectNumberPanel = selectNumberPanel;
 
-            _attackResultHandler = attackResultHandler;
+            _selectResultHandler = selectResultHandler;
             _selectResult = null;
 
             _selectMenuLabel.Init();
@@ -104,11 +104,11 @@ namespace GameFields.Persons.SelectMenues.Commons
 
             if (_selectResult.IsSelectSuccess)
             {
-                _attackResultHandler.SuccessChoice();
+                _selectResultHandler.SuccessChoice();
             }
             else
             {
-                _attackResultHandler.FalledChoice();
+                _selectResultHandler.FalledChoice();
             }
 
             IsComplete = true;

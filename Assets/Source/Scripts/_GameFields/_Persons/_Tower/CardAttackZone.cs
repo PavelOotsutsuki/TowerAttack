@@ -3,6 +3,7 @@ using Cards;
 using GameFields.CommonAnimations;
 using GameFields.DiscardPiles;
 using GameFields.Persons.SelectMenues.Attacks;
+using GameFields.Persons.SelectMenues.Commons;
 using GameFields.Signals;
 using Tools;
 using Tools.CommonAnimations;
@@ -11,14 +12,14 @@ using Zenject;
 
 namespace GameFields.Persons.Towers
 {
-    public abstract class CardAttackZone : MonoBehaviour, IAttackable, ICompletable, IPersonObject, IAttackResultHandler
+    public abstract class CardAttackZone : MonoBehaviour, IAttackable, ICompletable, IPersonObject, ISelectResultHandler
     {
         [SerializeField] private CardAttackZoneData _data;
 
         private InvertCardAnimation _invertCardAnimation;
         private ShakeAnimation _shakeAnimation;
 
-        private IAttackMenuActivator _attackMenu;
+        private ISelectMenuActivator _attackMenu;
         private IBoomTower _tower;
 
         private DiscardPile _discardPile;
@@ -39,7 +40,7 @@ namespace GameFields.Persons.Towers
             _isComplete = false;
         }
 
-        public void Init(IAttackMenuActivator attackMenu, IBoomTower tower)
+        public void Init(ISelectMenuActivator attackMenu, IBoomTower tower)
         {
             _attackMenu = attackMenu;
             _tower = tower;
@@ -74,18 +75,18 @@ namespace GameFields.Persons.Towers
 
             _shakeAnimation.Play();
 
-            AttackMenuActivateData attackMenuActivateData = new AttackMenuActivateData(_data.NeedSelectForAttack);
+            SelectMenuActivateData attackMenuActivateData = new SelectMenuActivateData(_data.NeedSelectForAttack);
             //AttackMenuActivateData attackMenuActivateData = new AttackMenuActivateData(49);
 
             _attackMenu.Activate(attackMenuActivateData);
         }
 
-        void IAttackResultHandler.SuccessChoice()
+        void ISelectResultHandler.SuccessChoice()
         {
             StartCoroutine(SuccessAttackProcessing());
         }
 
-        void IAttackResultHandler.FalledChoice()
+        void ISelectResultHandler.FalledChoice()
         {
             StartCoroutine(FalledAttackProcessing());
         }

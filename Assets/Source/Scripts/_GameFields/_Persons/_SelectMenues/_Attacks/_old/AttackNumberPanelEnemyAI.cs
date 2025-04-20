@@ -18,10 +18,10 @@ namespace GameFields.Persons.SelectMenues.Attacks
 
         private AttackNumberImitation[] _attackNumbers;
 
-        private InformationLableRoot _informationLableRoot;
+        private InformationLabel _informationLableRoot;
 
         [Inject]
-        public void Construct(InformationLableRoot informationLableRoot)
+        public void Construct(InformationLabel informationLableRoot)
         {
             _informationLableRoot = informationLableRoot;
         }

@@ -18,12 +18,12 @@ namespace GameFields.Persons.SelectMenues.Commons
 
         private SelectNumberImitation[] _selectNumbers;
 
-        private InformationLableRoot _informationLableRoot;
+        private InformationLabel _informationLabel;
 
         [Inject]
-        public void Construct(InformationLableRoot informationLableRoot)
+        public void Construct(InformationLabel informationLabel)
         {
-            _informationLableRoot = informationLableRoot;
+            _informationLabel = informationLabel;
         }
 
         protected override void InitNumbers()
@@ -78,12 +78,12 @@ namespace GameFields.Persons.SelectMenues.Commons
             }
 
             LabelActivateData informationLableData = new LabelActivateData(labelText);
-            _informationLableRoot.Activate(informationLableData);
+            _informationLabel.Activate(informationLableData);
 
             yield return new WaitForSeconds(_data.TimeViewInformationLabel);
-            _informationLableRoot.Deactivate();
+            _informationLabel.Deactivate();
 
-            yield return new WaitUntil(() => _informationLableRoot.IsComplete);
+            yield return new WaitUntil(() => _informationLabel.IsComplete);
 
             foreach (ISelectNumber selectedNumber in selectedNumbers)
             {

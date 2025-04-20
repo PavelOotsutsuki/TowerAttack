@@ -13,6 +13,7 @@ using GameFields.Signals;
 using UnityEngine;
 using Zenject;
 using GameFields.Persons.SelectMenues.Commons;
+using GameFields.Persons.SelectMenues.Choices;
 
 namespace Roots
 {
@@ -20,7 +21,7 @@ namespace Roots
     {
         [SerializeField] private CardDescription _cardDescription;
 
-        [SerializeField] private InformationLableRoot _informationLableRoot;
+        [SerializeField] private InformationLabel _informationLabel;
 
         [SerializeField] private Deck _deck;
         [SerializeField] private DiscardPileConfig _discardPileConfig;
@@ -32,7 +33,7 @@ namespace Roots
         [SerializeField] private TowerPlayer _playerTower;
         [SerializeField] private DiscoverPlayer _playerDiscover;
         [SerializeField] private CardPlayingZonePlayer _playerPlayingZone;
-        [SerializeField] private SelectMenuPlayer _selectMenuPlayer;
+        [SerializeField] private ChoiceMenuPlayer _choiceMenuPlayer;
         [SerializeField] private AttackMenuPlayer _attackMenuPlayer;
         [SerializeField] private CardAttackZonePlayer _playerCardAttackZone;
 
@@ -41,7 +42,7 @@ namespace Roots
         [SerializeField] private TowerAI _enemyTower;
         [SerializeField] private DiscoverAI _enemyDiscoverImitation;
         [SerializeField] private CardPlayingZoneAI _enemyPlayingZone;
-        [SerializeField] private SelectMenuImitation _enemySelectMenu;
+        [SerializeField] private ChoiceMenuImitation _enemyChoiceMenu;
         [SerializeField] private AttackMenuImitation _enemyAttackMenu;
         [SerializeField] private CardAttackZoneEnemyAI _enemyCardAttackZone;
 
@@ -51,8 +52,8 @@ namespace Roots
 
             Container.Bind<CardDescription>().FromInstance(_cardDescription).AsSingle();
 
-            Container.Bind<InformationLableRoot>().FromInstance(_informationLableRoot).AsSingle();
-            _informationLableRoot.Init();
+            Container.Bind<InformationLabel>().FromInstance(_informationLabel).AsSingle();
+            _informationLabel.Init();
 
             Container.Bind<Deck>().FromInstance(_deck).AsSingle();
             Container.Bind<DiscardPileConfig>().FromInstance(_discardPileConfig).AsSingle();
@@ -64,7 +65,7 @@ namespace Roots
             Container.Bind<TowerPlayer>().FromInstance(_playerTower).AsSingle();
             Container.Bind<DiscoverPlayer>().FromInstance(_playerDiscover).AsSingle();
             Container.Bind<CardPlayingZonePlayer>().FromInstance(_playerPlayingZone).AsSingle();
-            Container.Bind<SelectMenuPlayer>().FromInstance(_selectMenuPlayer).AsSingle();
+            Container.Bind<ChoiceMenuPlayer>().FromInstance(_choiceMenuPlayer).AsSingle();
             Container.Bind<AttackMenuPlayer>().FromInstance(_attackMenuPlayer).AsSingle();
             Container.Bind<CardAttackZonePlayer>().FromInstance(_playerCardAttackZone).AsSingle();
 
@@ -73,7 +74,7 @@ namespace Roots
             Container.Bind<TowerAI>().FromInstance(_enemyTower).AsSingle();
             Container.Bind<DiscoverAI>().FromInstance(_enemyDiscoverImitation).AsSingle();
             Container.Bind<CardPlayingZoneAI>().FromInstance(_enemyPlayingZone).AsSingle();
-            Container.Bind<SelectMenuImitation>().FromInstance(_enemySelectMenu).AsSingle();
+            Container.Bind<ChoiceMenuImitation>().FromInstance(_enemyChoiceMenu).AsSingle();
             Container.Bind<AttackMenuImitation>().FromInstance(_enemyAttackMenu).AsSingle();
             Container.Bind<CardAttackZoneEnemyAI>().FromInstance(_enemyCardAttackZone).AsSingle();
         }

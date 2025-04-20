@@ -14,6 +14,7 @@ using GameFields.Signals;
 using Tools;
 using UnityEngine;
 using Zenject;
+using GameFields.Persons.SelectMenues.Commons;
 
 namespace GameFields.Persons
 {
@@ -25,7 +26,8 @@ namespace GameFields.Persons
         private readonly Stack<PersonStep> _personSteps;
         private readonly Discover _discover;
         private readonly Hand _hand;
-        private readonly IAttackMenuActivator _attackMenu;
+        private readonly ISelectMenuActivator _attackMenu;
+        private readonly ISelectMenuActivator _selectMenu;
 
         //private readonly PersonStep _lastStep;
 
@@ -39,7 +41,8 @@ namespace GameFields.Persons
 
         protected Person(CardPlayingZone playingZone, DrawCardRoot drawCardRoot, Tower tower,
             StartTurnDraw startTurnDraw, Discover discover, SignalBus bus, /*PersonStep lastStep,*/
-            Hand hand, IAttackMenuActivator attackMenu, InteractionActivator gameFieldObjectsActivator)
+            Hand hand, ISelectMenuActivator attackMenu, InteractionActivator gameFieldObjectsActivator,
+            ISelectMenuActivator selectMenu)
         {
             _hand = hand;
             Bus = bus;
@@ -50,6 +53,7 @@ namespace GameFields.Persons
             //TurnProcess = turnProcess;
             _discover = discover;
             _attackMenu = attackMenu;
+            _selectMenu = selectMenu;
             //_lastStep = lastStep;
             InteractionActivator = gameFieldObjectsActivator;
 
@@ -108,9 +112,16 @@ namespace GameFields.Persons
 
         public void AttackActivate()
         {
-            AttackMenuActivateData data = new AttackMenuActivateData(1);
+            SelectMenuActivateData data = new SelectMenuActivateData(1);
 
             _attackMenu.Activate(data);
+        }
+
+        public void SelectActivate()
+        {
+            SelectMenuActivateData data = new SelectMenuActivateData(1);
+
+            _selectMenu.Activate(data);
         }
 
         //public void AttackDeactivate()

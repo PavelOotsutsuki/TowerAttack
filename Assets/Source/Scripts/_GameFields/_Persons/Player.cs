@@ -8,6 +8,7 @@ using GameFields.Persons.SelectMenues.Attacks;
 using Tools;
 using Cards;
 using GameFields.Signals;
+using GameFields.Persons.SelectMenues.Commons;
 
 namespace GameFields.Persons
 {
@@ -20,13 +21,14 @@ namespace GameFields.Persons
 
         private readonly TurnProcessing _turnProcessing;
 
-        private IAttackMenuActivator _attackMenu;
+        private ISelectMenuActivator _attackMenu;
 
         public Player(InteractionActivator interactionActivator, Hand hand, CardPlayingZone cardPlayingZone, Tower tower,
             DiscoverPlayer discover, DrawCardRoot drawCardRoot, StartTurnDraw startTurnDraw, TurnProcessing turnProcessing,
-            SignalBus bus, PersonStep startPlayerTurnView, IAttackMenuActivator attackMenu, EndTurnProcessing endTurnProcessing) :
+            SignalBus bus, PersonStep startPlayerTurnView, ISelectMenuActivator attackMenu, EndTurnProcessing endTurnProcessing,
+            ISelectMenuActivator selectMenu) :
             base(cardPlayingZone, drawCardRoot, tower, startTurnDraw, discover, bus, hand,
-                attackMenu, interactionActivator)
+                attackMenu, interactionActivator, selectMenu)
         {
             _startPlayerTurnView = startPlayerTurnView;
             _endTurnProcessing = endTurnProcessing;

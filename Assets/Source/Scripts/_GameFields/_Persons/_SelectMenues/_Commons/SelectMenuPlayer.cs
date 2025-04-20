@@ -13,7 +13,7 @@ namespace GameFields.Persons.SelectMenues.Commons
         [SerializeField] private SelectMenuPlayerData _data;
         [SerializeField] private SelectButton _selectButton;
 
-        public void Init(ICardNumberKeeper cardNumberKeeper, IAttackResultHandler attackResultHandler, int countNumbers,
+        public void Init(ICardNumberKeeper cardNumberKeeper, ISelectResultHandler attackResultHandler, int countNumbers,
             SelectNumbersList selectedNumbers)
         {
             _selectButton.Init(this);

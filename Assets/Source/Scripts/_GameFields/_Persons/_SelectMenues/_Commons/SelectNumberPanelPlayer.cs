@@ -109,8 +109,9 @@ namespace GameFields.Persons.SelectMenues.Commons
                 else
                 {
                     selectedNumber.ErrorChoice();
-                    SelectedNumbers.Add(selectedNumber);
                 }
+
+                SelectedNumbers.Add(selectedNumber);
 
                 float delayUntilPlayNextSelectedNumberAnimation = selectedNumber.AnimationDuration * _data.NextAnimationStartPercent;
 

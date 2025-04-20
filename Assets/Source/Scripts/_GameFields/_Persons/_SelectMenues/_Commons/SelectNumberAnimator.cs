@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace GameFields.Persons.SelectMenues.Commons
 {
-    public class SelectNumberAnimator : MonoBehaviour, IWorkable, IAutomaticFillComponents
+    public class SelectNumberAnimator : MonoBehaviour, IWorkable
     {
-        [SerializeField] private ErrorSelectNumberAnimation _errorAnimation;
-        [SerializeField] private SuccessSelectNumberAnimation _successAnimation;
+        [SerializeField] private SelectNumberAnimation _errorAnimation;
+        [SerializeField] private SelectNumberAnimation _successAnimation;
 
         private SelectNumberAnimation _currentAnimation;
 
@@ -64,32 +64,32 @@ namespace GameFields.Persons.SelectMenues.Commons
             _currentAnimation.Play();
         }
 
-        #region AutomaticFillComponents
+        //#region AutomaticFillComponents
 
-        [ContextMenu(nameof(DefineAllComponents) + nameof(SelectNumberAnimator))]
-        public List<ComponentAttachInfo> DefineAllComponents()
-        {
-            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
-            {
-                DefineErrorSelectNumberAnimation(),
-                DefineSuccessSelectNumberAnimation()
-            };
+        //[ContextMenu(nameof(DefineAllComponents) + nameof(SelectNumberAnimator))]
+        //public List<ComponentAttachInfo> DefineAllComponents()
+        //{
+        //    List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+        //    {
+        //        DefineErrorSelectNumberAnimation(),
+        //        DefineSuccessSelectNumberAnimation()
+        //    };
 
-            return list;
-        }
+        //    return list;
+        //}
 
-        [ContextMenu(nameof(DefineErrorSelectNumberAnimation))]
-        private ComponentAttachInfo DefineErrorSelectNumberAnimation()
-        {
-            return AutomaticFillComponents.DefineComponent(this, ref _errorAnimation, ComponentLocationTypes.InChildren);
-        }
+        //[ContextMenu(nameof(DefineErrorSelectNumberAnimation))]
+        //private ComponentAttachInfo DefineErrorSelectNumberAnimation()
+        //{
+        //    return AutomaticFillComponents.DefineComponent(this, ref _errorAnimation, ComponentLocationTypes.InChildren);
+        //}
 
-        [ContextMenu(nameof(DefineSuccessSelectNumberAnimation))]
-        private ComponentAttachInfo DefineSuccessSelectNumberAnimation()
-        {
-            return AutomaticFillComponents.DefineComponent(this, ref _successAnimation, ComponentLocationTypes.InChildren);
-        }
+        //[ContextMenu(nameof(DefineSuccessSelectNumberAnimation))]
+        //private ComponentAttachInfo DefineSuccessSelectNumberAnimation()
+        //{
+        //    return AutomaticFillComponents.DefineComponent(this, ref _successAnimation, ComponentLocationTypes.InChildren);
+        //}
 
-        #endregion
+        //#endregion
     }
 }
