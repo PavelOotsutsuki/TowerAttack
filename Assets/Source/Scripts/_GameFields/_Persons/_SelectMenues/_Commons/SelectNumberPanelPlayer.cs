@@ -16,6 +16,8 @@ namespace GameFields.Persons.SelectMenues.Commons
         [SerializeField] private SelectNumber[] _selectNumbers;
         [SerializeField] private SelectNumberPanelPlayerData _data;
 
+        protected List<SelectNumber> CurrentSelectedNumbers;
+
         private int _columnsCount;
         private int _rowsCount;
         private int _lastRowColumnsCount;
@@ -80,13 +82,13 @@ namespace GameFields.Persons.SelectMenues.Commons
 
         protected override IEnumerator Deactivating()
         {
-            List<SelectNumber> selectedNumbers = new List<SelectNumber>(); // Можно заменить на LINQ
+            CurrentSelectedNumbers = new List<SelectNumber>(); // Можно заменить на LINQ
 
             foreach (SelectNumber selectNumber in _selectNumbers)
             {
                 if (selectNumber.IsClicked)
                 {
-                    selectedNumbers.Add(selectNumber);
+                    CurrentSelectedNumbers.Add(selectNumber);
                 }
             }
             //Debug.Log("Длина: " + _attackNumbers.Length);
@@ -99,12 +101,15 @@ namespace GameFields.Persons.SelectMenues.Commons
             //    }
             //}
 
-            foreach (SelectNumber selectedNumber in selectedNumbers)
+            ResultType resultType = ResultType.Falled;
+
+            foreach (SelectNumber selectedNumber in CurrentSelectedNumbers)
             {
                 if (CardNumberKeeper.Card.IsSuccessAttack(selectedNumber.Number))
                 {
                     selectedNumber.SuccessChoice();
-                    SelectResult.SuccessChoice();
+
+                    resultType = ResultType.Success;
                 }
                 else
                 {
@@ -118,7 +123,11 @@ namespace GameFields.Persons.SelectMenues.Commons
                 yield return new WaitForSeconds(delayUntilPlayNextSelectedNumberAnimation);
             }
 
-            float waitLastAnimationCompleted = selectedNumbers[selectedNumbers.Count - 1].AnimationDuration * (1f - _data.NextAnimationStartPercent);
+            SetSelectResultData setSelectResultData = CreateSetSelectResultData(resultType);
+
+            SelectResult.SetResult(setSelectResultData);
+
+            float waitLastAnimationCompleted = CurrentSelectedNumbers[CurrentSelectedNumbers.Count - 1].AnimationDuration * (1f - _data.NextAnimationStartPercent);
             yield return new WaitForSeconds(waitLastAnimationCompleted + _data.DelayAfterAllNumbersAnimationsPlayed);
 
             _isCompleteNumbersHide = true;
@@ -133,6 +142,13 @@ namespace GameFields.Persons.SelectMenues.Commons
             yield return new WaitUntil(() => FadablePanel.IsComplete);
 
             IsCompleteThis = true;
+        }
+
+        protected virtual SetSelectResultData CreateSetSelectResultData(ResultType resultType)
+        {
+            SetSelectResultData setSelectResultData = new SetSelectResultData(resultType);
+
+            return setSelectResultData;
         }
 
         private void OnSelectNumberClick(bool isActive)

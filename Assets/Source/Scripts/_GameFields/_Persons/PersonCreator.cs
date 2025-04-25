@@ -174,11 +174,14 @@ namespace GameFields.Persons
             SelectNumbersList choicedNumbers = new SelectNumbersList();
 
             ConfirmableNumbers confirmableNumbersPlayer = new ConfirmableNumbers(attackedNumbers, choicedNumbers);
-            _playerAttackMenu.Init(_enemyTower, _playerCardAttackZone, CountNumbers, attackedNumbers);
-            _playerChoiceMenu.Init(_enemyTower, _playerCardAttackZone, CountNumbers, choicedNumbers);
 
-            //_playerCardAttackZone.Init(_playerAttackMenu, _enemyTower);
-            _playerCardAttackZone.Init(_playerChoiceMenu, _enemyTower);
+            ChoiceResultHandlerPlayer choiceResultHandler = new ChoiceResultHandlerPlayer(_informationLabel);
+
+            _playerAttackMenu.Init(_enemyTower, _playerCardAttackZone, CountNumbers, attackedNumbers);
+            _playerChoiceMenu.Init(_enemyTower, choiceResultHandler, CountNumbers, choicedNumbers);
+
+            _playerCardAttackZone.Init(_playerAttackMenu, _enemyTower);
+            //_playerCardAttackZone.Init(_playerChoiceMenu, _enemyTower);
         }
 
         private void InitEnemyData(SeatPool seatPool)
@@ -193,8 +196,11 @@ namespace GameFields.Persons
             SelectNumbersList choicedNumbers = new SelectNumbersList();
 
             ConfirmableNumbers confirmableNumbersEnemyAI = new ConfirmableNumbers(attackedNumbers, choicedNumbers);
+
+            ChoiceResultHandlerPlayer choiceResultHandler = new ChoiceResultHandlerPlayer(_informationLabel);
+
             _enemyAttackMenu.Init(_playerTower, _enemyCardAttackZone, CountNumbers, attackedNumbers);
-            _enemyChoiceMenu.Init(_playerTower, _enemyCardAttackZone, CountNumbers, choicedNumbers);
+            _enemyChoiceMenu.Init(_playerTower, choiceResultHandler, CountNumbers, choicedNumbers);
 
             _enemyCardAttackZone.Init(_enemyAttackMenu, _playerTower);
         }

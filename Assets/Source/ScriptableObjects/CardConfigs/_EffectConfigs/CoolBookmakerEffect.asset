@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a56921f2bd449dc9206de2d76eb1d0c, type: 3}
   m_Name: CoolBookmakerEffect
   m_EditorClassIdentifier: 
-  <Type>k__BackingField: 0
+  <Type>k__BackingField: 4
   <Duration>k__BackingField: 0

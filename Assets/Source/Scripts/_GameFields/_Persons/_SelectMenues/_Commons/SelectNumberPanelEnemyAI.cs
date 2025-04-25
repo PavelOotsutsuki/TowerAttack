@@ -85,15 +85,19 @@ namespace GameFields.Persons.SelectMenues.Commons
 
             yield return new WaitUntil(() => _informationLabel.IsComplete);
 
+            ResultType resultType = ResultType.Falled;
+
             foreach (ISelectNumber selectedNumber in selectedNumbers)
             {
                 if (CardNumberKeeper.Card.IsSuccessAttack(selectedNumber.Number))
                 {
-                    SelectResult.SuccessChoice();
+                    resultType = ResultType.Success;
                     break;
                 }
             }
 
+            SetSelectResultData setSelectResultData = new SetSelectResultData(resultType);
+            SelectResult.SetResult(setSelectResultData);
             //
             //string debugMsg = "";
 

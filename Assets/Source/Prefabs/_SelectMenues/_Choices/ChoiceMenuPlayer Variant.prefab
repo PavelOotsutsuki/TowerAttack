@@ -4703,7 +4703,8 @@ PrefabInstance:
       propertyPath: _selectNumbers.Array.data[49]
       value: 
       objectReference: {fileID: 2613453008840192906}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6383048701071339644, guid: b0310c990d05043b7b956fafd0e51ef5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 491525667406986589, guid: b0310c990d05043b7b956fafd0e51ef5, type: 3}
@@ -4860,18 +4861,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4758502892277597259, guid: b0310c990d05043b7b956fafd0e51ef5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4924958997545091182}
+    - targetCorrespondingSourceObject: {fileID: 8003965546279122662, guid: b0310c990d05043b7b956fafd0e51ef5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3224567459744659312}
   m_SourcePrefab: {fileID: 100100000, guid: b0310c990d05043b7b956fafd0e51ef5, type: 3}
---- !u!114 &425716724732267181 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6383048701071339644, guid: b0310c990d05043b7b956fafd0e51ef5, type: 3}
-  m_PrefabInstance: {fileID: 6736637248004700881}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79d538b28daa74837bcf9655fe2d8016, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!225 &1937732041585712849 stripped
 CanvasGroup:
   m_CorrespondingSourceObject: {fileID: 5159263583739569152, guid: b0310c990d05043b7b956fafd0e51ef5, type: 3}
@@ -4908,11 +4901,98 @@ MonoBehaviour:
   _selectMenuLabel: {fileID: 8406234356105586164}
   _selectMenuPanel: {fileID: 2170603010936849293}
   _canvasGroup: {fileID: 1937732041585712849}
-  _selectNumberPanelPlayer: {fileID: 425716724732267181}
+  _selectNumberPanelPlayer: {fileID: 3224567459744659312}
   _data:
     <SelectMenuLabelText>k__BackingField: "\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435
       \u043D\u043E\u043C\u0435\u0440\u0430"
   _selectButton: {fileID: 5217844712891728708}
+--- !u!225 &2880681349072774127 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 8829143852807838014, guid: b0310c990d05043b7b956fafd0e51ef5, type: 3}
+  m_PrefabInstance: {fileID: 6736637248004700881}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3634013075588418615 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8003965546279122662, guid: b0310c990d05043b7b956fafd0e51ef5, type: 3}
+  m_PrefabInstance: {fileID: 6736637248004700881}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3224567459744659312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3634013075588418615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f446bbe2e35e4345862736da9d18ad1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FadablePanel: {fileID: 8473041873466019228}
+  _canvasGroup: {fileID: 2880681349072774127}
+  _rectTransform: {fileID: 4198100461140863090}
+  _selectNumbers:
+  - {fileID: 7877990795783596985}
+  - {fileID: 220692122725478529}
+  - {fileID: 8357797964848947574}
+  - {fileID: 7527817949689724824}
+  - {fileID: 6398181179449101368}
+  - {fileID: 6113090260111794602}
+  - {fileID: 3635260658911404369}
+  - {fileID: 3477602674196212994}
+  - {fileID: 8013743053371411683}
+  - {fileID: 5957508549864653624}
+  - {fileID: 2519204115055552390}
+  - {fileID: 7369118844378035804}
+  - {fileID: 7236348227077945895}
+  - {fileID: 7683905267294184219}
+  - {fileID: 7857033956129681825}
+  - {fileID: 899071882381632022}
+  - {fileID: 8596962404909210839}
+  - {fileID: 3304502260119582103}
+  - {fileID: 7647267995082499370}
+  - {fileID: 5439449627936470540}
+  - {fileID: 6070737821000429022}
+  - {fileID: 4085749503185613230}
+  - {fileID: 5685605772946463528}
+  - {fileID: 5357727223948165510}
+  - {fileID: 2502730946798972681}
+  - {fileID: 7027735853251825701}
+  - {fileID: 1848808841914934823}
+  - {fileID: 4484106578659572754}
+  - {fileID: 8401387005000097400}
+  - {fileID: 6512533761056896037}
+  - {fileID: 7657701462140355810}
+  - {fileID: 4714209650529953411}
+  - {fileID: 4804835507437958568}
+  - {fileID: 4429559977582690786}
+  - {fileID: 6408872859871298062}
+  - {fileID: 3547132454130997148}
+  - {fileID: 8131434268028266145}
+  - {fileID: 5674927353418477003}
+  - {fileID: 1395540353996511694}
+  - {fileID: 6655497162260136825}
+  - {fileID: 1761906620970721457}
+  - {fileID: 7996370431552276675}
+  - {fileID: 4132628784849815661}
+  - {fileID: 1839680988367385179}
+  - {fileID: 1014865507728725222}
+  - {fileID: 100193357464061802}
+  - {fileID: 1056693953955324926}
+  - {fileID: 3156178029570788946}
+  - {fileID: 565295021350822049}
+  - {fileID: 2613453008840192906}
+  _data:
+    <NumberWidht>k__BackingField: 100
+    <NumberHeight>k__BackingField: 100
+    <Indent>k__BackingField: 50
+    <NextAnimationStartPercent>k__BackingField: 0.8
+    <DelayAfterAllNumbersAnimationsPlayed>k__BackingField: 1.6
+--- !u!224 &4198100461140863090 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 7439930929231450787, guid: b0310c990d05043b7b956fafd0e51ef5, type: 3}
+  m_PrefabInstance: {fileID: 6736637248004700881}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &5217844712891728708 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1519074254769093013, guid: b0310c990d05043b7b956fafd0e51ef5, type: 3}
@@ -4938,6 +5018,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7b8e78130cef3430398624baee6f914b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8473041873466019228 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2948482625931573069, guid: b0310c990d05043b7b956fafd0e51ef5, type: 3}
+  m_PrefabInstance: {fileID: 6736637248004700881}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3634013075588418615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb2c70a28de3c4b74af564a99b4c3dc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &6808973498461809453

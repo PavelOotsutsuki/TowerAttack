@@ -9,6 +9,7 @@ using GameFields.Signals;
 using Tools;
 using Zenject;
 using GameFields.Persons.SelectMenues.Commons;
+using GameFields.InformationLabels;
 
 namespace GameFields.Persons
 {

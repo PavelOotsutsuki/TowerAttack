@@ -11,12 +11,12 @@ namespace GameFields.Persons.SelectMenues.Commons
         [SerializeField] private SelectNumberPanelEnemyAI _selectNumberPanelEnemyAI;
         [SerializeField] private SelectMenuImitationData _data;
 
-        public void Init(ICardNumberKeeper cardNumberKeeper, ISelectResultHandler attackResultHandler, int countNumbers,
+        public void Init(ICardNumberKeeper cardNumberKeeper, ISelectResultHandler selectResultHandler, int countNumbers,
             SelectNumbersList selectedNumbers)
         {
             _selectNumberPanelEnemyAI.Init(cardNumberKeeper, countNumbers, selectedNumbers);
 
-            base.Init(attackResultHandler, _data, _selectNumberPanelEnemyAI);
+            base.Init(selectResultHandler, _data, _selectNumberPanelEnemyAI);
         }
 
         public override void Activate(SelectMenuActivateData activateData)
@@ -39,7 +39,6 @@ namespace GameFields.Persons.SelectMenues.Commons
 
             Deactivate();
         }
-
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(SelectMenuImitation))]

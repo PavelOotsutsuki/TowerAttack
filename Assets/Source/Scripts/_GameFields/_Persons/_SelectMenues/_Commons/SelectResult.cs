@@ -2,18 +2,22 @@ namespace GameFields.Persons.SelectMenues.Commons
 {
     public class SelectResult
     {
-        private bool _isSelectSuccess;
+        private SetSelectResultData _data;
 
         public SelectResult()
         {
-            _isSelectSuccess = false;
+            _data = null;
         }
 
-        public bool IsSelectSuccess => _isSelectSuccess;
+        public SetSelectResultData Data => _data;
 
-        public void SuccessChoice()
+        public void SetResult(SetSelectResultData data)
         {
-            _isSelectSuccess = true;
+            if (_data != null)
+                if (_data.ResultType == ResultType.Success)
+                    return;
+
+            _data = data;
         }
     }
 }

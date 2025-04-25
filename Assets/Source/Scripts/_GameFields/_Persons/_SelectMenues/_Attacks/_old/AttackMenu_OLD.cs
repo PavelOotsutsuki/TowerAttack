@@ -121,14 +121,14 @@ namespace GameFields.Persons.SelectMenues.Attacks
 
             gameObject.SetActive(false);
 
-            if (_attackResult.IsAttackSuccess)
-            {
-                _attackResultHandler.SuccessChoice();
-            }
-            else
-            {
-                _attackResultHandler.FalledChoice();
-            }
+            //if (_attackResult.IsAttackSuccess)
+            //{
+            //    _attackResultHandler.SetResult();
+            //}
+            //else
+            //{
+            //    _attackResultHandler.FalledChoice();
+            //}
 
             IsComplete = true;
         }

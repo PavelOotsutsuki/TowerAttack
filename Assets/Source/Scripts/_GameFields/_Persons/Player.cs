@@ -9,6 +9,7 @@ using Tools;
 using Cards;
 using GameFields.Signals;
 using GameFields.Persons.SelectMenues.Commons;
+using GameFields.InformationLabels;
 
 namespace GameFields.Persons
 {

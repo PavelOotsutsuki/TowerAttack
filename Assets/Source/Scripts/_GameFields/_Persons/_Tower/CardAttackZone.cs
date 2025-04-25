@@ -81,14 +81,19 @@ namespace GameFields.Persons.Towers
             _attackMenu.Activate(attackMenuActivateData);
         }
 
-        void ISelectResultHandler.SuccessChoice()
+        void ISelectResultHandler.SetResult(SetSelectResultData data)
         {
-            StartCoroutine(SuccessAttackProcessing());
-        }
-
-        void ISelectResultHandler.FalledChoice()
-        {
-            StartCoroutine(FalledAttackProcessing());
+            switch (data.ResultType)
+            {
+                case ResultType.Success:
+                    StartCoroutine(SuccessAttackProcessing());
+                    break;
+                case ResultType.Falled:
+                    StartCoroutine(FalledAttackProcessing());
+                    break;
+                default:
+                    throw new System.Exception("Неизвестный ResultType");
+            }
         }
 
         private IEnumerator FalledAttackProcessing()

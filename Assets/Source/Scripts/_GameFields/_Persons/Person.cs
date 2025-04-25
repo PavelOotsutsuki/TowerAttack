@@ -15,6 +15,8 @@ using Tools;
 using UnityEngine;
 using Zenject;
 using GameFields.Persons.SelectMenues.Commons;
+using GameFields.Persons.SelectMenues.Choices;
+using GameFields.InformationLabels;
 
 namespace GameFields.Persons
 {
@@ -27,7 +29,7 @@ namespace GameFields.Persons
         private readonly Discover _discover;
         private readonly Hand _hand;
         private readonly ISelectMenuActivator _attackMenu;
-        private readonly ISelectMenuActivator _selectMenu;
+        private readonly ISelectMenuActivator _choiceMenu;
 
         //private readonly PersonStep _lastStep;
 
@@ -53,7 +55,7 @@ namespace GameFields.Persons
             //TurnProcess = turnProcess;
             _discover = discover;
             _attackMenu = attackMenu;
-            _selectMenu = selectMenu;
+            _choiceMenu = selectMenu;
             //_lastStep = lastStep;
             InteractionActivator = gameFieldObjectsActivator;
 
@@ -117,11 +119,19 @@ namespace GameFields.Persons
             _attackMenu.Activate(data);
         }
 
-        public void SelectActivate()
-        {
-            SelectMenuActivateData data = new SelectMenuActivateData(1);
+        //public void ChoiceActivate(string message, int countNumbers)
+        //{
+        //    ChoiceResultHandler choiceResultHandler = new ChoiceResultHandler(_informationLabel, message);
+        //    ChoiceMenuActivateData data = new ChoiceMenuActivateData(countNumbers, choiceResultHandler);
 
-            _selectMenu.Activate(data);
+        //    _choiceMenu.Activate(data);
+        //}
+
+        public void ChoiceActivate(int countNumbers)
+        {
+            SelectMenuActivateData data = new SelectMenuActivateData(countNumbers);
+
+            _choiceMenu.Activate(data);
         }
 
         //public void AttackDeactivate()

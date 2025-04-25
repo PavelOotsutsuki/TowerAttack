@@ -23,6 +23,7 @@ namespace GameFields.Effects
                 EffectType.ZhyzhaEffect => new ZhyzhaEffect(_personsState.Deactive, effectConfig.Duration),
                 EffectType.GreedyEffect => new GreedyEffect(_personsState.Active, _personsState.Deactive),
                 EffectType.PyromancerEffect => new PyromancerEffect(_personsState.Deactive, effectConfig.Duration),
+                EffectType.CoolBookmaker => new CoolBookmakerEffect(_personsState.Active),
                 EffectType.PatriarchCorallEffect => new PatriarchCorallEffect(_personsState.Active, _personsState.Deactive),
                 _ => throw new NullReferenceException("Effect is not founded")
             };
