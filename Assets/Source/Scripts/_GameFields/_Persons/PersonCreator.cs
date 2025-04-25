@@ -175,10 +175,10 @@ namespace GameFields.Persons
 
             ConfirmableNumbers confirmableNumbersPlayer = new ConfirmableNumbers(attackedNumbers, choicedNumbers);
 
-            ChoiceResultHandlerPlayer choiceResultHandler = new ChoiceResultHandlerPlayer(_informationLabel);
+            ChoiceResultHandlerPlayer choiceResultHandlerPlayer = new ChoiceResultHandlerPlayer(_informationLabel);
 
             _playerAttackMenu.Init(_enemyTower, _playerCardAttackZone, CountNumbers, attackedNumbers);
-            _playerChoiceMenu.Init(_enemyTower, choiceResultHandler, CountNumbers, choicedNumbers);
+            _playerChoiceMenu.Init(_enemyTower, choiceResultHandlerPlayer, CountNumbers, choicedNumbers);
 
             _playerCardAttackZone.Init(_playerAttackMenu, _enemyTower);
             //_playerCardAttackZone.Init(_playerChoiceMenu, _enemyTower);
