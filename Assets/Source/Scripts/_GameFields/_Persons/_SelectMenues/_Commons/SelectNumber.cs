@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
+using Tools;
 using Tools.UI;
 using Tools.Utils.FillComponents;
 using UnityEngine;
@@ -8,7 +9,7 @@ using UnityEngine.UI;
 
 namespace GameFields.Persons.SelectMenues.Commons
 {
-    public class SelectNumber : SelectableButton, ISelectNumber
+    public class SelectNumber : SelectableButton, ISelectNumber, IActivatable<SelectNumberActivateData>
     {
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private TMP_Text _text;
@@ -17,8 +18,10 @@ namespace GameFields.Persons.SelectMenues.Commons
         [SerializeField] private SelectNumberAnimator _animator;
 
         private Action<bool> _clickCallback;
+        private Color _choiceColor;
 
-        private Color? _blockColor;
+        //private Color? _blockColor;
+        private Dictionary<NumberAnimationType, Color> _blockColors;
 
         public int Number { get; private set; }
         public float AnimationDuration => _animator.AnimationDuration;
@@ -29,7 +32,16 @@ namespace GameFields.Persons.SelectMenues.Commons
 
             Number = number;
 
-            _blockColor = null;
+            _choiceColor = _errorColor;
+            //_blockColor = NormalColor;
+
+            _blockColors = new Dictionary<NumberAnimationType, Color>()
+            {
+                { NumberAnimationType.Error, _errorColor },
+                { NumberAnimationType.Success, _successColor },
+                { NumberAnimationType.Choice, _choiceColor }
+            };
+
             _rectTransform.sizeDelta = size;
             _rectTransform.SetLocalPositionAndRotation(position, Quaternion.identity);
             _text.text = Number.ToString();
@@ -39,42 +51,63 @@ namespace GameFields.Persons.SelectMenues.Commons
             _clickCallback = clickCallback;
         }
 
-        public override void Activate()
+        public void Activate(SelectNumberActivateData data)
         {
             base.Activate();
 
-            if (_blockColor is not null)
+            if (data.NumberAnimationType is not null)
             {
-                SetDisableView(_blockColor.Value);
+                SetDisableView(_blockColors[data.NumberAnimationType.Value]);
             }
 
-            _animator.Activate();
+            _animator.Activate(data.SelectNumberAnimatorActivateData);
         }
 
         public override void Deactivate()
         {
             base.Deactivate();
+
+            _animator.Deactivate();
         }
 
-        public void SuccessChoice()
+        public void SetChoice(NumberAnimationType numberAnimationType)
         {
-            SetDisableView(_successColor);
-            //_confirmableNumbers.Add(this);
+            SetDisableView(_blockColors[numberAnimationType]);
 
-            _animator.PlaySuccessAnimation();
+            _animator.PlayAnimation(numberAnimationType);
+
+            //switch (numberAnimationType)
+            //{
+            //    case NumberAnimationType.Success:
+            //        break;
+            //    case NumberAnimationType.Error:
+            //        break;
+            //    case NumberAnimationType.Choice:
+            //        break;
+            //    default:
+            //        throw new NullReferenceException("Неизвестный NumberAnimationType: " + numberAnimationType);
+            //}
         }
 
-        public void ErrorChoice()
-        {
-            SetDisableView(_errorColor);
-            //_confirmableNumbers.Add(this);
+        //public void SuccessChoice()
+        //{
+        //    SetDisableView(_successColor);
+        //    //_confirmableNumbers.Add(this);
 
-            _animator.PlayErrorAnimation();
-        }
+        //    _animator.PlaySuccessAnimation();
+        //}
+
+        //public void ErrorChoice()
+        //{
+        //    SetDisableView(_errorColor);
+        //    //_confirmableNumbers.Add(this);
+
+        //    _animator.PlayErrorAnimation();
+        //}
 
         private void SetDisableView(Color color)
         {
-            _blockColor = color;
+            //_blockColor = color;
 
             Image.color = color;
             CanvasGroup.blocksRaycasts = false;

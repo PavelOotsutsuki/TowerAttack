@@ -10,7 +10,7 @@ using UnityEngine;
 namespace GameFields.Persons.SelectMenues.Attacks
 {
     [RequireComponent(typeof(FadablePanel))]
-    public class AttackNumberPanelPlayer : AttackNumberPanel
+    public class AttackNumberPanelPlayer_old : AttackNumberPanel
     {
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private AttackNumber[] _attackNumbers;
@@ -218,7 +218,7 @@ namespace GameFields.Persons.SelectMenues.Attacks
         }
 
         #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents) + nameof(AttackNumberPanelPlayer))]
+        [ContextMenu(nameof(DefineAllComponents) + nameof(AttackNumberPanelPlayer_old))]
         public override List<ComponentAttachInfo> DefineAllComponents()
         {
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>

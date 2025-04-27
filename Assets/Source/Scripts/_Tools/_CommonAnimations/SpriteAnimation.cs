@@ -9,7 +9,7 @@ using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCou
 
 namespace Tools.CommonAnimations
 {
-    public abstract class SpriteAnimation : MonoBehaviour, IWorkable, IAutomaticFillComponents
+    public abstract class SpriteAnimation : MonoBehaviour, IWorkable<SpriteAnimationActivateData>, IAutomaticFillComponents
     {
         [SerializeField] private Image _image;
         [SerializeField] private List<Sprite> _animSprites; //Возможно, стоит заменить на массив
@@ -31,12 +31,14 @@ namespace Tools.CommonAnimations
             _image.sprite = _defaultView;
         }
 
-        public void Activate()
+        public void Activate(SpriteAnimationActivateData data)
         {
             if (IsActive == true)
                 return;
 
             IsActive = true;
+
+            _image.sprite = data.IsActiveView ? _activeView : _defaultView;
 
             gameObject.SetActive(true);
         }
@@ -53,7 +55,9 @@ namespace Tools.CommonAnimations
 
         public void Play()
         {
-            Activate();
+            SpriteAnimationActivateData data = new SpriteAnimationActivateData(false);
+
+            Activate(data);
 
             StartingAnimation().ToUniTask();
             //PlayAnimation().ToUniTask();

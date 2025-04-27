@@ -38,14 +38,14 @@ namespace GameFields.Persons
 
         public void AddAccept(IAttackNumber attackNumber)
         {
-            if (_attackedNumbers.Contains(attackNumber) == false)
-                _attackedNumbers.Add(attackNumber);
+            //if (_attackedNumbers.Contains(attackNumber) == false)
+            //    _attackedNumbers.Add(attackNumber);
         }
 
         public void AddSelect(ISelectNumber choicedNumber)
         {
-            if (_choicedNumbers.Contains(choicedNumber) == false)
-                _choicedNumbers.Add(choicedNumber);
+            //if (_choicedNumbers.Contains(choicedNumber) == false)
+            //    _choicedNumbers.Add(choicedNumber);
         }
 
         ////public void Remove(IAttackNumber attackNumber)

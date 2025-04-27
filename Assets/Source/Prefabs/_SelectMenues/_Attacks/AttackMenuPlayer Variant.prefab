@@ -205,6 +205,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AttackMenuPlayer Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 4758502892277597259, guid: b0310c990d05043b7b956fafd0e51ef5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6383048701071339644, guid: b0310c990d05043b7b956fafd0e51ef5, type: 3}
       propertyPath: _selectNumbers.Array.size
       value: 50
@@ -566,6 +570,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4758502892277597259, guid: b0310c990d05043b7b956fafd0e51ef5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8284332244372455580}
+    - targetCorrespondingSourceObject: {fileID: 8003965546279122662, guid: b0310c990d05043b7b956fafd0e51ef5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4583802939325468684}
   m_SourcePrefab: {fileID: 100100000, guid: b0310c990d05043b7b956fafd0e51ef5, type: 3}
 --- !u!224 &39457683339378798 stripped
 RectTransform:
@@ -581,6 +588,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 06d72fc7913af4790974015cebc79b90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3365609644580063870 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2948482625931573069, guid: b0310c990d05043b7b956fafd0e51ef5, type: 3}
+  m_PrefabInstance: {fileID: 458823386061946163}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7587964152408411093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb2c70a28de3c4b74af564a99b4c3dc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &3426033191255450134 stripped
@@ -619,7 +637,7 @@ MonoBehaviour:
   _selectMenuLabel: {fileID: 3426033191255450134}
   _selectMenuPanel: {fileID: 4989075117769868399}
   _canvasGroup: {fileID: 4739884215405566259}
-  _selectNumberPanelPlayer: {fileID: 6830612125715336527}
+  _selectNumberPanelPlayer: {fileID: 4583802939325468684}
   _data:
     <SelectMenuLabelText>k__BackingField: "\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435
       \u043D\u043E\u043C\u0435\u0440\u0430"
@@ -635,17 +653,93 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 822927657cec64d609ede4aaf5d89091, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6830612125715336527 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6383048701071339644, guid: b0310c990d05043b7b956fafd0e51ef5, type: 3}
+--- !u!224 &7017136752524881808 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 7439930929231450787, guid: b0310c990d05043b7b956fafd0e51ef5, type: 3}
   m_PrefabInstance: {fileID: 458823386061946163}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+--- !u!1 &7587964152408411093 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8003965546279122662, guid: b0310c990d05043b7b956fafd0e51ef5, type: 3}
+  m_PrefabInstance: {fileID: 458823386061946163}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4583802939325468684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7587964152408411093}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79d538b28daa74837bcf9655fe2d8016, type: 3}
+  m_Script: {fileID: 11500000, guid: cf4f757dcf60c45ee97acc6f9589be82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FadablePanel: {fileID: 3365609644580063870}
+  _canvasGroup: {fileID: 8996356963695748109}
+  _rectTransform: {fileID: 7017136752524881808}
+  _selectNumbers:
+  - {fileID: 2284006371713559014}
+  - {fileID: 7195938787793285682}
+  - {fileID: 4089155943376330445}
+  - {fileID: 6101001769313930178}
+  - {fileID: 8543847862519533145}
+  - {fileID: 3911692591742314450}
+  - {fileID: 8195686205491517491}
+  - {fileID: 237641242056094986}
+  - {fileID: 6772294124324411932}
+  - {fileID: 8238518271720841172}
+  - {fileID: 601174311360470387}
+  - {fileID: 5834492032129661425}
+  - {fileID: 8225399938720264010}
+  - {fileID: 839330126721632182}
+  - {fileID: 8507025437011725355}
+  - {fileID: 2556888247289634161}
+  - {fileID: 4874962518197673936}
+  - {fileID: 6652656807333192532}
+  - {fileID: 694131608613769882}
+  - {fileID: 9222582523023659672}
+  - {fileID: 6124450737267170085}
+  - {fileID: 2627709828987453756}
+  - {fileID: 7066939870129006533}
+  - {fileID: 2620473794872205137}
+  - {fileID: 8780064847937920711}
+  - {fileID: 4133255864666096801}
+  - {fileID: 8728310486525797806}
+  - {fileID: 6780613697838870234}
+  - {fileID: 4721735612320581377}
+  - {fileID: 5082268964070763657}
+  - {fileID: 4994915168224014538}
+  - {fileID: 8505851260393638660}
+  - {fileID: 1337216551962167786}
+  - {fileID: 956317947744115407}
+  - {fileID: 5478145651094425873}
+  - {fileID: 3042989787994411315}
+  - {fileID: 2460906844586890367}
+  - {fileID: 9084169101255573428}
+  - {fileID: 637115319790031214}
+  - {fileID: 1977593123233429629}
+  - {fileID: 7213105974016366057}
+  - {fileID: 3029509995318270313}
+  - {fileID: 5940831092333790046}
+  - {fileID: 941377622369914156}
+  - {fileID: 915554979762982015}
+  - {fileID: 7835194214624579797}
+  - {fileID: 2186916065584268700}
+  - {fileID: 3752027809308085449}
+  - {fileID: 2295003650677028964}
+  - {fileID: 357681093126147219}
+  _data:
+    <NumberWidht>k__BackingField: 100
+    <NumberHeight>k__BackingField: 100
+    <Indent>k__BackingField: 50
+    <NextAnimationStartPercent>k__BackingField: 0.8
+    <DelayAfterAllNumbersAnimationsPlayed>k__BackingField: 1.6
+--- !u!225 &8996356963695748109 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 8829143852807838014, guid: b0310c990d05043b7b956fafd0e51ef5, type: 3}
+  m_PrefabInstance: {fileID: 458823386061946163}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &518554264140105590
 PrefabInstance:
   m_ObjectHideFlags: 0

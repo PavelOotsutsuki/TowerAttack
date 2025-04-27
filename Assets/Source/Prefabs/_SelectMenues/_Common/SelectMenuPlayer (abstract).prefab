@@ -760,7 +760,6 @@ GameObject:
   - component: {fileID: 1054375046367179449}
   - component: {fileID: 8829143852807838014}
   - component: {fileID: 2948482625931573069}
-  - component: {fileID: 6383048701071339644}
   m_Layer: 0
   m_Name: SelectNumberPanel
   m_TagString: Untagged
@@ -859,78 +858,6 @@ MonoBehaviour:
     <FadeUpDuration>k__BackingField: 0.3
     <FadeOutDuration>k__BackingField: 0.2
     <StartAlpha>k__BackingField: 0
---- !u!114 &6383048701071339644
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8003965546279122662}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79d538b28daa74837bcf9655fe2d8016, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FadablePanel: {fileID: 2948482625931573069}
-  _canvasGroup: {fileID: 8829143852807838014}
-  _rectTransform: {fileID: 7439930929231450787}
-  _selectNumbers:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  _data:
-    <NumberWidht>k__BackingField: 100
-    <NumberHeight>k__BackingField: 100
-    <Indent>k__BackingField: 50
-    <NextAnimationStartPercent>k__BackingField: 0.8
-    <DelayAfterAllNumbersAnimationsPlayed>k__BackingField: 1.6
 --- !u!1001 &5168196458836308578
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -63,7 +63,7 @@ namespace GameFields.Persons.SelectMenues.Commons
             for (int i = 0; i < NeedForActivate; i++)
             {
                 ISelectNumber attackedNumber = GetAttackedNumber() ?? throw new Exception("Ошибка нахождения номера для имитации атаки");
-                SelectedNumbers.Add(attackedNumber);
+                SelectedNumbers.Add(attackedNumber.Number, NumberAnimationType.Error);
                 selectedNumbers.Add(attackedNumber);
             }
 

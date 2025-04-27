@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using GameFields.Persons.SelectMenues.Choices;
 using GameFields.Persons.Towers;
 using Tools;
 using Tools.UI;
@@ -10,7 +11,7 @@ using UnityEngine;
 namespace GameFields.Persons.SelectMenues.Commons
 {
     [RequireComponent(typeof(FadablePanel))]
-    public class SelectNumberPanelPlayer : SelectNumberPanel
+    public abstract class SelectNumberPanelPlayer : SelectNumberPanel
     {
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private SelectNumber[] _selectNumbers;
@@ -67,7 +68,17 @@ namespace GameFields.Persons.SelectMenues.Commons
 
             foreach (SelectNumber selectNumber in _selectNumbers)
             {
-                selectNumber.Activate();
+                //NumberAnimationType? numberAnimationType = null;
+
+                //if (SelectedNumbers.Contains(selectNumber))
+                //{
+                //    numberAnimationType = NumberAnimationType.Error;
+                //}
+
+                //SelectNumberActivateData data = new SelectNumberActivateData(numberAnimationType);
+
+                //selectNumber.Activate(data);
+                ActivateNumber(selectNumber);
             }
 
             IsCompleteThis = true;
@@ -107,21 +118,30 @@ namespace GameFields.Persons.SelectMenues.Commons
             {
                 if (CardNumberKeeper.Card.IsSuccessAttack(selectedNumber.Number))
                 {
-                    selectedNumber.SuccessChoice();
+                    //SetChoiceNumber(selectedNumber, ResultType.Success);
+                    selectedNumber.SetChoice(ConvertResultTypeToNumberAnimationType(ResultType.Success));
 
                     resultType = ResultType.Success;
                 }
                 else
                 {
-                    selectedNumber.ErrorChoice();
+                    //SetChoiceNumber(selectedNumber, ResultType.Falled);
+                    selectedNumber.SetChoice(ConvertResultTypeToNumberAnimationType(ResultType.Falled));
+                    //selectedNumber.SetChoice(this is ChoiceNumberPanelPlayer ? NumberAnimationType.Choice : NumberAnimationType.Error);
                 }
 
-                SelectedNumbers.Add(selectedNumber);
+                //SelectedNumbers.Add(selectedNumber);
 
                 float delayUntilPlayNextSelectedNumberAnimation = selectedNumber.AnimationDuration * _data.NextAnimationStartPercent;
 
                 yield return new WaitForSeconds(delayUntilPlayNextSelectedNumberAnimation);
             }
+
+            if (resultType == ResultType.Falled)
+                foreach (SelectNumber selectedNumber in CurrentSelectedNumbers)
+                {
+                    SelectedNumbers.Add(selectedNumber.Number, ConvertResultTypeToNumberAnimationType(resultType));
+                }
 
             SetSelectResultData setSelectResultData = CreateSetSelectResultData(resultType);
 
@@ -144,12 +164,10 @@ namespace GameFields.Persons.SelectMenues.Commons
             IsCompleteThis = true;
         }
 
-        protected virtual SetSelectResultData CreateSetSelectResultData(ResultType resultType)
-        {
-            SetSelectResultData setSelectResultData = new SetSelectResultData(resultType);
-
-            return setSelectResultData;
-        }
+        protected abstract SetSelectResultData CreateSetSelectResultData(ResultType resultType);
+        protected abstract void ActivateNumber(SelectNumber target);
+        //protected abstract void SetChoiceNumber(SelectNumber target, ResultType resultType);
+        protected abstract NumberAnimationType ConvertResultTypeToNumberAnimationType(ResultType resultType);
 
         private void OnSelectNumberClick(bool isActive)
         {

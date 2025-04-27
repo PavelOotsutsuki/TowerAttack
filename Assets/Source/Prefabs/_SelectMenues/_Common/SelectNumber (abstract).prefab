@@ -139,7 +139,7 @@ GameObject:
   - component: {fileID: 6800604531691371215}
   - component: {fileID: 5167393419442578006}
   - component: {fileID: 496696438031018646}
-  - component: {fileID: 3129663662415350253}
+  - component: {fileID: 8329520759164880297}
   m_Layer: 0
   m_Name: AcceptView
   m_TagString: Untagged
@@ -204,7 +204,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3129663662415350253
+--- !u!114 &8329520759164880297
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -213,7 +213,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3991655681813377884}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cddb06cc354644cad849c2c0a8a61b63, type: 3}
+  m_Script: {fileID: 11500000, guid: aefd0ce97316e4affa57507ac5449258, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _image: {fileID: 496696438031018646}
@@ -408,8 +408,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a9573d9f24e848b595a7d7111db2201, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _errorAnimation: {fileID: 0}
-  _successAnimation: {fileID: 0}
+  _successAnimation: {fileID: 6809382072952687283}
+  _errorAnimation: {fileID: 2714137349256531515}
+  _acceptSelectNumberAnimation: {fileID: 8329520759164880297}
 --- !u!1 &5945580288001719167
 GameObject:
   m_ObjectHideFlags: 0

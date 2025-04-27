@@ -4986,7 +4986,7 @@ MonoBehaviour:
     <NumberWidht>k__BackingField: 100
     <NumberHeight>k__BackingField: 100
     <Indent>k__BackingField: 50
-    <NextAnimationStartPercent>k__BackingField: 0.8
+    <NextAnimationStartPercent>k__BackingField: 0.2
     <DelayAfterAllNumbersAnimationsPlayed>k__BackingField: 1.6
 --- !u!224 &4198100461140863090 stripped
 RectTransform:

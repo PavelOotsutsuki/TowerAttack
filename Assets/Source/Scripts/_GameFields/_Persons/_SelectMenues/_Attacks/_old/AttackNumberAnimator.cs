@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Tools;
+using Tools.CommonAnimations;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
@@ -28,14 +29,16 @@ namespace GameFields.Persons.SelectMenues.Attacks
 
             IsActive = true;
 
+            SpriteAnimationActivateData data = new SpriteAnimationActivateData(true);
+
             if (_currentAnimation is not null)
             {
-                _currentAnimation.Activate();
+                _currentAnimation.Activate(data);
             }
             else
             {
-                _errorAnimation.Activate();
-                _successAnimation.Activate();
+                _errorAnimation.Activate(data);
+                _successAnimation.Activate(data);
             }
         }
 

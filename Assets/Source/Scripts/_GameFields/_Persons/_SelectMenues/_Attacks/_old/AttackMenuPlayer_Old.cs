@@ -10,7 +10,7 @@ namespace GameFields.Persons.SelectMenues.Attacks
 {
     public class AttackMenuPlayer_Old : AttackMenu_OLD
     {
-        [SerializeField] private AttackNumberPanelPlayer _attackNumberPanelPlayer;
+        [SerializeField] private AttackNumberPanelPlayer_old _attackNumberPanelPlayer;
         [SerializeField] private AttackMenuPlayerData _data;
         [SerializeField] private AttackButton _attackButton;
 
