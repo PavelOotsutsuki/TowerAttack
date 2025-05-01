@@ -22,6 +22,7 @@ namespace GameFields.Persons.SelectMenues.Commons
         protected SelectResult SelectResult;
 
         protected SelectNumbersList SelectedNumbers;
+        protected ConfirmableNumbers ConfirmableNumbers;
         protected int CountNumbers;
 
         protected bool IsCompleteThis;
@@ -30,10 +31,12 @@ namespace GameFields.Persons.SelectMenues.Commons
 
         public bool? IsActive { get; private set; } = null;
 
-        public void Init(ICardNumberKeeper cardNumberKeeper, int countNumbers, SelectNumbersList selectedNumbers)
+        public void Init(ICardNumberKeeper cardNumberKeeper, int countNumbers, SelectNumbersList selectedNumbers,
+            ConfirmableNumbers confirmableNumbers)
         {
             CardNumberKeeper = cardNumberKeeper;
             CountNumbers = countNumbers;
+            ConfirmableNumbers = confirmableNumbers;
             //SelectResult = null;
 
             SelectedNumbers = selectedNumbers;

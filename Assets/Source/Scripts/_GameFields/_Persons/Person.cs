@@ -127,11 +127,20 @@ namespace GameFields.Persons
         //    _choiceMenu.Activate(data);
         //}
 
-        public void ChoiceActivate(int countNumbers)
+        public void ChoiceActivate(int countNumbers, Action callback)
         {
             SelectMenuActivateData data = new SelectMenuActivateData(countNumbers);
 
             _choiceMenu.Activate(data);
+
+            WaitingToInvoke(_choiceMenu, callback).ToUniTask(); ;
+        }
+
+        private IEnumerator WaitingToInvoke(ICompletable completable, Action callback)
+        {
+            yield return new WaitUntil(() => completable.IsComplete);
+
+            callback.Invoke();
         }
 
         //public void AttackDeactivate()

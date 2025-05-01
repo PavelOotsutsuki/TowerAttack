@@ -113,10 +113,10 @@ namespace GameFields.Persons.SelectMenues.Attacks
 
         private IAttackNumber GetAttackedNumber()
         {
-            //if (ConfirmableNumbers.AcceptNumbers.Count == _attackNumbers.Length)
-            //{
-            //    throw new Exception("Не осталось непроверенных (неатакованных) номеров!");
-            //}
+            if (ConfirmableNumbers.Count == _attackNumbers.Length)
+            {
+                throw new Exception("Не осталось непроверенных (неатакованных) номеров!");
+            }
 
             List<int> shuffleNumbers = new List<int>();
             List<int> allNumbers = new List<int>();
@@ -135,7 +135,7 @@ namespace GameFields.Persons.SelectMenues.Attacks
             {
                 IAttackNumber attackNumber = _attackNumbers[number - 1];
 
-                if (ConfirmableNumbers.ContainsAccept(attackNumber) == false)
+                if (ConfirmableNumbers.ContainsAccept(attackNumber.Number) == false)
                 {
                     return attackNumber;
                 }

@@ -5969,6 +5969,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startPlayerTurnLabel: {fileID: 407210860}
   _playerCountStartDrawCards: 1
+  _attackResultHandlerPlayerData:
+    <InvertCardAnimationData>k__BackingField:
+      <InvertCardFrontDuration>k__BackingField: 0.5
+      <InvertCardBackDuration>k__BackingField: 0.5
+      <DelayAfterInvert>k__BackingField: 0.5
+      <IsIgnoreStartSide>k__BackingField: 0
+      <StartSide>k__BackingField: 0
+    <DelayBeforeStartingEndFightActions>k__BackingField: 5
+  _informationLabelDataPlayerChoice:
+    <DefaultInformationLabelText>k__BackingField: 
+    <TimeViewInformationLabel>k__BackingField: 4
   _enemyDragAndDropImitationData:
     <StartDelayMin>k__BackingField: 1
     <StartDelayMax>k__BackingField: 2
@@ -5981,6 +5992,22 @@ MonoBehaviour:
     <MaxCountRepeat>k__BackingField: 2
     <CountDrawCards>k__BackingField: 1
     <DrawCardsDelay>k__BackingField: 0.5
+  _attackResultHandlerEnemyAIData:
+    <InvertCardAnimationData>k__BackingField:
+      <InvertCardFrontDuration>k__BackingField: 0.5
+      <InvertCardBackDuration>k__BackingField: 0.5
+      <DelayAfterInvert>k__BackingField: 0.5
+      <IsIgnoreStartSide>k__BackingField: 0
+      <StartSide>k__BackingField: 0
+    <DelayBeforeStartingEndFightActions>k__BackingField: 5
+  _informationLabelDataEnemyAIAttack:
+    <DefaultInformationLabelText>k__BackingField: "\u041F\u0440\u043E\u0442\u0438\u0432\u043D\u0438\u043A
+      \u0432\u044B\u0431\u0440\u0430\u043B \u043D\u043E\u043C\u0435\u0440: "
+    <TimeViewInformationLabel>k__BackingField: 4
+  _informationLabelDataEnemyAIChoice:
+    <DefaultInformationLabelText>k__BackingField: "\u041F\u0440\u043E\u0442\u0438\u0432\u043D\u0438\u043A
+      \u0432\u044B\u0431\u0440\u0430\u043B \u043D\u043E\u043C\u0435\u0440: "
+    <TimeViewInformationLabel>k__BackingField: 4
   _enemyCountStartDrawCards: 1
   _tableActivator: {fileID: 867188514}
   _towerActivator: {fileID: 2072956765}

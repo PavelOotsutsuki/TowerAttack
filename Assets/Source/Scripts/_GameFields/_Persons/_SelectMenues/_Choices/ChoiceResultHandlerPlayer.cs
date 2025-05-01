@@ -16,6 +16,7 @@ namespace GameFields.Persons.SelectMenues.Choices
         private const string FalledDefaultMessage = "\n\nНЕВЕРНО: ";
 
         private readonly InformationLabel _informationLabel;
+        private readonly InformationLabelData _informationLabelData;
         //private readonly string _defaultMessage;
 
         //private readonly List<string> _successMessages;
@@ -33,11 +34,12 @@ namespace GameFields.Persons.SelectMenues.Choices
         //    _defaultMessage = defaultMessage;
         //}
 
-        public ChoiceResultHandlerPlayer(InformationLabel informationLabel)
+        public ChoiceResultHandlerPlayer(InformationLabel informationLabel, InformationLabelData informationLabelData)
         {
             _isComplete = false;
 
             _informationLabel = informationLabel;
+            _informationLabelData = informationLabelData;
 
             List<string> successMessages = new List<string>()
             {
@@ -71,14 +73,14 @@ namespace GameFields.Persons.SelectMenues.Choices
 
         public void SetResult(SetSelectResultData data)
         {
-            if (data is not SetChoiceResultData)
-                throw new NotImplementedException();
+            //if (data is not SetChoiceResultData)
+            //    throw new NotImplementedException();
 
-            SetChoiceResultData extraData = data as SetChoiceResultData;
+            //SetChoiceResultData extraData = data as SetChoiceResultData;
 
-            string defaultMessage = _resultMessageData[data.ResultType].GetText();
+            string defaultMessage = _informationLabelData.DefaultInformationLabelText + _resultMessageData[data.ResultType].GetText();
 
-            LabelActivateData labelActivateData = new LabelActivateData(defaultMessage + extraData.Message);
+            LabelActivateData labelActivateData = new LabelActivateData(defaultMessage + data.Message);
             _informationLabel.Activate(labelActivateData);
 
             WaitingView().ToUniTask();
@@ -86,7 +88,7 @@ namespace GameFields.Persons.SelectMenues.Choices
 
         private IEnumerator WaitingView()
         {
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(_informationLabelData.TimeViewInformationLabel);
             _informationLabel.Deactivate();
 
             yield return new WaitUntil(() => _informationLabel.IsComplete);

@@ -18,13 +18,13 @@ namespace GameFields.Persons.SelectMenues.Commons
 
         private SelectNumberImitation[] _selectNumbers;
 
-        private InformationLabel _informationLabel;
+        //private InformationLabel _informationLabel;
 
-        [Inject]
-        public void Construct(InformationLabel informationLabel)
-        {
-            _informationLabel = informationLabel;
-        }
+        //[Inject]
+        //public void Construct(InformationLabel informationLabel)
+        //{
+        //    _informationLabel = informationLabel;
+        //}
 
         protected override void InitNumbers()
         {
@@ -67,7 +67,7 @@ namespace GameFields.Persons.SelectMenues.Commons
                 selectedNumbers.Add(attackedNumber);
             }
 
-            string labelText = _data.DefaultInformationLabelText;
+            string labelText = "";
 
             for (int i = 0; i < selectedNumbers.Count; i++)
             {
@@ -77,13 +77,13 @@ namespace GameFields.Persons.SelectMenues.Commons
                 labelText += selectedNumbers[i].Number.ToString();
             }
 
-            LabelActivateData informationLableData = new LabelActivateData(labelText);
-            _informationLabel.Activate(informationLableData);
+            //LabelActivateData informationLableData = new LabelActivateData(labelText);
+            //_informationLabel.Activate(informationLableData);
 
-            yield return new WaitForSeconds(_data.TimeViewInformationLabel);
-            _informationLabel.Deactivate();
+            //yield return new WaitForSeconds(_data.TimeViewInformationLabel);
+            //_informationLabel.Deactivate();
 
-            yield return new WaitUntil(() => _informationLabel.IsComplete);
+            //yield return new WaitUntil(() => _informationLabel.IsComplete);
 
             ResultType resultType = ResultType.Falled;
 
@@ -96,31 +96,32 @@ namespace GameFields.Persons.SelectMenues.Commons
                 }
             }
 
-            SetSelectResultData setSelectResultData = new SetSelectResultData(resultType);
+            SetSelectResultData setSelectResultData = new SetSelectResultData(resultType, labelText);
             SelectResult.SetResult(setSelectResultData);
-            //
-            //string debugMsg = "";
 
-            //foreach (ISelectNumber selectNumber in SelectedNumbers.ChoicedNumbers.OrderByDescending(n => n.Number))
-            //{
-            //    if (debugMsg != "")
-            //        debugMsg += ",";
+            #region DEBUG_ENEMY_NUMBERS
+            string debugMsg = "";
 
-            //    debugMsg += selectNumber.Number.ToString();
-            //}
+            foreach (KeyValuePair<int, NumberAnimationType> selectNumber in ConfirmableNumbers.FullList.SelectedNumbersStates.OrderByDescending(n => n.Key))
+            {
+                if (debugMsg != "")
+                    debugMsg += ",";
 
-            //Debug.Log(debugMsg);
-            //
+                debugMsg += selectNumber.Key.ToString();
+            }
+
+            Debug.Log(debugMsg);
+            #endregion
 
             IsCompleteThis = true;
         }
 
         private ISelectNumber GetAttackedNumber()
         {
-            //if (SelectedNumbers.ChoicedNumbers.Count == _selectNumbers.Length)
-            //{
-            //    throw new Exception("Не осталось непроверенных (неатакованных) номеров!");
-            //}
+            if (ConfirmableNumbers.Count == _selectNumbers.Length)
+            {
+                throw new Exception("Не осталось непроверенных номеров!");
+            }
 
             List<int> shuffleNumbers = new List<int>();
             List<int> allNumbers = new List<int>();
@@ -139,7 +140,7 @@ namespace GameFields.Persons.SelectMenues.Commons
             {
                 ISelectNumber selectNumber = _selectNumbers[number - 1];
 
-                if (SelectedNumbers.Contains(selectNumber) == false)
+                if (ConfirmableNumbers.Contains(selectNumber.Number) == false)
                 {
                     return selectNumber;
                 }

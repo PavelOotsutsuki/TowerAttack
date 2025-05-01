@@ -17,6 +17,7 @@ using Zenject;
 using GameFields.Persons.SelectMenues.Commons;
 using GameFields.Persons.SelectMenues.Choices;
 using GameFields.InformationLabels;
+using GameFields.DiscardPiles;
 
 namespace GameFields.Persons
 {
@@ -37,6 +38,8 @@ namespace GameFields.Persons
 
         [SerializeField] private StartPlayerTurnLabel _startPlayerTurnLabel; 
         [SerializeField] private int _playerCountStartDrawCards = 1;
+        [SerializeField] private AttackResultHandlerData _attackResultHandlerPlayerData;
+        [SerializeField] private InformationLabelData _informationLabelDataPlayerChoice;
 
         [Space]
         [Header("----------------------------")]
@@ -45,6 +48,9 @@ namespace GameFields.Persons
         [Header("EnemyAI Fields:")]
 
         [SerializeField] private EnemyDragAndDropImitationData _enemyDragAndDropImitationData;
+        [SerializeField] private AttackResultHandlerData _attackResultHandlerEnemyAIData;
+        [SerializeField] private InformationLabelData _informationLabelDataEnemyAIAttack;
+        [SerializeField] private InformationLabelData _informationLabelDataEnemyAIChoice;
 
         private CardPlayingZone _enemyPlayingZone;
         private HandAI _enemyHand;
@@ -85,13 +91,14 @@ namespace GameFields.Persons
 
         private InteractionActivator _interactionActivator;
         private InformationLabel _informationLabel;
+        private DiscardPile _discardPile;
 
         [Inject]
         public void Construct(CardPlayingZonePlayer playerPlayingZone, HandPlayer playerHand, TablePlayer playerTable, TowerPlayer playerTower,
             DiscoverPlayer playerDiscover, AttackMenuPlayer playerAttackMenu, CardPlayingZoneAI enemyPlayingZone, HandAI enemyHand,
             TableAI enemyTable, TowerAI enemyTower, DiscoverAI enemyDiscoverImitation, AttackMenuImitation enemyAttackMenu,
             CardAttackZonePlayer playerCardAttackZone, CardAttackZoneEnemyAI enemyCardAttackZone, ChoiceMenuPlayer playerChoiceMenu,
-            ChoiceMenuImitation enemyChoiceMenu, InformationLabel informationLabel)
+            ChoiceMenuImitation enemyChoiceMenu, InformationLabel informationLabel, DiscardPile discardPile)
         {
             _playerPlayingZone = playerPlayingZone;
             _playerHand = playerHand;
@@ -112,6 +119,7 @@ namespace GameFields.Persons
             _enemyCardAttackZone = enemyCardAttackZone;
 
             _informationLabel = informationLabel;
+            _discardPile = discardPile;
         }
 
         public void Init(SignalBus bus, Deck deck, EndTurnButton endTurnButton, SeatPool seatPool
@@ -175,12 +183,14 @@ namespace GameFields.Persons
 
             ConfirmableNumbers confirmableNumbersPlayer = new ConfirmableNumbers(attackedNumbers, choicedNumbers);
 
-            ChoiceResultHandlerPlayer choiceResultHandlerPlayer = new ChoiceResultHandlerPlayer(_informationLabel);
+            AttackResultHandlerPlayer attackResultHandlerPlayer = new AttackResultHandlerPlayer(_discardPile, _bus,
+                _enemyTower, _playerCardAttackZone, _attackResultHandlerPlayerData);
+            ChoiceResultHandlerPlayer choiceResultHandlerPlayer = new ChoiceResultHandlerPlayer(_informationLabel, _informationLabelDataPlayerChoice);
 
-            _playerAttackMenu.Init(_enemyTower, _playerCardAttackZone, CountNumbers, attackedNumbers);
-            _playerChoiceMenu.Init(_enemyTower, choiceResultHandlerPlayer, CountNumbers, choicedNumbers);
+            _playerAttackMenu.Init(_enemyTower, attackResultHandlerPlayer, CountNumbers, attackedNumbers, confirmableNumbersPlayer);
+            _playerChoiceMenu.Init(_enemyTower, choiceResultHandlerPlayer, CountNumbers, choicedNumbers, confirmableNumbersPlayer);
 
-            _playerCardAttackZone.Init(_playerAttackMenu, _enemyTower);
+            _playerCardAttackZone.Init(_playerAttackMenu, _enemyTower, _bus, attackResultHandlerPlayer);
             //_playerCardAttackZone.Init(_playerChoiceMenu, _enemyTower);
         }
 
@@ -197,12 +207,14 @@ namespace GameFields.Persons
 
             ConfirmableNumbers confirmableNumbersEnemyAI = new ConfirmableNumbers(attackedNumbers, choicedNumbers);
 
-            ChoiceResultHandlerPlayer choiceResultHandler = new ChoiceResultHandlerPlayer(_informationLabel);
+            AttackResultHandlerEnemyAI attackResultHandlerEnemyAI = new AttackResultHandlerEnemyAI(_discardPile, _bus, _playerTower,
+                _enemyCardAttackZone, _attackResultHandlerEnemyAIData, _informationLabel, _informationLabelDataEnemyAIAttack);
+            ChoiceResultHandlerEnemyAI choiceResultHandlerEnemyAI = new ChoiceResultHandlerEnemyAI(_informationLabel, _informationLabelDataEnemyAIChoice);
 
-            _enemyAttackMenu.Init(_playerTower, _enemyCardAttackZone, CountNumbers, attackedNumbers);
-            _enemyChoiceMenu.Init(_playerTower, choiceResultHandler, CountNumbers, choicedNumbers);
+            _enemyAttackMenu.Init(_playerTower, attackResultHandlerEnemyAI, CountNumbers, attackedNumbers, confirmableNumbersEnemyAI);
+            _enemyChoiceMenu.Init(_playerTower, choiceResultHandlerEnemyAI, CountNumbers, choicedNumbers, confirmableNumbersEnemyAI);
 
-            _enemyCardAttackZone.Init(_enemyAttackMenu, _playerTower);
+            _enemyCardAttackZone.Init(_enemyAttackMenu, _playerTower, _bus, attackResultHandlerEnemyAI);
         }
 
         //private void InitCommonData()

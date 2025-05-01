@@ -7,6 +7,7 @@ using Tools;
 using Tools.UI;
 using Tools.Utils.FillComponents;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 namespace GameFields.Persons.SelectMenues.Commons
 {
@@ -36,14 +37,14 @@ namespace GameFields.Persons.SelectMenues.Commons
         public bool IsCompleteNumbersHide => _isCompleteNumbersHide;
 
         public void Init(IWorkable selectButton, ICardNumberKeeper cardNumberKeeper, int countNumbers,
-            SelectNumbersList selectedNumbers)
+            SelectNumbersList selectedNumbers, ConfirmableNumbers confirmableNumbers)
         {
             if (_selectNumbers.Length != countNumbers)
                 throw new Exception("Несовпадение заданного кол-ва номеров и кол-ва объектов AttackNumber");
 
             _selectButton = selectButton;
 
-            base.Init(cardNumberKeeper, countNumbers, selectedNumbers);
+            base.Init(cardNumberKeeper, countNumbers, selectedNumbers, confirmableNumbers);
         }
 
         protected override void InitNumbers()
@@ -78,7 +79,20 @@ namespace GameFields.Persons.SelectMenues.Commons
                 //SelectNumberActivateData data = new SelectNumberActivateData(numberAnimationType);
 
                 //selectNumber.Activate(data);
-                ActivateNumber(selectNumber);
+
+                NumberAnimationType? numberAnimationType = null;
+
+                SelectNumbersList fullList = ConfirmableNumbers.FullList;
+
+                if (fullList.Contains(selectNumber.Number))
+                {
+                    numberAnimationType = fullList.GetType(selectNumber.Number);
+                }
+
+                SelectNumberActivateData data = new SelectNumberActivateData(numberAnimationType);
+
+                selectNumber.Activate(data);
+                //ActivateNumber(selectNumber);
             }
 
             IsCompleteThis = true;
@@ -165,7 +179,7 @@ namespace GameFields.Persons.SelectMenues.Commons
         }
 
         protected abstract SetSelectResultData CreateSetSelectResultData(ResultType resultType);
-        protected abstract void ActivateNumber(SelectNumber target);
+        //protected abstract void ActivateNumber(SelectNumber target);
         //protected abstract void SetChoiceNumber(SelectNumber target, ResultType resultType);
         protected abstract NumberAnimationType ConvertResultTypeToNumberAnimationType(ResultType resultType);
 

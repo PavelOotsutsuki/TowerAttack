@@ -120,6 +120,9 @@ namespace GameFields.Persons.SelectMenues.Commons
 
             //SelectResultHandler.SetResult(_selectResult.Data);
             _selectResultHandler.SetResult(_selectResult.Data);
+
+            yield return new WaitUntil(() => _selectResultHandler.IsComplete);
+
             IsComplete = true;
         }
 

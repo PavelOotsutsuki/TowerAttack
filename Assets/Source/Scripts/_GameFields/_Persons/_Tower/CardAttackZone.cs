@@ -12,46 +12,62 @@ using Zenject;
 
 namespace GameFields.Persons.Towers
 {
-    public abstract class CardAttackZone : MonoBehaviour, IAttackable, ICompletable, IPersonObject, ISelectResultHandler
+    public abstract class CardAttackZone : MonoBehaviour, IAttackable, IPersonObject, IAttackCardKeeper
     {
         [SerializeField] private CardAttackZoneData _data;
 
-        private InvertCardAnimation _invertCardAnimation;
+        //private InvertCardAnimation _invertCardAnimation;
         private ShakeAnimation _shakeAnimation;
 
         private ISelectMenuActivator _attackMenu;
-        private IBoomTower _tower;
+        private IReadOnlyRectTransformable _tower;
 
-        private DiscardPile _discardPile;
+        //private DiscardPile _discardPile;
         protected SignalBus Bus;
+        protected ICompletable AttackHandler;
 
         private Card _currentCard;
 
-        private bool _isComplete;
+        //private bool _isComplete;
 
-        public bool IsComplete => _isComplete;
+        //public bool IsComplete => _isComplete;
 
-        [Inject]
-        public void Construct(DiscardPile discardPile, SignalBus bus)
+        //[Inject]
+        //public void Construct(DiscardPile discardPile, SignalBus bus)
+        //{
+        //    _discardPile = discardPile;
+        //    Bus = bus;
+
+        //    _isComplete = false;
+        //}
+
+        public Card SeizeAttackingCard
         {
-            _discardPile = discardPile;
-            Bus = bus;
+            get
+            {
+                Card currentCard = _currentCard;
 
-            _isComplete = false;
+                _currentCard = null;
+                return currentCard;
+            }
         }
 
-        public void Init(ISelectMenuActivator attackMenu, IBoomTower tower)
+        public void Init(ISelectMenuActivator attackMenu, IReadOnlyRectTransformable tower, SignalBus bus,
+            ICompletable attackHandler)
         {
             _attackMenu = attackMenu;
             _tower = tower;
+            Bus = bus;
+            AttackHandler = attackHandler;
 
-            _invertCardAnimation = new InvertCardAnimation(_data.InvertCardAnimationData);
+            //_invertCardAnimation = new InvertCardAnimation(_data.InvertCardAnimationData);
             _shakeAnimation = new ShakeAnimation(_data.ShakeAnimationConfig);
         }
 
         public void Attack(Card card)
         {
-            _isComplete = false;
+            //_isComplete = false;
+            _currentCard = card;
 
             AttackProcessingActivate();
 
@@ -62,7 +78,7 @@ namespace GameFields.Persons.Towers
 
         private IEnumerator ActivatingAttack(Card card)
         {
-            _currentCard = card;
+            //_currentCard = card;
 
             ReadOnlyRectTransform towerTransform = _tower.ReadOnlyRectTransform;
 
@@ -81,55 +97,55 @@ namespace GameFields.Persons.Towers
             _attackMenu.Activate(attackMenuActivateData);
         }
 
-        void ISelectResultHandler.SetResult(SetSelectResultData data)
-        {
-            switch (data.ResultType)
-            {
-                case ResultType.Success:
-                    StartCoroutine(SuccessAttackProcessing());
-                    break;
-                case ResultType.Falled:
-                    StartCoroutine(FalledAttackProcessing());
-                    break;
-                default:
-                    throw new System.Exception("Неизвестный ResultType");
-            }
-        }
+        //void ISelectResultHandler.SetResult(SetSelectResultData data)
+        //{
+        //    switch (data.ResultType)
+        //    {
+        //        case ResultType.Success:
+        //            StartCoroutine(SuccessAttackProcessing());
+        //            break;
+        //        case ResultType.Falled:
+        //            StartCoroutine(FalledAttackProcessing());
+        //            break;
+        //        default:
+        //            throw new System.Exception("Неизвестный ResultType");
+        //    }
+        //}
 
-        private IEnumerator FalledAttackProcessing()
-        {
-            if (_currentCard is not null)
-            {
-                _invertCardAnimation.Play(_currentCard);
+        //private IEnumerator FalledAttackProcessing()
+        //{
+        //    if (_currentCard is not null)
+        //    {
+        //        _invertCardAnimation.Play(_currentCard);
 
-                yield return new WaitUntil(() => _invertCardAnimation.IsComplete);
+        //        yield return new WaitUntil(() => _invertCardAnimation.IsComplete);
 
-                _discardPile.SeatCard(_currentCard);
+        //        _discardPile.SeatCard(_currentCard);
 
-                _currentCard = null;
-            }
+        //        _currentCard = null;
+        //    }
 
-            _isComplete = true;
-        }
+        //    _isComplete = true;
+        //}
 
-        private IEnumerator SuccessAttackProcessing()
-        {
-            if (_currentCard is not null)
-            {
-                _invertCardAnimation.Play(_currentCard);
+        //private IEnumerator SuccessAttackProcessing()
+        //{
+        //    if (_currentCard is not null)
+        //    {
+        //        _invertCardAnimation.Play(_currentCard);
 
-                yield return new WaitUntil(() => _invertCardAnimation.IsComplete);
+        //        yield return new WaitUntil(() => _invertCardAnimation.IsComplete);
 
-                _discardPile.SeatCard(_currentCard);
+        //        _discardPile.SeatCard(_currentCard);
 
-                _currentCard = null;
-            }
+        //        _currentCard = null;
+        //    }
 
-            _tower.Boom();
+        //    _tower.Boom();
 
-            yield return new WaitForSeconds(_data.DelayBeforeStartingEndFightActions);
+        //    yield return new WaitForSeconds(_data.DelayBeforeStartingEndFightActions);
 
-            Bus.Fire(new PersonWinSignal(this));
-        }
+        //    Bus.Fire(new PersonWinSignal(this));
+        //}
     }
 }

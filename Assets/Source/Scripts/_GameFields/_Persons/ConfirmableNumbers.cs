@@ -18,6 +18,21 @@ namespace GameFields.Persons
             _choicedNumbers = choicedNumbers;
         }
 
+        public SelectNumbersList FullList
+        {
+            get
+            {
+                SelectNumbersList fullList = new SelectNumbersList();
+
+                AddRange(fullList, _attackedNumbers.SelectedNumbersStates);
+                AddRange(fullList, _choicedNumbers.SelectedNumbersStates);
+
+                return fullList;
+            }
+        }
+
+        public int Count => FullList.SelectedNumbersStates.Count;
+
         public void Clear()
         {
             _attackedNumbers.Clear();
@@ -36,7 +51,7 @@ namespace GameFields.Persons
         //public IReadOnlyList<IAttackNumber> AcceptNumbers => _acceptNumbers;
         //public IReadOnlyList<IChoiceNumber> ChoicedNumbers => _choicedNumbers;
 
-        public void AddAccept(IAttackNumber attackNumber)
+        public void AddAccept(ISelectNumber attackNumber)
         {
             //if (_attackedNumbers.Contains(attackNumber) == false)
             //    _attackedNumbers.Add(attackNumber);
@@ -54,16 +69,31 @@ namespace GameFields.Persons
         ////        _acceptNumbers.Remove(attackNumber);
         ////}
 
-        public bool ContainsAccept(IAttackNumber attackNumber)
+        public bool ContainsAccept(int attackNumber)
         {
             return _attackedNumbers.Contains(attackNumber);
         }
 
-        public bool ContainsSelect(ISelectNumber choicedNumber)
+        public bool ContainsSelect(int choicedNumber)
         {
             return _choicedNumbers.Contains(choicedNumber);
         }
 
+        public bool Contains(int selectedNumber)
+        {
+            return _choicedNumbers.Contains(selectedNumber) || _attackedNumbers.Contains(selectedNumber);
+        }
+
+        private void AddRange(SelectNumbersList addedList, IReadOnlyDictionary<int, NumberAnimationType> clonedList)
+        {
+            foreach (KeyValuePair<int, NumberAnimationType> number in clonedList)
+            {
+                if (addedList.Contains(number.Key) == false)
+                {
+                    addedList.Add(number.Key, number.Value);
+                }
+            }
+        }
         //public void Clear()
         //{
         //    _acceptNumbers.Clear();

@@ -1,8 +1,6 @@
-using Tools;
-
 namespace GameFields.Persons.Towers
 {
-    public interface IBoomTower: IReadOnlyRectTransformable
+    public interface IBoomTower
     {
         void Boom();
     }

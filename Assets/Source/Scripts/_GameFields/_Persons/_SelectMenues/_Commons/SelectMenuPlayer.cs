@@ -14,10 +14,10 @@ namespace GameFields.Persons.SelectMenues.Commons
         [SerializeField] private SelectButton _selectButton;
 
         public void Init(ICardNumberKeeper cardNumberKeeper, ISelectResultHandler attackResultHandler, int countNumbers,
-            SelectNumbersList selectedNumbers)
+            SelectNumbersList selectedNumbers, ConfirmableNumbers confirmableNumbers)
         {
             _selectButton.Init(this);
-            _selectNumberPanelPlayer.Init(_selectButton, cardNumberKeeper, countNumbers, selectedNumbers);
+            _selectNumberPanelPlayer.Init(_selectButton, cardNumberKeeper, countNumbers, selectedNumbers, confirmableNumbers);
 
             base.Init(attackResultHandler, _data, _selectNumberPanelPlayer);
         }

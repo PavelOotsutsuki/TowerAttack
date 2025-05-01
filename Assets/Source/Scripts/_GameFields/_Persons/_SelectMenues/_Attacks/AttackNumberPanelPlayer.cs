@@ -1,26 +1,25 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using GameFields.Persons.SelectMenues.Commons;
-using UnityEngine;
 
 namespace GameFields.Persons.SelectMenues.Attacks
 {
     public class AttackNumberPanelPlayer : SelectNumberPanelPlayer
     {
-        protected override void ActivateNumber(SelectNumber target)
-        {
-            NumberAnimationType? numberAnimationType = null;
+        //protected override void ActivateNumber(SelectNumber target)
+        //{
+        //    NumberAnimationType? numberAnimationType = null;
 
-            if (SelectedNumbers.Contains(target))
-            {
-                numberAnimationType = SelectedNumbers.GetType(target.Number);
-            }
+        //    SelectNumbersList fullList = ConfirmableNumbers.FullList;
 
-            SelectNumberActivateData data = new SelectNumberActivateData(numberAnimationType);
+        //    if (fullList.Contains(target.Number))
+        //    {
+        //        numberAnimationType = fullList.GetType(target.Number);
+        //    }
 
-            target.Activate(data);
-        }
+        //    SelectNumberActivateData data = new SelectNumberActivateData(numberAnimationType);
+
+        //    target.Activate(data);
+        //}
 
         protected override SetSelectResultData CreateSetSelectResultData(ResultType resultType)
         {

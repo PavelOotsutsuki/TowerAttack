@@ -6,6 +6,8 @@ namespace GameFields.Persons.SelectMenues.Commons
     {
         private readonly Dictionary<int, NumberAnimationType> _selectedNumbersStates;
 
+        public IReadOnlyDictionary<int, NumberAnimationType> SelectedNumbersStates => _selectedNumbersStates;
+
         public SelectNumbersList()
         {
             _selectedNumbersStates = new Dictionary<int, NumberAnimationType>();
@@ -17,9 +19,9 @@ namespace GameFields.Persons.SelectMenues.Commons
                 _selectedNumbersStates.Add(selectNumber, type);
         }
 
-        public bool Contains(ISelectNumber selectNumber)
+        public bool Contains(int selectNumber)
         {
-            return _selectedNumbersStates.ContainsKey(selectNumber.Number);
+            return _selectedNumbersStates.ContainsKey(selectNumber);
         }
 
         public void Clear()

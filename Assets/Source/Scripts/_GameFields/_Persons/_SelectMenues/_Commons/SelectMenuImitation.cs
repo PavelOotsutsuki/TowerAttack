@@ -12,9 +12,9 @@ namespace GameFields.Persons.SelectMenues.Commons
         [SerializeField] private SelectMenuImitationData _data;
 
         public void Init(ICardNumberKeeper cardNumberKeeper, ISelectResultHandler selectResultHandler, int countNumbers,
-            SelectNumbersList selectedNumbers)
+            SelectNumbersList selectedNumbers, ConfirmableNumbers confirmableNumbers)
         {
-            _selectNumberPanelEnemyAI.Init(cardNumberKeeper, countNumbers, selectedNumbers);
+            _selectNumberPanelEnemyAI.Init(cardNumberKeeper, countNumbers, selectedNumbers, confirmableNumbers);
 
             base.Init(selectResultHandler, _data, _selectNumberPanelEnemyAI);
         }

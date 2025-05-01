@@ -4,19 +4,19 @@ namespace GameFields.Persons.SelectMenues.Choices
 {
     public class ChoiceNumberPanelPlayer : SelectNumberPanelPlayer
     {
-        protected override void ActivateNumber(SelectNumber target)
-        {
-            NumberAnimationType? numberAnimationType = null;
+        //protected override void ActivateNumber(SelectNumber target)
+        //{
+        //    NumberAnimationType? numberAnimationType = null;
 
-            if (SelectedNumbers.Contains(target))
-            {
-                numberAnimationType = SelectedNumbers.GetType(target.Number);
-            }
+        //    if (SelectedNumbers.Contains(target))
+        //    {
+        //        numberAnimationType = SelectedNumbers.GetType(target.Number);
+        //    }
 
-            SelectNumberActivateData data = new SelectNumberActivateData(numberAnimationType);
+        //    SelectNumberActivateData data = new SelectNumberActivateData(numberAnimationType);
 
-            target.Activate(data);
-        }
+        //    target.Activate(data);
+        //}
 
         protected override SetSelectResultData CreateSetSelectResultData(ResultType resultType)
         {
@@ -31,7 +31,7 @@ namespace GameFields.Persons.SelectMenues.Choices
                 message += selectNumber.Number.ToString();
             }
 
-            SetChoiceResultData data = new SetChoiceResultData(resultType, message);
+            SetSelectResultData data = new SetSelectResultData(resultType, message);
 
             return data;
         }
