@@ -66,13 +66,15 @@ namespace GameFields.Persons.SelectMenues.Attacks
                     yield return SuccessAttackProcessing();
                     break;
                 case ResultType.Falled:
-                    yield return FalledAttackProcessing().ToUniTask();
+                    yield return FalledAttackProcessing();
                     break;
                 default:
                     throw new System.Exception("Неизвестный ResultType");
             }
 
             _isComplete = true;
+
+            yield return new WaitForSeconds(1f);
             _isActive = false;
         }
 

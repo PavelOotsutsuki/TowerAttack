@@ -21,6 +21,7 @@ namespace Roots
         [SerializeField] private CardRoot _cardRoot;
         [SerializeField] private GameFieldRoot _gameFieldRoot;
         [SerializeField] private ScreenRoot _screenRoot;
+        [SerializeField] private FontRoot _fontRoot;
         [SerializeField] private PersonCreator _personCreator;
         [SerializeField] private ObjectsLightControlsCreator _lightControlsCreator;
         [SerializeField] private SpeedUpButtonSortOrder _speedUpButtonSortOrder;
@@ -31,6 +32,7 @@ namespace Roots
         private void Construct(SignalBus bus, Deck deck, SeatPool seatPool, CardDescription cardDescription, HandPlayer handPlayer)
         {
             _screenRoot.Init();
+            _fontRoot.Init();
 
             seatPool.Init();
             _endTurnButton.Init();
@@ -161,6 +163,7 @@ namespace Roots
                 DefineCardRoot(),
                 DefineGameFieldRoot(),
                 DefineScreenRoot(),
+                DefineFontRoot(),
                 DefinePersonCreator(),
                 DefineObjectsLightControlsCreator()
             };
@@ -190,6 +193,12 @@ namespace Roots
         private ComponentAttachInfo DefineScreenRoot()
         {
             return AutomaticFillComponents.DefineComponent(this, ref _screenRoot, ComponentLocationTypes.InThis);
+        }
+
+        [ContextMenu(nameof(DefineFontRoot))]
+        private ComponentAttachInfo DefineFontRoot()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _fontRoot, ComponentLocationTypes.InThis);
         }
 
         [ContextMenu(nameof(DefinePersonCreator))]
