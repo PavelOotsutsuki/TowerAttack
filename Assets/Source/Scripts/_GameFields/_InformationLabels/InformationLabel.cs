@@ -33,8 +33,7 @@ namespace GameFields.InformationLabels
 
             _informationLabel.Show(data);
             _panel.Show();
-
-            _isComplete = true;
+            //_isComplete = true;
         }
 
         public void Deactivate()
@@ -44,7 +43,7 @@ namespace GameFields.InformationLabels
 
             IsActive = false;
 
-            _isComplete = false;
+            //_isComplete = false;
 
             _informationLabel.Hide();
             _panel.Hide();

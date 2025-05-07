@@ -14,6 +14,8 @@ namespace Tools.UI
         public bool IsComplete => _fadablePanel.IsComplete;
         public bool? IsShown => _fadablePanel.IsShown;
 
+        //public int TextLength => _label.TextLength;
+
         public virtual void Init()
         {
             _label.Init();

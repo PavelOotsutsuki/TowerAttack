@@ -77,6 +77,7 @@ namespace GameFields.Persons.SelectMenues.Choices
             //    throw new NotImplementedException();
 
             //SetChoiceResultData extraData = data as SetChoiceResultData;
+            _isComplete = false;
 
             string defaultMessage = _informationLabelData.DefaultInformationLabelText + _resultMessageData[data.ResultType].GetText();
 

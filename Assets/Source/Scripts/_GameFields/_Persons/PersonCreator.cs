@@ -190,7 +190,7 @@ namespace GameFields.Persons
             _playerAttackMenu.Init(_enemyTower, attackResultHandlerPlayer, CountNumbers, attackedNumbers, confirmableNumbersPlayer);
             _playerChoiceMenu.Init(_enemyTower, choiceResultHandlerPlayer, CountNumbers, choicedNumbers, confirmableNumbersPlayer);
 
-            _playerCardAttackZone.Init(_playerAttackMenu, _enemyTower, _bus, attackResultHandlerPlayer);
+            _playerCardAttackZone.Init(_playerAttackMenu, _enemyTower, _bus);
             //_playerCardAttackZone.Init(_playerChoiceMenu, _enemyTower);
         }
 
@@ -214,7 +214,7 @@ namespace GameFields.Persons
             _enemyAttackMenu.Init(_playerTower, attackResultHandlerEnemyAI, CountNumbers, attackedNumbers, confirmableNumbersEnemyAI);
             _enemyChoiceMenu.Init(_playerTower, choiceResultHandlerEnemyAI, CountNumbers, choicedNumbers, confirmableNumbersEnemyAI);
 
-            _enemyCardAttackZone.Init(_enemyAttackMenu, _playerTower, _bus, attackResultHandlerEnemyAI);
+            _enemyCardAttackZone.Init(_enemyAttackMenu, _playerTower, _bus);
         }
 
         //private void InitCommonData()

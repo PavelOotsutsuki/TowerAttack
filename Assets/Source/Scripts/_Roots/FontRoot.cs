@@ -14,7 +14,7 @@ namespace Roots
         {
             foreach (TMP_Text TMP_Text in _allTextMechProTexts)
             {
-                //TMP_Text.font = _defaultFont;
+                TMP_Text.font = _defaultFont;
                 //TMP_Text.text = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЬЫЪЭЮЯабвгдеёжзийклмнопрстуфхцчшщьыъэюя1234567890,.!? -:;";
             }
         }
@@ -34,7 +34,7 @@ namespace Roots
         [ContextMenu(nameof(DefineAllTMP_Texts))]
         private ComponentAttachInfo DefineAllTMP_Texts()
         {
-            return AutomaticFillComponents.DefineComponent(this, ref _allTextMechProTexts);
+            return AutomaticFillComponents.DefineComponent(this, ref _allTextMechProTexts, true);
         }
         #endregion
     }

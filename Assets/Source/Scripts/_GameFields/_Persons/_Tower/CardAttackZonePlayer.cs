@@ -6,7 +6,7 @@ namespace GameFields.Persons.Towers
     {
         protected override void AttackProcessingActivate()
         {
-            Bus.Fire(new AttackSignalPlayer(AttackHandler));
+            Bus.Fire(new AttackSignalPlayer(this));
         }
     }
 }

@@ -164,7 +164,7 @@ namespace Tools.CommonAnimations
                 //yield return new WaitForSeconds((_duration / _animSprites.Count) - Time.deltaTime);
             }
 
-            Debug.Log("Конец " + _animSprites.Count + " . Время: " + (DateTime.Now.TimeOfDay - startTime));
+            //Debug.Log("Конец " + _animSprites.Count + " . Время: " + (DateTime.Now.TimeOfDay - startTime));
         }
 
         #region AutomaticFillComponents

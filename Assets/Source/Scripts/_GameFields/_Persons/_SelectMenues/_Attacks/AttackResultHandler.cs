@@ -72,8 +72,6 @@ namespace GameFields.Persons.SelectMenues.Attacks
                     throw new System.Exception("Неизвестный ResultType");
             }
 
-            _isComplete = true;
-
             yield return new WaitForSeconds(1f);
             _isActive = false;
         }
@@ -89,7 +87,7 @@ namespace GameFields.Persons.SelectMenues.Attacks
                 _discardPile.SeatCard(_currentCard);
             }
 
-            //_isComplete = true;
+            _isComplete = true;
         }
 
         private IEnumerator SuccessAttackProcessing()
@@ -109,7 +107,7 @@ namespace GameFields.Persons.SelectMenues.Attacks
 
             _bus.Fire(new PersonWinSignal(this));
 
-            // не было
+            // не было, и не надо. Кнопка при победе переворачивтаься не должна
             //_isComplete = true;
         }
     }

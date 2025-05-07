@@ -9,7 +9,9 @@ namespace Tools.UI
     {
         [SerializeField] private TMP_Text _text;
 
-        [SerializeField] private LableData _data; 
+        [SerializeField] private LableData _data;
+
+        //public int TextLength => _text.text.Length;
 
         public void Init()
         {

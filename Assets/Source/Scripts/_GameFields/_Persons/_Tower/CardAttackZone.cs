@@ -12,7 +12,7 @@ using Zenject;
 
 namespace GameFields.Persons.Towers
 {
-    public abstract class CardAttackZone : MonoBehaviour, IAttackable, IPersonObject, IAttackCardKeeper
+    public abstract class CardAttackZone : MonoBehaviour, IAttackable, IPersonObject, IAttackCardKeeper, ICompletable
     {
         [SerializeField] private CardAttackZoneData _data;
 
@@ -24,13 +24,13 @@ namespace GameFields.Persons.Towers
 
         //private DiscardPile _discardPile;
         protected SignalBus Bus;
-        protected ICompletable AttackHandler;
+        //protected ICompletable AttackHandler;
 
         private Card _currentCard;
 
-        //private bool _isComplete;
+        private bool _isComplete;
 
-        //public bool IsComplete => _isComplete;
+        public bool IsComplete => _isComplete;
 
         //[Inject]
         //public void Construct(DiscardPile discardPile, SignalBus bus)
@@ -52,13 +52,12 @@ namespace GameFields.Persons.Towers
             }
         }
 
-        public void Init(ISelectMenuActivator attackMenu, IReadOnlyRectTransformable tower, SignalBus bus,
-            ICompletable attackHandler)
+        public void Init(ISelectMenuActivator attackMenu, IReadOnlyRectTransformable tower, SignalBus bus)//, ICompletable attackHandler)
         {
             _attackMenu = attackMenu;
             _tower = tower;
             Bus = bus;
-            AttackHandler = attackHandler;
+            //AttackHandler = attackHandler;
 
             //_invertCardAnimation = new InvertCardAnimation(_data.InvertCardAnimationData);
             _shakeAnimation = new ShakeAnimation(_data.ShakeAnimationConfig);
@@ -66,7 +65,7 @@ namespace GameFields.Persons.Towers
 
         public void Attack(Card card)
         {
-            //_isComplete = false;
+            _isComplete = false;
             _currentCard = card;
 
             AttackProcessingActivate();
@@ -95,6 +94,10 @@ namespace GameFields.Persons.Towers
             //AttackMenuActivateData attackMenuActivateData = new AttackMenuActivateData(49);
 
             _attackMenu.Activate(attackMenuActivateData);
+
+            yield return new WaitUntil(() => _attackMenu.IsComplete);
+
+            _isComplete = true;
         }
 
         //void ISelectResultHandler.SetResult(SetSelectResultData data)

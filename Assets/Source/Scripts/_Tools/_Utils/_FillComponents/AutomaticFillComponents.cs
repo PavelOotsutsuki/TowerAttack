@@ -13,7 +13,7 @@ namespace Tools.Utils.FillComponents
         // -2 - компонент не найден ВО ВСЕЙ СЦЕНЕ
         //  3 - массив компонентов успешно задан (проигнорены уже заданные значения, задались заного (значения 0 для массива нет))
         // -3 - компилятор не хочет компилиться без полного return на метод, до сюда дойти никогда не должно
-        public static ComponentAttachInfo DefineComponent<T>(MonoBehaviour parent, ref T target, ComponentLocationTypes componentType) where T: class
+        public static ComponentAttachInfo DefineComponent<T>(MonoBehaviour parent, ref T target, ComponentLocationTypes componentType, bool includeHideComponents = true) where T: class
         {
             if (target is not null)
             {
@@ -37,7 +37,7 @@ namespace Tools.Utils.FillComponents
 
             if (componentType == ComponentLocationTypes.InChildren)
             {
-                if (parent.GetComponentsInChildren<T>(true).Length - parent.GetComponents<T>().Length < 1)
+                if (parent.GetComponentsInChildren<T>(includeHideComponents).Length - parent.GetComponents<T>().Length < 1)
                 {
                     Debug.LogError($"{type} is not found. Parent: " + parent.ToString());
                     return new ComponentAttachInfo(parent.ToString(), target.ToString(), -1);
@@ -46,15 +46,15 @@ namespace Tools.Utils.FillComponents
                 {
                     int warningReturnSuccess = 1;
 
-                    if (parent.GetComponentsInChildren<T>(true).Length - parent.GetComponents<T>().Length > 1)
+                    if (parent.GetComponentsInChildren<T>(includeHideComponents).Length - parent.GetComponents<T>().Length > 1)
                     {
-                        Debug.LogWarning($"{type} is too much! {type} length is {parent.GetComponentsInChildren<T>(true).Length - parent.GetComponents<T>().Length}. Parent: {parent.ToString()}");
+                        Debug.LogWarning($"{type} is too much! {type} length is {parent.GetComponentsInChildren<T>(includeHideComponents).Length - parent.GetComponents<T>().Length}. Parent: {parent.ToString()}");
                         warningReturnSuccess = 2;
                     }
 
-                    if (parent.GetComponentsInChildren<T>(true).Length != 1)
+                    if (parent.GetComponentsInChildren<T>(includeHideComponents).Length != 1)
                     {
-                        T[] targets = parent.GetComponentsInChildren<T>(true);
+                        T[] targets = parent.GetComponentsInChildren<T>(includeHideComponents);
                         T[] inThisTargets = parent.GetComponents<T>();
                         bool isInThis;
 
@@ -138,7 +138,7 @@ namespace Tools.Utils.FillComponents
             return new ComponentAttachInfo(parent.ToString(), target.ToString(), -3);
         }
 
-        public static ComponentAttachInfo DefineComponent<T>(MonoBehaviour parent, ref T[] targets)
+        public static ComponentAttachInfo DefineComponent<T>(MonoBehaviour parent, ref T[] targets, bool includeHideComponents = false)
         {
             //if (targets is null)
             //{
@@ -154,13 +154,13 @@ namespace Tools.Utils.FillComponents
 
             string type = GetShortType<T>();
 
-            if (parent.GetComponentsInChildren<T>().Length < 1)
+            if (parent.GetComponentsInChildren<T>(includeHideComponents).Length < 1)
             {
                 Debug.LogError($"{type} is not found. Parent: " + parent.ToString());
                 return new ComponentAttachInfo(parent.ToString(), targets.ToString(), -1);
             }
 
-            targets = parent.GetComponentsInChildren<T>();
+            targets = parent.GetComponentsInChildren<T>(includeHideComponents);
             ShowSuccessMessage(type, parent);
             return new ComponentAttachInfo(parent.ToString(), targets.ToString(), 3);
         }
