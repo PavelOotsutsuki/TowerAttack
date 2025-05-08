@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7465c289317d843598acc156c84e4215, type: 3}
+  m_Name: Greedy_2
+  m_EditorClassIdentifier: 
+  <CardViewConfig>k__BackingField: {fileID: 11400000, guid: 8a3ad1b28b5d14ebaabb67aa9eb6c9f5, type: 2}
+  <CardCharacter>k__BackingField: {fileID: 7233767571375303125, guid: ef63134ca2cff467589c5e301a67a745, type: 3}
+  <AwakeSound>k__BackingField: {fileID: 8300000, guid: c3dcaeae62d7b40b8bfbc3d2f6df84fb, type: 3}
+  <Effect>k__BackingField: {fileID: 11400000, guid: e723773fbe8994dd48d549e7609268f2, type: 2}
