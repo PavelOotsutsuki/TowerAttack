@@ -1,9 +1,23 @@
+using Tools.UI.ImageChangers;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Tools.UI
 {
     public class SelectableButton : SimpleButton
     {
+        [SerializeField] private MonoBehaviour _ISelectableButtonImageChanger;
+
+        private ISelectableButtonImageChanger _imageChanger;
+
+        public override void Init()
+        {
+            //_imageChanger = GetComponent<ISelectableButtonImageChanger>();
+            _imageChanger = (ISelectableButtonImageChanger)_ISelectableButtonImageChanger;
+
+            base.Init(_imageChanger);
+        }
+
         public sealed override void OnPointerClick(PointerEventData eventData)
         {
             if (IsClicked == false)
@@ -16,17 +30,17 @@ namespace Tools.UI
             }
 
             IsClicked = IsClicked == false;
-            CurrentColor = Image.color;
+            _imageChanger.OnPointerClick();
         }
 
         protected override void OnEnterClick()
         {
-            Image.color = ClickColor;
+            _imageChanger.OnEnterClick();
         }
 
         protected virtual void OnExitClick()
         {
-            Image.color = NormalColor;
+            _imageChanger.OnExitClick();
         }
     }
 }

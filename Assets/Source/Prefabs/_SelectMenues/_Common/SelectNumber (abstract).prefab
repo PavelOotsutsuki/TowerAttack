@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 3816337536740826934}
   - component: {fileID: 6749229929323193934}
   - component: {fileID: 1880296199554080692}
-  - component: {fileID: 7742227905351150708}
   - component: {fileID: 6875317538117497145}
+  - component: {fileID: -8659283325777089503}
   m_Layer: 5
   m_Name: SelectNumber (abstract)
   m_TagString: Untagged
@@ -92,30 +92,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65aba2dc84b28404c9d8b62979eb13dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enterColorChanger: {fileID: 7742227905351150708}
   CanvasGroup: {fileID: 6875317538117497145}
-  Image: {fileID: 6749229929323193934}
-  NormalColor: {r: 1, g: 1, b: 1, a: 1}
-  ClickColor: {r: 1, g: 0, b: 0, a: 1}
+  _ISelectableButtonImageChanger: {fileID: -8659283325777089503}
   _rectTransform: {fileID: 7004512908343632923}
   _text: {fileID: 5655381698643464296}
+  _image: {fileID: 6749229929323193934}
   _errorColor: {r: 0.46274513, g: 0.41176474, b: 0.41176474, a: 1}
   _successColor: {r: 0, g: 0, b: 0, a: 1}
   _animator: {fileID: 8536558353573033186}
---- !u!114 &7742227905351150708
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3390835495117213845}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9fcedef29a2514d25a4edecd133f43ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _selectColor: {r: 0.16470589, g: 1, b: 0, a: 1}
-  _pressedColor: {r: 1, g: 0.88235295, b: 0.015686275, a: 1}
 --- !u!225 &6875317538117497145
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -128,6 +112,23 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &-8659283325777089503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3390835495117213845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae07b3fb6c6684460a6bf9195117064d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Image: {fileID: 6749229929323193934}
+  NormalColor: {r: 1, g: 1, b: 1, a: 1}
+  ClickColor: {r: 1, g: 0.1348231, b: 0, a: 1}
+  SelectColor: {r: 0, g: 1, b: 0.00002193451, a: 1}
+  PressedColor: {r: 0.9056604, g: 0.4882777, b: 0.03844783, a: 1}
 --- !u!1 &3991655681813377884
 GameObject:
   m_ObjectHideFlags: 0

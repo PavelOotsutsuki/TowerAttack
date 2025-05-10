@@ -13,6 +13,7 @@ namespace GameFields.Persons.SelectMenues.Commons
     {
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private TMP_Text _text;
+        [SerializeField] private Image _image;
         [SerializeField] private Color _errorColor;
         [SerializeField] private Color _successColor;
         [SerializeField] private SelectNumberAnimator _animator;
@@ -109,7 +110,7 @@ namespace GameFields.Persons.SelectMenues.Commons
         {
             //_blockColor = color;
 
-            Image.color = color;
+            _image.color = color;
             CanvasGroup.blocksRaycasts = false;
         }
 
@@ -135,6 +136,7 @@ namespace GameFields.Persons.SelectMenues.Commons
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
                 DefineRectTransform(),
+                DefineImage(),
                 DefineText(),
                 DefineAttackNumberAnimator()
             };
@@ -148,6 +150,12 @@ namespace GameFields.Persons.SelectMenues.Commons
         private ComponentAttachInfo DefineRectTransform()
         {
             return AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
+        }
+
+        [ContextMenu(nameof(DefineRectTransform))]
+        private ComponentAttachInfo DefineImage()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _image, ComponentLocationTypes.InThis);
         }
 
         [ContextMenu(nameof(DefineText))]

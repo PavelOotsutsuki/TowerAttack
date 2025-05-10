@@ -4499,6 +4499,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ChoiceMenuPlayer Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 4758502892277597259, guid: b0310c990d05043b7b956fafd0e51ef5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6383048701071339644, guid: b0310c990d05043b7b956fafd0e51ef5, type: 3}
       propertyPath: _selectNumbers.Array.size
       value: 50

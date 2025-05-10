@@ -47,6 +47,62 @@ namespace GameFields.Persons.SelectMenues.Commons
             base.Init(cardNumberKeeper, countNumbers, selectedNumbers, confirmableNumbers);
         }
 
+        public void DefaultActivate()
+        {
+            foreach (SelectNumber selectNumber in _selectNumbers)
+            {
+                //NumberAnimationType? numberAnimationType = null;
+
+                //if (SelectedNumbers.Contains(selectNumber))
+                //{
+                //    numberAnimationType = NumberAnimationType.Error;
+                //}
+
+                //SelectNumberActivateData data = new SelectNumberActivateData(numberAnimationType);
+
+                //selectNumber.Activate(data);
+                selectNumber.Deactivate();
+                NumberAnimationType? numberAnimationType = null;
+
+                SelectNumbersList fullList = ConfirmableNumbers.FullList;
+
+                if (fullList.Contains(selectNumber.Number))
+                {
+                    numberAnimationType = fullList.GetType(selectNumber.Number);
+                }
+
+                SelectNumberActivateData data = new SelectNumberActivateData(numberAnimationType);
+
+                selectNumber.Activate(data);
+                //ActivateNumber(selectNumber);
+            }
+        }
+
+        public void FullActivate()
+        {
+            foreach (SelectNumber selectNumber in _selectNumbers)
+            {
+                //NumberAnimationType? numberAnimationType = null;
+
+                //if (SelectedNumbers.Contains(selectNumber))
+                //{
+                //    numberAnimationType = NumberAnimationType.Error;
+                //}
+
+                //SelectNumberActivateData data = new SelectNumberActivateData(numberAnimationType);
+
+                //selectNumber.Activate(data);
+
+                selectNumber.Deactivate();
+                NumberAnimationType? numberAnimationType = null;
+
+                SelectNumberActivateData data = new SelectNumberActivateData(numberAnimationType);
+
+                selectNumber.Activate(data);
+                //ActivateNumber(selectNumber);
+            }
+        }
+
         protected override void InitNumbers()
         {
             _activateCounter = 0;
@@ -67,33 +123,7 @@ namespace GameFields.Persons.SelectMenues.Commons
         {
             _activateCounter = 0;
 
-            foreach (SelectNumber selectNumber in _selectNumbers)
-            {
-                //NumberAnimationType? numberAnimationType = null;
-
-                //if (SelectedNumbers.Contains(selectNumber))
-                //{
-                //    numberAnimationType = NumberAnimationType.Error;
-                //}
-
-                //SelectNumberActivateData data = new SelectNumberActivateData(numberAnimationType);
-
-                //selectNumber.Activate(data);
-
-                NumberAnimationType? numberAnimationType = null;
-
-                SelectNumbersList fullList = ConfirmableNumbers.FullList;
-
-                if (fullList.Contains(selectNumber.Number))
-                {
-                    numberAnimationType = fullList.GetType(selectNumber.Number);
-                }
-
-                SelectNumberActivateData data = new SelectNumberActivateData(numberAnimationType);
-
-                selectNumber.Activate(data);
-                //ActivateNumber(selectNumber);
-            }
+            DefaultActivate();
 
             IsCompleteThis = true;
         }

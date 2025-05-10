@@ -76,7 +76,7 @@ namespace GameFields.Persons.SelectMenues.Attacks
         {
             _blockColor = color;
 
-            Image.color = color;
+            //Image.color = color;
             CanvasGroup.blocksRaycasts = false;
         }
 

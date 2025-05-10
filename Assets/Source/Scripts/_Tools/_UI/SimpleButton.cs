@@ -1,31 +1,28 @@
 using System.Collections.Generic;
+using Tools.UI.ImageChangers;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace Tools.UI
 {
-    [RequireComponent(typeof(OnEnterColorChanger))]
+    //[RequireComponent(typeof(OnEnterColorChanger))]
     [RequireComponent(typeof(CanvasGroup))]
-    public abstract class SimpleButton : MonoBehaviour, IPointerClickHandler, IPointerExitHandler, IPointerUpHandler, IWorkable, IAutomaticFillComponents
+    public abstract class SimpleButton : MonoBehaviour, IPointerClickHandler, IPointerExitHandler, IPointerUpHandler, IPointerEnterHandler, IPointerDownHandler, IWorkable, IAutomaticFillComponents
     {
-        [SerializeField] private OnEnterColorChanger _enterColorChanger;
-
         [SerializeField] protected CanvasGroup CanvasGroup;
-        [SerializeField] protected Image Image;
-        [SerializeField] protected Color NormalColor;
-        [SerializeField] protected Color ClickColor;
 
-        protected Color CurrentColor;
+        private IButtonImageChanger _imageChanger;
 
         public bool IsClicked { get; protected set; }
 
         public bool? IsActive { get; protected set; } = null;
 
-        public virtual void Init()
+        public abstract void Init();
+
+        protected void Init(IButtonImageChanger imageChanger)
         {
-            _enterColorChanger.Init(Image);
+            _imageChanger = imageChanger;
         }
 
         public virtual void Activate()
@@ -35,8 +32,8 @@ namespace Tools.UI
 
             IsActive = true;
 
-            Image.color = NormalColor;
-            CurrentColor = Image.color;
+            _imageChanger.OnActivate();
+
             IsClicked = false;
             CanvasGroup.blocksRaycasts = true;
         }
@@ -56,12 +53,22 @@ namespace Tools.UI
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            Image.color = CurrentColor;
+            _imageChanger.OnPointerExit();
         }
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            Image.color = CurrentColor;
+            _imageChanger.OnPointerUp();
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            _imageChanger.OnPointerEnter();
+        }
+
+        public void OnPointerDown(PointerEventData eventData)
+        {
+            _imageChanger.OnPointerDown();
         }
 
         #region AutomaticFillComponents
@@ -70,17 +77,10 @@ namespace Tools.UI
         {
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
-                DefineColorChangePointer(),
                 DefineCanvasGroup()
             };
 
             return list;
-        }
-
-        [ContextMenu(nameof(DefineColorChangePointer))]
-        private ComponentAttachInfo DefineColorChangePointer()
-        {
-           return AutomaticFillComponents.DefineComponent(this, ref _enterColorChanger, ComponentLocationTypes.InThis);
         }
 
         [ContextMenu(nameof(DefineCanvasGroup))]
