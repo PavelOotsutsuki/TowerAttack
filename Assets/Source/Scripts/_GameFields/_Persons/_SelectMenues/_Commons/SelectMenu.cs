@@ -68,7 +68,7 @@ namespace GameFields.Persons.SelectMenues.Commons
 
             _selectResult = new SelectResult();
 
-            SelectNumberPanelActivateData numberPanelActivateData = new SelectNumberPanelActivateData(activateData.NeedSelect, _selectResult);
+            SelectNumberPanelActivateData numberPanelActivateData = new SelectNumberPanelActivateData(activateData.NeedSelect, activateData.RestrictionType, _selectResult);
             _selectNumberPanel.Activate(numberPanelActivateData);
         }
 

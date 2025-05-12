@@ -19,15 +19,17 @@ namespace GameFields.Persons.SelectMenues.Commons
         [SerializeField] private SelectNumberAnimator _animator;
 
         private Action<bool> _clickCallback;
+        private Func<SelectNumber, bool> _canClickChecker;
         private Color _choiceColor;
 
         //private Color? _blockColor;
         private Dictionary<NumberAnimationType, Color> _blockColors;
 
         public int Number { get; private set; }
+        //public bool IsClickable => CanvasGroup.blocksRaycasts;
         public float AnimationDuration => _animator.AnimationDuration;
 
-        public void Init(int number, Vector3 position, Vector2 size, Action<bool> clickCallback)
+        public void Init(int number, Vector3 position, Vector2 size, Action<bool> clickCallback, Func<SelectNumber, bool> canClickChecker)
         {
             base.Init();
 
@@ -50,6 +52,7 @@ namespace GameFields.Persons.SelectMenues.Commons
             _animator.Init();
 
             _clickCallback = clickCallback;
+            _canClickChecker = canClickChecker;
         }
 
         public void Activate(SelectNumberActivateData data)
@@ -69,6 +72,12 @@ namespace GameFields.Persons.SelectMenues.Commons
             base.Deactivate();
 
             _animator.Deactivate();
+        }
+
+        public void Disable()
+        {
+            SetDisableView(_errorColor);
+            //_animator.Deactivate();
         }
 
         public void SetChoice(NumberAnimationType numberAnimationType)
@@ -112,6 +121,11 @@ namespace GameFields.Persons.SelectMenues.Commons
 
             _image.color = color;
             CanvasGroup.blocksRaycasts = false;
+        }
+
+        public override bool CanBeClicked()
+        {
+            return base.CanBeClicked() && _canClickChecker.Invoke(this);
         }
 
         protected override void OnEnterClick()

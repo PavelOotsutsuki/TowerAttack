@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using GameFields.Persons.Towers;
 using Tools;
@@ -24,22 +26,31 @@ namespace GameFields.Persons.SelectMenues.Commons
         protected SelectNumbersList SelectedNumbers;
         protected ConfirmableNumbers ConfirmableNumbers;
         protected int CountNumbers;
+        protected List<ISelectNumber> CurrentAvailableNumbers;
+
+        protected bool IsConsecutiveMode;
 
         protected bool IsCompleteThis;
+
+        private ISelectNumber[] _selectNumbers;
 
         public bool IsComplete => IsCompleteThis && FadablePanel.IsComplete;
 
         public bool? IsActive { get; private set; } = null;
 
-        public void Init(ICardNumberKeeper cardNumberKeeper, int countNumbers, SelectNumbersList selectedNumbers,
-            ConfirmableNumbers confirmableNumbers)
+        protected void Init(ICardNumberKeeper cardNumberKeeper, int countNumbers, SelectNumbersList selectedNumbers,
+            ConfirmableNumbers confirmableNumbers, ISelectNumber[] selectNumbers)
         {
             CardNumberKeeper = cardNumberKeeper;
             CountNumbers = countNumbers;
             ConfirmableNumbers = confirmableNumbers;
+
+            ClearCurrentVariables();
             //SelectResult = null;
 
             SelectedNumbers = selectedNumbers;
+
+            _selectNumbers = selectNumbers;
 
             InitNumbers();
 
@@ -58,6 +69,8 @@ namespace GameFields.Persons.SelectMenues.Commons
 
             SelectResult = data.SelectResult;
             NeedForActivate = data.NeedForActivate;
+
+            SetRestriction(data.RestrictionType);
 
             gameObject.SetActive(true);
 
@@ -79,6 +92,11 @@ namespace GameFields.Persons.SelectMenues.Commons
             Deactivating().ToUniTask();
         }
 
+        public void OnDisable()
+        {
+            ClearCurrentVariables();
+        }
+
         protected virtual void OnDeactivate()
         {
             IsCompleteThis = false;
@@ -87,6 +105,73 @@ namespace GameFields.Persons.SelectMenues.Commons
         protected abstract IEnumerator Deactivating();
         protected abstract void OnActivate();
         protected abstract void InitNumbers();
+
+        private void ClearCurrentVariables()
+        {
+            _canvasGroup.blocksRaycasts = false;
+            CurrentAvailableNumbers = null;
+            IsConsecutiveMode = false;
+            NeedForActivate = -1;
+            SelectResult = null;
+        }
+
+        private void SetRestriction(RestrictionType? restrictionType)
+        {
+            CurrentAvailableNumbers = new List<ISelectNumber>();
+
+            if (restrictionType == null)
+            {
+                foreach (ISelectNumber selectNumber in _selectNumbers)
+                {
+                    CurrentAvailableNumbers.Add(selectNumber);
+                }
+
+                return;
+            }
+
+            switch (restrictionType.Value)
+            {
+                case RestrictionType.Even:
+                    SetEvenNumbers();
+                    break;
+                case RestrictionType.Odd:
+                    SetOddNumbers();
+                    break;
+                case RestrictionType.Consecutive:
+                    SetConsecutiveNumbers();
+                    break;
+                default:
+                    throw new ArgumentNullException($"Неизвестный {nameof(RestrictionType)}: {restrictionType}");
+            }
+        }
+
+        private void SetEvenNumbers()
+        {
+            foreach (ISelectNumber selectNumber in _selectNumbers)
+            {
+                if (selectNumber.Number % 2 == 0)
+                    CurrentAvailableNumbers.Add(selectNumber);
+            }
+        }
+
+        private void SetOddNumbers()
+        {
+            foreach (ISelectNumber selectNumber in _selectNumbers)
+            {
+                if (selectNumber.Number % 2 == 1)
+                    CurrentAvailableNumbers.Add(selectNumber);
+            }
+        }
+
+        private void SetConsecutiveNumbers()
+        {
+            IsConsecutiveMode = true;
+
+            foreach (ISelectNumber selectNumber in _selectNumbers)
+            {
+                CurrentAvailableNumbers.Add(selectNumber);
+            }
+        }
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(SelectNumberPanel))]

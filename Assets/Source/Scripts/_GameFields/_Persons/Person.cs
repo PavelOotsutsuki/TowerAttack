@@ -112,28 +112,24 @@ namespace GameFields.Persons
             _discover.Activate(discoverActivateData);
         }
 
-        public void AttackActivate()
+        public void AttackActivate(int countNumbers = 1, Action callback = null, RestrictionType? restrictionType = null)
         {
-            SelectMenuActivateData data = new SelectMenuActivateData(1);
-
-            _attackMenu.Activate(data);
+            ActivateSelectMenu(_attackMenu, countNumbers, callback, restrictionType);
         }
 
-        //public void ChoiceActivate(string message, int countNumbers)
-        //{
-        //    ChoiceResultHandler choiceResultHandler = new ChoiceResultHandler(_informationLabel, message);
-        //    ChoiceMenuActivateData data = new ChoiceMenuActivateData(countNumbers, choiceResultHandler);
-
-        //    _choiceMenu.Activate(data);
-        //}
-
-        public void ChoiceActivate(int countNumbers, Action callback)
+        public void ChoiceActivate(int countNumbers, Action callback = null, RestrictionType? restrictionType = null)
         {
-            SelectMenuActivateData data = new SelectMenuActivateData(countNumbers);
+            ActivateSelectMenu(_choiceMenu, countNumbers, callback, restrictionType);
+        }
 
-            _choiceMenu.Activate(data);
+        private void ActivateSelectMenu(ISelectMenuActivator selectMenu, int countNumbers, Action callback, RestrictionType? restrictionType)
+        {
+            SelectMenuActivateData data = new SelectMenuActivateData(countNumbers, restrictionType);
 
-            WaitingToInvoke(_choiceMenu, callback).ToUniTask(); ;
+            selectMenu.Activate(data);
+
+            if (callback != null)
+                WaitingToInvoke(selectMenu, callback).ToUniTask();
         }
 
         private IEnumerator WaitingToInvoke(ICompletable completable, Action callback)

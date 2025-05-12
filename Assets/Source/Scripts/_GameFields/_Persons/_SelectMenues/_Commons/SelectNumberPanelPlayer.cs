@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using GameFields.Persons.SelectMenues.Choices;
 using GameFields.Persons.Towers;
 using Tools;
@@ -12,7 +13,7 @@ using static UnityEngine.GraphicsBuffer;
 namespace GameFields.Persons.SelectMenues.Commons
 {
     [RequireComponent(typeof(FadablePanel))]
-    public abstract class SelectNumberPanelPlayer : SelectNumberPanel
+    public abstract class SelectNumberPanelPlayer : SelectNumberPanel, ISelectNumberActivator
     {
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private SelectNumber[] _selectNumbers;
@@ -44,68 +45,32 @@ namespace GameFields.Persons.SelectMenues.Commons
 
             _selectButton = selectButton;
 
-            base.Init(cardNumberKeeper, countNumbers, selectedNumbers, confirmableNumbers);
+            base.Init(cardNumberKeeper, countNumbers, selectedNumbers, confirmableNumbers, _selectNumbers);
         }
 
-        public void DefaultActivate()
+        public void ActivateNumbers(bool isConfirmableActivate)
         {
+            DiscardSelection();
+
             foreach (SelectNumber selectNumber in _selectNumbers)
             {
-                //NumberAnimationType? numberAnimationType = null;
-
-                //if (SelectedNumbers.Contains(selectNumber))
-                //{
-                //    numberAnimationType = NumberAnimationType.Error;
-                //}
-
-                //SelectNumberActivateData data = new SelectNumberActivateData(numberAnimationType);
-
-                //selectNumber.Activate(data);
                 selectNumber.Deactivate();
-                NumberAnimationType? numberAnimationType = null;
+                NumberAnimationType? numberAnimationType = FindActivateType(selectNumber, isConfirmableActivate);
 
-                SelectNumbersList fullList = ConfirmableNumbers.FullList;
+                SelectNumberActivateData data = new SelectNumberActivateData(numberAnimationType);
 
-                if (fullList.Contains(selectNumber.Number))
+                selectNumber.Activate(data);
+
+                if (CurrentAvailableNumbers.Contains(selectNumber) == false)
                 {
-                    numberAnimationType = fullList.GetType(selectNumber.Number);
+                    selectNumber.Disable();
                 }
-
-                SelectNumberActivateData data = new SelectNumberActivateData(numberAnimationType);
-
-                selectNumber.Activate(data);
-                //ActivateNumber(selectNumber);
-            }
-        }
-
-        public void FullActivate()
-        {
-            foreach (SelectNumber selectNumber in _selectNumbers)
-            {
-                //NumberAnimationType? numberAnimationType = null;
-
-                //if (SelectedNumbers.Contains(selectNumber))
-                //{
-                //    numberAnimationType = NumberAnimationType.Error;
-                //}
-
-                //SelectNumberActivateData data = new SelectNumberActivateData(numberAnimationType);
-
-                //selectNumber.Activate(data);
-
-                selectNumber.Deactivate();
-                NumberAnimationType? numberAnimationType = null;
-
-                SelectNumberActivateData data = new SelectNumberActivateData(numberAnimationType);
-
-                selectNumber.Activate(data);
-                //ActivateNumber(selectNumber);
             }
         }
 
         protected override void InitNumbers()
         {
-            _activateCounter = 0;
+            DiscardSelection();
 
             FindColumnsAndRowsCount();
             FindIndents();
@@ -114,16 +79,14 @@ namespace GameFields.Persons.SelectMenues.Commons
 
             foreach (SelectNumber selectNumber in _selectNumbers)
             {
-                selectNumber.Init(number, CalcNumberPosition(number), new Vector2(_data.NumberWidht, _data.NumberHeight), OnSelectNumberClick);
+                selectNumber.Init(number, CalcNumberPosition(number), new Vector2(_data.NumberWidht, _data.NumberHeight), OnSelectNumberClick, CheckCanBeClicked);
                 number++;
             }
         }
 
         protected override void OnActivate()
         {
-            _activateCounter = 0;
-
-            DefaultActivate();
+            ActivateNumbers(true);
 
             IsCompleteThis = true;
         }
@@ -215,6 +178,22 @@ namespace GameFields.Persons.SelectMenues.Commons
 
         private void OnSelectNumberClick(bool isActive)
         {
+            if (IsConsecutiveMode)
+            {
+                if (isActive)
+                {
+                    _activateCounter = NeedForActivate;
+                    _selectButton.Activate();
+                }
+                else
+                {
+                    _activateCounter = 0;
+                    _selectButton.Deactivate();
+                }
+
+                return;
+            }
+
             _activateCounter += isActive ? 1 : -1;
 
             if (_activateCounter == NeedForActivate)
@@ -225,6 +204,83 @@ namespace GameFields.Persons.SelectMenues.Commons
             {
                 _selectButton.Deactivate();
             }
+        }
+
+        private bool CheckCanBeClicked(SelectNumber selectNumber)
+        {
+            //if (IsConsecutiveMode == false)
+            //{
+            //    return true;
+            //}
+
+            //if (selectNumber.Number + NeedForActivate - 1 > CountNumbers)
+            //    return false;
+
+            //for (int i = 1; i < NeedForActivate; i++)
+            //{х
+            //    if (_selectNumbers[selectNumber.Number + i - 1].IsClickable == false)
+            //        return false;
+            //}
+
+            //return true;
+            return TryConsecutiveClick(selectNumber);
+        }
+
+        private bool TryConsecutiveClick(SelectNumber currentNumber)
+        {
+            if (IsConsecutiveMode == false)
+            {
+                return true;
+            }
+
+            // Проверки начало
+            if (currentNumber.Number + NeedForActivate - 1 > CountNumbers)
+                return false;
+
+            for (int i = 1; i < NeedForActivate; i++)
+            {
+                if (_selectNumbers[currentNumber.Number + i - 1].IsClickable == false)
+                    return false;
+            }
+            // Проверки конец
+
+            foreach (SelectNumber selectNumber in _selectNumbers)
+            {
+                if (selectNumber.IsClicked)
+                {
+                    selectNumber.OnPointerClick(null);
+                }
+            }
+
+            for (int i = 1; i < NeedForActivate; i++)
+            {
+                _selectNumbers[currentNumber.Number + i - 1].OnPointerClick(null);
+            }
+
+            return true;
+        }
+
+        private NumberAnimationType? FindActivateType(SelectNumber selectNumber, bool isConfirmableActivate)
+        {
+            NumberAnimationType? numberAnimationType = null;
+
+            if (isConfirmableActivate)
+            {
+                SelectNumbersList fullList = ConfirmableNumbers.FullList;
+
+                if (fullList.Contains(selectNumber.Number))
+                {
+                    numberAnimationType = fullList.GetType(selectNumber.Number);
+                }
+            }
+
+            return numberAnimationType;
+        }
+
+        private void DiscardSelection()
+        {
+            _activateCounter = 0;
+            _selectButton.Deactivate();
         }
 
         private Vector2 CalcNumberPosition(int number)

@@ -91,7 +91,7 @@ namespace GameFields.Persons.SelectMenues.Commons
         {
             if (_currentAnimation != null)
             {
-                Debug.Log("Сюда не должно дойти");
+                //Debug.Log("Сюда не должно дойти");
                 _currentAnimation.Deactivate();
             }
 

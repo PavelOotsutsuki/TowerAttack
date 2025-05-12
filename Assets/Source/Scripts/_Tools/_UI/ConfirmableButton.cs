@@ -1,6 +1,8 @@
 using Tools.UI.ImageChangers;
+using Tools.UI.ImageChangers.V1;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
 
 namespace Tools.UI
 {
@@ -12,13 +14,26 @@ namespace Tools.UI
 
         public override void Init()
         {
-            _imageChanger = (IConfirmableButtonImageChanger)_IConfirmableButtonImageChanger;
+            try
+            {
+                _imageChanger = (IConfirmableButtonImageChanger)_IConfirmableButtonImageChanger;
+            }
+            catch
+            {
+                _imageChanger = GetComponent<IConfirmableButtonImageChanger>();
+            }
 
             base.Init(_imageChanger);
         }
 
-        public sealed override void OnPointerClick(PointerEventData eventData)
+        public override void OnPointerClick(PointerEventData eventData)
         {
+            if (eventData != null) // Если null, значит насильно вызвали, значит надо
+            {
+                if (CanBeClicked() == false)
+                    return;
+            }
+
             _imageChanger.OnPointerClick();
 
             IsClicked = true;

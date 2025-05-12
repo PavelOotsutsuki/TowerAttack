@@ -1,6 +1,7 @@
 using System.Collections;
 using Cards;
 using GameFields.Persons;
+using GameFields.Persons.SelectMenues.Commons;
 using UnityEngine;
 
 namespace GameFields.Effects
@@ -28,7 +29,8 @@ namespace GameFields.Effects
         {
             _endPlaying = false;
             //_activePerson.ChoiceActivate("Выбрано:", 3);
-            _activePerson.ChoiceActivate(CountNumbers, EndPlayingCallback);
+            //_activePerson.ChoiceActivate(CountNumbers, EndPlayingCallback, RestrictionType.Even);
+            _activePerson.ChoiceActivate(4, EndPlayingCallback, RestrictionType.Consecutive);
             //yield return new WaitUntil(() => _activePerson.IsChoiceComplete);
             yield return new WaitUntil(() => _endPlaying);
 

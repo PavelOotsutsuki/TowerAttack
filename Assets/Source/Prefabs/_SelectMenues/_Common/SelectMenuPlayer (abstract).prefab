@@ -353,6 +353,7 @@ GameObject:
   - component: {fileID: 8678167750622381248}
   - component: {fileID: 403994639089065288}
   - component: {fileID: 6495112251245684398}
+  - component: {fileID: 2697509208639836857}
   m_Layer: 0
   m_Name: SelectModeButton
   m_TagString: Untagged
@@ -443,6 +444,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanvasGroup: {fileID: 8678167750622381248}
   _ISelectableButtonImageChanger: {fileID: 6495112251245684398}
+  _fadablePanel: {fileID: 2697509208639836857}
 --- !u!114 &6495112251245684398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -462,6 +464,25 @@ MonoBehaviour:
   PressedSprite: {fileID: 21300000, guid: 130999efc96014d16bf5f5693da3850c, type: 3}
   ClickSprite: {fileID: 21300000, guid: ea395cee272a745f6a2325fd74aea21c, type: 3}
   SelectSprite: {fileID: 21300000, guid: 130999efc96014d16bf5f5693da3850c, type: 3}
+--- !u!114 &2697509208639836857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4964345998440648697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb2c70a28de3c4b74af564a99b4c3dc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canvasGroup: {fileID: 8678167750622381248}
+  _data:
+    <MaxAlpha>k__BackingField: 1
+    <MinAlpha>k__BackingField: 0
+    <FadeUpDuration>k__BackingField: 0.3
+    <FadeOutDuration>k__BackingField: 0.3
+    <StartAlpha>k__BackingField: 0
 --- !u!1 &6187588780534060420
 GameObject:
   m_ObjectHideFlags: 0

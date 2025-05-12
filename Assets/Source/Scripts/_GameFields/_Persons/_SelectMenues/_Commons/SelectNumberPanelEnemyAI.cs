@@ -9,6 +9,7 @@ using Zenject;
 using System.Linq;
 using Random = UnityEngine.Random;
 using GameFields.Persons.SelectMenues.Attacks;
+using GameFields.Persons.Towers;
 
 namespace GameFields.Persons.SelectMenues.Commons
 {
@@ -27,20 +28,26 @@ namespace GameFields.Persons.SelectMenues.Commons
         //    _informationLabel = informationLabel;
         //}
 
+        public void Init(ICardNumberKeeper cardNumberKeeper, int countNumbers, SelectNumbersList selectedNumbers,
+            ConfirmableNumbers confirmableNumbers)
+        {
+            _selectNumbers = new SelectNumberImitation[countNumbers];
+
+            base.Init(cardNumberKeeper, countNumbers, selectedNumbers, confirmableNumbers, _selectNumbers);
+        }
+
         protected override void InitNumbers()
         {
-            _selectNumbers = new SelectNumberImitation[CountNumbers];
-
             for (int i = 0; i < CountNumbers; i++)
             {
-                SelectNumberImitation attackNumber = new SelectNumberImitation(i + 1);
-                _selectNumbers[i] = attackNumber;
+                SelectNumberImitation selectNumber = new SelectNumberImitation(i + 1);
+                _selectNumbers[i] = selectNumber;
             }
         }
 
         protected override void OnActivate()
         {
-            Attacking().ToUniTask();
+            Selecting().ToUniTask();
         }
 
         protected override IEnumerator Deactivating()
@@ -53,19 +60,24 @@ namespace GameFields.Persons.SelectMenues.Commons
             IsCompleteThis = true;
         }
 
-        private IEnumerator Attacking()
+        private IEnumerator Selecting()
         {
             //yield return new WaitForSeconds(0.1f);
             yield return new WaitUntil(() => FadablePanel.IsComplete);
             yield return new WaitForSeconds(_data.DelayThinkImitation);
 
-            List<ISelectNumber> selectedNumbers = new List<ISelectNumber>();
+            IRandomSelectNumberLogic selectNumberLogic = IsConsecutiveMode ?
+                new ConsecutiveRandomSelectNumberLogic(NeedForActivate, CurrentAvailableNumbers, ConfirmableNumbers) :
+                new DefaultRandomSelectNumberLogic(NeedForActivate, CurrentAvailableNumbers, ConfirmableNumbers);
 
-            for (int i = 0; i < NeedForActivate; i++)
-            {
-                ISelectNumber selectedNumber = GetSelectedNumber(selectedNumbers) ?? throw new Exception("Ошибка нахождения номера для имитации атаки");
-                selectedNumbers.Add(selectedNumber);
-            }
+            IReadOnlyList<ISelectNumber> selectedNumbers = selectNumberLogic.GetSelectedNumbers();
+            //List<ISelectNumber> restrictionNumbers = new List<ISelectNumber>();
+
+            //foreach (ISelectNumber selectNumber in _selectNumbers)
+            //{
+            //    if (CurrentAvailableNumbers.Contains(selectNumber) == false)
+            //        restrictionNumbers.Add(selectNumber);
+            //}
 
             string labelText = "";
 
@@ -132,68 +144,6 @@ namespace GameFields.Persons.SelectMenues.Commons
             #endregion
 
             IsCompleteThis = true;
-        }
-
-        private ISelectNumber GetSelectedNumber(List<ISelectNumber> exceptionsNumbers)
-        {
-            List<int> shuffleNumbers = new List<int>();
-            List<int> allNumbers = new List<int>();
-
-            for (int i = 0; i < CountNumbers; i++)
-            {
-                allNumbers.Add(i + 1);
-            }
-
-            while (allNumbers.Count > 0)
-            {
-                int selectNumber = allNumbers[Random.Range(0, allNumbers.Count)];
-                shuffleNumbers.Add(selectNumber);
-                allNumbers.Remove(selectNumber);
-            }
-
-            if (ConfirmableNumbers.Count + exceptionsNumbers.Count >= _selectNumbers.Length) // Если все возможные варианты разработаны, берем уже проверенные номера
-            {
-                if (ConfirmableNumbers.Count + exceptionsNumbers.Count == _selectNumbers.Length)
-                {
-                    Debug.Log("Номера кончились");
-                }
-                else
-                {
-                    string numbers = "";
-
-                    foreach (ISelectNumber number in exceptionsNumbers)
-                    {
-                        if (numbers != "")
-                            numbers += ",";
-
-                        numbers += number.Number.ToString();
-                    }
-
-                    Debug.Log("Номеров меньше чем сумма номеров: " + numbers);
-                }
-
-                foreach (int number in shuffleNumbers)
-                {
-                    ISelectNumber selectNumber = _selectNumbers[number - 1];
-
-                    if (exceptionsNumbers.Contains(selectNumber) == false)
-                    {
-                        return selectNumber;
-                    }
-                }
-            }
-
-            foreach (int number in shuffleNumbers)
-            {
-                ISelectNumber selectNumber = _selectNumbers[number - 1];
-
-                if (ConfirmableNumbers.Contains(selectNumber.Number) == false && exceptionsNumbers.Contains(selectNumber) == false)
-                {
-                    return selectNumber;
-                }
-            }
-
-            return null;
         }
     }
 }

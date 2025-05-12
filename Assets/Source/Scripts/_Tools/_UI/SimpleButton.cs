@@ -15,7 +15,7 @@ namespace Tools.UI
         private IButtonImageChanger _imageChanger;
 
         public bool IsClicked { get; protected set; }
-
+        public bool IsClickable => CanvasGroup.blocksRaycasts;
         public bool? IsActive { get; protected set; } = null;
 
         public abstract void Init();
@@ -69,6 +69,11 @@ namespace Tools.UI
         public void OnPointerDown(PointerEventData eventData)
         {
             _imageChanger.OnPointerDown();
+        }
+
+        public virtual bool CanBeClicked()
+        {
+            return IsClickable;
         }
 
         #region AutomaticFillComponents

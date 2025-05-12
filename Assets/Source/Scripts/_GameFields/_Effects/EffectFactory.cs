@@ -9,6 +9,7 @@ namespace GameFields.Effects
     {
         private readonly IPersonsState _personsState;
         //private readonly SignalBus _bus;
+        private Effect _lastEffect;
 
         public EffectFactory(IPersonsState personsState/*, SignalBus bus*/)
         {
@@ -29,6 +30,7 @@ namespace GameFields.Effects
             };
 
             _personsState.Active.StartEffect(effect);
+            _lastEffect = effect;
 
             return effect;
         }

@@ -41,8 +41,8 @@ namespace GameFields.Persons
                 if (_hand.TryGetCard(out Card card))
                 {
                     _cardImitationActions.SetCard(card);
-                    DragAndDropBehaviour1().ToUniTask();
-                    //DragAndDropBehaviour2().ToUniTask();
+                    //DragAndDropBehaviour1().ToUniTask();
+                    DragAndDropBehaviour2().ToUniTask();
                 }
                 else
                 {

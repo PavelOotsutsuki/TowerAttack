@@ -40,6 +40,7 @@ namespace GameFields.Persons.SelectMenues.Commons
             List<ICompletable> completableElements = base.FillCompletableElements();
 
             completableElements.Add(_selectButton);
+            completableElements.Add(_selectModeButton);
 
             return completableElements;
         }

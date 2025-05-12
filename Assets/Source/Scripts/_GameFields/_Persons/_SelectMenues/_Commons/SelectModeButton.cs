@@ -5,29 +5,29 @@ using UnityEngine;
 
 namespace GameFields.Persons.SelectMenues.Commons
 {
-    public class SelectModeButton : SelectableButton
+    public class SelectModeButton : FadableSelectableButton
     {
-        private SelectNumberPanelPlayer _selectNumberPanelPlayer;
+        private ISelectNumberActivator _selectNumberActivator;
 
-        public void Init(SelectNumberPanelPlayer selectNumberPanelPlayer)
+        public void Init(ISelectNumberActivator selectNumberActivator)
         {
             base.Init();
 
-            _selectNumberPanelPlayer = selectNumberPanelPlayer;
+            _selectNumberActivator = selectNumberActivator;
         }
 
         protected override void OnEnterClick()
         {
             base.OnEnterClick();
 
-            _selectNumberPanelPlayer.FullActivate();
+            _selectNumberActivator.ActivateNumbers(false);
         }
 
         protected override void OnExitClick()
         {
             base.OnExitClick();
 
-            _selectNumberPanelPlayer.DefaultActivate();
+            _selectNumberActivator.ActivateNumbers(true);
         }
     }
 }
