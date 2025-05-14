@@ -48,6 +48,8 @@ namespace GameFields.Persons
 
         public override void StartEffect(Effect effect)
         {
+            base.StartEffect(effect);
+
             PushStep(new CardEffectProcessingPlayer(InteractionActivator, effect));
 
             _turnProcessing.Completed();

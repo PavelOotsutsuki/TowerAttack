@@ -17,6 +17,7 @@ using Zenject;
 using GameFields.Persons.SelectMenues.Commons;
 using GameFields.Persons.SelectMenues.Choices;
 using GameFields.InformationLabels;
+using GameFields.Effects;
 
 namespace GameFields.Persons
 {
@@ -41,6 +42,8 @@ namespace GameFields.Persons
 
         private PersonStep _currentStep;
 
+        protected Effect LastEffect;
+
         protected Person(CardPlayingZone playingZone, DrawCardRoot drawCardRoot, Tower tower,
             StartTurnDraw startTurnDraw, Discover discover, SignalBus bus, /*PersonStep lastStep,*/
             Hand hand, ISelectMenuActivator attackMenu, InteractionActivator gameFieldObjectsActivator,
@@ -60,6 +63,8 @@ namespace GameFields.Persons
             InteractionActivator = gameFieldObjectsActivator;
 
             _personSteps = new Stack<PersonStep>();
+
+            LastEffect = new VoidEffect();
             //Bus.Subscribe<StartEffectSignal>(SetCardEffectProcess);
         }
 
@@ -186,7 +191,10 @@ namespace GameFields.Persons
             }
         }
 
-        public abstract void StartEffect(Effect effect);
+        public virtual void StartEffect(Effect effect)
+        {
+            LastEffect = effect;
+        }
 
         //public void StartEffect(Effect effect)
         //{

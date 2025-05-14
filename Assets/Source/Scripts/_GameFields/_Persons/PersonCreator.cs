@@ -205,8 +205,6 @@ namespace GameFields.Persons
             SelectNumbersList attackedNumbers = new SelectNumbersList();
             SelectNumbersList choicedNumbers = new SelectNumbersList();
 
-            TestBotLogic_ChoiceNumbers_TEST3(choicedNumbers);
-
             ConfirmableNumbers confirmableNumbersEnemyAI = new ConfirmableNumbers(attackedNumbers, choicedNumbers);
 
             AttackResultHandlerEnemyAI attackResultHandlerEnemyAI = new AttackResultHandlerEnemyAI(_discardPile, _bus, _playerTower,
@@ -217,6 +215,101 @@ namespace GameFields.Persons
             _enemyChoiceMenu.Init(_playerTower, choiceResultHandlerEnemyAI, CountNumbers, choicedNumbers, confirmableNumbersEnemyAI);
 
             _enemyCardAttackZone.Init(_enemyAttackMenu, _playerTower, _bus);
+        }
+
+        //private void InitCommonData()
+        //{
+        //    _playerCardAttackZone.Init(_playerAttackMenu, _enemyTower);
+        //    _enemyCardAttackZone.Init(_enemyAttackMenu, _playerTower);
+        //}
+        #region AutomaticFillComponents
+        [ContextMenu(nameof(DefineAllComponents) + nameof(PersonCreator))]
+        public List<ComponentAttachInfo> DefineAllComponents()
+        {
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineStartPlayerTurnLabel(),
+                DefineTableActivator(),
+                DefineTowerActivator(),
+            };
+
+            return list;
+        }
+
+        [ContextMenu(nameof(DefineStartPlayerTurnLabel))]
+        private ComponentAttachInfo DefineStartPlayerTurnLabel()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _startPlayerTurnLabel, ComponentLocationTypes.InScene);
+        }
+
+        [ContextMenu(nameof(DefineTableActivator))]
+        private ComponentAttachInfo DefineTableActivator()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _tableActivator, ComponentLocationTypes.InScene);
+        }
+
+        [ContextMenu(nameof(DefineTowerActivator))]
+        private ComponentAttachInfo DefineTowerActivator()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _towerActivator, ComponentLocationTypes.InScene);
+        }
+
+        #endregion
+
+        #region TESTS
+
+        private void TestBotLogic_ChoiceNumbers_TEST4(SelectNumbersList choicedNumbers)
+        {
+            //choicedNumbers.Add(1, NumberAnimationType.Choice);
+            //choicedNumbers.Add(2, NumberAnimationType.Choice);
+            //choicedNumbers.Add(3, NumberAnimationType.Choice);
+            //choicedNumbers.Add(4, NumberAnimationType.Choice);
+            choicedNumbers.Add(5, NumberAnimationType.Choice);
+            choicedNumbers.Add(6, NumberAnimationType.Choice);
+            choicedNumbers.Add(7, NumberAnimationType.Choice);
+            choicedNumbers.Add(8, NumberAnimationType.Choice);
+            choicedNumbers.Add(9, NumberAnimationType.Choice);
+            choicedNumbers.Add(10, NumberAnimationType.Choice);
+            choicedNumbers.Add(11, NumberAnimationType.Choice);
+            choicedNumbers.Add(12, NumberAnimationType.Choice);
+            choicedNumbers.Add(13, NumberAnimationType.Choice);
+            choicedNumbers.Add(14, NumberAnimationType.Choice);
+            choicedNumbers.Add(15, NumberAnimationType.Choice);
+            choicedNumbers.Add(16, NumberAnimationType.Choice);
+            choicedNumbers.Add(17, NumberAnimationType.Choice);
+            choicedNumbers.Add(18, NumberAnimationType.Choice);
+            choicedNumbers.Add(19, NumberAnimationType.Choice);
+            choicedNumbers.Add(20, NumberAnimationType.Choice);
+            choicedNumbers.Add(21, NumberAnimationType.Choice);
+            choicedNumbers.Add(22, NumberAnimationType.Choice);
+            choicedNumbers.Add(23, NumberAnimationType.Choice);
+            choicedNumbers.Add(24, NumberAnimationType.Choice);
+            choicedNumbers.Add(25, NumberAnimationType.Choice);
+            choicedNumbers.Add(26, NumberAnimationType.Choice);
+            choicedNumbers.Add(27, NumberAnimationType.Choice);
+            choicedNumbers.Add(28, NumberAnimationType.Choice);
+            choicedNumbers.Add(29, NumberAnimationType.Choice);
+            choicedNumbers.Add(30, NumberAnimationType.Choice);
+            choicedNumbers.Add(31, NumberAnimationType.Choice);
+            choicedNumbers.Add(32, NumberAnimationType.Choice);
+            choicedNumbers.Add(33, NumberAnimationType.Choice);
+            choicedNumbers.Add(34, NumberAnimationType.Choice);
+            choicedNumbers.Add(35, NumberAnimationType.Choice);
+            choicedNumbers.Add(36, NumberAnimationType.Choice);
+            choicedNumbers.Add(37, NumberAnimationType.Choice);
+            choicedNumbers.Add(38, NumberAnimationType.Choice);
+            choicedNumbers.Add(39, NumberAnimationType.Choice);
+            choicedNumbers.Add(40, NumberAnimationType.Choice);
+            choicedNumbers.Add(41, NumberAnimationType.Choice);
+            choicedNumbers.Add(42, NumberAnimationType.Choice);
+            choicedNumbers.Add(43, NumberAnimationType.Choice);
+            choicedNumbers.Add(44, NumberAnimationType.Choice);
+            choicedNumbers.Add(45, NumberAnimationType.Choice);
+            choicedNumbers.Add(46, NumberAnimationType.Choice);
+            choicedNumbers.Add(47, NumberAnimationType.Choice);
+            choicedNumbers.Add(48, NumberAnimationType.Choice);
+            choicedNumbers.Add(49, NumberAnimationType.Choice);
+            choicedNumbers.Add(50, NumberAnimationType.Choice);
         }
 
         private void TestBotLogic_ChoiceNumbers_TEST3(SelectNumbersList choicedNumbers)
@@ -307,44 +400,6 @@ namespace GameFields.Persons
             choicedNumbers.Add(48, NumberAnimationType.Choice);
             choicedNumbers.Add(49, NumberAnimationType.Choice);
         }
-
-        //private void InitCommonData()
-        //{
-        //    _playerCardAttackZone.Init(_playerAttackMenu, _enemyTower);
-        //    _enemyCardAttackZone.Init(_enemyAttackMenu, _playerTower);
-        //}
-        #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents) + nameof(PersonCreator))]
-        public List<ComponentAttachInfo> DefineAllComponents()
-        {
-            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
-            {
-                DefineStartPlayerTurnLabel(),
-                DefineTableActivator(),
-                DefineTowerActivator(),
-            };
-
-            return list;
-        }
-
-        [ContextMenu(nameof(DefineStartPlayerTurnLabel))]
-        private ComponentAttachInfo DefineStartPlayerTurnLabel()
-        {
-            return AutomaticFillComponents.DefineComponent(this, ref _startPlayerTurnLabel, ComponentLocationTypes.InScene);
-        }
-
-        [ContextMenu(nameof(DefineTableActivator))]
-        private ComponentAttachInfo DefineTableActivator()
-        {
-            return AutomaticFillComponents.DefineComponent(this, ref _tableActivator, ComponentLocationTypes.InScene);
-        }
-
-        [ContextMenu(nameof(DefineTowerActivator))]
-        private ComponentAttachInfo DefineTowerActivator()
-        {
-            return AutomaticFillComponents.DefineComponent(this, ref _towerActivator, ComponentLocationTypes.InScene);
-        }
-
-        #endregion 
+        #endregion
     }
 }

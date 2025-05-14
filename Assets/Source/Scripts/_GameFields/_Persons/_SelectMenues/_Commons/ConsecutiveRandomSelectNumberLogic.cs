@@ -8,23 +8,22 @@ namespace GameFields.Persons.SelectMenues.Commons
     public class ConsecutiveRandomSelectNumberLogic : IRandomSelectNumberLogic
     {
         private readonly int _needForActivate;
-        //private readonly ConfirmableNumbers _confirmableNumbers;
         private readonly IEnumerable<ISelectNumber> _currentAvailableNumbers;
         private readonly IEnumerable<ISelectNumber> _shuffleAvailableNumbers;
 
         private readonly int _maxNumber;
+        private readonly int _minNumber;
 
         public ConsecutiveRandomSelectNumberLogic(int needForActivate, IReadOnlyList<ISelectNumber> currentAvailableNumbers,
             ConfirmableNumbers confirmableNumbers)
         {
             _needForActivate = needForActivate;
-            //_confirmableNumbers = confirmableNumbers;
             _currentAvailableNumbers = currentAvailableNumbers;
 
             _maxNumber = currentAvailableNumbers.Select(e => e.Number).Max();
+            _minNumber = currentAvailableNumbers.Select(e => e.Number).Min();
 
             _shuffleAvailableNumbers = Shuffle(currentAvailableNumbers).Where(e => confirmableNumbers.Contains(e.Number) == false);
-            //_maxNumber = currentAvailableNumbers.Max(e => e.Number);
         }
 
         public IReadOnlyList<ISelectNumber> GetSelectedNumbers()
@@ -42,13 +41,11 @@ namespace GameFields.Persons.SelectMenues.Commons
         {
             IEnumerable<int> shuffleAvailableNumbersInt = _shuffleAvailableNumbers.Select(e => e.Number);
 
+            // Ищем совпадния по 4 (_needForActivate) номерам сразу 
             foreach (ISelectNumber number in _shuffleAvailableNumbers)
             {
                 if (number.Number + _needForActivate - 1 > _maxNumber)
                     continue;
-
-                //if (_confirmableNumbers.Contains(number.Number))
-                //    continue;
 
                 int i = 1;
 
@@ -64,13 +61,27 @@ namespace GameFields.Persons.SelectMenues.Commons
                 {
                     if (_shuffleAvailableNumbers.Count() == _needForActivate)
                     {
-                        return _currentAvailableNumbers.Where(e => e.Number == number.Number + 1).First();
+                        // Совпадения нашли, но номеров осталось всего 4.
+                        // Проверять каждый раз одни и те же бессмысленно, поэтому берем (number + 1) или (number - 1) 
+                        int findedNumber = number.Number;
+                        int vector = Random.Range(0, 2) * 2 - 1;
+
+                        findedNumber += vector;
+
+                        if (findedNumber + _needForActivate > _maxNumber)
+                            findedNumber -= 2;
+
+                        if (findedNumber < _minNumber)
+                            findedNumber += 2;
+
+                        return _currentAvailableNumbers.Where(e => e.Number == findedNumber).First();
                     }
 
                     return number;
                 }
             }
 
+            // Если 4 подряд не найдено, ищем любую неотмеченную
             foreach (ISelectNumber number in _shuffleAvailableNumbers)
             {
                 if (number.Number + _needForActivate - 1 > _maxNumber)
@@ -78,26 +89,14 @@ namespace GameFields.Persons.SelectMenues.Commons
                     return _currentAvailableNumbers.Where(e => e.Number == _maxNumber - _needForActivate + 1).First();
                 }
 
-                //if (_confirmableNumbers.Contains(number.Number))
-                //    continue;
-
                 return number;
             }
 
+            // Если неотмеченных нет (чего быть не должно) берем рандомную чтобы не проваливаться в ошибку
             foreach (ISelectNumber number in _currentAvailableNumbers)
             {
                 if (number.Number + _needForActivate - 1 > _maxNumber)
                     continue;
-
-                //IReadOnlyList<ISelectNumber> preliminaryResult = FillResult(number);
-
-                //foreach (ISelectNumber selectNumber in _shuffleAvailableNumbers)
-                //{
-                //    if (preliminaryResult.Contains(selectNumber) == false)
-                //    {
-                //        return number;
-                //    }
-                //}
 
                 return number;
             }
