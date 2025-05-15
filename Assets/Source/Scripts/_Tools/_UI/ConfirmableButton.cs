@@ -1,8 +1,6 @@
 using Tools.UI.ImageChangers;
-using Tools.UI.ImageChangers.V1;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UIElements;
 
 namespace Tools.UI
 {

@@ -8036,7 +8036,7 @@ GameObject:
   - component: {fileID: 2512079917286874957}
   - component: {fileID: 8518273023815615672}
   m_Layer: 0
-  m_Name: AttackFrameWithObjects
+  m_Name: SelectFrameWithObjects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
