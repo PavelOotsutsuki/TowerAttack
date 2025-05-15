@@ -207,6 +207,8 @@ namespace GameFields.Persons
 
             ConfirmableNumbers confirmableNumbersEnemyAI = new ConfirmableNumbers(attackedNumbers, choicedNumbers);
 
+            //TestBotLogic_ChoiceNumbers_TEST4(choicedNumbers);
+
             AttackResultHandlerEnemyAI attackResultHandlerEnemyAI = new AttackResultHandlerEnemyAI(_discardPile, _bus, _playerTower,
                 _enemyCardAttackZone, _attackResultHandlerEnemyAIData, _informationLabel, _informationLabelDataEnemyAIAttack);
             ChoiceResultHandlerEnemyAI choiceResultHandlerEnemyAI = new ChoiceResultHandlerEnemyAI(_informationLabel, _informationLabelDataEnemyAIChoice);
@@ -258,6 +260,12 @@ namespace GameFields.Persons
 
         #region TESTS
 
+        private void TestBotLogic_ChoiceNumbers_TEST5(SelectNumbersList choicedNumbers)
+        {
+            choicedNumbers.Add(2, NumberAnimationType.Choice);
+            choicedNumbers.Add(4, NumberAnimationType.Choice);
+        }
+
         private void TestBotLogic_ChoiceNumbers_TEST4(SelectNumbersList choicedNumbers)
         {
             //choicedNumbers.Add(1, NumberAnimationType.Choice);
@@ -305,9 +313,9 @@ namespace GameFields.Persons
             choicedNumbers.Add(43, NumberAnimationType.Choice);
             choicedNumbers.Add(44, NumberAnimationType.Choice);
             choicedNumbers.Add(45, NumberAnimationType.Choice);
-            choicedNumbers.Add(46, NumberAnimationType.Choice);
+            //choicedNumbers.Add(46, NumberAnimationType.Choice);
             choicedNumbers.Add(47, NumberAnimationType.Choice);
-            choicedNumbers.Add(48, NumberAnimationType.Choice);
+            //choicedNumbers.Add(48, NumberAnimationType.Choice);
             choicedNumbers.Add(49, NumberAnimationType.Choice);
             choicedNumbers.Add(50, NumberAnimationType.Choice);
         }

@@ -14,7 +14,7 @@ namespace GameFields.Persons.SelectMenues.Commons
         private readonly int _maxNumber;
         private readonly int _minNumber;
 
-        public ConsecutiveRandomSelectNumberLogic(int needForActivate, IReadOnlyList<ISelectNumber> currentAvailableNumbers,
+        public ConsecutiveRandomSelectNumberLogic(int needForActivate, IEnumerable<ISelectNumber> currentAvailableNumbers,
             ConfirmableNumbers confirmableNumbers)
         {
             _needForActivate = needForActivate;

@@ -29,7 +29,7 @@ namespace GameFields.Persons.SelectMenues.Commons
         private float _maxHeight;
         private float _maxWidth;
 
-        private int _activateCounter;
+        private SelectNumberClickHandler _currentSelectNumberClickHandler;
 
         private IWorkable _selectButton;
 
@@ -50,14 +50,14 @@ namespace GameFields.Persons.SelectMenues.Commons
 
         public void ActivateNumbers(bool isConfirmableActivate)
         {
-            DiscardSelection();
+            _currentSelectNumberClickHandler.Reset();
 
             foreach (SelectNumber selectNumber in _selectNumbers)
             {
                 selectNumber.Deactivate();
                 NumberAnimationType? numberAnimationType = FindActivateType(selectNumber, isConfirmableActivate);
 
-                SelectNumberActivateData data = new SelectNumberActivateData(numberAnimationType);
+                SelectNumberActivateData data = new SelectNumberActivateData(numberAnimationType, _currentSelectNumberClickHandler);
 
                 selectNumber.Activate(data);
 
@@ -70,8 +70,6 @@ namespace GameFields.Persons.SelectMenues.Commons
 
         protected override void InitNumbers()
         {
-            DiscardSelection();
-
             FindColumnsAndRowsCount();
             FindIndents();
 
@@ -79,13 +77,17 @@ namespace GameFields.Persons.SelectMenues.Commons
 
             foreach (SelectNumber selectNumber in _selectNumbers)
             {
-                selectNumber.Init(number, CalcNumberPosition(number), new Vector2(_data.NumberWidht, _data.NumberHeight), OnSelectNumberClick, CheckCanBeClicked);
+                selectNumber.Init(number, CalcNumberPosition(number), new Vector2(_data.NumberWidht, _data.NumberHeight));
                 number++;
             }
         }
 
         protected override void OnActivate()
         {
+            _currentSelectNumberClickHandler = IsConsecutiveMode ?
+                new ConsecutiveSelectNumberClickHandler(NeedForActivate, _selectButton, _selectNumbers) :
+                new DefaultSelectNumberClickHandler(NeedForActivate, _selectButton);
+
             ActivateNumbers(true);
 
             IsCompleteThis = true;
@@ -94,6 +96,7 @@ namespace GameFields.Persons.SelectMenues.Commons
         protected override void OnDeactivate()
         {
             _isCompleteNumbersHide = false;
+            _currentSelectNumberClickHandler = null;
 
             base.OnDeactivate();
         }
@@ -176,90 +179,6 @@ namespace GameFields.Persons.SelectMenues.Commons
         //protected abstract void SetChoiceNumber(SelectNumber target, ResultType resultType);
         protected abstract NumberAnimationType ConvertResultTypeToNumberAnimationType(ResultType resultType);
 
-        private void OnSelectNumberClick(bool isActive)
-        {
-            if (IsConsecutiveMode)
-            {
-                if (isActive)
-                {
-                    _activateCounter = NeedForActivate;
-                    _selectButton.Activate();
-                }
-                else
-                {
-                    _activateCounter = 0;
-                    _selectButton.Deactivate();
-                }
-
-                return;
-            }
-
-            _activateCounter += isActive ? 1 : -1;
-
-            if (_activateCounter == NeedForActivate)
-            {
-                _selectButton.Activate();
-            }
-            else
-            {
-                _selectButton.Deactivate();
-            }
-        }
-
-        private bool CheckCanBeClicked(SelectNumber selectNumber)
-        {
-            //if (IsConsecutiveMode == false)
-            //{
-            //    return true;
-            //}
-
-            //if (selectNumber.Number + NeedForActivate - 1 > CountNumbers)
-            //    return false;
-
-            //for (int i = 1; i < NeedForActivate; i++)
-            //{х
-            //    if (_selectNumbers[selectNumber.Number + i - 1].IsClickable == false)
-            //        return false;
-            //}
-
-            //return true;
-            return TryConsecutiveClick(selectNumber);
-        }
-
-        private bool TryConsecutiveClick(SelectNumber currentNumber)
-        {
-            if (IsConsecutiveMode == false)
-            {
-                return true;
-            }
-
-            // Проверки начало
-            if (currentNumber.Number + NeedForActivate - 1 > CountNumbers)
-                return false;
-
-            for (int i = 1; i < NeedForActivate; i++)
-            {
-                if (_selectNumbers[currentNumber.Number + i - 1].IsClickable == false)
-                    return false;
-            }
-            // Проверки конец
-
-            foreach (SelectNumber selectNumber in _selectNumbers)
-            {
-                if (selectNumber.IsClicked)
-                {
-                    selectNumber.OnPointerClick(null);
-                }
-            }
-
-            for (int i = 1; i < NeedForActivate; i++)
-            {
-                _selectNumbers[currentNumber.Number + i - 1].OnPointerClick(null);
-            }
-
-            return true;
-        }
-
         private NumberAnimationType? FindActivateType(SelectNumber selectNumber, bool isConfirmableActivate)
         {
             NumberAnimationType? numberAnimationType = null;
@@ -277,12 +196,6 @@ namespace GameFields.Persons.SelectMenues.Commons
             return numberAnimationType;
         }
 
-        private void DiscardSelection()
-        {
-            _activateCounter = 0;
-            _selectButton.Deactivate();
-        }
-
         private Vector2 CalcNumberPosition(int number)
         {
             if (number < 1 && number > _selectNumbers.Length)
@@ -296,6 +209,7 @@ namespace GameFields.Persons.SelectMenues.Commons
             Vector3 position = new Vector2(x, y);
             return position;
         }
+
         private void FindIndents()
         {
             //ScreenView.GetFactorX();
@@ -308,6 +222,7 @@ namespace GameFields.Persons.SelectMenues.Commons
             _columnsIndent = freeWidth / (_columnsCount + 2 - 1);
             _rowsIndent = freeHeight / (_rowsCount + 2 - 1);
         }
+
         private void FindColumnsAndRowsCount()
         {
             int countAll = _selectNumbers.Length;
@@ -344,6 +259,7 @@ namespace GameFields.Persons.SelectMenues.Commons
             _lastRowColumnsCount = countAll - _columnsCount * (_rowsCount - 1);
             CheckRightCalcColumnsAndRows();
         }
+
         private void CheckRightCalcColumnsAndRows()
         {
             if ((_rowsCount - 1) * _columnsCount + _lastRowColumnsCount != _selectNumbers.Length)

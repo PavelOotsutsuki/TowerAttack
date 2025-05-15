@@ -8,16 +8,20 @@ namespace GameFields.Persons.SelectMenues.Commons
     public class DefaultRandomSelectNumberLogic : IRandomSelectNumberLogic
     {
         private readonly int _needForActivate;
-        private readonly IEnumerable<ISelectNumber> _shuffleNumbers;
-        private readonly ConfirmableNumbers _confirmableNumbers;
+        //private readonly IEnumerable<ISelectNumber> _shuffleNumbers;
+        private readonly IEnumerable<ISelectNumber> _currentAvailableNumbers;
+        private readonly IEnumerable<ISelectNumber> _shuffleAvailableNumbers;
+        //private readonly ConfirmableNumbers _confirmableNumbers;
 
         public DefaultRandomSelectNumberLogic(int needForActivate, IEnumerable<ISelectNumber> currentAvailableNumbers,
             ConfirmableNumbers confirmableNumbers)
         {
             _needForActivate = needForActivate;
-            _confirmableNumbers = confirmableNumbers;
+            _currentAvailableNumbers = currentAvailableNumbers;
+            //_confirmableNumbers = confirmableNumbers;
 
-            _shuffleNumbers = Shuffle(currentAvailableNumbers);
+            _shuffleAvailableNumbers = Shuffle(currentAvailableNumbers).Where(e => confirmableNumbers.Contains(e.Number) == false);
+            //_shuffleNumbers = Shuffle(currentAvailableNumbers);
         }
 
         public IReadOnlyList<ISelectNumber> GetSelectedNumbers()
@@ -35,16 +39,22 @@ namespace GameFields.Persons.SelectMenues.Commons
 
         private ISelectNumber GetSelectedNumber(IReadOnlyList<ISelectNumber> alreadySelectedNumbers)
         {
-            foreach (ISelectNumber number in _shuffleNumbers)
+            if (_shuffleAvailableNumbers.Count() == 1)
             {
-                if (_confirmableNumbers.Contains(number.Number) == false && alreadySelectedNumbers.Contains(number) == false)
+                if (alreadySelectedNumbers.Contains(_shuffleAvailableNumbers.First()) == false)
+                    return _shuffleAvailableNumbers.First();
+            }
+
+            if (alreadySelectedNumbers.Count + 1 >= _shuffleAvailableNumbers.Count())
+            {
+                foreach (ISelectNumber number in _currentAvailableNumbers)
                 {
-                    return number;
+                    if (_shuffleAvailableNumbers.Contains(number) == false && alreadySelectedNumbers.Contains(number) == false)
+                        return number;
                 }
             }
 
-            // Доходим до сюда если свободных номеров нет. Берем рандомный невыбранный
-            foreach (ISelectNumber number in _shuffleNumbers)
+            foreach (ISelectNumber number in _shuffleAvailableNumbers)
             {
                 if (alreadySelectedNumbers.Contains(number) == false)
                 {

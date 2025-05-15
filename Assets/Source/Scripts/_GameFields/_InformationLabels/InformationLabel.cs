@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Tools;
 using Tools.UI;
@@ -20,6 +21,8 @@ namespace GameFields.InformationLabels
         {
             _informationLabel.Init();
             _panel.Init();
+
+            gameObject.SetActive(false);
         }
 
         public void Activate(LabelActivateData data)
@@ -30,6 +33,8 @@ namespace GameFields.InformationLabels
             IsActive = true;
 
             _isComplete = false;
+
+            gameObject.SetActive(true);
 
             _informationLabel.Show(data);
             _panel.Show();
@@ -47,6 +52,13 @@ namespace GameFields.InformationLabels
 
             _informationLabel.Hide();
             _panel.Hide();
+
+            StartCoroutine(Deactivating());
+        }
+
+        private IEnumerator Deactivating()
+        {
+            yield return new WaitUntil(() => _informationLabel.IsComplete && _panel.IsComplete);
 
             _isComplete = true;
         }

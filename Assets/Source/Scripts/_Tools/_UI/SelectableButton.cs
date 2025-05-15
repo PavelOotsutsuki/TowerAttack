@@ -12,7 +12,6 @@ namespace Tools.UI
 
         public override void Init()
         {
-            //_imageChanger = GetComponent<ISelectableButtonImageChanger>();
             try
             {
                 _imageChanger = (ISelectableButtonImageChanger)_ISelectableButtonImageChanger;

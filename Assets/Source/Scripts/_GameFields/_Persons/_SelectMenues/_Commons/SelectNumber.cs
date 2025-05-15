@@ -18,18 +18,17 @@ namespace GameFields.Persons.SelectMenues.Commons
         [SerializeField] private Color _successColor;
         [SerializeField] private SelectNumberAnimator _animator;
 
-        private Action<bool> _clickCallback;
-        private Func<SelectNumber, bool> _canClickChecker;
         private Color _choiceColor;
 
         //private Color? _blockColor;
+        private SelectNumberClickHandler _clickHandler;
         private Dictionary<NumberAnimationType, Color> _blockColors;
 
         public int Number { get; private set; }
         //public bool IsClickable => CanvasGroup.blocksRaycasts;
         public float AnimationDuration => _animator.AnimationDuration;
 
-        public void Init(int number, Vector3 position, Vector2 size, Action<bool> clickCallback, Func<SelectNumber, bool> canClickChecker)
+        public void Init(int number, Vector3 position, Vector2 size)
         {
             base.Init();
 
@@ -50,14 +49,13 @@ namespace GameFields.Persons.SelectMenues.Commons
             _text.text = Number.ToString();
 
             _animator.Init();
-
-            _clickCallback = clickCallback;
-            _canClickChecker = canClickChecker;
         }
 
         public void Activate(SelectNumberActivateData data)
         {
             base.Activate();
+
+            _clickHandler = data.SelectNumberClickHandler;
 
             if (data.NumberAnimationType is not null)
             {
@@ -71,6 +69,7 @@ namespace GameFields.Persons.SelectMenues.Commons
         {
             base.Deactivate();
 
+            _clickHandler = null;
             _animator.Deactivate();
         }
 
@@ -125,21 +124,21 @@ namespace GameFields.Persons.SelectMenues.Commons
 
         public override bool CanBeClicked()
         {
-            return base.CanBeClicked() && _canClickChecker.Invoke(this);
+            return base.CanBeClicked() && _clickHandler.CanBeClicked(this);
         }
 
         protected override void OnEnterClick()
         {
             base.OnEnterClick();
 
-            _clickCallback.Invoke(true);
+            _clickHandler.OnEnterClick();
         }
 
         protected override void OnExitClick()
         {
             base.OnExitClick();
 
-            _clickCallback.Invoke(false);
+            _clickHandler.OnExitClick();
         }
 
         #region AutomaticFillComponents
