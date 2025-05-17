@@ -61,6 +61,7 @@ namespace GameFields.Effects
         {
             //_endPlaying = false;
             _isDeckDiscoverComplete = false;
+            _isHandDiscoverComplete = false;
 
             ViewType enemyhandType = _activePerson is Player ? ViewType.HandAI : ViewType.HandPlayer;
 
