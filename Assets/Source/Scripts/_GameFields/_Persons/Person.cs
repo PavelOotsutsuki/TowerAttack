@@ -42,8 +42,6 @@ namespace GameFields.Persons
 
         private PersonStep _currentStep;
 
-        protected Effect LastEffect;
-
         protected Person(CardPlayingZone playingZone, DrawCardRoot drawCardRoot, Tower tower,
             StartTurnDraw startTurnDraw, Discover discover, SignalBus bus, /*PersonStep lastStep,*/
             Hand hand, ISelectMenuActivator attackMenu, InteractionActivator gameFieldObjectsActivator,
@@ -64,7 +62,7 @@ namespace GameFields.Persons
 
             _personSteps = new Stack<PersonStep>();
 
-            LastEffect = new VoidEffect();
+            LastEffect = null;
             //Bus.Subscribe<StartEffectSignal>(SetCardEffectProcess);
         }
 
@@ -73,6 +71,7 @@ namespace GameFields.Persons
             //Bus.Unsubscribe<StartEffectSignal>(SetCardEffectProcess);
         }
 
+        public CardEffectConfig LastEffect { get; private set; }
         public bool IsComplete { get; private set; }
 
         public void StartStep()
@@ -191,9 +190,9 @@ namespace GameFields.Persons
             }
         }
 
-        public virtual void StartEffect(Effect effect)
+        public virtual void StartEffect(Effect effect, CardEffectConfig effectData)
         {
-            LastEffect = effect;
+            LastEffect = effectData;
         }
 
         //public void StartEffect(Effect effect)
@@ -219,6 +218,11 @@ namespace GameFields.Persons
         List<Card> IDrawCardManager.DrawCards(int countCards, Action callback)
         { 
             return _drawCardRoot.DrawCards(countCards, callback);
+        }
+
+        Card IDrawCardManager.DrawCard(Card card, Action callback)
+        {
+            return _drawCardRoot.DrawCard(card, callback);
         }
 
         bool ITowerTransitCheck.IsFill => _tower.HasFreeSeat == false;

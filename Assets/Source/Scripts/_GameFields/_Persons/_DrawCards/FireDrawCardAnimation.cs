@@ -2,6 +2,7 @@ using System.Collections;
 using Cards;
 using Cysharp.Threading.Tasks;
 using GameFields.CommonAnimations;
+using GameFields.Persons.Fires;
 using GameFields.Persons.Hands;
 using Tools;
 using Tools.Settings;
@@ -13,12 +14,14 @@ namespace GameFields.Persons.DrawCards
     public class FireDrawCardAnimation : IDrawCardAnimation
     {
         private readonly FireDrawCardAnimationData _data;
+        private readonly FirePool _firePool;
 
         private bool _isComplete;
 
-        public FireDrawCardAnimation(FireDrawCardAnimationData data)
+        public FireDrawCardAnimation(FireDrawCardAnimationData data, FirePool firePool)
         {
             _data = data;
+            _firePool = firePool;
 
             _isComplete = true;
         }
@@ -73,6 +76,7 @@ namespace GameFields.Persons.DrawCards
             yield return new WaitForSeconds(_data.FireDrawCardDelay);
 
             drawnCard.Fire();
+            _firePool.Add(drawnCard);
 
             yield return new WaitForSeconds(2f);
             drawnCard.gameObject.SetActive(false);

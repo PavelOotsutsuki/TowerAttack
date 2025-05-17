@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <CardViewConfig>k__BackingField: {fileID: 11400000, guid: 9ca6c6cd5c2f94376af93836de4ca519, type: 2}
   <CardCharacter>k__BackingField: {fileID: 7233767571375303125, guid: ef63134ca2cff467589c5e301a67a745, type: 3}
-  <AwakeSound>k__BackingField: {fileID: 8300000, guid: 8773f9579cd3e449badbaa361a4cf80a, type: 3}
+  <AwakeSound>k__BackingField: {fileID: 8300000, guid: 434ab1ed979714cd1a998ea883dd913b, type: 3}
   <Effect>k__BackingField: {fileID: 11400000, guid: ad45216c403744c84b2664fda31b501c, type: 2}

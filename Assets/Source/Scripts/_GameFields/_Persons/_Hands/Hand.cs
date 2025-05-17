@@ -1,14 +1,16 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cards;
 using GameFields.Seats;
 using Tools.Utils.FillComponents;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace GameFields.Persons.Hands
 {
-    public abstract class Hand : MonoBehaviour, ICardDragAndDropHandHandler, IHandBlockable, IReadOnlyHand, IDrawCardWatcher,
-        IPersonObject, IAutomaticFillComponents
+    public abstract class Hand : MonoBehaviour, ICardDragAndDropHandHandler, IHandBlockable, IReadOnlyHand, ITurnDrawCardWatcher,
+        ICardView, IPersonObject, IAutomaticFillComponents
     {
         private const float StartRotation = 0;
         private const int EmptyIndex = -1;
@@ -78,7 +80,7 @@ namespace GameFields.Persons.Hands
             card.SetActiveInteraction(_isActiveInteraction);
         }
 
-        void IDrawCardWatcher.SetCard(Card card)
+        void ITurnDrawCardWatcher.SetCard(Card card)
         {
             _turnCardsFromDeck.Add(card);
         }
@@ -182,6 +184,52 @@ namespace GameFields.Persons.Hands
 
             if (_countSlimeEffect > 0)
                 _countSlimeEffect--;
+        }
+
+        public IReadOnlyList<Card> ViewRandomCards(int count, IEnumerable<int> exceptions)
+        {
+            List<Card> cards = new List<Card>();
+
+            foreach (Seat seat in _handSeats)
+            {
+                if (seat.IsFill())
+                    cards.Add(seat.Card);
+            }
+
+            if (_dragCardHandSeat != null)
+                if (_dragCardHandSeat.IsFill())
+                    cards.Add(_dragCardHandSeat.Card);
+
+            List<int> existingIndices = new List<int>();
+            List<Card> result = new List<Card>();
+
+            for (int i = 0; i < count; i++)
+            {
+                int randomIndex = Random.Range(0, cards.Count);
+
+                while (existingIndices.Contains(randomIndex) || exceptions.Contains(randomIndex))
+                {
+                    randomIndex = Random.Range(0, cards.Count);
+                }
+
+                result.Add(cards[randomIndex]);
+            }
+
+            return result;
+        }
+
+        public bool IsHasCards(int count, IEnumerable<int> exceptions = null)
+        {
+            exceptions ??= new List<int>();
+
+            int allCards = _handSeats.Where(s => s.IsFill() && exceptions?.Contains(s.Card.ViewConfig.Number) == false).Count();
+
+            if (_dragCardHandSeat != null)
+                if (_dragCardHandSeat.IsFill())
+                    if (exceptions.Contains(_dragCardHandSeat.Card.ViewConfig.Number) == false)
+                        allCards++;
+
+            return allCards >= count;
         }
 
         private void BlockCards()

@@ -36,9 +36,9 @@ namespace GameFields.Persons
             Bus.Unsubscribe<AttackSignalEnemyAI>(StartAttack);
         }
 
-        public override void StartEffect(Effect effect)
+        public override void StartEffect(Effect effect, CardEffectConfig effectConfig)
         {
-            base.StartEffect(effect);
+            base.StartEffect(effect, effectConfig);
 
             PushStep(new CardEffectProcessingEnemyAI(InteractionActivator, effect));
         }

@@ -12,6 +12,7 @@ using Tools.Utils.FillComponents;
 using UnityEngine;
 using Zenject;
 using CanvasSortOrders;
+using GameFields.InformationLabels;
 
 namespace Roots
 {
@@ -29,7 +30,8 @@ namespace Roots
         private PersonsState _personsState;
 
         [Inject]
-        private void Construct(SignalBus bus, Deck deck, SeatPool seatPool, CardDescription cardDescription, HandPlayer handPlayer)
+        private void Construct(SignalBus bus, Deck deck, SeatPool seatPool, CardDescription cardDescription, HandPlayer handPlayer,
+            InformationLabel informationLabel)
         {
             _screenRoot.Init();
             _fontRoot.Init();
@@ -47,15 +49,17 @@ namespace Roots
             CardDragAndDropHandler cardDragAndDropHandler = new CardDragAndDropHandler(handPlayer, handPlayer,
                 cardDragAndDropLightController, _speedUpButtonSortOrder);
 
-            _personCreator.Init(bus, deck, _endTurnButton, seatPool, cardDragAndDropHandler, cardDragAndDropLightController);
+            _personCreator.Init(bus, deck, _endTurnButton, seatPool, cardDragAndDropHandler, cardDragAndDropLightController,
+                informationLabel);
 
             Player player = _personCreator.CreatePlayer();
             EnemyAI enemyAI = _personCreator.CreateEnemyAI();
+            CardLocationViewRoot viewRoot = _personCreator.CreateCardLocationViewRoot(_cardRoot);
 
             Destroy(_personCreator.gameObject);
 
             _personsState = new PersonsState(player, enemyAI);
-            EffectFactory effectFactory = new EffectFactory(_personsState);
+            EffectFactory effectFactory = new EffectFactory(_personsState, viewRoot, informationLabel);
 
             _cardRoot.Init(effectFactory, cardDescription, cardDragAndDropHandler);
             deck.Init(_cardRoot.Cards);

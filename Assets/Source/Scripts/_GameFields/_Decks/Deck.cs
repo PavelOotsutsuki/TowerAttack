@@ -4,10 +4,13 @@ using Cards;
 using Tools.Utils.FillComponents;
 using Tools;
 using Tools.Utils.Movements;
+using System;
+using Random = UnityEngine.Random;
+using System.Linq;
 
 namespace GameFields.Decks
 {
-    public class Deck : MonoBehaviour, IAutomaticFillComponents
+    public class Deck : MonoBehaviour, IAutomaticFillComponents, IDeckTake, IDeckView
     {
         [SerializeField] private DeckCardContainer _cardContainer;
         [SerializeField] private DeckCardBackViewer _cardBackViewer;
@@ -32,9 +35,11 @@ namespace GameFields.Decks
             ShuffleCards();
         }
 
-        public bool IsHasCards(int count)
+        public bool IsHasCards(int count, IEnumerable<int> exceptions = null)
         {
-            return _cards.Count >= count;
+            exceptions ??= new List<int>();
+
+            return _cards.Where(c => exceptions.Contains(c.ViewConfig.Number) == false).Count() >= count;
         }
 
         public void AddCard(Card card)
@@ -49,6 +54,38 @@ namespace GameFields.Decks
         public Card TakeTopCard()
         {
             return TakeCardByIndex(_cards.Count - 1);
+        }
+
+        public Card TakeCard(Card card)
+        {
+            RemoveCard(card);
+
+            return card;
+        }
+
+        public IReadOnlyList<Card> ViewRandomCards(int count, IEnumerable<int> exceptions)
+        {
+            List<int> existingIndices = new List<int>();
+            List<Card> result = new List<Card>();
+
+            for (int i = 0; i < count; i++)
+            {
+                int randomIndex = Random.Range(0, _cards.Count);
+
+                while (existingIndices.Contains(randomIndex) || exceptions.Contains(randomIndex))
+                {
+                    randomIndex = Random.Range(0, _cards.Count);
+                }
+
+                result.Add(_cards[randomIndex]);
+            }
+
+            return result;
+        }
+
+        public Card ViewCardFromEndDeck(int index = 0)
+        {
+            return _cards[_cards.Count - 1 - index];
         }
 
         private Card TakeCardByIndex(int index)
@@ -122,6 +159,6 @@ namespace GameFields.Decks
         {
             return AutomaticFillComponents.DefineComponent(this, ref _cardBackViewer, ComponentLocationTypes.InChildren);
         }
-        #endregion 
+        #endregion
     }
 }

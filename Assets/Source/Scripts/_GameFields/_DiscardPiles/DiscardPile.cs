@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Cards;
 using Cysharp.Threading.Tasks;
 using GameFields.Seats;
@@ -10,7 +12,7 @@ using Random = UnityEngine.Random;
 
 namespace GameFields.DiscardPiles
 {
-    public class DiscardPile
+    public class DiscardPile: ICardView
     {
         private const float CenterRotation = 90f;
 
@@ -56,6 +58,33 @@ namespace GameFields.DiscardPiles
             
             //TODO: add seat removing
             _seats.Add(discardPileSeat);
+        }
+
+        public IReadOnlyList<Card> ViewRandomCards(int count, IEnumerable<int> exceptions)
+        {
+            List<int> existingIndices = new List<int>();
+            List<Card> result = new List<Card>();
+
+            for (int i = 0; i < count; i++)
+            {
+                int randomIndex = Random.Range(0, _seats.Count);
+
+                while (existingIndices.Contains(randomIndex) || exceptions.Contains(randomIndex))
+                {
+                    randomIndex = Random.Range(0, _seats.Count);
+                }
+
+                result.Add(_seats[randomIndex].Card);
+            }
+
+            return result;
+        }
+
+        public bool IsHasCards(int count, IEnumerable<int> exceptions = null)
+        {
+            exceptions ??= new List<int>();
+
+            return _seats.Where(s => exceptions.Contains(s.Card.ViewConfig.Number) == false).Count() >= count; 
         }
 
         private Seat GetSeat()

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
@@ -9,7 +11,7 @@ namespace Tools.Utils.FillComponents
         //  0 - компонент уже задан (не пуст), нет смысла брыкаться
         //  1 - успешно найдено
         // -1 - ошибка
-        //  2 - успешно найдено, по компоненотов много, не факт что применился тот что задумывался, прикрепился первый попавшийся
+        //  2 - успешно найдено, но компоненотов много, не факт что применился тот что задумывался, прикрепился первый попавшийся
         // -2 - компонент не найден ВО ВСЕЙ СЦЕНЕ
         //  3 - массив компонентов успешно задан (проигнорены уже заданные значения, задались заного (значения 0 для массива нет))
         // -3 - компилятор не хочет компилиться без полного return на метод, до сюда дойти никогда не должно
@@ -164,6 +166,21 @@ namespace Tools.Utils.FillComponents
             ShowSuccessMessage(type, parent);
             return new ComponentAttachInfo(parent.ToString(), targets.ToString(), 3);
         }
+
+        //public static ComponentAttachInfo DefineComponent<T>(MonoBehaviour parent, ref List<T> targets, bool includeHideComponents = false)
+        //{
+        //    string type = GetShortType<T>();
+
+        //    if (parent.GetComponentsInChildren<T>(includeHideComponents).Length < 1)
+        //    {
+        //        Debug.LogError($"{type} is not found. Parent: " + parent.ToString());
+        //        return new ComponentAttachInfo(parent.ToString(), targets.ToString(), -1);
+        //    }
+
+        //    targets = parent.GetComponentsInChildren<T>(includeHideComponents).ToList();
+        //    ShowSuccessMessage(type, parent);
+        //    return new ComponentAttachInfo(parent.ToString(), targets.ToString(), 3);
+        //}
 
         private static string GetShortType<T>()
         {

@@ -4,15 +4,16 @@ using UnityEngine;
 
 namespace Cards
 {
-    public class CardRoot : MonoBehaviour, IAutomaticFillComponents
+    public class CardRoot : MonoBehaviour, ICardWatcher, IAutomaticFillComponents
     {
         [SerializeField] private BigCard _bigCard;
         [SerializeField] private Card[] _cards;
 
         private CardDescription _cardDescription;
         private CardViewService _cardViewService;
+        private List<Card> _allCards;
 
-        public IEnumerable<Card> Cards => _cards;
+        public IReadOnlyList<Card> Cards => _allCards;
 
         public void Init(IEffectFactory effectFactory, CardDescription cardDescription, ICardDragAndDropHandler cardDragAndDropHandler)
         {
@@ -38,9 +39,12 @@ namespace Cards
 
         private void InitCards(IEffectFactory effectFactory, ICardDragAndDropHandler cardDragAndDropHandler)
         {
+            _allCards = new List<Card>();
+
             foreach (Card card in _cards)
             {
                 card.Init(effectFactory, _cardViewService, cardDragAndDropHandler);
+                _allCards.Add(card);
             }
         }
 

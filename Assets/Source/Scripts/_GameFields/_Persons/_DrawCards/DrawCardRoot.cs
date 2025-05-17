@@ -11,11 +11,11 @@ namespace GameFields.Persons.DrawCards
     public class DrawCardRoot
     {
         private readonly SimpleDrawCardAnimation _simpleDrawCardAnimation;
-        private readonly Deck _deck;
+        private readonly IDeckTake _deck;
 
         private IDrawCardAnimation _currentDrawCardAnimation;
 
-        public DrawCardRoot(SimpleDrawCardAnimation simpleDrawCardAnimation, Deck deck)
+        public DrawCardRoot(SimpleDrawCardAnimation simpleDrawCardAnimation, IDeckTake deck)
         {
             _simpleDrawCardAnimation = simpleDrawCardAnimation;
             _deck = deck;
@@ -33,6 +33,18 @@ namespace GameFields.Persons.DrawCards
         {
             _currentDrawCardAnimation = drawCardAnimation;
             TakeCards(countCards, callback);
+        }
+
+        public Card DrawCard(Card card, Action callback = null)
+        {
+            if (_deck.IsHasCards(1))
+            {
+                _deck.TakeCard(card);
+            }
+
+            DrawingCards(new List<Card>() { card }, callback).ToUniTask();
+
+            return card;
         }
 
         private List<Card> TakeCards(int countCards, Action callback = null)

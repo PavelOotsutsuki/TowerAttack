@@ -2,6 +2,7 @@ namespace Cards
 {
     public enum EffectType
     {
+        Void = 0,
         Zhyzha = 1,
         Greedy = 2,
         Pyromancer = 3,

@@ -18,6 +18,8 @@ using GameFields.Persons.SelectMenues.Commons;
 using GameFields.Persons.SelectMenues.Choices;
 using GameFields.InformationLabels;
 using GameFields.DiscardPiles;
+using GameFields.Persons.Fires;
+using Cards;
 
 namespace GameFields.Persons
 {
@@ -35,6 +37,7 @@ namespace GameFields.Persons
         private ChoiceMenuPlayer _playerChoiceMenu;
         private AttackMenuPlayer _playerAttackMenu;
         private CardAttackZonePlayer _playerCardAttackZone;
+        private FirePool _playerFirePool;
 
         [SerializeField] private StartPlayerTurnLabel _startPlayerTurnLabel; 
         [SerializeField] private int _playerCountStartDrawCards = 1;
@@ -60,6 +63,7 @@ namespace GameFields.Persons
         private ChoiceMenuImitation _enemyChoiceMenu;
         private AttackMenuImitation _enemyAttackMenu;
         private CardAttackZoneEnemyAI _enemyCardAttackZone;
+        private FirePool _enemyFirePool;
 
         [SerializeField] private int _enemyCountStartDrawCards = 1;
         
@@ -92,13 +96,14 @@ namespace GameFields.Persons
         private InteractionActivator _interactionActivator;
         private InformationLabel _informationLabel;
         private DiscardPile _discardPile;
+        private FireRoot _fireRoot;
 
         [Inject]
         public void Construct(CardPlayingZonePlayer playerPlayingZone, HandPlayer playerHand, TablePlayer playerTable, TowerPlayer playerTower,
             DiscoverPlayer playerDiscover, AttackMenuPlayer playerAttackMenu, CardPlayingZoneAI enemyPlayingZone, HandAI enemyHand,
             TableAI enemyTable, TowerAI enemyTower, DiscoverAI enemyDiscoverImitation, AttackMenuImitation enemyAttackMenu,
             CardAttackZonePlayer playerCardAttackZone, CardAttackZoneEnemyAI enemyCardAttackZone, ChoiceMenuPlayer playerChoiceMenu,
-            ChoiceMenuImitation enemyChoiceMenu, InformationLabel informationLabel, DiscardPile discardPile)
+            ChoiceMenuImitation enemyChoiceMenu, DiscardPile discardPile)
         {
             _playerPlayingZone = playerPlayingZone;
             _playerHand = playerHand;
@@ -118,28 +123,34 @@ namespace GameFields.Persons
             _enemyAttackMenu = enemyAttackMenu;
             _enemyCardAttackZone = enemyCardAttackZone;
 
-            _informationLabel = informationLabel;
             _discardPile = discardPile;
         }
 
         public void Init(SignalBus bus, Deck deck, EndTurnButton endTurnButton, SeatPool seatPool
-            , CardDragAndDropHandler cardDragAndDropHandler, LightController cardDragAndDropLightController)
+            , CardDragAndDropHandler cardDragAndDropHandler, LightController cardDragAndDropLightController,
+            InformationLabel informationLabel)
         {
             _bus = bus;
             _deck = deck;
             _endTurnButton = endTurnButton;
+            _informationLabel = informationLabel;
+
+            _playerFirePool = new FirePool();
+            _enemyFirePool = new FirePool();
+            _fireRoot = new FireRoot(_playerFirePool, _enemyFirePool);
 
             _interactionActivator = new InteractionActivator(cardDragAndDropHandler, _towerActivator, _tableActivator, endTurnButton, cardDragAndDropLightController);
 
             InitPlayersData(seatPool);
             InitEnemyData(seatPool);
             //InitCommonData();
+
         }
 
         public Player CreatePlayer()
         {
             SimpleDrawCardAnimation simpleDrawCardAnimation = new SimpleDrawCardAnimation(_playerHand, _playerSimpleDrawCardAnimationData);
-            FireDrawCardAnimation fireDrawCardAnimation = new FireDrawCardAnimation(_playerFireDrawCardAnimationData);
+            FireDrawCardAnimation fireDrawCardAnimation = new FireDrawCardAnimation(_playerFireDrawCardAnimationData, _playerFirePool);
             DrawCardRoot drawCardRoot = new DrawCardRoot(new SimpleDrawCardAnimation(_playerHand, _playerSimpleDrawCardAnimationData), _deck);
             TurnProcessing turnProcessing = new TurnProcessing(_interactionActivator, _playerHand);
             StartTurnDrawPlayer startTurnDraw = new StartTurnDrawPlayer(_interactionActivator, drawCardRoot, simpleDrawCardAnimation,
@@ -155,7 +166,7 @@ namespace GameFields.Persons
         public EnemyAI CreateEnemyAI()
         {
             SimpleDrawCardAnimation simpleDrawCardAnimation = new SimpleDrawCardAnimation(_enemyHand, _enemyAISimpleDrawCardAnimationData);
-            FireDrawCardAnimation fireDrawCardAnimation = new FireDrawCardAnimation(_enemyAIFireDrawCardAnimationData);
+            FireDrawCardAnimation fireDrawCardAnimation = new FireDrawCardAnimation(_enemyAIFireDrawCardAnimationData, _enemyFirePool);
             DrawCardRoot drawCardRoot = new DrawCardRoot(new SimpleDrawCardAnimation(_enemyHand, _enemyAISimpleDrawCardAnimationData), _deck);
             CardDragAndDropImitationActions cardDragAndDropImitationActions = new CardDragAndDropImitationActions(_enemyHand, _enemyPlayingZone, _enemyCardAttackZone);
             //CardDragAndDropImitationActions cardDragAndDropImitationActions = new CardDragAndDropImitationActions(_enemyHand, _playerTower, _enemyCardAttackZone);
@@ -167,6 +178,11 @@ namespace GameFields.Persons
             return new EnemyAI(_interactionActivator, enemyDragAndDropImitation, _enemyPlayingZone,
                 _enemyTower, drawCardRoot, _enemyDiscoverImitation, startTurnDraw, _bus, _enemyHand, _playerAttackMenu,
                 _enemyChoiceMenu);
+        }
+
+        public CardLocationViewRoot CreateCardLocationViewRoot(ICardWatcher cardWatcher)
+        {
+            return new CardLocationViewRoot(cardWatcher, _deck, _playerHand, _enemyHand, _discardPile, _fireRoot);
         }
         
         private void InitPlayersData(SeatPool seatPool)
@@ -221,9 +237,9 @@ namespace GameFields.Persons
 
         //private void InitCommonData()
         //{
-        //    _playerCardAttackZone.Init(_playerAttackMenu, _enemyTower);
-        //    _enemyCardAttackZone.Init(_enemyAttackMenu, _playerTower);
+        //    _fireRoot = new FireRoot(_playerFirePool, _enemyFirePool);
         //}
+
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(PersonCreator))]
         public List<ComponentAttachInfo> DefineAllComponents()

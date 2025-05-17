@@ -10,7 +10,7 @@ namespace GameFields.Persons.DrawCards
     {
         private readonly Hand _hand;
         private readonly float _delay;
-        private readonly IDrawCardWatcher _drawCardWatcher;
+        private readonly ITurnDrawCardWatcher _drawCardWatcher;
 
         private bool _isComplete;
 
