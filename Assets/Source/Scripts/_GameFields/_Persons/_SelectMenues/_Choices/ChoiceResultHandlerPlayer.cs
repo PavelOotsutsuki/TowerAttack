@@ -82,16 +82,14 @@ namespace GameFields.Persons.SelectMenues.Choices
             string defaultMessage = _informationLabelData.DefaultInformationLabelText + _resultMessageData[data.ResultType].GetText();
 
             LabelActivateData labelActivateData = new LabelActivateData(defaultMessage + data.Message);
-            _informationLabel.Activate(labelActivateData);
+            InformationLabelActivateData informationLabelActivateData = new InformationLabelActivateData(labelActivateData);
+            _informationLabel.Activate(informationLabelActivateData);
 
             WaitingView().ToUniTask();
         }
 
         private IEnumerator WaitingView()
         {
-            yield return new WaitForSeconds(_informationLabelData.TimeViewInformationLabel);
-            _informationLabel.Deactivate();
-
             yield return new WaitUntil(() => _informationLabel.IsComplete);
 
             _isComplete = true;

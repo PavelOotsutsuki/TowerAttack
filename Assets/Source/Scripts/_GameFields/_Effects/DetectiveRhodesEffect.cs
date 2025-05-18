@@ -25,7 +25,7 @@ namespace GameFields.Effects
         private readonly string _activateHandDiscoverMessage = "Какая карта в руке у противника?";
 
         private readonly Person _activePerson;
-        private readonly Person _deactivePerson;
+        //private readonly Person _deactivePerson;
         private readonly CardLocationViewRoot _viewRoot;
         private readonly InformationLabel _informationLabel;
 
@@ -46,7 +46,7 @@ namespace GameFields.Effects
             InformationLabel informationLabel) : base()
         {
             _activePerson = activePerson;
-            _deactivePerson = deactivePerson;
+            //_deactivePerson = deactivePerson;
             _viewRoot = viewRoot;
             _informationLabel = informationLabel;
             //_handTransitTryGet = activePerson;
@@ -101,7 +101,8 @@ namespace GameFields.Effects
                 }
 
                 LabelActivateData labelActivateData = new LabelActivateData(activateMessage);
-                _informationLabel.Activate(labelActivateData);
+                InformationLabelActivateData informationLabelActivateData = new InformationLabelActivateData(labelActivateData);
+                _informationLabel.Activate(informationLabelActivateData);
 
                 yield return new WaitUntil(() => _informationLabel.IsComplete);
                 yield break;
@@ -109,6 +110,7 @@ namespace GameFields.Effects
 
             Discover(deckCard, _countDeckDiscoverCards, _activateDeckDiscoverMessage, ContinueAfterFindDeckCard);
             yield return new WaitUntil(() => _isDeckDiscoverComplete);
+            yield return new WaitForSeconds(2f);
 
             Discover(handCard, _countHandDiscoverCards, _activateHandDiscoverMessage, ContinueAfterFindHandCard);
             yield return new WaitUntil(() => _isHandDiscoverComplete);
@@ -138,7 +140,8 @@ namespace GameFields.Effects
                 activateMessage += _handDiscoverChoice == handCard ? TrueChoice : FalseChoice;
 
                 LabelActivateData labelActivateData = new LabelActivateData(activateMessage);
-                _informationLabel.Activate(labelActivateData);
+                InformationLabelActivateData informationLabelActivateData = new InformationLabelActivateData(labelActivateData);
+                _informationLabel.Activate(informationLabelActivateData);
 
                 yield return new WaitUntil(() => _informationLabel.IsComplete);
             }

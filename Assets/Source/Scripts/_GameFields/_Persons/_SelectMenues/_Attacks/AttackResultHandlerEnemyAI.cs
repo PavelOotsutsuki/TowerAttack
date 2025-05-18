@@ -32,11 +32,9 @@ namespace GameFields.Persons.SelectMenues.Attacks
         {
             yield return base.OnSettingResult(data);
 
-            LabelActivateData informationLableData = new LabelActivateData(_informationLabelData.DefaultInformationLabelText + data.Message);
-            _informationLabel.Activate(informationLableData);
-
-            yield return new WaitForSeconds(_informationLabelData.TimeViewInformationLabel);
-            _informationLabel.Deactivate();
+            LabelActivateData labelActivateData = new LabelActivateData(_informationLabelData.DefaultInformationLabelText + data.Message);
+            InformationLabelActivateData informationLabelActivateData = new InformationLabelActivateData(labelActivateData);
+            _informationLabel.Activate(informationLabelActivateData);
 
             yield return new WaitUntil(() => _informationLabel.IsComplete);
         }

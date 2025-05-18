@@ -7,14 +7,13 @@ using UnityEngine;
 
 namespace GameFields.InformationLabels
 {
-    public class InformationLabel : MonoBehaviour, IWorkable<LabelActivateData>, ICompletable, IAutomaticFillComponents
+    public class InformationLabel : MonoBehaviour, IActivatable<InformationLabelActivateData>, ICompletable, IAutomaticFillComponents
     {
         [SerializeField] private InformationLabelLabel _informationLabel;
         [SerializeField] private InformationLabelPanel _panel;
 
         private bool _isComplete;
 
-        public bool? IsActive { get; private set; } = null;
         public bool IsComplete => _isComplete && _informationLabel.IsComplete && _panel.IsComplete;
 
         public void Init()
@@ -25,35 +24,31 @@ namespace GameFields.InformationLabels
             gameObject.SetActive(false);
         }
 
-        public void Activate(LabelActivateData data)
+        public void Activate(InformationLabelActivateData data)
         {
-            if (IsActive == true)
-                return;
-
-            IsActive = true;
-
             _isComplete = false;
 
             gameObject.SetActive(true);
 
-            _informationLabel.Show(data);
+            _informationLabel.Show(data.LabelActivateData);
             _panel.Show();
-            //_isComplete = true;
+
+            StartCoroutine(WaitUntilDeactivating(data.TimeView));
         }
 
-        public void Deactivate()
+        private void Deactivate()
         {
-            if (IsActive == false)
-                return;
-
-            IsActive = false;
-
-            //_isComplete = false;
-
             _informationLabel.Hide();
             _panel.Hide();
 
             StartCoroutine(Deactivating());
+        }
+
+        private IEnumerator WaitUntilDeactivating(float timeView)
+        {
+            yield return new WaitForSeconds(timeView);
+
+            Deactivate();
         }
 
         private IEnumerator Deactivating()

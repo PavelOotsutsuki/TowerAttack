@@ -8,6 +8,6 @@ namespace GameFields.InformationLabels
     public class InformationLabelData : IData
     {
         [field: SerializeField] public string DefaultInformationLabelText { get; private set; } = "Противник выбрал номер: ";
-        [field: SerializeField] public float TimeViewInformationLabel { get; private set; } = 4f;
+        //[field: SerializeField] public float TimeViewInformationLabel { get; private set; } = 4f;
     }
 }

@@ -7,6 +7,7 @@ using Tools.Utils.Movements;
 using System;
 using Random = UnityEngine.Random;
 using System.Linq;
+using Tools.Utils;
 
 namespace GameFields.Decks
 {
@@ -99,16 +100,17 @@ namespace GameFields.Decks
 
         private void ShuffleCards()
         {
-            List<Card> shuffleCards = new List<Card>();
+            _cards = Utils.Shuffle(_cards);
+            //List<Card> shuffleCards = new List<Card>();
 
-            while(_cards.Count > 0)
-            {
-                Card card = _cards[Random.Range(0, _cards.Count)];
-                shuffleCards.Add(card);
-                _cards.Remove(card);
-            }
+            //while (_cards.Count > 0)
+            //{
+            //    Card card = _cards[Random.Range(0, _cards.Count)];
+            //    shuffleCards.Add(card);
+            //    _cards.Remove(card);
+            //}
 
-            _cards = shuffleCards;
+            //_cards = shuffleCards;
         }
 
         private void RemoveCard(Card card)
