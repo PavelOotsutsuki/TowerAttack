@@ -6,6 +6,7 @@ using Cards;
 using Cysharp.Threading.Tasks;
 using GameFields.Seats;
 using GameFields.Signals;
+using Tools.Utils;
 using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
@@ -65,17 +66,61 @@ namespace GameFields.DiscardPiles
             List<int> existingIndices = new List<int>();
             List<Card> result = new List<Card>();
 
-            for (int i = 0; i < count; i++)
+            IReadOnlyList<Card> cards = Utils.Shuffle(_seats.Select(s => s.Card));
+
+            for (int c = 0; c < count; c++)
             {
-                int randomIndex = Random.Range(0, _seats.Count);
-
-                while (existingIndices.Contains(randomIndex) || exceptions.Contains(randomIndex))
+                for (int i = 0; i < cards.Count; i++)
                 {
-                    randomIndex = Random.Range(0, _seats.Count);
+                    if (existingIndices.Contains(cards[i].ViewConfig.Number) == false && exceptions.Contains(cards[i].ViewConfig.Number) == false)
+                    {
+                        result.Add(cards[i]);
+                        existingIndices.Add(cards[i].ViewConfig.Number);
+                    }
                 }
-
-                result.Add(_seats[randomIndex].Card);
             }
+
+            if (result.Count < count)
+            {
+                for (int c = result.Count - 1; c < count; c++)
+                {
+                    for (int i = 0; i < cards.Count; i++)
+                    {
+                        if (exceptions.Contains(cards[i].ViewConfig.Number) == false)
+                        {
+                            result.Add(cards[i]);
+                            existingIndices.Add(cards[i].ViewConfig.Number);
+                        }
+                    }
+                }
+            }
+
+            if (result.Count < count)
+            {
+                for (int c = result.Count - 1; c < count; c++)
+                {
+                    for (int i = 0; i < cards.Count; i++)
+                    {
+                        result.Add(cards[i]);
+                        existingIndices.Add(cards[i].ViewConfig.Number);
+                    }
+                }
+            }
+
+            if (result.Count < count)
+                throw new Exception("Ошибка вычисления чисел. Слишком мало карт!");
+
+            //for (int i = 0; i < count; i++)
+            //{
+            //    int randomIndex = Random.Range(0, _seats.Count);
+
+            //    while (existingIndices.Contains(randomIndex) || exceptions.Contains(randomIndex))
+            //    {
+            //        randomIndex = Random.Range(0, _seats.Count);
+            //    }
+
+            //    result.Add(_seats[randomIndex].Card);
+            //}
 
             return result;
         }
@@ -85,6 +130,11 @@ namespace GameFields.DiscardPiles
             exceptions ??= new List<int>();
 
             return _seats.Where(s => exceptions.Contains(s.Card.ViewConfig.Number) == false).Count() >= count; 
+        }
+
+        public bool Contains(int number)
+        {
+            return _seats.Select(s => s.Card.ViewConfig.Number).Contains(number);
         }
 
         private Seat GetSeat()

@@ -34,6 +34,7 @@ namespace Roots
             InformationLabel informationLabel)
         {
             _screenRoot.Init();
+            informationLabel.Init();
             _fontRoot.Init();
 
             seatPool.Init();

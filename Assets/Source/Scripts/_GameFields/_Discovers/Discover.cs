@@ -15,7 +15,7 @@ namespace GameFields.Persons.Discovers
 
         protected IReadOnlyList<Card> Cards;
 
-        private Action<Card> _callback;
+        private DiscoverResult _currentResult;
 
         public int MaxSeats => Seats.Length;
 
@@ -33,8 +33,7 @@ namespace GameFields.Persons.Discovers
                 seat.Reset();
             }
 
-            _callback?.Invoke(card);
-            _callback = null;
+            _currentResult.SetResult(card);
 
             Deactivate();
         }
@@ -42,7 +41,7 @@ namespace GameFields.Persons.Discovers
         public virtual void Activate(DiscoverActivateData data)
         {
             Cards = data.Cards;
-            _callback = data.Callback;
+            _currentResult = data.DiscoverResult;
 
             SortDiscoverSeats();
 
@@ -57,6 +56,8 @@ namespace GameFields.Persons.Discovers
         protected virtual void Deactivate()
         {
             gameObject.SetActive(false);
+            _currentResult.SetComplete();
+            _currentResult = null;
         }
 
         private void SortDiscoverSeats()

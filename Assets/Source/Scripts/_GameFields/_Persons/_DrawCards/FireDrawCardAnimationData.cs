@@ -20,7 +20,7 @@ namespace GameFields.Persons.DrawCards
 
         private float Direction => _isDirectionUp == true ? 1 : -1;
         private float CenterScale => _endScale - (_endScale - 1f) / 2f;
-        private Vector2 EndPosition => new Vector2(Settings.CardSize.x * 2 * -1, Settings.CardSize.y * Direction);
+        private Vector2 EndPosition => new Vector2(GameSettings.CardSize.x * 2 * -1, GameSettings.CardSize.y * Direction);
         private Vector3 CenterScaleVector => new Vector3(CenterScale, CenterScale, CenterScale);
         private Vector3 EndScaleVector => new Vector3(_endScale, _endScale, _endScale);
         private Vector3 CenterInvertPosition => EndPosition * _centerInvertPositionPercent;

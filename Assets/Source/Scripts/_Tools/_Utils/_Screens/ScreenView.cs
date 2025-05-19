@@ -1,24 +1,28 @@
 using UnityEngine;
+using Tools.Settings;
 
 namespace Tools.Utils.Screens
 {
     public static class ScreenView
     {
-        private static Vector2 _canvasReferenceResolution;
-
-        public static void SetReferenceResolution(Vector2 referenceResolution)
-        {
-            _canvasReferenceResolution = referenceResolution;
-        }
-
         public static float GetFactorX()
         {
-            return Screen.width / _canvasReferenceResolution.x;
+            return Screen.width / GameSettings.CanvasReferenceResolution.x;
         }
 
         public static float GetFactorY()
         {
-            return Screen.height / _canvasReferenceResolution.y;
+            return Screen.height / GameSettings.CanvasReferenceResolution.y;
+        }
+
+        public static float X()
+        {
+            return GameSettings.CanvasReferenceResolution.x;
+        }
+
+        public static float Y()
+        {
+           return GameSettings.CanvasReferenceResolution.y;
         }
     }
 }

@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cards;
+using Tools.Utils;
 using UnityEngine;
 
 namespace GameFields.Persons.Fires
@@ -40,22 +42,59 @@ namespace GameFields.Persons.Fires
             return thisCount >= count;
         }
 
+        public bool Contains(int number)
+        {
+            return Cards.Select(c => c.ViewConfig.Number).Contains(number);
+        }
+
         public IReadOnlyList<Card> ViewRandomCards(int count, IEnumerable<int> exceptions)
         {
             List<int> existingIndices = new List<int>();
             List<Card> result = new List<Card>();
 
-            for (int i = 0; i < count; i++)
+            IReadOnlyList<Card> cards = Utils.Shuffle(Cards);
+
+            for (int c = 0; c < count; c++)
             {
-                int randomIndex = Random.Range(0, Count);
-
-                while (existingIndices.Contains(randomIndex) || exceptions.Contains(randomIndex))
+                for (int i = 0; i < cards.Count; i++)
                 {
-                    randomIndex = Random.Range(0, Count);
+                    if (existingIndices.Contains(cards[i].ViewConfig.Number) == false && exceptions.Contains(cards[i].ViewConfig.Number) == false)
+                    {
+                        result.Add(cards[i]);
+                        existingIndices.Add(cards[i].ViewConfig.Number);
+                    }
                 }
-
-                result.Add(Cards[randomIndex]);
             }
+
+            if (result.Count < count)
+            {
+                for (int c = result.Count - 1; c < count; c++)
+                {
+                    for (int i = 0; i < cards.Count; i++)
+                    {
+                        if (exceptions.Contains(cards[i].ViewConfig.Number) == false)
+                        {
+                            result.Add(cards[i]);
+                            existingIndices.Add(cards[i].ViewConfig.Number);
+                        }
+                    }
+                }
+            }
+
+            if (result.Count < count)
+            {
+                for (int c = result.Count - 1; c < count; c++)
+                {
+                    for (int i = 0; i < cards.Count; i++)
+                    {
+                        result.Add(cards[i]);
+                        existingIndices.Add(cards[i].ViewConfig.Number);
+                    }
+                }
+            }
+
+            if (result.Count < count)
+                throw new Exception("Ошибка вычисления чисел. Слишком мало карт!");
 
             return result;
         }

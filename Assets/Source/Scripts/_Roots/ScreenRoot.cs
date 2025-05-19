@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Tools.Settings;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Screens;
 using UnityEngine;
@@ -9,7 +10,7 @@ namespace Roots
     internal class ScreenRoot : MonoBehaviour, IAutomaticFillComponents
     {
         [SerializeField] private CanvasScaler[] _allCanvasScalers;
-        [SerializeField] private Vector2 _defaultReferenceResolution = new Vector2(1920f, 1080f);
+        //[SerializeField] private Vector2 _defaultReferenceResolution = new Vector2(1920f, 1080f);
 
         public void Init()
         {
@@ -20,10 +21,8 @@ namespace Roots
         {
             foreach (CanvasScaler canvasScaler in _allCanvasScalers)
             {
-                canvasScaler.referenceResolution = _defaultReferenceResolution;
+                canvasScaler.referenceResolution = GameSettings.CanvasReferenceResolution;
             }
-
-            ScreenView.SetReferenceResolution(_defaultReferenceResolution);
         }
 
         #region AutomaticFillComponents

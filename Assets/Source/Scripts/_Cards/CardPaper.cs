@@ -30,8 +30,8 @@ namespace Cards
         {
             ReadOnlyRectTransform readOnlyRectTransform = new ReadOnlyRectTransform(cardTransform);
 
-            Vector2 cardSizeFront = Settings.CardSize;
-            Vector2 cardSizeBack = Settings.CardSize;
+            Vector2 cardSizeFront = GameSettings.CardSize;
+            Vector2 cardSizeBack = GameSettings.CardSize;
 
             _cardFront.Init(cardViewConfig, readOnlyRectTransform, cardViewService, cardSizeFront, _cardFrame);
             _cardBack.Init(cardSizeBack);

@@ -36,12 +36,6 @@ namespace GameFields.Effects
         //private List<Card> _cards;
         //private bool _endPlaying;
 
-        private bool _isDeckDiscoverComplete;
-        private Card _deckDiscoverChoice;
-
-        private bool _isHandDiscoverComplete;
-        private Card _handDiscoverChoice;
-
         public DetectiveRhodesEffect(Person activePerson, Person deactivePerson, CardLocationViewRoot viewRoot,
             InformationLabel informationLabel) : base()
         {
@@ -60,8 +54,6 @@ namespace GameFields.Effects
         protected override IEnumerator OnPlaying()
         {
             //_endPlaying = false;
-            _isDeckDiscoverComplete = false;
-            _isHandDiscoverComplete = false;
 
             ViewType enemyhandType = _activePerson is Player ? ViewType.HandAI : ViewType.HandPlayer;
 
@@ -108,14 +100,17 @@ namespace GameFields.Effects
                 yield break;
             }
 
-            Discover(deckCard, _countDeckDiscoverCards, _activateDeckDiscoverMessage, ContinueAfterFindDeckCard);
-            yield return new WaitUntil(() => _isDeckDiscoverComplete);
-            yield return new WaitForSeconds(2f);
+            DiscoverResult deckResult = new DiscoverResult();
+            List<ViewType> noContainsForDeck = new List<ViewType>() { ViewType.Deck };
+            Discover(deckCard, _countDeckDiscoverCards, _activateDeckDiscoverMessage, deckResult, noContainsForDeck);
+            yield return new WaitUntil(() => deckResult.IsComplete);
 
-            Discover(handCard, _countHandDiscoverCards, _activateHandDiscoverMessage, ContinueAfterFindHandCard);
-            yield return new WaitUntil(() => _isHandDiscoverComplete);
+            DiscoverResult handResult = new DiscoverResult();
+            List<ViewType> noContainsForHand = new List<ViewType>() { enemyhandType };
+            Discover(handCard, _countHandDiscoverCards, _activateHandDiscoverMessage, handResult, noContainsForHand);
+            yield return new WaitUntil(() => handResult.Result != null);
 
-            if (_deckDiscoverChoice == deckCard && _handDiscoverChoice == handCard)
+            if (deckResult.Result == deckCard && handResult.Result == handCard)
             {
                 if (_handTransitTryGet.TryGet(handCard))
                 {
@@ -133,14 +128,16 @@ namespace GameFields.Effects
                 string activateMessage = "";
 
                 activateMessage += "Выбор из колоды: ";
-                activateMessage += _deckDiscoverChoice == deckCard ? TrueChoice : FalseChoice;
+                activateMessage += deckResult.Result == deckCard ? TrueChoice : FalseChoice;
                 activateMessage += "\n";
 
                 activateMessage += "Выбор из руки: ";
-                activateMessage += _handDiscoverChoice == handCard ? TrueChoice : FalseChoice;
+                activateMessage += handResult.Result == handCard ? TrueChoice : FalseChoice;
 
                 LabelActivateData labelActivateData = new LabelActivateData(activateMessage);
                 InformationLabelActivateData informationLabelActivateData = new InformationLabelActivateData(labelActivateData);
+
+                yield return new WaitUntil(() => handResult.IsComplete);
                 _informationLabel.Activate(informationLabelActivateData);
 
                 yield return new WaitUntil(() => _informationLabel.IsComplete);
@@ -153,7 +150,7 @@ namespace GameFields.Effects
         }
 
         private void Discover(Card firstFindedCard, int countDiscoverCards, string activateDiscoverMessage,
-            Action<Card> continueAfterFindCard)
+            DiscoverResult discoverResult, IEnumerable<ViewType> noContains)
         {
             List<Card> cardsGuess = new List<Card>();
 
@@ -161,26 +158,26 @@ namespace GameFields.Effects
 
             for (int i = 0; i < countDiscoverCards - 1; i++)
             {
-                cardsGuess.Add(_viewRoot.ViewRandomCard(cardsGuess.Select(c => c.ViewConfig.Number)));
+                cardsGuess.Add(_viewRoot.ViewRandomCard(cardsGuess.Select(c => c.ViewConfig.Number), noContains));
             }
 
             cardsGuess = Utils.Shuffle(cardsGuess);
 
-            _activePerson.DiscoverCards(cardsGuess, activateDiscoverMessage, continueAfterFindCard);
+            _activePerson.DiscoverCards(cardsGuess, activateDiscoverMessage, discoverResult);
         }
 
-        private void ContinueAfterFindDeckCard(Card card)
-        {
-            _deckDiscoverChoice = card;
+        //private void ContinueAfterFindDeckCard(Card card)
+        //{
+        //    //deckResult = card;
 
-            _isDeckDiscoverComplete = true;
-        }
+        //    _isDeckDiscoverComplete = true;
+        //}
 
-        private void ContinueAfterFindHandCard(Card card)
-        {
-            _handDiscoverChoice = card;
+        //private void ContinueAfterFindHandCard(Card card)
+        //{
+        //    //handResult = card;
 
-            _isHandDiscoverComplete = true;
-        }
+        //    _isHandDiscoverComplete = true;
+        //}
     }
 }

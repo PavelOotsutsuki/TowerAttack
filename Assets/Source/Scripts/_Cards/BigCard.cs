@@ -3,16 +3,17 @@ using UnityEngine.UI;
 using Tools.Utils.FillComponents;
 using Tools;
 using System.Collections.Generic;
+using Tools.Utils.Screens;
 
 namespace Cards
 {
-    internal class BigCard : MonoBehaviour, IViewable<BigCardShowData>, IAutomaticFillComponents
+    public class BigCard : MonoBehaviour, IViewable<BigCardShowData>, IAutomaticFillComponents
     {
         [SerializeField, Min(1f)] private float _scaleFactor = 2f;
 
         [SerializeField] private CardView _cardView;
         [SerializeField] private RectTransform _rectTransform;
-        [SerializeField] private CanvasScaler _canvasScaler;
+        //[SerializeField] private CanvasScaler _canvasScaler;
 
         private float _bigHeight;
         private float _bigWidth;
@@ -22,10 +23,10 @@ namespace Cards
 
         public bool? IsShown { get; private set; } = null;
 
-        internal void Init()
+        public void Init()
         {
             _rectTransform.rotation = Quaternion.identity;
-            _canvasHeight = _canvasScaler.referenceResolution.y;
+            _canvasHeight = ScreenView.Y();
 
             Hide();
         }

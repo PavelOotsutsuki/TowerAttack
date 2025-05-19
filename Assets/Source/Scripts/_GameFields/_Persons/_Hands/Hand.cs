@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Cards;
 using GameFields.Seats;
+using Tools.Utils;
 using Tools.Utils.FillComponents;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -40,6 +42,26 @@ namespace GameFields.Persons.Hands
 
         public int CountCards => _handSeats.Count;
         public bool IsSlimeEffectCountZero => _turnCardsFromDeck.Count == 0 && _countSlimeEffect > 0;
+
+        private List<Card> AllCards
+        {
+            get
+            {
+                List<Card> cards = new List<Card>();
+
+                foreach (Seat seat in _handSeats)
+                {
+                    if (seat.IsFill())
+                        cards.Add(seat.Card);
+                }
+
+                if (_dragCardHandSeat != null)
+                    if (_dragCardHandSeat.IsFill())
+                        cards.Add(_dragCardHandSeat.Card);
+
+                return cards;
+            }
+        }
 
         public void Init(SeatPool seatPool)
         {
@@ -119,18 +141,20 @@ namespace GameFields.Persons.Hands
 
             _handSeats.Remove(findedHandSeat);
             findedHandSeat.Reset();
+            _handSeatPool.ReturnInPool(findedHandSeat);
 
             SortHandSeats();
 
             return isFind;
         }
 
-        public Card UnbindLastCard()
+        private Card UnbindLastCard()
         {
             Seat lastSeat = _handSeats[_handSeats.Count - 1];
             Card gettedCard = lastSeat.Card;
             _handSeats.Remove(lastSeat);
             lastSeat.Reset();
+            _handSeatPool.ReturnInPool(lastSeat);
 
             SortHandSeats();
 
@@ -188,32 +212,54 @@ namespace GameFields.Persons.Hands
 
         public IReadOnlyList<Card> ViewRandomCards(int count, IEnumerable<int> exceptions)
         {
-            List<Card> cards = new List<Card>();
-
-            foreach (Seat seat in _handSeats)
-            {
-                if (seat.IsFill())
-                    cards.Add(seat.Card);
-            }
-
-            if (_dragCardHandSeat != null)
-                if (_dragCardHandSeat.IsFill())
-                    cards.Add(_dragCardHandSeat.Card);
+            IReadOnlyList<Card> cards = AllCards;
 
             List<int> existingIndices = new List<int>();
             List<Card> result = new List<Card>();
 
-            for (int i = 0; i < count; i++)
+            cards = Utils.Shuffle(cards);
+
+            for (int c = 0; c < count; c++)
             {
-                int randomIndex = Random.Range(0, cards.Count);
-
-                while (existingIndices.Contains(randomIndex) || exceptions.Contains(randomIndex))
+                for (int i = 0; i < cards.Count; i++)
                 {
-                    randomIndex = Random.Range(0, cards.Count);
+                    if (existingIndices.Contains(cards[i].ViewConfig.Number) == false && exceptions.Contains(cards[i].ViewConfig.Number) == false)
+                    {
+                        result.Add(cards[i]);
+                        existingIndices.Add(cards[i].ViewConfig.Number);
+                    }
                 }
-
-                result.Add(cards[randomIndex]);
             }
+
+            if (result.Count < count)
+            {
+                for (int c = result.Count - 1; c < count; c++)
+                {
+                    for (int i = 0; i < cards.Count; i++)
+                    {
+                        if (exceptions.Contains(cards[i].ViewConfig.Number) == false)
+                        {
+                            result.Add(cards[i]);
+                            existingIndices.Add(cards[i].ViewConfig.Number);
+                        }
+                    }
+                }
+            }
+
+            if (result.Count < count)
+            {
+                for (int c = result.Count - 1; c < count; c++)
+                {
+                    for (int i = 0; i < cards.Count; i++)
+                    {
+                        result.Add(cards[i]);
+                        existingIndices.Add(cards[i].ViewConfig.Number);
+                    }
+                }
+            }
+
+            if (result.Count < count)
+                throw new Exception("Ошибка вычисления чисел. Слишком мало карт!");
 
             return result;
         }
@@ -230,6 +276,11 @@ namespace GameFields.Persons.Hands
                         allCards++;
 
             return allCards >= count;
+        }
+
+        public bool Contains(int number)
+        {
+            return AllCards.Select(c => c.ViewConfig.Number).Contains(number);
         }
 
         private void BlockCards()
@@ -356,7 +407,7 @@ namespace GameFields.Persons.Hands
 
         private bool TryFindHandSeat(out Seat findedHandSeat, Card card)
         {
-            findedHandSeat = _handSeats.FirstOrDefault(seat => seat.Card == card);
+            findedHandSeat = _handSeats.FirstOrDefault(s => s.Card == card);
 
             return findedHandSeat != null;
         }

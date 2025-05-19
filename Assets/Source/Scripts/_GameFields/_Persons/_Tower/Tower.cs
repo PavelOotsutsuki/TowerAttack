@@ -11,7 +11,7 @@ namespace GameFields.Persons.Towers
         private const SideType DefaultSideType = SideType.Back;
         private const bool IsCardInteraction = false;
 
-        [SerializeField] private TowerSeat _towerSeat;
+        [SerializeField] protected TowerSeat TowerSeat;
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField, Min(0f)] private float _seatDuration = 0.5f;
         [SerializeField] private Stone[] _stones;
@@ -20,16 +20,16 @@ namespace GameFields.Persons.Towers
         private BoomAnimation _boomAnimation;
 
         public ReadOnlyRectTransform ReadOnlyRectTransform { get; private set; }
-        public bool HasFreeSeat => _towerSeat.IsFill() == false;
-        public ICardNumber Card => _towerSeat.Card;
+        public bool HasFreeSeat => TowerSeat.IsFill() == false;
+        public ICardNumber Card => TowerSeat.Card;
 
-        public void Init()
+        public virtual void Init()
         {
-            _towerSeat.Init();
+            TowerSeat.Init();
 
             ReadOnlyRectTransform = new ReadOnlyRectTransform(_rectTransform);
 
-            BoomAnimationConfig boomAnimationConfig = new BoomAnimationConfig(_towerSeat, _stones, ReadOnlyRectTransform
+            BoomAnimationConfig boomAnimationConfig = new BoomAnimationConfig(TowerSeat, _stones, ReadOnlyRectTransform
                 , _boomAnimationData);
 
             _boomAnimation = new BoomAnimation(boomAnimationConfig);
@@ -40,7 +40,7 @@ namespace GameFields.Persons.Towers
             if (HasFreeSeat)
             {
                 card.SetActiveInteraction(IsCardInteraction);
-                _towerSeat.SetCard(card, DefaultSideType, _seatDuration);
+                TowerSeat.SetCard(card, DefaultSideType, _seatDuration);
             }
             else
             {
@@ -55,7 +55,7 @@ namespace GameFields.Persons.Towers
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(Tower))]
-        public List<ComponentAttachInfo> DefineAllComponents()
+        public virtual List<ComponentAttachInfo> DefineAllComponents()
         {
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
@@ -70,7 +70,7 @@ namespace GameFields.Persons.Towers
         [ContextMenu(nameof(DefineTowerSeat))]
         private ComponentAttachInfo DefineTowerSeat()
         {
-           return AutomaticFillComponents.DefineComponent(this, ref _towerSeat, ComponentLocationTypes.InChildren);
+           return AutomaticFillComponents.DefineComponent(this, ref TowerSeat, ComponentLocationTypes.InChildren);
         }
 
         [ContextMenu(nameof(DefineRectTransform))]

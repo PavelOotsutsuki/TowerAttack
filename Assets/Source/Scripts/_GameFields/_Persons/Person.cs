@@ -99,7 +99,7 @@ namespace GameFields.Persons
                 Bus.Fire(new DiscardCardsSignal(discardedCards));
         }
 
-        public void DiscoverCards(IReadOnlyList<Card> cards, string activateMessage, Action<Card> callback)
+        public void DiscoverCards(IReadOnlyList<Card> cards, string activateMessage, DiscoverResult discoverResult)
         {
             if (cards is null)
             {
@@ -111,7 +111,7 @@ namespace GameFields.Persons
                 return;
             }
 
-            DiscoverActivateData discoverActivateData = new DiscoverActivateData(cards, activateMessage, callback);
+            DiscoverActivateData discoverActivateData = new DiscoverActivateData(cards, activateMessage, discoverResult);
 
             _discover.Activate(discoverActivateData);
         }

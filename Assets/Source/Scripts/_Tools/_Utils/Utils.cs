@@ -5,7 +5,7 @@ namespace Tools.Utils
 {
     public static class Utils
     {
-        public static List<T> Shuffle<T>(IReadOnlyList<T> targets)
+        public static List<T> Shuffle<T>(IEnumerable<T> targets)
         {
             List<T> shuffleList = new List<T>();
             List<T> cloneTargets = new List<T>();

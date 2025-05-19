@@ -9,6 +9,7 @@ using GameFields.Persons;
 using GameFields.Persons.Fires;
 using GameFields.Persons.Hands;
 using GameFields.Persons.Towers;
+using Tools.Utils;
 using UnityEngine;
 using UnityEngine.XR;
 using Random = UnityEngine.Random;
@@ -82,18 +83,51 @@ namespace GameFields
         //{
         //    return TryView(out cards, countCards, _deckView);
         //}
-        public Card ViewRandomCard(IEnumerable<int> exceptions)
+        public Card ViewRandomCard(IEnumerable<int> exceptions, IEnumerable<ViewType> noContains = null)
         {
             IReadOnlyList<Card> cards = _cardWatcher.Cards;
 
-            int randomIndex = Random.Range(0, cards.Count);
-
-            while (exceptions.Contains(cards[randomIndex].ViewConfig.Number))
+            Func<int, bool> viewTypesContains = (int number) =>
             {
-                randomIndex = Random.Range(0, cards.Count);
+                if (noContains == null)
+                    return false;
+
+                foreach (ViewType viewType in noContains)
+                {
+                    ICardView target = _views[viewType];
+
+                    if (target.Contains(number))
+                        return true;
+                }
+
+                return false;
+            };
+
+            cards = Utils.Shuffle(cards);
+
+            for (int i = 0; i < cards.Count; i++)
+            {
+                if (exceptions.Contains(cards[i].ViewConfig.Number) == false && viewTypesContains.Invoke(cards[i].ViewConfig.Number) == false)
+                {
+                    return cards[i];
+                }
             }
 
-            return cards[randomIndex];
+            for (int i = 0; i < cards.Count; i++)
+            {
+                if (exceptions.Contains(cards[i].ViewConfig.Number) == false)
+                {
+                    return cards[i];
+                }
+            }
+
+            return cards[0];
+            //while (exceptions.Contains(cards[randomIndex].ViewConfig.Number))
+            //{
+            //    randomIndex = Random.Range(0, cards.Count);
+            //}
+
+            //return cards[randomIndex];
 
             //List<int> existingIndices = new List<int>();
             //List<Card> result = new List<Card>();

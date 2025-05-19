@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DetectiveRhodesView
   m_EditorClassIdentifier: 
   <Number>k__BackingField: 6
-  <Icon>k__BackingField: {fileID: 21300000, guid: 4925589caaf5a43c3a1d415d13b1e58a, type: 3}
+  <Icon>k__BackingField: {fileID: 21300000, guid: 75d6d5bc9c8fa41f39cd0ed63ddf0738, type: 3}
   <Description>k__BackingField: "\u041C\u0435\u043D\u044F \u043D\u0430\u043D\u044F\u043B\u0438
     \u043D\u0430\u0439\u0442\u0438 \u0412\u0430\u0448\u0443 \u043A\u0430\u0440\u0442\u0443,
     \u0438 \u044F \u0435\u0451 \u043D\u0430\u0439\u0434\u0443."

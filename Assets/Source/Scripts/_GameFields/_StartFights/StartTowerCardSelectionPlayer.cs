@@ -68,29 +68,25 @@ namespace GameFields.StartFights
                 card.gameObject.SetActive(false);
             }
 
-            DiscoverActivateData discoverActivateData = new DiscoverActivateData(cards, _data.LabelMessage, OnCardChoiceDone);
+            DiscoverResult discoverResult = new DiscoverResult(callbackAfterSetResult: ActivateSeats);
+            DiscoverActivateData discoverActivateData = new DiscoverActivateData(cards, _data.LabelMessage, discoverResult);
             _discover.Activate(discoverActivateData);
-        }
 
-        private void OnCardChoiceDone(Card card)
-        {
-            foreach (Seat seat in _seats)
-            {
-                seat.Card.gameObject.SetActive(true);
-            }
+            yield return new WaitUntil(() => discoverResult.Result != null);
 
-            EndProcessing(card).ToUniTask();
-        }
+            //foreach (Seat seat in _seats)
+            //{
+            //    seat.Card.gameObject.SetActive(true);
+            //}
 
-        private IEnumerator EndProcessing(Card card)
-        {
+            //EndProcessing(discoverResult.Result).ToUniTask();
             yield return new WaitForSeconds(_data.DelayAfterCardChoiceDone);
 
             if (TowerTransitCheck.IsFill == false)
             {
                 foreach (Seat seat in _seats)
                 {
-                    if (seat.Card != card)
+                    if (seat.Card != discoverResult.Result)
                     {
                         _handTransitSet.Set(seat.Card);
                         seat.Card.SetActiveInteraction(false);
@@ -107,6 +103,50 @@ namespace GameFields.StartFights
                 throw new System.Exception("Что-то не так, работяги");
             }
         }
+
+        private void ActivateSeats(Card card)
+        {
+            foreach (Seat seat in _seats)
+            {
+                seat.Card.gameObject.SetActive(true);
+            }
+        }
+
+        //private void OnCardChoiceDone(Card card)
+        //{
+        //    foreach (Seat seat in _seats)
+        //    {
+        //        seat.Card.gameObject.SetActive(true);
+        //    }
+
+        //    EndProcessing(card).ToUniTask();
+        //}
+
+        //private IEnumerator EndProcessing(Card card)
+        //{
+        //    yield return new WaitForSeconds(_data.DelayAfterCardChoiceDone);
+
+        //    if (TowerTransitCheck.IsFill == false)
+        //    {
+        //        foreach (Seat seat in _seats)
+        //        {
+        //            if (seat.Card != card)
+        //            {
+        //                _handTransitSet.Set(seat.Card);
+        //                seat.Card.SetActiveInteraction(false);
+        //                seat.Reset();
+        //            }
+        //            else
+        //            {
+        //                SeatCardInTower(seat).ToUniTask();
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        throw new System.Exception("Что-то не так, работяги");
+        //    }
+        //}
 
         private IEnumerator SeatCardInTower(Seat mySeat)
         {

@@ -4,6 +4,7 @@ using GameFields.Persons;
 using System.Collections;
 using System.Collections.Generic;
 using GameFields.Persons.CardTransits;
+using GameFields.Persons.Discovers;
 
 namespace GameFields.Effects
 {
@@ -13,14 +14,10 @@ namespace GameFields.Effects
         private readonly string _activateDiscoverMessage = "Выберете, какую карту отдадите противнику";
 
         private readonly Person _activePerson;
-        private readonly Person _deactivePerson;
 
         private readonly IHandTransitTryGet _handTransitTryGet;
         private readonly IHandTransitSet _handTransitSet;
         private readonly IDrawCardManager _drawCardManager;
-
-        private List<Card> _cards;
-        private bool _endPlaying;
 
         public PatriarchCorallEffect(Person activePerson, Person deactivePerson): base()
         {
@@ -35,13 +32,27 @@ namespace GameFields.Effects
 
         protected override IEnumerator OnPlaying()
         {
-            _endPlaying = false;
+            List<Card> cards = _drawCardManager?.DrawCards(_countDrawCards);
 
-            _cards = _drawCardManager?.DrawCards(_countDrawCards);
+            if (cards is null)
+            {
+                yield break;
+            }
 
-            DiscoverCards();
+            if (cards.Count <= 0)
+            {
+                yield break;
+            }
 
-            yield return new WaitUntil(() => _endPlaying);
+            DiscoverResult discoverResult = new DiscoverResult();
+            _activePerson.DiscoverCards(cards, _activateDiscoverMessage, discoverResult);
+
+            yield return new WaitUntil(() => discoverResult.Result != null);
+
+            if (_handTransitTryGet.TryGet(discoverResult.Result))
+            {
+                _handTransitSet.Set(discoverResult.Result);
+            }
         }
 
         public override void End()
@@ -49,31 +60,34 @@ namespace GameFields.Effects
             //Debug.Log("End patriarch corall effect");
         }
 
-        private void DiscoverCards()
-        {
-            if (_cards is null)
-            {
-                _endPlaying = true;
-                return;
-            }
+        //private void DiscoverCards()
+        //{
+        //    if (_cards is null)
+        //    {
+        //        _endPlaying = true;
+        //        return;
+        //    }
 
-            if (_cards.Count <= 0)
-            {
-                _endPlaying = true;
-                return;
-            }
+        //    if (_cards.Count <= 0)
+        //    {
+        //        _endPlaying = true;
+        //        return;
+        //    }
 
-            _activePerson.DiscoverCards(_cards, _activateDiscoverMessage, RechangeCards);
-        }
+        //    DiscoverResult discoverResult = new DiscoverResult();
+        //    _activePerson.DiscoverCards(_cards, _activateDiscoverMessage, discoverResult);
 
-        private void RechangeCards(Card card)
-        {
-            if (_handTransitTryGet.TryGet(card))
-            {
-                _handTransitSet.Set(card);
-            }
 
-            _endPlaying = true;
-        }
+        //}
+
+        //private void RechangeCards(Card card)
+        //{
+        //    if (_handTransitTryGet.TryGet(card))
+        //    {
+        //        _handTransitSet.Set(card);
+        //    }
+
+        //    _endPlaying = true;
+        //}
     }
 }

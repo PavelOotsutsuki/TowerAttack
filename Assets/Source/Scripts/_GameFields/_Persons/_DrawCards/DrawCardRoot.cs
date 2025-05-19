@@ -19,13 +19,15 @@ namespace GameFields.Persons.DrawCards
         {
             _simpleDrawCardAnimation = simpleDrawCardAnimation;
             _deck = deck;
+
+            _currentDrawCardAnimation = _simpleDrawCardAnimation;
         }
 
         public bool IsDrawing { get; private set; } = false;
 
         public List<Card> DrawCards(int countCards, Action callback = null)
         {
-            _currentDrawCardAnimation = _simpleDrawCardAnimation;
+            //_currentDrawCardAnimation = _simpleDrawCardAnimation;
             return TakeCards(countCards, callback);
         }
 
@@ -49,19 +51,25 @@ namespace GameFields.Persons.DrawCards
 
         private List<Card> TakeCards(int countCards, Action callback = null)
         {
-            List<Card> cards = new List<Card>();
+            List<Card> drawnCards = new List<Card>();
+            List<Card> drawnEffectCards = new List<Card>();
 
             for (int i = 0; i < countCards; i++)
             {
                 if (_deck.IsHasCards(1))
                 {
-                    cards.Add(_deck.TakeTopCard());
+                    Card card = _deck.TakeTopCard();
+
+                    if (_currentDrawCardAnimation is not FireDrawCardAnimation)
+                        drawnCards.Add(card);
+
+                    drawnEffectCards.Add(card);
                 }
             }
 
-            DrawingCards(cards, callback).ToUniTask();
+            DrawingCards(drawnEffectCards, callback).ToUniTask();
 
-            return cards;
+            return drawnCards;
         }
 
         private IEnumerator DrawingCards(IReadOnlyList<Card> cards, Action callback)
