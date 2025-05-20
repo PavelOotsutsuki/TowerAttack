@@ -52,14 +52,14 @@ namespace GameFields.Persons.Towers
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            Debug.Log("OnPointerEnter");
+            //Debug.Log("OnPointerEnter");
             BigCardShowData data = new BigCardShowData(GameSettings.CardSize, _readOnlyRectTransform, _configGetter.Invoke());
             _towerCardView.Activate(data);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            Debug.Log("OnPointerExit");
+            //Debug.Log("OnPointerExit");
             _towerCardView.Deactivate();
         }
 

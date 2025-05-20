@@ -12,7 +12,7 @@ using Random = UnityEngine.Random;
 namespace GameFields.Persons.Hands
 {
     public abstract class Hand : MonoBehaviour, ICardDragAndDropHandHandler, IHandBlockable, IReadOnlyHand, ITurnDrawCardWatcher,
-        ICardView, IPersonObject, IAutomaticFillComponents
+        ICardView, IPersonObject, ICardsCounter, IAutomaticFillComponents
     {
         private const float StartRotation = 0;
         private const int EmptyIndex = -1;
@@ -27,7 +27,8 @@ namespace GameFields.Persons.Hands
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private SideType _sideType;
         [SerializeField] private bool _isActiveInteraction;
-        [SerializeField] private Transform _container; //IPS
+        [SerializeField] private Transform _containerForDrag; //IPS
+        [SerializeField] private Transform _containerForSeats; 
 
         private List<Seat> _handSeats;
         private Seat _dragCardHandSeat;
@@ -40,8 +41,11 @@ namespace GameFields.Persons.Hands
 
         float ICardDragAndDropHandHandler.ReturnInSeatDuration => _returnInSeatDuration;
 
-        public int CountCards => _handSeats.Count;
+        public event Action OnSeatsCountChange;
+
+        public int CountHandSeats => _handSeats.Count;
         public bool IsSlimeEffectCountZero => _turnCardsFromDeck.Count == 0 && _countSlimeEffect > 0;
+        public int CountCards => AllCards.Count;
 
         private List<Card> AllCards
         {
@@ -112,7 +116,7 @@ namespace GameFields.Persons.Hands
             //card.SetDragAndDropListener(this);
 
             Seat handSeat = _handSeatPool.GetSeat();
-            handSeat.transform.SetParent(_rectTransform);
+            handSeat.transform.SetParent(_containerForSeats);
             handSeat.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
             _handSeats.Add(handSeat);
             handSeat.SetCard(card, _sideType, _returnInSeatDuration);
@@ -332,7 +336,7 @@ namespace GameFields.Persons.Hands
             if (TryFindHandSeat(out Seat handSeat, card))
             {
                 _dragCardParent = card.transform.parent; // IPS
-                card.ReadOnlyRectTransform.SetParent(_container); // IPS
+                card.ReadOnlyRectTransform.SetParent(_containerForDrag); // IPS
                 _dragCardHandSeat = handSeat;
 
                 _handSeatIndex = _handSeats.IndexOf(_dragCardHandSeat);
@@ -414,6 +418,8 @@ namespace GameFields.Persons.Hands
 
         private void SortHandSeats()
         {
+            OnSeatsCountChange?.Invoke();
+
             if (_handSeats.Count <= 0)
             {
                 return;

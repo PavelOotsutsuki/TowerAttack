@@ -24,7 +24,7 @@ namespace GameFields.Persons
 
         protected override void OnStartStep()
         {
-            int startCountCards = _hand.CountCards;
+            int startCountCards = _hand.CountHandSeats;
 
             _isComplete = false;
 

@@ -11,11 +11,11 @@ using Tools.Utils;
 
 namespace GameFields.Decks
 {
-    public class Deck : MonoBehaviour, IAutomaticFillComponents, IDeckTake, IDeckView
+    public class Deck : MonoBehaviour, IAutomaticFillComponents, IDeckTake, IDeckView, ICardsCounter
     {
         [SerializeField] private DeckCardContainer _cardContainer;
         [SerializeField] private DeckCardBackViewer _cardBackViewer;
-        [SerializeField] private DeckHelper deckHelper;
+        [SerializeField] private DeckHelper _deckHelper;
         [SerializeField] private int _countCardsInGroup = 10;
 
         private readonly float _startCardAddPositionX = 0f;
@@ -23,10 +23,15 @@ namespace GameFields.Decks
 
         private List<Card> _cards;
 
+        public event Action OnSeatsCountChange;
+
+        public int CountCards => _cards.Count;
+
         public void Init(IEnumerable<Card> cards)
         {
             _cards = new List<Card>();
             _cardBackViewer.Init(_startCardAddPositionX, _startCardAddPositionY);
+            _deckHelper.Init();
 
             foreach (Card card in cards)
             {
@@ -53,6 +58,9 @@ namespace GameFields.Decks
         {
             int position = Random.Range(0, _cards.Count);
             _cards.Insert(position, card);
+
+            OnSeatsCountChange?.Invoke();
+
             BindCard(card.ReadOnlyRectTransform, card.CardMovement);
 
             ShuffleCards();
@@ -155,6 +163,8 @@ namespace GameFields.Decks
         {
             _cards.Remove(card);
 
+            OnSeatsCountChange?.Invoke();
+
             if (_cards.Count % _countCardsInGroup == 0)
             {
                 _cardBackViewer.Remove();
@@ -182,7 +192,8 @@ namespace GameFields.Decks
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
                 DefineDeckCardContainer(),
-                DeckCardBackViewer()
+                DeckCardBackViewer(),
+                DeckCardDeckHelper()
             };
 
             return list;
@@ -198,6 +209,12 @@ namespace GameFields.Decks
         private ComponentAttachInfo DeckCardBackViewer()
         {
             return AutomaticFillComponents.DefineComponent(this, ref _cardBackViewer, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DeckCardDeckHelper))]
+        private ComponentAttachInfo DeckCardDeckHelper()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _deckHelper, ComponentLocationTypes.InThis);
         }
         #endregion
     }
