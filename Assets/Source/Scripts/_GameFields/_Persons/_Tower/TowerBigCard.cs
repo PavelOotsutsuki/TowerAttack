@@ -18,15 +18,17 @@ namespace GameFields.Persons.Towers
         private bool _isComplete;
         private Coroutine _hiddingCoroutine = null;
 
-        public bool? IsShown => _fadablePanel.IsShown!= null && _bigCard.IsShown != null? _fadablePanel.IsShown.Value && _bigCard.IsShown.Value: null;
+        public bool? IsShown { get; private set; } = null;
         public bool IsComplete => _isComplete;
 
         public void Init()
         {
-            _isComplete = false;
+            _isComplete = true;
 
             _bigCard.Init();
             _fadablePanel.Init();
+
+            IsShown = false;
         }
 
         public void Show(BigCardShowData data)
@@ -34,8 +36,13 @@ namespace GameFields.Persons.Towers
             if (IsShown == true)
                 return;
 
+            IsShown = true;
+
             if (_hiddingCoroutine != null)
+            {
                 StopCoroutine(_hiddingCoroutine);
+                _hiddingCoroutine = null;
+            }
 
             _isComplete = false;
 
@@ -48,7 +55,14 @@ namespace GameFields.Persons.Towers
             if (IsShown == false)
                 return;
 
+            IsShown = false;
+
             _hiddingCoroutine = StartCoroutine(Hidding());
+        }
+
+        private void OnDisable()
+        {
+            _hiddingCoroutine = null;
         }
 
         private IEnumerator Hidding()

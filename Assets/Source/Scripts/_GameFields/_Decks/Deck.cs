@@ -15,6 +15,7 @@ namespace GameFields.Decks
     {
         [SerializeField] private DeckCardContainer _cardContainer;
         [SerializeField] private DeckCardBackViewer _cardBackViewer;
+        [SerializeField] private DeckHelper deckHelper;
         [SerializeField] private int _countCardsInGroup = 10;
 
         private readonly float _startCardAddPositionX = 0f;

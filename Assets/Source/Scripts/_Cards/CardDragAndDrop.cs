@@ -117,7 +117,7 @@ namespace Cards
                 }
             }
 
-            if (EventSystem.current.TryGetComponentInRaycasts(eventData, out IAttackable cardAttackZone))
+            if (EventSystem.current.TryGetComponentInRaycasts(eventData, out IPlayerAttackable cardAttackZone))
             {
 
                 IsDragable = false;

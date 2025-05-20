@@ -13,6 +13,7 @@ namespace GameFields.Persons.Towers
         [SerializeField] private TowerBigCard _bigCard;
 
         private Coroutine _deactivateCoroutine = null; 
+        private Coroutine _activateCoroutine = null;
 
         public bool? IsActive { get; private set; } = null;
 
@@ -31,13 +32,9 @@ namespace GameFields.Persons.Towers
 
             IsActive = true;
 
-            if (_deactivateCoroutine != null)
-                StopCoroutine(_deactivateCoroutine);
-
             gameObject.SetActive(true);
 
-            _viewPanel.Show();
-            _bigCard.Show(data);
+            _activateCoroutine = StartCoroutine(Activating(data));
         }
 
         public void Deactivate()
@@ -47,10 +44,38 @@ namespace GameFields.Persons.Towers
 
             IsActive = false;
 
+            if (_activateCoroutine != null)
+            {
+                StopCoroutine(_activateCoroutine);
+                _activateCoroutine = null;
+            }
+
             _viewPanel.Hide();
             _bigCard.Hide();
 
             _deactivateCoroutine = StartCoroutine(WaitUntilSetDeactivate());
+        }
+
+        private void OnDisable()
+        {
+            _deactivateCoroutine = null;
+            _activateCoroutine = null;
+        }
+
+        private IEnumerator Activating(BigCardShowData data)
+        {
+            if (_deactivateCoroutine != null)
+            {
+                StopCoroutine(_deactivateCoroutine);
+                _deactivateCoroutine = null;
+            }
+            else
+            {
+                yield return new WaitForSeconds(0.8f);
+            }
+
+            _viewPanel.Show();
+            _bigCard.Show(data);
         }
 
         private IEnumerator WaitUntilSetDeactivate()
