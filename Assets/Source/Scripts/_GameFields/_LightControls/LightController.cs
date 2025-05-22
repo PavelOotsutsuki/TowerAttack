@@ -25,7 +25,7 @@ namespace GameFields.LightControls
             _isActivatable = true;
         }
 
-        public bool? IsActive { get; private set; } = null;
+        public bool? IsActive { get; private set; } = false;
 
         public void Activate()
         {

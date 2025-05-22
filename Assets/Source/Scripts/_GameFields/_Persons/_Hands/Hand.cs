@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cards;
+using GameFields.Persons.Common;
 using GameFields.Seats;
 using Tools.Utils;
 using Tools.Utils.FillComponents;

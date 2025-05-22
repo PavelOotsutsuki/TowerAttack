@@ -1,4 +1,4 @@
-using GameFields.Persons;
+using GameFields.Persons.Common;
 using GameFields.Persons.CardTransits;
 using Tools;
 

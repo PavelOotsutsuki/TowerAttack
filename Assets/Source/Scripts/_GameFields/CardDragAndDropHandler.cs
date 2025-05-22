@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using Cards;
 using GameFields.Persons.Hands;
-using GameFields.Persons.Towers;
 using GameFields.LightControls;
-using UnityEngine;
 using CanvasSortOrders;
 
 namespace GameFields
@@ -13,15 +9,15 @@ namespace GameFields
     {
         private readonly ICardDragAndDropHandHandler _cardDragAndDropHandPlayer;
         private readonly IHandBlockable _handPlayerBlockable; 
-        private readonly LightController _lightController;
+        private readonly CardDragAndDropLightController _cardDragAndDropLightController;
         private readonly CanvasSortOrder _sortOrder;
 
         public CardDragAndDropHandler(ICardDragAndDropHandHandler cardDragAndDropHandPlayer, IHandBlockable handPlayerBlockable,
-            LightController lightController, SpeedUpButtonSortOrder sortOrder)
+            CardDragAndDropLightController cardDragAndDropLightController, SpeedUpButtonSortOrder sortOrder)
         {
             _cardDragAndDropHandPlayer = cardDragAndDropHandPlayer;
             _handPlayerBlockable = handPlayerBlockable;
-            _lightController = lightController;
+            _cardDragAndDropLightController = cardDragAndDropLightController;
             _sortOrder = sortOrder;
         }
 
@@ -32,28 +28,29 @@ namespace GameFields
         public void OnCardAttack()
         {
             _cardDragAndDropHandPlayer.OnCardAttack();
-            _lightController.Deactivate();
+            _cardDragAndDropLightController.Deactivate();
             _sortOrder.SetDefaultIndex();
         }
 
         public void OnCardDrag(Card card)
         {
             _cardDragAndDropHandPlayer.OnCardDrag(card);
-            _lightController.Activate();
+            CardDragAndDropLightControllerActivateData lightActivateData = new CardDragAndDropLightControllerActivateData(card.EffectType);
+            _cardDragAndDropLightController.Activate(lightActivateData);
             _sortOrder.SetSortIndex(-1);
         }
 
         public void OnCardDrop()
         {
             _cardDragAndDropHandPlayer.OnCardDrop();
-            _lightController.Deactivate();
+            _cardDragAndDropLightController.Deactivate();
             _sortOrder.SetDefaultIndex();
         }
 
         public void OnCardPlay()
         {
             _cardDragAndDropHandPlayer.OnCardPlay();
-            _lightController.Deactivate();
+            _cardDragAndDropLightController.Deactivate();
             _sortOrder.SetDefaultIndex();
         }
 
@@ -65,7 +62,7 @@ namespace GameFields
         public void ForciblyBlock()
         {
             _handPlayerBlockable.ForciblyBlock();
-            _lightController.Deactivate();
+            _cardDragAndDropLightController.Deactivate();
             _sortOrder.SetDefaultIndex();
         }
 

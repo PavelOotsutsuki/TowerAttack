@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Cards;
 using Cysharp.Threading.Tasks;
-using GameFields.Persons;
 using GameFields.Persons.CardTransits;
+using GameFields.Persons.Common;
 using UnityEngine;
 
 namespace GameFields.StartFights

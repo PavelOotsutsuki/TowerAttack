@@ -71,6 +71,17 @@ namespace Cards
             _cardDragAndDropHandler.OnCardAttack();
         }
 
+        internal bool IsForgable()
+        {
+            return _card.EffectType == EffectType.BlueGnome;
+        }
+
+        internal void StartForging(IForging forgingZone)
+        {
+            forgingZone.StartForging(_card);
+            _cardDragAndDropHandler.OnCardPlay();
+        }
+
         internal void ReturnInHand(float duration)
         {
             _card.CardMovement.MoveLocalSmoothly(Vector2.zero, Quaternion.identity.eulerAngles, duration, _card.DefaultScaleVector);

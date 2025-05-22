@@ -1,6 +1,6 @@
 using System.Collections;
 using Cards;
-using GameFields.Persons;
+using GameFields.Persons.Common;
 using UnityEngine;
 
 namespace GameFields.Effects

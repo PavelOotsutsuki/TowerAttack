@@ -36,7 +36,7 @@ namespace GameFields.Effects
                 EffectType.CoolBookmaker => new CoolBookmakerEffect(_personsState.Active),
                 EffectType.BlindOldMan => new BlindOldManEffect(_personsState.Active),
                 EffectType.DetectiveRhodes => new DetectiveRhodesEffect(_personsState.Active, _personsState.Deactive, _viewRoot, _informationLabel),
-                EffectType.BlueGnome => new VoidEffect(),
+                EffectType.BlueGnome => new BlueGnomeEffect(_personsState.Active),
                 EffectType.TimeLord => new VoidEffect(),
                 EffectType.ThreeGuys => new VoidEffect(),
                 EffectType.TimeMistress => new VoidEffect(),

@@ -4,6 +4,7 @@ using Cysharp.Threading.Tasks;
 using GameFields.CommonAnimations;
 using GameFields.DiscardPiles;
 using GameFields.InformationLabels;
+using GameFields.Persons.Common;
 using GameFields.Persons.SelectMenues.Commons;
 using GameFields.Persons.Towers;
 using GameFields.Signals;

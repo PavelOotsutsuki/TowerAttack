@@ -1,5 +1,6 @@
 using System.Collections;
 using Cysharp.Threading.Tasks;
+using GameFields.Persons.Common;
 using UnityEngine;
 
 namespace GameFields.Persons.DrawCards

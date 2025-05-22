@@ -126,6 +126,15 @@ namespace Cards
                 return;
             }
 
+            if (_cardDragAndDropActions.IsForgable() && EventSystem.current.TryGetComponentInRaycasts(eventData, out IForging forgingZone))
+            {
+
+                IsDragable = false;
+                enabled = false;
+                _cardDragAndDropActions.StartForging(forgingZone);
+                return;
+            }
+
             enabled = false;
             _cardDragAndDropActions.StartEndDrag();
 

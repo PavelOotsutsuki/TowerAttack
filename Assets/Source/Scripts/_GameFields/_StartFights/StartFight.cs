@@ -3,7 +3,7 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using GameFields.Seats;
 using Zenject;
-using GameFields.Persons;
+using GameFields.Persons.Common;
 using GameFields.Persons.Discovers;
 using Tools.Utils.FillComponents;
 using System.Collections.Generic;

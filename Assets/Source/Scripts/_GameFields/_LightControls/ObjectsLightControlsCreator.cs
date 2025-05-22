@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using GameFields.DiscardPiles;
 using GameFields.Persons.Tables;
 using GameFields.Persons.Towers;
 using Tools;
@@ -14,6 +15,7 @@ namespace GameFields.LightControls
 
         [SerializeField] private CardAttackZoneEnemyAILightableObject _cardAttackZoneEnemyAI;
         [SerializeField] private CardPlayingZonePlayerLightableObject _cardPlayingZonePlayer;
+        [SerializeField] private ForgingLightableObject _forgingLightableObject;
         [SerializeField] private float _dragAndDropDelayForActivate = 3f;
 
         public void Init()
@@ -22,17 +24,29 @@ namespace GameFields.LightControls
 
             _cardAttackZoneEnemyAI.Init();
             _cardPlayingZonePlayer.Init();
+            _forgingLightableObject.Init();
         }
 
-        public LightController CreateDragAndDropLightController()
+        public CardDragAndDropLightController CreateCardDragAndDropLightController()
         {
-            LightableObject[] lightableObjects = new LightableObject[]
+            LightableObject[] defaultLightableObjects = new LightableObject[]
             {
                 _cardAttackZoneEnemyAI,
                 _cardPlayingZonePlayer
             };
 
-            return new LightController(_lightPanel, lightableObjects, _dragAndDropDelayForActivate);
+            LightController defaultLightController = new LightController(_lightPanel, defaultLightableObjects, _dragAndDropDelayForActivate);
+
+            LightableObject[] gnomeLightableObjects = new LightableObject[]
+            {
+                _cardAttackZoneEnemyAI,
+                _cardPlayingZonePlayer,
+                _forgingLightableObject
+            };
+
+            LightController gnomeLightController = new LightController(_lightPanel, gnomeLightableObjects, _dragAndDropDelayForActivate);
+
+            return new CardDragAndDropLightController(defaultLightController, gnomeLightController);
         }
 
         #region AutomaticFillComponents
@@ -43,7 +57,8 @@ namespace GameFields.LightControls
             {
                 DefineLightPanel(),
                 DefineCardAttackZoneEnemyAILightableObject(),
-                DefineCardPlayingZonePlayerLightableObject()
+                DefineCardPlayingZonePlayerLightableObject(),
+                DefineForgingLightableObject()
             };
 
             return list;
@@ -65,6 +80,12 @@ namespace GameFields.LightControls
         private ComponentAttachInfo DefineCardPlayingZonePlayerLightableObject()
         {
             return AutomaticFillComponents.DefineComponent(this, ref _cardPlayingZonePlayer, ComponentLocationTypes.InScene);
+        }
+
+        [ContextMenu(nameof(DefineForgingLightableObject))]
+        private ComponentAttachInfo DefineForgingLightableObject()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _forgingLightableObject, ComponentLocationTypes.InScene);
         }
         #endregion
     }

@@ -20,6 +20,7 @@ namespace Tools.UI
         public void Init()
         {
             _canvasGroup.alpha = _data.StartAlpha;
+            gameObject.SetActive(true);
             _isComplete = true;
         }
 

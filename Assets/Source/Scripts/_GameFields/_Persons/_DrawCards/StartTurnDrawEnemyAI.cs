@@ -1,3 +1,5 @@
+using GameFields.Persons.Common;
+
 namespace GameFields.Persons.DrawCards
 {
     public class StartTurnDrawEnemyAI : StartTurnDraw, IEnemyAIObject

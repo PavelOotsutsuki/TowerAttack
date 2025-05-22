@@ -1,9 +1,9 @@
 using UnityEngine;
-using GameFields.Persons;
 using Cards;
 using System.Collections;
 using System.Collections.Generic;
 using GameFields.Persons.CardTransits;
+using GameFields.Persons.Common;
 
 namespace GameFields.Effects
 {

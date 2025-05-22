@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Cards;
+using GameFields.Persons.Common;
 using Tools;
 using Tools.Utils.FillComponents;
 using UnityEngine;

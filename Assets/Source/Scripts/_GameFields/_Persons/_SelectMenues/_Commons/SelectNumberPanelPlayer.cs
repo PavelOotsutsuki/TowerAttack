@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using GameFields.Persons.Common;
 using GameFields.Persons.SelectMenues.Choices;
 using GameFields.Persons.Towers;
 using Tools;

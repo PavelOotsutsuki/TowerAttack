@@ -1,4 +1,4 @@
-using GameFields.Persons;
+using GameFields.Persons.Common;
 using GameFields.Persons.DrawCards;
 using GameFields.Persons.Hands;
 using Tools;
@@ -13,15 +13,17 @@ namespace GameFields
         private readonly IWorkable _table;
         private readonly IWorkable _endTurnButton;
         private readonly IBlockable _cardDragAndDropLightController;
+        private readonly IWorkable _forgingZone;
 
         public InteractionActivator(ICardDragAndDropBlockable dragAndDropBlockable, IWorkable towerEnemy, IWorkable tablePlayer,
-            IWorkable endTurnButton, IBlockable cardDragAndDropLightController)
+            IWorkable endTurnButton, IBlockable cardDragAndDropLightController, IWorkable forgingZone)
         {
             _dragAndDropBlockable = dragAndDropBlockable;
             _tower = towerEnemy;
             _table = tablePlayer;
             _endTurnButton = endTurnButton;
             _cardDragAndDropLightController = cardDragAndDropLightController;
+            _forgingZone = forgingZone;
         }
 
         public void SetObjectsStates(PersonStep personStep)
@@ -39,21 +41,25 @@ namespace GameFields
                 case TurnProcessing:
                     SetTurnProcessingStates();
                     break;
-                case CardEffectProcessingPlayer:
-                    SetCardActionProcessingPlayerStates();
-                    break;
+                //case CardEffectProcessingPlayer:
+                //    SetCardActionProcessingPlayerStates();
+                //    break;
                 case EndTurnProcessing:
                     SetEndTurnProcessingStates();
                     break;
-                case CardAttackProcessingPlayer:
+                //case CardAttackProcessingPlayer:
+                //    SetCardActionProcessingPlayerStates();
+                //    break;
+                case CardActionProcessingPlayer:
                     SetCardActionProcessingPlayerStates();
                     break;
                 case StartTurnDrawEnemyAI:
                     SetEnemyAIStates();
                     break;
                 case EnemyDragAndDropImitation:
-                case CardEffectProcessingEnemyAI:
-                case CardAttackProcessingEnemyAI:
+                case CardActionProcessingEnemyAI:
+                //case CardEffectProcessingEnemyAI:
+                    //case CardAttackProcessingEnemyAI:
                     break;
                 default:
                     throw new System.Exception("Неизветное состояние PersonStep" + personStep);
@@ -67,7 +73,7 @@ namespace GameFields
             _table.Deactivate();
             _endTurnButton.Deactivate();
             _cardDragAndDropLightController.Block();
-
+            _forgingZone.Deactivate();
             //Debug.Log("SetStartPlayerTurnViewStates");
         }
 
@@ -78,7 +84,7 @@ namespace GameFields
             _table.Deactivate();
             _endTurnButton.Deactivate();
             _cardDragAndDropLightController.Block();
-
+            _forgingZone.Deactivate();
             //Debug.Log("SetStartTurnDrawPlayerStates");
 
         }
@@ -90,7 +96,7 @@ namespace GameFields
             _table.Activate();
             _endTurnButton.Deactivate();
             _cardDragAndDropLightController.Unblock();
-
+            _forgingZone.Activate();
             //Debug.Log("SetTurnProcessingStates");
         }
 
@@ -101,7 +107,7 @@ namespace GameFields
             _table.Deactivate();
             _endTurnButton.Deactivate();
             _cardDragAndDropLightController.Block();
-
+            _forgingZone.Deactivate();
             //Debug.Log("SetCardActionProcessingPlayerStates");
         }
 
@@ -112,7 +118,7 @@ namespace GameFields
             _table.Deactivate();
             _endTurnButton.Activate();
             _cardDragAndDropLightController.Block();
-
+            _forgingZone.Deactivate();
             //Debug.Log("SetEndTurnProcessingStates");
         }
 
@@ -123,7 +129,7 @@ namespace GameFields
             _table.Deactivate();
             _endTurnButton.Deactivate();
             _cardDragAndDropLightController.Block();
-
+            _forgingZone.Deactivate();
             //Debug.Log("SetEnemyAIStates");
         }
     }

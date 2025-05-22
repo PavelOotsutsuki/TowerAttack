@@ -10,6 +10,7 @@ using System.Linq;
 using Random = UnityEngine.Random;
 using GameFields.Persons.SelectMenues.Attacks;
 using GameFields.Persons.Towers;
+using GameFields.Persons.Common;
 
 namespace GameFields.Persons.SelectMenues.Commons
 {

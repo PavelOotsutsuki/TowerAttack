@@ -29,6 +29,7 @@ namespace Cards
         public bool IsPlayingEffect => _cardEffectManager.IsPlayingEffect;
         public Image Background => _background;
         public SideType CurrentSide => _cardPaper.CurrentSide;
+        public EffectType EffectType => _config.Effect.Type;
 
         internal void Init(IEffectFactory effectFactory, CardViewService cardViewService,
             ICardDragAndDropHandler cardDragAndDropHandler)

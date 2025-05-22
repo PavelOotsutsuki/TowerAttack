@@ -5,7 +5,7 @@ using GameFields.Decks;
 using GameFields.Effects;
 using GameFields.EndTurnButtons;
 using GameFields.LightControls;
-using GameFields.Persons;
+using GameFields.Persons.Common;
 using GameFields.Persons.Hands;
 using GameFields.Seats;
 using Tools.Utils.FillComponents;
@@ -13,6 +13,7 @@ using UnityEngine;
 using Zenject;
 using CanvasSortOrders;
 using GameFields.InformationLabels;
+using GameFields.DiscardPiles;
 
 namespace Roots
 {
@@ -26,12 +27,13 @@ namespace Roots
         [SerializeField] private PersonCreator _personCreator;
         [SerializeField] private ObjectsLightControlsCreator _lightControlsCreator;
         [SerializeField] private SpeedUpButtonSortOrder _speedUpButtonSortOrder;
+        [SerializeField] private ForgingZone _forgingZone;
 
         private PersonsState _personsState;
 
         [Inject]
         private void Construct(SignalBus bus, Deck deck, SeatPool seatPool, CardDescription cardDescription, HandPlayer handPlayer,
-            InformationLabel informationLabel)
+            InformationLabel informationLabel, DiscardPile discardPile)
         {
             _screenRoot.Init();
             informationLabel.Init();
@@ -43,7 +45,7 @@ namespace Roots
             _lightControlsCreator.Init();
             _speedUpButtonSortOrder.Init();
 
-            LightController cardDragAndDropLightController = _lightControlsCreator.CreateDragAndDropLightController();
+            CardDragAndDropLightController cardDragAndDropLightController = _lightControlsCreator.CreateCardDragAndDropLightController();
 
             //Destroy(_lightControlsCreator.gameObject);
 
@@ -51,7 +53,7 @@ namespace Roots
                 cardDragAndDropLightController, _speedUpButtonSortOrder);
 
             _personCreator.Init(bus, deck, _endTurnButton, seatPool, cardDragAndDropHandler, cardDragAndDropLightController,
-                informationLabel);
+                informationLabel, _forgingZone);
 
             Player player = _personCreator.CreatePlayer();
             EnemyAI enemyAI = _personCreator.CreateEnemyAI();
@@ -60,6 +62,7 @@ namespace Roots
             Destroy(_personCreator.gameObject);
 
             _personsState = new PersonsState(player, enemyAI);
+            _forgingZone.Init(discardPile, _personsState);
             EffectFactory effectFactory = new EffectFactory(_personsState, viewRoot, informationLabel);
 
             _cardRoot.Init(effectFactory, cardDescription, cardDragAndDropHandler);
@@ -170,7 +173,8 @@ namespace Roots
                 DefineScreenRoot(),
                 DefineFontRoot(),
                 DefinePersonCreator(),
-                DefineObjectsLightControlsCreator()
+                DefineObjectsLightControlsCreator(),
+                DefineForgingZone()
             };
 
             return list;
@@ -216,6 +220,12 @@ namespace Roots
         private ComponentAttachInfo DefineObjectsLightControlsCreator()
         {
             return AutomaticFillComponents.DefineComponent(this, ref _lightControlsCreator, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineForgingZone))]
+        private ComponentAttachInfo DefineForgingZone()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _forgingZone, ComponentLocationTypes.InChildren);
         }
 
         #endregion

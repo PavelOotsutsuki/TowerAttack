@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using GameFields.Persons;
+using GameFields.Persons.Common;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 using Zenject;

@@ -1,7 +1,7 @@
 using UnityEngine;
 using GameFields.StartFights;
 using GameFields.Effects;
-using GameFields.Persons;
+using GameFields.Persons.Common;
 using Tools.Utils.FillComponents;
 using System.Collections.Generic;
 using Zenject;
