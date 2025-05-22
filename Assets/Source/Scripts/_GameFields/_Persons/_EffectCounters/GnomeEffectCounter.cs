@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cards;
 using UnityEngine;
 
 namespace GameFields.Persons.EffectCounters
@@ -19,9 +20,16 @@ namespace GameFields.Persons.EffectCounters
             _gnomeCounterUse = 1;
         }
 
-        public void Upgrade()
+        public void Upgrade(Card card)
         {
             _gnomeCounterNumbers += _upgradeStepCount;
+
+            List<TagValuePair> tagValuePairs = new List<TagValuePair>
+            {
+                new TagValuePair("NUMBERS", _gnomeCounterNumbers)
+            };
+
+            card.RechangeFeature(tagValuePairs);
         }
 
         public bool TryActivate(out int countNumbers)

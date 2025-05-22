@@ -1,11 +1,12 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 namespace GameFields.Seats
 {
     public class SeatPool: MonoBehaviour
     {
-        private const int CountExtraObjects = 10;
+        private const int CountExtraObjects = 500;
 
         [SerializeField] private Transform _container;
         [SerializeField] private int _countObjects;
@@ -13,6 +14,8 @@ namespace GameFields.Seats
 
         private readonly Queue<Seat> _remainingPool = new Queue<Seat>();
         private readonly List<Seat> _usedPool = new List<Seat>();
+
+        //private readonly List<Seat> _returnablePool = new List<Seat>();
 
         public void Init()
         {
@@ -33,6 +36,9 @@ namespace GameFields.Seats
             result.gameObject.SetActive(true);
             _usedPool.Add(result);
 
+            //if (_returnablePool.Contains(result))
+            //    _returnablePool.Remove(result);
+
             return result;
         }
 
@@ -41,6 +47,7 @@ namespace GameFields.Seats
             if (_usedPool.Contains(handSeat))
             {
                 handSeat.ReadOnlyTransform.SetParent(_container);
+                //_returnablePool.Add(handSeat);
                 handSeat.Reset();
                 _usedPool.Remove(handSeat);
                 _remainingPool.Enqueue(handSeat);
@@ -51,6 +58,19 @@ namespace GameFields.Seats
                 Debug.LogError("No contain on pool");
             }
         }
+
+        //public void Collect()
+        //{
+        //    if (_returnablePool.Count == 0)
+        //        return;
+
+        //    foreach (Seat seat in _returnablePool)
+        //    {
+        //        seat.ReadOnlyTransform.SetParent(_container);
+        //    }
+
+        //    _returnablePool.Clear();
+        //}
 
         public void ResetPool()
         {

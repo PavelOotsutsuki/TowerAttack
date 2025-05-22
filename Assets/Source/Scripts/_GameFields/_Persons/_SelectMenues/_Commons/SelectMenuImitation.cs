@@ -17,7 +17,9 @@ namespace GameFields.Persons.SelectMenues.Commons
         {
             _selectNumberPanelEnemyAI.Init(cardNumberKeeper, countNumbers, selectedNumbers, confirmableNumbers);
 
-            base.Init(selectResultHandler, _data, _selectNumberPanelEnemyAI);
+            SelectMenuLabelTextLogic selectMenuLabelTextLogic = new EnemySelectMenuLabelTextLogic(_data.SelectMenuLabelText);
+
+            base.Init(selectResultHandler, _selectNumberPanelEnemyAI, selectMenuLabelTextLogic);
         }
 
         public override void Activate(SelectMenuActivateData activateData)

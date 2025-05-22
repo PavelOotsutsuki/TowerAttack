@@ -12,9 +12,10 @@ namespace GameFields.Persons.SelectMenues.Commons
     public class SelectMenuPlayer : SelectMenu
     {
         [SerializeField] private SelectNumberPanelPlayer _selectNumberPanelPlayer;
-        [SerializeField] private SelectMenuPlayerData _data;
         [SerializeField] private SelectButton _selectButton;
         [SerializeField] private SelectModeButton _selectModeButton;
+
+        private int _currentNeedForActivate;
 
         public void Init(ICardNumberKeeper cardNumberKeeper, ISelectResultHandler attackResultHandler, int countNumbers,
             SelectNumbersList selectedNumbers, ConfirmableNumbers confirmableNumbers)
@@ -23,13 +24,17 @@ namespace GameFields.Persons.SelectMenues.Commons
             _selectNumberPanelPlayer.Init(_selectButton, cardNumberKeeper, countNumbers, selectedNumbers, confirmableNumbers);
             _selectModeButton.Init(_selectNumberPanelPlayer);
 
-            base.Init(attackResultHandler, _data, _selectNumberPanelPlayer);
+            SelectMenuLabelTextLogic selectMenuLabelTextLogic = new DefaultSelectMenuLabelTextLogic(GetNeedForActivate);
+
+            base.Init(attackResultHandler, _selectNumberPanelPlayer, selectMenuLabelTextLogic);
         }
 
         public override void Activate(SelectMenuActivateData activateData)
         {
             if (IsActive == true)
                 return;
+
+            _currentNeedForActivate = activateData.NeedSelect;
 
             base.Activate(activateData);
 
@@ -54,6 +59,8 @@ namespace GameFields.Persons.SelectMenues.Commons
 
             yield return new WaitUntil(() => _selectNumberPanelPlayer.IsCompleteNumbersHide);
         }
+
+        private int GetNeedForActivate() => _currentNeedForActivate;
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(SelectMenuPlayer))]

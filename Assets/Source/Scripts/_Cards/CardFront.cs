@@ -78,6 +78,10 @@ namespace Cards
         //{
         //    _cardFrame.Fire();
         //}
+        public void RechangeFeature(IReadOnlyList<TagValuePair> givenPairs)
+        {
+            _cardView.RechangeFeature(givenPairs);
+        }
 
         internal void Block()
         {

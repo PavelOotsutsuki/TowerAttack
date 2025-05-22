@@ -146,7 +146,7 @@ namespace GameFields.Persons.Hands
 
             _handSeats.Remove(findedHandSeat);
             findedHandSeat.Reset();
-            _handSeatPool.ReturnInPool(findedHandSeat);
+            //_handSeatPool.ReturnInPool(findedHandSeat);
 
             SortHandSeats();
 
@@ -159,7 +159,7 @@ namespace GameFields.Persons.Hands
             Card gettedCard = lastSeat.Card;
             _handSeats.Remove(lastSeat);
             lastSeat.Reset();
-            _handSeatPool.ReturnInPool(lastSeat);
+            //_handSeatPool.ReturnInPool(lastSeat);
 
             SortHandSeats();
 
@@ -297,7 +297,7 @@ namespace GameFields.Persons.Hands
 
         private void UnbindDragableCard()
         {
-            _handSeatPool.ReturnInPool(_dragCardHandSeat);
+            //_handSeatPool.ReturnInPool(_dragCardHandSeat);
 
             SortHandSeats();
             ResetDragOptions();

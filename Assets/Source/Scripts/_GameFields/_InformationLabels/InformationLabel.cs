@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Tools;
@@ -46,7 +47,10 @@ namespace GameFields.InformationLabels
 
         private IEnumerator WaitUntilDeactivating(float timeView)
         {
-            yield return new WaitForSeconds(timeView);
+            yield return new WaitUntil(() => _informationLabel.IsComplete && _panel.IsComplete);
+            yield return new WaitForSeconds(timeView / 2f);
+            GC.Collect();
+            yield return new WaitForSeconds(timeView / 2f);
 
             Deactivate();
         }

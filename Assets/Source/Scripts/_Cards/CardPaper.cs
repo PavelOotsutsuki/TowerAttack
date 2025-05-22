@@ -74,6 +74,11 @@ namespace Cards
             _cardFireAnimator.Play();
         }
 
+        public void RechangeFeature(IReadOnlyList<TagValuePair> givenPairs)
+        {
+            _cardFront.RechangeFeature(givenPairs);
+        }
+
         public void SetSide(SideType sideType)
         {
             _cardSideFlipper.SetSide(sideType);

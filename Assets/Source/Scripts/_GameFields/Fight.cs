@@ -5,6 +5,8 @@ using Cysharp.Threading.Tasks;
 using Zenject;
 using GameFields.Signals;
 using GameFields.EndFights;
+using System;
+using GameFields.Seats;
 
 namespace GameFields
 {
@@ -17,9 +19,11 @@ namespace GameFields
         private readonly PersonsState _personsState;
         private readonly SignalBus _bus;
 
+        private readonly SeatPool _seatPool;
+
         private int _turnNumber;
 
-        public Fight(PersonsState personsState, FightResult fightResult, SignalBus bus)
+        public Fight(PersonsState personsState, FightResult fightResult, SignalBus bus, SeatPool seatPool)
         {
             _personsState = personsState;
             _fightResult = fightResult;
@@ -28,6 +32,7 @@ namespace GameFields
 
             IsComplete = false;
 
+            _seatPool = seatPool;
             _bus = bus;
             _bus.Subscribe<PersonWinSignal>(SetWinner);
         }
@@ -44,6 +49,8 @@ namespace GameFields
 
         public void StartStep()
         {
+            GC.Collect();
+
             StartTurn().ToUniTask();
         }
 
@@ -84,6 +91,7 @@ namespace GameFields
         private void NextTurn()
         {
             _turnNumber++;
+            //_seatPool.Collect();
 
             ActivePerson.FinishTurn();
 

@@ -61,6 +61,11 @@ namespace Cards
             Destroy(gameObject);
         }
 
+        public void RechangeFeature(IReadOnlyList<TagValuePair> givenPairs)
+        {
+            _cardPaper.RechangeFeature(givenPairs);
+        }
+
         //public void SetDragAndDropHandler(ICardDragAndDropHandler cardDragAndDropHandler)
         //{
         //    _cardPaper.SetDragAndDropHandler(cardDragAndDropHandler);

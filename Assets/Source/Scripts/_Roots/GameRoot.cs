@@ -68,7 +68,7 @@ namespace Roots
             _cardRoot.Init(effectFactory, cardDescription, cardDragAndDropHandler);
             deck.Init(_cardRoot.Cards);
 
-            _gameFieldRoot.Init(_personsState, player, enemyAI, bus);
+            _gameFieldRoot.Init(_personsState, player, enemyAI, bus, seatPool);
         }
 
         #region AutomaticFillComponents

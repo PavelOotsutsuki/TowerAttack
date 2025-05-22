@@ -3,6 +3,8 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using GameFields.Persons.Hands;
 using Cards;
+using System;
+using Random = UnityEngine.Random;
 
 namespace GameFields.Persons.Common
 {

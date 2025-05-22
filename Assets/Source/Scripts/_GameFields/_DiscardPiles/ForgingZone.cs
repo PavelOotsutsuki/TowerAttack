@@ -73,7 +73,7 @@ namespace GameFields.DiscardPiles
             IDrawCardManager drawCardManager = _personState.Active;
             drawCardManager.DrawCards(1, Continue);
 
-            _personState.Active.PersonEffectsCounter.GnomeEffectCounter.Upgrade();
+            _personState.Active.PersonEffectsCounter.GnomeEffectCounter.Upgrade(card);
         }
 
         private void Continue()

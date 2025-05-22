@@ -22,8 +22,8 @@ namespace GameFields.Persons.SelectMenues.Commons
         private ISelectResultHandler _selectResultHandler;
 
         private SelectResult _selectResult;
-        private SelectMenuData _data;
         private SelectNumberPanel _selectNumberPanel;
+        private SelectMenuLabelTextLogic _selectMenuLabelTextLogic;
 
         private IEnumerable<ICompletable> _completableElements;
 
@@ -32,14 +32,14 @@ namespace GameFields.Persons.SelectMenues.Commons
 
         private bool IsElementsComplete => _completableElements.Any(e => e.IsComplete == false) == false;
 
-        public void Init(ISelectResultHandler selectResultHandler, SelectMenuData data, SelectNumberPanel selectNumberPanel)
+        public void Init(ISelectResultHandler selectResultHandler, SelectNumberPanel selectNumberPanel,
+            SelectMenuLabelTextLogic selectMenuLabelTextLogic)
         {
             gameObject.SetActive(false);
             IsComplete = false;
 
             _canvasGroup.blocksRaycasts = true;
 
-            _data = data;
             _selectNumberPanel = selectNumberPanel;
 
             //SelectResultHandler = selectResultHandler;
@@ -49,6 +49,7 @@ namespace GameFields.Persons.SelectMenues.Commons
             _selectMenuLabel.Init();
             _selectMenuPanel.Init();
 
+            _selectMenuLabelTextLogic = selectMenuLabelTextLogic;
             _completableElements = FillCompletableElements();
         }
 
@@ -62,7 +63,7 @@ namespace GameFields.Persons.SelectMenues.Commons
 
             gameObject.SetActive(true);
 
-            LabelActivateData labelData = new LabelActivateData(_data.SelectMenuLabelText);
+            LabelActivateData labelData = new LabelActivateData(_selectMenuLabelTextLogic.CreateLabelText());
             _selectMenuLabel.Show(labelData);
             _selectMenuPanel.Show();
 
