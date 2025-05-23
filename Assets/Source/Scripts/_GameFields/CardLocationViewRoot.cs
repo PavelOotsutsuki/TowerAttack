@@ -107,7 +107,7 @@ namespace GameFields
 
             for (int i = 0; i < cards.Count; i++)
             {
-                if (exceptions.Contains(cards[i].ViewConfig.Number) == false && viewTypesContains.Invoke(cards[i].ViewConfig.Number) == false)
+                if (exceptions.Contains(cards[i].ViewData.Number) == false && viewTypesContains.Invoke(cards[i].ViewData.Number) == false)
                 {
                     return cards[i];
                 }
@@ -115,7 +115,7 @@ namespace GameFields
 
             for (int i = 0; i < cards.Count; i++)
             {
-                if (exceptions.Contains(cards[i].ViewConfig.Number) == false)
+                if (exceptions.Contains(cards[i].ViewData.Number) == false)
                 {
                     return cards[i];
                 }

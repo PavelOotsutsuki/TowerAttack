@@ -1,3 +1,4 @@
+using Cards;
 using Tools;
 
 namespace GameFields.LightControls
@@ -31,7 +32,7 @@ namespace GameFields.LightControls
 
             IsActive = true;
 
-            if (data.EffectType == Cards.EffectType.BlueGnome)
+            if (data.EffectFeature == EffectFeature.Forging)
             {
                 _currentLightController = _gnomeLightController;
             }

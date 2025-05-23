@@ -49,7 +49,7 @@ namespace GameFields
 
         public void StartStep()
         {
-            GC.Collect();
+            //GC.Collect();
 
             StartTurn().ToUniTask();
         }

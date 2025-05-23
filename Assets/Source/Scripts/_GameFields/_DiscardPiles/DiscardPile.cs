@@ -72,10 +72,10 @@ namespace GameFields.DiscardPiles
             {
                 for (int i = 0; i < cards.Count; i++)
                 {
-                    if (existingIndices.Contains(cards[i].ViewConfig.Number) == false && exceptions.Contains(cards[i].ViewConfig.Number) == false)
+                    if (existingIndices.Contains(cards[i].ViewData.Number) == false && exceptions.Contains(cards[i].ViewData.Number) == false)
                     {
                         result.Add(cards[i]);
-                        existingIndices.Add(cards[i].ViewConfig.Number);
+                        existingIndices.Add(cards[i].ViewData.Number);
                     }
                 }
             }
@@ -86,10 +86,10 @@ namespace GameFields.DiscardPiles
                 {
                     for (int i = 0; i < cards.Count; i++)
                     {
-                        if (exceptions.Contains(cards[i].ViewConfig.Number) == false)
+                        if (exceptions.Contains(cards[i].ViewData.Number) == false)
                         {
                             result.Add(cards[i]);
-                            existingIndices.Add(cards[i].ViewConfig.Number);
+                            existingIndices.Add(cards[i].ViewData.Number);
                         }
                     }
                 }
@@ -102,7 +102,7 @@ namespace GameFields.DiscardPiles
                     for (int i = 0; i < cards.Count; i++)
                     {
                         result.Add(cards[i]);
-                        existingIndices.Add(cards[i].ViewConfig.Number);
+                        existingIndices.Add(cards[i].ViewData.Number);
                     }
                 }
             }
@@ -129,12 +129,12 @@ namespace GameFields.DiscardPiles
         {
             exceptions ??= new List<int>();
 
-            return _seats.Where(s => exceptions.Contains(s.Card.ViewConfig.Number) == false).Count() >= count; 
+            return _seats.Where(s => exceptions.Contains(s.Card.ViewData.Number) == false).Count() >= count; 
         }
 
         public bool Contains(int number)
         {
-            return _seats.Select(s => s.Card.ViewConfig.Number).Contains(number);
+            return _seats.Select(s => s.Card.ViewData.Number).Contains(number);
         }
 
         private Seat GetSeat()

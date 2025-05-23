@@ -1,26 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cards;
+using GameFields.Persons.Common;
 using UnityEngine;
 
 namespace GameFields.Persons.EffectCounters
 {
     public class GnomeEffectCounter
     {
+        private readonly RechangeFeatureRuleController _ruleController;
+        private readonly IEnumerable<ICardFeatureRechangable> _rechangables;
+
         private readonly int _upgradeStepCount;
 
         private int _gnomeCounterNumbers;
         private int _gnomeCounterUse;
 
-        public GnomeEffectCounter()
+        public GnomeEffectCounter(RechangeFeatureRuleController ruleController, IEnumerable<ICardFeatureRechangable> rechangables)
         {
+            _ruleController = ruleController;
+            _rechangables = rechangables;
+
             _upgradeStepCount = 2;
 
             _gnomeCounterNumbers = 3;
             _gnomeCounterUse = 1;
         }
 
-        public void Upgrade(Card card)
+        public void Upgrade()
         {
             _gnomeCounterNumbers += _upgradeStepCount;
 
@@ -29,7 +36,21 @@ namespace GameFields.Persons.EffectCounters
                 new TagValuePair("NUMBERS", _gnomeCounterNumbers)
             };
 
-            card.RechangeFeature(tagValuePairs);
+            _ruleController.Add(EffectFeature.Forging, tagValuePairs);
+
+            if (_rechangables != null)
+            {
+                foreach (ICardFeatureRechangable rechangable in _rechangables)
+                {
+                    if (rechangable.GetRechangableCards() != null)
+                    {
+                        foreach (IFeatureRechanger rechanger in rechangable.GetRechangableCards())
+                        {
+                            _ruleController.TryRenameFeature(rechanger);
+                        }
+                    }
+                }
+            }
         }
 
         public bool TryActivate(out int countNumbers)

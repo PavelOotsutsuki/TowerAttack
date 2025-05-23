@@ -48,7 +48,7 @@ namespace Cards
 
             IsShown = true;
 
-            _cardView.FillData(data.CardViewConfig);
+            _cardView.FillData(data.CardViewData);
             _sizeFactor = data.CardSize.x / data.CardSize.y;
             _bigHeight = _canvasHeight / _scaleFactor;
             _bigWidth = _bigHeight * _sizeFactor;

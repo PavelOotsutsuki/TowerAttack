@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace Cards
 {
-    public class Card : MonoBehaviour, ICardTransformable, ICardNumber, IAutomaticFillComponents
+    public class Card : MonoBehaviour, ICardTransformable, ICardNumber, IFeatureRechanger, IAutomaticFillComponents
     {
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private CardPaper _cardPaper;
@@ -19,28 +19,31 @@ namespace Cards
 
         private CardCharacter _character;
         private CardEffectManager _cardEffectManager;
+        private CardViewData _viewData;
 
         private ICardState _currentState;
 
         public ReadOnlyRectTransform ReadOnlyRectTransform { get; private set; }
         public Movement CardMovement { get; private set; }
         public Vector3 DefaultScaleVector => _defaultScaleVector;
-        public CardViewConfig ViewConfig => _config.CardViewConfig;
+        public CardViewData ViewData => _viewData;
         public bool IsPlayingEffect => _cardEffectManager.IsPlayingEffect;
         public Image Background => _background;
         public SideType CurrentSide => _cardPaper.CurrentSide;
-        public EffectType EffectType => _config.Effect.Type;
+        //public EffectType EffectType => _config.Effect.Type;
+        public EffectFeature EffectFeature => _config.EffectFeature;
 
         internal void Init(IEffectFactory effectFactory, CardViewService cardViewService,
             ICardDragAndDropHandler cardDragAndDropHandler)
         {
             ReadOnlyRectTransform = new ReadOnlyRectTransform(_rectTransform);
             _cardEffectManager = new CardEffectManager(_config.Effect, effectFactory);
+            _viewData = new CardViewData(_config.CardViewConfig);
 
             _rectTransform.localScale = _defaultScaleVector;
             CardMovement = new Movement(_rectTransform);
 
-            _cardPaper.Init(this, cardViewService, ViewConfig, _rectTransform, cardDragAndDropHandler);
+            _cardPaper.Init(this, cardViewService, ViewData, _rectTransform, cardDragAndDropHandler);
 
             CreateCardCharacter();
             SetState(_cardPaper);
@@ -61,7 +64,7 @@ namespace Cards
             Destroy(gameObject);
         }
 
-        public void RechangeFeature(IReadOnlyList<TagValuePair> givenPairs)
+        public void RechangeFeature(IEnumerable<TagValuePair> givenPairs = null)
         {
             _cardPaper.RechangeFeature(givenPairs);
         }

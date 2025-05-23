@@ -15,27 +15,33 @@ namespace Cards
         [SerializeField] private TMP_Text _feature;
 
         private CardFeatureTags _cardFeatureTags = null;
+        private CardViewData _cardViewData = null;
 
-        public void FillData(CardViewConfig cardViewConfig)
+        public void FillData(CardViewData cardViewData)
         {
-            _icon.sprite = cardViewConfig.Icon;
-            _number.text = cardViewConfig.Number.ToString();
-            _name.text = cardViewConfig.Name;
+            _icon.sprite = cardViewData.Icon;
+            _number.text = cardViewData.Number.ToString();
+            _name.text = cardViewData.Name;
+            _feature.text = cardViewData.Feature;
 
-            if (TryFindTags(cardViewConfig.Feature))
+            if (TryFindTags(cardViewData.Feature))
             {
                 _feature.text = _cardFeatureTags.CreateFeature();
+                _cardViewData = cardViewData;
             }
             else
             {
-                _feature.text = cardViewConfig.Feature;
+                _feature.text = cardViewData.Feature;
             }
         }
 
-        public void RechangeFeature(IReadOnlyList<TagValuePair> givenPairs)
+        public void RechangeFeature(IEnumerable<TagValuePair> givenPairs)
         {
             if (_cardFeatureTags != null)
+            {
                 _feature.text = _cardFeatureTags.CreateFeature(givenPairs);
+                _cardViewData.ChangeFeature(_cardFeatureTags.UpdateTemplate(givenPairs));
+            }
         }
 
         private bool TryFindTags(string feature)

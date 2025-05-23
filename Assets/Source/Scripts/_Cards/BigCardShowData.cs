@@ -8,17 +8,17 @@ namespace Cards
     {
         private readonly ReadOnlyTransform _readOnlyTransform;
 
-        public BigCardShowData(Vector2 cardSize, ReadOnlyTransform readOnlyTransform, CardViewConfig cardViewConfig)
+        public BigCardShowData(Vector2 cardSize, ReadOnlyTransform readOnlyTransform, CardViewData cardViewData)
         {
             CardSize = cardSize;
-            CardViewConfig = cardViewConfig;
-            LabelData = new LabelActivateData(CardViewConfig.Description);
+            CardViewData = cardViewData;
+            LabelData = new LabelActivateData(cardViewData.Description);
 
             _readOnlyTransform = readOnlyTransform;
         }
 
         public Vector2 CardSize { get; private set; }
-        public CardViewConfig CardViewConfig { get; private set; }
+        public CardViewData CardViewData { get; private set; }
         public LabelActivateData LabelData { get; private set; }
 
         public float PositionX => _readOnlyTransform.GetPositionX();

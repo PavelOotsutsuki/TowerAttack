@@ -13,7 +13,7 @@ using Random = UnityEngine.Random;
 namespace GameFields.Persons.Hands
 {
     public abstract class Hand : MonoBehaviour, ICardDragAndDropHandHandler, IHandBlockable, IReadOnlyHand, ITurnDrawCardWatcher,
-        ICardView, IPersonObject, ICardsCounter, IAutomaticFillComponents
+        ICardView, IPersonObject, ICardsCounter, ICardFeatureRechangable, IAutomaticFillComponents
     {
         private const float StartRotation = 0;
         private const int EmptyIndex = -1;
@@ -36,6 +36,7 @@ namespace GameFields.Persons.Hands
         private Transform _dragCardParent; // IPS
         private int _handSeatIndex;
         private SeatPool _handSeatPool;
+        private RechangeFeatureRuleController _ruleController;
 
         private List<Card> _turnCardsFromDeck;
         private int _countSlimeEffect = 0;
@@ -68,13 +69,19 @@ namespace GameFields.Persons.Hands
             }
         }
 
-        public void Init(SeatPool seatPool)
+        public void Init(SeatPool seatPool, RechangeFeatureRuleController ruleController)
         {
             _handSeats = new List<Seat>();
             _turnCardsFromDeck = new List<Card>();
             _handSeatIndex = EmptyIndex;
+            _ruleController = ruleController;
 
             _handSeatPool = seatPool;
+        }
+
+        public IEnumerable<IFeatureRechanger> GetRechangableCards()
+        {
+            return AllCards;
         }
 
         bool ICardDragAndDropHandHandler.IsDraggable(Card card) => TryFindHandSeat(out Seat seat, card);
@@ -116,6 +123,7 @@ namespace GameFields.Persons.Hands
         {
             //card.SetDragAndDropListener(this);
 
+            _ruleController.TryRenameFeature(card);
             Seat handSeat = _handSeatPool.GetSeat();
             handSeat.transform.SetParent(_containerForSeats);
             handSeat.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
@@ -228,10 +236,10 @@ namespace GameFields.Persons.Hands
             {
                 for (int i = 0; i < cards.Count; i++)
                 {
-                    if (existingIndices.Contains(cards[i].ViewConfig.Number) == false && exceptions.Contains(cards[i].ViewConfig.Number) == false)
+                    if (existingIndices.Contains(cards[i].ViewData.Number) == false && exceptions.Contains(cards[i].ViewData.Number) == false)
                     {
                         result.Add(cards[i]);
-                        existingIndices.Add(cards[i].ViewConfig.Number);
+                        existingIndices.Add(cards[i].ViewData.Number);
                     }
                 }
             }
@@ -242,10 +250,10 @@ namespace GameFields.Persons.Hands
                 {
                     for (int i = 0; i < cards.Count; i++)
                     {
-                        if (exceptions.Contains(cards[i].ViewConfig.Number) == false)
+                        if (exceptions.Contains(cards[i].ViewData.Number) == false)
                         {
                             result.Add(cards[i]);
-                            existingIndices.Add(cards[i].ViewConfig.Number);
+                            existingIndices.Add(cards[i].ViewData.Number);
                         }
                     }
                 }
@@ -258,7 +266,7 @@ namespace GameFields.Persons.Hands
                     for (int i = 0; i < cards.Count; i++)
                     {
                         result.Add(cards[i]);
-                        existingIndices.Add(cards[i].ViewConfig.Number);
+                        existingIndices.Add(cards[i].ViewData.Number);
                     }
                 }
             }
@@ -273,11 +281,11 @@ namespace GameFields.Persons.Hands
         {
             exceptions ??= new List<int>();
 
-            int allCards = _handSeats.Where(s => s.IsFill() && exceptions?.Contains(s.Card.ViewConfig.Number) == false).Count();
+            int allCards = _handSeats.Where(s => s.IsFill() && exceptions?.Contains(s.Card.ViewData.Number) == false).Count();
 
             if (_dragCardHandSeat != null)
                 if (_dragCardHandSeat.IsFill())
-                    if (exceptions.Contains(_dragCardHandSeat.Card.ViewConfig.Number) == false)
+                    if (exceptions.Contains(_dragCardHandSeat.Card.ViewData.Number) == false)
                         allCards++;
 
             return allCards >= count;
@@ -285,7 +293,7 @@ namespace GameFields.Persons.Hands
 
         public bool Contains(int number)
         {
-            return AllCards.Select(c => c.ViewConfig.Number).Contains(number);
+            return AllCards.Select(c => c.ViewData.Number).Contains(number);
         }
 
         private void BlockCards()

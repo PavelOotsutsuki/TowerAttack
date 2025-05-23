@@ -25,7 +25,7 @@ namespace Cards
         public bool? IsShown { get; private set; } = null;
         public SideType CurrentSide => _cardSideFlipper.CurrentSide;
 
-        internal void Init(Card me, CardViewService cardViewService, CardViewConfig cardViewConfig,
+        internal void Init(Card me, CardViewService cardViewService, CardViewData cardViewData,
             RectTransform cardTransform, ICardDragAndDropHandler cardDragAndDropHandler)
         {
             ReadOnlyRectTransform readOnlyRectTransform = new ReadOnlyRectTransform(cardTransform);
@@ -33,7 +33,7 @@ namespace Cards
             Vector2 cardSizeFront = GameSettings.CardSize;
             Vector2 cardSizeBack = GameSettings.CardSize;
 
-            _cardFront.Init(cardViewConfig, readOnlyRectTransform, cardViewService, cardSizeFront, _cardFrame);
+            _cardFront.Init(cardViewData, readOnlyRectTransform, cardViewService, cardSizeFront, _cardFrame);
             _cardBack.Init(cardSizeBack);
             _cardFireAnimator.Init();
 
@@ -74,7 +74,7 @@ namespace Cards
             _cardFireAnimator.Play();
         }
 
-        public void RechangeFeature(IReadOnlyList<TagValuePair> givenPairs)
+        public void RechangeFeature(IEnumerable<TagValuePair> givenPairs)
         {
             _cardFront.RechangeFeature(givenPairs);
         }

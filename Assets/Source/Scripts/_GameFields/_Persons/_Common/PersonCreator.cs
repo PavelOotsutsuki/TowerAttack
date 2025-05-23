@@ -20,6 +20,7 @@ using GameFields.InformationLabels;
 using GameFields.DiscardPiles;
 using GameFields.Persons.Fires;
 using Cards;
+using GameFields.Persons.EffectCounters;
 
 namespace GameFields.Persons.Common
 {
@@ -38,6 +39,7 @@ namespace GameFields.Persons.Common
         private AttackMenuPlayer _playerAttackMenu;
         private CardAttackZonePlayer _playerCardAttackZone;
         private FirePool _playerFirePool;
+        private RechangeFeatureRuleController _playerRechangeFeatureRuleController;
 
         [SerializeField] private StartPlayerTurnLabel _startPlayerTurnLabel; 
         [SerializeField] private int _playerCountStartDrawCards = 1;
@@ -64,6 +66,7 @@ namespace GameFields.Persons.Common
         private AttackMenuImitation _enemyAttackMenu;
         private CardAttackZoneEnemyAI _enemyCardAttackZone;
         private FirePool _enemyFirePool;
+        private RechangeFeatureRuleController _enemyRechangeFeatureRuleController;
 
         [SerializeField] private int _enemyCountStartDrawCards = 1;
         
@@ -139,6 +142,9 @@ namespace GameFields.Persons.Common
             _enemyFirePool = new FirePool();
             _fireRoot = new FireRoot(_playerFirePool, _enemyFirePool);
 
+            _playerRechangeFeatureRuleController = new RechangeFeatureRuleController();
+            _enemyRechangeFeatureRuleController = new RechangeFeatureRuleController();
+
             _interactionActivator = new InteractionActivator(cardDragAndDropHandler, _towerActivator, _tableActivator, endTurnButton,
                 cardDragAndDropLightController, forgingZone);
 
@@ -159,9 +165,17 @@ namespace GameFields.Persons.Common
             StartPlayerTurnView startPlayerTurnView = new StartPlayerTurnView(_interactionActivator, _startPlayerTurnLabel);
             EndTurnProcessing endTurnProcessing = new EndTurnProcessing(_endTurnButton, _interactionActivator);
 
+            List<ICardFeatureRechangable> cardFeatureRechangables = new List<ICardFeatureRechangable>()
+            {
+                _playerTower,
+                _playerHand
+            };
+            PersonEffectsCounter personEffectsCounter = new PersonEffectsCounter(_playerRechangeFeatureRuleController,
+                cardFeatureRechangables);
+
             return new Player(_interactionActivator, _playerHand, _playerPlayingZone, _playerTower, _playerDiscover,
                 drawCardRoot, startTurnDraw, turnProcessing, _bus, startPlayerTurnView, _playerAttackMenu, endTurnProcessing,
-                _playerChoiceMenu);
+                _playerChoiceMenu, personEffectsCounter);
         }
 
         public EnemyAI CreateEnemyAI()
@@ -176,9 +190,17 @@ namespace GameFields.Persons.Common
             EnemyDragAndDropImitation enemyDragAndDropImitation = new EnemyDragAndDropImitation(cardDragAndDropImitationActions,
                 _enemyDragAndDropImitationData, _interactionActivator, _enemyHand);
 
+            List<ICardFeatureRechangable> cardFeatureRechangables = new List<ICardFeatureRechangable>()
+            {
+                _enemyTower,
+                _enemyHand
+            };
+            PersonEffectsCounter personEffectsCounter = new PersonEffectsCounter(_enemyRechangeFeatureRuleController,
+                cardFeatureRechangables);
+
             return new EnemyAI(_interactionActivator, enemyDragAndDropImitation, _enemyPlayingZone,
                 _enemyTower, drawCardRoot, _enemyDiscoverImitation, startTurnDraw, _bus, _enemyHand, _playerAttackMenu,
-                _enemyChoiceMenu);
+                _enemyChoiceMenu, personEffectsCounter);
         }
 
         public CardLocationViewRoot CreateCardLocationViewRoot(ICardWatcher cardWatcher)
@@ -188,7 +210,7 @@ namespace GameFields.Persons.Common
         
         private void InitPlayersData(SeatPool seatPool)
         {
-            _playerHand.Init(seatPool);
+            _playerHand.Init(seatPool, _playerRechangeFeatureRuleController);
             _playerTable.Init();
             _playerPlayingZone.Init(_playerTable);
             _playerTower.Init();
@@ -213,7 +235,7 @@ namespace GameFields.Persons.Common
 
         private void InitEnemyData(SeatPool seatPool)
         {
-            _enemyHand.Init(seatPool);
+            _enemyHand.Init(seatPool, _enemyRechangeFeatureRuleController);
             _enemyTable.Init();
             _enemyPlayingZone.Init(_enemyTable);
             _enemyTower.Init();

@@ -35,7 +35,7 @@ namespace GameFields
         public void OnCardDrag(Card card)
         {
             _cardDragAndDropHandPlayer.OnCardDrag(card);
-            CardDragAndDropLightControllerActivateData lightActivateData = new CardDragAndDropLightControllerActivateData(card.EffectType);
+            CardDragAndDropLightControllerActivateData lightActivateData = new CardDragAndDropLightControllerActivateData(card.EffectFeature);
             _cardDragAndDropLightController.Activate(lightActivateData);
             _sortOrder.SetSortIndex(-1);
         }

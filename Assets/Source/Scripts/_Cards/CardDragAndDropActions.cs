@@ -73,7 +73,7 @@ namespace Cards
 
         internal bool IsForgable()
         {
-            return _card.EffectType == EffectType.BlueGnome;
+            return _card.EffectFeature == EffectFeature.Forging;
         }
 
         internal void StartForging(IForging forgingZone)

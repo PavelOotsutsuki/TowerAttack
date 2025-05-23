@@ -10,6 +10,7 @@ using Tools;
 using Zenject;
 using GameFields.Persons.SelectMenues.Commons;
 using GameFields.InformationLabels;
+using GameFields.Persons.EffectCounters;
 
 namespace GameFields.Persons.Common
 {
@@ -20,9 +21,9 @@ namespace GameFields.Persons.Common
 
         public EnemyAI(InteractionActivator interactionActivator, EnemyDragAndDropImitation enemyDragAndDropImitation, CardPlayingZone cardPlayingZone,
             Tower tower, DrawCardRoot drawCardRoot, DiscoverAI discoverImitation, StartTurnDraw startTurnDraw, SignalBus bus,
-            Hand hand, ISelectMenuActivator attackMenu, ISelectMenuActivator selectMenu) :
+            Hand hand, ISelectMenuActivator attackMenu, ISelectMenuActivator selectMenu, PersonEffectsCounter personEffectsCounter) :
             base(cardPlayingZone, drawCardRoot, tower, startTurnDraw,discoverImitation, bus,
-                hand, attackMenu, interactionActivator, selectMenu)
+                hand, attackMenu, interactionActivator, selectMenu, personEffectsCounter)
         {
             //_gameFieldObjectsActivator = gameFieldObjectsActivator;
             //Bus.Subscribe<StartEffectSignal>(SetCardEffectProcess);

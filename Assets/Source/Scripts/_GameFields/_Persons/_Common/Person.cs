@@ -48,7 +48,7 @@ namespace GameFields.Persons.Common
         protected Person(CardPlayingZone playingZone, DrawCardRoot drawCardRoot, Tower tower,
             StartTurnDraw startTurnDraw, Discover discover, SignalBus bus, /*PersonStep lastStep,*/
             Hand hand, ISelectMenuActivator attackMenu, InteractionActivator gameFieldObjectsActivator,
-            ISelectMenuActivator selectMenu)
+            ISelectMenuActivator selectMenu, PersonEffectsCounter personEffectsCounter)
         {
             _hand = hand;
             Bus = bus;
@@ -63,7 +63,7 @@ namespace GameFields.Persons.Common
             //_lastStep = lastStep;
             InteractionActivator = gameFieldObjectsActivator;
 
-            _personEffectsCounter = new PersonEffectsCounter();
+            _personEffectsCounter = personEffectsCounter;
 
             _personSteps = new Stack<PersonStep>();
 

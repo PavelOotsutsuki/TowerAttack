@@ -10,6 +10,7 @@ using Cards;
 using GameFields.Signals;
 using GameFields.Persons.SelectMenues.Commons;
 using GameFields.InformationLabels;
+using GameFields.Persons.EffectCounters;
 
 namespace GameFields.Persons.Common
 {
@@ -27,9 +28,9 @@ namespace GameFields.Persons.Common
         public Player(InteractionActivator interactionActivator, Hand hand, CardPlayingZone cardPlayingZone, Tower tower,
             DiscoverPlayer discover, DrawCardRoot drawCardRoot, StartTurnDraw startTurnDraw, TurnProcessing turnProcessing,
             SignalBus bus, PersonStep startPlayerTurnView, ISelectMenuActivator attackMenu, EndTurnProcessing endTurnProcessing,
-            ISelectMenuActivator selectMenu) :
+            ISelectMenuActivator selectMenu, PersonEffectsCounter personEffectsCounter) :
             base(cardPlayingZone, drawCardRoot, tower, startTurnDraw, discover, bus, hand,
-                attackMenu, interactionActivator, selectMenu)
+                attackMenu, interactionActivator, selectMenu, personEffectsCounter)
         {
             _startPlayerTurnView = startPlayerTurnView;
             _endTurnProcessing = endTurnProcessing;

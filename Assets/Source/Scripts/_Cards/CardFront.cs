@@ -24,7 +24,7 @@ namespace Cards
         public bool IsBlock { get; private set; }
         public bool? IsShown { get; private set; } = null;
 
-        internal void Init(CardViewConfig cardViewConfig, ReadOnlyRectTransform readOnlyCartRectTransform,
+        internal void Init(CardViewData cardViewData, ReadOnlyRectTransform readOnlyCartRectTransform,
             CardViewService cardViewService, Vector2 cardSize, CardFrame cardFrame)
         {
             _readOnlyCardRectTransform = readOnlyCartRectTransform;
@@ -36,10 +36,10 @@ namespace Cards
 
             IsBlock = false;
 
-            _cardView.FillData(cardViewConfig);
+            _cardView.FillData(cardViewData);
             DefineSmallSize();
 
-            _bigCardShowData = new BigCardShowData(_cardSize, _readOnlyCardRectTransform, cardViewConfig);
+            _bigCardShowData = new BigCardShowData(_cardSize, _readOnlyCardRectTransform, cardViewData);
         }
 
         private void OnDisable()
@@ -78,7 +78,7 @@ namespace Cards
         //{
         //    _cardFrame.Fire();
         //}
-        public void RechangeFeature(IReadOnlyList<TagValuePair> givenPairs)
+        public void RechangeFeature(IEnumerable<TagValuePair> givenPairs)
         {
             _cardView.RechangeFeature(givenPairs);
         }

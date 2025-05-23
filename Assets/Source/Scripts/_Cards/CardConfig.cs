@@ -10,5 +10,7 @@ namespace Cards
         [field: SerializeField] internal CardCharacter CardCharacter { get; private set; }
         [field: SerializeField] internal AudioClip AwakeSound { get; private set; }
         [field: SerializeField] internal CardEffectConfig Effect { get; private set; }
+        [field: SerializeField] internal EffectFeature EffectFeature { get; private set; }
+        [field: SerializeField] internal CardPersonType CardPersonType { get; private set; }
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GameFields.Persons.Common;
 
 namespace GameFields.Persons.EffectCounters
 {
@@ -8,9 +9,9 @@ namespace GameFields.Persons.EffectCounters
     {
         private readonly GnomeEffectCounter _gnomeEffectCounter;
 
-        public PersonEffectsCounter()
+        public PersonEffectsCounter(RechangeFeatureRuleController ruleController, IEnumerable<ICardFeatureRechangable> rechangables)
         {
-            _gnomeEffectCounter = new GnomeEffectCounter();
+            _gnomeEffectCounter = new GnomeEffectCounter(ruleController, rechangables);
         }
 
         public GnomeEffectCounter GnomeEffectCounter => _gnomeEffectCounter;

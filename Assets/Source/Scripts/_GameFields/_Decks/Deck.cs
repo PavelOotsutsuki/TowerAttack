@@ -46,12 +46,12 @@ namespace GameFields.Decks
         {
             exceptions ??= new List<int>();
 
-            return _cards.Where(c => exceptions.Contains(c.ViewConfig.Number) == false).Count() >= count;
+            return _cards.Where(c => exceptions.Contains(c.ViewData.Number) == false).Count() >= count;
         }
 
         public bool Contains(int number)
         {
-            return _cards.Select(c => c.ViewConfig.Number).Contains(number);
+            return _cards.Select(c => c.ViewData.Number).Contains(number);
         }
 
         public void AddCard(Card card)
@@ -89,10 +89,10 @@ namespace GameFields.Decks
             {
                 for (int i = 0; i < cards.Count; i++)
                 {
-                    if (existingIndices.Contains(cards[i].ViewConfig.Number) == false && exceptions.Contains(cards[i].ViewConfig.Number) == false)
+                    if (existingIndices.Contains(cards[i].ViewData.Number) == false && exceptions.Contains(cards[i].ViewData.Number) == false)
                     {
                         result.Add(cards[i]);
-                        existingIndices.Add(cards[i].ViewConfig.Number);
+                        existingIndices.Add(cards[i].ViewData.Number);
                     }
                 }
             }
@@ -103,10 +103,10 @@ namespace GameFields.Decks
                 {
                     for (int i = 0; i < cards.Count; i++)
                     {
-                        if (exceptions.Contains(cards[i].ViewConfig.Number) == false)
+                        if (exceptions.Contains(cards[i].ViewData.Number) == false)
                         {
                             result.Add(cards[i]);
-                            existingIndices.Add(cards[i].ViewConfig.Number);
+                            existingIndices.Add(cards[i].ViewData.Number);
                         }
                     }
                 }
@@ -119,7 +119,7 @@ namespace GameFields.Decks
                     for (int i = 0; i < cards.Count; i++)
                     {
                         result.Add(cards[i]);
-                        existingIndices.Add(cards[i].ViewConfig.Number);
+                        existingIndices.Add(cards[i].ViewData.Number);
                     }
                 }
             }

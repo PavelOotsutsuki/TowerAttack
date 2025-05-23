@@ -44,8 +44,8 @@ namespace GameFields.Persons.Discovers
 
             Block();
 
-            _cardView.FillData(data.CardViewConfig);
-            _descriptionMessage = data.CardViewConfig.Description;
+            _cardView.FillData(data.CardViewData);
+            _descriptionMessage = data.CardViewData.Description;
             _labelData = new LabelActivateData(_descriptionMessage);
 
             DiscoverViewLogicData discoverViewLogicData = new DiscoverViewLogicData(data.CardHeight, data.CardWidth);

@@ -1,29 +1,42 @@
 using System.Collections.Generic;
 using System.Linq;
 
-
 namespace Cards
 {
     public class CardFeatureTags
     {
-        private readonly string _feature;
-        private readonly IReadOnlyList<TagValuePair> _tagValuePairs;
+        private readonly string _featureTemplate;
+        private readonly IEnumerable<TagValuePair> _tagValuePairs;
 
-        public CardFeatureTags(string feature, IReadOnlyList<TagValuePair> tagValuePairs)
+        public CardFeatureTags(string feature, IEnumerable<TagValuePair> tagValuePairs)
         {
-            _feature = feature;
+            _featureTemplate = feature;
             _tagValuePairs = tagValuePairs;
         }
 
-        public string CreateFeature(IReadOnlyList<TagValuePair> givenPairs = null)
+        public string CreateFeature(IEnumerable<TagValuePair> givenPairs = null)
         {
             givenPairs ??= _tagValuePairs;
 
-            string result = _feature;
+            string result = _featureTemplate;
 
             foreach (TagValuePair pair in _tagValuePairs)
             {
                 result = result.Replace($"<{pair.Tag}_{pair.Value}>", $"({givenPairs.First(p => p.Tag == pair.Tag).Value})");
+            }
+
+            return result;
+        }
+
+        public string UpdateTemplate(IEnumerable<TagValuePair> givenPairs)
+        {
+            givenPairs ??= _tagValuePairs;
+
+            string result = _featureTemplate;
+
+            foreach (TagValuePair pair in _tagValuePairs)
+            {
+                result = result.Replace($"<{pair.Tag}_{pair.Value}>", $"<{pair.Tag}_{givenPairs.First(p => p.Tag == pair.Tag).Value}>");
             }
 
             return result;

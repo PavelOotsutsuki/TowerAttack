@@ -7,7 +7,8 @@ using UnityEngine;
 
 namespace GameFields.Persons.Towers
 {
-    public abstract class Tower : MonoBehaviour, ICardDropPlace, ICardNumberKeeper, IBoomTower, IPersonObject, IReadOnlyRectTransformable, IAutomaticFillComponents
+    public abstract class Tower : MonoBehaviour, ICardDropPlace, ICardNumberKeeper, IBoomTower, IPersonObject,
+        IReadOnlyRectTransformable, ICardFeatureRechangable, IAutomaticFillComponents
     {
         private const SideType DefaultSideType = SideType.Back;
         private const bool IsCardInteraction = false;
@@ -36,6 +37,14 @@ namespace GameFields.Persons.Towers
             _boomAnimation = new BoomAnimation(boomAnimationConfig);
         }
 
+        public IEnumerable<IFeatureRechanger> GetRechangableCards()
+        {
+            if (HasFreeSeat)
+                return null;
+
+            return new List<IFeatureRechanger>() { _towerSeat.Card };
+        }
+
         public virtual void SeatCard(Card card)
         {
             if (HasFreeSeat)
@@ -49,9 +58,9 @@ namespace GameFields.Persons.Towers
             }
         }
 
-        protected CardViewConfig GetCardViewConfig()
+        protected CardViewData GetCardViewData()
         {
-            return _towerSeat.Card.ViewConfig;
+            return _towerSeat.Card.ViewData;
         }
 
         void IBoomTower.Boom()

@@ -37,14 +37,14 @@ namespace GameFields.Persons.Fires
         {
             exceptions ??= new List<int>();
 
-            int thisCount = Cards.Where(c => exceptions.Contains(c.ViewConfig.Number) == false).Count();
+            int thisCount = Cards.Where(c => exceptions.Contains(c.ViewData.Number) == false).Count();
 
             return thisCount >= count;
         }
 
         public bool Contains(int number)
         {
-            return Cards.Select(c => c.ViewConfig.Number).Contains(number);
+            return Cards.Select(c => c.ViewData.Number).Contains(number);
         }
 
         public IReadOnlyList<Card> ViewRandomCards(int count, IEnumerable<int> exceptions)
@@ -58,10 +58,10 @@ namespace GameFields.Persons.Fires
             {
                 for (int i = 0; i < cards.Count; i++)
                 {
-                    if (existingIndices.Contains(cards[i].ViewConfig.Number) == false && exceptions.Contains(cards[i].ViewConfig.Number) == false)
+                    if (existingIndices.Contains(cards[i].ViewData.Number) == false && exceptions.Contains(cards[i].ViewData.Number) == false)
                     {
                         result.Add(cards[i]);
-                        existingIndices.Add(cards[i].ViewConfig.Number);
+                        existingIndices.Add(cards[i].ViewData.Number);
                     }
                 }
             }
@@ -72,10 +72,10 @@ namespace GameFields.Persons.Fires
                 {
                     for (int i = 0; i < cards.Count; i++)
                     {
-                        if (exceptions.Contains(cards[i].ViewConfig.Number) == false)
+                        if (exceptions.Contains(cards[i].ViewData.Number) == false)
                         {
                             result.Add(cards[i]);
-                            existingIndices.Add(cards[i].ViewConfig.Number);
+                            existingIndices.Add(cards[i].ViewData.Number);
                         }
                     }
                 }
@@ -88,7 +88,7 @@ namespace GameFields.Persons.Fires
                     for (int i = 0; i < cards.Count; i++)
                     {
                         result.Add(cards[i]);
-                        existingIndices.Add(cards[i].ViewConfig.Number);
+                        existingIndices.Add(cards[i].ViewData.Number);
                     }
                 }
             }

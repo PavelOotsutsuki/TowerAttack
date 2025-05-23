@@ -18,11 +18,11 @@ namespace GameFields.Persons.Towers
         [SerializeField] private CanvasGroup _canvasGroup;
 
         private ReadOnlyRectTransform _readOnlyRectTransform;
-        private Func<CardViewConfig> _configGetter;
+        private Func<CardViewData> _configGetter;
 
         public bool? IsActive { get; private set; } = null;
 
-        public void Init(Func<CardViewConfig> configGetter)
+        public void Init(Func<CardViewData> configGetter)
         {
             _readOnlyRectTransform = new ReadOnlyRectTransform(_rectTransform);
             _towerCardView.Init();

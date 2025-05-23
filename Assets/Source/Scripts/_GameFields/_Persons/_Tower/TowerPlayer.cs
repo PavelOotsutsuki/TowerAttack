@@ -60,7 +60,7 @@ namespace GameFields.Persons.Towers
         {
             base.Init();
 
-            _towerPlayerHelper.Init(GetCardViewConfig);
+            _towerPlayerHelper.Init(GetCardViewData);
         }
 
         public override void SeatCard(Card card)

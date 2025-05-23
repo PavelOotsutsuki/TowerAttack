@@ -27,7 +27,7 @@ namespace GameFields.Persons.Discovers
         public void SetCard(Card card)
         {
             _card = card;
-            DiscoverCardActivateData data = new DiscoverCardActivateData(_card.ReadOnlyRectTransform.GetSizeDelta(), _card.ViewConfig);
+            DiscoverCardActivateData data = new DiscoverCardActivateData(_card.ReadOnlyRectTransform.GetSizeDelta(), _card.ViewData);
             _discoverCard.Activate(data);
         }
 
