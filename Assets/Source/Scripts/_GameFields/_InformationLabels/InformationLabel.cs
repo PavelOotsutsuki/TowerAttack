@@ -49,7 +49,7 @@ namespace GameFields.InformationLabels
         {
             yield return new WaitUntil(() => _informationLabel.IsComplete && _panel.IsComplete);
             yield return new WaitForSeconds(timeView / 2f);
-            GC.Collect();
+            GameFieldGC.Collect();
             yield return new WaitForSeconds(timeView / 2f);
 
             Deactivate();

@@ -50,6 +50,8 @@ namespace GameFields
         public void StartStep()
         {
             //GC.Collect();
+            GameFieldGC.EndRememberGCMemory();
+            GameFieldGC.StartWait();
 
             StartTurn().ToUniTask();
         }

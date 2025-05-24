@@ -35,6 +35,8 @@ namespace Roots
         private void Construct(SignalBus bus, Deck deck, SeatPool seatPool, CardDescription cardDescription, HandPlayer handPlayer,
             InformationLabel informationLabel, DiscardPile discardPile)
         {
+            GameFieldGC.StartRememberGCMemory();
+
             _screenRoot.Init();
             informationLabel.Init();
             _fontRoot.Init();

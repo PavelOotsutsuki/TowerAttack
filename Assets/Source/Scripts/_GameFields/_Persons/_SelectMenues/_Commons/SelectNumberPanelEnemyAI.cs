@@ -66,7 +66,7 @@ namespace GameFields.Persons.SelectMenues.Commons
             //yield return new WaitForSeconds(0.1f);
             yield return new WaitUntil(() => FadablePanel.IsComplete);
             yield return new WaitForSeconds(_data.DelayThinkImitation / 2f);
-            GC.Collect();
+            GameFieldGC.Collect();
             yield return new WaitForSeconds(_data.DelayThinkImitation / 2f);
 
             IRandomSelectNumberLogic selectNumberLogic = IsConsecutiveMode ?
