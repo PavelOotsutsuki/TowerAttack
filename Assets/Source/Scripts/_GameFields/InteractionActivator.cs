@@ -28,7 +28,7 @@ namespace GameFields
 
         public void SetObjectsStates(PersonStep personStep)
         {
-            Debug.Log(personStep.ToString());
+            //Debug.Log(personStep.ToString());
 
             switch (personStep)
             {

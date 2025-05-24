@@ -33,7 +33,7 @@ namespace GameFields.Persons.EffectCounters
 
             List<TagValuePair> tagValuePairs = new List<TagValuePair>
             {
-                new TagValuePair("NUMBERS", _gnomeCounterNumbers)
+                new TagValuePair("CARDS", _gnomeCounterNumbers)
             };
 
             _ruleController.Add(EffectFeature.Forging, tagValuePairs);

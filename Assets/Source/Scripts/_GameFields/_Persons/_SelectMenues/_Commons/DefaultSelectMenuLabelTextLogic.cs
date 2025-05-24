@@ -18,7 +18,7 @@ namespace GameFields.Persons.SelectMenues.Commons
 
             string labelText = "Выберите " + needForActivate.ToString() + " ";
 
-            labelText += Orthography.GetWordByNumber(WordType.Numbers, needForActivate);
+            labelText += Orthography.GetWordByNumber(WordType.NUMBERS, needForActivate);
 
             return labelText;
         }
