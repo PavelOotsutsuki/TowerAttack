@@ -159,7 +159,10 @@ namespace GameFields.Persons.SelectMenues.Commons
             SelectResult.SetResult(setSelectResultData);
 
             float waitLastAnimationCompleted = CurrentSelectedNumbers[CurrentSelectedNumbers.Count - 1].AnimationDuration * (1f - _data.NextAnimationStartPercent);
-            yield return new WaitForSeconds(waitLastAnimationCompleted + _data.DelayAfterAllNumbersAnimationsPlayed);
+            yield return new WaitForSeconds(waitLastAnimationCompleted);
+            yield return new WaitForSeconds(_data.DelayAfterAllNumbersAnimationsPlayed / 3f);
+            GC.Collect();
+            yield return new WaitForSeconds(_data.DelayAfterAllNumbersAnimationsPlayed * 2f / 3f);
 
             _isCompleteNumbersHide = true;
 

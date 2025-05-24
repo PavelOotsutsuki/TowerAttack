@@ -10,7 +10,7 @@ namespace GameFields.Persons.Hands
         void OnCardDrag(Card card);
         void OnCardDrop();
         void OnCardPlay();
-        void OnCardAttack();
+        //void OnCardAttack();
         void OnCardReturnInHand(Card card);
     }
 }

@@ -62,11 +62,11 @@ namespace GameFields.DiscardPiles
         }
         private IEnumerator Forginging(Card card)
         {
+            _personState.Active.StartAction(this);
+
             _invertCardAnimation.Play(card);
 
             yield return new WaitUntil(() => _invertCardAnimation.IsComplete);
-
-            _personState.Active.StartAction(this);
 
             _discardPile.SeatCard(card);
 

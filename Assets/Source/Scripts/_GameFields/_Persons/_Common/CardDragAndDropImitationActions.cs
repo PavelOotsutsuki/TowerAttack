@@ -68,7 +68,8 @@ namespace GameFields.Persons.Common
         public void Attack()
         {
             _hand.OnCardDrag(_activeCard);
-            _hand.OnCardAttack();
+            _hand.OnCardPlay();
+            //_hand.OnCardAttack();
             _attackZone.Attack(_activeCard);
         }
 

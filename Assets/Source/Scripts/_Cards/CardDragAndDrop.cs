@@ -119,7 +119,6 @@ namespace Cards
 
             if (EventSystem.current.TryGetComponentInRaycasts(eventData, out IPlayerAttackable cardAttackZone))
             {
-
                 IsDragable = false;
                 enabled = false;
                 _cardDragAndDropActions.Attack(cardAttackZone);
@@ -128,7 +127,6 @@ namespace Cards
 
             if (_cardDragAndDropActions.IsForgable() && EventSystem.current.TryGetComponentInRaycasts(eventData, out IForging forgingZone))
             {
-
                 IsDragable = false;
                 enabled = false;
                 _cardDragAndDropActions.StartForging(forgingZone);

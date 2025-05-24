@@ -25,12 +25,12 @@ namespace GameFields
 
         public bool IsDraggable(Card card) => _cardDragAndDropHandPlayer.IsDraggable(card);
 
-        public void OnCardAttack()
-        {
-            _cardDragAndDropHandPlayer.OnCardAttack();
-            _cardDragAndDropLightController.Deactivate();
-            _sortOrder.SetDefaultIndex();
-        }
+        //public void OnCardAttack()
+        //{
+        //    _cardDragAndDropHandPlayer.OnCardAttack();
+        //    _cardDragAndDropLightController.Deactivate();
+        //    _sortOrder.SetDefaultIndex();
+        //}
 
         public void OnCardDrag(Card card)
         {

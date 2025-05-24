@@ -99,15 +99,16 @@ namespace GameFields.Persons.Hands
 
         void ICardDragAndDropHandHandler.OnCardPlay()
         {
-            UnblockCards();
-            UnbindDragableCard();
-        }
-
-        void ICardDragAndDropHandHandler.OnCardAttack()
-        {
+            //UnblockCards(); // Было раньше. Убрал тк, а нахер заблочивать??? 
             BlockCards();
             UnbindDragableCard();
         }
+
+        //void ICardDragAndDropHandHandler.OnCardAttack()
+        //{
+        //    BlockCards();
+        //    UnbindDragableCard();
+        //}
 
         void ICardDragAndDropHandHandler.OnCardReturnInHand(Card card)
         {

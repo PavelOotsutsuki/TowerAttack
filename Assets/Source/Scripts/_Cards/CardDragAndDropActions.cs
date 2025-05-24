@@ -68,7 +68,8 @@ namespace Cards
         internal void Attack(IAttackable cardAttackZone)
         {
             cardAttackZone.Attack(_card);
-            _cardDragAndDropHandler.OnCardAttack();
+            _cardDragAndDropHandler.OnCardPlay();
+            //_cardDragAndDropHandler.OnCardAttack();
         }
 
         internal bool IsForgable()
@@ -80,6 +81,7 @@ namespace Cards
         {
             forgingZone.StartForging(_card);
             _cardDragAndDropHandler.OnCardPlay();
+            //_cardDragAndDropHandler.OnCardAttack();
         }
 
         internal void ReturnInHand(float duration)
