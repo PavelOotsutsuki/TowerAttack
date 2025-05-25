@@ -35,7 +35,7 @@ namespace Roots
         private void Construct(SignalBus bus, Deck deck, SeatPool seatPool, CardDescription cardDescription, HandPlayer handPlayer,
             InformationLabel informationLabel, DiscardPile discardPile)
         {
-            GameFieldGC.StartRememberGCMemory();
+            GameFieldGC.GCOFF();
 
             _screenRoot.Init();
             informationLabel.Init();
@@ -71,6 +71,11 @@ namespace Roots
             deck.Init(_cardRoot.Cards);
 
             _gameFieldRoot.Init(_personsState, player, enemyAI, bus, seatPool);
+        }
+
+        public void OnDestroy()
+        {
+            GameFieldGC.GCON();
         }
 
         #region AutomaticFillComponents
