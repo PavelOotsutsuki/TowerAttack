@@ -26,14 +26,14 @@ namespace Cards
         public SideType CurrentSide => _cardSideFlipper.CurrentSide;
 
         internal void Init(Card me, CardViewService cardViewService, CardViewData cardViewData,
-            RectTransform cardTransform, ICardDragAndDropHandler cardDragAndDropHandler)
+            RectTransform cardTransform, ICardDragAndDropHandler cardDragAndDropHandler, CardCapability cardCapability)
         {
             ReadOnlyRectTransform readOnlyRectTransform = new ReadOnlyRectTransform(cardTransform);
 
             Vector2 cardSizeFront = GameSettings.CardSize;
             Vector2 cardSizeBack = GameSettings.CardSize;
 
-            _cardFront.Init(cardViewData, readOnlyRectTransform, cardViewService, cardSizeFront, _cardFrame);
+            _cardFront.Init(cardViewData, readOnlyRectTransform, cardViewService, cardSizeFront, _cardFrame, cardCapability);
             _cardBack.Init(cardSizeBack);
             _cardFireAnimator.Init();
 

@@ -5,13 +5,13 @@ namespace GameFields.LightControls
 {
     public class CardDragAndDropLightControllerActivateData : IData
     {
-        private readonly EffectFeature _effectFeature;
+        private readonly CardCapability _effectFeature;
 
-        public CardDragAndDropLightControllerActivateData(EffectFeature effectFeature)
+        public CardDragAndDropLightControllerActivateData(CardCapability effectFeature)
         {
             _effectFeature = effectFeature;
         }
 
-        public EffectFeature EffectFeature => _effectFeature;
+        public CardCapability EffectFeature => _effectFeature;
     }
 }

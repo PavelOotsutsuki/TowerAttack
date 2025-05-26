@@ -16,5 +16,5 @@ MonoBehaviour:
   <CardCharacter>k__BackingField: {fileID: 7233767571375303125, guid: ef63134ca2cff467589c5e301a67a745, type: 3}
   <AwakeSound>k__BackingField: {fileID: 8300000, guid: 9aba1e8badce84433a35c5993bc7c855, type: 3}
   <Effect>k__BackingField: {fileID: 11400000, guid: 8b3dda0dec7914bd8aee30e1cf06a2a1, type: 2}
-  <EffectFeature>k__BackingField: 1
+  <CardCapability>k__BackingField: 55
   <CardPersonType>k__BackingField: 4

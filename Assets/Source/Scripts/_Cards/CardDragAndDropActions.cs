@@ -74,7 +74,17 @@ namespace Cards
 
         internal bool IsForgable()
         {
-            return _card.EffectFeature == EffectFeature.Forging;
+            return (_card.CardCapability & CardCapability.GnomeForging) == CardCapability.GnomeForging;
+        }
+
+        internal bool IsAttackable()
+        {
+            return (_card.CardCapability & CardCapability.Attack) == CardCapability.Attack;
+        }
+
+        internal bool IsPlayable()
+        {
+            return (_card.CardCapability & CardCapability.Play) == CardCapability.Play;
         }
 
         internal void StartForging(IForging forgingZone)

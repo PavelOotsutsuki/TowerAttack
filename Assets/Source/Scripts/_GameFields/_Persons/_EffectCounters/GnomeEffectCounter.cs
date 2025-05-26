@@ -36,7 +36,7 @@ namespace GameFields.Persons.EffectCounters
                 new TagValuePair("CARDS", _gnomeCounterNumbers)
             };
 
-            _ruleController.Add(EffectFeature.Forging, tagValuePairs);
+            _ruleController.Add(CardCapability.GnomeForging, tagValuePairs);
 
             if (_rechangables != null)
             {

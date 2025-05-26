@@ -34,7 +34,7 @@ namespace Tools.UI
             _fadablePanel.Show();
         }
 
-        public void Hide()
+        public virtual void Hide()
         {
             _fadablePanel.Hide();
         }

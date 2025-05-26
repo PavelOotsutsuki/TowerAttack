@@ -54,7 +54,7 @@ namespace Cards
                 if (beginTagsLength != endTagsLength)
                     throw new Exception("Неверно заданы теги в CardViewConfig (по количеству <>): " + feature);
 
-                List<TagValuePair> result = new List<TagValuePair>(beginTagsLength - 1);
+                List<TagValuePair> result = new List<TagValuePair>();
                 string featureCopy = feature;
 
                 for (int i = 0; i < beginTagsLength - 1; i++)
@@ -62,6 +62,12 @@ namespace Cards
                     int start = featureCopy.IndexOf('<') + 1;
                     int end = featureCopy.IndexOf('>');
                     string tag = featureCopy.Substring(start, end - start);
+
+                    if (tag == "b" || tag == "/b")
+                    {
+                        featureCopy = featureCopy.Substring(end + 1);
+                        continue;
+                    }
 
                     string[] tagParse = tag.Split('_');
 

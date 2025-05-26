@@ -35,7 +35,7 @@ namespace Cards
                     afterValue += Orthography.GetWordByNumber(wordType, pair.Value);
                 }
 
-                result = result.Replace($"<{pair.Tag}_{pair.Value}>", $"({currentValue}){afterValue}");
+                result = result.Replace($"<{pair.Tag}_{pair.Value}>", $"<b>({currentValue})</b>{afterValue}");
 
             }
 

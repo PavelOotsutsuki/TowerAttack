@@ -32,7 +32,7 @@ namespace GameFields.LightControls
 
             IsActive = true;
 
-            if (data.EffectFeature == EffectFeature.Forging)
+            if ((data.EffectFeature & CardCapability.GnomeForging) == CardCapability.GnomeForging)
             {
                 _currentLightController = _gnomeLightController;
             }

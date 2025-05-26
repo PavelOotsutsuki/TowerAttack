@@ -4,6 +4,7 @@ using Tools.Utils.FillComponents;
 using Tools;
 using System.Collections.Generic;
 using Tools.Utils.Screens;
+using Tools.UI;
 
 namespace Cards
 {
@@ -22,6 +23,10 @@ namespace Cards
         private float _screenFactor;
 
         public bool? IsShown { get; private set; } = null;
+
+        //public float BigWidth => _bigWidth;
+        //public Vector2 Position => _rectTransform.position;
+        //public Vector2 Size => _rectTransform.sizeDelta;
 
         public void Init()
         {

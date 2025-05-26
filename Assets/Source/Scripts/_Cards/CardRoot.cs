@@ -6,7 +6,7 @@ namespace Cards
 {
     public class CardRoot : MonoBehaviour, ICardWatcher, IAutomaticFillComponents
     {
-        [SerializeField] private BigCard _bigCard;
+        [SerializeField] private BigCardRoot _bigCardRoot;
         [SerializeField] private Card[] _cards;
 
         private CardDescription _cardDescription;
@@ -22,7 +22,7 @@ namespace Cards
             InitCardDescription();
             InitBigCard();
 
-            _cardViewService = new CardViewService(_bigCard, _cardDescription);
+            _cardViewService = new CardViewService(_bigCardRoot, _cardDescription);
 
             InitCards(effectFactory, cardDragAndDropHandler);
         }
@@ -34,7 +34,7 @@ namespace Cards
 
         private void InitBigCard()
         {
-            _bigCard.Init();
+            _bigCardRoot.Init();
         }
 
         private void InitCards(IEffectFactory effectFactory, ICardDragAndDropHandler cardDragAndDropHandler)
@@ -55,7 +55,7 @@ namespace Cards
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
                 DefineAllCards(),
-                DefineBigCard()
+                DefineBigCardRoot()
             };
 
             return list;
@@ -67,10 +67,10 @@ namespace Cards
            return AutomaticFillComponents.DefineComponent(this, ref _cards);
         }
 
-        [ContextMenu(nameof(DefineBigCard))]
-        private ComponentAttachInfo DefineBigCard()
+        [ContextMenu(nameof(DefineBigCardRoot))]
+        private ComponentAttachInfo DefineBigCardRoot()
         {
-           return AutomaticFillComponents.DefineComponent(this, ref _bigCard, ComponentLocationTypes.InChildren);
+           return AutomaticFillComponents.DefineComponent(this, ref _bigCardRoot, ComponentLocationTypes.InChildren);
         }
         #endregion 
     }

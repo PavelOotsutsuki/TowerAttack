@@ -6,14 +6,14 @@ namespace GameFields.Persons.Common
 {
     public class RechangeFeatureRuleController
     {
-        private readonly Dictionary<EffectFeature, IEnumerable<TagValuePair>> _rechangeFeatureRules;
+        private readonly Dictionary<CardCapability, IEnumerable<TagValuePair>> _rechangeFeatureRules;
 
         public RechangeFeatureRuleController()
         {
-            _rechangeFeatureRules = new Dictionary<EffectFeature, IEnumerable<TagValuePair>>();
+            _rechangeFeatureRules = new Dictionary<CardCapability, IEnumerable<TagValuePair>>();
         }
 
-        public void Add(EffectFeature effectFeature, IEnumerable<TagValuePair> tagValuePairs)
+        public void Add(CardCapability effectFeature, IEnumerable<TagValuePair> tagValuePairs)
         {
             if (_rechangeFeatureRules.ContainsKey(effectFeature) == false)
             {
@@ -37,16 +37,34 @@ namespace GameFields.Persons.Common
 
         public void TryRenameFeature(IFeatureRechanger card)
         {
-            EffectFeature effectFeature = card.EffectFeature;
+            CardCapability targetCapabiliry = card.CardCapability;
+            List<TagValuePair> tagValuePairs = new List<TagValuePair>();
 
-            if (_rechangeFeatureRules.ContainsKey(effectFeature))
+            foreach (CardCapability cardCapability in _rechangeFeatureRules.Keys)
             {
-                card.RechangeFeature(_rechangeFeatureRules[effectFeature]);
+                if ((targetCapabiliry & cardCapability) == cardCapability)
+                {
+                    tagValuePairs.AddRange(_rechangeFeatureRules[cardCapability]);
+                }
+            }
+
+            if (tagValuePairs.Count > 0)
+            {
+                card.RechangeFeature(tagValuePairs);
             }
             else
             {
                 card.RechangeFeature();
             }
+
+            //if (_rechangeFeatureRules.ContainsKey(targetCapabiliry))
+            //{
+            //    card.RechangeFeature(_rechangeFeatureRules[targetCapabiliry]);
+            //}
+            //else
+            //{
+            //    card.RechangeFeature();
+            //}
         }
     }
 }

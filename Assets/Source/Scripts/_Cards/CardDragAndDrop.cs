@@ -107,7 +107,7 @@ namespace Cards
                 return;
             }
 
-            if (EventSystem.current.TryGetComponentInRaycasts(eventData, out ICardDropPlace cardDropPlace))
+            if (_cardDragAndDropActions.IsPlayable() && EventSystem.current.TryGetComponentInRaycasts(eventData, out ICardDropPlace cardDropPlace))
             {
                 if (_cardDragAndDropActions.CanDrop(cardDropPlace))
                 {
@@ -117,7 +117,7 @@ namespace Cards
                 }
             }
 
-            if (EventSystem.current.TryGetComponentInRaycasts(eventData, out IPlayerAttackable cardAttackZone))
+            if (_cardDragAndDropActions.IsAttackable() && EventSystem.current.TryGetComponentInRaycasts(eventData, out IPlayerAttackable cardAttackZone))
             {
                 IsDragable = false;
                 enabled = false;

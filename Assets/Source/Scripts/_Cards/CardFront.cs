@@ -17,7 +17,7 @@ namespace Cards
         private ReadOnlyRectTransform _readOnlyCardRectTransform;
         private CardViewService _cardViewService;
         private Vector2 _cardSize;
-        private BigCardShowData _bigCardShowData;
+        private BigCardRootActivateData _bigCardRootActivateData;
         //private ICardBlockable _cardBlockable;
         private CardFrame _cardFrame;
 
@@ -25,7 +25,7 @@ namespace Cards
         public bool? IsShown { get; private set; } = null;
 
         internal void Init(CardViewData cardViewData, ReadOnlyRectTransform readOnlyCartRectTransform,
-            CardViewService cardViewService, Vector2 cardSize, CardFrame cardFrame)
+            CardViewService cardViewService, Vector2 cardSize, CardFrame cardFrame, CardCapability cardCapability)
         {
             _readOnlyCardRectTransform = readOnlyCartRectTransform;
             _cardViewService = cardViewService;
@@ -39,7 +39,8 @@ namespace Cards
             _cardView.FillData(cardViewData);
             DefineSmallSize();
 
-            _bigCardShowData = new BigCardShowData(_cardSize, _readOnlyCardRectTransform, cardViewData);
+            BigCardShowData bigCardShowData = new BigCardShowData(_cardSize, _readOnlyCardRectTransform, cardViewData);
+            _bigCardRootActivateData = new BigCardRootActivateData(bigCardShowData, cardCapability);
         }
 
         private void OnDisable()
@@ -50,7 +51,7 @@ namespace Cards
 
         internal void StartReview()
         {
-            _cardViewService.SetOverview(this, _bigCardShowData, _cardFrame);
+            _cardViewService.SetOverview(this, _bigCardRootActivateData, _cardFrame);
         }
 
         internal void EndReview()

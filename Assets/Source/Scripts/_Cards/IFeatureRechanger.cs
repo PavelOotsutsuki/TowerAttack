@@ -4,7 +4,7 @@ namespace Cards
 {
     public interface IFeatureRechanger
     {
-        public EffectFeature EffectFeature { get; }
+        public CardCapability CardCapability { get; }
 
         public void RechangeFeature(IEnumerable<TagValuePair> givenPairs = null);
     }
