@@ -20,18 +20,23 @@ namespace GameFields
         private Deck _deck;
         private DiscardPile _discardPile;
 
-        [Inject]
-        public void Construct(CardPlayingZonePlayer playerPlayingZone, HandPlayer playerHand, TowerPlayer playerTower,
-            CardPlayingZoneAI enemyPlayingZone, HandAI enemyHand, TowerAI enemyTower, Deck deck, DiscardPile discardPile)
+        //[Inject]
+        //public void Construct(CardPlayingZonePlayer playerPlayingZone, HandPlayer playerHand, TowerPlayer playerTower,
+        //    CardPlayingZoneAI enemyPlayingZone, HandAI enemyHand, TowerAI enemyTower, Deck deck, DiscardPile discardPile)
+        //{
+        //    _playerPlayingZone = playerPlayingZone;
+        //    _playerHand = playerHand;
+        //    _playerTower = playerTower;
+        //    _enemyPlayingZone = enemyPlayingZone;
+        //    _enemyHand = enemyHand;
+        //    _enemyTower = enemyTower;
+        //    _deck = deck;
+        //    _discardPile = discardPile;
+        //}
+
+        public CardTransitManager()
         {
-            _playerPlayingZone = playerPlayingZone;
-            _playerHand = playerHand;
-            _playerTower = playerTower;
-            _enemyPlayingZone = enemyPlayingZone;
-            _enemyHand = enemyHand;
-            _enemyTower = enemyTower;
-            _deck = deck;
-            _discardPile = discardPile;
+
         }
     }
 }

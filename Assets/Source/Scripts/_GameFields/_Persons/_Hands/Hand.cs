@@ -135,7 +135,7 @@ namespace GameFields.Persons.Hands
             SortHandSeats();
         }
 
-        public bool TryGetCard(out Card card)
+        public bool TryGetRandomCard(out Card card)
         {
             card = null;
 
@@ -145,7 +145,7 @@ namespace GameFields.Persons.Hands
             }
             else
             {
-                return TryGetRandomCard(out card);
+                return TryGetDefaultRandomCard(out card);
             }
         }
 
@@ -387,7 +387,7 @@ namespace GameFields.Persons.Hands
             _dragCardHandSeat = null;
         }
 
-        private bool TryGetRandomCard(out Card card)
+        private bool TryGetDefaultRandomCard(out Card card)
         {
             card = null;
 

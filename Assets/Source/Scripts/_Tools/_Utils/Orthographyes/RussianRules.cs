@@ -11,20 +11,30 @@ namespace Tools.Utils.Orthographyes
             _wordsRules = new Dictionary<WordType, RussianWordsEndings>()
             {
                 { WordType.CARDS, new RussianWordsEndings("карту", "карты", "карт")},
-                { WordType.NUMBERS, new RussianWordsEndings("номер", "номера", "номеров")}
+                { WordType.NUMBERS, new RussianWordsEndings("номер", "номера", "номеров")},
+                { WordType.TIME, new RussianWordsEndings("раз", "раза", "раза")}
             };
         }
 
         public string GetWordByNumber(WordType wordType, int number)
         {
-            if (number % 100 > 10 && number % 100 < 21)
-                return _wordsRules[wordType].DefaultEnding;
+            //if (wordType == WordType.CARDS || wordType == WordType.NUMBERS)
+            //{
+                if (number % 100 > 10 && number % 100 < 21)
+                    return _wordsRules[wordType].DefaultEnding;
 
-            if (number % 10 == 1)
-                return _wordsRules[wordType].OneEnding;
+                if (number % 10 == 1)
+                    return _wordsRules[wordType].OneEnding;
 
-            if (number % 10 >= 2 && number % 10 <= 4)
-                return _wordsRules[wordType].TwoThreeFourEnding;
+                if (number % 10 >= 2 && number % 10 <= 4)
+                    return _wordsRules[wordType].TwoThreeFourEnding;
+            //}
+
+            //if (wordType == WordType.TIME)
+            //{
+
+            //}
+
 
             return _wordsRules[wordType].DefaultEnding;
         }

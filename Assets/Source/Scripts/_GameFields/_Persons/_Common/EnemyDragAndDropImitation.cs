@@ -40,7 +40,7 @@ namespace GameFields.Persons.Common
 
             if (logicNumber == 1)
             {
-                if (_hand.TryGetCard(out Card card))
+                if (_hand.TryGetRandomCard(out Card card))
                 {
                     _cardImitationActions.SetCard(card);
                     //DragAndDropBehaviour1().ToUniTask();
@@ -54,7 +54,7 @@ namespace GameFields.Persons.Common
 
             if (logicNumber == 2)
             {
-                if (_hand.TryGetCard(out Card card))
+                if (_hand.TryGetRandomCard(out Card card))
                 {
                     _cardImitationActions.SetCard(card);
                     DragAndDropBehaviour2().ToUniTask();

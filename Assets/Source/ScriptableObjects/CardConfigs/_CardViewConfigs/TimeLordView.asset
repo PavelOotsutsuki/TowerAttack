@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TimeLordView
   m_EditorClassIdentifier: 
   <Number>k__BackingField: 8
-  <Icon>k__BackingField: {fileID: 21300000, guid: 758d9900016044f72aa88b992d4128fc, type: 3}
+  <Icon>k__BackingField: {fileID: 21300000, guid: 0417714cd101649a5b89ee33774a9e8d, type: 3}
   <Description>k__BackingField: "\u042F \u043C\u043E\u0433\u0443 \u043F\u043E\u0432\u0442\u043E\u0440\u044F\u0442\u044C
     \u0435\u0433\u043E \u0431\u0435\u0441\u043A\u043E\u043D\u0435\u0447\u043D\u043E."
   <Feature>k__BackingField: "\u0412\u044B \u043F\u043E\u0432\u0442\u043E\u0440\u044F\u0435\u0442\u0435
