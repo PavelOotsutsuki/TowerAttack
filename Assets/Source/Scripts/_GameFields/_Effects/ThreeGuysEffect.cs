@@ -1,21 +1,45 @@
 using System.Collections;
-using System.Collections.Generic;
+using Cards;
+using GameFields.Persons.Common;
+using GameFields.Persons.SelectMenues.Commons;
 using UnityEngine;
 
-namespace GameFields
+namespace GameFields.Effects
 {
-    public class ThreeGuysEffect : MonoBehaviour
+    public class ThreeGuysEffect : Effect
     {
-        // Start is called before the first frame update
-        void Start()
+        private const int CountNumbers = 3;
+        private readonly Person _activePerson;
+
+        private bool _endPlaying;
+
+        public ThreeGuysEffect(Person activePerson) : base()
         {
-        
+            _activePerson = activePerson;
+
+            Play();
         }
 
-        // Update is called once per frame
-        void Update()
+        public override void End()
         {
-        
+            Debug.Log("Эффект Четкого букмекера закончен");
+        }
+
+        protected override IEnumerator OnPlaying()
+        {
+            _endPlaying = false;
+            //_activePerson.ChoiceActivate("Выбрано:", 3);
+            _activePerson.ChoiceImitationActivate(CountNumbers, EndPlayingCallback);
+            //_activePerson.ChoiceActivate(4, EndPlayingCallback, RestrictionType.Consecutive);
+            //yield return new WaitUntil(() => _activePerson.IsChoiceComplete);
+            yield return new WaitUntil(() => _endPlaying);
+
+            //_deactivePerson.AttackDeactivate();
+        }
+
+        private void EndPlayingCallback()
+        {
+            _endPlaying = true;
         }
     }
 }

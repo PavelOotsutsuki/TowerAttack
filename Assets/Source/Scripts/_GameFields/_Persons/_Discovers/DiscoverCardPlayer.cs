@@ -93,8 +93,8 @@ namespace GameFields.Persons.Discovers
 
         private void Unblock()
         {
-            if (gameObject.activeSelf == true && _cardBlock.IsBlock)
-                Debug.Log("Заблочен + активен");
+            //if (gameObject.activeSelf == true && _cardBlock.IsBlock)
+            //    Debug.Log("Заблочен + активен");
 
 
             _cardBlock.Unblock();

@@ -8,25 +8,25 @@ using UnityEngine;
 
 namespace Cards
 {
-    public class BigCardDescription : FadableLabel, IShowable<BigCardDescriptionActivateData>
+    public class BigCardDescription : FadableLabel//, IShowable<BigCardDescriptionActivateData>
     {
-        [SerializeField] private RectTransform _rectTransform;
+        //[SerializeField] private RectTransform _rectTransform;
 
-        private ReadOnlyRectTransform _readOnlyRectTransform;
+        //private ReadOnlyRectTransform _readOnlyRectTransform;
         //private float _width;
 
-        private Coroutine _currentCoroutine;
+        //private Coroutine _currentCoroutine;
 
-        public override void Init()
-        {
-            base.Init();
+        //public override void Init()
+        //{
+        //    base.Init();
 
-            _readOnlyRectTransform = new ReadOnlyRectTransform(_rectTransform);
+            //_readOnlyRectTransform = new ReadOnlyRectTransform(_rectTransform);
             //_width = _readOnlyRectTransform.GetWidth();
-        }
+        //}
 
-        public void Show(BigCardDescriptionActivateData data)
-        {
+        //public void Show(BigCardDescriptionActivateData data)
+        //{
             //float xPosition;
             //_readOnlyRectTransform.SetSize(new Vector2(data.BigCardSize.x * 2f, data.BigCardSize.y * 2f));
 
@@ -49,16 +49,16 @@ namespace Cards
 
             //_currentCoroutine = StartCoroutine(WaitingUntilShow(data.LabelActivateData, IsComplete));
 
-            base.Show(data.LabelActivateData);
-        }
+        //    base.Show(data.LabelActivateData);
+        //}
 
-        public override void Hide()
-        {
+        //public override void Hide()
+        //{
             //if (_currentCoroutine != null)
                 //StopCoroutine(_currentCoroutine);
 
-            base.Hide();
-        }
+        //    base.Hide();
+        //}
 
         //private IEnumerator WaitingUntilShow(LabelActivateData activateData, bool isWait)
         //{
@@ -70,25 +70,25 @@ namespace Cards
         //    _currentCoroutine = null;
         //}
 
-        #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents) + nameof(BigCardDescription))]
-        public override List<ComponentAttachInfo> DefineAllComponents()
-        {
-            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
-            {
-                DefineRectTransform()
-            };
+        //#region AutomaticFillComponents
+        //[ContextMenu(nameof(DefineAllComponents) + nameof(BigCardDescription))]
+        //public override List<ComponentAttachInfo> DefineAllComponents()
+        //{
+        //    List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+        //    {
+        //        DefineRectTransform()
+        //    };
 
-            list.AddRange(base.DefineAllComponents());
+        //    list.AddRange(base.DefineAllComponents());
 
-            return list;
-        }
+        //    return list;
+        //}
 
-        [ContextMenu(nameof(DefineRectTransform))]
-        private ComponentAttachInfo DefineRectTransform()
-        {
-            return AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
-        }
-        #endregion 
+        //[ContextMenu(nameof(DefineRectTransform))]
+        //private ComponentAttachInfo DefineRectTransform()
+        //{
+        //    return AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
+        //}
+        //#endregion 
     }
 }

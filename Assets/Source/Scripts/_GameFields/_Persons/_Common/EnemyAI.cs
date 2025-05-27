@@ -21,9 +21,10 @@ namespace GameFields.Persons.Common
 
         public EnemyAI(InteractionActivator interactionActivator, EnemyDragAndDropImitation enemyDragAndDropImitation, CardPlayingZone cardPlayingZone,
             Tower tower, DrawCardRoot drawCardRoot, DiscoverAI discoverImitation, StartTurnDraw startTurnDraw, SignalBus bus,
-            Hand hand, ISelectMenuActivator attackMenu, ISelectMenuActivator selectMenu, PersonEffectsCounter personEffectsCounter) :
+            Hand hand, ISelectMenuActivator attackMenu, ISelectMenuActivator choiceMenu, ISelectMenuActivator choiceMenuImitation,
+            PersonEffectsCounter personEffectsCounter) :
             base(cardPlayingZone, drawCardRoot, tower, startTurnDraw,discoverImitation, bus,
-                hand, attackMenu, interactionActivator, selectMenu, personEffectsCounter)
+                hand, attackMenu, interactionActivator, choiceMenu, choiceMenuImitation, personEffectsCounter)
         {
             //_gameFieldObjectsActivator = gameFieldObjectsActivator;
             //Bus.Subscribe<StartEffectSignal>(SetCardEffectProcess);

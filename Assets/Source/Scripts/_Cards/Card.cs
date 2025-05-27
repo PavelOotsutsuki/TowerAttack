@@ -27,7 +27,7 @@ namespace Cards
         public Movement CardMovement { get; private set; }
         public Vector3 DefaultScaleVector => _defaultScaleVector;
         public CardViewData ViewData => _viewData;
-        public bool IsPlayingEffect => _cardEffectManager.IsPlayingEffect;
+        //public bool IsPlayingEffect => _cardEffectManager.IsPlayingEffect;
         public Image Background => _background;
         public SideType CurrentSide => _cardPaper.CurrentSide;
         //public EffectType EffectType => _config.Effect.Type;

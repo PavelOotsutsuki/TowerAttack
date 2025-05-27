@@ -8,12 +8,15 @@ namespace Cards
     public abstract class Effect: ICompletable
     {
         private readonly float _endEffectDelay = 1f;
+        private readonly int _duration;
 
-        public Effect()
+        public Effect(int duration = 0)
         {
             IsComplete = false;
+            _duration = duration;
         }
 
+        public int Duration => _duration;
         public bool IsComplete { get; private set; }
 
         public abstract void End();

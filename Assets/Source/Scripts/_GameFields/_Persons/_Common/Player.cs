@@ -28,9 +28,9 @@ namespace GameFields.Persons.Common
         public Player(InteractionActivator interactionActivator, Hand hand, CardPlayingZone cardPlayingZone, Tower tower,
             DiscoverPlayer discover, DrawCardRoot drawCardRoot, StartTurnDraw startTurnDraw, TurnProcessing turnProcessing,
             SignalBus bus, PersonStep startPlayerTurnView, ISelectMenuActivator attackMenu, EndTurnProcessing endTurnProcessing,
-            ISelectMenuActivator selectMenu, PersonEffectsCounter personEffectsCounter) :
+            ISelectMenuActivator choiceMenu, ISelectMenuActivator choiceMenuImitation, PersonEffectsCounter personEffectsCounter) :
             base(cardPlayingZone, drawCardRoot, tower, startTurnDraw, discover, bus, hand,
-                attackMenu, interactionActivator, selectMenu, personEffectsCounter)
+                attackMenu, interactionActivator, choiceMenu, choiceMenuImitation, personEffectsCounter)
         {
             _startPlayerTurnView = startPlayerTurnView;
             _endTurnProcessing = endTurnProcessing;

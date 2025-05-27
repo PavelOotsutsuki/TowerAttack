@@ -9,9 +9,9 @@ namespace GameFields.Persons.EffectCounters
     {
         private readonly GnomeEffectCounter _gnomeEffectCounter;
 
-        public PersonEffectsCounter(RechangeFeatureRuleController ruleController, IEnumerable<ICardFeatureRechangable> rechangables)
+        public PersonEffectsCounter(GnomeEffectCounter gnomeEffectCounter)
         {
-            _gnomeEffectCounter = new GnomeEffectCounter(ruleController, rechangables);
+            _gnomeEffectCounter = gnomeEffectCounter;
         }
 
         public GnomeEffectCounter GnomeEffectCounter => _gnomeEffectCounter;

@@ -15,9 +15,9 @@ using GameFields.Persons.Common;
 namespace GameFields.Persons.SelectMenues.Commons
 {
     [RequireComponent(typeof(FadablePanel))]
-    public class SelectNumberPanelEnemyAI : SelectNumberPanel
+    public class SelectNumberPanelImitation : SelectNumberPanel
     {
-        [SerializeField] private SelectNumberPanelEnemyAIData _data;
+        [SerializeField] private SelectNumberPanelImitatitonData _data;
 
         private SelectNumberImitation[] _selectNumbers;
 
@@ -118,7 +118,7 @@ namespace GameFields.Persons.SelectMenues.Commons
                     SelectedNumbers.Add(selectedNumber.Number, NumberAnimationType.Error);
                 }
             }
-            else
+            else if (_data.IsRememberSuccessChoice)
             {
                 foreach (ISelectNumber selectNumber in _selectNumbers)
                 {

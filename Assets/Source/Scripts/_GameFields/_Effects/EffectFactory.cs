@@ -2,6 +2,7 @@ using System;
 using Cards;
 using GameFields.InformationLabels;
 using GameFields.Signals;
+using UnityEngine;
 using Zenject;
 
 namespace GameFields.Effects
@@ -11,7 +12,7 @@ namespace GameFields.Effects
         private readonly IPersonsState _personsState;
         private readonly CardLocationViewRoot _viewRoot;
         private readonly InformationLabel _informationLabel;
-        //private readonly VoidEffect _voidEffect;
+        private readonly CardEffectConfig _voidEffectConfig;
         //private readonly SignalBus _bus;
         //private Effect _lastEffect;
 
@@ -20,6 +21,8 @@ namespace GameFields.Effects
             _personsState = personsState;
             _viewRoot = viewRoot;
             _informationLabel = informationLabel;
+            _voidEffectConfig = ScriptableObject.CreateInstance<CardEffectConfig>();
+            //_voidEffectConfig = new CardEffectConfig();
             //_voidEffect = new VoidEffect();
             //_lastEffect = _voidEffect;
             //_bus = bus;
@@ -37,8 +40,8 @@ namespace GameFields.Effects
                 EffectType.BlindOldMan => new BlindOldManEffect(_personsState.Active),
                 EffectType.DetectiveRhodes => new DetectiveRhodesEffect(_personsState.Active, _personsState.Deactive, _viewRoot, _informationLabel),
                 EffectType.BlueGnome => new BlueGnomeEffect(_personsState.Active),
-                EffectType.TimeLord => new VoidEffect(),
-                EffectType.ThreeGuys => new VoidEffect(),
+                EffectType.TimeLord => Create(_personsState.Deactive.LastEffect.Type == EffectType.TimeLord ? _voidEffectConfig : _personsState.Deactive.LastEffect),// new TimeLordEffect(_personsState.Deactive, this),
+                EffectType.ThreeGuys => new ThreeGuysEffect(_personsState.Active),
                 EffectType.TimeMistress => new VoidEffect(),
                 EffectType.SharpSnake => new VoidEffect(),
                 EffectType.ImpArmy => new VoidEffect(),
@@ -89,5 +92,6 @@ namespace GameFields.Effects
 
             return effect;
         }
+
     }
 }

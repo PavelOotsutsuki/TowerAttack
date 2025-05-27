@@ -8,12 +8,10 @@ namespace GameFields.Effects
     public class ZhyzhaEffect : Effect
     {
         private readonly Person _deactivePerson;
-        private readonly int _countTurns;
 
-        public ZhyzhaEffect(Person deactivePerson, int countTurns) : base()
+        public ZhyzhaEffect(Person deactivePerson, int countTurns) : base(countTurns)
         {
             _deactivePerson = deactivePerson;
-            _countTurns = countTurns;
 
             Play();
         }
@@ -25,7 +23,7 @@ namespace GameFields.Effects
 
         protected override IEnumerator OnPlaying()
         {
-            _deactivePerson.ActivateSlimeEffect(_countTurns);
+            _deactivePerson.ActivateSlimeEffect(Duration);
             yield break;
             //yield return new WaitForSeconds(10f);
 

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.SelectMenues.Attacks
 {
-    public class AttackMenuImitation : SelectMenuImitation//AttackMenu
+    public class AttackMenuEnemyAI : SelectMenuImitation//AttackMenu
     {
         //[SerializeField] private SelectNumberPanelEnemyAI _selectNumberPanelEnemyAI;
         //[SerializeField] private SelectMenuImitationData _data;

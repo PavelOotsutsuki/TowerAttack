@@ -9,17 +9,17 @@ namespace GameFields.Persons.SelectMenues.Commons
 {
     public class SelectMenuImitation : SelectMenu
     {
-        [SerializeField] private SelectNumberPanelEnemyAI _selectNumberPanelEnemyAI;
+        [SerializeField] private SelectNumberPanelImitation _selectNumberPanelImitation;
         [SerializeField] private SelectMenuImitationData _data;
 
         public void Init(ICardNumberKeeper cardNumberKeeper, ISelectResultHandler selectResultHandler, int countNumbers,
             SelectNumbersList selectedNumbers, ConfirmableNumbers confirmableNumbers)
         {
-            _selectNumberPanelEnemyAI.Init(cardNumberKeeper, countNumbers, selectedNumbers, confirmableNumbers);
+            _selectNumberPanelImitation.Init(cardNumberKeeper, countNumbers, selectedNumbers, confirmableNumbers);
 
             SelectMenuLabelTextLogic selectMenuLabelTextLogic = new EnemySelectMenuLabelTextLogic(_data.SelectMenuLabelText);
 
-            base.Init(selectResultHandler, _selectNumberPanelEnemyAI, selectMenuLabelTextLogic);
+            base.Init(selectResultHandler, _selectNumberPanelImitation, selectMenuLabelTextLogic);
         }
 
         public override void Activate(SelectMenuActivateData activateData)
@@ -33,12 +33,12 @@ namespace GameFields.Persons.SelectMenues.Commons
         {
             yield return new WaitForSeconds(_data.DelayAfterChoiceNumberDone);
 
-            _selectNumberPanelEnemyAI.Deactivate();
+            _selectNumberPanelImitation.Deactivate();
         }
 
         private IEnumerator WaitingUntilDeactivate()
         {
-            yield return new WaitUntil(() => _selectNumberPanelEnemyAI.IsComplete);
+            yield return new WaitUntil(() => _selectNumberPanelImitation.IsComplete);
 
             Deactivate();
         }
@@ -60,7 +60,7 @@ namespace GameFields.Persons.SelectMenues.Commons
         [ContextMenu(nameof(DefineSelectNumberPanel))]
         private ComponentAttachInfo DefineSelectNumberPanel()
         {
-            return AutomaticFillComponents.DefineComponent(this, ref _selectNumberPanelEnemyAI, ComponentLocationTypes.InChildren);
+            return AutomaticFillComponents.DefineComponent(this, ref _selectNumberPanelImitation, ComponentLocationTypes.InChildren);
         }
         #endregion 
     }

@@ -31,11 +31,9 @@ namespace Cards
 
             _bigCard.Show(data.BigCardShowData);
 
-            BigCardDescriptionActivateData bigCardDescriptionActivateData = new BigCardDescriptionActivateData(
-                //_bigCard.BigWidth, _bigCard.Position, _bigCard.Size,
-                new LabelActivateData(_cardCapabilityDescription.GetDescription(data.CardCapability)));
+             LabelActivateData labelActivateData = new LabelActivateData(_cardCapabilityDescription.GetDescription(data.CardCapability));
 
-            _description.Show(bigCardDescriptionActivateData);
+            _description.Show(labelActivateData);
         }
 
         public void Deactivate()

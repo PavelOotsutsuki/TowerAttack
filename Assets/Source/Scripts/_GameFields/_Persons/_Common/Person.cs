@@ -32,6 +32,7 @@ namespace GameFields.Persons.Common
         private readonly Hand _hand;
         private readonly ISelectMenuActivator _attackMenu;
         private readonly ISelectMenuActivator _choiceMenu;
+        private readonly ISelectMenuActivator _choiceMenuImitation;
 
         //private readonly PersonStep _lastStep;
 
@@ -48,7 +49,7 @@ namespace GameFields.Persons.Common
         protected Person(CardPlayingZone playingZone, DrawCardRoot drawCardRoot, Tower tower,
             StartTurnDraw startTurnDraw, Discover discover, SignalBus bus, /*PersonStep lastStep,*/
             Hand hand, ISelectMenuActivator attackMenu, InteractionActivator gameFieldObjectsActivator,
-            ISelectMenuActivator selectMenu, PersonEffectsCounter personEffectsCounter)
+            ISelectMenuActivator choiceMenu, ISelectMenuActivator choiceMenuImitation, PersonEffectsCounter personEffectsCounter)
         {
             _hand = hand;
             Bus = bus;
@@ -59,7 +60,8 @@ namespace GameFields.Persons.Common
             //TurnProcess = turnProcess;
             _discover = discover;
             _attackMenu = attackMenu;
-            _choiceMenu = selectMenu;
+            _choiceMenu = choiceMenu;
+            _choiceMenuImitation = choiceMenuImitation;
             //_lastStep = lastStep;
             InteractionActivator = gameFieldObjectsActivator;
 
@@ -67,7 +69,7 @@ namespace GameFields.Persons.Common
 
             _personSteps = new Stack<PersonStep>();
 
-            LastEffect = null;
+            LastEffect = ScriptableObject.CreateInstance<CardEffectConfig>();
             //Bus.Subscribe<StartEffectSignal>(SetCardEffectProcess);
         }
 
@@ -130,6 +132,11 @@ namespace GameFields.Persons.Common
         public void ChoiceActivate(int countNumbers, Action callback = null, RestrictionType? restrictionType = null)
         {
             ActivateSelectMenu(_choiceMenu, countNumbers, callback, restrictionType);
+        }
+
+        public void ChoiceImitationActivate(int countNumbers, Action callback = null, RestrictionType? restrictionType = null)
+        {
+            ActivateSelectMenu(_choiceMenuImitation, countNumbers, callback, restrictionType);
         }
 
         private void ActivateSelectMenu(ISelectMenuActivator selectMenu, int countNumbers, Action callback, RestrictionType? restrictionType)

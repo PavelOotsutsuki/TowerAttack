@@ -34,6 +34,7 @@ namespace Roots
         [SerializeField] private DiscoverPlayer _playerDiscover;
         [SerializeField] private CardPlayingZonePlayer _playerPlayingZone;
         [SerializeField] private ChoiceMenuPlayer _choiceMenuPlayer;
+        [SerializeField] private ChoiceMenuImitationPlayer _choiceMenuImitationPlayer;
         [SerializeField] private AttackMenuPlayer _attackMenuPlayer;
         [SerializeField] private CardAttackZonePlayer _playerCardAttackZone;
 
@@ -42,8 +43,9 @@ namespace Roots
         [SerializeField] private TowerAI _enemyTower;
         [SerializeField] private DiscoverAI _enemyDiscoverImitation;
         [SerializeField] private CardPlayingZoneAI _enemyPlayingZone;
-        [SerializeField] private ChoiceMenuImitation _enemyChoiceMenu;
-        [SerializeField] private AttackMenuImitation _enemyAttackMenu;
+        [SerializeField] private ChoiceMenuEnemyAI _enemyChoiceMenu;
+        [SerializeField] private ChoiceMenuImitationEnemyAI _enemyChoiceMenuImitation;
+        [SerializeField] private AttackMenuEnemyAI _enemyAttackMenu;
         [SerializeField] private CardAttackZoneEnemyAI _enemyCardAttackZone;
 
         public override void InstallBindings()
@@ -65,6 +67,7 @@ namespace Roots
             Container.Bind<DiscoverPlayer>().FromInstance(_playerDiscover).AsSingle();
             Container.Bind<CardPlayingZonePlayer>().FromInstance(_playerPlayingZone).AsSingle();
             Container.Bind<ChoiceMenuPlayer>().FromInstance(_choiceMenuPlayer).AsSingle();
+            Container.Bind<ChoiceMenuImitationPlayer>().FromInstance(_choiceMenuImitationPlayer).AsSingle();
             Container.Bind<AttackMenuPlayer>().FromInstance(_attackMenuPlayer).AsSingle();
             Container.Bind<CardAttackZonePlayer>().FromInstance(_playerCardAttackZone).AsSingle();
 
@@ -73,8 +76,9 @@ namespace Roots
             Container.Bind<TowerAI>().FromInstance(_enemyTower).AsSingle();
             Container.Bind<DiscoverAI>().FromInstance(_enemyDiscoverImitation).AsSingle();
             Container.Bind<CardPlayingZoneAI>().FromInstance(_enemyPlayingZone).AsSingle();
-            Container.Bind<ChoiceMenuImitation>().FromInstance(_enemyChoiceMenu).AsSingle();
-            Container.Bind<AttackMenuImitation>().FromInstance(_enemyAttackMenu).AsSingle();
+            Container.Bind<ChoiceMenuEnemyAI>().FromInstance(_enemyChoiceMenu).AsSingle();
+            Container.Bind<ChoiceMenuImitationEnemyAI>().FromInstance(_enemyChoiceMenuImitation).AsSingle();
+            Container.Bind<AttackMenuEnemyAI>().FromInstance(_enemyAttackMenu).AsSingle();
             Container.Bind<CardAttackZoneEnemyAI>().FromInstance(_enemyCardAttackZone).AsSingle();
         }
 

@@ -36,6 +36,7 @@ namespace GameFields.Persons.Common
         private Tower _playerTower;
         private DiscoverPlayer _playerDiscover;
         private ChoiceMenuPlayer _playerChoiceMenu;
+        private ChoiceMenuImitationPlayer _playerChoiceMenuImitation;
         private AttackMenuPlayer _playerAttackMenu;
         private CardAttackZonePlayer _playerCardAttackZone;
         private FirePool _playerFirePool;
@@ -62,8 +63,9 @@ namespace GameFields.Persons.Common
         private Table _enemyTable;
         private Tower _enemyTower;
         private DiscoverAI _enemyDiscoverImitation;
-        private ChoiceMenuImitation _enemyChoiceMenu;
-        private AttackMenuImitation _enemyAttackMenu;
+        private ChoiceMenuEnemyAI _enemyChoiceMenu;
+        private ChoiceMenuImitationEnemyAI _enemyChoiceMenuImitation;
+        private AttackMenuEnemyAI _enemyAttackMenu;
         private CardAttackZoneEnemyAI _enemyCardAttackZone;
         private FirePool _enemyFirePool;
         private RechangeFeatureRuleController _enemyRechangeFeatureRuleController;
@@ -104,9 +106,10 @@ namespace GameFields.Persons.Common
         [Inject]
         public void Construct(CardPlayingZonePlayer playerPlayingZone, HandPlayer playerHand, TablePlayer playerTable, TowerPlayer playerTower,
             DiscoverPlayer playerDiscover, AttackMenuPlayer playerAttackMenu, CardPlayingZoneAI enemyPlayingZone, HandAI enemyHand,
-            TableAI enemyTable, TowerAI enemyTower, DiscoverAI enemyDiscoverImitation, AttackMenuImitation enemyAttackMenu,
+            TableAI enemyTable, TowerAI enemyTower, DiscoverAI enemyDiscoverImitation, AttackMenuEnemyAI enemyAttackMenu,
             CardAttackZonePlayer playerCardAttackZone, CardAttackZoneEnemyAI enemyCardAttackZone, ChoiceMenuPlayer playerChoiceMenu,
-            ChoiceMenuImitation enemyChoiceMenu, DiscardPile discardPile)
+            ChoiceMenuEnemyAI enemyChoiceMenu, DiscardPile discardPile, ChoiceMenuImitationPlayer choiceMenuImitationPlayer,
+            ChoiceMenuImitationEnemyAI choiceMenuImitationEnemyAI)
         {
             _playerPlayingZone = playerPlayingZone;
             _playerHand = playerHand;
@@ -114,6 +117,7 @@ namespace GameFields.Persons.Common
             _playerTower = playerTower;
             _playerDiscover = playerDiscover;
             _playerChoiceMenu = playerChoiceMenu;
+            _playerChoiceMenuImitation = choiceMenuImitationPlayer;
             _playerAttackMenu = playerAttackMenu;
             _playerCardAttackZone = playerCardAttackZone;
 
@@ -123,6 +127,7 @@ namespace GameFields.Persons.Common
             _enemyTower = enemyTower;
             _enemyDiscoverImitation = enemyDiscoverImitation;
             _enemyChoiceMenu = enemyChoiceMenu;
+            _enemyChoiceMenuImitation = choiceMenuImitationEnemyAI;
             _enemyAttackMenu = enemyAttackMenu;
             _enemyCardAttackZone = enemyCardAttackZone;
 
@@ -170,12 +175,12 @@ namespace GameFields.Persons.Common
                 _playerTower,
                 _playerHand
             };
-            PersonEffectsCounter personEffectsCounter = new PersonEffectsCounter(_playerRechangeFeatureRuleController,
-                cardFeatureRechangables);
+            GnomeEffectCounter gnomeEffectCounter = new GnomeEffectCounter(_playerRechangeFeatureRuleController, cardFeatureRechangables);
+            PersonEffectsCounter personEffectsCounter = new PersonEffectsCounter(gnomeEffectCounter);
 
             return new Player(_interactionActivator, _playerHand, _playerPlayingZone, _playerTower, _playerDiscover,
                 drawCardRoot, startTurnDraw, turnProcessing, _bus, startPlayerTurnView, _playerAttackMenu, endTurnProcessing,
-                _playerChoiceMenu, personEffectsCounter);
+                _playerChoiceMenu, _playerChoiceMenuImitation, personEffectsCounter);
         }
 
         public EnemyAI CreateEnemyAI()
@@ -195,12 +200,12 @@ namespace GameFields.Persons.Common
                 _enemyTower,
                 _enemyHand
             };
-            PersonEffectsCounter personEffectsCounter = new PersonEffectsCounter(_enemyRechangeFeatureRuleController,
-                cardFeatureRechangables);
+            GnomeEffectCounter gnomeEffectCounter = new GnomeEffectCounter(_enemyRechangeFeatureRuleController, cardFeatureRechangables);
+            PersonEffectsCounter personEffectsCounter = new PersonEffectsCounter(gnomeEffectCounter);
 
             return new EnemyAI(_interactionActivator, enemyDragAndDropImitation, _enemyPlayingZone,
                 _enemyTower, drawCardRoot, _enemyDiscoverImitation, startTurnDraw, _bus, _enemyHand, _playerAttackMenu,
-                _enemyChoiceMenu, personEffectsCounter);
+                _enemyChoiceMenu, _enemyChoiceMenuImitation, personEffectsCounter);
         }
 
         public CardLocationViewRoot CreateCardLocationViewRoot(ICardWatcher cardWatcher)
@@ -228,6 +233,7 @@ namespace GameFields.Persons.Common
 
             _playerAttackMenu.Init(_enemyTower, attackResultHandlerPlayer, CountNumbers, attackedNumbers, confirmableNumbersPlayer);
             _playerChoiceMenu.Init(_enemyTower, choiceResultHandlerPlayer, CountNumbers, choicedNumbers, confirmableNumbersPlayer);
+            _playerChoiceMenuImitation.Init(_enemyTower, choiceResultHandlerPlayer, CountNumbers, choicedNumbers, confirmableNumbersPlayer);
 
             _playerCardAttackZone.Init(_playerAttackMenu, _enemyTower, _bus);
             //_playerCardAttackZone.Init(_playerChoiceMenu, _enemyTower);
@@ -254,6 +260,7 @@ namespace GameFields.Persons.Common
 
             _enemyAttackMenu.Init(_playerTower, attackResultHandlerEnemyAI, CountNumbers, attackedNumbers, confirmableNumbersEnemyAI);
             _enemyChoiceMenu.Init(_playerTower, choiceResultHandlerEnemyAI, CountNumbers, choicedNumbers, confirmableNumbersEnemyAI);
+            _enemyChoiceMenuImitation.Init(_playerTower, choiceResultHandlerEnemyAI, CountNumbers, choicedNumbers, confirmableNumbersEnemyAI);
 
             _enemyCardAttackZone.Init(_enemyAttackMenu, _playerTower, _bus);
         }

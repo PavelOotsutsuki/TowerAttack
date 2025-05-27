@@ -19,7 +19,7 @@ namespace Cards
         public void Play()
         {
             _effect = _effectFactory.Create(_cardEffectConfig);
-            _effectCounter = _cardEffectConfig.Duration;
+            _effectCounter = _effect.Duration;
         }
 
         public bool TryDiscard()

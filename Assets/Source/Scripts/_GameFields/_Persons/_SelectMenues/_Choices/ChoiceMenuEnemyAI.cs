@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.SelectMenues.Choices
 {
-    public class ChoiceMenuImitation : SelectMenuImitation//ChoiceMenu
+    public class ChoiceMenuEnemyAI : SelectMenuImitation//ChoiceMenu
     {
         //[SerializeField] private SelectNumberPanelEnemyAI _selectNumberPanelEnemyAI;
         //[SerializeField] private SelectMenuImitationData _data;

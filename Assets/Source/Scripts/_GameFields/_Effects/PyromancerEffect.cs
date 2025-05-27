@@ -8,12 +8,10 @@ namespace GameFields.Effects
     public class PyromancerEffect : Effect
     {
         private readonly Person _deactivePerson;
-        private readonly int _countTurns;
 
-        public PyromancerEffect(Person deactivePerson, int countTurns) : base()
+        public PyromancerEffect(Person deactivePerson, int countTurns) : base(countTurns)
         {
             _deactivePerson = deactivePerson;
-            _countTurns = countTurns;
 
             Play();
         }
@@ -25,7 +23,7 @@ namespace GameFields.Effects
 
         protected override IEnumerator OnPlaying()
         {
-            _deactivePerson.ActivateFireDraw(_countTurns);
+            _deactivePerson.ActivateFireDraw(Duration);
             yield break;
         }
     }
