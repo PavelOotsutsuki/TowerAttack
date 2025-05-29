@@ -13,14 +13,17 @@ namespace GameFields.Effects
         private readonly CardLocationViewRoot _viewRoot;
         private readonly InformationLabel _informationLabel;
         private readonly CardEffectConfig _voidEffectConfig;
+        private readonly CardTransitManager _cardTransitManager;
         //private readonly SignalBus _bus;
         //private Effect _lastEffect;
 
-        public EffectFactory(IPersonsState personsState, CardLocationViewRoot viewRoot, InformationLabel informationLabel/*, SignalBus bus*/)
+        public EffectFactory(IPersonsState personsState, CardLocationViewRoot viewRoot, InformationLabel informationLabel,
+            CardTransitManager cardTransitManager/*, SignalBus bus*/)
         {
             _personsState = personsState;
             _viewRoot = viewRoot;
             _informationLabel = informationLabel;
+            _cardTransitManager = cardTransitManager;
             _voidEffectConfig = ScriptableObject.CreateInstance<CardEffectConfig>();
             //_voidEffectConfig = new CardEffectConfig();
             //_voidEffect = new VoidEffect();
@@ -34,11 +37,12 @@ namespace GameFields.Effects
             {
                 EffectType.Void => new VoidEffect(),
                 EffectType.Zhyzha => new ZhyzhaEffect(_personsState.Deactive, effectConfig.Duration),
-                EffectType.Greedy => new GreedyEffect(_personsState.Active, _personsState.Deactive),
+                //EffectType.Greedy => new GreedyEffect_OLD(_personsState.Active, _personsState.Deactive),
+                EffectType.Greedy => new GreedyEffect(_viewRoot, _cardTransitManager),
                 EffectType.Pyromancer => new PyromancerEffect(_personsState.Deactive, effectConfig.Duration),
                 EffectType.CoolBookmaker => new CoolBookmakerEffect(_personsState.Active),
                 EffectType.BlindOldMan => new BlindOldManEffect(_personsState.Active),
-                EffectType.DetectiveRhodes => new DetectiveRhodesEffect(_personsState.Active, _personsState.Deactive, _viewRoot, _informationLabel),
+                EffectType.DetectiveRhodes => new DetectiveRhodesEffect(_personsState.Active, _cardTransitManager, _viewRoot, _informationLabel),
                 EffectType.BlueGnome => new BlueGnomeEffect(_personsState.Active),
                 EffectType.TimeLord => Create(_personsState.Deactive.LastEffect.Type == EffectType.TimeLord ? _voidEffectConfig : _personsState.Deactive.LastEffect),// new TimeLordEffect(_personsState.Deactive, this),
                 EffectType.ThreeGuys => new ThreeGuysEffect(_personsState.Active),
@@ -58,7 +62,7 @@ namespace GameFields.Effects
                 EffectType.DumbMonk => new VoidEffect(),
                 EffectType.LeftEyedSister => new VoidEffect(),
                 EffectType.JusticeBull => new VoidEffect(),
-                EffectType.PatriarchCorall => new PatriarchCorallEffect(_personsState.Active, _personsState.Deactive),
+                EffectType.PatriarchCorall => new PatriarchCorallEffect(_personsState.Active, _cardTransitManager),
                 EffectType.GreenGnome => new VoidEffect(),
                 EffectType.LittleBrother => new VoidEffect(),
                 EffectType.BrothersMother => new VoidEffect(),

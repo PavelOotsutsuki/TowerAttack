@@ -60,12 +60,13 @@ namespace Roots
             Player player = _personCreator.CreatePlayer();
             EnemyAI enemyAI = _personCreator.CreateEnemyAI();
             CardLocationViewRoot viewRoot = _personCreator.CreateCardLocationViewRoot(_cardRoot);
+            CardTransitManager cardTransitManager = _personCreator.CreateCardTransitManager();
 
             Destroy(_personCreator.gameObject);
 
             _personsState = new PersonsState(player, enemyAI);
             _forgingZone.Init(discardPile, _personsState);
-            EffectFactory effectFactory = new EffectFactory(_personsState, viewRoot, informationLabel);
+            EffectFactory effectFactory = new EffectFactory(_personsState, viewRoot, informationLabel, cardTransitManager);
 
             _cardRoot.Init(effectFactory, cardDescription, cardDragAndDropHandler);
             deck.Init(_cardRoot.Cards);

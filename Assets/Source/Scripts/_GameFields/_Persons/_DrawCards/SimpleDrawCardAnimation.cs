@@ -36,7 +36,7 @@ namespace GameFields.Persons.DrawCards
 
             yield return new WaitForSeconds(_delay);
 
-            _hand.AddCard(drawnCard);
+            _hand.SeatCard(drawnCard);
             _drawCardWatcher.SetCard(drawnCard);
             _isComplete = true;
         }

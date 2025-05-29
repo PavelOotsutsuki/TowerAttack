@@ -8,22 +8,24 @@ using GameFields.Persons.Discovers;
 
 namespace GameFields.Effects
 {
-    public class PatriarchCorallEffect : Effect
+    public class PatriarchCorallEffect_OLD : Effect
     {
         private readonly int _countDrawCards = 3;
         private readonly string _activateDiscoverMessage = "Выберете, какую карту отдадите противнику";
 
         private readonly Person _activePerson;
 
-        private readonly CardTransitManager _transitManager;
+        private readonly IHandTransitTryGet _handTransitTryGet;
+        private readonly IHandTransitSet _handTransitSet;
         private readonly IDrawCardManager _drawCardManager;
 
-        public PatriarchCorallEffect(Person activePerson, CardTransitManager transitManager) : base()
+        public PatriarchCorallEffect_OLD(Person activePerson, Person deactivePerson): base()
         {
             _activePerson = activePerson;
-            _transitManager = transitManager;
 
             _drawCardManager = activePerson;
+            _handTransitTryGet = activePerson;
+            _handTransitSet = deactivePerson;
 
             Play();
         }
@@ -47,18 +49,10 @@ namespace GameFields.Effects
 
             yield return new WaitUntil(() => discoverResult.Result != null);
 
-            TransitFromType transitFrom = _activePerson is Player ? TransitFromType.HandPlayer : TransitFromType.HandEnemy;
-            TransitToType transitTo = _activePerson is Player ? TransitToType.HandEnemy : TransitToType.HandPlayer;
-
-            if (_transitManager.TryTransitCard(discoverResult.Result, transitFrom, transitTo) == false)
+            if (_handTransitTryGet.TryGet(discoverResult.Result))
             {
-                throw new System.Exception("Ошибка нахождения карты");
+                _handTransitSet.Set(discoverResult.Result);
             }
-
-            //if (_handTransitTryGet.TryGet(discoverResult.Result))
-            //{
-            //    _handTransitSet.Set(discoverResult.Result);
-            //}
         }
 
         public override void End()

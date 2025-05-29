@@ -20,7 +20,7 @@ namespace GameFields.Persons.Fires
         }
 
         public int Count => _playerFirePool.Count + _enemyFirePool.Count;
-        public IReadOnlyList<Card> Cards
+        public IEnumerable<Card> AllCards
         {
             get
             {
@@ -37,14 +37,14 @@ namespace GameFields.Persons.Fires
         {
             exceptions ??= new List<int>();
 
-            int thisCount = Cards.Where(c => exceptions.Contains(c.ViewData.Number) == false).Count();
+            int thisCount = AllCards.Where(c => exceptions.Contains(c.ViewData.Number) == false).Count();
 
             return thisCount >= count;
         }
 
         public bool Contains(int number)
         {
-            return Cards.Select(c => c.ViewData.Number).Contains(number);
+            return AllCards.Select(c => c.ViewData.Number).Contains(number);
         }
 
         public IReadOnlyList<Card> ViewRandomCards(int count, IEnumerable<int> exceptions)
@@ -52,7 +52,7 @@ namespace GameFields.Persons.Fires
             List<int> existingIndices = new List<int>();
             List<Card> result = new List<Card>();
 
-            IReadOnlyList<Card> cards = Utils.Shuffle(Cards);
+            IReadOnlyList<Card> cards = Utils.Shuffle(AllCards);
 
             for (int c = 0; c < count; c++)
             {

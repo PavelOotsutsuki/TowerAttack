@@ -13,7 +13,7 @@ using Random = UnityEngine.Random;
 namespace GameFields.Persons.Hands
 {
     public abstract class Hand : MonoBehaviour, ICardDragAndDropHandHandler, IHandBlockable, IReadOnlyHand, ITurnDrawCardWatcher,
-        ICardView, IPersonObject, ICardsCounter, ICardFeatureRechangable, IAutomaticFillComponents
+        ICardView, IPersonObject, ICardsCounter, ICardFeatureRechangable, ITransitable, IAutomaticFillComponents
     {
         private const float StartRotation = 0;
         private const int EmptyIndex = -1;
@@ -47,9 +47,11 @@ namespace GameFields.Persons.Hands
 
         public int CountHandSeats => _handSeats.Count;
         public bool IsSlimeEffectCountZero => _turnCardsFromDeck.Count == 0 && _countSlimeEffect > 0;
-        public int CountCards => AllCards.Count;
+        public int CountCards => Cards.Count;
 
-        private List<Card> AllCards
+        public IEnumerable<Card> AllCards => Cards;
+
+        private List<Card> Cards
         {
             get
             {
@@ -81,7 +83,7 @@ namespace GameFields.Persons.Hands
 
         public IEnumerable<IFeatureRechanger> GetRechangableCards()
         {
-            return AllCards;
+            return Cards;
         }
 
         bool ICardDragAndDropHandHandler.IsDraggable(Card card) => TryFindHandSeat(out Seat seat, card);
@@ -120,7 +122,7 @@ namespace GameFields.Persons.Hands
             _turnCardsFromDeck.Add(card);
         }
 
-        public void AddCard(Card card)
+        public void SeatCard(Card card)
         {
             //card.SetDragAndDropListener(this);
 
@@ -149,7 +151,7 @@ namespace GameFields.Persons.Hands
             }
         }
 
-        public bool TryGetCard(Card card)
+        public bool TryTakeAwayCard(Card card)
         {
             bool isFind = TryFindHandSeat(out Seat findedHandSeat, card);
 
@@ -175,7 +177,7 @@ namespace GameFields.Persons.Hands
             return gettedCard;
         }
 
-        public bool TryGetAllCards(out List<Card> cards)
+        public bool TryTakeAwayAllCards(out List<Card> cards)
         {
             StartEndDragCard(true);
 
@@ -226,7 +228,7 @@ namespace GameFields.Persons.Hands
 
         public IReadOnlyList<Card> ViewRandomCards(int count, IEnumerable<int> exceptions)
         {
-            IReadOnlyList<Card> cards = AllCards;
+            IReadOnlyList<Card> cards = Cards;
 
             List<int> existingIndices = new List<int>();
             List<Card> result = new List<Card>();
@@ -294,7 +296,7 @@ namespace GameFields.Persons.Hands
 
         public bool Contains(int number)
         {
-            return AllCards.Select(c => c.ViewData.Number).Contains(number);
+            return Cards.Select(c => c.ViewData.Number).Contains(number);
         }
 
         private void BlockCards()

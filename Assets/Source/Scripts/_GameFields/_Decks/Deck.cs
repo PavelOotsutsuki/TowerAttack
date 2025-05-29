@@ -11,7 +11,7 @@ using Tools.Utils;
 
 namespace GameFields.Decks
 {
-    public class Deck : MonoBehaviour, IAutomaticFillComponents, IDeckTake, IDeckView, ICardsCounter
+    public class Deck : MonoBehaviour, IAutomaticFillComponents, IDeckTake, IDeckView, ITransitable, ICardsCounter
     {
         [SerializeField] private DeckCardContainer _cardContainer;
         [SerializeField] private DeckCardBackViewer _cardBackViewer;
@@ -26,6 +26,8 @@ namespace GameFields.Decks
         public event Action OnSeatsCountChange;
 
         public int CountCards => _cards.Count;
+
+        public IEnumerable<Card> AllCards => _cards;
 
         public void Init(IEnumerable<Card> cards)
         {
@@ -54,7 +56,7 @@ namespace GameFields.Decks
             return _cards.Select(c => c.ViewData.Number).Contains(number);
         }
 
-        public void AddCard(Card card)
+        public void SeatCard(Card card)
         {
             int position = Random.Range(0, _cards.Count);
             _cards.Insert(position, card);
@@ -71,11 +73,14 @@ namespace GameFields.Decks
             return TakeCardByIndex(_cards.Count - 1);
         }
 
-        public Card TakeCard(Card card)
+        public bool TryTakeAwayCard(Card card)
         {
+            if (IsHasCards(1) == false)
+                return false;
+
             RemoveCard(card);
 
-            return card;
+            return true;
         }
 
         public IReadOnlyList<Card> ViewRandomCards(int count, IEnumerable<int> exceptions)

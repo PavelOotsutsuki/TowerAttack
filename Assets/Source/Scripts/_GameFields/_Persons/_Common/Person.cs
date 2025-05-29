@@ -249,12 +249,12 @@ namespace GameFields.Persons.Common
 
         bool IHandTransitTryGet.TryGet(Card card)
         {
-            return _hand.TryGetCard(card);
+            return _hand.TryTakeAwayCard(card);
         }
 
         void IHandTransitSet.Set(Card card)
         {
-            _hand.AddCard(card);
+            _hand.SeatCard(card);
         }
 
         //Card IHandTransitGetLast.Get()
@@ -266,7 +266,7 @@ namespace GameFields.Persons.Common
         {
             List<Card> cards;
 
-            if (_hand.TryGetAllCards(out cards) == false)
+            if (_hand.TryTakeAwayAllCards(out cards) == false)
             {
                 cards = null;
             }

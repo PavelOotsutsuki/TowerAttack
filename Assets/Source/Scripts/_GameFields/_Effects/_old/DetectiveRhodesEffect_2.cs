@@ -13,7 +13,7 @@ using GameFields.Persons.Discovers;
 
 namespace GameFields.Effects
 {
-    public class DetectiveRhodesEffect : Effect
+    public class DetectiveRhodesEffect_2: Effect
     {
         private const string TrueChoice = "ВЕРНО";
         private const string FalseChoice = "НЕВЕРНО";
@@ -25,22 +25,27 @@ namespace GameFields.Effects
         private readonly string _activateHandDiscoverMessage = "Какая карта в руке у противника?";
 
         private readonly Person _activePerson;
-
+        //private readonly Person _deactivePerson;
         private readonly CardLocationViewRoot _viewRoot;
         private readonly InformationLabel _informationLabel;
-        private readonly CardTransitManager _transitManager;
 
+        private readonly IHandTransitTryGet _handTransitTryGet;
+        private readonly IHandTransitSet _handTransitSet;
         private readonly IDrawCardManager _drawCardManager;
 
-        public DetectiveRhodesEffect(Person activePerson, CardTransitManager transitManager, CardLocationViewRoot viewRoot,
+        //private List<Card> _cards;
+        //private bool _endPlaying;
+
+        public DetectiveRhodesEffect_2(Person activePerson, Person deactivePerson, CardLocationViewRoot viewRoot,
             InformationLabel informationLabel) : base()
         {
             _activePerson = activePerson;
-            _transitManager = transitManager;
-
+            //_deactivePerson = deactivePerson;
             _viewRoot = viewRoot;
             _informationLabel = informationLabel;
-
+            //_handTransitTryGet = activePerson;
+            _handTransitSet = activePerson;
+            _handTransitTryGet = deactivePerson;
             _drawCardManager = activePerson;
 
             Play();
@@ -48,6 +53,8 @@ namespace GameFields.Effects
 
         protected override IEnumerator OnPlaying()
         {
+            //_endPlaying = false;
+
             ViewType enemyhandType = _activePerson is Player ? ViewType.HandAI : ViewType.HandPlayer;
 
             Card deckCard = null;
@@ -105,10 +112,11 @@ namespace GameFields.Effects
 
             if (deckResult.Result == deckCard && handResult.Result == handCard)
             {
-                TransitFromType handFrom = _activePerson is Player ? TransitFromType.HandEnemy : TransitFromType.HandPlayer;
-                TransitToType handTo = _activePerson is Player ? TransitToType.HandPlayer : TransitToType.HandEnemy;
-
-                if (_transitManager.TryTransitCard(handCard, handFrom, handTo) == false)
+                if (_handTransitTryGet.TryGet(handCard))
+                {
+                    _handTransitSet.Set(handCard);
+                }
+                else
                 {
                     throw new Exception("Не удалось получить карту из руки противника");
                 }
@@ -138,7 +146,7 @@ namespace GameFields.Effects
 
         public override void End()
         {
-            Debug.Log("End DetectiveRhodesEffect");
+            //Debug.Log("End patriarch corall effect");
         }
 
         private void Discover(Card firstFindedCard, int countDiscoverCards, string activateDiscoverMessage,
@@ -157,5 +165,19 @@ namespace GameFields.Effects
 
             _activePerson.DiscoverCards(cardsGuess, activateDiscoverMessage, discoverResult);
         }
+
+        //private void ContinueAfterFindDeckCard(Card card)
+        //{
+        //    //deckResult = card;
+
+        //    _isDeckDiscoverComplete = true;
+        //}
+
+        //private void ContinueAfterFindHandCard(Card card)
+        //{
+        //    //handResult = card;
+
+        //    _isHandDiscoverComplete = true;
+        //}
     }
 }

@@ -13,7 +13,7 @@ using Random = UnityEngine.Random;
 
 namespace GameFields.DiscardPiles
 {
-    public class DiscardPile: ICardView
+    public class DiscardPile: ICardView, ICardTakable
     {
         private const float CenterRotation = 90f;
 
@@ -26,6 +26,8 @@ namespace GameFields.DiscardPiles
         private readonly SeatPool _discardPileSeatPool;
 
         private readonly SignalBus _bus;
+
+        public IEnumerable<Card> AllCards => _seats.Select(s => s.Card);
 
         public DiscardPile(SeatPool seatPool, SignalBus bus, DiscardPileConfig discardPileConfig)
         {
@@ -59,6 +61,19 @@ namespace GameFields.DiscardPiles
             
             //TODO: add seat removing
             _seats.Add(discardPileSeat);
+        }
+
+        public bool TryTakeAwayCard(Card card)
+        {
+            Seat seat = _seats.Where(s => s.Card == card).FirstOrDefault();
+
+            if (seat == null)
+                return false;
+
+            _seats.Remove(seat);
+            seat.Reset();
+
+            return true;
         }
 
         public IReadOnlyList<Card> ViewRandomCards(int count, IEnumerable<int> exceptions)

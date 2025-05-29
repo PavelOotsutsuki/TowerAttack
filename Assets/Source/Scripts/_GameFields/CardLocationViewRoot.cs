@@ -18,7 +18,7 @@ namespace GameFields
 {
     public class CardLocationViewRoot
     {
-        private readonly ICardWatcher _cardWatcher;
+        private readonly ICardWatcher _allCardsWatcher;
         private readonly IDeckView _deckView;
         //private readonly ICardView _handPlayer;
         //private readonly ICardView _handAI;
@@ -30,10 +30,10 @@ namespace GameFields
         private readonly Dictionary<ViewType, ICardView> _views;
         //private readonly List<Hand> _hands;
 
-        public CardLocationViewRoot(ICardWatcher cardWatcher, IDeckView deckView, HandPlayer handPlayer, HandAI handAI,
+        public CardLocationViewRoot(ICardWatcher allCardsWatcher, IDeckView deckView, HandPlayer handPlayer, HandAI handAI,
             DiscardPile discardPile, FireRoot fireRoot)
         {
-            _cardWatcher = cardWatcher;
+            _allCardsWatcher = allCardsWatcher;
             _deckView = deckView;
 
             _views = new Dictionary<ViewType, ICardView>()
@@ -83,9 +83,14 @@ namespace GameFields
         //{
         //    return TryView(out cards, countCards, _deckView);
         //}
+        public IEnumerable<Card> GetAllCards(ViewType viewType)
+        {
+            return _views[viewType].AllCards;
+        }
+
         public Card ViewRandomCard(IEnumerable<int> exceptions, IEnumerable<ViewType> noContains = null)
         {
-            IReadOnlyList<Card> cards = _cardWatcher.Cards;
+            IReadOnlyList<Card> cards = _allCardsWatcher.Cards;
 
             Func<int, bool> viewTypesContains = (int number) =>
             {

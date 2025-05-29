@@ -39,9 +39,9 @@ namespace GameFields.Persons.DrawCards
 
         public Card DrawCard(Card card, Action callback = null)
         {
-            if (_deck.IsHasCards(1))
+            if (_deck.TryTakeAwayCard(card) == false)
             {
-                _deck.TakeCard(card);
+                throw new Exception("Пытаемся взять карты которой нет");
             }
 
             DrawingCards(new List<Card>() { card }, callback).ToUniTask();
