@@ -1,20 +1,20 @@
-using GameFields.Persons.Common;
+using GameFields.Persons.Commons;
 using GameFields.Persons.CardTransits;
 using Tools;
+using GameFields.Persons.Towers;
+using Cards;
 
 namespace GameFields.StartFights
 {
     public abstract class StartTowerCardSelection : ICompletable
     {
-        protected readonly ITowerTransitSet TowerTransitSet;
-        protected readonly ITowerTransitCheck TowerTransitCheck;
+        protected readonly ICardDropPlace Tower;
 
-        public bool IsComplete => TowerTransitCheck.IsFill;
+        public bool IsComplete => Tower.HasFreeSeat == false;
 
-        public StartTowerCardSelection(Person person)
+        public StartTowerCardSelection(Tower tower)
         {
-            TowerTransitCheck = person;
-            TowerTransitSet = person;
+            Tower = tower;
         }
 
         public abstract void StartProcess();

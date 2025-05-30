@@ -94,18 +94,18 @@ namespace GameFields.EndTurnButtons
         {
             Vector3 endRotationVector = new Vector3(rotation, 0f, 0f);
             Vector3 scaleVector = _data.ButtonTransform.localScale;
-            Vector3 downWay = _data.ButtonTransform.position;
+            Vector3 downWay = _data.ButtonTransform.localPosition;
 
-            _endTurnButtonMovement.MoveLinear(downWay, endRotationVector, duration, scaleVector);
+            _endTurnButtonMovement.MoveLocalLinear(downWay, endRotationVector, duration, scaleVector);
         }
 
         private void InvertDeactiveSide(float duration, float rotation)
         {
             Vector3 endRotationVector = new Vector3(rotation, 0f, 0f);
             Vector3 scaleVector = _data.ButtonTransform.localScale;
-            Vector3 downWay = _data.ButtonTransform.position;
+            Vector3 downWay = _data.ButtonTransform.localPosition;
 
-            _endTurnButtonMovement.MoveSmoothly(downWay, endRotationVector, duration, scaleVector);
+            _endTurnButtonMovement.MoveLocalSmoothly(downWay, endRotationVector, duration, scaleVector);
         }
 
         private void SetLockSide()

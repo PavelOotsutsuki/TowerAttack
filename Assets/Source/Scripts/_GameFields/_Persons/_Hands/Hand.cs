@@ -1,8 +1,10 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cards;
-using GameFields.Persons.Common;
+using GameFields.Persons.Commons;
+using GameFields.Persons.EffectHandlers.Slimes;
 using GameFields.Seats;
 using Tools.Utils;
 using Tools.Utils.FillComponents;
@@ -12,8 +14,8 @@ using Random = UnityEngine.Random;
 
 namespace GameFields.Persons.Hands
 {
-    public abstract class Hand : MonoBehaviour, ICardDragAndDropHandHandler, IHandBlockable, IReadOnlyHand, ITurnDrawCardWatcher,
-        ICardView, IPersonObject, ICardsCounter, ICardFeatureRechangable, ITransitable, IAutomaticFillComponents
+    public abstract class Hand : MonoBehaviour, ICardDragAndDropHandHandler, IHandBlockable, ICardView, IPersonObject, ICardsCounter,
+        ICardFeatureRechangable, ITransitable, ISlimeEffectWorker, ITurnSkipper, IAutomaticFillComponents
     {
         private const float StartRotation = 0;
         private const int EmptyIndex = -1;
@@ -37,16 +39,16 @@ namespace GameFields.Persons.Hands
         private int _handSeatIndex;
         private SeatPool _handSeatPool;
         private RechangeFeatureRuleController _ruleController;
+        private IDrawnCardWatcher _turnDrawnCards;
 
-        private List<Card> _turnCardsFromDeck;
-        private int _countSlimeEffect = 0;
+        //private List<Card> _turnCardsFromDeck;
+        private bool _isSlimeEffect = false;
 
         float ICardDragAndDropHandHandler.ReturnInSeatDuration => _returnInSeatDuration;
 
         public event Action OnSeatsCountChange;
 
         public int CountHandSeats => _handSeats.Count;
-        public bool IsSlimeEffectCountZero => _turnCardsFromDeck.Count == 0 && _countSlimeEffect > 0;
         public int CountCards => Cards.Count;
 
         public IEnumerable<Card> AllCards => Cards;
@@ -71,12 +73,16 @@ namespace GameFields.Persons.Hands
             }
         }
 
-        public void Init(SeatPool seatPool, RechangeFeatureRuleController ruleController)
+        public bool CanSkip => CountCards == 0;
+        public bool IsSlimeEffect => _isSlimeEffect;
+
+        public void Init(SeatPool seatPool, RechangeFeatureRuleController ruleController, IDrawnCardWatcher turnDrawnCards)
         {
             _handSeats = new List<Seat>();
-            _turnCardsFromDeck = new List<Card>();
+            //_turnCardsFromDeck = new List<Card>();
             _handSeatIndex = EmptyIndex;
             _ruleController = ruleController;
+            _turnDrawnCards = turnDrawnCards;
 
             _handSeatPool = seatPool;
         }
@@ -117,10 +123,10 @@ namespace GameFields.Persons.Hands
             card.SetActiveInteraction(_isActiveInteraction);
         }
 
-        void ITurnDrawCardWatcher.SetCard(Card card)
-        {
-            _turnCardsFromDeck.Add(card);
-        }
+        //void ITurnDrawCardWatcher.SetCard(Card card)
+        //{
+        //    _turnCardsFromDeck.Add(card);
+        //}
 
         public void SeatCard(Card card)
         {
@@ -132,24 +138,26 @@ namespace GameFields.Persons.Hands
             handSeat.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
             _handSeats.Add(handSeat);
             handSeat.SetCard(card, _sideType, _returnInSeatDuration);
-            card.SetActiveInteraction(_isActiveInteraction);
+            //card.SetActiveInteraction(_isActiveInteraction);
+
+            SetCardsInteraction();
 
             SortHandSeats();
         }
 
-        public bool TryGetRandomCard(out Card card)
-        {
-            card = null;
+        //public bool TryGetRandomCard(out Card card)
+        //{
+        //    card = null;
 
-            if (_countSlimeEffect > 0)
-            {
-                return TryGetRandomCardFromDrawnCards(out card);
-            }
-            else
-            {
-                return TryGetDefaultRandomCard(out card);
-            }
-        }
+        //    if (_isSlimeEffect)
+        //    {
+        //        return TryGetRandomCardFromDrawnCards(out card);
+        //    }
+        //    else
+        //    {
+        //        return TryGetDefaultRandomCard(out card);
+        //    }
+        //}
 
         public bool TryTakeAwayCard(Card card)
         {
@@ -177,25 +185,25 @@ namespace GameFields.Persons.Hands
             return gettedCard;
         }
 
-        public bool TryTakeAwayAllCards(out List<Card> cards)
-        {
-            StartEndDragCard(true);
+        //public bool TryTakeAwayAllCards(out List<Card> cards)
+        //{
+        //    StartEndDragCard(true);
 
-            if (_handSeats.Count <= 0)
-            {
-                cards = null;
-                return false;
-            }
+        //    if (_handSeats.Count <= 0)
+        //    {
+        //        cards = null;
+        //        return false;
+        //    }
 
-            cards = new List<Card>();
+        //    cards = new List<Card>();
 
-            while (_handSeats.Count > 0)
-            {
-                cards.Add(UnbindLastCard());
-            }
+        //    while (_handSeats.Count > 0)
+        //    {
+        //        cards.Add(UnbindLastCard());
+        //    }
 
-            return true;
-        }
+        //    return true;
+        //}
 
         public void ForciblyBlock()
         {
@@ -208,23 +216,18 @@ namespace GameFields.Persons.Hands
             UnblockCards();
         }
 
-        public void ActivateSlimeEffect(int countTurns)
-        {
-            _countSlimeEffect = countTurns;
-        }
+        //public void OnStartTurn()
+        //{
+        //    _turnCardsFromDeck.Clear();
+        //}
 
-        public void OnStartTurn()
-        {
-            _turnCardsFromDeck.Clear();
-        }
+        //public void OnFinishTurn()
+        //{
+        //    _turnCardsFromDeck.Clear();
 
-        public void OnFinishTurn()
-        {
-            _turnCardsFromDeck.Clear();
-
-            if (_countSlimeEffect > 0)
-                _countSlimeEffect--;
-        }
+        //    //if (_countSlimeEffect > 0)
+        //    //    _countSlimeEffect--;
+        //}
 
         public IReadOnlyList<Card> ViewRandomCards(int count, IEnumerable<int> exceptions)
         {
@@ -297,6 +300,16 @@ namespace GameFields.Persons.Hands
         public bool Contains(int number)
         {
             return Cards.Select(c => c.ViewData.Number).Contains(number);
+        }
+
+        void ISlimeEffectWorker.Activate()
+        {
+            _isSlimeEffect = true;
+        }
+
+        void ISlimeEffectWorker.Deactivate()
+        {
+            _isSlimeEffect = false;
         }
 
         private void BlockCards()
@@ -372,7 +385,7 @@ namespace GameFields.Persons.Hands
             {
                 Card card = seat.Card;
 
-                if (_countSlimeEffect > 0 && _turnCardsFromDeck.Contains(card) == false)
+                if (_isSlimeEffect && _turnDrawnCards.DrawnCards.Contains(card) == false)
                 {
                     card.SetActiveInteraction(false);
                 }
@@ -389,37 +402,37 @@ namespace GameFields.Persons.Hands
             _dragCardHandSeat = null;
         }
 
-        private bool TryGetDefaultRandomCard(out Card card)
-        {
-            card = null;
+        //private bool TryGetDefaultRandomCard(out Card card)
+        //{
+        //    card = null;
 
-            if (_handSeats.Count <= 0)
-            {
-                return false;
-            }
+        //    if (_handSeats.Count <= 0)
+        //    {
+        //        return false;
+        //    }
 
-            int randomIndex = Random.Range(0, _handSeats.Count);
+        //    int randomIndex = Random.Range(0, _handSeats.Count);
 
-            card = _handSeats[randomIndex].Card;
+        //    card = _handSeats[randomIndex].Card;
 
-            return true;
-        }
+        //    return true;
+        //}
 
-        private bool TryGetRandomCardFromDrawnCards(out Card card)
-        {
-            card = null;
+        //private bool TryGetRandomCardFromDrawnCards(out Card card)
+        //{
+        //    card = null;
 
-            if (_turnCardsFromDeck.Count <= 0)
-            {
-                return false;
-            }
+        //    if (_turnCardsFromDeck.Count <= 0)
+        //    {
+        //        return false;
+        //    }
 
-            int randomIndex = Random.Range(0, _turnCardsFromDeck.Count);
+        //    int randomIndex = Random.Range(0, _turnCardsFromDeck.Count);
 
-            card = _turnCardsFromDeck[randomIndex];
+        //    card = _turnCardsFromDeck[randomIndex];
 
-            return true;
-        }
+        //    return true;
+        //}
 
         private bool TryFindHandSeat(out Seat findedHandSeat, Card card)
         {

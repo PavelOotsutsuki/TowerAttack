@@ -1,4 +1,4 @@
-using GameFields.Persons.Common;
+using GameFields.Persons.Commons;
 using System.Collections;
 using UnityEngine;
 using Cysharp.Threading.Tasks;

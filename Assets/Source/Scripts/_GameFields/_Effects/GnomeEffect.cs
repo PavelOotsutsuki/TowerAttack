@@ -1,6 +1,6 @@
 using System.Collections;
 using Cards;
-using GameFields.Persons.Common;
+using GameFields.Persons.Commons;
 using GameFields.Persons.SelectMenues.Commons;
 using UnityEngine;
 
@@ -23,7 +23,7 @@ namespace GameFields.Effects
         {
             _endPlaying = false;
             //_activePerson.ChoiceActivate("Выбрано:", 3);
-            if (_activePerson.PersonEffectsCounter.GnomeEffectCounter.TryActivate(out int countNumbers))
+            if (_activePerson.PersonEffectsHandler.GnomeEffectCounter.TryActivate(out int countNumbers))
             {
                 _activePerson.ChoiceActivate(countNumbers, EndPlaying);
             }

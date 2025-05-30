@@ -2,7 +2,7 @@ using System;
 using Cards;
 using GameFields.Decks;
 using GameFields.DiscardPiles;
-using GameFields.Persons.Common;
+using GameFields.Persons.Commons;
 using GameFields.Persons.Hands;
 using GameFields.Persons.Towers;
 

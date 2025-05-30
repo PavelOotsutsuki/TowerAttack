@@ -1,4 +1,4 @@
-using GameFields.Persons.Common;
+using GameFields.Persons.Commons;
 using GameFields.Persons.DrawCards;
 using GameFields.Persons.Hands;
 using Tools;

@@ -4,19 +4,21 @@ using Cards;
 using Cysharp.Threading.Tasks;
 using GameFields.CommonAnimations;
 using GameFields.Decks;
-using GameFields.Persons.Common;
+using GameFields.Persons.Commons;
 using GameFields.Persons.CardTransits;
 using GameFields.Persons.Discovers;
 using GameFields.Seats;
 using Tools.Utils.Movements;
 using UnityEngine;
+using GameFields.Persons.Hands;
+using GameFields.Persons.Towers;
 
 namespace GameFields.StartFights
 {
     public class StartTowerCardSelectionPlayer : StartTowerCardSelection
     {
         private readonly Deck _deck;
-        private readonly IHandTransitSet _handTransitSet;
+        private readonly ICardSeatable _hand;
         private readonly Discover _discover;
 
         private readonly StartTowerCardSelectionPlayerData _data;
@@ -24,9 +26,9 @@ namespace GameFields.StartFights
 
         private readonly Seat[] _seats;
 
-        public StartTowerCardSelectionPlayer(Deck deck, Person person, Seat[] seats, Discover discover, StartTowerCardSelectionPlayerData data) : base(person)
+        public StartTowerCardSelectionPlayer(Deck deck, HandPlayer hand, TowerPlayer tower, Seat[] seats, Discover discover, StartTowerCardSelectionPlayerData data) : base(tower)
         {
-            _handTransitSet = person;
+            _hand = hand;
             _data = data;
 
             _seats = seats;
@@ -82,19 +84,29 @@ namespace GameFields.StartFights
             //EndProcessing(discoverResult.Result).ToUniTask();
             yield return new WaitForSeconds(_data.DelayAfterCardChoiceDone);
 
-            if (TowerTransitCheck.IsFill == false)
+            if (Tower.HasFreeSeat)
             {
                 foreach (Seat seat in _seats)
                 {
                     if (seat.Card != discoverResult.Result)
                     {
-                        _handTransitSet.Set(seat.Card);
-                        seat.Card.SetActiveInteraction(false);
-                        seat.Reset();
+                        _hand.SeatCard(seat.Card);
+                        //seat.Card.SetActiveInteraction(true);
+                        //seat.Reset();
                     }
                     else
                     {
                         SeatCardInTower(seat).ToUniTask();
+                    }
+                }
+
+                // Ещё раз потому что при SeatCard идет перерасчет и interactable сбрасывается
+                foreach (Seat seat in _seats)
+                {
+                    if (seat.Card != discoverResult.Result)
+                    {
+                        seat.Card.SetActiveInteraction(false);
+                        seat.Reset();
                     }
                 }
             }
@@ -167,7 +179,7 @@ namespace GameFields.StartFights
             //yield return new WaitForSeconds(_data.InvertCardBackDuration + _data.DelayAfterInvert);
 
             mySeat.Reset();
-            TowerTransitSet.Set(card);
+            Tower.SeatCard(card);
         }
 
         //private void InvertCardFront(Card card)

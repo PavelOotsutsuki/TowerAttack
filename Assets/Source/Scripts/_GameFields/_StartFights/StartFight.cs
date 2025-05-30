@@ -3,11 +3,13 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using GameFields.Seats;
 using Zenject;
-using GameFields.Persons.Common;
+using GameFields.Persons.Commons;
 using GameFields.Persons.Discovers;
 using Tools.Utils.FillComponents;
 using System.Collections.Generic;
 using GameFields.Decks;
+using GameFields.Persons.Hands;
+using GameFields.Persons.Towers;
 
 namespace GameFields.StartFights
 {
@@ -28,24 +30,32 @@ namespace GameFields.StartFights
         private StartTowerCardSelection _startTowerCardSelectionImitation;
 
         private Deck _deck;
+        private HandPlayer _handPlayer;
+        private HandAI _handAI;
+        private TowerPlayer _towerPlayer;
+        private TowerAI _towerAI;
 
         public bool IsComplete => _startTowerCardSelectionPlayer.IsComplete && _startTowerCardSelectionImitation.IsComplete;
 
         [Inject]
-        private void Construct(Deck deck)
+        private void Construct(Deck deck, HandPlayer handPlayer, HandAI handAI, TowerPlayer towerPlayer, TowerAI towerAI)
         {
             _deck = deck;
+            _handPlayer = handPlayer;
+            _handAI = handAI;
+            _towerPlayer = towerPlayer;
+            _towerAI = towerAI;
         }
 
-        public void Init(Player player, EnemyAI enemyAI)
+        public void Init(EnemyAI enemyAI)
         {
             _startTowerCardSelectionPanel.Init();
             _startTowerCardSelectionLabel.Init();
             _waitEnemySolutionLabel.Init();
             _discover.Init();
 
-            _startTowerCardSelectionImitation = new StartTowerCardSelectionImitation(enemyAI, _data.FirstTurnCardsCount, _imitationData);
-            _startTowerCardSelectionPlayer = new StartTowerCardSelectionPlayer(_deck, player, _seats, _discover, _playerData);
+            _startTowerCardSelectionImitation = new StartTowerCardSelectionImitation(enemyAI, _handAI, _towerAI, _data.FirstTurnCardsCount, _imitationData);
+            _startTowerCardSelectionPlayer = new StartTowerCardSelectionPlayer(_deck, _handPlayer, _towerPlayer, _seats, _discover, _playerData);
         }
 
         public void StartStep()

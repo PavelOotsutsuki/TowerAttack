@@ -3,7 +3,7 @@ using Cards;
 using System.Collections;
 using System.Collections.Generic;
 using GameFields.Persons.CardTransits;
-using GameFields.Persons.Common;
+using GameFields.Persons.Commons;
 using System;
 using System.Linq;
 

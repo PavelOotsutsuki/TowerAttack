@@ -2,7 +2,7 @@ using System.Collections;
 using Cards;
 using GameFields.CommonAnimations;
 using GameFields.DiscardPiles;
-using GameFields.Persons.Common;
+using GameFields.Persons.Commons;
 using GameFields.Persons.SelectMenues.Attacks;
 using GameFields.Persons.SelectMenues.Commons;
 using GameFields.Signals;

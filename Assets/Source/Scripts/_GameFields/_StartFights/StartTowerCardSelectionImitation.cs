@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using Cards;
 using Cysharp.Threading.Tasks;
 using GameFields.Persons.CardTransits;
-using GameFields.Persons.Common;
+using GameFields.Persons.Commons;
+using GameFields.Persons.Hands;
+using GameFields.Persons.Towers;
 using UnityEngine;
 
 namespace GameFields.StartFights
 {
     public class StartTowerCardSelectionImitation: StartTowerCardSelection
     {
-        private readonly IHandTransitTryGet _handTransitTryGet;
+        private readonly ICardTakable _hand;
         private readonly IDrawCardManager _drawCardManager;
 
         private readonly int _firstTurnCardsCount;
@@ -18,9 +20,9 @@ namespace GameFields.StartFights
 
         private List<Card> _enemyCards;
 
-        public StartTowerCardSelectionImitation(Person person, int firstTurnCardsCount, StartTowerCardSelectionImitationData data) : base(person)
+        public StartTowerCardSelectionImitation(Person person, HandAI hand, TowerAI tower, int firstTurnCardsCount, StartTowerCardSelectionImitationData data) : base(tower)
         {
-            _handTransitTryGet = person;
+            _hand = hand;
             _drawCardManager = person;
             _data = data;
 
@@ -43,11 +45,11 @@ namespace GameFields.StartFights
 
             int selectedCardIndex = Random.Range(0, _firstTurnCardsCount);
 
-            if (_handTransitTryGet.TryGet(enemyCards[selectedCardIndex]))
+            if (_hand.TryTakeAwayCard(enemyCards[selectedCardIndex]))
             {
-                if (TowerTransitCheck.IsFill == false)
+                if (Tower.HasFreeSeat)
                 {
-                    TowerTransitSet.Set(enemyCards[selectedCardIndex]);
+                    Tower.SeatCard(enemyCards[selectedCardIndex]);
                 }
                 else
                 {

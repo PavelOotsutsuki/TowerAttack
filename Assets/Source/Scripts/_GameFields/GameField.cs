@@ -1,7 +1,7 @@
 using UnityEngine;
 using GameFields.StartFights;
 using GameFields.Effects;
-using GameFields.Persons.Common;
+using GameFields.Persons.Commons;
 using Tools.Utils.FillComponents;
 using System.Collections.Generic;
 using Zenject;
@@ -18,9 +18,9 @@ namespace GameFields
         private EffectFactory _effectFactory;
         private FightStepsController _fightStepsController;
 
-        public void Init(PersonsState personsState, Player player, EnemyAI enemyAI, SignalBus bus, SeatPool seatPool)
+        public void Init(PersonsState personsState, EnemyAI enemyAI, SignalBus bus, SeatPool seatPool)
         {
-            _startFight.Init(player, enemyAI);
+            _startFight.Init(enemyAI);
 
             FightResult fightResult = new FightResult();
             Fight fight = new Fight(personsState, fightResult, bus, seatPool);

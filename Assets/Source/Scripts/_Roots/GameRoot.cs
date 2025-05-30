@@ -5,7 +5,7 @@ using GameFields.Decks;
 using GameFields.Effects;
 using GameFields.EndTurnButtons;
 using GameFields.LightControls;
-using GameFields.Persons.Common;
+using GameFields.Persons.Commons;
 using GameFields.Persons.Hands;
 using GameFields.Seats;
 using Tools.Utils.FillComponents;
@@ -71,7 +71,7 @@ namespace Roots
             _cardRoot.Init(effectFactory, cardDescription, cardDragAndDropHandler);
             deck.Init(_cardRoot.Cards);
 
-            _gameFieldRoot.Init(_personsState, player, enemyAI, bus, seatPool);
+            _gameFieldRoot.Init(_personsState, enemyAI, bus, seatPool);
         }
 
         public void OnDestroy()

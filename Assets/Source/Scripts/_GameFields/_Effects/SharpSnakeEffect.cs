@@ -1,21 +1,38 @@
 using System.Collections;
-using System.Collections.Generic;
+using Cards;
+using GameFields.Persons.Commons;
 using UnityEngine;
 
-namespace GameFields
+namespace GameFields.Effects
 {
-    public class SharpSnakeEffect : MonoBehaviour
+    public class SharpSnakeEffect : Effect
     {
-        // Start is called before the first frame update
-        void Start()
+        private readonly Person _deactivePerson;
+
+        private bool _isEffectComplete;
+
+        public SharpSnakeEffect(Person deactivePerson) : base()
         {
-        
+            _deactivePerson = deactivePerson;
+            _isEffectComplete = false;
+
+            Play();
         }
 
-        // Update is called once per frame
-        void Update()
+        public override void End()
         {
-        
+            Debug.Log("Эффект Пироманта закончен");
+        }
+
+        protected override IEnumerator OnPlaying()
+        {
+            _deactivePerson.ActivateSharpSnakeEffect(CompleteEffect);
+            yield return new WaitUntil(() => _isEffectComplete);
+        }
+
+        private void CompleteEffect()
+        {
+            _isEffectComplete = true;
         }
     }
 }

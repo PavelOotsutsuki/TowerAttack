@@ -8,17 +8,17 @@ namespace GameFields.Persons.DrawCards
 {
     public class SimpleDrawCardAnimation: IDrawCardAnimation
     {
-        private readonly Hand _hand;
+        private readonly ICardSeatable _hand;
         private readonly float _delay;
-        private readonly ITurnDrawCardWatcher _drawCardWatcher;
+        private readonly IDrawnCardAdder _drawCardAdder;
 
         private bool _isComplete;
 
-        public SimpleDrawCardAnimation(Hand hand, SimpleDrawCardAnimationData data)
+        public SimpleDrawCardAnimation(ICardSeatable hand, IDrawnCardAdder drawCardAdder, SimpleDrawCardAnimationData data)
         {
             _hand = hand;
             _delay = data.Delay;
-            _drawCardWatcher = hand;
+            _drawCardAdder = drawCardAdder;
 
             _isComplete = true;
         }
@@ -37,7 +37,7 @@ namespace GameFields.Persons.DrawCards
             yield return new WaitForSeconds(_delay);
 
             _hand.SeatCard(drawnCard);
-            _drawCardWatcher.SetCard(drawnCard);
+            _drawCardAdder.Add(drawnCard);
             _isComplete = true;
         }
     }

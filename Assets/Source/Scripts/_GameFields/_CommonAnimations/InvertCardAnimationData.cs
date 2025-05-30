@@ -33,5 +33,15 @@ namespace GameFields.CommonAnimations
         [field: SerializeField] public SideType StartSide { get; private set; } = SideType.Front;
 
         public SideType FinishSide => StartSide == SideType.Front ? SideType.Back : SideType.Front;
+
+        public InvertCardAnimationData(float invertCardFrontDuration, float invertCardBackDuration, float delayAfterInvert
+            , bool isIgnoreStartSide, SideType startSide)
+        {
+            InvertCardFrontDuration = invertCardFrontDuration;
+            InvertCardBackDuration = invertCardBackDuration;
+            DelayAfterInvert = delayAfterInvert;
+            IsIgnoreStartSide = isIgnoreStartSide;
+            StartSide = startSide;
+        }
     }
 }
