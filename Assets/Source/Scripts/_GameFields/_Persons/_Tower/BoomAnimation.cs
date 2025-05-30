@@ -72,7 +72,7 @@ namespace GameFields.Persons.Towers
 
             foreach (Stone stone in _stones)
             {
-                stone.Boom(_rectTransform.GetPositionY() - _rectTransform.GetHeight() / 2);
+                stone.Boom(_rectTransform.GetHeight());
 
                 yield return new WaitForSeconds(_data.DelayBetweenStonesBoom);
             }

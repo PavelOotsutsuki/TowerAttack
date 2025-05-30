@@ -15,15 +15,15 @@ namespace GameFields.Persons.Towers
 
         [SerializeField] private RectTransform _rectTransform;
 
-        public void Boom(float positionY)
+        public void Boom(float heightTower)
         {
             float xOffset = Random.Range(Offset * (-1), Offset);
 
-            float positionX = transform.position.x + xOffset;
-            positionY = positionY + _rectTransform.rect.height / 2;
-            float positionZ = transform.position.z;
+            float positionX = transform.localPosition.x + xOffset;
+            float positionY = (heightTower / 2) * (-1) + _rectTransform.rect.height / 2;
+            float positionZ = transform.localPosition.z;
 
-            transform.DOMove(new Vector3(positionX, positionY, positionZ), BoomDuration).SetEase(BoomEase);
+            transform.DOLocalMove(new Vector3(positionX, positionY, positionZ), BoomDuration).SetEase(BoomEase);
         }
 
         #region AutomaticFillComponents

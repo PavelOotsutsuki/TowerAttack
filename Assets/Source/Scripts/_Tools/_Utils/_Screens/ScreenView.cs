@@ -22,7 +22,7 @@ namespace Tools.Utils.Screens
 
         public static float Y()
         {
-           return GameSettings.CanvasReferenceResolution.y;
+            return GameSettings.CanvasReferenceResolution.y;
         }
     }
 }

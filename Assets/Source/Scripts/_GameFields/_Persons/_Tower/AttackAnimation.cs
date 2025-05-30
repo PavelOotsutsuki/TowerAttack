@@ -3,6 +3,7 @@ using System.Collections;
 using Cysharp.Threading.Tasks;
 using Tools;
 using Tools.Utils.Movements;
+using Tools.Utils.Screens;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -12,7 +13,7 @@ namespace GameFields.Persons.Towers
     {
         private readonly Movement _cardMovement;
         private readonly ReadOnlyRectTransform _cardTransform;
-        private readonly Vector2 _towerPosition;
+        private readonly Vector2 _towerLocalPosition;
         private readonly Vector2 _towerSize;
         private readonly AttackAnimationData _data;
 
@@ -23,12 +24,12 @@ namespace GameFields.Persons.Towers
 
         private float _cardAngle;
 
-        public AttackAnimation(Movement cardMovement, ReadOnlyRectTransform cardTransform, Vector3 towerPosition
+        public AttackAnimation(Movement cardMovement, ReadOnlyRectTransform cardTransform, Vector3 towerLocalPosition
             , Vector2 towerSize, AttackAnimationData data)
         {
             _cardMovement = cardMovement;
             _cardTransform = cardTransform;
-            _towerPosition = towerPosition;
+            _towerLocalPosition = towerLocalPosition;
             _towerSize = towerSize;
             _data = data;
         }
@@ -36,7 +37,7 @@ namespace GameFields.Persons.Towers
         public bool IsComplete { get; private set; }
 
         private Vector2 CardSize => _cardTransform.GetRect();
-        private Vector2 CardPosition => _cardTransform.GetPosition();
+        private Vector2 CardLocalPosition => _cardTransform.GetLocalPosition();
         private Vector3 CardScale => _cardTransform.GetLocalScale();
         private Vector3 CardRotation => _cardTransform.GetRotationVector();
 
@@ -52,16 +53,15 @@ namespace GameFields.Persons.Towers
 
         private IEnumerator Playing()
         {
-            Vector2 atTheReadyPosition = FindAtTheReadyPosition();
+            Vector2 atTheReadyLocalPosition = FindAtTheReadyPosition();
             Vector3 rotation = FindAtTheReadyRotation();
 
-            _cardMovement.MoveSmoothly(atTheReadyPosition, rotation, _data.AtTheReadyMoveDuration, CardScale);
+            _cardMovement.MoveLocalSmoothly(atTheReadyLocalPosition, rotation, _data.AtTheReadyMoveDuration, CardScale);
             yield return new WaitForSeconds(_data.AtTheReadyMoveDuration + _data.AfterAtTheReadyMoveDelay);
 
+            Vector2 endLocalPosition = FindEndPosition();
 
-            Vector2 endPosition = FindEndPosition();
-
-            _cardMovement.MoveInOutBack(endPosition, rotation, _data.EndMoveDuration, CardScale);
+            _cardMovement.MoveLocalInOutBack(endLocalPosition, rotation, _data.EndMoveDuration, CardScale);
             yield return new WaitForSeconds(_data.EndMoveDuration * _data.InOutBackFactor);
 
             IsComplete = true;
@@ -87,7 +87,7 @@ namespace GameFields.Persons.Towers
             }
 
             //return new Vector2(_towerPosition.x + _xOffset, _towerPosition.y - _yOffset);
-            return new Vector2(_towerPosition.x + _xOffset, _towerPosition.y - _yOffset * DownOrUpVector);
+            return new Vector2(_towerLocalPosition.x + _xOffset, _towerLocalPosition.y - _yOffset * DownOrUpVector);
             //return new Vector2(_towerPosition.x + _xOffset, _towerPosition.y + _yOffset);
         }
 
@@ -128,20 +128,20 @@ namespace GameFields.Persons.Towers
         {
             if (_cardAngle == 90f)
             {
-                return new Vector2(_towerPosition.x + _towerSize.x / 2, CardPosition.y);
+                return new Vector2(_towerLocalPosition.x + _towerSize.x / 2, CardLocalPosition.y);
             }
             //else if (_cardAngle == 0f)
             else if (_cardAngle == DownOrUpRotation)
             //else if (_cardAngle == 180f)
             {
                 //return new Vector2(CardPosition.x, _towerPosition.y - _towerSize.y / 2);
-                return new Vector2(CardPosition.x, _towerPosition.y - DownOrUpVector * _towerSize.y / 2);
+                return new Vector2(CardLocalPosition.x, _towerLocalPosition.y - DownOrUpVector * _towerSize.y / 2);
                 //return new Vector2(CardPosition.x, _towerPosition.y + _towerSize.y / 2);
             }
             else
             {
                 //return new Vector2(_towerPosition.x + _towerSize.x / 2, _towerPosition.y - _towerSize.y / 2);
-                return new Vector2(_towerPosition.x + _towerSize.x / 2, _towerPosition.y - DownOrUpVector * _towerSize.y / 2);
+                return new Vector2(_towerLocalPosition.x + _towerSize.x / 2, _towerLocalPosition.y - DownOrUpVector * _towerSize.y / 2);
                 //return new Vector2(_towerPosition.x + _towerSize.x / 2, _towerPosition.y + _towerSize.y / 2);
             }
         }

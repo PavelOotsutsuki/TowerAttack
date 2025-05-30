@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using Tools.Utils.Movements;
+using Tools.Utils.Screens;
 
 namespace GameFields.EndTurnButtons
 {
@@ -43,7 +44,7 @@ namespace GameFields.EndTurnButtons
         }
 
         private IEnumerator PlayingLockButtonAnimation()
-        {
+        {            
             IsActiveSide = false;
 
             yield return new WaitWhile(() => _isAnimationInWork);
@@ -94,6 +95,8 @@ namespace GameFields.EndTurnButtons
         {
             Vector3 endRotationVector = new Vector3(rotation, 0f, 0f);
             Vector3 scaleVector = _data.ButtonTransform.localScale;
+            //Vector3 downWay = new Vector2(_data.ButtonTransform.position.x * ScreenView.GetFactorX(), _data.ButtonTransform.position.y * ScreenView.GetFactorY());
+            //Vector3 downWay = new Vector2(_data.ButtonTransform.position.x, _data.ButtonTransform.position.y);
             Vector3 downWay = _data.ButtonTransform.localPosition;
 
             _endTurnButtonMovement.MoveLocalLinear(downWay, endRotationVector, duration, scaleVector);
@@ -103,6 +106,8 @@ namespace GameFields.EndTurnButtons
         {
             Vector3 endRotationVector = new Vector3(rotation, 0f, 0f);
             Vector3 scaleVector = _data.ButtonTransform.localScale;
+            //Vector3 downWay = new Vector2(_data.ButtonTransform.position.x * ScreenView.GetFactorX(), _data.ButtonTransform.position.y * ScreenView.GetFactorY());
+            //Vector3 downWay = new Vector2(_data.ButtonTransform.position.x, _data.ButtonTransform.position.y);
             Vector3 downWay = _data.ButtonTransform.localPosition;
 
             _endTurnButtonMovement.MoveLocalSmoothly(downWay, endRotationVector, duration, scaleVector);

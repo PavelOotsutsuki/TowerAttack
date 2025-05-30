@@ -235,5 +235,23 @@ namespace Tools.Utils.Movements
                 _currentSequence = sequence;
             }
         }
+
+        // Закомментил тк не нужно. А так мб и правильно. Ни разу не тестил
+        public void MoveLocalInOutBack(Vector3 position, Vector3 rotation, float duration, Vector3 scaleVector)
+        {
+            if (Mathf.Approximately(duration, 0f))
+            {
+                MoveLocalInstantly(position, rotation, scaleVector);
+            }
+            else
+            {
+                Sequence sequence = DOTween.Sequence()
+                .Join(_transform.DOLocalMove(position, duration).SetEase(Ease.InOutBack))
+                .Join(_transform.DOLocalRotate(rotation, duration).SetEase(Ease.InOutBack))
+                .Join(_transform.DOScale(scaleVector, duration).SetEase(Ease.InOutBack));
+
+                _currentSequence = sequence;
+            }
+        }
     }
 }

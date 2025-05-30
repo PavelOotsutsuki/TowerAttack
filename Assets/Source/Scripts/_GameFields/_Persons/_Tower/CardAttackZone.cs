@@ -83,7 +83,7 @@ namespace GameFields.Persons.Towers
             ReadOnlyRectTransform towerTransform = _tower.ReadOnlyRectTransform;
 
             AttackAnimation attackAnimation = new AttackAnimation(card.CardMovement, card.ReadOnlyRectTransform,
-                towerTransform.GetPosition(), towerTransform.GetRect(), _data.AttackAnimationData);
+                towerTransform.GetLocalPosition(), towerTransform.GetRect(), _data.AttackAnimationData);
 
             attackAnimation.Play();
 
