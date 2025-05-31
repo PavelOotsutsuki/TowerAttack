@@ -49,7 +49,7 @@ namespace Cards
             SetState(_cardPaper);
         }
 
-        public bool IsSuccessAttack(int number)
+        public bool IsSuccessChoice(int number)
         {
             return _config.CardViewConfig.Number == number;
         }

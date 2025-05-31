@@ -38,15 +38,15 @@ namespace GameFields.Persons.SelectMenues.Commons
 
         public bool IsCompleteNumbersHide => _isCompleteNumbersHide;
 
-        public void Init(IWorkable selectButton, ICardNumberKeeper cardNumberKeeper, int countNumbers,
+        public void Init(IWorkable selectButton, ICardNumberKeeper cardNumberKeeper, int[] сardNumbers,
             SelectNumbersList selectedNumbers, ConfirmableNumbers confirmableNumbers)
         {
-            if (_selectNumbers.Length != countNumbers)
+            if (_selectNumbers.Length != сardNumbers.Length)
                 throw new Exception("Несовпадение заданного кол-ва номеров и кол-ва объектов AttackNumber");
 
             _selectButton = selectButton;
 
-            base.Init(cardNumberKeeper, countNumbers, selectedNumbers, confirmableNumbers, _selectNumbers);
+            base.Init(cardNumberKeeper, сardNumbers, selectedNumbers, confirmableNumbers, _selectNumbers);
         }
 
         public void ActivateNumbers(bool isConfirmableActivate)
@@ -74,13 +74,16 @@ namespace GameFields.Persons.SelectMenues.Commons
             FindColumnsAndRowsCount();
             FindIndents();
 
-            int number = 1;
-
-            foreach (SelectNumber selectNumber in _selectNumbers)
+            for (int i = 0; i < CardNumbers.Length; i++)
             {
-                selectNumber.Init(number, CalcNumberPosition(number), new Vector2(_data.NumberWidht, _data.NumberHeight));
-                number++;
+                _selectNumbers[i].Init(CardNumbers[i], CalcNumberPosition(i + 1), new Vector2(_data.NumberWidht, _data.NumberHeight));
             }
+
+            //foreach (SelectNumber selectNumber in _selectNumbers)
+            //{
+            //    selectNumber.Init(number, CalcNumberPosition(number), new Vector2(_data.NumberWidht, _data.NumberHeight));
+            //    number++;
+            //}
         }
 
         protected override void OnActivate()
@@ -127,7 +130,7 @@ namespace GameFields.Persons.SelectMenues.Commons
 
             foreach (SelectNumber selectedNumber in CurrentSelectedNumbers)
             {
-                if (CardNumberKeeper.Card.IsSuccessAttack(selectedNumber.Number))
+                if (CardNumberKeeper.Card.IsSuccessChoice(selectedNumber.Number))
                 {
                     //SetChoiceNumber(selectedNumber, ResultType.Success);
                     selectedNumber.SetChoice(ConvertResultTypeToNumberAnimationType(ResultType.Success));

@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using GameFields.Persons.SelectMenues.Attacks;
 using GameFields.Persons.SelectMenues.Commons;
+using ModestTree;
+using Tools.Settings;
 using UnityEngine;
 
 namespace GameFields.Persons.Commons
@@ -10,13 +13,21 @@ namespace GameFields.Persons.Commons
     {
         private readonly SelectNumbersList _attackedNumbers;
         private readonly SelectNumbersList _choicedNumbers;
+        private readonly SelectNumbersList _cursedNumbers;
+
+        private readonly int[] _allNumbers;
 
         public ConfirmableNumbers(SelectNumbersList attackedNumbers,
-            SelectNumbersList choicedNumbers)
+            SelectNumbersList choicedNumbers, SelectNumbersList cursedNumbers)
         {
             _attackedNumbers = attackedNumbers;
             _choicedNumbers = choicedNumbers;
+            _cursedNumbers = cursedNumbers;
+
+            _allNumbers = GameSettings.DefaultCardNumbers;
         }
+
+        public IEnumerable<int> FreeNumbers => _allNumbers.Except(FullList.SelectedNumbersStates.Select(p => p.Key));
 
         public SelectNumbersList FullList
         {
@@ -26,6 +37,7 @@ namespace GameFields.Persons.Commons
 
                 AddRange(fullList, _attackedNumbers.SelectedNumbersStates);
                 AddRange(fullList, _choicedNumbers.SelectedNumbersStates);
+                AddRange(fullList, _cursedNumbers.SelectedNumbersStates);
 
                 return fullList;
             }
@@ -37,6 +49,7 @@ namespace GameFields.Persons.Commons
         {
             _attackedNumbers.Clear();
             _choicedNumbers.Clear();
+            _cursedNumbers.Clear();
         }
 
         //private readonly List<IAttackNumber> _acceptNumbers;
@@ -51,17 +64,17 @@ namespace GameFields.Persons.Commons
         //public IReadOnlyList<IAttackNumber> AcceptNumbers => _acceptNumbers;
         //public IReadOnlyList<IChoiceNumber> ChoicedNumbers => _choicedNumbers;
 
-        public void AddAccept(ISelectNumber attackNumber)
-        {
-            //if (_attackedNumbers.Contains(attackNumber) == false)
-            //    _attackedNumbers.Add(attackNumber);
-        }
+        //public void AddAccept(ISelectNumber attackNumber)
+        //{
+        //    if (_attackedNumbers.Contains(attackNumber) == false)
+        //        _attackedNumbers.Add(attackNumber);
+        //}
 
-        public void AddSelect(ISelectNumber choicedNumber)
-        {
-            //if (_choicedNumbers.Contains(choicedNumber) == false)
-            //    _choicedNumbers.Add(choicedNumber);
-        }
+        //public void AddSelect(ISelectNumber choicedNumber)
+        //{
+        //    if (_choicedNumbers.Contains(choicedNumber) == false)
+        //        _choicedNumbers.Add(choicedNumber);
+        //}
 
         ////public void Remove(IAttackNumber attackNumber)
         ////{
@@ -69,19 +82,19 @@ namespace GameFields.Persons.Commons
         ////        _acceptNumbers.Remove(attackNumber);
         ////}
 
-        public bool ContainsAccept(int attackNumber)
-        {
-            return _attackedNumbers.Contains(attackNumber);
-        }
+        //public bool ContainsAccept(int attackNumber)
+        //{
+        //    return _attackedNumbers.Contains(attackNumber);
+        //}
 
-        public bool ContainsSelect(int choicedNumber)
-        {
-            return _choicedNumbers.Contains(choicedNumber);
-        }
+        //public bool ContainsSelect(int choicedNumber)
+        //{
+        //    return _choicedNumbers.Contains(choicedNumber);
+        //}
 
         public bool Contains(int selectedNumber)
         {
-            return _choicedNumbers.Contains(selectedNumber) || _attackedNumbers.Contains(selectedNumber);
+            return _choicedNumbers.Contains(selectedNumber) || _attackedNumbers.Contains(selectedNumber) || _cursedNumbers.Contains(selectedNumber);
         }
 
         private void AddRange(SelectNumbersList addedList, IReadOnlyDictionary<int, NumberAnimationType> clonedList)

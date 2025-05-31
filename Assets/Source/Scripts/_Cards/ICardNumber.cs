@@ -2,6 +2,6 @@ namespace Cards
 {
     public interface ICardNumber
     {
-        public bool IsSuccessAttack(int number);
+        public bool IsSuccessChoice(int number);
     }
 }

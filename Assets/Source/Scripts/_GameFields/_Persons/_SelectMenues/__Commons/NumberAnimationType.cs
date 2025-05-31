@@ -4,6 +4,7 @@ namespace GameFields.Persons.SelectMenues.Commons
     {
         Success,
         Error,
-        Choice
+        Choice,
+        Curse
     }
 }

@@ -55,11 +55,11 @@ namespace Roots
                 cardDragAndDropLightController, _speedUpButtonSortOrder);
 
             _personCreator.Init(bus, deck, _endTurnButton, seatPool, cardDragAndDropHandler, cardDragAndDropLightController,
-                informationLabel, _forgingZone);
+                informationLabel, _forgingZone, _cardRoot);
 
             Player player = _personCreator.CreatePlayer();
             EnemyAI enemyAI = _personCreator.CreateEnemyAI();
-            CardLocationViewRoot viewRoot = _personCreator.CreateCardLocationViewRoot(_cardRoot);
+            CardLocationViewRoot viewRoot = _personCreator.CreateCardLocationViewRoot();
             CardTransitManager cardTransitManager = _personCreator.CreateCardTransitManager();
 
             Destroy(_personCreator.gameObject);

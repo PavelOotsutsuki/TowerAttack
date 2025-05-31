@@ -12,6 +12,7 @@ namespace GameFields.Persons.SelectMenues.Commons
         [SerializeField] private SuccessSelectNumberAnimation _successAnimation;
         [SerializeField] private ErrorSelectNumberAnimation _errorAnimation;
         [SerializeField] private AcceptSelectNumberAnimation _acceptSelectNumberAnimation;
+        [SerializeField] private CurseSelectNumberAnimation _curseSelectNumberAnimation;
 
         private Dictionary<NumberAnimationType, SelectNumberAnimation> _selectNumberAnimations;
         private SelectNumberAnimation[] _allAnimations;
@@ -26,14 +27,16 @@ namespace GameFields.Persons.SelectMenues.Commons
             {
                 {NumberAnimationType.Success, _successAnimation },
                 {NumberAnimationType.Error, _errorAnimation },
-                {NumberAnimationType.Choice, _acceptSelectNumberAnimation }
+                {NumberAnimationType.Choice, _acceptSelectNumberAnimation },
+                {NumberAnimationType.Curse, _curseSelectNumberAnimation }
             };
 
             _allAnimations = new SelectNumberAnimation[]
             {
                 _successAnimation,
                 _errorAnimation,
-                _acceptSelectNumberAnimation
+                _acceptSelectNumberAnimation,
+                _curseSelectNumberAnimation
             };
 
             foreach (SelectNumberAnimation animation in _allAnimations)
@@ -124,7 +127,8 @@ namespace GameFields.Persons.SelectMenues.Commons
             {
                 DefineErrorSelectNumberAnimation(),
                 DefineSuccessSelectNumberAnimation(),
-                DefineAcceptSelectNumberAnimation()
+                DefineAcceptSelectNumberAnimation(),
+                DefineCurseSelectNumberAnimation()
             };
 
             return list;
@@ -146,6 +150,12 @@ namespace GameFields.Persons.SelectMenues.Commons
         private ComponentAttachInfo DefineAcceptSelectNumberAnimation()
         {
             return AutomaticFillComponents.DefineComponent(this, ref _acceptSelectNumberAnimation, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineCurseSelectNumberAnimation))]
+        private ComponentAttachInfo DefineCurseSelectNumberAnimation()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _curseSelectNumberAnimation, ComponentLocationTypes.InChildren);
         }
 
         #endregion

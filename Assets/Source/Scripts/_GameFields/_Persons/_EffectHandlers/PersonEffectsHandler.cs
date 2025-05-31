@@ -10,15 +10,24 @@ namespace GameFields.Persons.EffectHandlers
     {
         private readonly GnomeEffectHandler _gnomeEffectHandler;
         private readonly SlimeEffectHandler _slimeEffectHandler;
+        private readonly CurseEffectHandler _curseEffectHandler;
 
-        public PersonEffectsHandler(GnomeEffectHandler gnomeEffectHandler, SlimeEffectHandler slimeEffectHandler)
+        public PersonEffectsHandler(GnomeEffectHandler gnomeEffectHandler, SlimeEffectHandler slimeEffectHandler,
+            CurseEffectHandler curseEffectHandler)
         {
             _gnomeEffectHandler = gnomeEffectHandler;
             _slimeEffectHandler = slimeEffectHandler;
+            _curseEffectHandler = curseEffectHandler;
         }
 
         public GnomeEffectHandler GnomeEffectCounter => _gnomeEffectHandler;
         public SlimeEffectHandler SlimeEffectHandler => _slimeEffectHandler;
+        public CurseEffectHandler CurseEffectHandler => _curseEffectHandler;
+
+        public void OnStartTurn()
+        {
+            _curseEffectHandler.OnStartTurn();
+        }
 
         public void OnEndTurn()
         {

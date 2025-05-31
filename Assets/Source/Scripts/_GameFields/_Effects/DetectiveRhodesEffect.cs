@@ -103,8 +103,11 @@ namespace GameFields.Effects
             Discover(handCard, _countHandDiscoverCards, _activateHandDiscoverMessage, handResult, noContainsForHand);
             yield return new WaitUntil(() => handResult.Result != null);
 
+            //bool isTest = true;
+
+            //if ((deckResult.Result == deckCard && handResult.Result == handCard) || isTest)
             if (deckResult.Result == deckCard && handResult.Result == handCard)
-            {
+                {
                 TransitFromType handFrom = _activePerson is Player ? TransitFromType.HandEnemy : TransitFromType.HandPlayer;
                 TransitToType handTo = _activePerson is Player ? TransitToType.HandPlayer : TransitToType.HandEnemy;
 

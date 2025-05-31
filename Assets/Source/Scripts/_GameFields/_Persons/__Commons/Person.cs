@@ -89,6 +89,7 @@ namespace GameFields.Persons.Commons
             _personSteps.Clear();
 
             //_hand.OnStartTurn();
+            _personEffectsHandler.OnStartTurn();
             OnStartStep();
             InitSteps();
 
@@ -274,6 +275,11 @@ namespace GameFields.Persons.Commons
 
         //    return cards;
         //}
+
+        public void AddCurse(EffectedCard effectedCard)
+        {
+            _personEffectsHandler.CurseEffectHandler.Add(effectedCard);
+        }
 
         public void ActivateSlimeEffect(int countTurns)
         {

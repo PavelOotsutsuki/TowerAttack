@@ -163,8 +163,29 @@ namespace GameFields.Persons.Hands
         {
             bool isFind = TryFindHandSeat(out Seat findedHandSeat, card);
 
+            if (_dragCardHandSeat == findedHandSeat)
+            {
+                card.EndDrag();
+                card.SetActiveInteraction(false);
+                ResetDragOptions();
+            }
+
+            //if (_handSeats.Contains(findedHandSeat))
+            //{
+            //    _handSeats.Remove(findedHandSeat);
+            //}
+            //else if (_dragCardHandSeat == findedHandSeat)
+            //{
+            //    StartEndDragCard(true);
+            //}
+            //else
+            //{
+            //    throw new Exception("Не найден найденный HandSeat");
+            //}
+
             _handSeats.Remove(findedHandSeat);
             findedHandSeat.Reset();
+
             //_handSeatPool.ReturnInPool(findedHandSeat);
 
             SortHandSeats();
@@ -172,18 +193,18 @@ namespace GameFields.Persons.Hands
             return isFind;
         }
 
-        private Card UnbindLastCard()
-        {
-            Seat lastSeat = _handSeats[_handSeats.Count - 1];
-            Card gettedCard = lastSeat.Card;
-            _handSeats.Remove(lastSeat);
-            lastSeat.Reset();
-            //_handSeatPool.ReturnInPool(lastSeat);
+        //private Card UnbindLastCard()
+        //{
+        //    Seat lastSeat = _handSeats[_handSeats.Count - 1];
+        //    Card gettedCard = lastSeat.Card;
+        //    _handSeats.Remove(lastSeat);
+        //    lastSeat.Reset();
+        //    //_handSeatPool.ReturnInPool(lastSeat);
 
-            SortHandSeats();
+        //    SortHandSeats();
 
-            return gettedCard;
-        }
+        //    return gettedCard;
+        //}
 
         //public bool TryTakeAwayAllCards(out List<Card> cards)
         //{
@@ -438,11 +459,19 @@ namespace GameFields.Persons.Hands
         {
             findedHandSeat = _handSeats.FirstOrDefault(s => s.Card == card);
 
+            if (findedHandSeat == null)
+            {
+                if (_dragCardHandSeat.Card == card)
+                    findedHandSeat = _dragCardHandSeat;
+            }
+
             return findedHandSeat != null;
         }
 
         private void SortHandSeats()
         {
+            //SetCardsInteraction();
+
             OnSeatsCountChange?.Invoke();
 
             if (_handSeats.Count <= 0)

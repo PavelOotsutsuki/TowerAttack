@@ -12,10 +12,10 @@ namespace GameFields.Persons.SelectMenues.Commons
         [SerializeField] private SelectNumberPanelImitation _selectNumberPanelImitation;
         [SerializeField] private SelectMenuImitationData _data;
 
-        public void Init(ICardNumberKeeper cardNumberKeeper, ISelectResultHandler selectResultHandler, int countNumbers,
+        public void Init(ICardNumberKeeper cardNumberKeeper, ISelectResultHandler selectResultHandler, int[] cardNumbers,
             SelectNumbersList selectedNumbers, ConfirmableNumbers confirmableNumbers)
         {
-            _selectNumberPanelImitation.Init(cardNumberKeeper, countNumbers, selectedNumbers, confirmableNumbers);
+            _selectNumberPanelImitation.Init(cardNumberKeeper, cardNumbers, selectedNumbers, confirmableNumbers);
 
             SelectMenuLabelTextLogic selectMenuLabelTextLogic = new EnemySelectMenuLabelTextLogic(_data.SelectMenuLabelText);
 

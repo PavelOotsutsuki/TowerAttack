@@ -48,7 +48,7 @@ namespace GameFields.Effects
                 EffectType.ThreeGuys => new ThreeGuysEffect(_personsState.Active),
                 EffectType.TimeMistress => new TimeMistressEffect(_personsState.Active, _viewRoot, _cardTransitManager),
                 EffectType.SharpSnake => new SharpSnakeEffect(_personsState.Deactive),
-                EffectType.ImpArmy => new VoidEffect(),
+                EffectType.ImpArmy => new ImpArmyEffect(_personsState.Deactive, effectConfig.Duration),
                 EffectType.CursedMark => new VoidEffect(),
                 EffectType.RushingMailman => new VoidEffect(),
                 EffectType.Schemer => new VoidEffect(),

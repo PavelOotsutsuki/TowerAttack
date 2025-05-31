@@ -16,6 +16,7 @@ namespace GameFields.Persons.SelectMenues.Commons
         [SerializeField] private Image _image;
         [SerializeField] private Color _errorColor;
         [SerializeField] private Color _successColor;
+        [SerializeField] private Color _curseColor;
         [SerializeField] private SelectNumberAnimator _animator;
 
         private Color _choiceColor;
@@ -41,7 +42,8 @@ namespace GameFields.Persons.SelectMenues.Commons
             {
                 { NumberAnimationType.Error, _errorColor },
                 { NumberAnimationType.Success, _successColor },
-                { NumberAnimationType.Choice, _choiceColor }
+                { NumberAnimationType.Choice, _choiceColor },
+                { NumberAnimationType.Curse, _curseColor }
             };
 
             _rectTransform.sizeDelta = size;

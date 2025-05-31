@@ -22,12 +22,13 @@ using GameFields.Persons.Fires;
 using Cards;
 using GameFields.Persons.EffectHandlers;
 using GameFields.Persons.EffectHandlers.Slimes;
+using Tools.Settings;
 
 namespace GameFields.Persons.Commons
 {
     public class PersonCreator : MonoBehaviour, IAutomaticFillComponents
     {
-        private const int CountNumbers = 50;
+        private readonly int[] _cardNumbers = GameSettings.DefaultCardNumbers;
 
         [Header("Player Fields:")]
 
@@ -43,6 +44,12 @@ namespace GameFields.Persons.Commons
         private FirePool _playerFirePool;
         private RechangeFeatureRuleController _playerRechangeFeatureRuleController;
         private TurnDrawnCards _playerTurnDrawnCards;
+
+        private SelectNumbersList _attackedNumbersPlayer = new SelectNumbersList();
+        private SelectNumbersList _choicedNumbersPlayer = new SelectNumbersList();
+        private SelectNumbersList _cursedNumbersPlayer = new SelectNumbersList();
+        private ConfirmableNumbers _confirmableNumbersPlayer;
+
 
         [SerializeField] private StartPlayerTurnLabel _startPlayerTurnLabel; 
         [SerializeField] private int _playerCountStartDrawCards = 1;
@@ -72,6 +79,12 @@ namespace GameFields.Persons.Commons
         private FirePool _enemyFirePool;
         private RechangeFeatureRuleController _enemyRechangeFeatureRuleController;
         private TurnDrawnCards _enemyTurnDrawnCards;
+
+        private SelectNumbersList _attackedNumbersEnemy = new SelectNumbersList();
+        private SelectNumbersList _choicedNumbersEnemy = new SelectNumbersList();
+        private SelectNumbersList _cursedNumbersEnemy = new SelectNumbersList();
+
+        private ConfirmableNumbers _confirmableNumbersEnemyAI;
 
         [SerializeField] private int _enemyCountStartDrawCards = 1;
         
@@ -105,6 +118,7 @@ namespace GameFields.Persons.Commons
         private InformationLabel _informationLabel;
         private DiscardPile _discardPile;
         private FireRoot _fireRoot;
+        private ICardWatcher _cardWatcher;
 
         [Inject]
         public void Construct(CardPlayingZonePlayer playerPlayingZone, HandPlayer playerHand, TablePlayer playerTable, TowerPlayer playerTower,
@@ -139,12 +153,13 @@ namespace GameFields.Persons.Commons
 
         public void Init(SignalBus bus, Deck deck, EndTurnButton endTurnButton, SeatPool seatPool
             , CardDragAndDropHandler cardDragAndDropHandler, CardDragAndDropLightController cardDragAndDropLightController,
-            InformationLabel informationLabel, ForgingZone forgingZone)
+            InformationLabel informationLabel, ForgingZone forgingZone, ICardWatcher cardRoot)
         {
             _bus = bus;
             _deck = deck;
             _endTurnButton = endTurnButton;
             _informationLabel = informationLabel;
+            _cardWatcher = cardRoot;
 
             _playerFirePool = new FirePool();
             _enemyFirePool = new FirePool();
@@ -171,7 +186,9 @@ namespace GameFields.Persons.Commons
                 _playerHand
             };
             GnomeEffectHandler gnomeEffectHandler = new GnomeEffectHandler(_playerRechangeFeatureRuleController, cardFeatureRechangables);
-            PersonEffectsHandler personEffectsHandler = new PersonEffectsHandler(gnomeEffectHandler, slimeEffectHandler);
+            CurseEffectHandler curseEffectHandler = new CurseEffectHandler(_playerTower, _informationLabel, _confirmableNumbersEnemyAI,
+                _cursedNumbersEnemy);
+            PersonEffectsHandler personEffectsHandler = new PersonEffectsHandler(gnomeEffectHandler, slimeEffectHandler, curseEffectHandler);
 
             SkipTurnChecker skipTurnChecker = new SkipTurnChecker(slimeEffectHandler, _playerHand);
             SimpleDrawCardAnimation simpleDrawCardAnimation = new SimpleDrawCardAnimation(_playerHand, _playerTurnDrawnCards, _playerSimpleDrawCardAnimationData);
@@ -198,7 +215,9 @@ namespace GameFields.Persons.Commons
                 _enemyHand
             };
             GnomeEffectHandler gnomeEffectHandler = new GnomeEffectHandler(_enemyRechangeFeatureRuleController, cardFeatureRechangables);
-            PersonEffectsHandler personEffectsHandler = new PersonEffectsHandler(gnomeEffectHandler, slimeEffectHandler);
+            CurseEffectHandler curseEffectHandler = new CurseEffectHandler(_enemyTower, _informationLabel, _confirmableNumbersPlayer,
+                _cursedNumbersPlayer);
+            PersonEffectsHandler personEffectsHandler = new PersonEffectsHandler(gnomeEffectHandler, slimeEffectHandler, curseEffectHandler);
 
             SkipTurnChecker skipTurnChecker = new SkipTurnChecker(slimeEffectHandler, _enemyHand);
             SimpleDrawCardAnimation simpleDrawCardAnimation = new SimpleDrawCardAnimation(_enemyHand, _enemyTurnDrawnCards, _enemyAISimpleDrawCardAnimationData);
@@ -217,9 +236,9 @@ namespace GameFields.Persons.Commons
                 _enemyChoiceMenu, _enemyChoiceMenuImitation, personEffectsHandler);
         }
 
-        public CardLocationViewRoot CreateCardLocationViewRoot(ICardWatcher cardWatcher)
+        public CardLocationViewRoot CreateCardLocationViewRoot()
         {
-            return new CardLocationViewRoot(cardWatcher, _deck, _playerHand, _enemyHand, _discardPile, _fireRoot);
+            return new CardLocationViewRoot(_cardWatcher, _deck, _playerHand, _enemyHand, _discardPile, _fireRoot);
         }
 
         public CardTransitManager CreateCardTransitManager()
@@ -238,18 +257,19 @@ namespace GameFields.Persons.Commons
             _playerDiscover.Init();
             _startPlayerTurnLabel.Init();
 
-            SelectNumbersList attackedNumbers = new SelectNumbersList();
-            SelectNumbersList choicedNumbers = new SelectNumbersList();
+            //SelectNumbersList attackedNumbers = new SelectNumbersList();
+            //SelectNumbersList choicedNumbers = new SelectNumbersList();
+            //SelectNumbersList cursedNumbers = new SelectNumbersList();
 
-            ConfirmableNumbers confirmableNumbersPlayer = new ConfirmableNumbers(attackedNumbers, choicedNumbers);
+            _confirmableNumbersPlayer = new ConfirmableNumbers(_attackedNumbersPlayer, _choicedNumbersPlayer, _cursedNumbersPlayer);
 
             AttackResultHandlerPlayer attackResultHandlerPlayer = new AttackResultHandlerPlayer(_discardPile, _bus,
                 _enemyTower, _playerCardAttackZone, _attackResultHandlerPlayerData);
             ChoiceResultHandlerPlayer choiceResultHandlerPlayer = new ChoiceResultHandlerPlayer(_informationLabel, _informationLabelDataPlayerChoice);
 
-            _playerAttackMenu.Init(_enemyTower, attackResultHandlerPlayer, CountNumbers, attackedNumbers, confirmableNumbersPlayer);
-            _playerChoiceMenu.Init(_enemyTower, choiceResultHandlerPlayer, CountNumbers, choicedNumbers, confirmableNumbersPlayer);
-            _playerChoiceMenuImitation.Init(_enemyTower, choiceResultHandlerPlayer, CountNumbers, choicedNumbers, confirmableNumbersPlayer);
+            _playerAttackMenu.Init(_enemyTower, attackResultHandlerPlayer, _cardNumbers, _attackedNumbersPlayer, _confirmableNumbersPlayer);
+            _playerChoiceMenu.Init(_enemyTower, choiceResultHandlerPlayer, _cardNumbers, _choicedNumbersPlayer, _confirmableNumbersPlayer);
+            _playerChoiceMenuImitation.Init(_enemyTower, choiceResultHandlerPlayer, _cardNumbers, _choicedNumbersPlayer, _confirmableNumbersPlayer);
 
             _playerCardAttackZone.Init(_playerAttackMenu, _enemyTower, _bus);
             //_playerCardAttackZone.Init(_playerChoiceMenu, _enemyTower);
@@ -265,10 +285,11 @@ namespace GameFields.Persons.Commons
             _enemyTower.Init();
             _enemyDiscoverImitation.Init();
 
-            SelectNumbersList attackedNumbers = new SelectNumbersList();
-            SelectNumbersList choicedNumbers = new SelectNumbersList();
+            //SelectNumbersList attackedNumbers = new SelectNumbersList();
+            //SelectNumbersList choicedNumbers = new SelectNumbersList();
+            //SelectNumbersList cursedNumbers = new SelectNumbersList();
 
-            ConfirmableNumbers confirmableNumbersEnemyAI = new ConfirmableNumbers(attackedNumbers, choicedNumbers);
+            _confirmableNumbersEnemyAI = new ConfirmableNumbers(_attackedNumbersEnemy, _choicedNumbersEnemy, _cursedNumbersEnemy);
 
             //TestBotLogic_ChoiceNumbers_TEST4(choicedNumbers);
 
@@ -276,9 +297,9 @@ namespace GameFields.Persons.Commons
                 _enemyCardAttackZone, _attackResultHandlerEnemyAIData, _informationLabel, _informationLabelDataEnemyAIAttack);
             ChoiceResultHandlerEnemyAI choiceResultHandlerEnemyAI = new ChoiceResultHandlerEnemyAI(_informationLabel, _informationLabelDataEnemyAIChoice);
 
-            _enemyAttackMenu.Init(_playerTower, attackResultHandlerEnemyAI, CountNumbers, attackedNumbers, confirmableNumbersEnemyAI);
-            _enemyChoiceMenu.Init(_playerTower, choiceResultHandlerEnemyAI, CountNumbers, choicedNumbers, confirmableNumbersEnemyAI);
-            _enemyChoiceMenuImitation.Init(_playerTower, choiceResultHandlerEnemyAI, CountNumbers, choicedNumbers, confirmableNumbersEnemyAI);
+            _enemyAttackMenu.Init(_playerTower, attackResultHandlerEnemyAI, _cardNumbers, _attackedNumbersEnemy, _confirmableNumbersEnemyAI);
+            _enemyChoiceMenu.Init(_playerTower, choiceResultHandlerEnemyAI, _cardNumbers, _choicedNumbersEnemy, _confirmableNumbersEnemyAI);
+            _enemyChoiceMenuImitation.Init(_playerTower, choiceResultHandlerEnemyAI, _cardNumbers, _choicedNumbersEnemy, _confirmableNumbersEnemyAI);
 
             _enemyCardAttackZone.Init(_enemyAttackMenu, _playerTower, _bus);
         }

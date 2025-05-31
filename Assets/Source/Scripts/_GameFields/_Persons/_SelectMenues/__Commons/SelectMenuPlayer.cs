@@ -17,11 +17,11 @@ namespace GameFields.Persons.SelectMenues.Commons
 
         private int _currentNeedForActivate;
 
-        public void Init(ICardNumberKeeper cardNumberKeeper, ISelectResultHandler attackResultHandler, int countNumbers,
+        public void Init(ICardNumberKeeper cardNumberKeeper, ISelectResultHandler attackResultHandler, int[] cardNumbers,
             SelectNumbersList selectedNumbers, ConfirmableNumbers confirmableNumbers)
         {
             _selectButton.Init(this);
-            _selectNumberPanelPlayer.Init(_selectButton, cardNumberKeeper, countNumbers, selectedNumbers, confirmableNumbers);
+            _selectNumberPanelPlayer.Init(_selectButton, cardNumberKeeper, cardNumbers, selectedNumbers, confirmableNumbers);
             _selectModeButton.Init(_selectNumberPanelPlayer);
 
             SelectMenuLabelTextLogic selectMenuLabelTextLogic = new DefaultSelectMenuLabelTextLogic(GetNeedForActivate);

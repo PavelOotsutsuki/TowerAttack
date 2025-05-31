@@ -29,17 +29,17 @@ namespace GameFields.Persons.SelectMenues.Commons
         //    _informationLabel = informationLabel;
         //}
 
-        public void Init(ICardNumberKeeper cardNumberKeeper, int countNumbers, SelectNumbersList selectedNumbers,
+        public void Init(ICardNumberKeeper cardNumberKeeper, int[] сardNumbers, SelectNumbersList selectedNumbers,
             ConfirmableNumbers confirmableNumbers)
         {
-            _selectNumbers = new SelectNumberImitation[countNumbers];
+            _selectNumbers = new SelectNumberImitation[сardNumbers.Length];
 
-            base.Init(cardNumberKeeper, countNumbers, selectedNumbers, confirmableNumbers, _selectNumbers);
+            base.Init(cardNumberKeeper, сardNumbers, selectedNumbers, confirmableNumbers, _selectNumbers);
         }
 
         protected override void InitNumbers()
         {
-            for (int i = 0; i < CountNumbers; i++)
+            for (int i = 0; i < CardNumbers.Length; i++)
             {
                 SelectNumberImitation selectNumber = new SelectNumberImitation(i + 1);
                 _selectNumbers[i] = selectNumber;
@@ -104,7 +104,7 @@ namespace GameFields.Persons.SelectMenues.Commons
 
             foreach (ISelectNumber selectedNumber in selectedNumbers)
             {
-                if (CardNumberKeeper.Card.IsSuccessAttack(selectedNumber.Number))
+                if (CardNumberKeeper.Card.IsSuccessChoice(selectedNumber.Number))
                 {
                     resultType = ResultType.Success;
                     break;
