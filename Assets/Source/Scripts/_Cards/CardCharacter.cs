@@ -4,15 +4,18 @@ using System.Collections.Generic;
 
 namespace Cards
 {
-    public class CardCharacter : MonoBehaviour, ICardState, IAutomaticFillComponents
+    public class CardCharacter : MonoBehaviour, ICardState//, IAutomaticFillComponents
     {
-        [SerializeField] private AudioSource _audioSource;
+        //[SerializeField] private AudioSource _audioSource;
+
+        private AudioClip _awakeSound;
 
         public bool? IsShown { get; private set; } = null;
 
         public void Init(AudioClip awakeSound)
         {
-            _audioSource.clip = awakeSound;
+            //_audioSource.clip = awakeSound;
+            _awakeSound = awakeSound;
             transform.localPosition = Vector2.zero;
 
             IsShown = true;
@@ -26,7 +29,8 @@ namespace Cards
 
             IsShown = true;
 
-            AudioSource.PlayClipAtPoint(_audioSource.clip, Vector3.zero);
+            //AudioSource.PlayClipAtPoint(_audioSource.clip, Vector3.zero);
+            AudioSource.PlayClipAtPoint(_awakeSound, Vector3.zero);
             gameObject.SetActive(true);
         }
 
@@ -47,23 +51,23 @@ namespace Cards
         //    //AudioSource.PlayClipAtPoint(_audioSource.clip, Vector3.zero);
         //}
 
-        #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents) + nameof(CardCharacter))]
-        public List<ComponentAttachInfo> DefineAllComponents()
-        {
-            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
-            {
-                DefineAudioSource()
-            };
+        //#region AutomaticFillComponents
+        //[ContextMenu(nameof(DefineAllComponents) + nameof(CardCharacter))]
+        //public List<ComponentAttachInfo> DefineAllComponents()
+        //{
+        //    List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+        //    {
+        //        DefineAudioSource()
+        //    };
 
-            return list;
-        }
+        //    return list;
+        //}
 
-        [ContextMenu(nameof(DefineAudioSource))]
-        private ComponentAttachInfo DefineAudioSource()
-        {
-           return AutomaticFillComponents.DefineComponent(this, ref _audioSource, ComponentLocationTypes.InThis);
-        }
-        #endregion
+        //[ContextMenu(nameof(DefineAudioSource))]
+        //private ComponentAttachInfo DefineAudioSource()
+        //{
+        //   return AutomaticFillComponents.DefineComponent(this, ref _audioSource, ComponentLocationTypes.InThis);
+        //}
+        //#endregion
     }
 }

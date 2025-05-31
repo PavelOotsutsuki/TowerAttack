@@ -12,10 +12,18 @@ PrefabInstance:
       propertyPath: _config
       value: 
       objectReference: {fileID: 11400000, guid: 6778a6ffbd736428fa5778056e7070ca, type: 2}
+    - target: {fileID: 1001606075633270796, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4147016789588735738, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
       propertyPath: m_Name
       value: Pyromancer_3 Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 5735171853976598656, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
+      propertyPath: _onFireLogic
+      value: 
+      objectReference: {fileID: 1899063768968178235}
     - target: {fileID: 5981172514607463790, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -96,8 +104,42 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4493403651954962212, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1001606075633270796, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1899063768968178235}
   m_SourcePrefab: {fileID: 100100000, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
+--- !u!114 &3581688105510108584 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5801046121218444597, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
+  m_PrefabInstance: {fileID: 7004719117496873117}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7841797777682559121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3369570c5ac6d4b5899644d8d7b450d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &7841797777682559121 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1001606075633270796, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
+  m_PrefabInstance: {fileID: 7004719117496873117}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1899063768968178235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7841797777682559121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 309d3142e9dff41b1bfb39d723a38e36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cardFireAnimator: {fileID: 3581688105510108584}
+  _fireSound: {fileID: 8300000, guid: 22f2c2d656a174fa48c3d14f98d4b298, type: 3}

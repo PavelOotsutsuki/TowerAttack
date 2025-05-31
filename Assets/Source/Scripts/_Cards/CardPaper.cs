@@ -17,7 +17,8 @@ namespace Cards
         [SerializeField] private CardFront _cardFront;
         [SerializeField] private CardDragAndDrop _cardDragAndDrop;
         [SerializeField] private CardFrame _cardFrame;
-        [SerializeField] private CardFireAnimator _cardFireAnimator;
+        [SerializeField] private OnFireLogic _onFireLogic;
+        //[SerializeField] private CardFireAnimator _cardFireAnimator;
 
         private CardDragAndDropActions _cardDragAndDropActions;
         private CardSideFlipper _cardSideFlipper;
@@ -35,7 +36,7 @@ namespace Cards
 
             _cardFront.Init(cardViewData, readOnlyRectTransform, cardViewService, cardSizeFront, _cardFrame, cardCapability);
             _cardBack.Init(cardSizeBack);
-            _cardFireAnimator.Init();
+            _onFireLogic.Init();
 
             _cardDragAndDropActions = new CardDragAndDropActions(_cardFront, me, cardDragAndDropHandler);
             _cardDragAndDrop.Init(cardTransform, _cardDragAndDropActions);
@@ -57,7 +58,7 @@ namespace Cards
         //    _cardDragAndDropActions.SetListener(cardDragAndDropHandler);
         //}
 
-        public void Fire()
+        public void Fire(WaitForSeconds delay)
         {
             //switch (_cardSideFlipper.CurrentSide)
             //{
@@ -70,8 +71,8 @@ namespace Cards
             //    default:
             //        throw new System.Exception("Неизвестный тип side карты");
             //}
-
-            _cardFireAnimator.Play();
+            OnFireLogicActivateData onFireLogicActivateData = new OnFireLogicActivateData(delay);
+            _onFireLogic.Activate(onFireLogicActivateData);
         }
 
         public void RechangeFeature(IEnumerable<TagValuePair> givenPairs)
@@ -132,7 +133,7 @@ namespace Cards
                 DefineCardFront(),
                 DefineCardDragAndDrop(),
                 DefineCardFrame(),
-                DefineCardFire()
+                DefineOnFireLogic()
             };
 
             return list;
@@ -162,10 +163,10 @@ namespace Cards
             return AutomaticFillComponents.DefineComponent(this, ref _cardFrame, ComponentLocationTypes.InChildren);
         }
 
-        [ContextMenu(nameof(DefineCardFire))]
-        private ComponentAttachInfo DefineCardFire()
+        [ContextMenu(nameof(DefineOnFireLogic))]
+        private ComponentAttachInfo DefineOnFireLogic()
         {
-            return AutomaticFillComponents.DefineComponent(this, ref _cardFireAnimator, ComponentLocationTypes.InThis);
+            return AutomaticFillComponents.DefineComponent(this, ref _onFireLogic, ComponentLocationTypes.InThis);
         }
         #endregion
     }

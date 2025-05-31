@@ -10,7 +10,7 @@ namespace GameFields.Persons.DrawCards
     public class FireDrawCardAnimationData
     {
         [field: SerializeField] public InvertCardAnimationData InvertCardAnimationData { get; private set; }
-        [field: SerializeField] public float FireDrawCardDelay { get; private set; } = 0.5f;
+        [field: SerializeField] public float FireDrawCardDelay { get; private set; } = 1f;
         [field: SerializeField] public float StartMoveDuration { get; private set; } = 0.3f;
         [SerializeField, Min(1f)] private float _endScale = 2f;
         [SerializeField] private bool _isDirectionUp = true;

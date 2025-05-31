@@ -151,14 +151,14 @@ namespace Cards
             _currentState.Show();
         }
 
-        public void Fire()
+        public void Fire(WaitForSeconds delay)
         {
             if (_currentState is not CardPaper)
             {
                 throw new Exception("Try fire not CardPaper. Card state: " + _currentState.ToString());
             }
 
-            _cardPaper.Fire();
+            _cardPaper.Fire(delay);
         }
 
         #region AutomaticFillComponents

@@ -60,6 +60,13 @@ namespace GameFields.Persons.DrawCards
             //Vector3 centerScaleVector = new Vector3(CenterScale, CenterScale, CenterScale);
 
             //Vector2 firstPosition = new Vector2(-400f, 200f);
+            drawnCard.Fire(new WaitForSeconds(
+                _data.StartMoveDuration +
+                _data.InvertCardAnimationData.InvertCardFrontDuration +
+                _data.InvertCardAnimationData.InvertCardBackDuration +
+                _data.InvertCardAnimationData.DelayAfterInvert +
+                _data.FireDrawCardDelay));
+
             drawnCard.ReadOnlyRectTransform.SetParent(_data.FireCardParent);
 
             drawnCard.CardMovement.MoveLocalLinear(_data.EndStartMovePosition, drawnCard.ReadOnlyRectTransform.GetRotationVector(),
@@ -73,12 +80,11 @@ namespace GameFields.Persons.DrawCards
 
             //cardMovement.MoveLocalSmoothly(firstPosition, readOnlyRectTransform.GetRotationVector(), 0.5f, scale);
             yield return new WaitUntil(() => invertCardAnimation.IsComplete);
-            yield return new WaitForSeconds(_data.FireDrawCardDelay);
+            //yield return new WaitForSeconds(_data.FireDrawCardDelay);
 
-            drawnCard.Fire();
             _firePool.Add(drawnCard);
 
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(2.5f);
             drawnCard.gameObject.SetActive(false);
 
             _isComplete = true;

@@ -436,6 +436,7 @@ GameObject:
   - component: {fileID: 6776742393676862376}
   - component: {fileID: 567757509716396096}
   - component: {fileID: 5801046121218444597}
+  - component: {fileID: 4493403651954962212}
   m_Layer: 5
   m_Name: CardPaper
   m_TagString: Untagged
@@ -483,7 +484,7 @@ MonoBehaviour:
   _cardFront: {fileID: 2805773735245598067}
   _cardDragAndDrop: {fileID: 7947053024734069809}
   _cardFrame: {fileID: 149869727242011792}
-  _cardFireAnimator: {fileID: 5801046121218444597}
+  _onFireLogic: {fileID: 4493403651954962212}
 --- !u!114 &7947053024734069809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -548,6 +549,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cardFrameFireAnimation: {fileID: 406529268799005734}
   _cardFireAnimation: {fileID: 6422188207668851826}
+--- !u!114 &4493403651954962212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1001606075633270796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f41d3d69c71cb41daa7ff9627a18eb50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cardFireAnimator: {fileID: 5801046121218444597}
 --- !u!1 &1692597579874414744
 GameObject:
   m_ObjectHideFlags: 0
