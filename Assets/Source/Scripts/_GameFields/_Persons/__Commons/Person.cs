@@ -89,13 +89,19 @@ namespace GameFields.Persons.Commons
             _personSteps.Clear();
 
             //_hand.OnStartTurn();
-            _personEffectsHandler.OnStartTurn();
             OnStartStep();
             InitSteps();
+            //_personEffectsHandler.OnStartTurn();
 
             _currentStep = _personSteps.Pop();
 
             ProcessingTurn().ToUniTask();
+        }
+
+        protected void AddStartTurnDrawStep()
+        {
+            PushStep(StartTurnDraw);
+            _personEffectsHandler.OnStartTurn();
         }
 
         public void FinishTurn()

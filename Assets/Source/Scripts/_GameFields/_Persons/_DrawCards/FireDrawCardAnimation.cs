@@ -65,7 +65,7 @@ namespace GameFields.Persons.DrawCards
                 _data.InvertCardAnimationData.InvertCardFrontDuration +
                 _data.InvertCardAnimationData.InvertCardBackDuration +
                 _data.InvertCardAnimationData.DelayAfterInvert +
-                _data.FireDrawCardDelay));
+                _data.FireDrawCardDelay)); // Так, потому что надо чтобы sound пироманта пошел сразу
 
             drawnCard.ReadOnlyRectTransform.SetParent(_data.FireCardParent);
 

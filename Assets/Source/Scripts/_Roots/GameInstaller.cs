@@ -87,8 +87,8 @@ namespace Roots
             SignalBusInstaller.Install(Container);
 
             Container.DeclareSignal<DiscardCardsSignal>();
-            Container.DeclareSignal<AttackSignalPlayer>();
-            Container.DeclareSignal<AttackSignalEnemyAI>();
+            Container.DeclareSignal<PushStepSignalPlayer>();
+            Container.DeclareSignal<PushStepSignalEnemyAI>();
             Container.DeclareSignal<PersonWinSignal>();
         }
     }

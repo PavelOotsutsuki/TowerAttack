@@ -37,12 +37,12 @@ namespace GameFields.Persons.Commons
             _enemyDragAndDropImitation = enemyDragAndDropImitation;
             _handEnemy = hand;
 
-            Bus.Subscribe<AttackSignalEnemyAI>(StartAttack);
+            Bus.Subscribe<PushStepSignalEnemyAI>(StartAttack);
         }
 
         ~EnemyAI()
         {
-            Bus.Unsubscribe<AttackSignalEnemyAI>(StartAttack);
+            Bus.Unsubscribe<PushStepSignalEnemyAI>(StartAttack);
         }
 
         public override void StartAction(ICompletable completable)
@@ -57,7 +57,7 @@ namespace GameFields.Persons.Commons
             StartAction(effect);
         }
 
-        private void StartAttack(AttackSignalEnemyAI signal)
+        private void StartAttack(PushStepSignalEnemyAI signal)
         {
             StartAction(signal.Completable);
         }
@@ -66,7 +66,8 @@ namespace GameFields.Persons.Commons
         {
             //PushStep(CardEffectProcessing);
             PushStep(_enemyDragAndDropImitation);
-            PushStep(StartTurnDraw);
+            AddStartTurnDrawStep();
+            //PushStep(StartTurnDraw);
         }
 
         //~EnemyAI()

@@ -2,11 +2,11 @@ using Tools;
 
 namespace GameFields.Signals
 {
-    public struct AttackSignalPlayer
+    public struct PushStepSignalEnemyAI
     {
         public readonly ICompletable Completable;
 
-        public AttackSignalPlayer(ICompletable completable)
+        public PushStepSignalEnemyAI(ICompletable completable)
         {
             Completable = completable;
         }

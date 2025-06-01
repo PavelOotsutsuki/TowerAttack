@@ -1,18 +1,15 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Cards;
 using GameFields.InformationLabels;
+using GameFields.Persons.Commons;
 using GameFields.Persons.SelectMenues.Commons;
 using GameFields.Persons.Towers;
 using Tools;
 using Tools.UI;
 using Tools.Utils;
-using UnityEngine;
 
-namespace GameFields.Persons.Commons
+namespace GameFields.Persons.EffectHandlers.Curses
 {
-    public class CurseEffectHandler
+    public abstract class CurseEffectHandler
     {
         private readonly ICardNumberKeeper _tower;
         private readonly InformationLabel _informationLabel;
@@ -94,9 +91,16 @@ namespace GameFields.Persons.Commons
                 cursedMessage += number.ToString();
             }
 
-            LabelActivateData labelActivateData = new LabelActivateData("<b>ПРОКЛЯТЬЕ:</b>\n" + cursedMessage);
-            InformationLabelActivateData informationLabelActivateData = new InformationLabelActivateData(labelActivateData);
+            string personCurseFeature = GetPersonFeature();
+
+            LabelActivateData labelActivateData = new LabelActivateData($"<b>{personCurseFeature}</b>\n{cursedMessage}");
+            InformationLabelActivateData informationLabelActivateData = new InformationLabelActivateData(labelActivateData, 2f);
             _informationLabel.Activate(informationLabelActivateData);
+
+            PushStep();
         }
+
+        protected abstract string GetPersonFeature();
+        protected abstract void PushStep();
     }
 }

@@ -49,12 +49,12 @@ namespace GameFields.Persons.Commons
 
             _informationLabel = informationLabel;
 
-            Bus.Subscribe<AttackSignalPlayer>(StartAttack);
+            Bus.Subscribe<PushStepSignalPlayer>(StartAttack);
         }
 
         ~Player()
         {
-            Bus.Unsubscribe<AttackSignalPlayer>(StartAttack);
+            Bus.Unsubscribe<PushStepSignalPlayer>(StartAttack);
         }
 
         public override void StartAction(ICompletable completable)
@@ -96,7 +96,8 @@ namespace GameFields.Persons.Commons
         {
             PushStep(_endTurnProcessing);
             PushStep(_turnProcessing);
-            PushStep(StartTurnDraw);
+            AddStartTurnDrawStep();
+            //PushStep(StartTurnDraw);
             PushStep(_startPlayerTurnView);
         }
 
@@ -107,7 +108,7 @@ namespace GameFields.Persons.Commons
             //_attackMenu.Activate();
         }
 
-        private void StartAttack(AttackSignalPlayer signal)
+        private void StartAttack(PushStepSignalPlayer signal)
         {
             //PushStep(new CardAttackProcessingPlayer(InteractionActivator, signal.Completable));
             StartAction(signal.Completable);

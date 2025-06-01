@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameFields.Persons.Commons;
 using GameFields.Persons.EffectHandlers.Slimes;
+using GameFields.Persons.EffectHandlers.Curses;
 
 namespace GameFields.Persons.EffectHandlers
 {

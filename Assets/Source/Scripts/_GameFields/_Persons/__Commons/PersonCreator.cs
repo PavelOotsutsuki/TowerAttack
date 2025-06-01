@@ -23,6 +23,7 @@ using Cards;
 using GameFields.Persons.EffectHandlers;
 using GameFields.Persons.EffectHandlers.Slimes;
 using Tools.Settings;
+using GameFields.Persons.EffectHandlers.Curses;
 
 namespace GameFields.Persons.Commons
 {
@@ -82,7 +83,7 @@ namespace GameFields.Persons.Commons
 
         private SelectNumbersList _attackedNumbersEnemy = new SelectNumbersList();
         private SelectNumbersList _choicedNumbersEnemy = new SelectNumbersList();
-        private SelectNumbersList _cursedNumbersEnemy = new SelectNumbersList();
+        private SelectNumbersList _cursedNumbersEnemyAI = new SelectNumbersList();
 
         private ConfirmableNumbers _confirmableNumbersEnemyAI;
 
@@ -186,8 +187,8 @@ namespace GameFields.Persons.Commons
                 _playerHand
             };
             GnomeEffectHandler gnomeEffectHandler = new GnomeEffectHandler(_playerRechangeFeatureRuleController, cardFeatureRechangables);
-            CurseEffectHandler curseEffectHandler = new CurseEffectHandler(_playerTower, _informationLabel, _confirmableNumbersEnemyAI,
-                _cursedNumbersEnemy);
+            CurseEffectHandlerPlayer curseEffectHandler = new CurseEffectHandlerPlayer(_playerTower, _informationLabel, _confirmableNumbersEnemyAI,
+                _cursedNumbersEnemyAI, _bus);
             PersonEffectsHandler personEffectsHandler = new PersonEffectsHandler(gnomeEffectHandler, slimeEffectHandler, curseEffectHandler);
 
             SkipTurnChecker skipTurnChecker = new SkipTurnChecker(slimeEffectHandler, _playerHand);
@@ -215,8 +216,8 @@ namespace GameFields.Persons.Commons
                 _enemyHand
             };
             GnomeEffectHandler gnomeEffectHandler = new GnomeEffectHandler(_enemyRechangeFeatureRuleController, cardFeatureRechangables);
-            CurseEffectHandler curseEffectHandler = new CurseEffectHandler(_enemyTower, _informationLabel, _confirmableNumbersPlayer,
-                _cursedNumbersPlayer);
+            CurseEffectHandlerEnemyAI curseEffectHandler = new CurseEffectHandlerEnemyAI(_enemyTower, _informationLabel, _confirmableNumbersPlayer,
+                _cursedNumbersPlayer, _bus);
             PersonEffectsHandler personEffectsHandler = new PersonEffectsHandler(gnomeEffectHandler, slimeEffectHandler, curseEffectHandler);
 
             SkipTurnChecker skipTurnChecker = new SkipTurnChecker(slimeEffectHandler, _enemyHand);
@@ -289,7 +290,7 @@ namespace GameFields.Persons.Commons
             //SelectNumbersList choicedNumbers = new SelectNumbersList();
             //SelectNumbersList cursedNumbers = new SelectNumbersList();
 
-            _confirmableNumbersEnemyAI = new ConfirmableNumbers(_attackedNumbersEnemy, _choicedNumbersEnemy, _cursedNumbersEnemy);
+            _confirmableNumbersEnemyAI = new ConfirmableNumbers(_attackedNumbersEnemy, _choicedNumbersEnemy, _cursedNumbersEnemyAI);
 
             //TestBotLogic_ChoiceNumbers_TEST4(choicedNumbers);
 
