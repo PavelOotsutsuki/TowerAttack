@@ -133,6 +133,14 @@ namespace Cards
                 return;
             }
 
+            if (_cardDragAndDropActions.IsHandTransferable() && EventSystem.current.TryGetComponentInRaycasts(eventData, out IHandTransferable handTransferZone))
+            {
+                IsDragable = false;
+                enabled = false;
+                _cardDragAndDropActions.StartHandTransfing(handTransferZone);
+                return;
+            }
+
             enabled = false;
             _cardDragAndDropActions.StartEndDrag();
 

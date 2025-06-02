@@ -12,6 +12,7 @@ namespace Cards
         GnomeForging = 1 << 4,
         GnomeChoice = 1 << 5,
         Variants = 1 << 6,
-        BrothersBonds = 1 << 7
+        BrothersBonds = 1 << 7,
+        HandTransfer = 1 << 8
     }
 }

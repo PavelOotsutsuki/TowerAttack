@@ -1,6 +1,4 @@
-using GameFields.LightControls;
-
-namespace GameFields.Persons.Towers
+namespace GameFields.LightControls
 {
     public class CardAttackZoneEnemyAILightableObject : LightableObject
     { }

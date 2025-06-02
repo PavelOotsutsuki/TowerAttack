@@ -154,7 +154,7 @@ namespace GameFields.Persons.Commons
 
         public void Init(SignalBus bus, Deck deck, EndTurnButton endTurnButton, SeatPool seatPool
             , CardDragAndDropHandler cardDragAndDropHandler, CardDragAndDropLightController cardDragAndDropLightController,
-            InformationLabel informationLabel, ForgingZone forgingZone, ICardWatcher cardRoot)
+            InformationLabel informationLabel, ForgingZone forgingZone, ICardWatcher cardRoot, HandTransferZone handTransferZone)
         {
             _bus = bus;
             _deck = deck;
@@ -170,7 +170,7 @@ namespace GameFields.Persons.Commons
             _enemyRechangeFeatureRuleController = new RechangeFeatureRuleController();
 
             _interactionActivator = new InteractionActivator(cardDragAndDropHandler, _towerActivator, _tableActivator, endTurnButton,
-                cardDragAndDropLightController, forgingZone);
+                cardDragAndDropLightController, forgingZone, handTransferZone);
 
             InitPlayersData(seatPool);
             InitEnemyData(seatPool);

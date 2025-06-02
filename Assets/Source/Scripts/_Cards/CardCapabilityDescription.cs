@@ -15,7 +15,8 @@ namespace Cards
         private const string GnomeForgingDescription = "<b>ГНОМИЧЬЯ КОВКА: </b>Вы убираете карту в бито и берете одну карту из колоды. <b>Гномичей выбор</b> увеличивается на +2 карты.";
         private const string GnomeChoiceDescription = "<b>ГНОМИЧЕЙ ВЫБОР: </b>Вы <b>Ищете</b> несколько карт. Количество карт на <b>Поиск</b> увеличивается от <b>Гномичей ковки</b>. Каждый игрок может использовать этот навык только один раз за игру.";
         private const string VariantsDescription = "<b>ВАРИАНТ: </b>Эффект зависит от выбранного вами при розыгрыше варианта";
-        private const string BrothersBondsDescription = "<b>БРАТСКИЕ УЗЫ</b>Эффект братьев увеличивает от сыгранных карт братьев";
+        private const string BrothersBondsDescription = "<b>БРАТСКИЕ УЗЫ: </b>Эффект братьев увеличивает от сыгранных карт братьев";
+        private const string HandTransferDescription = "<b>ПЕРЕДАЧА: </b>Перенесите карту в руку противника, чтобы отдать её";
 
         private /*static*/ readonly CardCapability[] _cardCapabilities;
 
@@ -35,6 +36,7 @@ namespace Cards
                 { CardCapability.GnomeChoice,  GnomeChoiceDescription},
                 { CardCapability.Variants,  VariantsDescription},
                 { CardCapability.BrothersBonds,  BrothersBondsDescription},
+                { CardCapability.HandTransfer,  HandTransferDescription},
             };
         }
 

@@ -1,9 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using GameFields.DiscardPiles;
-using GameFields.Persons.Tables;
-using GameFields.Persons.Towers;
-using Tools;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
@@ -16,6 +11,7 @@ namespace GameFields.LightControls
         [SerializeField] private CardAttackZoneEnemyAILightableObject _cardAttackZoneEnemyAI;
         [SerializeField] private CardPlayingZonePlayerLightableObject _cardPlayingZonePlayer;
         [SerializeField] private ForgingLightableObject _forgingLightableObject;
+        [SerializeField] private HandTransferLightableObject _handTransferLightableObject;
         [SerializeField] private float _dragAndDropDelayForActivate = 3f;
 
         public void Init()
@@ -25,28 +21,15 @@ namespace GameFields.LightControls
             _cardAttackZoneEnemyAI.Init();
             _cardPlayingZonePlayer.Init();
             _forgingLightableObject.Init();
+            _handTransferLightableObject.Init();
         }
 
         public CardDragAndDropLightController CreateCardDragAndDropLightController()
         {
-            LightableObject[] defaultLightableObjects = new LightableObject[]
-            {
-                _cardAttackZoneEnemyAI,
-                _cardPlayingZonePlayer
-            };
+            LightController lightController = new LightController(_lightPanel, _dragAndDropDelayForActivate);
 
-            LightController defaultLightController = new LightController(_lightPanel, defaultLightableObjects, _dragAndDropDelayForActivate);
-
-            LightableObject[] gnomeLightableObjects = new LightableObject[]
-            {
-                _cardAttackZoneEnemyAI,
-                _cardPlayingZonePlayer,
-                _forgingLightableObject
-            };
-
-            LightController gnomeLightController = new LightController(_lightPanel, gnomeLightableObjects, _dragAndDropDelayForActivate);
-
-            return new CardDragAndDropLightController(defaultLightController, gnomeLightController);
+            return new CardDragAndDropLightController(lightController, _cardAttackZoneEnemyAI, _cardPlayingZonePlayer,
+                _forgingLightableObject, _handTransferLightableObject);
         }
 
         #region AutomaticFillComponents
@@ -58,7 +41,8 @@ namespace GameFields.LightControls
                 DefineLightPanel(),
                 DefineCardAttackZoneEnemyAILightableObject(),
                 DefineCardPlayingZonePlayerLightableObject(),
-                DefineForgingLightableObject()
+                DefineForgingLightableObject(),
+                DefineHandTransferLightableObject()
             };
 
             return list;
@@ -86,6 +70,12 @@ namespace GameFields.LightControls
         private ComponentAttachInfo DefineForgingLightableObject()
         {
             return AutomaticFillComponents.DefineComponent(this, ref _forgingLightableObject, ComponentLocationTypes.InScene);
+        }
+
+        [ContextMenu(nameof(DefineHandTransferLightableObject))]
+        private ComponentAttachInfo DefineHandTransferLightableObject()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _handTransferLightableObject, ComponentLocationTypes.InScene);
         }
         #endregion
     }

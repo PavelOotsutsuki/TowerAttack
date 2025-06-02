@@ -12,5 +12,13 @@ namespace Cards
         [field: SerializeField] internal CardEffectConfig Effect { get; private set; }
         [field: SerializeField] public CardCapability CardCapability { get; private set; }
         [field: SerializeField] internal CardPersonType CardPersonType { get; private set; }
+
+        public void SetCurseMode()
+        {
+            if ((CardCapability & CardCapability.Curse) == CardCapability.Curse)
+                return;
+
+            CardCapability |= CardCapability.Curse;
+        }
     }
 }

@@ -87,11 +87,22 @@ namespace Cards
             return (_card.CardCapability & CardCapability.Play) == CardCapability.Play;
         }
 
+        internal bool IsHandTransferable()
+        {
+            return (_card.CardCapability & CardCapability.HandTransfer) == CardCapability.HandTransfer;
+        }
+
         internal void StartForging(IForging forgingZone)
         {
             forgingZone.StartForging(_card);
             _cardDragAndDropHandler.OnCardPlay();
             //_cardDragAndDropHandler.OnCardAttack();
+        }
+
+        internal void StartHandTransfing(IHandTransferable handTransferZone)
+        {
+            handTransferZone.StartHandTransfing(_card);
+            _cardDragAndDropHandler.OnCardPlay();
         }
 
         internal void ReturnInHand(float duration)

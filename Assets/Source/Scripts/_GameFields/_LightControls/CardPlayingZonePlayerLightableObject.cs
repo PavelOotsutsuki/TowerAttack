@@ -1,6 +1,4 @@
-using GameFields.LightControls;
-
-namespace GameFields.Persons.Tables
+namespace GameFields.LightControls
 {
     public class CardPlayingZonePlayerLightableObject : LightableObject
     { }

@@ -6,15 +6,18 @@ namespace Cards
         private readonly CardBack _back;
         private readonly CardDragAndDrop _cardDragAndDrop;
         private readonly CardFrame _cardFrame;
+        private readonly CardSpriteManager _cardSpriteManager;
 
         private SideType _currentSide;
 
-        public CardSideFlipper(CardFront front, CardBack back, CardDragAndDrop cardDragAndDrop, CardFrame cardFrame)
+        public CardSideFlipper(CardFront front, CardBack back, CardDragAndDrop cardDragAndDrop, CardFrame cardFrame,
+            CardSpriteManager cardSpriteManager)
         {
             _front = front;
             _back = back;
             _cardDragAndDrop = cardDragAndDrop;
             _cardFrame = cardFrame;
+            _cardSpriteManager = cardSpriteManager;
         }
 
         public SideType CurrentSide => _currentSide;
@@ -29,6 +32,15 @@ namespace Cards
             if (_currentSide == SideType.Back)
             {
                 _cardFrame.Neutral();
+            }
+
+            if (side == SideType.Front)
+            {
+                _cardSpriteManager.Activate();
+            }
+            else
+            {
+                _cardSpriteManager.Deactivate();
             }
         }
 

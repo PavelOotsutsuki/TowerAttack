@@ -28,12 +28,13 @@ namespace Roots
         [SerializeField] private ObjectsLightControlsCreator _lightControlsCreator;
         [SerializeField] private SpeedUpButtonSortOrder _speedUpButtonSortOrder;
         [SerializeField] private ForgingZone _forgingZone;
+        [SerializeField] private HandTransferZone _handTransferZone;
 
         private PersonsState _personsState;
 
         [Inject]
         private void Construct(SignalBus bus, Deck deck, SeatPool seatPool, CardDescription cardDescription, HandPlayer handPlayer,
-            InformationLabel informationLabel, DiscardPile discardPile)
+            InformationLabel informationLabel, DiscardPile discardPile, HandAI handAI)
         {
             GameFieldGC.GCOFF();
 
@@ -55,7 +56,7 @@ namespace Roots
                 cardDragAndDropLightController, _speedUpButtonSortOrder);
 
             _personCreator.Init(bus, deck, _endTurnButton, seatPool, cardDragAndDropHandler, cardDragAndDropLightController,
-                informationLabel, _forgingZone, _cardRoot);
+                informationLabel, _forgingZone, _cardRoot, _handTransferZone);
 
             Player player = _personCreator.CreatePlayer();
             EnemyAI enemyAI = _personCreator.CreateEnemyAI();
@@ -66,6 +67,7 @@ namespace Roots
 
             _personsState = new PersonsState(player, enemyAI);
             _forgingZone.Init(discardPile, _personsState);
+            _handTransferZone.Init(handAI, _personsState);
             EffectFactory effectFactory = new EffectFactory(_personsState, viewRoot, informationLabel, cardTransitManager);
 
             _cardRoot.Init(effectFactory, cardDescription, cardDragAndDropHandler);
@@ -182,7 +184,8 @@ namespace Roots
                 DefineFontRoot(),
                 DefinePersonCreator(),
                 DefineObjectsLightControlsCreator(),
-                DefineForgingZone()
+                DefineForgingZone(),
+                DefineHandTransferZone()
             };
 
             return list;
@@ -234,6 +237,12 @@ namespace Roots
         private ComponentAttachInfo DefineForgingZone()
         {
             return AutomaticFillComponents.DefineComponent(this, ref _forgingZone, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineHandTransferZone))]
+        private ComponentAttachInfo DefineHandTransferZone()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _handTransferZone, ComponentLocationTypes.InChildren);
         }
 
         #endregion

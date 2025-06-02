@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Tools;
@@ -6,20 +7,19 @@ using UnityEngine;
 
 namespace GameFields.LightControls
 {
-    public class LightController : IWorkable, IBlockable
+    public class LightController : IWorkable<LightControllerActivateData>, IBlockable
     {
         private readonly LightPanel _lightPanel;
-        private readonly LightableObject[] _lightableObjects;
         private readonly WaitForSeconds _WFS_DelayForActivate;
 
+        private IEnumerable<LightableObject> _currentLightableObjects;
         private CancellationTokenSource _token;
         private UniTask _activating;
         private bool _isActivatable;
 
-        public LightController(LightPanel lightPanel, LightableObject[] lightableObjects, float delayForActivate)
+        public LightController(LightPanel lightPanel, float delayForActivate)
         {
             _lightPanel = lightPanel;
-            _lightableObjects = lightableObjects;
             _WFS_DelayForActivate = new WaitForSeconds(delayForActivate);
 
             _isActivatable = true;
@@ -27,7 +27,7 @@ namespace GameFields.LightControls
 
         public bool? IsActive { get; private set; } = false;
 
-        public void Activate()
+        public void Activate(LightControllerActivateData data)
         {
             if (_isActivatable == false)
                 return;
@@ -36,6 +36,7 @@ namespace GameFields.LightControls
                 return;
 
             IsActive = true;
+            _currentLightableObjects = data.LightableObjects;
 
             CancelActivating();
 
@@ -52,7 +53,7 @@ namespace GameFields.LightControls
 
             CancelActivating();
 
-            foreach (LightableObject lightableObject in _lightableObjects)
+            foreach (LightableObject lightableObject in _currentLightableObjects)
             {
                 lightableObject.Hide();
             }
@@ -76,7 +77,7 @@ namespace GameFields.LightControls
         {
             yield return _WFS_DelayForActivate;
 
-            foreach (LightableObject lightableObject in _lightableObjects)
+            foreach (LightableObject lightableObject in _currentLightableObjects)
             {
                 lightableObject.Show();
             }

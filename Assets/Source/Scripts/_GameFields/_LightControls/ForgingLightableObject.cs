@@ -1,6 +1,4 @@
-using GameFields.LightControls;
-
-namespace GameFields.DiscardPiles
+namespace GameFields.LightControls
 {
     public class ForgingLightableObject : LightableObject
     { }

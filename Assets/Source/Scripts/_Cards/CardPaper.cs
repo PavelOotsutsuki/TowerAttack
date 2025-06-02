@@ -18,6 +18,7 @@ namespace Cards
         [SerializeField] private CardDragAndDrop _cardDragAndDrop;
         [SerializeField] private CardFrame _cardFrame;
         [SerializeField] private OnFireLogic _onFireLogic;
+        [SerializeField] private CardSpriteManager _cardSpriteManager;
         //[SerializeField] private CardFireAnimator _cardFireAnimator;
 
         private CardDragAndDropActions _cardDragAndDropActions;
@@ -27,13 +28,15 @@ namespace Cards
         public SideType CurrentSide => _cardSideFlipper.CurrentSide;
 
         internal void Init(Card me, CardViewService cardViewService, CardViewData cardViewData,
-            RectTransform cardTransform, ICardDragAndDropHandler cardDragAndDropHandler, CardCapability cardCapability)
+            RectTransform cardTransform, ICardDragAndDropHandler cardDragAndDropHandler, CardCapability cardCapability,
+            CardSpriteModeManager cardSpriteModeManager, CurseAnimator curseAnimator)
         {
             ReadOnlyRectTransform readOnlyRectTransform = new ReadOnlyRectTransform(cardTransform);
 
             Vector2 cardSizeFront = GameSettings.CardSize;
             Vector2 cardSizeBack = GameSettings.CardSize;
 
+            _cardSpriteManager.Init(cardSpriteModeManager, curseAnimator);
             _cardFront.Init(cardViewData, readOnlyRectTransform, cardViewService, cardSizeFront, _cardFrame, cardCapability);
             _cardBack.Init(cardSizeBack);
             _onFireLogic.Init();
@@ -42,7 +45,7 @@ namespace Cards
             _cardDragAndDrop.Init(cardTransform, _cardDragAndDropActions);
 
             _cardFrame.Init();
-            _cardSideFlipper = new CardSideFlipper(_cardFront, _cardBack, _cardDragAndDrop, _cardFrame);
+            _cardSideFlipper = new CardSideFlipper(_cardFront, _cardBack, _cardDragAndDrop, _cardFrame, _cardSpriteManager);
 
             SetSide(DefaultSide);
             SetActiveInteraction(DefaultInteractionActive);
@@ -73,6 +76,11 @@ namespace Cards
             //}
             OnFireLogicActivateData onFireLogicActivateData = new OnFireLogicActivateData(delay);
             _onFireLogic.Activate(onFireLogicActivateData);
+        }
+
+        public void SetView(CardViewData cardViewData, CardCapability cardCapability)
+        {
+            _cardFront.SetView(cardViewData, cardCapability);
         }
 
         public void RechangeFeature(IEnumerable<TagValuePair> givenPairs)

@@ -20,6 +20,7 @@ namespace Cards
         private CardCharacter _character;
         private CardEffectManager _cardEffectManager;
         private CardViewData _viewData;
+        private CardSpriteModeManager _cardSpriteModeManager;
 
         private ICardState _currentState;
 
@@ -34,19 +35,32 @@ namespace Cards
         public CardCapability CardCapability => _config.CardCapability;
 
         internal void Init(IEffectFactory effectFactory, CardViewService cardViewService,
-            ICardDragAndDropHandler cardDragAndDropHandler)
+            ICardDragAndDropHandler cardDragAndDropHandler, CurseAnimator curseAnimator)
         {
             ReadOnlyRectTransform = new ReadOnlyRectTransform(_rectTransform);
             _cardEffectManager = new CardEffectManager(_config.Effect, effectFactory);
             _viewData = new CardViewData(_config.CardViewConfig);
 
+            _cardSpriteModeManager = new CardSpriteModeManager(_config.Effect.Type);
             _rectTransform.localScale = _defaultScaleVector;
             CardMovement = new Movement(_rectTransform);
 
-            _cardPaper.Init(this, cardViewService, ViewData, _rectTransform, cardDragAndDropHandler, CardCapability);
+            _cardPaper.Init(this, cardViewService, ViewData, _rectTransform, cardDragAndDropHandler, CardCapability, _cardSpriteModeManager,
+                curseAnimator);
 
             CreateCardCharacter();
             SetState(_cardPaper);
+        }
+
+        public void SetCurseMode()
+        {
+            if (_cardSpriteModeManager.IsCurse)
+                return;
+
+            _cardSpriteModeManager.SetCurseMode();
+            _viewData.ChangeFeature(_viewData.Feature + "\n<b>ПРОКЛЯТ</b>");
+            _config.SetCurseMode();
+            _cardPaper.SetView(_viewData, CardCapability);
         }
 
         public bool IsSuccessChoice(int number)

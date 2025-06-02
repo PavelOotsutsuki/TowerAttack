@@ -12,6 +12,7 @@ namespace Cards
         [SerializeField] private CanvasGroup _canvasGroup;
 
         [SerializeField] private CardView _cardView;
+        //[SerializeField] private CardSpriteManager _cardSpriteManager;
         //[SerializeField] private CardBlock _cardBlock;
 
         private ReadOnlyRectTransform _readOnlyCardRectTransform;
@@ -30,14 +31,24 @@ namespace Cards
             _readOnlyCardRectTransform = readOnlyCartRectTransform;
             _cardViewService = cardViewService;
             _cardSize = cardSize;
+            //_cardSpriteManager.Init(cardSpriteModeManager);
             //_cardBlockable = cardBlockable;
             _cardFrame = cardFrame;
             //_cardFrame.Init();
 
             IsBlock = false;
 
-            _cardView.FillData(cardViewData);
             DefineSmallSize();
+            SetView(cardViewData, cardCapability);
+            //_cardView.FillData(cardViewData);
+
+            //BigCardShowData bigCardShowData = new BigCardShowData(_cardSize, _readOnlyCardRectTransform, cardViewData);
+            //_bigCardRootActivateData = new BigCardRootActivateData(bigCardShowData, cardCapability);
+        }
+
+        public void SetView(CardViewData cardViewData, CardCapability cardCapability)
+        {
+            _cardView.FillData(cardViewData);
 
             BigCardShowData bigCardShowData = new BigCardShowData(_cardSize, _readOnlyCardRectTransform, cardViewData);
             _bigCardRootActivateData = new BigCardRootActivateData(bigCardShowData, cardCapability);
@@ -91,6 +102,10 @@ namespace Cards
             if (gameObject.activeSelf)
                 _cardFrame.Block();
 
+            //Debug.Log("Block");
+            //_cardSpriteManager.Deactivate();
+
+
             IsBlock = true;
         }
 
@@ -101,6 +116,9 @@ namespace Cards
             if (gameObject.activeSelf)
                 _cardFrame.Unblock();
 
+            //Debug.Log("Unblock");
+
+            //_cardSpriteManager.Activate();
             IsBlock = false;
         }
 

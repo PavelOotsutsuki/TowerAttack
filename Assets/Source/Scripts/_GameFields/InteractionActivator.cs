@@ -14,9 +14,11 @@ namespace GameFields
         private readonly IWorkable _endTurnButton;
         private readonly IBlockable _cardDragAndDropLightController;
         private readonly IWorkable _forgingZone;
+        private readonly IWorkable _handTransferZone;
 
         public InteractionActivator(ICardDragAndDropBlockable dragAndDropBlockable, IWorkable towerEnemy, IWorkable tablePlayer,
-            IWorkable endTurnButton, IBlockable cardDragAndDropLightController, IWorkable forgingZone)
+            IWorkable endTurnButton, IBlockable cardDragAndDropLightController, IWorkable forgingZone,
+            IWorkable handTransferZone)
         {
             _dragAndDropBlockable = dragAndDropBlockable;
             _tower = towerEnemy;
@@ -24,6 +26,7 @@ namespace GameFields
             _endTurnButton = endTurnButton;
             _cardDragAndDropLightController = cardDragAndDropLightController;
             _forgingZone = forgingZone;
+            _handTransferZone = handTransferZone;
         }
 
         public void SetObjectsStates(PersonStep personStep)
@@ -74,6 +77,7 @@ namespace GameFields
             _endTurnButton.Deactivate();
             _cardDragAndDropLightController.Block();
             _forgingZone.Deactivate();
+            _handTransferZone.Deactivate();
             //Debug.Log("SetStartPlayerTurnViewStates");
         }
 
@@ -85,6 +89,7 @@ namespace GameFields
             _endTurnButton.Deactivate();
             _cardDragAndDropLightController.Block();
             _forgingZone.Deactivate();
+            _handTransferZone.Deactivate();
             //Debug.Log("SetStartTurnDrawPlayerStates");
 
         }
@@ -97,6 +102,7 @@ namespace GameFields
             _endTurnButton.Deactivate();
             _cardDragAndDropLightController.Unblock();
             _forgingZone.Activate();
+            _handTransferZone.Activate();
             //Debug.Log("SetTurnProcessingStates");
         }
 
@@ -108,6 +114,7 @@ namespace GameFields
             _endTurnButton.Deactivate();
             _cardDragAndDropLightController.Block();
             _forgingZone.Deactivate();
+            _handTransferZone.Deactivate();
             //Debug.Log("SetCardActionProcessingPlayerStates");
         }
 
@@ -119,6 +126,7 @@ namespace GameFields
             _endTurnButton.Activate();
             _cardDragAndDropLightController.Block();
             _forgingZone.Deactivate();
+            _handTransferZone.Deactivate();
             //Debug.Log("SetEndTurnProcessingStates");
         }
 
@@ -130,6 +138,7 @@ namespace GameFields
             _endTurnButton.Deactivate();
             _cardDragAndDropLightController.Block();
             _forgingZone.Deactivate();
+            _handTransferZone.Deactivate();
             //Debug.Log("SetEnemyAIStates");
         }
     }

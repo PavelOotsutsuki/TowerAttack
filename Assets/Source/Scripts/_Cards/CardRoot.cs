@@ -8,6 +8,7 @@ namespace Cards
     {
         [SerializeField] private BigCardRoot _bigCardRoot;
         [SerializeField] private Card[] _cards;
+        [SerializeField] private CurseAnimator _curseAnimator;
 
         private CardDescription _cardDescription;
         private CardViewService _cardViewService;
@@ -18,6 +19,7 @@ namespace Cards
         public void Init(IEffectFactory effectFactory, CardDescription cardDescription, ICardDragAndDropHandler cardDragAndDropHandler)
         {
             _cardDescription = cardDescription;
+            _curseAnimator.Init();
 
             InitCardDescription();
             InitBigCard();
@@ -43,7 +45,7 @@ namespace Cards
 
             foreach (Card card in _cards)
             {
-                card.Init(effectFactory, _cardViewService, cardDragAndDropHandler);
+                card.Init(effectFactory, _cardViewService, cardDragAndDropHandler, _curseAnimator);
                 _allCards.Add(card);
             }
         }
