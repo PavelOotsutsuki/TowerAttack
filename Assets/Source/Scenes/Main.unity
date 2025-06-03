@@ -16679,8 +16679,6 @@ MonoBehaviour:
   _personCreator: {fileID: 610687167}
   _lightControlsCreator: {fileID: 200841578}
   _speedUpButtonSortOrder: {fileID: 1317657964}
-  _forgingZone: {fileID: 7969638147173903684}
-  _handTransferZone: {fileID: 3932600362190830680}
 --- !u!114 &1272924795
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20227,6 +20225,8 @@ MonoBehaviour:
   _choiceMenuImitationPlayer: {fileID: 2040406083}
   _attackMenuPlayer: {fileID: 7285808889636942353}
   _playerCardAttackZone: {fileID: 2072956770}
+  _forgingZone: {fileID: 7969638147173903684}
+  _handTransferZone: {fileID: 3932600362190830680}
   _enemyHand: {fileID: 1620354848}
   _enemyTable: {fileID: 704143081}
   _enemyTower: {fileID: 2072956769}

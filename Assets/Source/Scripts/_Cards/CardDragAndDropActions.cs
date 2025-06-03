@@ -94,14 +94,14 @@ namespace Cards
 
         internal void StartForging(IForging forgingZone)
         {
-            forgingZone.StartForging(_card);
+            forgingZone.StartExtraEffect(_card);
             _cardDragAndDropHandler.OnCardPlay();
             //_cardDragAndDropHandler.OnCardAttack();
         }
 
         internal void StartHandTransfing(IHandTransferable handTransferZone)
         {
-            handTransferZone.StartHandTransfing(_card);
+            handTransferZone.StartExtraEffect(_card);
             _cardDragAndDropHandler.OnCardPlay();
         }
 

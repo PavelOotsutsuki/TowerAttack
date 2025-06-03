@@ -1,5 +1,3 @@
-using GameFields.Persons.Commons;
-using GameFields.Persons.CardTransits;
 using Tools;
 using GameFields.Persons.Towers;
 using Cards;

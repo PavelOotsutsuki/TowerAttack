@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cards;
 using GameFields.Persons.Commons;
+using GameFields.Persons.EffectHandlers.Curses;
 using GameFields.Persons.EffectHandlers.Slimes;
 using GameFields.Seats;
 using Tools.Utils;
@@ -33,6 +34,7 @@ namespace GameFields.Persons.Hands
         [SerializeField] private Transform _containerForDrag; //IPS
         [SerializeField] private Transform _containerForSeats; 
 
+        private readonly Dictionary<Card, EffectedCard> _handCursedCards = new Dictionary<Card, EffectedCard>();
         private List<Seat> _handSeats;
         private Seat _dragCardHandSeat;
         private Transform _dragCardParent; // IPS
@@ -40,6 +42,7 @@ namespace GameFields.Persons.Hands
         private SeatPool _handSeatPool;
         private RechangeFeatureRuleController _ruleController;
         private IDrawnCardWatcher _turnDrawnCards;
+        private CurseEffectHandler _curseEffectHandler;
 
         //private List<Card> _turnCardsFromDeck;
         private bool _isSlimeEffect = false;
@@ -76,9 +79,11 @@ namespace GameFields.Persons.Hands
         public bool CanSkip => CountCards == 0;
         public bool IsSlimeEffect => _isSlimeEffect;
 
-        public void Init(SeatPool seatPool, RechangeFeatureRuleController ruleController, IDrawnCardWatcher turnDrawnCards)
+        public void Init(SeatPool seatPool, RechangeFeatureRuleController ruleController, IDrawnCardWatcher turnDrawnCards,
+            CurseEffectHandler curseEffectHandler)
         {
             _handSeats = new List<Seat>();
+            _curseEffectHandler = curseEffectHandler;
             //_turnCardsFromDeck = new List<Card>();
             _handSeatIndex = EmptyIndex;
             _ruleController = ruleController;
@@ -107,7 +112,9 @@ namespace GameFields.Persons.Hands
 
         void ICardDragAndDropHandHandler.OnCardPlay()
         {
-            //UnblockCards(); // Было раньше. Убрал тк, а нахер заблочивать??? 
+            //UnblockCards(); // Было раньше. Убрал тк, а нахер заблочивать???
+            UnbindCurse(_dragCardHandSeat.Card);
+
             BlockCards();
             UnbindDragableCard();
         }
@@ -133,6 +140,14 @@ namespace GameFields.Persons.Hands
             //card.SetDragAndDropListener(this);
 
             _ruleController.TryRenameFeature(card);
+
+            if (card.IsCurse)
+            {
+                EffectedCard effectedCard = new EffectedCard();
+                _curseEffectHandler.Add(effectedCard);
+                _handCursedCards.Add(card, effectedCard);
+            }
+
             Seat handSeat = _handSeatPool.GetSeat();
             handSeat.transform.SetParent(_containerForSeats);
             handSeat.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
@@ -182,6 +197,7 @@ namespace GameFields.Persons.Hands
             //{
             //    throw new Exception("Не найден найденный HandSeat");
             //}
+            UnbindCurse(card);
 
             _handSeats.Remove(findedHandSeat);
             findedHandSeat.Reset();
@@ -421,6 +437,15 @@ namespace GameFields.Persons.Hands
         {
             _handSeatIndex = EmptyIndex;
             _dragCardHandSeat = null;
+        }
+
+        private void UnbindCurse(Card card)
+        {
+            if (_handCursedCards.ContainsKey(card))
+            {
+                _handCursedCards[card].EndEffect();
+                _handCursedCards.Remove(card);
+            }
         }
 
         //private bool TryGetDefaultRandomCard(out Card card)

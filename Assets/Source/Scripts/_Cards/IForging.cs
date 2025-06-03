@@ -1,7 +1,5 @@
 namespace Cards
 {
-    public interface IForging
-    {
-        public void StartForging(Card card);
-    }
+    public interface IForging : IExtraEffectZone
+    { }
 }

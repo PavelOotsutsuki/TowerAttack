@@ -1,13 +1,14 @@
 using System.Collections;
 using Cysharp.Threading.Tasks;
 using Tools;
+using Tools.Settings;
 using UnityEngine;
 
 namespace Cards
 {
     public abstract class Effect: ICompletable
     {
-        private readonly float _endEffectDelay = 1f;
+        //private readonly float _endEffectDelay = 1f;
         private readonly int _duration;
 
         public Effect(int duration = 0)
@@ -32,7 +33,7 @@ namespace Cards
         {
             yield return OnPlaying();
 
-            yield return new WaitForSeconds(_endEffectDelay);
+            yield return new WaitForSeconds(GameSettings.DefaultEffectDelayBeforeComplete);
 
             IsComplete = true;
         }

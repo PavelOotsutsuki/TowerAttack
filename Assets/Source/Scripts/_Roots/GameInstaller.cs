@@ -38,6 +38,9 @@ namespace Roots
         [SerializeField] private AttackMenuPlayer _attackMenuPlayer;
         [SerializeField] private CardAttackZonePlayer _playerCardAttackZone;
 
+        [SerializeField] private ForgingZone _forgingZone;
+        [SerializeField] private HandTransferZone _handTransferZone;
+
         [SerializeField] private HandAI _enemyHand;
         [SerializeField] private TableAI _enemyTable;
         [SerializeField] private TowerAI _enemyTower;
@@ -70,6 +73,9 @@ namespace Roots
             Container.Bind<ChoiceMenuImitationPlayer>().FromInstance(_choiceMenuImitationPlayer).AsSingle();
             Container.Bind<AttackMenuPlayer>().FromInstance(_attackMenuPlayer).AsSingle();
             Container.Bind<CardAttackZonePlayer>().FromInstance(_playerCardAttackZone).AsSingle();
+
+            Container.Bind<ForgingZone>().FromInstance(_forgingZone).AsSingle();
+            Container.Bind<HandTransferZone>().FromInstance(_handTransferZone).AsSingle();
 
             Container.Bind<HandAI>().FromInstance(_enemyHand).AsSingle();
             Container.Bind<TableAI>().FromInstance(_enemyTable).AsSingle();

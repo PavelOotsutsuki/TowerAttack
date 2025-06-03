@@ -8,7 +8,7 @@ using GameFields.Decks;
 
 namespace GameFields.Persons.DrawCards
 {
-    public class DrawCardRoot
+    public class DrawCardRoot : IDrawCardManager
     {
         private readonly SimpleDrawCardAnimation _simpleDrawCardAnimation;
         private readonly IDeckTake _deck;

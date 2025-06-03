@@ -33,6 +33,7 @@ namespace Cards
         public SideType CurrentSide => _cardPaper.CurrentSide;
         //public EffectType EffectType => _config.Effect.Type;
         public CardCapability CardCapability => _config.CardCapability;
+        public bool IsCurse => _cardSpriteModeManager.IsCurse;
 
         internal void Init(IEffectFactory effectFactory, CardViewService cardViewService,
             ICardDragAndDropHandler cardDragAndDropHandler, CurseAnimator curseAnimator)
@@ -54,7 +55,7 @@ namespace Cards
 
         public void SetCurseMode()
         {
-            if (_cardSpriteModeManager.IsCurse)
+            if (IsCurse)
                 return;
 
             _cardSpriteModeManager.SetCurseMode();

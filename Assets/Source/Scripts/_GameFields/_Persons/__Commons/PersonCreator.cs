@@ -46,6 +46,9 @@ namespace GameFields.Persons.Commons
         private RechangeFeatureRuleController _playerRechangeFeatureRuleController;
         private TurnDrawnCards _playerTurnDrawnCards;
 
+        private ForgingZone _forgingZone;
+        private HandTransferZone _handTransferZone;
+
         private SelectNumbersList _attackedNumbersPlayer = new SelectNumbersList();
         private SelectNumbersList _choicedNumbersPlayer = new SelectNumbersList();
         private SelectNumbersList _cursedNumbersPlayer = new SelectNumbersList();
@@ -114,6 +117,7 @@ namespace GameFields.Persons.Commons
         private SignalBus _bus;
         private Deck _deck;
         private EndTurnButton _endTurnButton;
+        private SeatPool _seatPool;
 
         private InteractionActivator _interactionActivator;
         private InformationLabel _informationLabel;
@@ -127,7 +131,7 @@ namespace GameFields.Persons.Commons
             TableAI enemyTable, TowerAI enemyTower, DiscoverAI enemyDiscoverImitation, AttackMenuEnemyAI enemyAttackMenu,
             CardAttackZonePlayer playerCardAttackZone, CardAttackZoneEnemyAI enemyCardAttackZone, ChoiceMenuPlayer playerChoiceMenu,
             ChoiceMenuEnemyAI enemyChoiceMenu, DiscardPile discardPile, ChoiceMenuImitationPlayer choiceMenuImitationPlayer,
-            ChoiceMenuImitationEnemyAI choiceMenuImitationEnemyAI)
+            ChoiceMenuImitationEnemyAI choiceMenuImitationEnemyAI, ForgingZone forgingZone, HandTransferZone handTransferZone)
         {
             _playerPlayingZone = playerPlayingZone;
             _playerHand = playerHand;
@@ -138,6 +142,9 @@ namespace GameFields.Persons.Commons
             _playerChoiceMenuImitation = choiceMenuImitationPlayer;
             _playerAttackMenu = playerAttackMenu;
             _playerCardAttackZone = playerCardAttackZone;
+
+            _forgingZone = forgingZone;
+            _handTransferZone = handTransferZone;
 
             _enemyPlayingZone = enemyPlayingZone;
             _enemyHand = enemyHand;
@@ -154,7 +161,7 @@ namespace GameFields.Persons.Commons
 
         public void Init(SignalBus bus, Deck deck, EndTurnButton endTurnButton, SeatPool seatPool
             , CardDragAndDropHandler cardDragAndDropHandler, CardDragAndDropLightController cardDragAndDropLightController,
-            InformationLabel informationLabel, ForgingZone forgingZone, ICardWatcher cardRoot, HandTransferZone handTransferZone)
+            InformationLabel informationLabel, ICardWatcher cardRoot)
         {
             _bus = bus;
             _deck = deck;
@@ -170,10 +177,12 @@ namespace GameFields.Persons.Commons
             _enemyRechangeFeatureRuleController = new RechangeFeatureRuleController();
 
             _interactionActivator = new InteractionActivator(cardDragAndDropHandler, _towerActivator, _tableActivator, endTurnButton,
-                cardDragAndDropLightController, forgingZone, handTransferZone);
+                cardDragAndDropLightController, _forgingZone, _handTransferZone);
 
-            InitPlayersData(seatPool);
-            InitEnemyData(seatPool);
+            _seatPool = seatPool;
+
+            InitPlayersData();
+            InitEnemyData();
             //InitCommonData();
 
         }
@@ -201,6 +210,10 @@ namespace GameFields.Persons.Commons
             StartPlayerTurnView startPlayerTurnView = new StartPlayerTurnView(_interactionActivator, _startPlayerTurnLabel);
             EndTurnProcessing endTurnProcessing = new EndTurnProcessing(_endTurnButton, _interactionActivator);
 
+            _forgingZone.Init(_discardPile, _bus, drawCardRoot, gnomeEffectHandler);
+            _handTransferZone.Init(_enemyHand, _bus);
+
+            _playerHand.Init(_seatPool, _playerRechangeFeatureRuleController, _playerTurnDrawnCards, curseEffectHandler);
 
             return new Player(_interactionActivator, _playerHand, _playerPlayingZone, _playerTower, _playerDiscover,
                 drawCardRoot, startTurnDraw, turnProcessing, _bus, startPlayerTurnView, _playerAttackMenu, endTurnProcessing,
@@ -231,6 +244,7 @@ namespace GameFields.Persons.Commons
             EnemyDragAndDropImitation enemyDragAndDropImitation = new EnemyDragAndDropImitation(cardDragAndDropImitationActions,
                 _enemyDragAndDropImitationData, _interactionActivator, skipTurnChecker, _enemyTurnDrawnCards, _enemyHand);
 
+            _enemyHand.Init(_seatPool, _enemyRechangeFeatureRuleController, _enemyTurnDrawnCards, curseEffectHandler);
 
             return new EnemyAI(_interactionActivator, enemyDragAndDropImitation, _enemyPlayingZone,
                 _enemyTower, drawCardRoot, _enemyDiscoverImitation, startTurnDraw, _bus, _enemyHand, _playerAttackMenu,
@@ -247,11 +261,11 @@ namespace GameFields.Persons.Commons
             return new CardTransitManager(_playerHand, _enemyHand, _playerTower, _enemyTower, _deck, _discardPile);
         }
 
-        private void InitPlayersData(SeatPool seatPool)
+        private void InitPlayersData()
         {
             _playerTurnDrawnCards = new TurnDrawnCards();
 
-            _playerHand.Init(seatPool, _playerRechangeFeatureRuleController, _playerTurnDrawnCards);
+            //_playerHand.Init(seatPool, _playerRechangeFeatureRuleController, _playerTurnDrawnCards);
             _playerTable.Init();
             _playerPlayingZone.Init(_playerTable);
             _playerTower.Init();
@@ -276,11 +290,11 @@ namespace GameFields.Persons.Commons
             //_playerCardAttackZone.Init(_playerChoiceMenu, _enemyTower);
         }
 
-        private void InitEnemyData(SeatPool seatPool)
+        private void InitEnemyData()
         {
             _enemyTurnDrawnCards = new TurnDrawnCards();
 
-            _enemyHand.Init(seatPool, _enemyRechangeFeatureRuleController, _enemyTurnDrawnCards);
+            //_enemyHand.Init(seatPool, _enemyRechangeFeatureRuleController, _enemyTurnDrawnCards);
             _enemyTable.Init();
             _enemyPlayingZone.Init(_enemyTable);
             _enemyTower.Init();

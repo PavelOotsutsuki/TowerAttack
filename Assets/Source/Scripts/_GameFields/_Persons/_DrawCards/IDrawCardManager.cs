@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Cards;
 
-namespace GameFields.Persons.CardTransits
+namespace GameFields.Persons.DrawCards
 {
     public interface IDrawCardManager
     {

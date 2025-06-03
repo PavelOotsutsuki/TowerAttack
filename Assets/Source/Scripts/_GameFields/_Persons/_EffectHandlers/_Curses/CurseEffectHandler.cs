@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cards;
 using GameFields.InformationLabels;
 using GameFields.Persons.Commons;
 using GameFields.Persons.SelectMenues.Commons;
@@ -6,6 +7,7 @@ using GameFields.Persons.Towers;
 using Tools;
 using Tools.UI;
 using Tools.Utils;
+using UnityEngine;
 
 namespace GameFields.Persons.EffectHandlers.Curses
 {
@@ -32,15 +34,25 @@ namespace GameFields.Persons.EffectHandlers.Curses
         public void Add(ICompletable effectedCard)
         {
             _cursedEffectCards.Add(effectedCard);
+            Debug.Log("Add" + " /// " + this);
         }
 
         public void OnStartTurn()
         {
-            foreach (ICompletable effectCard in _cursedEffectCards)
+            if (_cursedEffectCards.Count == 0)
+                return;
+
+            for (int i = _cursedEffectCards.Count - 1; i >= 0; i--)
             {
-                if (effectCard.IsComplete)
-                    _cursedEffectCards.Remove(effectCard);
+                if (_cursedEffectCards[i].IsComplete)
+                    _cursedEffectCards.Remove(_cursedEffectCards[i]);
             }
+
+            //foreach (ICompletable effectCard in _cursedEffectCards)
+            //{
+            //    if (effectCard.IsComplete)
+            //        _cursedEffectCards.Remove(effectCard);
+            //}
 
             int cursedCount = _cursedEffectCards.Count;
 

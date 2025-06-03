@@ -13,7 +13,7 @@ using Random = UnityEngine.Random;
 
 namespace GameFields.DiscardPiles
 {
-    public class DiscardPile: ICardView, ICardTakable
+    public class DiscardPile: ICardView, ITransitable
     {
         private const float CenterRotation = 90f;
 

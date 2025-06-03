@@ -3,8 +3,8 @@ using Cards;
 using GameFields.Persons.Commons;
 using System.Collections;
 using System.Collections.Generic;
-using GameFields.Persons.CardTransits;
 using GameFields.Persons.Discovers;
+using GameFields.Persons.DrawCards;
 
 namespace GameFields.Effects
 {

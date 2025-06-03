@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Cards;
 using Cysharp.Threading.Tasks;
-using GameFields.Persons.SelectMenues.Attacks;
-using GameFields.Persons.CardTransits;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.DrawCards;
 using GameFields.Persons.Hands;
@@ -15,9 +13,6 @@ using Tools;
 using UnityEngine;
 using Zenject;
 using GameFields.Persons.SelectMenues.Commons;
-using GameFields.Persons.SelectMenues.Choices;
-using GameFields.InformationLabels;
-using GameFields.Effects;
 using GameFields.Persons.EffectHandlers;
 
 namespace GameFields.Persons.Commons
