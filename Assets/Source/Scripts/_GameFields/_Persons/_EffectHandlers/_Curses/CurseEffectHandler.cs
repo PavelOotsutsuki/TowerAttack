@@ -34,7 +34,6 @@ namespace GameFields.Persons.EffectHandlers.Curses
         public void Add(ICompletable effectedCard)
         {
             _cursedEffectCards.Add(effectedCard);
-            Debug.Log("Add" + " /// " + this);
         }
 
         public void OnStartTurn()

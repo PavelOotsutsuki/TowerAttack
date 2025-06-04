@@ -2,7 +2,7 @@ using System;
 using Tools;
 using UnityEngine;
 
-namespace GameFields.Persons.Commons
+namespace GameFields.Persons.EnemyProcessImitations
 {
     [Serializable]
     public class EnemyDragAndDropImitationData : IData

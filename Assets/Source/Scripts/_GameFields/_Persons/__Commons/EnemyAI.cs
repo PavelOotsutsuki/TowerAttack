@@ -16,6 +16,7 @@ using System.Collections;
 using Cysharp.Threading.Tasks;
 using Tools.UI;
 using UnityEngine;
+using GameFields.Persons.EnemyProcessImitations;
 
 namespace GameFields.Persons.Commons
 {

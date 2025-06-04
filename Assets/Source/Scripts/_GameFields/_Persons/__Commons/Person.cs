@@ -104,7 +104,7 @@ namespace GameFields.Persons.Commons
             //_hand.OnFinishTurn();
             _personEffectsHandler.OnEndTurn();
 
-            IReadOnlyList<Card> discardedCards = _playingZone.UpdateCards();
+            IReadOnlyList<Card> discardedCards = _playingZone.DiscardCards();
 
             if (discardedCards.Count > 0)
                 Bus.Fire(new DiscardCardsSignal(discardedCards));
@@ -291,7 +291,7 @@ namespace GameFields.Persons.Commons
 
         public void ActivateFireDraw(int countTurns)
         {
-            StartTurnDraw.SetFireMode(countTurns);
+            _personEffectsHandler.FireEffectHandler.Activate(countTurns);
         }
 
         //public void DeactivateSlimeEffect()

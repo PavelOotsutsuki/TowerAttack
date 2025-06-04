@@ -10,32 +10,30 @@ namespace GameFields.Persons.DrawCards
 {
     public class DrawCardRoot : IDrawCardManager
     {
-        private readonly SimpleDrawCardAnimation _simpleDrawCardAnimation;
+        private readonly IDrawCardAnimationWatcher _drawCardAnimationWatcher;
         private readonly IDeckTake _deck;
 
         private IDrawCardAnimation _currentDrawCardAnimation;
 
-        public DrawCardRoot(SimpleDrawCardAnimation simpleDrawCardAnimation, IDeckTake deck)
+        public DrawCardRoot(IDrawCardAnimationWatcher drawCardAnimationWatcher, IDeckTake deck)
         {
-            _simpleDrawCardAnimation = simpleDrawCardAnimation;
+            _drawCardAnimationWatcher = drawCardAnimationWatcher;
             _deck = deck;
-
-            _currentDrawCardAnimation = _simpleDrawCardAnimation;
         }
 
         public bool IsDrawing { get; private set; } = false;
 
         public List<Card> DrawCards(int countCards, Action callback = null)
         {
-            //_currentDrawCardAnimation = _simpleDrawCardAnimation;
+            _currentDrawCardAnimation = _drawCardAnimationWatcher.CurrentAnimation;
             return TakeCards(countCards, callback);
         }
 
-        public void DrawCards(IDrawCardAnimation drawCardAnimation, int countCards, Action callback = null)
-        {
-            _currentDrawCardAnimation = drawCardAnimation;
-            TakeCards(countCards, callback);
-        }
+        //public void DrawCards(IDrawCardAnimation drawCardAnimation, int countCards, Action callback = null)
+        //{
+        //    _currentDrawCardAnimation = drawCardAnimation;
+        //    TakeCards(countCards, callback);
+        //}
 
         public Card DrawCard(Card card, Action callback = null)
         {
@@ -43,6 +41,8 @@ namespace GameFields.Persons.DrawCards
             {
                 throw new Exception("Пытаемся взять карты которой нет");
             }
+
+            _currentDrawCardAnimation = _drawCardAnimationWatcher.CurrentAnimation;
 
             DrawingCards(new List<Card>() { card }, callback).ToUniTask();
 

@@ -49,7 +49,7 @@ namespace GameFields.Effects
                 EffectType.TimeMistress => new TimeMistressEffect(_personsState.Active, _viewRoot, _cardTransitManager),
                 EffectType.SharpSnake => new SharpSnakeEffect(_personsState.Deactive),
                 EffectType.ImpArmy => new ImpArmyEffect(_personsState.Deactive, effectConfig.Duration),
-                EffectType.CursedMark => new VoidEffect(),
+                EffectType.CursedMark => new VoidEffect(), // Нельзя разыграть
                 EffectType.RushingMailman => new VoidEffect(),
                 EffectType.Schemer => new VoidEffect(),
                 EffectType.Mime => new VoidEffect(),

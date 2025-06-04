@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Tools.Utils
 {
@@ -23,6 +25,22 @@ namespace Tools.Utils
             }
 
             return shuffleList;
+        }
+
+        public static List<T> GetFlags<T>(T number) where T : Enum
+        {
+            List<T> result = new List<T>();
+            int numberInt = Convert.ToInt32(number);
+
+            for (int i = 1; i <= numberInt; i <<= 1)
+            {
+                if ((numberInt & i) == i)
+                {
+                    result.Add((T)(object)i);
+                }
+            }
+
+            return result;
         }
     }
 }

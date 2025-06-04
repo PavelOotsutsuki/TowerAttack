@@ -27,6 +27,9 @@ namespace GameFields.Persons.EffectHandlers
             _gnomeCounterUse = 1;
         }
 
+        public int GnomeCounterNumbers => _gnomeCounterNumbers;
+        public int UpgradeStepCount => _upgradeStepCount;
+
         public void Upgrade()
         {
             _gnomeCounterNumbers += _upgradeStepCount;
@@ -53,11 +56,19 @@ namespace GameFields.Persons.EffectHandlers
             }
         }
 
+        public bool CanActivate()
+        {
+            if (_gnomeCounterUse <= 0)
+                return false;
+
+            return true;
+        }
+
         public bool TryActivate(out int countNumbers)
         {
             countNumbers = 0;
 
-            if (_gnomeCounterUse <= 0)
+            if (CanActivate() == false)
                 return false;
 
             _gnomeCounterUse--;

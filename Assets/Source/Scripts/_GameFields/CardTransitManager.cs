@@ -15,7 +15,7 @@ namespace GameFields
         private readonly ITransitable _enemyHand;
         private readonly ITowerTransitable _enemyTower;
         private readonly ITransitable _deck;
-        private readonly ICardTakable _discardPile;
+        private readonly ITransitable _discardPile;
 
         public CardTransitManager(HandPlayer playerHand, HandAI enemyHand, Tower playerTower, Tower enemyTower, Deck deck,
             DiscardPile discardPile)
@@ -45,6 +45,7 @@ namespace GameFields
                 TransitToType.Deck => _deck,
                 TransitToType.HandPlayer => _playerHand,
                 TransitToType.HandEnemy => _enemyHand,
+                TransitToType.DiscardPile => _discardPile,
                 _ => throw new Exception($"Ошибка нахождения типа {typeof(TransitToType)}: {to}")
             };
 

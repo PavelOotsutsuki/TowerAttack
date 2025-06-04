@@ -4,6 +4,7 @@ namespace GameFields
     {
         Deck,
         HandPlayer,
-        HandEnemy
+        HandEnemy,
+        DiscardPile
     }
 }

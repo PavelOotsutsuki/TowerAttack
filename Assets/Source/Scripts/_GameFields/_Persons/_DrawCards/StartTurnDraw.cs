@@ -9,25 +9,27 @@ namespace GameFields.Persons.DrawCards
     {
         private readonly int _countDrawCards;
         private readonly DrawCardRoot _drawCardRoot;
-        private readonly SimpleDrawCardAnimation _simpleDrawCardAnimation;
-        private readonly FireDrawCardAnimation _fireDrawCardAnimation;
+        //private readonly SimpleDrawCardAnimation _simpleDrawCardAnimation;
+        //private readonly FireDrawCardAnimation _fireDrawCardAnimation;
 
         private bool _isComplete;
-        private int _countExtraAnimationTurns;
+        //private int _countExtraAnimationTurns;
 
-        private IDrawCardAnimation _currentAnimation;
+        //private IDrawCardAnimation _currentAnimation;
 
+        //public StartTurnDraw(InteractionActivator interactionActivator, DrawCardRoot drawCardRoot,
+        //    SimpleDrawCardAnimation simpleDrawCardAnimation, FireDrawCardAnimation fireDrawCardAnimation,
+        //    int countDrawCards) :base(interactionActivator)
         public StartTurnDraw(InteractionActivator interactionActivator, DrawCardRoot drawCardRoot,
-            SimpleDrawCardAnimation simpleDrawCardAnimation, FireDrawCardAnimation fireDrawCardAnimation,
-            int countDrawCards) :base(interactionActivator)
+            int countDrawCards) : base(interactionActivator)
         {
             _drawCardRoot = drawCardRoot;
-            _simpleDrawCardAnimation = simpleDrawCardAnimation;
-            _fireDrawCardAnimation = fireDrawCardAnimation;
+            //_simpleDrawCardAnimation = simpleDrawCardAnimation;
+            //_fireDrawCardAnimation = fireDrawCardAnimation;
             _countDrawCards = countDrawCards;
 
-            _currentAnimation = _simpleDrawCardAnimation;
-            _countExtraAnimationTurns = 0;
+            //_currentAnimation = _simpleDrawCardAnimation;
+            //_countExtraAnimationTurns = 0;
         }
 
         public override bool IsComplete => _isComplete;
@@ -38,36 +40,36 @@ namespace GameFields.Persons.DrawCards
 
             DrawingCards().ToUniTask();
 
-            if (_countExtraAnimationTurns > 0)
-            {
-                _countExtraAnimationTurns--;
+            //if (_countExtraAnimationTurns > 0)
+            //{
+            //    _countExtraAnimationTurns--;
 
-                if (_countExtraAnimationTurns <= 0)
-                {
-                    SetSimpleMode();
-                }
-            }
+            //    if (_countExtraAnimationTurns <= 0)
+            //    {
+            //        SetSimpleMode();
+            //    }
+            //}
         }
 
-        public void SetFireMode(int countTurns)
-        {
-            _currentAnimation = _fireDrawCardAnimation;
+        //public void SetFireMode(int countTurns)
+        //{
+        //    _currentAnimation = _fireDrawCardAnimation;
 
-            _countExtraAnimationTurns = countTurns;
-        }
+        //    _countExtraAnimationTurns = countTurns;
+        //}
 
         private IEnumerator DrawingCards()
         {
-            _drawCardRoot.DrawCards(_currentAnimation, _countDrawCards);
+            _drawCardRoot.DrawCards(_countDrawCards);
 
             yield return new WaitUntil(() => _drawCardRoot.IsDrawing == false);
 
             _isComplete = true;
         }
 
-        private void SetSimpleMode()
-        {
-            _currentAnimation = _simpleDrawCardAnimation;
-        }
+        //private void SetSimpleMode()
+        //{
+        //    _currentAnimation = _simpleDrawCardAnimation;
+        //}
     }
 }

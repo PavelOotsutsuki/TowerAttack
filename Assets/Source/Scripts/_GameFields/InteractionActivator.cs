@@ -1,5 +1,6 @@
 using GameFields.Persons.Commons;
 using GameFields.Persons.DrawCards;
+using GameFields.Persons.EnemyProcessImitations;
 using GameFields.Persons.Hands;
 using Tools;
 using UnityEngine;

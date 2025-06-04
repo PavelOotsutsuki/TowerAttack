@@ -36,7 +36,7 @@ namespace GameFields.Persons.Tables
             _playedCards.Add(card);
         }
 
-        public IReadOnlyList<Card> UpdateCards()
+        public IReadOnlyList<Card> DiscardCards()
         {
             List<Card> toDiscard = new List<Card>();
             
