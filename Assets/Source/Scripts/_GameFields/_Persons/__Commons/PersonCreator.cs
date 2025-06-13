@@ -206,7 +206,10 @@ namespace GameFields.Persons.Commons
             CurseEffectHandlerPlayer curseEffectHandler = new CurseEffectHandlerPlayer(_playerTower, _informationLabel, _confirmableNumbersEnemyAI,
                 _cursedNumbersEnemyAI, _bus);
             FireEffectHandler fireEffectHandler = new FireEffectHandler(drawCardAnimationManager);
-            PersonEffectsHandler personEffectsHandler = new PersonEffectsHandler(gnomeEffectHandler, slimeEffectHandler, curseEffectHandler, fireEffectHandler);
+            DoubleEffectHandler doubleEffectHandler = new DoubleEffectHandler();
+            SkipTurnEffectHandler skipTurnEffectHandler = new SkipTurnEffectHandler();
+            PersonEffectsHandler personEffectsHandler = new PersonEffectsHandler(gnomeEffectHandler, slimeEffectHandler, curseEffectHandler,
+                fireEffectHandler, doubleEffectHandler, skipTurnEffectHandler);
 
             SkipTurnChecker skipTurnChecker = new SkipTurnChecker(slimeEffectHandler, _playerHand);
             TurnProcessing turnProcessing = new TurnProcessing(_interactionActivator, skipTurnChecker);
@@ -242,7 +245,10 @@ namespace GameFields.Persons.Commons
             CurseEffectHandlerEnemyAI curseEffectHandler = new CurseEffectHandlerEnemyAI(_enemyTower, _informationLabel, _confirmableNumbersPlayer,
                 _cursedNumbersPlayer, _bus);
             FireEffectHandler fireEffectHandler = new FireEffectHandler(drawCardAnimationManager);
-            PersonEffectsHandler personEffectsHandler = new PersonEffectsHandler(gnomeEffectHandler, slimeEffectHandler, curseEffectHandler, fireEffectHandler);
+            DoubleEffectHandler doubleEffectHandler = new DoubleEffectHandler();
+            SkipTurnEffectHandler skipTurnEffectHandler = new SkipTurnEffectHandler();
+            PersonEffectsHandler personEffectsHandler = new PersonEffectsHandler(gnomeEffectHandler, slimeEffectHandler, curseEffectHandler,
+                fireEffectHandler, doubleEffectHandler, skipTurnEffectHandler);
 
             SkipTurnChecker skipTurnChecker = new SkipTurnChecker(slimeEffectHandler, _enemyHand);
             CardDragAndDropImitationActions cardDragAndDropImitationActions = new CardDragAndDropImitationActions(_enemyHand, _enemyPlayingZone, _enemyCardAttackZone,

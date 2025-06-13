@@ -14,20 +14,27 @@ namespace GameFields.Persons.EffectHandlers
         private readonly SlimeEffectHandler _slimeEffectHandler;
         private readonly CurseEffectHandler _curseEffectHandler;
         private readonly FireEffectHandler _fireEffectHandler;
+        private readonly DoubleEffectHandler _doubleEffectHandler;
+        private readonly SkipTurnEffectHandler _skipTurnEffectHandler;
 
         public PersonEffectsHandler(GnomeEffectHandler gnomeEffectHandler, SlimeEffectHandler slimeEffectHandler,
-            CurseEffectHandler curseEffectHandler, FireEffectHandler fireEffectHandler)
+            CurseEffectHandler curseEffectHandler, FireEffectHandler fireEffectHandler, DoubleEffectHandler doubleEffectHandler,
+            SkipTurnEffectHandler skipTurnEffectHandler)
         {
             _gnomeEffectHandler = gnomeEffectHandler;
             _slimeEffectHandler = slimeEffectHandler;
             _curseEffectHandler = curseEffectHandler;
             _fireEffectHandler = fireEffectHandler;
+            _doubleEffectHandler = doubleEffectHandler;
+            _skipTurnEffectHandler = skipTurnEffectHandler;
         }
 
         public GnomeEffectHandler GnomeEffectCounter => _gnomeEffectHandler;
         public SlimeEffectHandler SlimeEffectHandler => _slimeEffectHandler;
         public CurseEffectHandler CurseEffectHandler => _curseEffectHandler;
         public FireEffectHandler FireEffectHandler => _fireEffectHandler;
+        public DoubleEffectHandler DoubleEffectHandler => _doubleEffectHandler;
+        public SkipTurnEffectHandler SkipTurnEffectHandler => _skipTurnEffectHandler;
 
         public void OnStartTurn()
         {
@@ -36,6 +43,8 @@ namespace GameFields.Persons.EffectHandlers
 
         public void OnEndTurn()
         {
+            _doubleEffectHandler.OnEndTurn();
+            _skipTurnEffectHandler.OnEndTurn();
             _slimeEffectHandler.OnEndTurn();
             _fireEffectHandler.OnEndTurn();
         }

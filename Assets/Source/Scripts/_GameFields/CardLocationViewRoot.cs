@@ -170,6 +170,24 @@ namespace GameFields
             return true;
         }
 
+        public bool TryViewDeckTopCards(out IReadOnlyList<Card> cards, int countCards)
+        {
+            cards = null;
+
+            if (_deckView.IsHasCards(countCards) == false)
+                return false;
+
+            List<Card> currentCards = new List<Card>();
+
+            for (int i = 0; i < countCards; i++)
+            {
+                currentCards.Add(_deckView.ViewCardFromTopDeck(i));
+            }
+
+            cards = currentCards;
+            return true;
+        }
+
         public bool TryView(out IReadOnlyList<Card> cards, int countCards, ViewType viewType, IEnumerable<int> exceptions = null)
         {
             exceptions ??= new List<int>();

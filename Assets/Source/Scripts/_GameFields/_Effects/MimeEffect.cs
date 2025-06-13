@@ -1,21 +1,166 @@
+using UnityEngine;
+using Cards;
+using GameFields.Persons.Commons;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using GameFields.InformationLabels;
+using Tools.UI;
+using System.Linq;
+using Tools.Utils;
+using System;
+using GameFields.Persons.Discovers;
+using GameFields.Persons.DrawCards;
 
-namespace GameFields
+namespace GameFields.Effects
 {
-    public class MimeEffect : MonoBehaviour
+    public class MimeEffect : Effect
     {
-        // Start is called before the first frame update
-        void Start()
+        private const string TrueChoice = "ВЕРНО";
+        private const string FalseChoice = "НЕВЕРНО";
+
+        private readonly string _activateDeckDiscoverMessage = "Какая карта верхняя в колоде?";
+
+        private readonly Person _activePerson;
+        private readonly Person _deactivePerson;
+
+        private readonly CardLocationViewRoot _viewRoot;
+        private readonly InformationLabel _informationLabel;
+
+        public MimeEffect(Person activePerson, Person deactivePerson, CardLocationViewRoot viewRoot,
+            InformationLabel informationLabel) : base()
         {
-        
+            _activePerson = activePerson;
+            _deactivePerson = deactivePerson;
+
+            _viewRoot = viewRoot;
+            _informationLabel = informationLabel;
+
+            Play();
         }
 
-        // Update is called once per frame
-        void Update()
+        protected override IEnumerator OnPlaying()
         {
-        
+            string activateMessage;
+            LabelActivateData labelActivateData;
+            InformationLabelActivateData informationLabelActivateData;
+
+            ViewType enemyhandType = _activePerson is Player ? ViewType.HandAI : ViewType.HandPlayer;
+
+            //Card deckCard = null;
+
+            //if (_viewRoot.TryView(out IReadOnlyList<Card> cardDeck, 1, ViewType.Deck))
+            //{
+            //    deckCard = cardDeck[0];
+            //}
+
+            Card handCard = null;
+
+            if (_viewRoot.TryView(out IReadOnlyList<Card> cardHand, 1, enemyhandType))
+            {
+                handCard = cardHand[0];
+            }
+
+            Card deckTopCard = null;
+
+            if (_viewRoot.TryViewDeckTopCards(out IReadOnlyList<Card> cardTopDeck, 1))
+            {
+                deckTopCard = cardTopDeck[0];
+            }
+
+            Card deckEndCard = null;
+
+            if (_viewRoot.TryViewDeckLastCards(out IReadOnlyList<Card> cardEndDeck, 1))
+            {
+                deckEndCard = cardEndDeck[0];
+            }
+
+            if (deckEndCard == null || handCard == null || deckTopCard == deckEndCard)
+            {
+                //string activateMessage;
+
+                if (deckEndCard == null && handCard == null)
+                {
+                    activateMessage = "И в колоде, и в руке противника пусто!";
+                }
+                if (deckEndCard == null)
+                {
+                    activateMessage = "В колоде пусто!";
+                }
+                else if (deckTopCard == deckEndCard)
+                {
+                    activateMessage = "В колоде всего одна карта!";
+                }
+                else if (handCard == null)
+                {
+                    activateMessage = "И в колоде, и в руке противника пусто!";
+                }
+                else
+                {
+                    throw new Exception("Ошибка условия вывода сообщения для " + typeof(MimeEffect));
+                }
+
+                labelActivateData = new LabelActivateData(activateMessage);
+                informationLabelActivateData = new InformationLabelActivateData(labelActivateData);
+                _informationLabel.Activate(informationLabelActivateData);
+
+                yield return new WaitUntil(() => _informationLabel.IsComplete);
+                yield break;
+            }
+
+            DiscoverResult discoverResult = new DiscoverResult();
+
+            List<Card> discoverCards = new List<Card>()
+            {
+                handCard,
+                deckTopCard,
+                deckEndCard
+            };
+
+            discoverCards = Utils.Shuffle(discoverCards);
+
+            _activePerson.DiscoverCards(discoverCards, _activateDeckDiscoverMessage, discoverResult);
+
+            yield return new WaitUntil(() => discoverResult.IsComplete);
+
+            if (discoverResult.Result == deckTopCard)
+            {
+                _deactivePerson.ActivateSkipTurns(2);
+                activateMessage = TrueChoice;
+            }
+            else
+            {
+                activateMessage = FalseChoice;
+            }
+
+            labelActivateData = new LabelActivateData(activateMessage);
+            informationLabelActivateData = new InformationLabelActivateData(labelActivateData);
+
+            yield return new WaitUntil(() => discoverResult.IsComplete);
+            _informationLabel.Activate(informationLabelActivateData);
+
+            yield return new WaitUntil(() => _informationLabel.IsComplete);
         }
+
+        public override void End()
+        {
+            Debug.Log("End DetectiveRhodesEffect");
+        }
+
+        //private void Discover(Card firstFindedCard, int countDiscoverCards, string activateDiscoverMessage,
+        //    DiscoverResult discoverResult, IEnumerable<ViewType> noContains)
+        //{
+        //    List<Card> cardsGuess = new List<Card>();
+
+        //    cardsGuess.Add(firstFindedCard);
+
+        //    for (int i = 0; i < countDiscoverCards - 1; i++)
+        //    {
+        //        cardsGuess.Add(_viewRoot.ViewRandomCard(cardsGuess.Select(c => c.ViewData.Number), noContains));
+        //    }
+
+        //    cardsGuess = Utils.Shuffle(cardsGuess);
+
+        //    _activePerson.DiscoverCards(cardsGuess, activateDiscoverMessage, discoverResult);
+        //}
     }
 }

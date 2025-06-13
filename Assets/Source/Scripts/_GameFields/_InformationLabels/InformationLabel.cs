@@ -5,6 +5,7 @@ using Tools;
 using Tools.UI;
 using Tools.Utils.FillComponents;
 using UnityEngine;
+using static PlasticPipe.Server.MonitorStats;
 
 namespace GameFields.InformationLabels
 {
@@ -14,6 +15,9 @@ namespace GameFields.InformationLabels
         [SerializeField] private InformationLabelPanel _panel;
 
         private bool _isComplete;
+        private bool _isActive;
+        private InformationLabelActivateData _currentData;
+        private Coroutine _currentCoroutine;
 
         public bool IsComplete => _isComplete && _informationLabel.IsComplete && _panel.IsComplete;
 
@@ -22,19 +26,32 @@ namespace GameFields.InformationLabels
             _informationLabel.Init();
             _panel.Init();
 
+            _currentData = null;
             gameObject.SetActive(false);
         }
 
         public void Activate(InformationLabelActivateData data)
         {
+            if (_currentData != null)
+            {
+                _currentData += data;
+            }
+            else
+            {
+                _currentData = data;
+            }
+
             _isComplete = false;
 
             gameObject.SetActive(true);
 
-            _informationLabel.Show(data.LabelActivateData);
+            _informationLabel.Show(_currentData.LabelActivateData);
             _panel.Show();
 
-            StartCoroutine(WaitUntilDeactivating(data.TimeView));
+            if (_currentCoroutine != null)
+                StopCoroutine(_currentCoroutine);
+
+            _currentCoroutine = StartCoroutine(WaitUntilDeactivating(data.TimeView));
         }
 
         private void Deactivate()
@@ -59,6 +76,8 @@ namespace GameFields.InformationLabels
         {
             yield return new WaitUntil(() => _informationLabel.IsComplete && _panel.IsComplete);
 
+            _currentData = null;
+            _currentCoroutine = null;
             _isComplete = true;
         }
 

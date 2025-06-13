@@ -23,7 +23,7 @@ namespace GameFields.Effects
         {
             _endPlaying = false;
             //_activePerson.ChoiceActivate("Выбрано:", 3);
-            if (_activePerson.PersonEffectsHandler.GnomeEffectCounter.TryActivate(out int countNumbers))
+            if (_activePerson.TryActivateGnomeEffect(out int countNumbers))
             {
                 _activePerson.ChoiceActivate(countNumbers, EndPlaying);
             }

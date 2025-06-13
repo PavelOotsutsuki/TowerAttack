@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TimeMistressView
   m_EditorClassIdentifier: 
   <Number>k__BackingField: 10
-  <Icon>k__BackingField: {fileID: 21300000, guid: 758d9900016044f72aa88b992d4128fc, type: 3}
+  <Icon>k__BackingField: {fileID: 21300000, guid: 12f358f121a1247d6ab8c7cab0429514, type: 3}
   <Description>k__BackingField: "\u0427\u0442\u043E \u0431\u044B\u043B\u043E \u0443\u0442\u0440\u0430\u0447\u0435\u043D\u043E
     \u043C\u043E\u0436\u043D\u043E \u0432\u0435\u0440\u043D\u0443\u0442\u044C"
   <Feature>k__BackingField: "\u0412\u044B \u0431\u0435\u0440\u0435\u0442\u0435 \u0441\u043B\u0443\u0447\u0430\u0439\u043D\u0443\u044E

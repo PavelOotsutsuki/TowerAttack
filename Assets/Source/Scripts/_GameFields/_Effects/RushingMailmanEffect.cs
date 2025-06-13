@@ -1,21 +1,44 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Cards;
+using GameFields.Persons.Commons;
+using System.Collections;
+using GameFields.Persons.DrawCards;
 
-namespace GameFields
+namespace GameFields.Effects
 {
-    public class RushingMailmanEffect : MonoBehaviour
+    public class RushingMailmanEffect : Effect
     {
-        // Start is called before the first frame update
-        void Start()
+        private readonly int _countDrawCards = 2;
+
+        private readonly IDrawCardManager _drawCardManager;
+
+        private bool _isContinue;
+
+        public RushingMailmanEffect(Person activePerson) : base()
         {
-        
+            _drawCardManager = activePerson;
+
+            Play();
         }
 
-        // Update is called once per frame
-        void Update()
+        protected override IEnumerator OnPlaying()
         {
-        
+            _isContinue = false;
+
+            _drawCardManager?.DrawCards(_countDrawCards, Continue);
+
+            yield return new WaitUntil(() => _isContinue);
+        }
+
+        private void Continue()
+        {
+            _isContinue = true;
+        }
+
+
+        public override void End()
+        {
+            //Debug.Log("End patriarch corall effect");
         }
     }
 }

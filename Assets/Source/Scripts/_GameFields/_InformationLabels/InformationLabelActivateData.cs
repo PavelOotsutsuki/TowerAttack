@@ -14,6 +14,13 @@ namespace GameFields.InformationLabels
             _timeView = timeView;
         }
 
+        public static InformationLabelActivateData operator +(InformationLabelActivateData data1, InformationLabelActivateData data2)
+        {
+            return new InformationLabelActivateData(new LabelActivateData
+                (data1.LabelActivateData.Message + "\n" + data2.LabelActivateData.Message),
+                data1.TimeView + data2.TimeView);
+        }
+
         public LabelActivateData LabelActivateData => _labelActivateData;
         public float TimeView => _timeView;
     }

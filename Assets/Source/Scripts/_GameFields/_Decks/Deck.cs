@@ -135,9 +135,14 @@ namespace GameFields.Decks
             return result;
         }
 
-        public Card ViewCardFromEndDeck(int index = 0)
+        public Card ViewCardFromTopDeck(int index = 0)
         {
             return _cards[_cards.Count - 1 - index];
+        }
+
+        public Card ViewCardFromEndDeck(int index = 0)
+        {
+            return _cards[index];
         }
 
         private Card TakeCardByIndex(int index)

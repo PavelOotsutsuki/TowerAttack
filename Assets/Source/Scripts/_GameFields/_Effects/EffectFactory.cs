@@ -33,6 +33,33 @@ namespace GameFields.Effects
 
         public Effect Create(CardEffectConfig effectConfig)
         {
+            Debug.Log("Последний эффект противника: " + _personsState.Deactive.LastEffect.ToString());
+
+            CardEffectConfig currentEffectConfig = effectConfig;
+            Effect effect;
+
+            if (effectConfig.Type == EffectType.TimeLord)
+            {
+                currentEffectConfig = _personsState.Deactive.LastEffect.Type == EffectType.TimeLord ? _voidEffectConfig : _personsState.Deactive.LastEffect;
+            }
+
+            if (_personsState.Active.IsDoubleEffect)
+            {
+                effect = new DoubleEffect(CreateEffect, currentEffectConfig);
+            }
+            else
+            {
+                effect = CreateEffect(currentEffectConfig);
+            }
+
+            _personsState.Active.StartEffect(effect, currentEffectConfig);
+            //_lastEffect = effect;
+
+            return effect;
+        }
+
+        private Effect CreateEffect(CardEffectConfig effectConfig)
+        {
             Effect effect = effectConfig.Type switch
             {
                 EffectType.Void => new VoidEffect(),
@@ -44,15 +71,15 @@ namespace GameFields.Effects
                 EffectType.BlindOldMan => new BlindOldManEffect(_personsState.Active),
                 EffectType.DetectiveRhodes => new DetectiveRhodesEffect(_personsState.Active, _cardTransitManager, _viewRoot, _informationLabel),
                 EffectType.BlueGnome => new BlueGnomeEffect(_personsState.Active),
-                EffectType.TimeLord => Create(_personsState.Deactive.LastEffect.Type == EffectType.TimeLord ? _voidEffectConfig : _personsState.Deactive.LastEffect),// new TimeLordEffect(_personsState.Deactive, this),
+                EffectType.TimeLord => new VoidEffect(),// new TimeLordEffect(_personsState.Deactive, this),
                 EffectType.ThreeGuys => new ThreeGuysEffect(_personsState.Active),
                 EffectType.TimeMistress => new TimeMistressEffect(_personsState.Active, _viewRoot, _cardTransitManager),
                 EffectType.SharpSnake => new SharpSnakeEffect(_personsState.Deactive),
                 EffectType.ImpArmy => new ImpArmyEffect(_personsState.Deactive, effectConfig.Duration),
                 EffectType.CursedMark => new VoidEffect(), // Нельзя разыграть
-                EffectType.RushingMailman => new VoidEffect(),
-                EffectType.Schemer => new VoidEffect(),
-                EffectType.Mime => new VoidEffect(),
+                EffectType.RushingMailman => new RushingMailmanEffect(_personsState.Active),
+                EffectType.Schemer => new SchemerEffect(_personsState.Active, _personsState.Deactive, effectConfig.Duration),
+                EffectType.Mime => new MimeEffect(_personsState.Active, _personsState.Deactive, _viewRoot, _informationLabel),
                 EffectType.RedGnome => new VoidEffect(),
                 EffectType.TimeChild => new VoidEffect(),
                 EffectType.Undergrounder => new VoidEffect(),
@@ -91,11 +118,7 @@ namespace GameFields.Effects
                 _ => throw new NullReferenceException("Effect is not founded")
             };
 
-            _personsState.Active.StartEffect(effect, effectConfig);
-            //_lastEffect = effect;
-
             return effect;
         }
-
     }
 }

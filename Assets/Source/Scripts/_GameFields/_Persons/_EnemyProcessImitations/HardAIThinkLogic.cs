@@ -77,7 +77,7 @@ namespace GameFields.Persons.EnemyProcessImitations
             {
                 //Если GnomeChoice уже был разыгран
                 if (_gnomeEffectHandler.CanActivate() == false)
-                    if (flags.Contains(CardCapability.GnomeChoice))
+                    if ((cardCapability & CardCapability.GnomeChoice) == CardCapability.GnomeChoice)
                     {
                         probability.Add(CardCapability.Play, 5); // Берем минимальную вероятность, но все же берем
 
@@ -117,7 +117,7 @@ namespace GameFields.Persons.EnemyProcessImitations
                     //Самое время разыграть 
                     probability.Add(CardCapability.Play, 80);
                     // Атаковать в данной ситуации очень плохо
-                    probability.Add(CardCapability.Play, 5);
+                    probability.Add(CardCapability.Attack, 5);
 
                     return CalculateByProbability(probability);
                 }
@@ -193,7 +193,14 @@ namespace GameFields.Persons.EnemyProcessImitations
             int countAll = _cardWatcher.Cards.Count;
             int countFree = _confirmableNumbers.FreeNumbers.Count();
 
+            //Debug.Log($"{countAll}: countAll");
+            //Debug.Log($"{countFree}: countFree");
+
             int probabilityPlay = countFree * 100 / countAll;
+
+            if (probabilityPlay > 99)
+                probabilityPlay = 99;
+
             int probabilityAttack = 100 - probabilityPlay;
 
             probability.Add(CardCapability.Play, probabilityPlay);
@@ -207,10 +214,24 @@ namespace GameFields.Persons.EnemyProcessImitations
 
             int randomValue = Random.Range(0, maxValue);
             int summ = 0;
+
+            #region Debug
+            string debugMsg = "";
+            foreach (KeyValuePair<CardCapability, int> pair in probability)
+            {
+                summ += pair.Value;
+                debugMsg += $"{pair.Key}: value: {pair.Value} summ: {summ} randomValue: {randomValue}\n";
+            }
+            Debug.Log(debugMsg);
+            summ = 0;
+            #endregion
+
             foreach (KeyValuePair<CardCapability, int> pair in probability)
             {
                 if (randomValue < pair.Value + summ)
+                {
                     return pair.Key;
+                }
 
                 summ += pair.Value;
             }

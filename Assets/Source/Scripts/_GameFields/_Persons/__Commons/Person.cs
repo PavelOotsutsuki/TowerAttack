@@ -75,7 +75,8 @@ namespace GameFields.Persons.Commons
 
         public CardEffectConfig LastEffect { get; private set; }
         public bool IsComplete { get; private set; }
-        public PersonEffectsHandler PersonEffectsHandler => _personEffectsHandler;
+        //public PersonEffectsHandler PersonEffectsHandler => _personEffectsHandler;
+        public bool IsDoubleEffect => _personEffectsHandler.DoubleEffectHandler.IsActive;
 
         public void StartStep()
         {
@@ -85,6 +86,12 @@ namespace GameFields.Persons.Commons
 
             //_hand.OnStartTurn();
             OnStartStep();
+
+            if (_personEffectsHandler.SkipTurnEffectHandler.IsActive)
+            {
+                IsComplete = true;
+            }
+
             InitSteps();
             //_personEffectsHandler.OnStartTurn();
 
@@ -276,6 +283,21 @@ namespace GameFields.Persons.Commons
 
         //    return cards;
         //}
+
+        public void ActivateSkipTurns(int countTurns)
+        {
+            _personEffectsHandler.SkipTurnEffectHandler.Activate(countTurns);
+        }
+
+        public bool TryActivateGnomeEffect(out int countTurns)
+        {
+            return _personEffectsHandler.GnomeEffectCounter.TryActivate(out countTurns);
+        }
+
+        public void ActivateDoubleEffect(int countTurns)
+        {
+            _personEffectsHandler.DoubleEffectHandler.Activate(countTurns);
+        }
 
         public void AddCurse(EffectedCard effectedCard)
         {

@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: SchemerEffect
   m_EditorClassIdentifier: 
   <Type>k__BackingField: 15
-  <Duration>k__BackingField: 0
+  <Duration>k__BackingField: 1
