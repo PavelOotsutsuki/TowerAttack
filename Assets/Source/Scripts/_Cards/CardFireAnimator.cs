@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Tools;
 using Tools.Utils.FillComponents;
@@ -6,21 +7,63 @@ using UnityEngine;
 
 namespace Cards
 {
-    public class CardFireAnimator : MonoBehaviour
+    public class CardFireAnimator : MonoBehaviour, IWorkable
     {
         [SerializeField] private CardFrameFireAnimation _cardFrameFireAnimation;
         [SerializeField] private CardFireAnimation _cardFireAnimation;
+        [SerializeField] private CardFrameRiseAnimation _cardFrameRiseAnimation;
+        [SerializeField] private CardRiseAnimation _cardRiseAnimation;
+
+        public bool? IsActive { get; private set; } = null;
 
         public void Init()
         {
+            _cardFrameRiseAnimation.Init();
+            _cardRiseAnimation.Init();
             _cardFrameFireAnimation.Init();
             _cardFireAnimation.Init();
         }
 
-        public void Play()
+        //public void Play()
+        //{
+        //    _cardFrameFireAnimation.Play();
+        //    _cardFireAnimation.Play();
+        //}
+
+        public void Activate()
         {
+            if (IsActive == true)
+                return;
+
+            IsActive = true;
+
+            //_cardFrameFireAnimation.Activate();
+            //_cardFireAnimation.Activate();
+            //_cardFrameFireAnimation.Activate();
+            //_cardFrameFireAnimation.Activate();
+
             _cardFrameFireAnimation.Play();
             _cardFireAnimation.Play();
+        }
+
+        public void Deactivate()
+        {
+            if (IsActive == false)
+                return;
+
+            IsActive = false;
+
+            _cardFrameRiseAnimation.Play();
+            _cardRiseAnimation.Play();
+
+            StartCoroutine(WaitingUntilDeactivate());
+        }
+
+        private IEnumerator WaitingUntilDeactivate()
+        {
+            yield return new WaitUntil(() => _cardFrameRiseAnimation.IsComplete && _cardRiseAnimation.IsComplete);
+
+            _cardFireAnimation.Deactivate();
         }
 
         #region AutomaticFillComponents
@@ -30,7 +73,9 @@ namespace Cards
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
                 DefineCardFrameFireAnimation(),
-                DefineCardFireAnimation()
+                DefineCardFireAnimation(),
+                DefineCardFrameRiseAnimation(),
+                DefineCardRiseAnimation()
             };
 
             return list;
@@ -47,6 +92,18 @@ namespace Cards
         {
             return AutomaticFillComponents.DefineComponent(this, ref _cardFireAnimation, ComponentLocationTypes.InChildren);
         }
-        #endregion 
+
+        [ContextMenu(nameof(DefineCardFrameRiseAnimation))]
+        private ComponentAttachInfo DefineCardFrameRiseAnimation()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _cardFrameRiseAnimation, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineCardRiseAnimation))]
+        private ComponentAttachInfo DefineCardRiseAnimation()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _cardRiseAnimation, ComponentLocationTypes.InChildren);
+        }
+        #endregion
     }
 }

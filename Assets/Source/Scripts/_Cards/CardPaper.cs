@@ -26,6 +26,7 @@ namespace Cards
 
         public bool? IsShown { get; private set; } = null;
         public SideType CurrentSide => _cardSideFlipper.CurrentSide;
+        public bool IsFired => _onFireLogic.IsActive == true;
 
         internal void Init(Card me, CardViewService cardViewService, CardViewData cardViewData,
             RectTransform cardTransform, ICardDragAndDropHandler cardDragAndDropHandler, CardCapability cardCapability,
@@ -76,6 +77,11 @@ namespace Cards
             //}
             OnFireLogicActivateData onFireLogicActivateData = new OnFireLogicActivateData(delay);
             _onFireLogic.Activate(onFireLogicActivateData);
+        }
+
+        public void RiseFromTheAshes()
+        {
+            _onFireLogic.Deactivate();
         }
 
         public void SetView(CardViewData cardViewData, CardCapability cardCapability)

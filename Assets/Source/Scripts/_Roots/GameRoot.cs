@@ -68,7 +68,7 @@ namespace Roots
             EffectFactory effectFactory = new EffectFactory(_personsState, viewRoot, informationLabel, cardTransitManager);
 
             _cardRoot.Init(effectFactory, cardDescription, cardDragAndDropHandler);
-            deck.Init(_cardRoot.Cards);
+            deck.Init(seatPool, _cardRoot.Cards);
 
             _gameFieldRoot.Init(_personsState, enemyAI, bus, seatPool);
         }

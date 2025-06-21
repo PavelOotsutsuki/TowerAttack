@@ -9,7 +9,7 @@ using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCou
 
 namespace Tools.CommonAnimations
 {
-    public abstract class SpriteAnimation : MonoBehaviour, IWorkable<SpriteAnimationActivateData>, IAutomaticFillComponents
+    public abstract class SpriteAnimation : MonoBehaviour, ICompletable, IWorkable<SpriteAnimationActivateData>, IAutomaticFillComponents
     {
         [SerializeField] private Image _image;
         [SerializeField] private List<Sprite> _animSprites; //Возможно, стоит заменить на массив
@@ -18,12 +18,17 @@ namespace Tools.CommonAnimations
         private Sprite _defaultView;
         private Sprite _activeView;
 
+        private bool _isComplete;
+
         public float Duration => _duration;
         public bool? IsActive { get; private set; } = null;
+
+        public bool IsComplete => _isComplete;
 
         public void Init()
         {
             IsActive = false;
+            _isComplete = false;
 
             _defaultView = _animSprites[0];
             _activeView = _animSprites[_animSprites.Count - 1];
@@ -55,6 +60,8 @@ namespace Tools.CommonAnimations
 
         public void Play()
         {
+            _isComplete = false;
+
             SpriteAnimationActivateData data = new SpriteAnimationActivateData(false);
 
             Activate(data);
@@ -164,6 +171,7 @@ namespace Tools.CommonAnimations
                 //yield return new WaitForSeconds((_duration / _animSprites.Count) - Time.deltaTime);
             }
 
+            _isComplete = true;
             //Debug.Log("Конец " + _animSprites.Count + " . Время: " + (DateTime.Now.TimeOfDay - startTime));
         }
 

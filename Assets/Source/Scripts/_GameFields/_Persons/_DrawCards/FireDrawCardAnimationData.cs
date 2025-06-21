@@ -16,7 +16,7 @@ namespace GameFields.Persons.DrawCards
         [SerializeField] private bool _isDirectionUp = true;
         [SerializeField, Range(0f, 0.9f)] private float _startInvertPositionPercent = 0.33f;
         [SerializeField, Range(0f, 0.9f)] private float _centerInvertPositionPercent = 0.66f;
-        [SerializeField] private FireCardContainer _fireContainer;
+        [SerializeField] private FireDrawTemporarilyContainer _fireDrawTemporarilyContainer;
 
         private float Direction => _isDirectionUp == true ? 1 : -1;
         private float CenterScale => _endScale - (_endScale - 1f) / 2f;
@@ -27,6 +27,6 @@ namespace GameFields.Persons.DrawCards
 
         public Vector3 EndStartMovePosition => EndPosition * _startInvertPositionPercent;
         public InvertCardAnimationPlayData InvertCardAnimationPlayData => new InvertCardAnimationPlayData(CenterInvertPosition, CenterScaleVector, EndPosition, EndScaleVector);
-        public Transform FireCardParent => _fireContainer.GetTransform();
+        public Transform FireDrawTemporarilyParent => _fireDrawTemporarilyContainer.GetTransform();
     }
 }

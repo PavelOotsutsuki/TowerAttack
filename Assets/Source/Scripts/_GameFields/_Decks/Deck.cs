@@ -8,10 +8,12 @@ using System;
 using Random = UnityEngine.Random;
 using System.Linq;
 using Tools.Utils;
+using GameFields.Seats;
+using GameFields.DiscardPiles;
 
 namespace GameFields.Decks
 {
-    public class Deck : MonoBehaviour, IAutomaticFillComponents, IDeckTake, IDeckView, ITransitable, ICardsCounter
+    public class Deck : MonoBehaviour, IAutomaticFillComponents, IDeckTake, IDeckView, ITransitable, ICardsCounter//, IDeckSeatable
     {
         [SerializeField] private DeckCardContainer _cardContainer;
         [SerializeField] private DeckCardBackViewer _cardBackViewer;
@@ -20,25 +22,29 @@ namespace GameFields.Decks
 
         private readonly float _startCardAddPositionX = 0f;
         private readonly float _startCardAddPositionY = 0f;
+        private List<Seat> _seats = new List<Seat>();
 
-        private List<Card> _cards;
+        private SeatPool _deckSeatPool;
 
         public event Action OnSeatsCountChange;
 
-        public int CountCards => _cards.Count;
+        public int CountCards => _seats.Count;
 
-        public IEnumerable<Card> AllCards => _cards;
+        public IEnumerable<Card> AllCards => _seats.Select(s => s.Card);
 
-        public void Init(IEnumerable<Card> cards)
+        public void Init(SeatPool seatPool, IEnumerable<Card> cards)
         {
-            _cards = new List<Card>();
+            _deckSeatPool = seatPool;
             _cardBackViewer.Init(_startCardAddPositionX, _startCardAddPositionY);
             _deckHelper.Init();
 
             foreach (Card card in cards)
             {
-                _cards.Add(card);
-                BindCard(card.ReadOnlyRectTransform, card.CardMovement);
+                Seat deckSeat = GetSeat();
+                deckSeat.SetCard(card, SideType.Back, 0f);
+
+                _seats.Add(deckSeat);
+                //BindCard(card.ReadOnlyRectTransform, card.CardMovement);
             }
 
             ShuffleCards();
@@ -48,29 +54,47 @@ namespace GameFields.Decks
         {
             exceptions ??= new List<int>();
 
-            return _cards.Where(c => exceptions.Contains(c.ViewData.Number) == false).Count() >= count;
+            return _seats.Where(c => exceptions.Contains(c.Card.ViewData.Number) == false).Count() >= count;
         }
 
         public bool Contains(int number)
         {
-            return _cards.Select(c => c.ViewData.Number).Contains(number);
+            return _seats.Select(c => c.Card.ViewData.Number).Contains(number);
         }
 
         public void SeatCard(Card card)
         {
-            int position = Random.Range(0, _cards.Count);
-            _cards.Insert(position, card);
+            //SeatCardWithoutShuffle(card);
+
+            Seat deckSeat = GetSeat();
+            deckSeat.SetCard(card, SideType.Back, 0.5f);
+
+            _seats.Add(deckSeat);
+
+            //int position = Random.Range(0, _seats.Count);
+            //_seats.Insert(position, card);
 
             OnSeatsCountChange?.Invoke();
 
-            BindCard(card.ReadOnlyRectTransform, card.CardMovement);
+            //BindCard(card.ReadOnlyRectTransform, card.CardMovement);
 
             ShuffleCards();
         }
 
+
+        //public void SeatCardWithoutShuffle(Card card)
+        //{
+        //    int position = Random.Range(0, _cards.Count);
+        //    _cards.Insert(position, card);
+
+        //    OnSeatsCountChange?.Invoke();
+
+        //    BindCard(card.ReadOnlyRectTransform, card.CardMovement);
+        //}
+
         public Card TakeTopCard()
         {
-            return TakeCardByIndex(_cards.Count - 1);
+            return TakeCardByIndex(_seats.Count - 1);
         }
 
         public bool TryTakeAwayCard(Card card)
@@ -88,16 +112,16 @@ namespace GameFields.Decks
             List<int> existingIndices = new List<int>();
             List<Card> result = new List<Card>();
 
-            IReadOnlyList<Card> cards = Utils.Shuffle(_cards);
+            IReadOnlyList<Seat> seats = Utils.Shuffle(_seats);
 
             for (int c = 0; c < count; c++)
             {
-                for (int i = 0; i < cards.Count; i++)
+                for (int i = 0; i < seats.Count; i++)
                 {
-                    if (existingIndices.Contains(cards[i].ViewData.Number) == false && exceptions.Contains(cards[i].ViewData.Number) == false)
+                    if (existingIndices.Contains(seats[i].Card.ViewData.Number) == false && exceptions.Contains(seats[i].Card.ViewData.Number) == false)
                     {
-                        result.Add(cards[i]);
-                        existingIndices.Add(cards[i].ViewData.Number);
+                        result.Add(seats[i].Card);
+                        existingIndices.Add(seats[i].Card.ViewData.Number);
                     }
                 }
             }
@@ -106,12 +130,12 @@ namespace GameFields.Decks
             {
                 for (int c = result.Count - 1; c < count; c++)
                 {
-                    for (int i = 0; i < cards.Count; i++)
+                    for (int i = 0; i < seats.Count; i++)
                     {
-                        if (exceptions.Contains(cards[i].ViewData.Number) == false)
+                        if (exceptions.Contains(seats[i].Card.ViewData.Number) == false)
                         {
-                            result.Add(cards[i]);
-                            existingIndices.Add(cards[i].ViewData.Number);
+                            result.Add(seats[i].Card);
+                            existingIndices.Add(seats[i].Card.ViewData.Number);
                         }
                     }
                 }
@@ -121,10 +145,10 @@ namespace GameFields.Decks
             {
                 for (int c = result.Count - 1; c < count; c++)
                 {
-                    for (int i = 0; i < cards.Count; i++)
+                    for (int i = 0; i < seats.Count; i++)
                     {
-                        result.Add(cards[i]);
-                        existingIndices.Add(cards[i].ViewData.Number);
+                        result.Add(seats[i].Card);
+                        existingIndices.Add(seats[i].Card.ViewData.Number);
                     }
                 }
             }
@@ -137,17 +161,18 @@ namespace GameFields.Decks
 
         public Card ViewCardFromTopDeck(int index = 0)
         {
-            return _cards[_cards.Count - 1 - index];
+            return _seats[_seats.Count - 1 - index].Card;
         }
 
         public Card ViewCardFromEndDeck(int index = 0)
         {
-            return _cards[index];
+            return _seats[index].Card;
         }
 
         private Card TakeCardByIndex(int index)
         {
-            Card card = _cards[index];
+            //Seat seat = _seats[index];
+            Card card = _seats[index].Card;
 
             RemoveCard(card);
 
@@ -156,7 +181,7 @@ namespace GameFields.Decks
 
         private void ShuffleCards()
         {
-            _cards = Utils.Shuffle(_cards);
+            _seats = Utils.Shuffle(_seats);
             //List<Card> shuffleCards = new List<Card>();
 
             //while (_cards.Count > 0)
@@ -171,28 +196,41 @@ namespace GameFields.Decks
 
         private void RemoveCard(Card card)
         {
-            _cards.Remove(card);
+            Seat seat = _seats.Where(s => s.Card == card).FirstOrDefault();
+
+            if (seat == null)
+                throw new Exception("Пытаетесь удалить карту которой нет в Seat-а");
+
+            _seats.Remove(seat);
 
             OnSeatsCountChange?.Invoke();
 
-            if (_cards.Count % _countCardsInGroup == 0)
+            if (_seats.Count % _countCardsInGroup == 0)
             {
                 _cardBackViewer.Remove();
             }
         }
 
-        private void BindCard(ReadOnlyTransform cardTransform, Movement cardMovement)
+        //private void BindCard(ReadOnlyTransform cardTransform, Movement cardMovement)
+        //{
+        //    cardTransform.SetParent(_cardContainer.GetTransform());
+
+        //    Vector2 cardAddPosition = new Vector2(_startCardAddPositionX, _startCardAddPositionY);
+
+        //    cardMovement.MoveLocalInstantly(cardAddPosition, cardTransform.GetRotationVector());
+
+        //    if (_seats.Count % _countCardsInGroup == 1)
+        //    {
+        //        _cardBackViewer.Add();
+        //    }
+        //}
+
+        private Seat GetSeat()
         {
-            cardTransform.SetParent(_cardContainer.GetTransform());
-
-            Vector2 cardAddPosition = new Vector2(_startCardAddPositionX, _startCardAddPositionY);
-
-            cardMovement.MoveLocalInstantly(cardAddPosition, cardTransform.GetRotationVector());
-
-            if (_cards.Count % _countCardsInGroup == 1)
-            {
-                _cardBackViewer.Add();
-            }
+            Seat discardPileSeat = _deckSeatPool.GetSeat();
+            discardPileSeat.ReadOnlyTransform.SetParent(transform);
+            discardPileSeat.SetLocalPositionValues(new Vector2(_startCardAddPositionX, _startCardAddPositionY), Quaternion.identity.eulerAngles);
+            return discardPileSeat;
         }
 
         #region AutomaticFillComponents

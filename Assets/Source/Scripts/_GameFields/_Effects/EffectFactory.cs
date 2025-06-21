@@ -1,6 +1,7 @@
 using System;
 using Cards;
 using GameFields.InformationLabels;
+using GameFields.Persons.Fires;
 using GameFields.Signals;
 using UnityEngine;
 using Zenject;
@@ -33,8 +34,6 @@ namespace GameFields.Effects
 
         public Effect Create(CardEffectConfig effectConfig)
         {
-            Debug.Log("Последний эффект противника: " + _personsState.Deactive.LastEffect.ToString());
-
             CardEffectConfig currentEffectConfig = effectConfig;
             Effect effect;
 
@@ -52,7 +51,7 @@ namespace GameFields.Effects
                 effect = CreateEffect(currentEffectConfig);
             }
 
-            _personsState.Active.StartEffect(effect, currentEffectConfig);
+            _personsState.Active.StartEffect(effect, effectConfig);
             //_lastEffect = effect;
 
             return effect;
@@ -80,8 +79,8 @@ namespace GameFields.Effects
                 EffectType.RushingMailman => new RushingMailmanEffect(_personsState.Active),
                 EffectType.Schemer => new SchemerEffect(_personsState.Active, _personsState.Deactive, effectConfig.Duration),
                 EffectType.Mime => new MimeEffect(_personsState.Active, _personsState.Deactive, _viewRoot, _informationLabel),
-                EffectType.RedGnome => new VoidEffect(),
-                EffectType.TimeChild => new VoidEffect(),
+                EffectType.RedGnome => new RedGnomeEffect(_personsState.Active),
+                EffectType.TimeChild => new TimeChildEffect(_viewRoot, _cardTransitManager),
                 EffectType.Undergrounder => new VoidEffect(),
                 EffectType.RobinGood => new VoidEffect(),
                 EffectType.General => new VoidEffect(),

@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Fires
 {
-    public class FireRoot: ICardView
+    public class FireRoot: ICardView, ICardTakable
     {
         private readonly FirePool _playerFirePool;
         private readonly FirePool _enemyFirePool;
@@ -31,6 +31,26 @@ namespace GameFields.Persons.Fires
 
                 return allCards;
             }
+        }
+
+        //public void Clear()
+        //{
+        //    _playerFirePool.Clear();
+        //    _enemyFirePool.Clear();
+        //}
+
+        public bool TryTakeAwayCard(Card card)
+        {
+            if (AllCards.Contains(card) == false)
+                return false;
+
+            if (_playerFirePool.FireList.Contains(card))
+                _playerFirePool.Remove(card);
+
+            if (_enemyFirePool.FireList.Contains(card))
+                _enemyFirePool.Remove(card);
+
+            return true;
         }
 
         public bool IsHasCards(int count, IEnumerable<int> exceptions = null)

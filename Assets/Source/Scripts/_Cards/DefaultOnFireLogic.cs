@@ -17,15 +17,39 @@ namespace Cards
 
         public override void Activate(OnFireLogicActivateData data)
         {
+            if (IsActive == true)
+                return;
+
+            IsActive = true;
+
             StartCoroutine(Activating(data.Delay));
+        }
+
+        public override void Deactivate()
+        {
+            if (IsActive == false)
+                return;
+
+            IsActive = false;
+
+            _cardFireAnimator.Deactivate();
+            //StartCoroutine(Deactivating());
         }
 
         private IEnumerator Activating(WaitForSeconds delay)
         {
             yield return delay;
 
-            _cardFireAnimator.Play();
+            _cardFireAnimator.Activate();
         }
+
+        //private IEnumerator Deactivating()
+        //{
+        //    //yield return _currentDelay;
+
+        //    _cardFireAnimator.Deactivate();
+        //    yield break;
+        //}
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(DefaultOnFireLogic))]
@@ -44,6 +68,6 @@ namespace Cards
         {
             return AutomaticFillComponents.DefineComponent(this, ref _cardFireAnimator, ComponentLocationTypes.InThis);
         }
-        #endregion 
+        #endregion
     }
 }

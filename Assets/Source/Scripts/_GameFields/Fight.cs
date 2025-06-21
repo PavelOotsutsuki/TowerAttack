@@ -101,6 +101,17 @@ namespace GameFields
                 IsComplete = true;
             }
 
+            //if (_personsState.Deactive is Player)
+            //{
+            //    Debug.Log("Player: " + _personsState.Deactive.LastEffect.ToString());
+            //    Debug.Log("Enemy: " + _personsState.Active.LastEffect.ToString());
+            //}
+            //else
+            //{
+            //    Debug.Log("Player: " + _personsState.Active.LastEffect.ToString());
+            //    Debug.Log("Enemy: " + _personsState.Deactive.LastEffect.ToString());
+            //}
+
             _personsState.Switch();
         }
     }

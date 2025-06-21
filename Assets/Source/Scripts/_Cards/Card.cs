@@ -176,6 +176,21 @@ namespace Cards
             _cardPaper.Fire(delay);
         }
 
+        public void Rise()
+        {
+            if (_currentState is not CardPaper)
+            {
+                throw new Exception("Try rise not CardPaper. Card state: " + _currentState.ToString());
+            }
+
+            if (_cardPaper.IsFired == false)
+                throw new Exception("Try rise no fired Card");
+
+            gameObject.SetActive(true);
+            _rectTransform.localScale = _defaultScaleVector;
+            _cardPaper.RiseFromTheAshes();
+        }
+
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(Card))]
         public List<ComponentAttachInfo> DefineAllComponents()

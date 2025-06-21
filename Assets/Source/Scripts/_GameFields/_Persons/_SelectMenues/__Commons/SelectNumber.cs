@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace GameFields.Persons.SelectMenues.Commons
 {
-    public class SelectNumber : SelectableButton, ISelectNumber, IActivatable<SelectNumberActivateData>
+    public class SelectNumber : SelectableButton, ISelectNumber, IWorkable<SelectNumberActivateData>
     {
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private TMP_Text _text;

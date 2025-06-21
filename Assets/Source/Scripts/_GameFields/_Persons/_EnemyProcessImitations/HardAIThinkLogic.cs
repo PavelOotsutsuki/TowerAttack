@@ -44,6 +44,12 @@ namespace GameFields.Persons.EnemyProcessImitations
 
         public CardCapability FindActionType(CardCapability cardCapability)
         {
+            List<CardCapability> testflags = Utils.GetFlags(cardCapability & (CardCapability.Play |
+                CardCapability.GnomeForging | CardCapability.HandTransfer));
+
+
+            return testflags[Random.Range(0, testflags.Count)];
+
             List<CardCapability> flags = Utils.GetFlags(cardCapability & (CardCapability.Attack | CardCapability.Play |
                 CardCapability.GnomeForging | CardCapability.HandTransfer));
 

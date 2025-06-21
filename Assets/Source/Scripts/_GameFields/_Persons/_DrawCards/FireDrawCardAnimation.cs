@@ -67,7 +67,7 @@ namespace GameFields.Persons.DrawCards
                 _data.InvertCardAnimationData.DelayAfterInvert +
                 _data.FireDrawCardDelay)); // Так, потому что надо чтобы sound пироманта пошел сразу
 
-            drawnCard.ReadOnlyRectTransform.SetParent(_data.FireCardParent);
+            drawnCard.ReadOnlyRectTransform.SetParent(_data.FireDrawTemporarilyParent);
 
             drawnCard.CardMovement.MoveLocalLinear(_data.EndStartMovePosition, drawnCard.ReadOnlyRectTransform.GetRotationVector(),
                 _data.StartMoveDuration);
@@ -82,11 +82,11 @@ namespace GameFields.Persons.DrawCards
             yield return new WaitUntil(() => invertCardAnimation.IsComplete);
             //yield return new WaitForSeconds(_data.FireDrawCardDelay);
 
-            _firePool.Add(drawnCard);
 
             yield return new WaitForSeconds(2.5f);
             drawnCard.gameObject.SetActive(false);
 
+            _firePool.Add(drawnCard);
             _isComplete = true;
         }
     }

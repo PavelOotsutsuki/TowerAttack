@@ -113,6 +113,7 @@ namespace GameFields.Persons.Commons
         [SerializeField] private SimpleDrawCardAnimationData _enemyAISimpleDrawCardAnimationData;
         [SerializeField] private FireDrawCardAnimationData _playerFireDrawCardAnimationData;
         [SerializeField] private FireDrawCardAnimationData _enemyAIFireDrawCardAnimationData;
+        [SerializeField] private FireCardContainer _fireContainer;
         //[SerializeField] private float _fireDrawCardDelay = 2f;
         //[SerializeField] private InvertCardAnimationData _fireAnimationInvertData;
 
@@ -171,8 +172,8 @@ namespace GameFields.Persons.Commons
             _informationLabel = informationLabel;
             _cardWatcher = cardRoot;
 
-            _playerFirePool = new FirePool();
-            _enemyFirePool = new FirePool();
+            _playerFirePool = new FirePool(_fireContainer.GetTransform());
+            _enemyFirePool = new FirePool(_fireContainer.GetTransform());
             _fireRoot = new FireRoot(_playerFirePool, _enemyFirePool);
 
             _playerRechangeFeatureRuleController = new RechangeFeatureRuleController();
@@ -275,7 +276,7 @@ namespace GameFields.Persons.Commons
 
         public CardTransitManager CreateCardTransitManager()
         {
-            return new CardTransitManager(_playerHand, _enemyHand, _playerTower, _enemyTower, _deck, _discardPile);
+            return new CardTransitManager(_playerHand, _enemyHand, _playerTower, _enemyTower, _deck, _discardPile, _fireRoot);
         }
 
         private void InitPlayersData()

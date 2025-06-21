@@ -4,6 +4,7 @@ namespace GameFields
     {
         HandPlayer,
         HandEnemy,
-        DiscardPile
+        DiscardPile,
+        FireRoot
     }
 }
