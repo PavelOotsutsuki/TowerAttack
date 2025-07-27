@@ -7,7 +7,7 @@ namespace Cards
     public class CardRoot : MonoBehaviour, ICardWatcher, IAutomaticFillComponents
     {
         [SerializeField] private BigCardRoot _bigCardRoot;
-        [SerializeField] private Card[] _cards;
+        [SerializeField] private Card[] _startCards;
         [SerializeField] private CurseAnimator _curseAnimator;
 
         private CardDescription _cardDescription;
@@ -43,7 +43,7 @@ namespace Cards
         {
             _allCards = new List<Card>();
 
-            foreach (Card card in _cards)
+            foreach (Card card in _startCards)
             {
                 card.Init(effectFactory, _cardViewService, cardDragAndDropHandler, _curseAnimator);
                 _allCards.Add(card);
@@ -66,7 +66,7 @@ namespace Cards
         [ContextMenu(nameof(DefineAllCards))]
         private ComponentAttachInfo DefineAllCards()
         {
-           return AutomaticFillComponents.DefineComponent(this, ref _cards);
+           return AutomaticFillComponents.DefineComponent(this, ref _startCards);
         }
 
         [ContextMenu(nameof(DefineBigCardRoot))]

@@ -26,6 +26,7 @@ using Tools.Settings;
 using GameFields.Persons.EffectHandlers.Curses;
 using GameFields.Persons.EnemyProcessImitations;
 using GameFields.Persons.EffectHandlers.Fires;
+using GameFields.Persons.LookCardMenues;
 
 namespace GameFields.Persons.Commons
 {
@@ -47,6 +48,8 @@ namespace GameFields.Persons.Commons
         private FirePool _playerFirePool;
         private RechangeFeatureRuleController _playerRechangeFeatureRuleController;
         private TurnDrawnCards _playerTurnDrawnCards;
+
+        private LookCardMenu _playerLookCardMenu;
 
         private ForgingZone _forgingZone;
         private HandTransferZone _handTransferZone;
@@ -134,7 +137,8 @@ namespace GameFields.Persons.Commons
             TableAI enemyTable, TowerAI enemyTower, DiscoverAI enemyDiscoverImitation, AttackMenuEnemyAI enemyAttackMenu,
             CardAttackZonePlayer playerCardAttackZone, CardAttackZoneEnemyAI enemyCardAttackZone, ChoiceMenuPlayer playerChoiceMenu,
             ChoiceMenuEnemyAI enemyChoiceMenu, DiscardPile discardPile, ChoiceMenuImitationPlayer choiceMenuImitationPlayer,
-            ChoiceMenuImitationEnemyAI choiceMenuImitationEnemyAI, ForgingZone forgingZone, HandTransferZone handTransferZone)
+            ChoiceMenuImitationEnemyAI choiceMenuImitationEnemyAI, ForgingZone forgingZone, HandTransferZone handTransferZone,
+            LookCardMenu lookCardMenu)
         {
             _playerPlayingZone = playerPlayingZone;
             _playerHand = playerHand;
@@ -145,6 +149,8 @@ namespace GameFields.Persons.Commons
             _playerChoiceMenuImitation = choiceMenuImitationPlayer;
             _playerAttackMenu = playerAttackMenu;
             _playerCardAttackZone = playerCardAttackZone;
+
+            _playerLookCardMenu = lookCardMenu;
 
             _forgingZone = forgingZone;
             _handTransferZone = handTransferZone;

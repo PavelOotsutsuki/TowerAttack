@@ -1,6 +1,8 @@
 using System.Collections;
+using System.Collections.Generic;
 using Cards;
 using GameFields.Persons.Commons;
+using GameFields.Persons.LookCardMenues;
 using UnityEngine;
 
 namespace GameFields.Effects
@@ -8,13 +10,18 @@ namespace GameFields.Effects
     public class SharpSnakeEffect : Effect
     {
         private readonly Person _deactivePerson;
-
         private bool _isEffectComplete;
 
-        public SharpSnakeEffect(Person deactivePerson) : base()
+        private readonly LookCardMenu _lookCardMenu;
+        private readonly CardLocationViewRoot _cardLocationViewRoot;
+
+        public SharpSnakeEffect(Person deactivePerson, LookCardMenu lookCardMenu, CardLocationViewRoot cardLocationViewRoot) : base()
         {
             _deactivePerson = deactivePerson;
             _isEffectComplete = false;
+
+            _lookCardMenu = lookCardMenu;
+            _cardLocationViewRoot = cardLocationViewRoot;
 
             Play();
         }
@@ -26,8 +33,15 @@ namespace GameFields.Effects
 
         protected override IEnumerator OnPlaying()
         {
-            _deactivePerson.ActivateSharpSnakeEffect(CompleteEffect);
-            yield return new WaitUntil(() => _isEffectComplete);
+            //_deactivePerson.ActivateSharpSnakeEffect(CompleteEffect);
+            //yield return new WaitUntil(() => _isEffectComplete);
+            ViewType hand = _deactivePerson is EnemyAI ? ViewType.HandAI : ViewType.HandPlayer;
+            IEnumerable<Card> cards = _cardLocationViewRoot.GetAllCards(hand);
+
+            LookCardMenuActivateData lookCardMenuActivateData = new LookCardMenuActivateData(cards);
+            _lookCardMenu.Activate(lookCardMenuActivateData);
+
+            yield return new WaitUntil(() => _lookCardMenu.IsComplete);
         }
 
         private void CompleteEffect()

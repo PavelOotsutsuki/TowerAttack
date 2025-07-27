@@ -40,10 +40,14 @@ namespace GameFields.Decks
 
             foreach (Card card in cards)
             {
-                Seat deckSeat = GetSeat();
-                deckSeat.SetCard(card, SideType.Back, 0f);
+                SeatCard(card);
+                //Seat deckSeat = GetSeat();
+                //deckSeat.SetCard(card, SideType.Back, 0f);
 
-                _seats.Add(deckSeat);
+                //_seats.Add(deckSeat);
+
+
+
                 //BindCard(card.ReadOnlyRectTransform, card.CardMovement);
             }
 
@@ -77,6 +81,14 @@ namespace GameFields.Decks
             OnSeatsCountChange?.Invoke();
 
             //BindCard(card.ReadOnlyRectTransform, card.CardMovement);
+            Debug.Log("_seats.Count % _countCardsInGroup:" + _seats.Count % _countCardsInGroup);
+            Debug.Log("_seats.Count:" + _seats.Count);
+            Debug.Log("_countCardsInGroup:" + _countCardsInGroup);
+
+            if (AllCards.Count() % _countCardsInGroup == 1)
+            {
+                _cardBackViewer.Add();
+            }
 
             ShuffleCards();
         }
@@ -205,7 +217,7 @@ namespace GameFields.Decks
 
             OnSeatsCountChange?.Invoke();
 
-            if (_seats.Count % _countCardsInGroup == 0)
+            if (AllCards.Count() % _countCardsInGroup == 0)
             {
                 _cardBackViewer.Remove();
             }
@@ -228,7 +240,7 @@ namespace GameFields.Decks
         private Seat GetSeat()
         {
             Seat discardPileSeat = _deckSeatPool.GetSeat();
-            discardPileSeat.ReadOnlyTransform.SetParent(transform);
+            discardPileSeat.ReadOnlyTransform.SetParent(_cardContainer.GetTransform());
             discardPileSeat.SetLocalPositionValues(new Vector2(_startCardAddPositionX, _startCardAddPositionY), Quaternion.identity.eulerAngles);
             return discardPileSeat;
         }

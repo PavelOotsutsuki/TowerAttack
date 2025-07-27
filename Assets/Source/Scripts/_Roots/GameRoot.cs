@@ -14,6 +14,7 @@ using Zenject;
 using CanvasSortOrders;
 using GameFields.InformationLabels;
 using GameFields.DiscardPiles;
+using GameFields.Persons.LookCardMenues;
 
 namespace Roots
 {
@@ -32,7 +33,7 @@ namespace Roots
 
         [Inject]
         private void Construct(SignalBus bus, Deck deck, SeatPool seatPool, CardDescription cardDescription, HandPlayer handPlayer,
-            InformationLabel informationLabel)
+            InformationLabel informationLabel, LookCardMenu lookCardMenu)
         {
             GameFieldGC.GCOFF();
 
@@ -45,6 +46,8 @@ namespace Roots
 
             _lightControlsCreator.Init();
             _speedUpButtonSortOrder.Init();
+
+            lookCardMenu.Init();
 
             CardDragAndDropLightController cardDragAndDropLightController = _lightControlsCreator.CreateCardDragAndDropLightController();
 
@@ -65,7 +68,7 @@ namespace Roots
 
             _personsState = new PersonsState(player, enemyAI);
 
-            EffectFactory effectFactory = new EffectFactory(_personsState, viewRoot, informationLabel, cardTransitManager);
+            EffectFactory effectFactory = new EffectFactory(_personsState, viewRoot, informationLabel, cardTransitManager, lookCardMenu);
 
             _cardRoot.Init(effectFactory, cardDescription, cardDragAndDropHandler);
             deck.Init(seatPool, _cardRoot.Cards);
