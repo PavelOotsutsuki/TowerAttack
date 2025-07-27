@@ -3,7 +3,7 @@ using Tools.UI;
 
 namespace GameFields.Persons.LookCardMenues
 {
-    public class LookCardMenuSeatPanelSwitch : ConfirmableButton
+    public abstract class LookCardMenuSeatPanelSwitch : ConfirmableButton
     {
         private Action _onEnterClick;
 

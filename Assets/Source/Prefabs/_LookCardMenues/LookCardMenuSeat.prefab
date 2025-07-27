@@ -332,6 +332,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _viewDuration: 0.5
   _viewLogic: {fileID: 2946402574323752578}
+  _transform: {fileID: 8183030424040434604}
   _cardView:
     _icon: {fileID: 4185035692310723269}
     _number: {fileID: 405594994804656668}

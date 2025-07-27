@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Cards;
 using Cysharp.Threading.Tasks;
 using Tools;
+using Tools.Settings;
 using Tools.UI;
 using Tools.Utils.FillComponents;
 using UnityEngine;
@@ -15,18 +16,30 @@ namespace GameFields.Persons.LookCardMenues
     {
         [SerializeField, Min(0f)] private float _viewDuration = 0.5f;
         [SerializeField] private LookCardMenuCardViewLogic _viewLogic;
+        [SerializeField] private Transform _transform;
         [SerializeField] private CardView _cardView;
         [SerializeField] private CardBlock _cardBlock;
 
+        private ReadOnlyTransform _ROTransform;
+
         private string _descriptionMessage;
         private CardDescription _description;
+        private BigCard _bigCard;
+
         private LabelActivateData _labelData;
+        private Vector2 _bigCardSize;
+        private CardViewData _currentViewData;
 
         public bool? IsActive { get; private set; } = null;
 
-        public void Init(CardDescription cardDescription)
+        public void Init(CardDescription cardDescription, BigCard bigCard)
         {
+            _ROTransform = new ReadOnlyTransform(_transform);
+            _bigCardSize = GameSettings.CardSize * 2f;
+
             _description = cardDescription;
+            _bigCard = bigCard;
+
             _viewLogic.Init(_viewDuration);
             //gameObject.SetActive(true);
 
@@ -54,7 +67,8 @@ namespace GameFields.Persons.LookCardMenues
 
             Block();
 
-            _cardView.FillData(data.CardViewData);
+            _currentViewData = data.CardViewData;
+            _cardView.FillData(_currentViewData);
             _descriptionMessage = data.CardViewData.Description;
             _labelData = new LabelActivateData(_descriptionMessage);
 
@@ -70,11 +84,16 @@ namespace GameFields.Persons.LookCardMenues
         public void OnPointerEnter(PointerEventData eventData)
         {
             _description.Show(_labelData);
+
+            BigCardShowData showData = new BigCardShowData(_bigCardSize, _ROTransform, _currentViewData);
+
+            _bigCard.Show(showData);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             _description.Hide();
+            _bigCard.Hide();
         }
 
         private IEnumerator WaitingToUnblock()
@@ -105,7 +124,8 @@ namespace GameFields.Persons.LookCardMenues
         {
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
-                DefineDiscoverViewLogic()
+                DefineDiscoverViewLogic(),
+                DefineTransform()
             };
 
             return list;
@@ -115,6 +135,12 @@ namespace GameFields.Persons.LookCardMenues
         private ComponentAttachInfo DefineDiscoverViewLogic()
         {
             return AutomaticFillComponents.DefineComponent(this, ref _viewLogic, ComponentLocationTypes.InThis);
+        }
+
+        [ContextMenu(nameof(DefineTransform))]
+        private ComponentAttachInfo DefineTransform()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _transform, ComponentLocationTypes.InThis);
         }
         #endregion
     }

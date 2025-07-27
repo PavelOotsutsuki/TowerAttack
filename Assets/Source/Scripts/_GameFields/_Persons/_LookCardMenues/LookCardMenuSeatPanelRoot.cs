@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cards;
 using Tools;
+using Tools.Utils.FillComponents;
 using UnityEngine;
 using Zenject;
 
@@ -10,10 +11,11 @@ namespace GameFields.Persons.LookCardMenues
 {
     public class LookCardMenuSeatPanelRoot : MonoBehaviour, ICompletable, IWorkable<LookCardMenuSeatPanelRootActivateData>
     {
+        [SerializeField] private BigCard _bigCard;
         [SerializeField] private LookCardMenuSeatPanel _seatPanelTemplate;
         [SerializeField] private LookCardMenuSeatPanelContainer _seatPanelContainer;
-        [SerializeField] private LookCardMenuSeatPanelSwitch _rightSwitch;
-        [SerializeField] private LookCardMenuSeatPanelSwitch _leftSwitch;
+        [SerializeField] private LookCardMenuSeatPanelRightSwitch _rightSwitch;
+        [SerializeField] private LookCardMenuSeatPanelLeftSwitch _leftSwitch;
         [SerializeField, Min(0)] private int _startCountPanels = 5;
 
         private readonly List<LookCardMenuSeatPanel> _seatPanels = new List<LookCardMenuSeatPanel>();
@@ -169,30 +171,66 @@ namespace GameFields.Persons.LookCardMenues
 
         private void CheckSwitches()
         {
-            if (_currentPanelIndex == _currentMaxIndex)
-            {
-                SetSwitchState(_rightSwitch, false);
-            }
-            else
-            {
-                SetSwitchState(_rightSwitch, true);
-            }
+            SetSwitchState(_rightSwitch, _currentPanelIndex != _currentMaxIndex);
+            SetSwitchState(_leftSwitch, _currentPanelIndex > 0);
 
-            if (_currentPanelIndex > 0)
-            {
-                SetSwitchState(_leftSwitch, true);
-            }
-            else
-            {
-                SetSwitchState(_leftSwitch, false);
-            }
+            //if (_currentPanelIndex == _currentMaxIndex)
+            //{
+            //    SetSwitchState(_rightSwitch, false);
+            //}
+            //else
+            //{
+            //    SetSwitchState(_rightSwitch, true);
+            //}
+
+            //if (_currentPanelIndex > 0)
+            //{
+            //    SetSwitchState(_leftSwitch, true);
+            //}
+            //else
+            //{
+            //    SetSwitchState(_leftSwitch, false);
+            //}
         }
 
         private void CreatePanel()
         {
             LookCardMenuSeatPanel lookCardMenuSeatPanel = Instantiate(_seatPanelTemplate, _seatPanelContainer.GetTransform());
             _seatPanels.Add(lookCardMenuSeatPanel);
-            lookCardMenuSeatPanel.Init(_description);
+            lookCardMenuSeatPanel.Init(_description, _bigCard);
         }
+
+        #region AutomaticFillComponents
+        [ContextMenu(nameof(DefineAllComponents) + nameof(LookCardMenuSeatPanelRoot))]
+        public List<ComponentAttachInfo> DefineAllComponents()
+        {
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineLookCardMenuSeatPanelContainer(),
+                DefineLookCardMenuSeatPanelRightSwitch(),
+                DefineLookCardMenuSeatPanelLeftSwitch(),
+            };
+
+            return list;
+        }
+
+        [ContextMenu(nameof(DefineLookCardMenuSeatPanelContainer))]
+        private ComponentAttachInfo DefineLookCardMenuSeatPanelContainer()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _seatPanelContainer, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineLookCardMenuSeatPanelRightSwitch))]
+        private ComponentAttachInfo DefineLookCardMenuSeatPanelRightSwitch()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _rightSwitch, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineLookCardMenuSeatPanelLeftSwitch))]
+        private ComponentAttachInfo DefineLookCardMenuSeatPanelLeftSwitch()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _leftSwitch, ComponentLocationTypes.InChildren);
+        }
+        #endregion
     }
 }

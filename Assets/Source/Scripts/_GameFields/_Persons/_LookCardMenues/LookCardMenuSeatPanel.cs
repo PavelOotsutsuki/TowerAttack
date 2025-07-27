@@ -16,7 +16,7 @@ namespace GameFields.Persons.LookCardMenues
         [SerializeField] private RectTransform _rectTransform;
 
         [SerializeField] private float _maxCardSizeScale = 2f;
-        [SerializeField] private float _minCardSizeScale = 1f;
+        [SerializeField] private float _minCardSizeScale = 1.5f;
         //[SerializeField] private float _offset = 400f;
         //[SerializeField] private float _positionY = 0f;
 
@@ -67,7 +67,7 @@ namespace GameFields.Persons.LookCardMenues
 
         public int MaxSeats => _maxSeats;
 
-        public void Init(CardDescription cardDescription)
+        public void Init(CardDescription cardDescription, BigCard bigCard)
         {
             _ROTransform = new ReadOnlyRectTransform(_rectTransform);
 
@@ -106,7 +106,7 @@ namespace GameFields.Persons.LookCardMenues
             {
                 LookCardMenuSeat seat = Instantiate(_seatTemplate, _seatContainer.GetTransform());
                 _seats[i] = seat;
-                seat.Init(cardDescription);
+                seat.Init(cardDescription, bigCard);
             }
 
             _isComplete = true;
@@ -271,13 +271,13 @@ namespace GameFields.Persons.LookCardMenues
         private void SeatCards(int countInRow, int countInColumn, int currentRow, Vector2 cardSize, float cardIndentHeight,
             float cardIndentWidth, float edgeIndentHeight, float edgeIndentWidth)
         {
-            Debug.Log("countInRow: " + countInRow);
-            Debug.Log("countInColumn: " + countInColumn);
-            Debug.Log("cardSize: " + cardSize);
-            Debug.Log("cardIndentHeight: " + cardIndentHeight);
-            Debug.Log("cardIndentWidth: " + cardIndentWidth);
-            Debug.Log("edgeIndentHeight: " + edgeIndentHeight);
-            Debug.Log("edgeIndentWidth: " + edgeIndentWidth);
+            //Debug.Log("countInRow: " + countInRow);
+            //Debug.Log("countInColumn: " + countInColumn);
+            //Debug.Log("cardSize: " + cardSize);
+            //Debug.Log("cardIndentHeight: " + cardIndentHeight);
+            //Debug.Log("cardIndentWidth: " + cardIndentWidth);
+            //Debug.Log("edgeIndentHeight: " + edgeIndentHeight);
+            //Debug.Log("edgeIndentWidth: " + edgeIndentWidth);
 
 
             //if (countInRow * countInColumn != _cards.Length)
@@ -302,7 +302,7 @@ namespace GameFields.Persons.LookCardMenues
 
                     Vector2 position = new Vector2(localPositionX, localPositionY);
 
-                    Debug.Log("position: " + position);
+                    //Debug.Log("position: " + position);
 
                     _seats[currentIndex].SetLocalPositionValues(position, Quaternion.identity.eulerAngles);
                     _seats[currentIndex].SetCard(card, cardSize);

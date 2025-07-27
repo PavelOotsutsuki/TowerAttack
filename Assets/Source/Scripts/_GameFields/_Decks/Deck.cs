@@ -81,9 +81,9 @@ namespace GameFields.Decks
             OnSeatsCountChange?.Invoke();
 
             //BindCard(card.ReadOnlyRectTransform, card.CardMovement);
-            Debug.Log("_seats.Count % _countCardsInGroup:" + _seats.Count % _countCardsInGroup);
-            Debug.Log("_seats.Count:" + _seats.Count);
-            Debug.Log("_countCardsInGroup:" + _countCardsInGroup);
+            //Debug.Log("_seats.Count % _countCardsInGroup:" + _seats.Count % _countCardsInGroup);
+            //Debug.Log("_seats.Count:" + _seats.Count);
+            //Debug.Log("_countCardsInGroup:" + _countCardsInGroup);
 
             if (AllCards.Count() % _countCardsInGroup == 1)
             {
