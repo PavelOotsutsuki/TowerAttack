@@ -25,7 +25,7 @@ namespace GameFields.Effects
 
         public override void End()
         {
-            Debug.Log("Эффект Жыжи закончен");
+            Debug.Log("Эффект Повелителя времени закончен");
         }
 
         protected override IEnumerator OnPlaying()

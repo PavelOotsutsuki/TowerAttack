@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.LookCardMenues
 {
-    public class LookCardMenu : MonoBehaviour, ICompletable, IWorkable<LookCardMenuActivateData>, IAutomaticFillComponents
+    public class LookCardMenuPlayer : MonoBehaviour, ILookCardMenu, IAutomaticFillComponents
     {
         //[SerializeField] private LookCardMenuSeat[] _seats;
         [SerializeField] private LookCardMenuSeatPanelRoot _seatPanelRoot;
@@ -109,7 +109,7 @@ namespace GameFields.Persons.LookCardMenues
         //}
 
         #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents) + nameof(LookCardMenu))]
+        [ContextMenu(nameof(DefineAllComponents) + nameof(LookCardMenuPlayer))]
         public List<ComponentAttachInfo> DefineAllComponents()
         {
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>

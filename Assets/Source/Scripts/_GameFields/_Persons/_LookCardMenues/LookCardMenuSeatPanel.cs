@@ -409,7 +409,7 @@ namespace GameFields.Persons.LookCardMenues
                     if (row == rowWhereIncreaseCountCards)
                         countInRow++;
 
-                    Debug.Log("cardSize: " + cardSize);
+                    //Debug.Log("cardSize: " + cardSize);
 
                     //scale = _minCardSizeScale;
                     //cardSize = _defaultCardSize * scale;

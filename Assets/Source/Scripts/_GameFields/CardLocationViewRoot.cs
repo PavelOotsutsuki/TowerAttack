@@ -156,16 +156,17 @@ namespace GameFields
         {
             cards = null;
 
-            if (_deckView.IsHasCards(countCards) == false)
+            if (_deckView.IsHasCards(1) == false)
                 return false;
 
             List<Card> currentCards = new List<Card>();
 
             for (int i = 0; i < countCards; i++)
             {
-                currentCards.Add(_deckView.ViewCardFromEndDeck(i));
+                if (_deckView.IsHasCards(i + 1))
+                    currentCards.Add(_deckView.ViewCardFromEndDeck(i));
             }
-
+            
             cards = currentCards;
             return true;
         }

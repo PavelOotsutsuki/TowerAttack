@@ -16,6 +16,7 @@ using Tools.UI;
 using UnityEngine;
 using System.Collections;
 using Cysharp.Threading.Tasks;
+using GameFields.Persons.LookCardMenues;
 
 namespace GameFields.Persons.Commons
 {
@@ -36,9 +37,10 @@ namespace GameFields.Persons.Commons
             DiscoverPlayer discover, DrawCardRoot drawCardRoot, StartTurnDraw startTurnDraw, TurnProcessing turnProcessing,
             SignalBus bus, PersonStep startPlayerTurnView, ISelectMenuActivator attackMenu, EndTurnProcessing endTurnProcessing,
             ISelectMenuActivator choiceMenu, ISelectMenuActivator choiceMenuImitation, PersonEffectsHandler personEffectsHandler,
-            InformationLabel informationLabel) :
+            InformationLabel informationLabel, LookCardMenuPlayer lookCardMenuPlayer) :
             base(cardPlayingZone, drawCardRoot, tower, startTurnDraw, discover, bus, hand,
-                attackMenu, interactionActivator, choiceMenu, choiceMenuImitation, personEffectsHandler)
+                attackMenu, interactionActivator, choiceMenu, choiceMenuImitation, personEffectsHandler,
+                lookCardMenuPlayer)
         {
             _startPlayerTurnView = startPlayerTurnView;
             _endTurnProcessing = endTurnProcessing;
@@ -76,21 +78,21 @@ namespace GameFields.Persons.Commons
             //_turnProcessing.Completed();
         }
 
-        public override void ActivateSharpSnakeEffect(Action callback)
-        {
-            ActivatingSharpSnakeEffect(callback).ToUniTask();
-        }
+        //public override void ActivateSharpSnakeEffect(Action callback)
+        //{
+        //    ActivatingSharpSnakeEffect(callback).ToUniTask();
+        //}
 
-        private IEnumerator ActivatingSharpSnakeEffect(Action callback)
-        {
-            LabelActivateData labelActivateData = new LabelActivateData("Соперник смотрит ваши карты...");
-            InformationLabelActivateData informationLabelActivateData = new InformationLabelActivateData(labelActivateData, 10f);
-            _informationLabel.Activate(informationLabelActivateData);
+        //private IEnumerator ActivatingSharpSnakeEffect(Action callback)
+        //{
+        //    LabelActivateData labelActivateData = new LabelActivateData("Соперник смотрит ваши карты...");
+        //    InformationLabelActivateData informationLabelActivateData = new InformationLabelActivateData(labelActivateData, 10f);
+        //    _informationLabel.Activate(informationLabelActivateData);
 
-            yield return new WaitUntil(() => _informationLabel.IsComplete);
+        //    yield return new WaitUntil(() => _informationLabel.IsComplete);
 
-            callback?.Invoke();
-        }
+        //    callback?.Invoke();
+        //}
 
         protected override void InitSteps()
         {

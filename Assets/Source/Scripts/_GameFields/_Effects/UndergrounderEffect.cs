@@ -1,21 +1,57 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cards;
+using GameFields.Persons.Commons;
+using GameFields.Persons.LookCardMenues;
 using UnityEngine;
 
-namespace GameFields
+namespace GameFields.Effects
 {
-    public class UndergrounderEffect : MonoBehaviour
+    public class UndergrounderEffect : Effect
     {
-        // Start is called before the first frame update
-        void Start()
+        private const string Message = "Соперник смотрит карты в конце колоды...";
+        private const int CountLookCards = 3;
+
+        private readonly Person _activePerson;
+        private bool _isEffectComplete;
+
+        private readonly CardLocationViewRoot _cardLocationViewRoot;
+
+        public UndergrounderEffect(Person activePerson, CardLocationViewRoot cardLocationViewRoot) : base()
         {
-        
+            _activePerson = activePerson;
+            _isEffectComplete = false;
+
+            _cardLocationViewRoot = cardLocationViewRoot;
+
+            Play();
         }
 
-        // Update is called once per frame
-        void Update()
+        public override void End()
         {
-        
+            Debug.Log("Эффект Подпольщика закончен");
+        }
+
+        protected override IEnumerator OnPlaying()
+        {
+            //_deactivePerson.ActivateSharpSnakeEffect(CompleteEffect);
+            //yield return new WaitUntil(() => _isEffectComplete);
+            if (_cardLocationViewRoot.TryViewDeckLastCards(out IReadOnlyList<Card> cards, CountLookCards) == false)
+            {
+                CompleteEffect();
+                yield break;
+            }
+
+            LookCardMenuActivateData lookCardMenuActivateData = new LookCardMenuActivateData(cards, Message);
+            _activePerson.LookCards(lookCardMenuActivateData, CompleteEffect);
+
+            yield return new WaitUntil(() => _isEffectComplete);
+        }
+
+        private void CompleteEffect()
+        {
+            _isEffectComplete = true;
         }
     }
 }
+

@@ -14,6 +14,7 @@ using UnityEngine;
 using Zenject;
 using GameFields.Persons.SelectMenues.Commons;
 using GameFields.Persons.EffectHandlers;
+using GameFields.Persons.LookCardMenues;
 
 namespace GameFields.Persons.Commons
 {
@@ -28,6 +29,7 @@ namespace GameFields.Persons.Commons
         private readonly ISelectMenuActivator _attackMenu;
         private readonly ISelectMenuActivator _choiceMenu;
         private readonly ISelectMenuActivator _choiceMenuImitation;
+        private readonly ILookCardMenu _lookCardMenu;
 
         //private readonly PersonStep _lastStep;
 
@@ -44,7 +46,8 @@ namespace GameFields.Persons.Commons
         protected Person(CardPlayingZone playingZone, DrawCardRoot drawCardRoot, Tower tower,
             StartTurnDraw startTurnDraw, Discover discover, SignalBus bus, /*PersonStep lastStep,*/
             Hand hand, ISelectMenuActivator attackMenu, InteractionActivator gameFieldObjectsActivator,
-            ISelectMenuActivator choiceMenu, ISelectMenuActivator choiceMenuImitation, PersonEffectsHandler personEffectsHandler)
+            ISelectMenuActivator choiceMenu, ISelectMenuActivator choiceMenuImitation, PersonEffectsHandler personEffectsHandler,
+            ILookCardMenu lookCardMenu)
         {
             _hand = hand;
             Bus = bus;
@@ -57,6 +60,7 @@ namespace GameFields.Persons.Commons
             _attackMenu = attackMenu;
             _choiceMenu = choiceMenu;
             _choiceMenuImitation = choiceMenuImitation;
+            _lookCardMenu = lookCardMenu;
             //_lastStep = lastStep;
             InteractionActivator = gameFieldObjectsActivator;
 
@@ -134,6 +138,13 @@ namespace GameFields.Persons.Commons
             _discover.Activate(discoverActivateData);
         }
 
+        public void LookCards(LookCardMenuActivateData activateData, Action callback = null)
+        {
+            _lookCardMenu.Activate(activateData);
+
+            WaitingToInvoke(_lookCardMenu, callback).ToUniTask();
+        }
+
         public void AttackActivate(int countNumbers = 1, Action callback = null, RestrictionType? restrictionType = null)
         {
             ActivateSelectMenu(_attackMenu, countNumbers, callback, restrictionType);
@@ -163,7 +174,7 @@ namespace GameFields.Persons.Commons
         {
             yield return new WaitUntil(() => completable.IsComplete);
 
-            callback.Invoke();
+            callback?.Invoke();
         }
 
         //public void AttackDeactivate()
@@ -309,7 +320,7 @@ namespace GameFields.Persons.Commons
             _personEffectsHandler.SlimeEffectHandler.Activate(countTurns);
         }
 
-        public abstract void ActivateSharpSnakeEffect(Action callback);
+        //public abstract void ActivateSharpSnakeEffect(Action callback);
 
         public void ActivateFireDraw(int countTurns)
         {

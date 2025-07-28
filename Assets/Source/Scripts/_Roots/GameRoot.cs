@@ -33,7 +33,7 @@ namespace Roots
 
         [Inject]
         private void Construct(SignalBus bus, Deck deck, SeatPool seatPool, CardDescription cardDescription, HandPlayer handPlayer,
-            InformationLabel informationLabel, LookCardMenu lookCardMenu)
+            InformationLabel informationLabel, LookCardMenuPlayer lookCardMenu)
         {
             GameFieldGC.GCOFF();
 

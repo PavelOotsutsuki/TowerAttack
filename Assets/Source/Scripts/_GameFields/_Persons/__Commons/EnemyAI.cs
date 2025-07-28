@@ -17,6 +17,7 @@ using Cysharp.Threading.Tasks;
 using Tools.UI;
 using UnityEngine;
 using GameFields.Persons.EnemyProcessImitations;
+using GameFields.Persons.LookCardMenues;
 
 namespace GameFields.Persons.Commons
 {
@@ -29,9 +30,10 @@ namespace GameFields.Persons.Commons
         public EnemyAI(InteractionActivator interactionActivator, EnemyDragAndDropImitation enemyDragAndDropImitation, CardPlayingZone cardPlayingZone,
             Tower tower, DrawCardRoot drawCardRoot, DiscoverAI discoverImitation, StartTurnDraw startTurnDraw, SignalBus bus,
             HandAI hand, ISelectMenuActivator attackMenu, ISelectMenuActivator choiceMenu, ISelectMenuActivator choiceMenuImitation,
-            PersonEffectsHandler personEffectsHandler) :
+            PersonEffectsHandler personEffectsHandler, LookCardMenuEnemyAI lookCardMenu) :
             base(cardPlayingZone, drawCardRoot, tower, startTurnDraw,discoverImitation, bus,
-                hand, attackMenu, interactionActivator, choiceMenu, choiceMenuImitation, personEffectsHandler)
+                hand, attackMenu, interactionActivator, choiceMenu, choiceMenuImitation, personEffectsHandler,
+                lookCardMenu)
         {
             //_gameFieldObjectsActivator = gameFieldObjectsActivator;
             //Bus.Subscribe<StartEffectSignal>(SetCardEffectProcess);
@@ -48,6 +50,7 @@ namespace GameFields.Persons.Commons
 
         public override void StartAction(ICompletable completable)
         {
+            //Debug.Log(completable.ToString());
             PushStep(new CardActionProcessingEnemyAI(InteractionActivator, completable));
         }
 
@@ -81,10 +84,10 @@ namespace GameFields.Persons.Commons
             //GameFieldObjectsActivator.Deactivate();
         }
 
-        public override void ActivateSharpSnakeEffect(Action callback)
-        {
-            _handEnemy.ActivateSharpSnakeEffect(callback);
-        }
+        //public override void ActivateSharpSnakeEffect(Action callback)
+        //{
+        //    _handEnemy.ActivateSharpSnakeEffect(callback);
+        //}
 
         //private void SetCardEffectProcess(StartEffectSignal signal)
         //{

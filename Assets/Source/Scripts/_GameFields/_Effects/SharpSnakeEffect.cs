@@ -9,18 +9,18 @@ namespace GameFields.Effects
 {
     public class SharpSnakeEffect : Effect
     {
-        private readonly Person _deactivePerson;
+        private const string Message = "Соперник смотрит ваши карты...";
+
+        private readonly Person _activePerson;
         private bool _isEffectComplete;
 
-        private readonly LookCardMenu _lookCardMenu;
         private readonly CardLocationViewRoot _cardLocationViewRoot;
 
-        public SharpSnakeEffect(Person deactivePerson, LookCardMenu lookCardMenu, CardLocationViewRoot cardLocationViewRoot) : base()
+        public SharpSnakeEffect(Person activePerson, CardLocationViewRoot cardLocationViewRoot) : base()
         {
-            _deactivePerson = deactivePerson;
+            _activePerson = activePerson;
             _isEffectComplete = false;
 
-            _lookCardMenu = lookCardMenu;
             _cardLocationViewRoot = cardLocationViewRoot;
 
             Play();
@@ -28,20 +28,20 @@ namespace GameFields.Effects
 
         public override void End()
         {
-            Debug.Log("Эффект Пироманта закончен");
+            Debug.Log("Эффект Зоркой змеи закончен");
         }
 
         protected override IEnumerator OnPlaying()
         {
             //_deactivePerson.ActivateSharpSnakeEffect(CompleteEffect);
             //yield return new WaitUntil(() => _isEffectComplete);
-            ViewType hand = _deactivePerson is EnemyAI ? ViewType.HandAI : ViewType.HandPlayer;
+            ViewType hand = _activePerson is Player ? ViewType.HandAI : ViewType.HandPlayer;
             IEnumerable<Card> cards = _cardLocationViewRoot.GetAllCards(hand);
 
-            LookCardMenuActivateData lookCardMenuActivateData = new LookCardMenuActivateData(cards);
-            _lookCardMenu.Activate(lookCardMenuActivateData);
+            LookCardMenuActivateData lookCardMenuActivateData = new LookCardMenuActivateData(cards, Message);
+            _activePerson.LookCards(lookCardMenuActivateData, CompleteEffect);
 
-            yield return new WaitUntil(() => _lookCardMenu.IsComplete);
+            yield return new WaitUntil(() => _isEffectComplete);
         }
 
         private void CompleteEffect()

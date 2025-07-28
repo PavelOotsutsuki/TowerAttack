@@ -39,7 +39,7 @@ namespace Roots
         [SerializeField] private AttackMenuPlayer _attackMenuPlayer;
         [SerializeField] private CardAttackZonePlayer _playerCardAttackZone;
 
-        [SerializeField] private LookCardMenu _lookCardMenuPlayer;
+        [SerializeField] private LookCardMenuPlayer _lookCardMenuPlayer;
 
         [SerializeField] private ForgingZone _forgingZone;
         [SerializeField] private HandTransferZone _handTransferZone;
@@ -77,7 +77,7 @@ namespace Roots
             Container.Bind<AttackMenuPlayer>().FromInstance(_attackMenuPlayer).AsSingle();
             Container.Bind<CardAttackZonePlayer>().FromInstance(_playerCardAttackZone).AsSingle();
 
-            Container.Bind<LookCardMenu>().FromInstance(_lookCardMenuPlayer).AsSingle();
+            Container.Bind<LookCardMenuPlayer>().FromInstance(_lookCardMenuPlayer).AsSingle();
 
             Container.Bind<ForgingZone>().FromInstance(_forgingZone).AsSingle();
             Container.Bind<HandTransferZone>().FromInstance(_handTransferZone).AsSingle();

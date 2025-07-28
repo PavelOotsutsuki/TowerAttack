@@ -49,7 +49,7 @@ namespace GameFields.Persons.Commons
         private RechangeFeatureRuleController _playerRechangeFeatureRuleController;
         private TurnDrawnCards _playerTurnDrawnCards;
 
-        private LookCardMenu _playerLookCardMenu;
+        private LookCardMenuPlayer _playerLookCardMenu;
 
         private ForgingZone _forgingZone;
         private HandTransferZone _handTransferZone;
@@ -138,7 +138,7 @@ namespace GameFields.Persons.Commons
             CardAttackZonePlayer playerCardAttackZone, CardAttackZoneEnemyAI enemyCardAttackZone, ChoiceMenuPlayer playerChoiceMenu,
             ChoiceMenuEnemyAI enemyChoiceMenu, DiscardPile discardPile, ChoiceMenuImitationPlayer choiceMenuImitationPlayer,
             ChoiceMenuImitationEnemyAI choiceMenuImitationEnemyAI, ForgingZone forgingZone, HandTransferZone handTransferZone,
-            LookCardMenu lookCardMenu)
+            LookCardMenuPlayer lookCardMenuPlayer)
         {
             _playerPlayingZone = playerPlayingZone;
             _playerHand = playerHand;
@@ -150,7 +150,7 @@ namespace GameFields.Persons.Commons
             _playerAttackMenu = playerAttackMenu;
             _playerCardAttackZone = playerCardAttackZone;
 
-            _playerLookCardMenu = lookCardMenu;
+            _playerLookCardMenu = lookCardMenuPlayer;
 
             _forgingZone = forgingZone;
             _handTransferZone = handTransferZone;
@@ -168,8 +168,8 @@ namespace GameFields.Persons.Commons
             _discardPile = discardPile;
         }
 
-        public void Init(SignalBus bus, Deck deck, EndTurnButton endTurnButton, SeatPool seatPool
-            , CardDragAndDropHandler cardDragAndDropHandler, CardDragAndDropLightController cardDragAndDropLightController,
+        public void Init(SignalBus bus, Deck deck, EndTurnButton endTurnButton, SeatPool seatPool,
+            CardDragAndDropHandler cardDragAndDropHandler, CardDragAndDropLightController cardDragAndDropLightController,
             InformationLabel informationLabel, ICardWatcher cardRoot)
         {
             _bus = bus;
@@ -232,7 +232,7 @@ namespace GameFields.Persons.Commons
 
             return new Player(_interactionActivator, _playerHand, _playerPlayingZone, _playerTower, _playerDiscover,
                 drawCardRoot, startTurnDraw, turnProcessing, _bus, startPlayerTurnView, _playerAttackMenu, endTurnProcessing,
-                _playerChoiceMenu, _playerChoiceMenuImitation, personEffectsHandler, _informationLabel);
+                _playerChoiceMenu, _playerChoiceMenuImitation, personEffectsHandler, _informationLabel, _playerLookCardMenu);
         }
 
         public EnemyAI CreateEnemyAI()
@@ -270,9 +270,11 @@ namespace GameFields.Persons.Commons
 
             _enemyHand.Init(_seatPool, _enemyRechangeFeatureRuleController, _enemyTurnDrawnCards, curseEffectHandler);
 
+            LookCardMenuEnemyAI lookCardMenuEnemyAI = new LookCardMenuEnemyAI(_informationLabel);
+
             return new EnemyAI(_interactionActivator, enemyDragAndDropImitation, _enemyPlayingZone,
                 _enemyTower, drawCardRoot, _enemyDiscoverImitation, startTurnDraw, _bus, _enemyHand, _playerAttackMenu,
-                _enemyChoiceMenu, _enemyChoiceMenuImitation, personEffectsHandler);
+                _enemyChoiceMenu, _enemyChoiceMenuImitation, personEffectsHandler, lookCardMenuEnemyAI);
         }
 
         public CardLocationViewRoot CreateCardLocationViewRoot()

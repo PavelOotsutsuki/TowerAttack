@@ -19,10 +19,9 @@ namespace GameFields.Effects
 
         //private readonly SignalBus _bus;
         //private Effect _lastEffect;
-        private readonly LookCardMenu _lookCardMenu;
 
         public EffectFactory(IPersonsState personsState, CardLocationViewRoot viewRoot, InformationLabel informationLabel,
-            CardTransitManager cardTransitManager/*, SignalBus bus*/, LookCardMenu lookCardMenu)
+            CardTransitManager cardTransitManager/*, SignalBus bus*/, LookCardMenuPlayer lookCardMenu)
         {
             _personsState = personsState;
             _viewRoot = viewRoot;
@@ -33,7 +32,6 @@ namespace GameFields.Effects
             //_voidEffect = new VoidEffect();
             //_lastEffect = _voidEffect;
             //_bus = bus;
-            _lookCardMenu = lookCardMenu;
         }
 
         public Effect Create(CardEffectConfig effectConfig)
@@ -77,7 +75,7 @@ namespace GameFields.Effects
                 EffectType.TimeLord => new VoidEffect(),// new TimeLordEffect(_personsState.Deactive, this),
                 EffectType.ThreeGuys => new ThreeGuysEffect(_personsState.Active),
                 EffectType.TimeMistress => new TimeMistressEffect(_personsState.Active, _viewRoot, _cardTransitManager),
-                EffectType.SharpSnake => new SharpSnakeEffect(_personsState.Deactive, _lookCardMenu, _viewRoot),
+                EffectType.SharpSnake => new SharpSnakeEffect(_personsState.Active, _viewRoot),
                 EffectType.ImpArmy => new ImpArmyEffect(_personsState.Deactive, effectConfig.Duration),
                 EffectType.CursedMark => new VoidEffect(), // Нельзя разыграть
                 EffectType.RushingMailman => new RushingMailmanEffect(_personsState.Active),
@@ -85,8 +83,8 @@ namespace GameFields.Effects
                 EffectType.Mime => new MimeEffect(_personsState.Active, _personsState.Deactive, _viewRoot, _informationLabel),
                 EffectType.RedGnome => new RedGnomeEffect(_personsState.Active),
                 EffectType.TimeChild => new TimeChildEffect(_viewRoot, _cardTransitManager),
-                EffectType.Undergrounder => new VoidEffect(),
-                EffectType.RobinGood => new VoidEffect(),
+                EffectType.Undergrounder => new UndergrounderEffect(_personsState.Active, _viewRoot),
+                EffectType.RobinGood => new RobinGoodEffect(_personsState.Active, _personsState.Deactive, _viewRoot),
                 EffectType.General => new VoidEffect(),
                 EffectType.FateMistress => new VoidEffect(),
                 EffectType.DumbMonk => new VoidEffect(),
