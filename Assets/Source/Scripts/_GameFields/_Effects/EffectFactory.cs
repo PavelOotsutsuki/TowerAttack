@@ -21,7 +21,7 @@ namespace GameFields.Effects
         //private Effect _lastEffect;
 
         public EffectFactory(IPersonsState personsState, CardLocationViewRoot viewRoot, InformationLabel informationLabel,
-            CardTransitManager cardTransitManager/*, SignalBus bus*/, LookCardMenuPlayer lookCardMenu)
+            CardTransitManager cardTransitManager/*, SignalBus bus*/)
         {
             _personsState = personsState;
             _viewRoot = viewRoot;
@@ -85,7 +85,7 @@ namespace GameFields.Effects
                 EffectType.TimeChild => new TimeChildEffect(_viewRoot, _cardTransitManager),
                 EffectType.Undergrounder => new UndergrounderEffect(_personsState.Active, _viewRoot),
                 EffectType.RobinGood => new RobinGoodEffect(_personsState.Active, _personsState.Deactive, _viewRoot),
-                EffectType.General => new VoidEffect(),
+                EffectType.General => new GeneralEffect(_personsState.Active),
                 EffectType.FateMistress => new VoidEffect(),
                 EffectType.DumbMonk => new VoidEffect(),
                 EffectType.LeftEyedSister => new VoidEffect(),

@@ -9,7 +9,7 @@ using Zenject;
 
 namespace GameFields.Persons.LookCardMenues
 {
-    public class LookCardMenuSeatPanelRoot : MonoBehaviour, ICompletable, IWorkable<LookCardMenuSeatPanelRootActivateData>
+    public class LookCardMenuSeatPanelRoot : MonoBehaviour, ICompletable, IWorkable<LookCardMenuSeatPanelRootActivateData>, IAutomaticFillComponents
     {
         [SerializeField] private BigCard _bigCard;
         [SerializeField] private LookCardMenuSeatPanel _seatPanelTemplate;
@@ -17,6 +17,7 @@ namespace GameFields.Persons.LookCardMenues
         [SerializeField] private LookCardMenuSeatPanelRightSwitch _rightSwitch;
         [SerializeField] private LookCardMenuSeatPanelLeftSwitch _leftSwitch;
         [SerializeField, Min(0)] private int _startCountPanels = 5;
+        [SerializeField] private StoneFrame _stoneFrame;
 
         private readonly List<LookCardMenuSeatPanel> _seatPanels = new List<LookCardMenuSeatPanel>();
 
@@ -44,6 +45,7 @@ namespace GameFields.Persons.LookCardMenues
 
             _rightSwitch.Init(NextSwitch);
             _leftSwitch.Init(PreviousSwitch);
+            _stoneFrame.Init();
         }
 
         public void Activate(LookCardMenuSeatPanelRootActivateData data)
@@ -52,6 +54,8 @@ namespace GameFields.Persons.LookCardMenues
                 return;
 
             IsActive = true;
+
+            _stoneFrame.Activate();
 
             SetSwitchState(_rightSwitch, false);
             SetSwitchState(_leftSwitch, false);
@@ -110,6 +114,8 @@ namespace GameFields.Persons.LookCardMenues
 
             IsActive = false;
             _isComplete = false;
+
+            _stoneFrame.Deactivate();
 
             foreach (LookCardMenuSeatPanel panel in _seatPanels)
             {

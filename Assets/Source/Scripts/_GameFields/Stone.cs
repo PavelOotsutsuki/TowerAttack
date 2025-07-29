@@ -5,7 +5,7 @@ using DG.Tweening;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
-namespace GameFields.Persons.Towers
+namespace GameFields
 {
     public class Stone : MonoBehaviour, IAutomaticFillComponents
     {
@@ -19,11 +19,11 @@ namespace GameFields.Persons.Towers
         {
             float xOffset = Random.Range(Offset * (-1), Offset);
 
-            float positionX = transform.localPosition.x + xOffset;
+            float positionX = _rectTransform.localPosition.x + xOffset;
             float positionY = (heightTower / 2) * (-1) + _rectTransform.rect.height / 2;
-            float positionZ = transform.localPosition.z;
+            float positionZ = _rectTransform.localPosition.z;
 
-            transform.DOLocalMove(new Vector3(positionX, positionY, positionZ), BoomDuration).SetEase(BoomEase);
+            _rectTransform.DOLocalMove(new Vector3(positionX, positionY, positionZ), BoomDuration).SetEase(BoomEase);
         }
 
         #region AutomaticFillComponents

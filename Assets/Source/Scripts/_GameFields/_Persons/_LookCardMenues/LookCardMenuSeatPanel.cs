@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.LookCardMenues
 {
-    public class LookCardMenuSeatPanel : MonoBehaviour, ICompletable, IWorkable<LookCardMenuSeatPanelActivateData>
+    public class LookCardMenuSeatPanel : MonoBehaviour, ICompletable, IWorkable<LookCardMenuSeatPanelActivateData>, IAutomaticFillComponents
     {
         //[SerializeField] private LookCardMenuSeat[] _seats;
         [SerializeField] private LookCardMenuSeat _seatTemplate;

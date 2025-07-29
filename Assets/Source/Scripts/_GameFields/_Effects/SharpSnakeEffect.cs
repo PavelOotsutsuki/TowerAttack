@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Cards;
 using GameFields.Persons.Commons;
 using GameFields.Persons.LookCardMenues;
@@ -37,6 +38,12 @@ namespace GameFields.Effects
             //yield return new WaitUntil(() => _isEffectComplete);
             ViewType hand = _activePerson is Player ? ViewType.HandAI : ViewType.HandPlayer;
             IEnumerable<Card> cards = _cardLocationViewRoot.GetAllCards(hand);
+
+            if (cards.Count() == 0)
+            {
+                CompleteEffect();
+                yield break;
+            }
 
             LookCardMenuActivateData lookCardMenuActivateData = new LookCardMenuActivateData(cards, Message);
             _activePerson.LookCards(lookCardMenuActivateData, CompleteEffect);
