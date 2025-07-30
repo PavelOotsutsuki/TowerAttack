@@ -25,6 +25,8 @@ namespace Cards
         RobinGood = 20,
         General = 21,
         FateMistress = 22,
+        FateMistress_FatefulAttack = 2200001,
+        FateMistress_FateInevitability = 2200002,
         DumbMonk = 23,
         LeftEyedSister = 24,
         JusticeBull = 25,

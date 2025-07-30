@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Cards
 {
-    [CreateAssetMenu(fileName = "CardConfig", menuName = "Cards/Card Config", order = 51)]
+    [CreateAssetMenu(fileName = "CardConfig", menuName = "Cards/CardConfig", order = 51)]
     internal class CardConfig : ScriptableObject, IData
     {
         [field: SerializeField] public CardViewConfig CardViewConfig { get; private set; }

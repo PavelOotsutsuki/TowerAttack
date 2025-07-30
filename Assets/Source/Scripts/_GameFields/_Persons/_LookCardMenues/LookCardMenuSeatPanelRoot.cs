@@ -215,6 +215,7 @@ namespace GameFields.Persons.LookCardMenues
                 DefineLookCardMenuSeatPanelContainer(),
                 DefineLookCardMenuSeatPanelRightSwitch(),
                 DefineLookCardMenuSeatPanelLeftSwitch(),
+                DefineStoneFrame()
             };
 
             return list;
@@ -236,6 +237,12 @@ namespace GameFields.Persons.LookCardMenues
         private ComponentAttachInfo DefineLookCardMenuSeatPanelLeftSwitch()
         {
             return AutomaticFillComponents.DefineComponent(this, ref _leftSwitch, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineStoneFrame))]
+        private ComponentAttachInfo DefineStoneFrame()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _stoneFrame, ComponentLocationTypes.InChildren);
         }
         #endregion
     }

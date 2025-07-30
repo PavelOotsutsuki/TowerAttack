@@ -8,7 +8,7 @@ namespace Cards
         private int _effectCounter;
         private Effect _effect;
 
-        public bool IsPlayingEffect => _effect is null ? false : _effect.IsComplete;
+        //public bool IsPlayingEffect => _effect is null ? false : _effect.IsComplete;
 
         public CardEffectManager(CardEffectConfig cardEffectConfig, IEffectFactory effectFactory)
         {

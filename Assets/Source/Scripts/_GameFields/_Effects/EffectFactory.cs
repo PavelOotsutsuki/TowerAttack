@@ -77,7 +77,7 @@ namespace GameFields.Effects
                 EffectType.TimeMistress => new TimeMistressEffect(_personsState.Active, _viewRoot, _cardTransitManager),
                 EffectType.SharpSnake => new SharpSnakeEffect(_personsState.Active, _viewRoot),
                 EffectType.ImpArmy => new ImpArmyEffect(_personsState.Deactive, effectConfig.Duration),
-                EffectType.CursedMark => new VoidEffect(), // Нельзя разыграть
+                EffectType.CursedMark => new VoidEffect(), // Нельзя разыграть, мб стоит выдать экспшн
                 EffectType.RushingMailman => new RushingMailmanEffect(_personsState.Active),
                 EffectType.Schemer => new SchemerEffect(_personsState.Active, _personsState.Deactive, effectConfig.Duration),
                 EffectType.Mime => new MimeEffect(_personsState.Active, _personsState.Deactive, _viewRoot, _informationLabel),

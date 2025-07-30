@@ -29,7 +29,7 @@ namespace GameFields.Effects
 
         public override void End()
         {
-            Debug.Log("Эффект Роибн Гуда закончен");
+            Debug.Log("Эффект Робин Гуда закончен");
         }
 
         protected override IEnumerator OnPlaying()

@@ -1,12 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
 using Tools;
+using Tools.Utils.FillComponents;
 using Tools.Utils.Movements;
 using UnityEngine;
 
 namespace GameFields
 {
-    public class StoneFrame : MonoBehaviour
+    public class StoneFrame : MonoBehaviour, IAutomaticFillComponents
     {
         [SerializeField] private Stone[] _stoneVariants;
         [SerializeField] private RectTransform _targetTransform;
@@ -150,5 +150,23 @@ namespace GameFields
             //}
         }
 
+        #region AutomaticFillComponents
+        [ContextMenu(nameof(DefineAllComponents) + nameof(StoneFrame))]
+        public List<ComponentAttachInfo> DefineAllComponents()
+        {
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineRectTransform()
+            };
+
+            return list;
+        }
+
+        [ContextMenu(nameof(DefineRectTransform))]
+        private ComponentAttachInfo DefineRectTransform()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _targetTransform, ComponentLocationTypes.InThis);
+        }
+        #endregion
     }
 }

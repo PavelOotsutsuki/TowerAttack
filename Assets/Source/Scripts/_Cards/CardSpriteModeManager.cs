@@ -6,6 +6,8 @@ namespace Cards
 
         public CardSpriteModeManager(EffectType effectType)
         {
+            _isCurse = false;
+
             SetCurseByEffect(effectType); 
         }
 
@@ -21,10 +23,6 @@ namespace Cards
             if (effectType == EffectType.CursedMark)
             {
                 _isCurse = true;
-            }
-            else
-            {
-                _isCurse = false;
             }
         }
     }
