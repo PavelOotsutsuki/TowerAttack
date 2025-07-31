@@ -5,10 +5,10 @@ namespace GameFields.Persons.Discovers
 {
     public class DiscoverResult
     {
-        private readonly Action<Card> _callbackAfterSetResult;
-        private readonly Action<Card> _callbackAfterSetComplete;
+        private readonly Action<IDiscoverable> _callbackAfterSetResult;
+        private readonly Action<IDiscoverable> _callbackAfterSetComplete;
 
-        public DiscoverResult(Action<Card> callbackAfterSetResult = null, Action<Card> callbackAfterSetComplete = null)
+        public DiscoverResult(Action<IDiscoverable> callbackAfterSetResult = null, Action<IDiscoverable> callbackAfterSetComplete = null)
         {
             Result = null;
             IsComplete = false;
@@ -17,10 +17,10 @@ namespace GameFields.Persons.Discovers
             _callbackAfterSetComplete = callbackAfterSetComplete;
         }
 
-        public Card Result { get; private set; }
+        public IDiscoverable Result { get; private set; }
         public bool IsComplete { get; private set; }
 
-        public void SetResult(Card result)
+        public void SetResult(IDiscoverable result)
         {
             Result = result;
             _callbackAfterSetResult?.Invoke(Result);

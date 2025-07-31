@@ -198,6 +198,7 @@ namespace GameFields.Persons.EnemyProcessImitations
             yield return endAction.Invoke();
 
             yield return new WaitForSeconds(_data.EndTurnDelay);
+            //yield return new WaitForSeconds(5f);
 
             _isComplete = true;
         }

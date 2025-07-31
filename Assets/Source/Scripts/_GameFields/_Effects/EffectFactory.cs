@@ -1,6 +1,12 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Cards;
+using Cysharp.Threading.Tasks;
 using GameFields.InformationLabels;
+using GameFields.Persons.Commons;
+using GameFields.Persons.Discovers;
 using GameFields.Persons.Fires;
 using GameFields.Persons.LookCardMenues;
 using GameFields.Signals;
@@ -16,17 +22,19 @@ namespace GameFields.Effects
         private readonly InformationLabel _informationLabel;
         private readonly CardEffectConfig _voidEffectConfig;
         private readonly CardTransitManager _cardTransitManager;
+        private readonly VariantCardCreator _variantCardCreator;
 
         //private readonly SignalBus _bus;
         //private Effect _lastEffect;
 
         public EffectFactory(IPersonsState personsState, CardLocationViewRoot viewRoot, InformationLabel informationLabel,
-            CardTransitManager cardTransitManager/*, SignalBus bus*/)
+            CardTransitManager cardTransitManager, VariantCardCreator variantCardCreator)
         {
             _personsState = personsState;
             _viewRoot = viewRoot;
             _informationLabel = informationLabel;
             _cardTransitManager = cardTransitManager;
+            _variantCardCreator = variantCardCreator;
             _voidEffectConfig = ScriptableObject.CreateInstance<CardEffectConfig>();
             //_voidEffectConfig = new CardEffectConfig();
             //_voidEffect = new VoidEffect();
@@ -34,7 +42,7 @@ namespace GameFields.Effects
             //_bus = bus;
         }
 
-        public Effect Create(CardEffectConfig effectConfig)
+        public Effect Create(CardEffectConfig effectConfig, Action<int> callback)
         {
             CardEffectConfig currentEffectConfig = effectConfig;
             Effect effect;
@@ -44,13 +52,18 @@ namespace GameFields.Effects
                 currentEffectConfig = _personsState.Deactive.LastEffect.Type == EffectType.TimeLord ? _voidEffectConfig : _personsState.Deactive.LastEffect;
             }
 
+            //if (effectConfig.Type == EffectType.FateMistress)
+            //{
+            //    currentEffectConfig = PlayVariantEffect(_variantCardCreator.CreateByEffect(effectConfig.Type));
+            //}
+
             if (_personsState.Active.IsDoubleEffect)
             {
-                effect = new DoubleEffect(CreateEffect, currentEffectConfig);
+                effect = new DoubleEffect(CreateEffect, currentEffectConfig, callback);
             }
             else
             {
-                effect = CreateEffect(currentEffectConfig);
+                effect = CreateEffect(currentEffectConfig, callback);
             }
 
             _personsState.Active.StartEffect(effect, effectConfig);
@@ -59,7 +72,7 @@ namespace GameFields.Effects
             return effect;
         }
 
-        private Effect CreateEffect(CardEffectConfig effectConfig)
+        private Effect CreateEffect(CardEffectConfig effectConfig, Action<int> callback)
         {
             Effect effect = effectConfig.Type switch
             {
@@ -86,7 +99,12 @@ namespace GameFields.Effects
                 EffectType.Undergrounder => new UndergrounderEffect(_personsState.Active, _viewRoot),
                 EffectType.RobinGood => new RobinGoodEffect(_personsState.Active, _personsState.Deactive, _viewRoot),
                 EffectType.General => new GeneralEffect(_personsState.Active),
-                EffectType.FateMistress => new VoidEffect(),
+                //EffectType.FateMistress => _personsState.Active is Player ?
+                //new FateMistressEffect(_personsState.Active, _variantCardCreator, CreateEffect, callback) :
+                //new VoidEffect(),
+                EffectType.FateMistress => new FateMistressEffect(_personsState.Active, _variantCardCreator, CreateEffect, callback),
+                EffectType.FateMistress_FatefulAttack => new FateMistress_FatefulAttack(_personsState.Active, _viewRoot),
+                EffectType.FateMistress_FateInevitability => new FateMistress_FateInevitability(_personsState.Active, effectConfig.Duration),
                 EffectType.DumbMonk => new VoidEffect(),
                 EffectType.LeftEyedSister => new VoidEffect(),
                 EffectType.JusticeBull => new VoidEffect(),
@@ -119,7 +137,26 @@ namespace GameFields.Effects
                 _ => throw new NullReferenceException("Effect is not founded")
             };
 
+            callback.Invoke(effect.Duration);
             return effect;
         }
+
+        //private CardEffectConfig PlayVariantEffect(IReadOnlyList<VariantCard> variantCards)
+        //{
+        //    DiscoverResult discoverResult = new DiscoverResult();
+        //    _personsState.Active.DiscoverCards(variantCards, "Выберите эффект", discoverResult);
+
+        //    return WaitingUntilCreateEffect(discoverResult);
+        //}
+
+        //private CardEffectConfig WaitingUntilCreateEffect(DiscoverResult discoverResult)
+        //{
+        //    UniTask.WaitUntil(() => discoverResult.IsComplete);
+
+        //    VariantCard variantCard = (VariantCard)discoverResult.Result;
+        //    CardEffectConfig effectConfig = variantCard.EffectConfig;
+
+        //    return effectConfig;
+        //}
     }
 }

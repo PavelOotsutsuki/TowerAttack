@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace Cards
 {
-    public class Card : MonoBehaviour, ICardTransformable, ICardNumber, IFeatureRechanger, IAutomaticFillComponents
+    public class Card : MonoBehaviour, ICardTransformable, IDiscoverable, ICardNumber, IFeatureRechanger, IAutomaticFillComponents
     {
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private CardPaper _cardPaper;
@@ -215,7 +215,6 @@ namespace Cards
         {
            return AutomaticFillComponents.DefineComponent(this, ref _cardPaper, ComponentLocationTypes.InChildren);
         }
-
         #endregion
     }
 }

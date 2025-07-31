@@ -1,6 +1,7 @@
 using System.Collections;
 using Cysharp.Threading.Tasks;
 using GameFields.EndTurnButtons;
+using GameFields.Persons.EffectHandlers;
 using GameFields.Persons.Hands;
 using UnityEngine;
 
@@ -9,16 +10,18 @@ namespace GameFields.Persons.Commons
     public class EndTurnProcessing : PersonStep
     {
         private readonly IEndTurnButtonStateWatcher _endTurnButtonStateWatcher;
+        private readonly PersonEffectsHandler _personEffectsHandler;
         //private readonly IHandBlockable _handBlockable;
         //private readonly GameFieldObjectsActivator _gameFieldObjectsActivator;
 
         private bool _isComplete;
 
         public EndTurnProcessing(IEndTurnButtonStateWatcher endTurnButtonStateWatcher,// IHandBlockable handBlockable,
-            InteractionActivator interactionActivator): base(interactionActivator)
+            InteractionActivator interactionActivator, PersonEffectsHandler personEffectsHandler): base(interactionActivator)
         {
             _isComplete = false;
             _endTurnButtonStateWatcher = endTurnButtonStateWatcher;
+            _personEffectsHandler = personEffectsHandler;
             //_handBlockable = handBlockable;
             //_gameFieldObjectsActivator = gameFieldObjectsActivator;
         }
@@ -38,6 +41,11 @@ namespace GameFields.Persons.Commons
         {
             yield return new WaitUntil(() => _endTurnButtonStateWatcher.EndTurnClicked == false);
 
+            _personEffectsHandler.BeforeEndTurn(BeforeEndCallback);
+        }
+
+        private void BeforeEndCallback()
+        {
             _isComplete = true;
         }
     }

@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace Cards
 {
     public class CardEffectManager
@@ -14,12 +16,14 @@ namespace Cards
         {
             _cardEffectConfig = cardEffectConfig;
             _effectFactory = effectFactory;
+
+            _effectCounter = 0;
         }
 
         public void Play()
         {
-            _effect = _effectFactory.Create(_cardEffectConfig);
-            _effectCounter = _effect.Duration;
+            _effect = _effectFactory.Create(_cardEffectConfig, SetCounter);
+            //_effectCounter = _effect.Duration;
         }
 
         public bool TryDiscard()
@@ -34,6 +38,14 @@ namespace Cards
             _effectCounter--;
 
             return false;
+        }
+
+        private void SetCounter(int count)
+        {
+            Debug.Log("_effectCounter: " + _effectCounter + " -/- count: " + count);
+
+            if (_effectCounter < count)
+                _effectCounter = count;
         }
     }
 }

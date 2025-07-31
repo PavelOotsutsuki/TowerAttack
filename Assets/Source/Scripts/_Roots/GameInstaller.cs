@@ -15,6 +15,7 @@ using Zenject;
 using GameFields.Persons.SelectMenues.Commons;
 using GameFields.Persons.SelectMenues.Choices;
 using GameFields.Persons.LookCardMenues;
+using GameFields.Effects;
 
 namespace Roots
 {
@@ -28,6 +29,8 @@ namespace Roots
         [SerializeField] private DiscardPileConfig _discardPileConfig;
         [SerializeField] private SeatPool _seatPool;
         [SerializeField] private DiscardPile _discardPile;
+
+        [SerializeField] private VariantCardCreator _variantCardCreator;
 
         [SerializeField] private HandPlayer _playerHand;
         [SerializeField] private TablePlayer _playerTable;
@@ -66,6 +69,8 @@ namespace Roots
             Container.Bind<DiscardPileConfig>().FromInstance(_discardPileConfig).AsSingle();
             Container.Bind<SeatPool>().FromInstance(_seatPool).AsSingle();
             Container.Bind<DiscardPile>().AsSingle().NonLazy();
+
+            Container.Bind<VariantCardCreator>().FromInstance(_variantCardCreator).AsSingle();
 
             Container.Bind<HandPlayer>().FromInstance(_playerHand).AsSingle();
             Container.Bind<TablePlayer>().FromInstance(_playerTable).AsSingle();

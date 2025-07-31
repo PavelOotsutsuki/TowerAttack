@@ -5,11 +5,11 @@ using Zenject;
 
 namespace GameFields.Persons.SelectMenues.Attacks
 {
-    public class AttackResultHandlerPlayer : AttackResultHandler, IPlayerObject
+    public class AttackResultHandlerPlayer : AttackResultHandler, IEnemyAIObject
     {
-        public AttackResultHandlerPlayer(DiscardPile discardPile, SignalBus bus, IBoomTower tower,
+        public AttackResultHandlerPlayer(DiscardPile discardPile, LoseActions loseActions,
             IAttackCardKeeper attackCardKeeper, AttackResultHandlerData data) :
-            base(discardPile, bus, tower, attackCardKeeper, data)
+            base(discardPile, loseActions, attackCardKeeper, data)
         { }
     }
 }

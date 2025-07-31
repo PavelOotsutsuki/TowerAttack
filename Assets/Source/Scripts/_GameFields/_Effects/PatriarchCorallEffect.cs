@@ -50,7 +50,7 @@ namespace GameFields.Effects
             TransitFromType transitFrom = _activePerson is Player ? TransitFromType.HandPlayer : TransitFromType.HandEnemy;
             TransitToType transitTo = _activePerson is Player ? TransitToType.HandEnemy : TransitToType.HandPlayer;
 
-            if (_transitManager.TryTransitCard(discoverResult.Result, transitFrom, transitTo) == false)
+            if (_transitManager.TryTransitCard((Card)discoverResult.Result, transitFrom, transitTo) == false)
             {
                 throw new System.Exception("Ошибка нахождения карты");
             }

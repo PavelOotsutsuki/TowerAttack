@@ -56,13 +56,13 @@ namespace GameFields
 
         private void SetWinner(PersonWinSignal signal)
         {
-            IPersonObject towerAttackedType = signal.TowerAttackedType;
+            IPersonObject loser = signal.Loser;
 
-            if (towerAttackedType is IEnemyAIObject)
+            if (loser is IPlayerObject)
             {
                 _fightResult.SetEnemyWin();
             }
-            else if (towerAttackedType is IPlayerObject)
+            else if (loser is IEnemyAIObject)
             {
                 _fightResult.SetPlayerWin();
             }

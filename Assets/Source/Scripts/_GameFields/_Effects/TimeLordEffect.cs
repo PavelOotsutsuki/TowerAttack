@@ -11,14 +11,14 @@ namespace GameFields.Effects
 
         public TimeLordEffect(Person deactivePerson, IEffectFactory effectFactory) : base()
         {
-            if (deactivePerson.LastEffect.Type == EffectType.TimeLord)
-            {
-                _lastEffect = new VoidEffect();
-            }
-            else
-            {
-                _lastEffect = effectFactory.Create(deactivePerson.LastEffect);
-            }
+            //if (deactivePerson.LastEffect.Type == EffectType.TimeLord)
+            //{
+            //    _lastEffect = new VoidEffect();
+            //}
+            //else
+            //{
+            //    _lastEffect = effectFactory.Create(deactivePerson.LastEffect);
+            //}
 
             Play();
         }

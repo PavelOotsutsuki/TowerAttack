@@ -15,15 +15,15 @@ using Zenject;
 
 namespace GameFields.Persons.SelectMenues.Attacks
 {
-    public class AttackResultHandlerEnemyAI : AttackResultHandler, IEnemyAIObject
+    public class AttackResultHandlerEnemyAI : AttackResultHandler, IPlayerObject
     {
         private readonly InformationLabel _informationLabel;
         private readonly InformationLabelData _informationLabelData;
 
-        public AttackResultHandlerEnemyAI(DiscardPile discardPile, SignalBus bus, IBoomTower tower,
+        public AttackResultHandlerEnemyAI(DiscardPile discardPile, LoseActions loseActions,
             IAttackCardKeeper attackCardKeeper, AttackResultHandlerData data, InformationLabel informationLabel,
             InformationLabelData informationLabelData) :
-            base(discardPile, bus, tower, attackCardKeeper, data)
+            base(discardPile, loseActions, attackCardKeeper, data)
         {
             _informationLabel = informationLabel;
             _informationLabelData = informationLabelData;

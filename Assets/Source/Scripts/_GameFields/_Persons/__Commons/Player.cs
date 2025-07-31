@@ -20,7 +20,7 @@ using GameFields.Persons.LookCardMenues;
 
 namespace GameFields.Persons.Commons
 {
-    public class Player : Person
+    public class Player : Person, IPlayerObject
     {
         //private readonly IActivatable _gameFieldObjectsActivator;
         private readonly IHandBlockable _handBlockable;
@@ -37,10 +37,10 @@ namespace GameFields.Persons.Commons
             DiscoverPlayer discover, DrawCardRoot drawCardRoot, StartTurnDraw startTurnDraw, TurnProcessing turnProcessing,
             SignalBus bus, PersonStep startPlayerTurnView, ISelectMenuActivator attackMenu, EndTurnProcessing endTurnProcessing,
             ISelectMenuActivator choiceMenu, ISelectMenuActivator choiceMenuImitation, PersonEffectsHandler personEffectsHandler,
-            InformationLabel informationLabel, LookCardMenuPlayer lookCardMenuPlayer) :
+            InformationLabel informationLabel, LookCardMenuPlayer lookCardMenuPlayer, LoseActions loseActions) :
             base(cardPlayingZone, drawCardRoot, tower, startTurnDraw, discover, bus, hand,
                 attackMenu, interactionActivator, choiceMenu, choiceMenuImitation, personEffectsHandler,
-                lookCardMenuPlayer)
+                lookCardMenuPlayer, loseActions)
         {
             _startPlayerTurnView = startPlayerTurnView;
             _endTurnProcessing = endTurnProcessing;

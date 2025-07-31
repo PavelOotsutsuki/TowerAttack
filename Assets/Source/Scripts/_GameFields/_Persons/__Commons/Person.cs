@@ -18,7 +18,7 @@ using GameFields.Persons.LookCardMenues;
 
 namespace GameFields.Persons.Commons
 {
-    public abstract class Person : ITurnStep, IDrawCardManager
+    public abstract class Person : ITurnStep, IDrawCardManager, IPersonObject
     {
         private readonly CardPlayingZone _playingZone;
         private readonly DrawCardRoot _drawCardRoot;
@@ -30,6 +30,8 @@ namespace GameFields.Persons.Commons
         private readonly ISelectMenuActivator _choiceMenu;
         private readonly ISelectMenuActivator _choiceMenuImitation;
         private readonly ILookCardMenu _lookCardMenu;
+        private readonly IBoomTower _boomTower;
+        private readonly LoseActions _loseActions;
 
         //private readonly PersonStep _lastStep;
 
@@ -47,12 +49,13 @@ namespace GameFields.Persons.Commons
             StartTurnDraw startTurnDraw, Discover discover, SignalBus bus, /*PersonStep lastStep,*/
             Hand hand, ISelectMenuActivator attackMenu, InteractionActivator gameFieldObjectsActivator,
             ISelectMenuActivator choiceMenu, ISelectMenuActivator choiceMenuImitation, PersonEffectsHandler personEffectsHandler,
-            ILookCardMenu lookCardMenu)
+            ILookCardMenu lookCardMenu, LoseActions loseActions)
         {
             _hand = hand;
             Bus = bus;
             _playingZone = playingZone;
             _tower = tower;
+            _boomTower = tower;
             _drawCardRoot = drawCardRoot;
             StartTurnDraw = startTurnDraw;
             //TurnProcess = turnProcess;
@@ -61,6 +64,7 @@ namespace GameFields.Persons.Commons
             _choiceMenu = choiceMenu;
             _choiceMenuImitation = choiceMenuImitation;
             _lookCardMenu = lookCardMenu;
+            _loseActions = loseActions;
             //_lastStep = lastStep;
             InteractionActivator = gameFieldObjectsActivator;
 
@@ -121,7 +125,7 @@ namespace GameFields.Persons.Commons
                 Bus.Fire(new DiscardCardsSignal(discardedCards));
         }
 
-        public void DiscoverCards(IReadOnlyList<Card> cards, string activateMessage, DiscoverResult discoverResult)
+        public void DiscoverCards(IReadOnlyList<IDiscoverable> cards, string activateMessage, DiscoverResult discoverResult)
         {
             if (cards is null)
             {
@@ -159,6 +163,19 @@ namespace GameFields.Persons.Commons
         {
             ActivateSelectMenu(_choiceMenuImitation, countNumbers, callback, restrictionType);
         }
+
+        public void Capitulate()
+        {
+            _loseActions.Activate();
+        }
+
+        //private IEnumerator WaitUntilCapitulate()
+        //{
+        //    yield return new WaitForSeconds(5f);
+
+        //    Bus.Fire(new PersonWinSignal(this));
+        //}
+
 
         private void ActivateSelectMenu(ISelectMenuActivator selectMenu, int countNumbers, Action callback, RestrictionType? restrictionType)
         {
@@ -325,6 +342,11 @@ namespace GameFields.Persons.Commons
         public void ActivateFireDraw(int countTurns)
         {
             _personEffectsHandler.FireEffectHandler.Activate(countTurns);
+        }
+
+        public void ActivateFateInevitability(int countTurns)
+        {
+            _personEffectsHandler.FateInevitabilityHandler.Activate(countTurns);
         }
 
         //public void DeactivateSlimeEffect()

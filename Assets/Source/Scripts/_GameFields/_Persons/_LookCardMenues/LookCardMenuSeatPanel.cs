@@ -315,7 +315,6 @@ namespace GameFields.Persons.LookCardMenues
             //int countAll = _selectNumbers.Length;
             int countAll = _cards.Length;
 
-            int qnty;
             int countInRow;
             int countInColumn = (countAll - 1) / _maxSeatsInWidth + 1;
             float scale;
@@ -365,8 +364,6 @@ namespace GameFields.Persons.LookCardMenues
                 float height = width * _defaultCardSize.y / _defaultCardSize.x;
 
                 cardSize = new Vector2(width, height);
-
-                Debug.Log("cardSize: " + cardSize);
 
                 //scale = _minCardSizeScale;
                 //cardSize = _defaultCardSize * scale;

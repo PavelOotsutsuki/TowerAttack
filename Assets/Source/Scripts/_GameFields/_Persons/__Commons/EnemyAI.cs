@@ -21,7 +21,7 @@ using GameFields.Persons.LookCardMenues;
 
 namespace GameFields.Persons.Commons
 {
-    public class EnemyAI : Person
+    public class EnemyAI : Person, IEnemyAIObject
     {
         //private readonly IDeactivatable _gameFieldObjectsActivator;
         private readonly EnemyDragAndDropImitation _enemyDragAndDropImitation;
@@ -30,10 +30,10 @@ namespace GameFields.Persons.Commons
         public EnemyAI(InteractionActivator interactionActivator, EnemyDragAndDropImitation enemyDragAndDropImitation, CardPlayingZone cardPlayingZone,
             Tower tower, DrawCardRoot drawCardRoot, DiscoverAI discoverImitation, StartTurnDraw startTurnDraw, SignalBus bus,
             HandAI hand, ISelectMenuActivator attackMenu, ISelectMenuActivator choiceMenu, ISelectMenuActivator choiceMenuImitation,
-            PersonEffectsHandler personEffectsHandler, LookCardMenuEnemyAI lookCardMenu) :
+            PersonEffectsHandler personEffectsHandler, LookCardMenuEnemyAI lookCardMenu, LoseActions loseActions) :
             base(cardPlayingZone, drawCardRoot, tower, startTurnDraw,discoverImitation, bus,
                 hand, attackMenu, interactionActivator, choiceMenu, choiceMenuImitation, personEffectsHandler,
-                lookCardMenu)
+                lookCardMenu, loseActions)
         {
             //_gameFieldObjectsActivator = gameFieldObjectsActivator;
             //Bus.Subscribe<StartEffectSignal>(SetCardEffectProcess);

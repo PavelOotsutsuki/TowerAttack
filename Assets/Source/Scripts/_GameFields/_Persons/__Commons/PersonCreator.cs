@@ -59,6 +59,7 @@ namespace GameFields.Persons.Commons
         private SelectNumbersList _cursedNumbersPlayer = new SelectNumbersList();
         private ConfirmableNumbers _confirmableNumbersPlayer;
 
+        private LoseActions _playerLoseActions;
 
         [SerializeField] private StartPlayerTurnLabel _startPlayerTurnLabel; 
         [SerializeField] private int _playerCountStartDrawCards = 1;
@@ -92,8 +93,9 @@ namespace GameFields.Persons.Commons
         private SelectNumbersList _attackedNumbersEnemy = new SelectNumbersList();
         private SelectNumbersList _choicedNumbersEnemy = new SelectNumbersList();
         private SelectNumbersList _cursedNumbersEnemyAI = new SelectNumbersList();
-
         private ConfirmableNumbers _confirmableNumbersEnemyAI;
+
+        private LoseActions _enemyLoseActions;
 
         [SerializeField] private int _enemyCountStartDrawCards = 1;
         
@@ -190,6 +192,10 @@ namespace GameFields.Persons.Commons
 
             _seatPool = seatPool;
 
+            _enemyLoseActions = new LoseActions(_enemyTower, _enemyTower, _playerHand, _bus);
+            _playerLoseActions = new LoseActions(_playerTower, _playerTower, _playerHand, _bus);
+
+
             InitPlayersData();
             InitEnemyData();
             //InitCommonData();
@@ -215,15 +221,16 @@ namespace GameFields.Persons.Commons
             FireEffectHandler fireEffectHandler = new FireEffectHandler(drawCardAnimationManager);
             DoubleEffectHandler doubleEffectHandler = new DoubleEffectHandler();
             SkipTurnEffectHandler skipTurnEffectHandler = new SkipTurnEffectHandler();
+            FateInevitabilityHandler fateInevitabilityHandler = new FateInevitabilityHandler(_playerLoseActions, _playerAttackMenu);
             PersonEffectsHandler personEffectsHandler = new PersonEffectsHandler(gnomeEffectHandler, slimeEffectHandler, curseEffectHandler,
-                fireEffectHandler, doubleEffectHandler, skipTurnEffectHandler);
+                fireEffectHandler, doubleEffectHandler, skipTurnEffectHandler, fateInevitabilityHandler);
 
             SkipTurnChecker skipTurnChecker = new SkipTurnChecker(slimeEffectHandler, _playerHand);
             TurnProcessing turnProcessing = new TurnProcessing(_interactionActivator, skipTurnChecker);
             StartTurnDrawPlayer startTurnDraw = new StartTurnDrawPlayer(_interactionActivator, drawCardRoot, _playerCountStartDrawCards);
 
             StartPlayerTurnView startPlayerTurnView = new StartPlayerTurnView(_interactionActivator, _startPlayerTurnLabel);
-            EndTurnProcessing endTurnProcessing = new EndTurnProcessing(_endTurnButton, _interactionActivator);
+            EndTurnProcessing endTurnProcessing = new EndTurnProcessing(_endTurnButton, _interactionActivator, personEffectsHandler);
 
             _forgingZone.Init(_discardPile, _bus, drawCardRoot, gnomeEffectHandler);
             _handTransferZone.Init(_enemyHand, _bus);
@@ -232,7 +239,8 @@ namespace GameFields.Persons.Commons
 
             return new Player(_interactionActivator, _playerHand, _playerPlayingZone, _playerTower, _playerDiscover,
                 drawCardRoot, startTurnDraw, turnProcessing, _bus, startPlayerTurnView, _playerAttackMenu, endTurnProcessing,
-                _playerChoiceMenu, _playerChoiceMenuImitation, personEffectsHandler, _informationLabel, _playerLookCardMenu);
+                _playerChoiceMenu, _playerChoiceMenuImitation, personEffectsHandler, _informationLabel, _playerLookCardMenu,
+                _playerLoseActions);
         }
 
         public EnemyAI CreateEnemyAI()
@@ -254,8 +262,9 @@ namespace GameFields.Persons.Commons
             FireEffectHandler fireEffectHandler = new FireEffectHandler(drawCardAnimationManager);
             DoubleEffectHandler doubleEffectHandler = new DoubleEffectHandler();
             SkipTurnEffectHandler skipTurnEffectHandler = new SkipTurnEffectHandler();
+            FateInevitabilityHandler fateInevitabilityHandler = new FateInevitabilityHandler(_enemyLoseActions, _enemyAttackMenu);
             PersonEffectsHandler personEffectsHandler = new PersonEffectsHandler(gnomeEffectHandler, slimeEffectHandler, curseEffectHandler,
-                fireEffectHandler, doubleEffectHandler, skipTurnEffectHandler);
+                fireEffectHandler, doubleEffectHandler, skipTurnEffectHandler, fateInevitabilityHandler);
 
             SkipTurnChecker skipTurnChecker = new SkipTurnChecker(slimeEffectHandler, _enemyHand);
             CardDragAndDropImitationActions cardDragAndDropImitationActions = new CardDragAndDropImitationActions(_enemyHand, _enemyPlayingZone, _enemyCardAttackZone,
@@ -273,8 +282,8 @@ namespace GameFields.Persons.Commons
             LookCardMenuEnemyAI lookCardMenuEnemyAI = new LookCardMenuEnemyAI(_informationLabel);
 
             return new EnemyAI(_interactionActivator, enemyDragAndDropImitation, _enemyPlayingZone,
-                _enemyTower, drawCardRoot, _enemyDiscoverImitation, startTurnDraw, _bus, _enemyHand, _playerAttackMenu,
-                _enemyChoiceMenu, _enemyChoiceMenuImitation, personEffectsHandler, lookCardMenuEnemyAI);
+                _enemyTower, drawCardRoot, _enemyDiscoverImitation, startTurnDraw, _bus, _enemyHand, _enemyAttackMenu,
+                _enemyChoiceMenu, _enemyChoiceMenuImitation, personEffectsHandler, lookCardMenuEnemyAI, _enemyLoseActions);
         }
 
         public CardLocationViewRoot CreateCardLocationViewRoot()
@@ -304,8 +313,9 @@ namespace GameFields.Persons.Commons
 
             _confirmableNumbersPlayer = new ConfirmableNumbers(_attackedNumbersPlayer, _choicedNumbersPlayer, _cursedNumbersPlayer);
 
-            AttackResultHandlerPlayer attackResultHandlerPlayer = new AttackResultHandlerPlayer(_discardPile, _bus,
-                _enemyTower, _playerCardAttackZone, _attackResultHandlerPlayerData);
+            //_playerLoseActions = new LoseActions(_playerTower ,_playerTower, _playerHand, _bus);
+            AttackResultHandlerPlayer attackResultHandlerPlayer = new AttackResultHandlerPlayer(_discardPile, _enemyLoseActions,
+                _playerCardAttackZone, _attackResultHandlerPlayerData);
             ChoiceResultHandlerPlayer choiceResultHandlerPlayer = new ChoiceResultHandlerPlayer(_informationLabel, _informationLabelDataPlayerChoice);
 
             _playerAttackMenu.Init(_enemyTower, attackResultHandlerPlayer, _cardNumbers, _attackedNumbersPlayer, _confirmableNumbersPlayer);
@@ -333,8 +343,8 @@ namespace GameFields.Persons.Commons
             _confirmableNumbersEnemyAI = new ConfirmableNumbers(_attackedNumbersEnemy, _choicedNumbersEnemy, _cursedNumbersEnemyAI);
 
             //TestBotLogic_ChoiceNumbers_TEST4(choicedNumbers);
-
-            AttackResultHandlerEnemyAI attackResultHandlerEnemyAI = new AttackResultHandlerEnemyAI(_discardPile, _bus, _playerTower,
+            //_enemyLoseActions = new LoseActions(_enemyTower , _enemyTower, _playerHand, _bus); 
+            AttackResultHandlerEnemyAI attackResultHandlerEnemyAI = new AttackResultHandlerEnemyAI(_discardPile, _playerLoseActions,
                 _enemyCardAttackZone, _attackResultHandlerEnemyAIData, _informationLabel, _informationLabelDataEnemyAIAttack);
             ChoiceResultHandlerEnemyAI choiceResultHandlerEnemyAI = new ChoiceResultHandlerEnemyAI(_informationLabel, _informationLabelDataEnemyAIChoice);
 

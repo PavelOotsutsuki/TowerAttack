@@ -17,8 +17,7 @@ namespace GameFields.Persons.SelectMenues.Attacks
     {
         private readonly InvertCardAnimation _invertCardAnimation;
         private readonly DiscardPile _discardPile;
-        private readonly SignalBus _bus;
-        private readonly IBoomTower _tower;
+        private readonly LoseActions _loseActions;
         private readonly IAttackCardKeeper _attackCardKeeper;
         private readonly AttackResultHandlerData _data;
 
@@ -26,12 +25,11 @@ namespace GameFields.Persons.SelectMenues.Attacks
         private bool _isComplete;
         private bool _isActive;
 
-        public AttackResultHandler(DiscardPile discardPile, SignalBus bus, IBoomTower tower, IAttackCardKeeper attackCardKeeper,
+        public AttackResultHandler(DiscardPile discardPile, LoseActions loseActions, IAttackCardKeeper attackCardKeeper,
             AttackResultHandlerData data)
         {
             _discardPile = discardPile;
-            _bus = bus;
-            _tower = tower;
+            _loseActions = loseActions;
             _attackCardKeeper = attackCardKeeper;
             _data = data;
 
@@ -102,11 +100,7 @@ namespace GameFields.Persons.SelectMenues.Attacks
                 _discardPile.SeatCard(_currentCard);
             }
 
-            _tower.Boom();
-
-            yield return new WaitForSeconds(_data.DelayBeforeStartingEndFightActions);
-
-            _bus.Fire(new PersonWinSignal(this));
+            _loseActions.Activate();
 
             // не было, и не надо. Кнопка при победе переворачивтаься не должна
             //_isComplete = true;

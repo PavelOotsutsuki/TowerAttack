@@ -13,7 +13,7 @@ namespace GameFields.Persons.Discovers
         [SerializeField] private float _offset = 400f;
         [SerializeField] private float _positionY = 0f;
 
-        protected IReadOnlyList<Card> Cards;
+        protected IReadOnlyList<IDiscoverable> Cards;
 
         private DiscoverResult _currentResult;
 
@@ -26,7 +26,7 @@ namespace GameFields.Persons.Discovers
             gameObject.SetActive(false);
         }
 
-        public void OnMakeChoice(Card card)
+        public void OnMakeChoice(IDiscoverable card)
         {
             foreach (DiscoverSeat seat in Seats)
             {

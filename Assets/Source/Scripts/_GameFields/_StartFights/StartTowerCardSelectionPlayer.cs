@@ -113,7 +113,7 @@ namespace GameFields.StartFights
             }
         }
 
-        private void ActivateSeats(Card card)
+        private void ActivateSeats(IDiscoverable card)
         {
             foreach (Seat seat in _seats)
             {

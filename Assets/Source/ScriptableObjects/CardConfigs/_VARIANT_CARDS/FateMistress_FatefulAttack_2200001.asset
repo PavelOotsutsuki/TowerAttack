@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 961f8779e31664b8b93208abc5cc22bb, type: 3}
   m_Name: FateMistress_FatefulAttack_2200001
   m_EditorClassIdentifier: 
-  <CardViewConfig>k__BackingField: {fileID: 0}
-  <Effect>k__BackingField: {fileID: 0}
+  <CardViewConfig>k__BackingField: {fileID: 11400000, guid: 4429a5118ba86458abaa2868bb95e4c9, type: 2}
+  <Effect>k__BackingField: {fileID: 11400000, guid: 25f3f9c58138d4969b80ffda3142092f, type: 2}

@@ -33,7 +33,7 @@ namespace Roots
 
         [Inject]
         private void Construct(SignalBus bus, Deck deck, SeatPool seatPool, CardDescription cardDescription, HandPlayer handPlayer,
-            InformationLabel informationLabel, LookCardMenuPlayer lookCardMenu)
+            InformationLabel informationLabel, LookCardMenuPlayer lookCardMenu, VariantCardCreator variantCardCreator)
         {
             GameFieldGC.GCOFF();
 
@@ -48,6 +48,7 @@ namespace Roots
             _speedUpButtonSortOrder.Init();
 
             lookCardMenu.Init();
+            variantCardCreator.Init();
 
             CardDragAndDropLightController cardDragAndDropLightController = _lightControlsCreator.CreateCardDragAndDropLightController();
 
@@ -68,7 +69,8 @@ namespace Roots
 
             _personsState = new PersonsState(player, enemyAI);
 
-            EffectFactory effectFactory = new EffectFactory(_personsState, viewRoot, informationLabel, cardTransitManager);
+            EffectFactory effectFactory = new EffectFactory(_personsState, viewRoot, informationLabel, cardTransitManager,
+                variantCardCreator);
 
             _cardRoot.Init(effectFactory, cardDescription, cardDragAndDropHandler);
             deck.Init(seatPool, _cardRoot.Cards);

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Cards;
+using Tools.Settings;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Movements;
 using UnityEngine;
@@ -11,7 +12,7 @@ namespace GameFields.Persons.Discovers
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private DiscoverCard _discoverCard;
 
-        private Card _card;
+        private IDiscoverable _card;
 
         private Movement _seatMovement;
         private IDiscoverChoiceHandler _discoverChoiceHandler;
@@ -24,10 +25,11 @@ namespace GameFields.Persons.Discovers
             Reset();
         }
 
-        public void SetCard(Card card)
+        public void SetCard(IDiscoverable card)
         {
             _card = card;
-            DiscoverCardActivateData data = new DiscoverCardActivateData(_card.ReadOnlyRectTransform.GetSizeDelta(), _card.ViewData);
+            //DiscoverCardActivateData data = new DiscoverCardActivateData(_card.ReadOnlyRectTransform.GetSizeDelta(), _card.ViewData);
+            DiscoverCardActivateData data = new DiscoverCardActivateData(GameSettings.CardSize, _card.ViewData);
             _discoverCard.Activate(data);
         }
 
