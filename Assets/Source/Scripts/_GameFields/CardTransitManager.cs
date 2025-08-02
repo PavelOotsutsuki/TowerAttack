@@ -9,6 +9,7 @@ using GameFields.Persons.Commons;
 using GameFields.Persons.Fires;
 using GameFields.Persons.Hands;
 using GameFields.Persons.Towers;
+using Tools;
 using UnityEngine;
 
 namespace GameFields
@@ -22,9 +23,11 @@ namespace GameFields
         private readonly ITransitable _deck;
         private readonly ITransitable _discardPile;
         private readonly ICardTakable _fireRoot;
+        private readonly ICardSeatable _playerFirePool;
+        private readonly ICardSeatable _enemyFirePool;
 
         public CardTransitManager(HandPlayer playerHand, HandAI enemyHand, Tower playerTower, Tower enemyTower, Deck deck,
-            DiscardPile discardPile, FireRoot fireRoot)
+            DiscardPile discardPile, FireRoot fireRoot, FirePool playerFirePool, FirePool enemyFirePool)
         {
             _playerHand = playerHand;
             _playerTower = playerTower;
@@ -36,9 +39,17 @@ namespace GameFields
             _discardPile = discardPile;
 
             _fireRoot = fireRoot;
+
+            _playerFirePool = playerFirePool;
+            _enemyFirePool = enemyFirePool;
         }
 
-        public bool TryTransitCard(Card card, TransitFromType from, TransitToType to, Action callback = null)
+        public void TransitCard(Card card, TransitFromType from, TransitToType to, Action callback = null)
+        {
+            TransitingCard(card, from, to, callback).ToUniTask();
+        }
+
+        private IEnumerator TransitingCard(Card card, TransitFromType from, TransitToType to, Action callback)
         {
             ICardTakable takable = from switch
             {
@@ -55,11 +66,25 @@ namespace GameFields
                 TransitToType.HandPlayer => _playerHand,
                 TransitToType.HandEnemy => _enemyHand,
                 TransitToType.DiscardPile => _discardPile,
+                TransitToType.PlayerFirePool => _playerFirePool,
+                TransitToType.EnemyFirePool => _enemyFirePool,
                 _ => throw new Exception($"Ошибка нахождения типа {typeof(TransitToType)}: {to}")
             };
 
+            if (from == TransitFromType.FireRoot &&
+                (to == TransitToType.PlayerFirePool || to == TransitToType.EnemyFirePool))
+                throw new Exception("Ошибка: попытка положить карту из FirePool-а в FirePool. Зачем???");
+
+            if (to == TransitToType.PlayerFirePool || to == TransitToType.EnemyFirePool)
+            {
+                CallbackHandler callbackHandler = new CallbackHandler();
+                card.Fire(new WaitForSeconds(0.1f), callbackHandler);
+
+                yield return new WaitUntil(() => callbackHandler.IsComplete);
+            }
+
             if (takable.TryTakeAwayCard(card) == false)
-                return false;
+                throw new Exception("Ошибка: не найдена карта в from");
 
             if (from == TransitFromType.FireRoot)
             {
@@ -68,10 +93,10 @@ namespace GameFields
             else
             {
                 seatable.SeatCard(card);
+                callback?.Invoke();
             }
-
-            return true;
         }
+
 
         public bool TryExchangeTower(Card cardToTower, IPersonObject exchangeObject, TowerTransitType transitType)
         {

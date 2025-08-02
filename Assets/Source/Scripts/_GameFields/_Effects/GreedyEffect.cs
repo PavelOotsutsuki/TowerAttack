@@ -55,8 +55,7 @@ namespace GameFields.Effects
                 {
                     foreach (Card card in givenCards)
                     {
-                        if (_transitManager.TryTransitCard(card, fromType, toType) == false)
-                            throw new Exception("Ошибка получения карты ТРАНЗИТОМ");
+                        _transitManager.TransitCard(card, fromType, toType);
                     }
                 }
             }

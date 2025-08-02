@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Fires
 {
-    public class FirePool
+    public class FirePool : ICardSeatable
     {
         private const float CenterRotation = 90f;
 
@@ -32,7 +32,7 @@ namespace GameFields.Persons.Fires
         public IReadOnlyList<Card> FireList => _fireList;
         public int Count => _fireList.Count;
 
-        public void Add(Card card)
+        public void SeatCard(Card card)
         {
             card.gameObject.SetActive(false);
 

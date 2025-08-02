@@ -6,6 +6,8 @@ namespace GameFields
         //DeckWithoutShuffle,
         HandPlayer,
         HandEnemy,
-        DiscardPile
+        DiscardPile,
+        PlayerFirePool,
+        EnemyFirePool
     }
 }

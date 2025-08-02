@@ -33,8 +33,7 @@ namespace GameFields.Effects
             {
                 isSeats.Add(card, false);
 
-                if (_transitManager.TryTransitCard(card, TransitFromType.FireRoot, TransitToType.Deck, () => isSeats.Remove(card)) == false)
-                    throw new System.Exception("Невозможно найти карту");
+                _transitManager.TransitCard(card, TransitFromType.FireRoot, TransitToType.Deck, () => isSeats.Remove(card));
 
                 yield return new WaitForSeconds(0.2f);
             }

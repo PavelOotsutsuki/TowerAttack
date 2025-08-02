@@ -22,7 +22,7 @@ namespace Cards
 
             IsActive = true;
 
-            StartCoroutine(Activating(data.Delay));
+            StartCoroutine(Activating(data));
         }
 
         public override void Deactivate()
@@ -36,11 +36,17 @@ namespace Cards
             //StartCoroutine(Deactivating());
         }
 
-        private IEnumerator Activating(WaitForSeconds delay)
+        private IEnumerator Activating(OnFireLogicActivateData data)
         {
-            yield return delay;
+            yield return data.Delay;
 
             _cardFireAnimator.Activate();
+
+            yield return new WaitUntil(() => _cardFireAnimator.IsComplete);
+
+            yield return new WaitForSeconds(1f);
+
+            data.CallbackHandler.Complete();
         }
 
         //private IEnumerator Deactivating()

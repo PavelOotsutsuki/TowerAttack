@@ -111,11 +111,7 @@ namespace GameFields.Effects
                 TransitFromType handFrom = _activePerson is Player ? TransitFromType.HandEnemy : TransitFromType.HandPlayer;
                 TransitToType handTo = _activePerson is Player ? TransitToType.HandPlayer : TransitToType.HandEnemy;
 
-                if (_transitManager.TryTransitCard(handCard, handFrom, handTo) == false)
-                {
-                    throw new Exception("Не удалось получить карту из руки противника");
-                }
-
+                _transitManager.TransitCard(handCard, handFrom, handTo);
                 _drawCardManager.DrawCard(deckCard);
             }
             else

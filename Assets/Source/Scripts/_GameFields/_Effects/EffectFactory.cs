@@ -105,7 +105,7 @@ namespace GameFields.Effects
                 EffectType.FateMistress => new FateMistressEffect(_personsState.Active, _variantCardCreator, CreateEffect, callback),
                 EffectType.FateMistress_FatefulAttack => new FateMistress_FatefulAttack(_personsState.Active, _viewRoot),
                 EffectType.FateMistress_FateInevitability => new FateMistress_FateInevitability(_personsState.Active, effectConfig.Duration),
-                EffectType.DumbMonk => new VoidEffect(),
+                EffectType.DumbMonk => new DumbMonkEffect(_personsState.Active, _viewRoot, _cardTransitManager),
                 EffectType.LeftEyedSister => new VoidEffect(),
                 EffectType.JusticeBull => new VoidEffect(),
                 EffectType.PatriarchCorall => new PatriarchCorallEffect(_personsState.Active, _cardTransitManager),

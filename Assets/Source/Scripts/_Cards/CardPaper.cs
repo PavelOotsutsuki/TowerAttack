@@ -62,7 +62,7 @@ namespace Cards
         //    _cardDragAndDropActions.SetListener(cardDragAndDropHandler);
         //}
 
-        public void Fire(WaitForSeconds delay)
+        public void Fire(WaitForSeconds delay, CallbackHandler callbackHandler)
         {
             //switch (_cardSideFlipper.CurrentSide)
             //{
@@ -75,7 +75,7 @@ namespace Cards
             //    default:
             //        throw new System.Exception("Неизвестный тип side карты");
             //}
-            OnFireLogicActivateData onFireLogicActivateData = new OnFireLogicActivateData(delay);
+            OnFireLogicActivateData onFireLogicActivateData = new OnFireLogicActivateData(delay, callbackHandler);
             _onFireLogic.Activate(onFireLogicActivateData);
         }
 

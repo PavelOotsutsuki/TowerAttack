@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Cards
 {
-    public class CardFireAnimator : MonoBehaviour, IWorkable
+    public class CardFireAnimator : MonoBehaviour, IWorkable, ICompletable
     {
         [SerializeField] private CardFrameFireAnimation _cardFrameFireAnimation;
         [SerializeField] private CardFireAnimation _cardFireAnimation;
@@ -15,6 +15,8 @@ namespace Cards
         [SerializeField] private CardRiseAnimation _cardRiseAnimation;
 
         public bool? IsActive { get; private set; } = null;
+
+        public bool IsComplete => _cardFrameFireAnimation.IsComplete && _cardFireAnimation.IsComplete;
 
         public void Init()
         {

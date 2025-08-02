@@ -60,12 +60,13 @@ namespace GameFields.Persons.DrawCards
             //Vector3 centerScaleVector = new Vector3(CenterScale, CenterScale, CenterScale);
 
             //Vector2 firstPosition = new Vector2(-400f, 200f);
+            CallbackHandler callbackHandlerFire = new CallbackHandler();
             drawnCard.Fire(new WaitForSeconds(
                 _data.StartMoveDuration +
                 _data.InvertCardAnimationData.InvertCardFrontDuration +
                 _data.InvertCardAnimationData.InvertCardBackDuration +
                 _data.InvertCardAnimationData.DelayAfterInvert +
-                _data.FireDrawCardDelay)); // Так, потому что надо чтобы sound пироманта пошел сразу
+                _data.FireDrawCardDelay), callbackHandlerFire); // Так, а не потом, потому что надо чтобы sound пироманта пошел сразу
 
             drawnCard.ReadOnlyRectTransform.SetParent(_data.FireDrawTemporarilyParent);
 
@@ -81,12 +82,13 @@ namespace GameFields.Persons.DrawCards
             //cardMovement.MoveLocalSmoothly(firstPosition, readOnlyRectTransform.GetRotationVector(), 0.5f, scale);
             yield return new WaitUntil(() => invertCardAnimation.IsComplete);
             //yield return new WaitForSeconds(_data.FireDrawCardDelay);
+            yield return new WaitUntil(() => callbackHandlerFire.IsComplete);
 
 
-            yield return new WaitForSeconds(2.5f);
+            //yield return new WaitForSeconds(2.5f);
             drawnCard.gameObject.SetActive(false);
 
-            _firePool.Add(drawnCard);
+            _firePool.SeatCard(drawnCard);
             _isComplete = true;
         }
     }

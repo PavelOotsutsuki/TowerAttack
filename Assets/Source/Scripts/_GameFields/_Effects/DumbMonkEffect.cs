@@ -1,21 +1,69 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Cards;
+using GameFields.Persons.Commons;
 using UnityEngine;
 
-namespace GameFields
+namespace GameFields.Effects
 {
-    public class DumbMonkEffect : MonoBehaviour
+    public class DumbMonkEffect : Effect
     {
-        // Start is called before the first frame update
-        void Start()
+        private readonly Person _activePerson;
+        private readonly CardLocationViewRoot _viewRoot;
+        private readonly CardTransitManager _transitManager;
+
+        private bool _isEffectComplete;
+
+        public DumbMonkEffect(Person activePerson, CardLocationViewRoot viewRoot, CardTransitManager transitManager) : base()
         {
-        
+            _activePerson = activePerson;
+            _viewRoot = viewRoot;
+            _transitManager = transitManager;
+
+            Play();
         }
 
-        // Update is called once per frame
-        void Update()
+        public override void End()
         {
-        
+            Debug.Log("Эффект Глупого Монаха закончен");
+        }
+
+        protected override IEnumerator OnPlaying()
+        {
+            _isEffectComplete = false;
+
+            ViewType viewType = _activePerson is Player ? ViewType.HandPlayer : ViewType.HandAI;
+            IReadOnlyList<Card> cards = _viewRoot.GetAllCards(viewType).ToList();
+
+            if (cards.Count <= 0)
+            {
+                EffectComplete();
+                yield break;
+            }
+
+            TransitFromType transitFromType;
+            TransitToType transitToType;
+
+            if (viewType == ViewType.HandPlayer)
+            {
+                transitFromType = TransitFromType.HandPlayer;
+                transitToType = TransitToType.PlayerFirePool;
+            }
+            else
+            {
+                transitFromType = TransitFromType.HandEnemy;
+                transitToType = TransitToType.EnemyFirePool;
+            }
+
+            _transitManager.TransitCard(cards[0], transitFromType, transitToType, EffectComplete);
+            //_activePerson.ActivateFateInevitability(_duration);
+            yield return new WaitUntil(() => _isEffectComplete);
+        }
+
+        private void EffectComplete()
+        {
+            _isEffectComplete = true;
         }
     }
 }

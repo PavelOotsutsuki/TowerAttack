@@ -166,14 +166,14 @@ namespace Cards
             _currentState.Show();
         }
 
-        public void Fire(WaitForSeconds delay)
+        public void Fire(WaitForSeconds delay, CallbackHandler callbackHandler)
         {
             if (_currentState is not CardPaper)
             {
                 throw new Exception("Try fire not CardPaper. Card state: " + _currentState.ToString());
             }
 
-            _cardPaper.Fire(delay);
+            _cardPaper.Fire(delay, callbackHandler);
         }
 
         public void Rise()

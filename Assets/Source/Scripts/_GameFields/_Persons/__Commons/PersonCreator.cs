@@ -293,7 +293,7 @@ namespace GameFields.Persons.Commons
 
         public CardTransitManager CreateCardTransitManager()
         {
-            return new CardTransitManager(_playerHand, _enemyHand, _playerTower, _enemyTower, _deck, _discardPile, _fireRoot);
+            return new CardTransitManager(_playerHand, _enemyHand, _playerTower, _enemyTower, _deck, _discardPile, _fireRoot, _playerFirePool, _enemyFirePool);
         }
 
         private void InitPlayersData()

@@ -34,7 +34,7 @@ namespace GameFields.Effects
             {
                 Card card = cards[0];
 
-                _transitManager.TryTransitCard(card, TransitFromType.DiscardPile, transitTo);
+                _transitManager.TransitCard(card, TransitFromType.DiscardPile, transitTo);
             }
 
             yield break;
