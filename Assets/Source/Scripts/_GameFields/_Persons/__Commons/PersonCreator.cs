@@ -270,6 +270,7 @@ namespace GameFields.Persons.Commons
             CardDragAndDropImitationActions cardDragAndDropImitationActions = new CardDragAndDropImitationActions(_enemyHand, _enemyPlayingZone, _enemyCardAttackZone,
                 _discardPile, drawCardRoot, _playerHand);
             StartTurnDrawEnemyAI startTurnDraw = new StartTurnDrawEnemyAI(_interactionActivator, drawCardRoot, _enemyCountStartDrawCards);
+            OnBeforeEndTurnProcessing onBeforeEndTurnProcessing = new OnBeforeEndTurnProcessing(_interactionActivator, personEffectsHandler);
 
             HardAIThinkLogic hardAIThinkLogic = new HardAIThinkLogic(_cardWatcher,_deck, _confirmableNumbersEnemyAI, gnomeEffectHandler,
                 _enemyPlayingZone, _enemyHand, fireEffectHandler, _discardPile, _fireRoot);
@@ -283,7 +284,8 @@ namespace GameFields.Persons.Commons
 
             return new EnemyAI(_interactionActivator, enemyDragAndDropImitation, _enemyPlayingZone,
                 _enemyTower, drawCardRoot, _enemyDiscoverImitation, startTurnDraw, _bus, _enemyHand, _enemyAttackMenu,
-                _enemyChoiceMenu, _enemyChoiceMenuImitation, personEffectsHandler, lookCardMenuEnemyAI, _enemyLoseActions);
+                _enemyChoiceMenu, _enemyChoiceMenuImitation, personEffectsHandler, lookCardMenuEnemyAI, _enemyLoseActions,
+                onBeforeEndTurnProcessing);
         }
 
         public CardLocationViewRoot CreateCardLocationViewRoot()

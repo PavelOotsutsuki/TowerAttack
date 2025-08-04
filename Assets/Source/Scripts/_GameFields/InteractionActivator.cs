@@ -62,6 +62,7 @@ namespace GameFields
                     break;
                 case EnemyDragAndDropImitation:
                 case CardActionProcessingEnemyAI:
+                case OnBeforeEndTurnProcessing:
                 //case CardEffectProcessingEnemyAI:
                     //case CardAttackProcessingEnemyAI:
                     break;

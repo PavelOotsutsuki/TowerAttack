@@ -496,6 +496,7 @@ namespace GameFields.Persons.Hands
         private void SortHandSeats()
         {
             //SetCardsInteraction();
+            Debug.Log(Cards.Count);
 
             OnSeatsCountChange?.Invoke();
 

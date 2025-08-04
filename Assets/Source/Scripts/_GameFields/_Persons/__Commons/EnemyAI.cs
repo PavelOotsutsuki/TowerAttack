@@ -25,12 +25,14 @@ namespace GameFields.Persons.Commons
     {
         //private readonly IDeactivatable _gameFieldObjectsActivator;
         private readonly EnemyDragAndDropImitation _enemyDragAndDropImitation;
+        private readonly OnBeforeEndTurnProcessing _onBeforeEndTurnProcessing;
         private readonly HandAI _handEnemy;
 
         public EnemyAI(InteractionActivator interactionActivator, EnemyDragAndDropImitation enemyDragAndDropImitation, CardPlayingZone cardPlayingZone,
             Tower tower, DrawCardRoot drawCardRoot, DiscoverAI discoverImitation, StartTurnDraw startTurnDraw, SignalBus bus,
             HandAI hand, ISelectMenuActivator attackMenu, ISelectMenuActivator choiceMenu, ISelectMenuActivator choiceMenuImitation,
-            PersonEffectsHandler personEffectsHandler, LookCardMenuEnemyAI lookCardMenu, LoseActions loseActions) :
+            PersonEffectsHandler personEffectsHandler, LookCardMenuEnemyAI lookCardMenu, LoseActions loseActions,
+            OnBeforeEndTurnProcessing onBeforeEndTurnProcessing) :
             base(cardPlayingZone, drawCardRoot, tower, startTurnDraw,discoverImitation, bus,
                 hand, attackMenu, interactionActivator, choiceMenu, choiceMenuImitation, personEffectsHandler,
                 lookCardMenu, loseActions)
@@ -38,6 +40,7 @@ namespace GameFields.Persons.Commons
             //_gameFieldObjectsActivator = gameFieldObjectsActivator;
             //Bus.Subscribe<StartEffectSignal>(SetCardEffectProcess);
             _enemyDragAndDropImitation = enemyDragAndDropImitation;
+            _onBeforeEndTurnProcessing = onBeforeEndTurnProcessing;
             _handEnemy = hand;
 
             Bus.Subscribe<PushStepSignalEnemyAI>(StartAttack);
@@ -69,6 +72,7 @@ namespace GameFields.Persons.Commons
         protected override void InitSteps()
         {
             //PushStep(CardEffectProcessing);
+            PushStep(_onBeforeEndTurnProcessing);
             PushStep(_enemyDragAndDropImitation);
             AddStartTurnDrawStep();
             //PushStep(StartTurnDraw);
