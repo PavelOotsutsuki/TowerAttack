@@ -195,6 +195,8 @@ namespace GameFields.Persons.Commons
             _enemyLoseActions = new LoseActions(_enemyTower, _enemyTower, _playerHand, _bus);
             _playerLoseActions = new LoseActions(_playerTower, _playerTower, _playerHand, _bus);
 
+            _confirmableNumbersPlayer = new ConfirmableNumbers(_attackedNumbersPlayer, _choicedNumbersPlayer, _cursedNumbersPlayer);
+            _confirmableNumbersEnemyAI = new ConfirmableNumbers(_attackedNumbersEnemy, _choicedNumbersEnemy, _cursedNumbersEnemyAI);
 
             InitPlayersData();
             InitEnemyData();
@@ -305,15 +307,13 @@ namespace GameFields.Persons.Commons
             //_playerHand.Init(seatPool, _playerRechangeFeatureRuleController, _playerTurnDrawnCards);
             _playerTable.Init();
             _playerPlayingZone.Init(_playerTable);
-            _playerTower.Init();
+            _playerTower.Init(_confirmableNumbersEnemyAI);
             _playerDiscover.Init();
             _startPlayerTurnLabel.Init();
 
             //SelectNumbersList attackedNumbers = new SelectNumbersList();
             //SelectNumbersList choicedNumbers = new SelectNumbersList();
             //SelectNumbersList cursedNumbers = new SelectNumbersList();
-
-            _confirmableNumbersPlayer = new ConfirmableNumbers(_attackedNumbersPlayer, _choicedNumbersPlayer, _cursedNumbersPlayer);
 
             //_playerLoseActions = new LoseActions(_playerTower ,_playerTower, _playerHand, _bus);
             AttackResultHandlerPlayer attackResultHandlerPlayer = new AttackResultHandlerPlayer(_discardPile, _enemyLoseActions,
@@ -335,14 +335,13 @@ namespace GameFields.Persons.Commons
             //_enemyHand.Init(seatPool, _enemyRechangeFeatureRuleController, _enemyTurnDrawnCards);
             _enemyTable.Init();
             _enemyPlayingZone.Init(_enemyTable);
-            _enemyTower.Init();
+            _enemyTower.Init(_confirmableNumbersPlayer);
+
             _enemyDiscoverImitation.Init();
 
             //SelectNumbersList attackedNumbers = new SelectNumbersList();
             //SelectNumbersList choicedNumbers = new SelectNumbersList();
             //SelectNumbersList cursedNumbers = new SelectNumbersList();
-
-            _confirmableNumbersEnemyAI = new ConfirmableNumbers(_attackedNumbersEnemy, _choicedNumbersEnemy, _cursedNumbersEnemyAI);
 
             //TestBotLogic_ChoiceNumbers_TEST4(choicedNumbers);
             //_enemyLoseActions = new LoseActions(_enemyTower , _enemyTower, _playerHand, _bus); 

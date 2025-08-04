@@ -20,14 +20,16 @@ namespace GameFields.Persons.Towers
         [SerializeField] private BoomAnimationData _boomAnimationData;
 
         private BoomAnimation _boomAnimation;
+        private ConfirmableNumbers _confirmableNumbers;
 
         public ReadOnlyRectTransform ReadOnlyRectTransform { get; private set; }
         public bool HasFreeSeat => _towerSeat.IsFill() == false;
         public ICardNumber Card => _towerSeat.Card;
 
-        public virtual void Init()
+        public virtual void Init(ConfirmableNumbers confirmableNumbers)
         {
             _towerSeat.Init();
+            _confirmableNumbers = confirmableNumbers;
 
             ReadOnlyRectTransform = new ReadOnlyRectTransform(_rectTransform);
 
@@ -67,6 +69,7 @@ namespace GameFields.Persons.Towers
 
             card = _towerSeat.Card;
             _towerSeat.Reset();
+            _confirmableNumbers.Clear();
 
             return true;
         }

@@ -134,7 +134,8 @@ namespace GameFields.Persons.Commons
 
             if (cards.Count > _discover.MaxSeats)
             {
-                return;
+                throw new Exception("Пытаемся закинуть в discover больше карт чем можем");
+                //return;
             }
 
             DiscoverActivateData discoverActivateData = new DiscoverActivateData(cards, activateMessage, discoverResult);

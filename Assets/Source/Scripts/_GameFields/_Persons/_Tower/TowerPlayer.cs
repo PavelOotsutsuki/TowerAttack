@@ -56,9 +56,9 @@ namespace GameFields.Persons.Towers
 
         [SerializeField] private TowerPlayerHelper _towerPlayerHelper;
 
-        public override void Init()
+        public override void Init(ConfirmableNumbers confirmableNumbers)
         {
-            base.Init();
+            base.Init(confirmableNumbers);
 
             _towerPlayerHelper.Init(GetCardViewData);
         }

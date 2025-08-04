@@ -82,9 +82,13 @@ namespace GameFields.Effects
                 {
                     activateMessage = "И в колоде, и в руке противника пусто!";
                 }
-                if (deckEndCard == null)
+                else if (deckEndCard == null)
                 {
                     activateMessage = "В колоде пусто!";
+                }
+                else if (deckTopCard == deckEndCard && handCard == null)
+                {
+                    activateMessage = "В колоде всего одна карта, а в руке карт нет вообще!";
                 }
                 else if (deckTopCard == deckEndCard)
                 {
@@ -92,7 +96,7 @@ namespace GameFields.Effects
                 }
                 else if (handCard == null)
                 {
-                    activateMessage = "И в колоде, и в руке противника пусто!";
+                    activateMessage = "В руке противника пусто!";
                 }
                 else
                 {

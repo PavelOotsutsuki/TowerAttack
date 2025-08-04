@@ -283,6 +283,7 @@ namespace GameFields.Persons.Hands
                     {
                         result.Add(cards[i]);
                         existingIndices.Add(cards[i].ViewData.Number);
+                        break;
                     }
                 }
             }
@@ -297,6 +298,7 @@ namespace GameFields.Persons.Hands
                         {
                             result.Add(cards[i]);
                             existingIndices.Add(cards[i].ViewData.Number);
+                            break;
                         }
                     }
                 }
@@ -310,6 +312,7 @@ namespace GameFields.Persons.Hands
                     {
                         result.Add(cards[i]);
                         existingIndices.Add(cards[i].ViewData.Number);
+                        break;
                     }
                 }
             }
@@ -496,7 +499,6 @@ namespace GameFields.Persons.Hands
         private void SortHandSeats()
         {
             //SetCardsInteraction();
-            Debug.Log(Cards.Count);
 
             OnSeatsCountChange?.Invoke();
 
