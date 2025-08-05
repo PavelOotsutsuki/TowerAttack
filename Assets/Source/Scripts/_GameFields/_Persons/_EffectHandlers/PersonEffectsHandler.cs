@@ -46,14 +46,14 @@ namespace GameFields.Persons.EffectHandlers
         public void OnStartTurn()
         {
             _curseEffectHandler.OnStartTurn();
+            _slimeEffectHandler.OnStartTurn();
+            _fireEffectHandler.OnStartTurn();
         }
 
         public void OnEndTurn()
         {
             _doubleEffectHandler.OnEndTurn();
             _skipTurnEffectHandler.OnEndTurn();
-            _slimeEffectHandler.OnEndTurn();
-            _fireEffectHandler.OnEndTurn();
         }
 
         public void BeforeEndTurn(Action callback)

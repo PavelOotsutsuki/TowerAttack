@@ -19,12 +19,13 @@ namespace GameFields.Persons.EffectHandlers.Fires
 
         public void Activate(int countTurns)
         {
-            _countTurns = countTurns;
+            _countTurns = countTurns
+                + 1; // +1 чтобы нейтрализовать эффект "в начале хода"
 
             _cardAnimationManager.SetFireMode();
         }
 
-        public void OnEndTurn()
+        public void OnStartTurn()
         {
             if (_countTurns > 0)
             {

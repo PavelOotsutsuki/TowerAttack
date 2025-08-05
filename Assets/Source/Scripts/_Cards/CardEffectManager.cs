@@ -26,6 +26,18 @@ namespace Cards
             //_effectCounter = _effect.Duration;
         }
 
+        public void AddTurns(int countAdded)
+        {
+            _effectCounter += countAdded;
+        }
+
+        public void Discard()
+        {
+            _effectCounter = 0;
+
+            TryDiscard();
+        }
+
         public bool TryDiscard()
         {
             if (_effectCounter <= 0)

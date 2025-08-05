@@ -29,7 +29,8 @@ namespace GameFields.Persons.EffectHandlers.Slimes
 
         public void Activate(int countTurns)
         {
-            _countTurns = countTurns;
+            _countTurns = countTurns
+                + 1; // +1 чтобы нейтрализовать эффект "в начале хода"
 
             _slimeEffectWorker.Activate();
         }
@@ -39,7 +40,7 @@ namespace GameFields.Persons.EffectHandlers.Slimes
         //    _turnCardsFromDeck.Add(card);
         //}
 
-        public void OnEndTurn()
+        public void OnStartTurn()
         {
             if (_countTurns > 0)
             {

@@ -108,6 +108,16 @@ namespace Cards
             _cardEffectManager.Play();
         }
 
+        public void Discard()
+        {
+            if (_currentState is not CardCharacter)
+            {
+                throw new Exception("Try discard not CardCharacter. Card state: " + _currentState.ToString());
+            }
+
+            _cardEffectManager.Discard();
+        }
+
         public bool TryDiscard()
         {
             if (_currentState is not CardCharacter)
