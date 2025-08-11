@@ -9,6 +9,7 @@ using System;
 using Tools;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using GameFields.Persons.EffectHandlers.Brothers;
 
 namespace GameFields.Persons.EffectHandlers
 {
@@ -21,10 +22,13 @@ namespace GameFields.Persons.EffectHandlers
         private readonly DoubleEffectHandler _doubleEffectHandler;
         private readonly SkipTurnEffectHandler _skipTurnEffectHandler;
         private readonly FateInevitabilityHandler _fateInevitabilityHandler;
+        private readonly JusticeBullEffectHandler _justiceBullEffectHandler;
+        private readonly BrothersEffectHandler _brothersEffectHandler;
 
         public PersonEffectsHandler(GnomeEffectHandler gnomeEffectHandler, SlimeEffectHandler slimeEffectHandler,
             CurseEffectHandler curseEffectHandler, FireEffectHandler fireEffectHandler, DoubleEffectHandler doubleEffectHandler,
-            SkipTurnEffectHandler skipTurnEffectHandler, FateInevitabilityHandler fateInevitabilityHandler)
+            SkipTurnEffectHandler skipTurnEffectHandler, FateInevitabilityHandler fateInevitabilityHandler,
+            JusticeBullEffectHandler justiceBullEffectHandler, BrothersEffectHandler brothersEffectHandler)
         {
             _gnomeEffectHandler = gnomeEffectHandler;
             _slimeEffectHandler = slimeEffectHandler;
@@ -33,6 +37,8 @@ namespace GameFields.Persons.EffectHandlers
             _doubleEffectHandler = doubleEffectHandler;
             _skipTurnEffectHandler = skipTurnEffectHandler;
             _fateInevitabilityHandler = fateInevitabilityHandler;
+            _justiceBullEffectHandler = justiceBullEffectHandler;
+            _brothersEffectHandler = brothersEffectHandler;
         }
 
         public GnomeEffectHandler GnomeEffectCounter => _gnomeEffectHandler;
@@ -42,6 +48,8 @@ namespace GameFields.Persons.EffectHandlers
         public DoubleEffectHandler DoubleEffectHandler => _doubleEffectHandler;
         public SkipTurnEffectHandler SkipTurnEffectHandler => _skipTurnEffectHandler;
         public FateInevitabilityHandler FateInevitabilityHandler => _fateInevitabilityHandler;
+        public JusticeBullEffectHandler JusticeBullEffectHandler => _justiceBullEffectHandler;
+        public BrothersEffectHandler BrothersEffectHandler => _brothersEffectHandler;
 
         public void OnStartTurn()
         {

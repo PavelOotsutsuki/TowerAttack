@@ -10,7 +10,7 @@ using Zenject;
 
 namespace GameFields.Effects
 {
-    public class FateMistress_FatefulAttack : Effect
+    public class FateMistress_FatefulAttackEffect : Effect
     {
         private readonly Person _activePerson;
         //private readonly Person _deactivePerson;
@@ -19,7 +19,7 @@ namespace GameFields.Effects
 
         private bool _isEffectComplete;
 
-        public FateMistress_FatefulAttack(Person activePerson, CardLocationViewRoot viewRoot) : base()
+        public FateMistress_FatefulAttackEffect(Person activePerson, CardLocationViewRoot viewRoot) : base()
         {
             _activePerson = activePerson;
             //_deactivePerson = deactivePerson;

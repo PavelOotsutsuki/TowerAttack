@@ -8,7 +8,7 @@ using UnityEngine;
 namespace GameFields.Persons.Towers
 {
     public abstract class Tower : MonoBehaviour, ICardDropPlace, ICardNumberKeeper, IBoomTower, IPersonObject,
-        IReadOnlyRectTransformable, ICardFeatureRechangable, ITowerTransitable, IAutomaticFillComponents
+        IReadOnlyRectTransformable, ICardFeatureRechangablePlace, ITowerTransitable, IAutomaticFillComponents
     {
         private const SideType DefaultSideType = SideType.Back;
         private const bool IsCardInteraction = false;

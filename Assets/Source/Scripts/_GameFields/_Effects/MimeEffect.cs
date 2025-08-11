@@ -147,7 +147,7 @@ namespace GameFields.Effects
 
         public override void End()
         {
-            Debug.Log("End DetectiveRhodesEffect");
+            Debug.Log("Эффект Мима окончен");
         }
 
         //private void Discover(Card firstFindedCard, int countDiscoverCards, string activateDiscoverMessage,

@@ -5,27 +5,27 @@ using UnityEngine;
 
 namespace GameFields.Effects
 {
-    public class FateMistress_FateInevitability : Effect
+    public class JusticeBull_FalseChoiceEffect : Effect
     {
+        private const int CountTurns = 2;
         private readonly Person _activePerson;
-        private readonly int _duration;
 
-        public FateMistress_FateInevitability(Person activePerson, int duration) : base(duration)
+        public JusticeBull_FalseChoiceEffect(Person activePerson) : base(CountTurns - 1)
         {
             _activePerson = activePerson;
-            _duration = duration;
 
             Play();
         }
 
         public override void End()
         {
-            Debug.Log("Эффект Неизбежность судьбы закончен");
+            Debug.Log("Эффект Быка правосудия(2.0) закончен");
         }
 
         protected override IEnumerator OnPlaying()
         {
-            _activePerson.ActivateFateInevitability(_duration);
+            _activePerson.ActivateSkipTurns(CountTurns);
+
             yield break;
         }
     }

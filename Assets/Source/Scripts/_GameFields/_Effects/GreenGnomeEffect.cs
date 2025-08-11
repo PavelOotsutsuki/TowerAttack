@@ -1,21 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
+using GameFields.Persons.Commons;
 using UnityEngine;
 
-namespace GameFields
+namespace GameFields.Effects
 {
-    public class GreenGnomeEffect : MonoBehaviour
+    public class GreenGnomeEffect : GnomeEffect
     {
-        // Start is called before the first frame update
-        void Start()
-        {
-        
-        }
+        public GreenGnomeEffect(Person activePerson) : base(activePerson)
+        { }
 
-        // Update is called once per frame
-        void Update()
+        public override void End()
         {
-        
+            Debug.Log("Эффект Зеленого Гнома закончен");
         }
     }
 }

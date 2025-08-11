@@ -16,7 +16,7 @@ using Random = UnityEngine.Random;
 namespace GameFields.Persons.Hands
 {
     public abstract class Hand : MonoBehaviour, ICardDragAndDropHandHandler, IHandBlockable, ICardView, IPersonObject, ICardsCounter,
-        ICardFeatureRechangable, ITransitable, ISlimeEffectWorker, ITurnSkipper, IAutomaticFillComponents
+        ICardFeatureRechangablePlace, ITransitable, ISlimeEffectWorker, ITurnSkipper, IAutomaticFillComponents
     {
         private const float StartRotation = 0;
         private const int EmptyIndex = -1;

@@ -3,7 +3,7 @@ using Cards;
 
 namespace GameFields.Persons.Commons
 {
-    public interface ICardFeatureRechangable
+    public interface ICardFeatureRechangablePlace
     {
         public IEnumerable<IFeatureRechanger> GetRechangableCards();
     }

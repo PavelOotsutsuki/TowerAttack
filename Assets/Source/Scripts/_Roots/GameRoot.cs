@@ -15,6 +15,7 @@ using CanvasSortOrders;
 using GameFields.InformationLabels;
 using GameFields.DiscardPiles;
 using GameFields.Persons.LookCardMenues;
+using GameFields.Persons.EffectHandlers.Brothers;
 
 namespace Roots
 {
@@ -64,13 +65,14 @@ namespace Roots
             EnemyAI enemyAI = _personCreator.CreateEnemyAI();
             CardLocationViewRoot viewRoot = _personCreator.CreateCardLocationViewRoot();
             CardTransitManager cardTransitManager = _personCreator.CreateCardTransitManager();
+            BrothersEffectHandlerRoot brothersEffectHandlerRoot = _personCreator.CreateBrothersEffectHandlerRoot();
 
             Destroy(_personCreator.gameObject);
 
             _personsState = new PersonsState(player, enemyAI);
 
             EffectFactory effectFactory = new EffectFactory(_personsState, viewRoot, informationLabel, cardTransitManager,
-                variantCardCreator);
+                variantCardCreator, brothersEffectHandlerRoot);
 
             _cardRoot.Init(effectFactory, cardDescription, cardDragAndDropHandler);
             deck.Init(seatPool, _cardRoot.Cards);

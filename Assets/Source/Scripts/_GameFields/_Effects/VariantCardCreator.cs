@@ -10,11 +10,16 @@ namespace GameFields.Effects
         [Header("22: FateMistress")]
 
         [SerializeField] private VariantCard _fateMistress_FatefulAttack_template;
-        [SerializeField] private VariantCard _fateMistress_FateInevitability;
+        [SerializeField] private VariantCard _fateMistress_FateInevitability_template;
 
-        //[Space]
-        //[Header("----------------------------")]
-        //[Space]
+        [Space]
+        [Header("----------------------------")]
+        [Space]
+
+        [Header("25: JusticeBull")]
+
+        [SerializeField] private VariantCard _justiceBullEffect_SmallerOnesArmy_template;
+        [SerializeField] private VariantCard _justiceBullEffect_BigOnesArmy_template;
 
         private readonly Dictionary<EffectType, VariantCard[]> _effectsVariantsTemplates = new Dictionary<EffectType, VariantCard[]>(); 
 
@@ -24,7 +29,14 @@ namespace GameFields.Effects
                 new VariantCard[2]
                 {
                     _fateMistress_FatefulAttack_template,
-                    _fateMistress_FateInevitability
+                    _fateMistress_FateInevitability_template
+                });
+
+            _effectsVariantsTemplates.Add(EffectType.JusticeBull,
+                new VariantCard[2]
+                {
+                    _justiceBullEffect_SmallerOnesArmy_template,
+                    _justiceBullEffect_BigOnesArmy_template
                 });
         }
 

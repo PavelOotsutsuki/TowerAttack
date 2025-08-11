@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: RushingMailmanView
   m_EditorClassIdentifier: 
   <Number>k__BackingField: 14
-  <Icon>k__BackingField: {fileID: 21300000, guid: 758d9900016044f72aa88b992d4128fc, type: 3}
+  <Icon>k__BackingField: {fileID: 21300000, guid: 58b6e3cc84886466c9f2165bfe8a67ad, type: 3}
   <Description>k__BackingField: "\u042F \u0434\u043E\u043B\u0436\u0435\u043D \u0443\u0441\u043F\u0435\u0442\u044C
     \u0434\u043E\u0441\u0442\u0430\u0432\u0438\u0442\u044C \u0434\u043E \u0432\u0441\u0435\u0445
     \u0438\u043D\u0444\u043E\u0440\u043C\u0430\u0446\u0438\u044E \u043D\u0430 \u043F\u043E\u043B\u0435

@@ -9,14 +9,14 @@ namespace GameFields.Persons.EffectHandlers
     public class GnomeEffectHandler
     {
         private readonly RechangeFeatureRuleController _ruleController;
-        private readonly IEnumerable<ICardFeatureRechangable> _rechangables;
+        private readonly IEnumerable<ICardFeatureRechangablePlace> _rechangables;
 
         private readonly int _upgradeStepCount;
 
         private int _gnomeCounterNumbers;
         private int _gnomeCounterUse;
 
-        public GnomeEffectHandler(RechangeFeatureRuleController ruleController, IEnumerable<ICardFeatureRechangable> rechangables)
+        public GnomeEffectHandler(RechangeFeatureRuleController ruleController, IEnumerable<ICardFeatureRechangablePlace> rechangables)
         {
             _ruleController = ruleController;
             _rechangables = rechangables;
@@ -43,7 +43,7 @@ namespace GameFields.Persons.EffectHandlers
 
             if (_rechangables != null)
             {
-                foreach (ICardFeatureRechangable rechangable in _rechangables)
+                foreach (ICardFeatureRechangablePlace rechangable in _rechangables)
                 {
                     if (rechangable.GetRechangableCards() != null)
                     {

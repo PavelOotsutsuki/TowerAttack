@@ -27,6 +27,7 @@ using GameFields.Persons.EffectHandlers.Curses;
 using GameFields.Persons.EnemyProcessImitations;
 using GameFields.Persons.EffectHandlers.Fires;
 using GameFields.Persons.LookCardMenues;
+using GameFields.Persons.EffectHandlers.Brothers;
 
 namespace GameFields.Persons.Commons
 {
@@ -58,6 +59,8 @@ namespace GameFields.Persons.Commons
         private SelectNumbersList _choicedNumbersPlayer = new SelectNumbersList();
         private SelectNumbersList _cursedNumbersPlayer = new SelectNumbersList();
         private ConfirmableNumbers _confirmableNumbersPlayer;
+
+        private BrothersEffectHandler _playerBrothersEffectHandler;
 
         private LoseActions _playerLoseActions;
 
@@ -94,6 +97,8 @@ namespace GameFields.Persons.Commons
         private SelectNumbersList _choicedNumbersEnemy = new SelectNumbersList();
         private SelectNumbersList _cursedNumbersEnemyAI = new SelectNumbersList();
         private ConfirmableNumbers _confirmableNumbersEnemyAI;
+
+        private BrothersEffectHandler _enemyBrothersEffectHandler;
 
         private LoseActions _enemyLoseActions;
 
@@ -212,7 +217,7 @@ namespace GameFields.Persons.Commons
             DrawCardRoot drawCardRoot = new DrawCardRoot(drawCardAnimationManager, _deck);
 
             SlimeEffectHandler slimeEffectHandler = new SlimeEffectHandler(_playerHand, _playerTurnDrawnCards);
-            List<ICardFeatureRechangable> cardFeatureRechangables = new List<ICardFeatureRechangable>()
+            List<ICardFeatureRechangablePlace> cardFeatureRechangables = new List<ICardFeatureRechangablePlace>()
             {
                 _playerTower,
                 _playerHand
@@ -224,8 +229,11 @@ namespace GameFields.Persons.Commons
             DoubleEffectHandler doubleEffectHandler = new DoubleEffectHandler();
             SkipTurnEffectHandler skipTurnEffectHandler = new SkipTurnEffectHandler();
             FateInevitabilityHandler fateInevitabilityHandler = new FateInevitabilityHandler(_playerLoseActions, _playerAttackMenu);
+            JusticeBullEffectHandler justiceBullEffectHandler = new JusticeBullEffectHandler(_choicedNumbersPlayer, _enemyTower);
+            _playerBrothersEffectHandler = new BrothersEffectHandler(_playerRechangeFeatureRuleController, cardFeatureRechangables);
             PersonEffectsHandler personEffectsHandler = new PersonEffectsHandler(gnomeEffectHandler, slimeEffectHandler, curseEffectHandler,
-                fireEffectHandler, doubleEffectHandler, skipTurnEffectHandler, fateInevitabilityHandler);
+                fireEffectHandler, doubleEffectHandler, skipTurnEffectHandler, fateInevitabilityHandler, justiceBullEffectHandler,
+                _playerBrothersEffectHandler);
 
             SkipTurnChecker skipTurnChecker = new SkipTurnChecker(slimeEffectHandler, _playerHand);
             TurnProcessing turnProcessing = new TurnProcessing(_interactionActivator, skipTurnChecker);
@@ -253,7 +261,7 @@ namespace GameFields.Persons.Commons
             DrawCardRoot drawCardRoot = new DrawCardRoot(drawCardAnimationManager, _deck);
 
             SlimeEffectHandler slimeEffectHandler = new SlimeEffectHandler(_enemyHand, _enemyTurnDrawnCards);
-            List<ICardFeatureRechangable> cardFeatureRechangables = new List<ICardFeatureRechangable>()
+            List<ICardFeatureRechangablePlace> cardFeatureRechangables = new List<ICardFeatureRechangablePlace>()
             {
                 _enemyTower,
                 _enemyHand
@@ -265,8 +273,11 @@ namespace GameFields.Persons.Commons
             DoubleEffectHandler doubleEffectHandler = new DoubleEffectHandler();
             SkipTurnEffectHandler skipTurnEffectHandler = new SkipTurnEffectHandler();
             FateInevitabilityHandler fateInevitabilityHandler = new FateInevitabilityHandler(_enemyLoseActions, _enemyAttackMenu);
+            JusticeBullEffectHandler justiceBullEffectHandler = new JusticeBullEffectHandler(_choicedNumbersEnemy, _playerTower);
+            _enemyBrothersEffectHandler = new BrothersEffectHandler(_enemyRechangeFeatureRuleController, cardFeatureRechangables);
             PersonEffectsHandler personEffectsHandler = new PersonEffectsHandler(gnomeEffectHandler, slimeEffectHandler, curseEffectHandler,
-                fireEffectHandler, doubleEffectHandler, skipTurnEffectHandler, fateInevitabilityHandler);
+                fireEffectHandler, doubleEffectHandler, skipTurnEffectHandler, fateInevitabilityHandler, justiceBullEffectHandler,
+                _enemyBrothersEffectHandler);
 
             SkipTurnChecker skipTurnChecker = new SkipTurnChecker(slimeEffectHandler, _enemyHand);
             CardDragAndDropImitationActions cardDragAndDropImitationActions = new CardDragAndDropImitationActions(_enemyHand, _enemyPlayingZone, _enemyCardAttackZone,
@@ -298,6 +309,11 @@ namespace GameFields.Persons.Commons
         public CardTransitManager CreateCardTransitManager()
         {
             return new CardTransitManager(_playerHand, _enemyHand, _playerTower, _enemyTower, _deck, _discardPile, _fireRoot, _playerFirePool, _enemyFirePool);
+        }
+
+        public BrothersEffectHandlerRoot CreateBrothersEffectHandlerRoot()
+        {
+            return new BrothersEffectHandlerRoot(_playerBrothersEffectHandler, _enemyBrothersEffectHandler);
         }
 
         private void InitPlayersData()

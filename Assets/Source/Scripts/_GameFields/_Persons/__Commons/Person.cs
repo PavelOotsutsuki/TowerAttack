@@ -31,6 +31,7 @@ namespace GameFields.Persons.Commons
         private readonly ISelectMenuActivator _choiceMenuImitation;
         private readonly ILookCardMenu _lookCardMenu;
         private readonly IBoomTower _boomTower;
+        private readonly ICardNumberKeeper _cardNumberKeeper;
         private readonly LoseActions _loseActions;
 
         //private readonly PersonStep _lastStep;
@@ -56,6 +57,7 @@ namespace GameFields.Persons.Commons
             _playingZone = playingZone;
             _tower = tower;
             _boomTower = tower;
+            _cardNumberKeeper = tower;
             _drawCardRoot = drawCardRoot;
             StartTurnDraw = startTurnDraw;
             //TurnProcess = turnProcess;
@@ -168,6 +170,11 @@ namespace GameFields.Persons.Commons
         public void Capitulate()
         {
             _loseActions.Activate();
+        }
+
+        public bool IsSuccessChoiceTowerNumber(int number)
+        {
+            return _cardNumberKeeper.Card.IsSuccessChoice(number);
         }
 
         //private IEnumerator WaitUntilCapitulate()
@@ -313,6 +320,11 @@ namespace GameFields.Persons.Commons
         //    return cards;
         //}
 
+        public void ActivateJusticeBullEffect()
+        {
+            _personEffectsHandler.JusticeBullEffectHandler.Activate();
+        }
+
         public void ActivateSkipTurns(int countTurns)
         {
             _personEffectsHandler.SkipTurnEffectHandler.Activate(countTurns);
@@ -321,6 +333,13 @@ namespace GameFields.Persons.Commons
         public bool TryActivateGnomeEffect(out int countTurns)
         {
             return _personEffectsHandler.GnomeEffectCounter.TryActivate(out countTurns);
+        }
+
+        public int BrothersCounter => _personEffectsHandler.BrothersEffectHandler.ExtraCount;
+
+        public void UpgradeBrothers(int startValue, int increaseValue)
+        {
+            _personEffectsHandler.BrothersEffectHandler.Upgrade(startValue, increaseValue);
         }
 
         public void ActivateDoubleEffect(int countTurns)

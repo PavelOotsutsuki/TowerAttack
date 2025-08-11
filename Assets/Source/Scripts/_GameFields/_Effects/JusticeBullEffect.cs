@@ -1,21 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
+using Cards;
+using GameFields.Persons.Commons;
+using System;
 using UnityEngine;
 
-namespace GameFields
+namespace GameFields.Effects
 {
-    public class JusticeBullEffect : MonoBehaviour
+    public class JusticeBullEffect : VariantEffect
     {
-        // Start is called before the first frame update
-        void Start()
-        {
-        
-        }
+        public JusticeBullEffect(Person activePerson, VariantCardCreator variantCardCreator,
+            Func<CardEffectConfig, Action<int>, Effect> effectCreator, Action<int> callback, EffectType effectType) :
+            base(activePerson, variantCardCreator, effectCreator, callback, effectType)
+        { }
 
-        // Update is called once per frame
-        void Update()
+        public override void End()
         {
-        
+            Debug.Log("Эффект Быка Правосудия окончен");
         }
     }
 }
