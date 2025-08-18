@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 961f8779e31664b8b93208abc5cc22bb, type: 3}
+  m_Name: JusticeBullEffect_SmallerOnesArmy_2500001
+  m_EditorClassIdentifier: 
+  <CardViewConfig>k__BackingField: {fileID: 11400000, guid: 0e3af74d8dbd44b19bfe3d4e84b34d55, type: 2}
+  <Effect>k__BackingField: {fileID: 11400000, guid: fa609c9f66ee9463b9c789b432c0b515, type: 2}
