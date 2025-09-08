@@ -3,6 +3,7 @@ using Cards;
 using GameFields.Persons.Commons;
 using GameFields.Persons.SelectMenues.Commons;
 using UnityEngine;
+using Zenject;
 
 namespace GameFields.Effects
 {
@@ -13,7 +14,7 @@ namespace GameFields.Effects
 
         private bool _endPlaying;
 
-        public GeneralEffect(Person activePerson) : base()
+        public GeneralEffect(Person activePerson, SignalBus bus, CardEffectData data) : base(bus, data)
         {
             _activePerson = activePerson;
 
@@ -22,6 +23,8 @@ namespace GameFields.Effects
 
         public override void End()
         {
+            base.End();
+
             Debug.Log("Эффект Генерала закончен");
         }
 

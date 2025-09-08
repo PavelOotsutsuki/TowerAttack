@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: RobinGoodView
   m_EditorClassIdentifier: 
   <Number>k__BackingField: 20
-  <Icon>k__BackingField: {fileID: 21300000, guid: 758d9900016044f72aa88b992d4128fc, type: 3}
+  <Icon>k__BackingField: {fileID: 21300000, guid: 9933c088d436740c7a6e583f2db4fc5d, type: 3}
   <Description>k__BackingField: "\u042F \u043F\u043E\u043C\u043E\u0433\u0430\u044E
     \u0441\u043B\u0430\u0431\u044B\u043C! \u041E\u0441\u043E\u0431\u0435\u043D\u043D\u043E,
     \u0435\u0441\u043B\u0438 \u044F \u0441\u043B\u0430\u0431\u0435\u0435."

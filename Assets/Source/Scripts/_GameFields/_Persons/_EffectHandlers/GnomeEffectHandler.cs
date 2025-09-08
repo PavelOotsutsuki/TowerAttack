@@ -12,6 +12,7 @@ namespace GameFields.Persons.EffectHandlers
         private readonly IEnumerable<ICardFeatureRechangablePlace> _rechangables;
 
         private readonly int _upgradeStepCount;
+        private readonly int _startCount; 
 
         private int _gnomeCounterNumbers;
         private int _gnomeCounterUse;
@@ -23,11 +24,12 @@ namespace GameFields.Persons.EffectHandlers
 
             _upgradeStepCount = 2;
 
-            _gnomeCounterNumbers = 3;
+            _startCount = 3;
+            _gnomeCounterNumbers = 0;
             _gnomeCounterUse = 1;
         }
 
-        public int GnomeCounterNumbers => _gnomeCounterNumbers;
+        public int GnomeCounterNumbers => _startCount + _gnomeCounterNumbers;
         public int UpgradeStepCount => _upgradeStepCount;
 
         public void Upgrade()
@@ -72,7 +74,7 @@ namespace GameFields.Persons.EffectHandlers
                 return false;
 
             _gnomeCounterUse--;
-            countNumbers = _gnomeCounterNumbers;
+            countNumbers = GnomeCounterNumbers;
 
             return true;
         }

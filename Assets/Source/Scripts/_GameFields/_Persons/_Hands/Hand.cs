@@ -290,7 +290,7 @@ namespace GameFields.Persons.Hands
 
             if (result.Count < count)
             {
-                for (int c = result.Count - 1; c < count; c++)
+                for (int c = result.Count; c < count; c++)
                 {
                     for (int i = 0; i < cards.Count; i++)
                     {
@@ -306,13 +306,12 @@ namespace GameFields.Persons.Hands
 
             if (result.Count < count)
             {
-                for (int c = result.Count - 1; c < count; c++)
+                for (int c = result.Count; c < count; c++)
                 {
                     for (int i = 0; i < cards.Count; i++)
                     {
                         result.Add(cards[i]);
                         existingIndices.Add(cards[i].ViewData.Number);
-                        break;
                     }
                 }
             }

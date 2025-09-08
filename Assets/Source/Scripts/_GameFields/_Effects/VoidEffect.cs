@@ -2,6 +2,7 @@
 using System.Collections;
 using Cards;
 using UnityEngine;
+using Zenject;
 
 namespace GameFields.Effects
 {
@@ -9,7 +10,7 @@ namespace GameFields.Effects
     {
         private readonly float _delay;
 
-        public VoidEffect() : base()
+        public VoidEffect(SignalBus bus, CardEffectData data) : base(bus, data)
         {
             _delay = 1f;
 
@@ -18,6 +19,8 @@ namespace GameFields.Effects
 
         public override void End()
         {
+            base.End();
+
             Debug.Log("Пустой эффект закончен");
         }
 

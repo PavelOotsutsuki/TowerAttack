@@ -8,6 +8,6 @@ namespace Cards
         public bool HasFreeSeat { get; }
         public ReadOnlyRectTransform ReadOnlyRectTransform { get; }
 
-        public void SeatCard(Card card);
+        //public void SeatCard(Card card);
     }
 }

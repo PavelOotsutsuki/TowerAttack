@@ -2,6 +2,7 @@ using System.Collections;
 using Cards;
 using GameFields.Persons.Commons;
 using UnityEngine;
+using Zenject;
 
 namespace GameFields.Effects
 {
@@ -10,16 +11,18 @@ namespace GameFields.Effects
         private readonly Person _activePerson;
         private readonly int _duration;
 
-        public FateMistress_FateInevitabilityEffect(Person activePerson, int duration) : base(duration)
+        public FateMistress_FateInevitabilityEffect(Person activePerson, SignalBus bus, CardEffectData data) : base(bus, data)
         {
             _activePerson = activePerson;
-            _duration = duration;
+            _duration = data.Duration;
 
             Play();
         }
 
         public override void End()
         {
+            base.End();
+
             Debug.Log("Эффект Неизбежность судьбы закончен");
         }
 

@@ -4,6 +4,7 @@ using Cards;
 using GameFields.Persons.Commons;
 using GameFields.Persons.DrawCards;
 using UnityEngine;
+using Zenject;
 
 namespace GameFields.Effects
 {
@@ -16,7 +17,8 @@ namespace GameFields.Effects
 
         private readonly CardLocationViewRoot _cardLocationViewRoot;
 
-        public RobinGoodEffect(Person activePerson, Person deactivePerson, CardLocationViewRoot cardLocationViewRoot) : base()
+        public RobinGoodEffect(Person activePerson, Person deactivePerson, CardLocationViewRoot cardLocationViewRoot,
+            SignalBus bus, CardEffectData data) : base(bus, data)
         {
             _activePerson = activePerson;
             _deactivePerson = deactivePerson;
@@ -29,6 +31,8 @@ namespace GameFields.Effects
 
         public override void End()
         {
+            base.End();
+
             Debug.Log("Эффект Робин Гуда закончен");
         }
 

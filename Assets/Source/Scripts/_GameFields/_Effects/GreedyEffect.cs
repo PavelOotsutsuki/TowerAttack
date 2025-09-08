@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using Zenject;
+using UnityEngine;
 
 namespace GameFields.Effects
 {
@@ -11,7 +13,8 @@ namespace GameFields.Effects
         private readonly CardLocationViewRoot _viewRoot;
         private readonly CardTransitManager _transitManager;
 
-        public GreedyEffect(CardLocationViewRoot viewRoot, CardTransitManager transitManager) : base()
+        public GreedyEffect(CardLocationViewRoot viewRoot, CardTransitManager transitManager, SignalBus bus, CardEffectData data)
+            : base(bus, data)
         {
             //_activePerson = activePerson;
             //_deactivePerson = deactivePerson;
@@ -24,7 +27,9 @@ namespace GameFields.Effects
 
         public override void End()
         {
-            //Debug.Log("Эффект Жадины закончен");
+            base.End();
+
+            Debug.Log("Эффект Жадины закончен");
         }
 
         //protected override IEnumerator OnPlaying()

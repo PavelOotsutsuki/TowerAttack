@@ -1,21 +1,37 @@
 using System.Collections;
-using System.Collections.Generic;
+using Cards;
+using GameFields.Persons.Commons;
 using UnityEngine;
+using Zenject;
 
-namespace GameFields
+namespace GameFields.Effects
 {
-    public class ScarecrowEffect : MonoBehaviour
+    public class ScarecrowEffect : Effect
     {
-        // Start is called before the first frame update
-        void Start()
+        private const int CountUsed = 1;
+
+        private readonly Person _deactivePerson;
+        private readonly Card _card;
+
+        public ScarecrowEffect(Person deactivePerson, SignalBus bus, CardEffectData data) : base(bus, data)
         {
-        
+            _deactivePerson = deactivePerson;
+            _card = data.Card;
+
+            Play();
         }
 
-        // Update is called once per frame
-        void Update()
+        public override void End()
         {
-        
+            base.End();
+
+            Debug.Log("Эффект Чучела закончен");
+        }
+
+        protected override IEnumerator OnPlaying()
+        {
+            _deactivePerson.ActivateScarecrowEffect(CountUsed, _card);
+            yield break;
         }
     }
 }

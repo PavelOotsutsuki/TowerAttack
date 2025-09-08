@@ -25,7 +25,8 @@ namespace Cards
             foreach (TagValuePair pair in _tagValuePairs)
             {
                 TagValuePair givenPair = givenPairs.FirstOrDefault(p => p.Tag == pair.Tag);
-                int currentValue = givenPair == null ? pair.Value : givenPair.Value;
+                //int currentValue = givenPair == null ? pair.Value : givenPair.Value;
+                int currentValue = givenPair == null || givenPairs == _tagValuePairs ? pair.Value : givenPair.Value + pair.Value;
 
                 string afterValue = "";
 
@@ -48,9 +49,12 @@ namespace Cards
 
             string result = _featureTemplate;
 
+            if (givenPairs == _tagValuePairs)
+                return result;
+
             foreach (TagValuePair pair in _tagValuePairs)
             {
-                result = result.Replace($"<{pair.Tag}_{pair.Value}>", $"<{pair.Tag}_{givenPairs.First(p => p.Tag == pair.Tag)?.Value}>");
+                result = result.Replace($"<{pair.Tag}_{pair.Value}>", $"<{pair.Tag}_{givenPairs.First(p => p.Tag == pair.Tag)?.Value + pair.Value}>");
             }
 
             return result;

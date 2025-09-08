@@ -5,11 +5,18 @@ namespace GameFields.Signals
 {
     public struct DiscardCardsSignal
     {
-        public readonly IEnumerable<Card> Cards;
+        //public readonly IEnumerable<Card> Cards;
 
-        public DiscardCardsSignal(IEnumerable<Card> cards)
+        //public DiscardCardsSignal(IEnumerable<Card> cards)
+        //{
+        //    Cards = cards;
+        //}
+
+        public readonly Card Card;
+
+        public DiscardCardsSignal(Card card)
         {
-            Cards = cards;
+            Card = card;
         }
     }
 }

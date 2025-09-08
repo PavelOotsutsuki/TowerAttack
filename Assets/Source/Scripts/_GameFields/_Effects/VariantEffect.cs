@@ -5,6 +5,7 @@ using System.Collections;
 using GameFields.Persons.Discovers;
 using System.Collections.Generic;
 using System;
+using Zenject;
 
 namespace GameFields.Effects
 {
@@ -12,21 +13,33 @@ namespace GameFields.Effects
     {
         private readonly Person _activePerson;
         private readonly VariantCardCreator _variantCardCreator;
-        private readonly Func<CardEffectConfig, Action<int>, Effect> _effectCreator;
-        private readonly Action<int> _callback;
+        private readonly Func<EffectType, CardEffectData, Effect> _effectCreator;
+        //private readonly Action<int> _callback;
         private readonly EffectType _effectType;
+        private readonly CardEffectData _data;
 
+        //public VariantEffect(Person activePerson, VariantCardCreator variantCardCreator,
+        //    Func<CardEffectConfig, Action<int>, Effect> effectCreator, Action<int> callback,
+        //    EffectType effectType) : base()
         public VariantEffect(Person activePerson, VariantCardCreator variantCardCreator,
-            Func<CardEffectConfig, Action<int>, Effect> effectCreator, Action<int> callback,
-            EffectType effectType) : base()
+            Func<EffectType, CardEffectData , Effect> effectCreator, EffectType effectType, SignalBus bus, CardEffectData data)
+            : base(bus, data)
         {
             _activePerson = activePerson;
             _variantCardCreator = variantCardCreator;
             _effectCreator = effectCreator;
-            _callback = callback;
+            _data = data;
+            //_callback = callback;
             _effectType = effectType;
 
             Play();
+        }
+
+        public override void End()
+        {
+            base.End();
+
+            Debug.Log("Эффект ВАРИАНТ окончен");
         }
 
         protected override IEnumerator OnPlaying()
@@ -41,7 +54,8 @@ namespace GameFields.Effects
             VariantCard variantCard = (VariantCard)discoverResult.Result;
             CardEffectConfig effectConfig = variantCard.EffectConfig;
 
-            Effect realEffect = _effectCreator.Invoke(effectConfig, _callback);
+            //Effect realEffect = _effectCreator.Invoke(effectConfig, _callback);
+            Effect realEffect = _effectCreator.Invoke(effectConfig.Type, new CardEffectData(_data.Card, effectConfig.Duration));
 
             yield return new WaitUntil(() => realEffect.IsComplete);
         }

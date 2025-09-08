@@ -62,7 +62,8 @@ namespace Cards
         internal void PlayCard(ICardDropPlace cardDropPlace)
         {
             _cardDragAndDropHandler.OnCardPlay();
-            cardDropPlace.SeatCard(_card);
+            //cardDropPlace.SeatCard(_card);
+            _card.Play();
         }
 
         internal void Attack(IAttackable cardAttackZone)

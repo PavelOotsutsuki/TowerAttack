@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using GameFields.Persons.Commons;
 using UnityEngine;
+using Zenject;
 
 namespace GameFields.Effects
 {
@@ -11,7 +12,8 @@ namespace GameFields.Effects
         private readonly CardLocationViewRoot _viewRoot;
         private readonly CardTransitManager _transitManager;
 
-        public TimeChildEffect(CardLocationViewRoot viewRoot, CardTransitManager transitManager) : base()
+        public TimeChildEffect(CardLocationViewRoot viewRoot, CardTransitManager transitManager, SignalBus bus, CardEffectData data)
+            : base(bus, data)
         {
             _viewRoot = viewRoot;
             _transitManager = transitManager;
@@ -21,7 +23,9 @@ namespace GameFields.Effects
 
         public override void End()
         {
-            //Debug.Log("Эффект Жадины закончен");
+            base.End();
+
+            Debug.Log("Эффект Дитя времени закончен");
         }
 
         protected override IEnumerator OnPlaying()

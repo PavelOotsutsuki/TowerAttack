@@ -6,7 +6,7 @@ namespace GameFields.StartFights
 {
     public abstract class StartTowerCardSelection : ICompletable
     {
-        protected readonly ICardDropPlace Tower;
+        protected readonly ITowerCardSeatable Tower;
 
         public bool IsComplete => Tower.HasFreeSeat == false;
 

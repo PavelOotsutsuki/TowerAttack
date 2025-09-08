@@ -5,6 +5,7 @@ using Cards;
 using GameFields.Persons.Commons;
 using GameFields.Persons.LookCardMenues;
 using UnityEngine;
+using Zenject;
 
 namespace GameFields.Effects
 {
@@ -17,7 +18,8 @@ namespace GameFields.Effects
 
         private readonly CardLocationViewRoot _cardLocationViewRoot;
 
-        public SharpSnakeEffect(Person activePerson, CardLocationViewRoot cardLocationViewRoot) : base()
+        public SharpSnakeEffect(Person activePerson, CardLocationViewRoot cardLocationViewRoot,
+             SignalBus bus, CardEffectData data) : base(bus, data)
         {
             _activePerson = activePerson;
             _isEffectComplete = false;
@@ -29,6 +31,8 @@ namespace GameFields.Effects
 
         public override void End()
         {
+            base.End();
+
             Debug.Log("Эффект Зоркой змеи закончен");
         }
 

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using GameFields.Persons.Commons;
 using UnityEngine;
 using GameFields.Persons.Discovers;
+using Zenject;
 
 namespace GameFields.Effects
 {
@@ -15,7 +16,8 @@ namespace GameFields.Effects
         private readonly CardLocationViewRoot _viewRoot;
         private readonly CardTransitManager _transitManager;
 
-        public LeftEyedSisterEffect(Person activePerson, CardLocationViewRoot viewRoot, CardTransitManager transitManager) : base()
+        public LeftEyedSisterEffect(Person activePerson, CardLocationViewRoot viewRoot, CardTransitManager transitManager,
+            SignalBus bus, CardEffectData data) : base(bus, data)
         {
             _activePerson = activePerson;
 
@@ -27,6 +29,8 @@ namespace GameFields.Effects
 
         public override void End()
         {
+            base.End();
+
             Debug.Log("Эффект Левоглазой сестры закончен");
         }
 

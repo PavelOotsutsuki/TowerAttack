@@ -4,6 +4,7 @@ using System.Linq;
 using Cards;
 using GameFields.Persons.Commons;
 using UnityEngine;
+using Zenject;
 
 namespace GameFields.Effects
 {
@@ -15,7 +16,8 @@ namespace GameFields.Effects
 
         private bool _isEffectComplete;
 
-        public DumbMonkEffect(Person activePerson, CardLocationViewRoot viewRoot, CardTransitManager transitManager) : base()
+        public DumbMonkEffect(Person activePerson, CardLocationViewRoot viewRoot, CardTransitManager transitManager,
+            SignalBus bus, CardEffectData data) : base(bus, data)
         {
             _activePerson = activePerson;
             _viewRoot = viewRoot;
@@ -26,6 +28,8 @@ namespace GameFields.Effects
 
         public override void End()
         {
+            base.End();
+
             Debug.Log("Эффект Глупого Монаха закончен");
         }
 

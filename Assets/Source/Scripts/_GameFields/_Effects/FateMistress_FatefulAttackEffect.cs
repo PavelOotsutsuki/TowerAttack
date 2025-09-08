@@ -19,7 +19,8 @@ namespace GameFields.Effects
 
         private bool _isEffectComplete;
 
-        public FateMistress_FatefulAttackEffect(Person activePerson, CardLocationViewRoot viewRoot) : base()
+        public FateMistress_FatefulAttackEffect(Person activePerson, CardLocationViewRoot viewRoot, SignalBus bus, CardEffectData data)
+            : base(bus, data)
         {
             _activePerson = activePerson;
             //_deactivePerson = deactivePerson;
@@ -31,6 +32,8 @@ namespace GameFields.Effects
 
         public override void End()
         {
+            base.End();
+
             Debug.Log("Эффект Судьбоносный удар закончен");
         }
 

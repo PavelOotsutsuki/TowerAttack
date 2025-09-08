@@ -87,6 +87,7 @@ namespace GameFields.Persons.Commons
         public bool IsComplete { get; private set; }
         //public PersonEffectsHandler PersonEffectsHandler => _personEffectsHandler;
         public bool IsDoubleEffect => _personEffectsHandler.DoubleEffectHandler.IsActive;
+        public bool IsScarecrowEffectActive => _personEffectsHandler.ScarecrowEffectHandler.TryUse();
 
         public void StartStep()
         {
@@ -121,10 +122,11 @@ namespace GameFields.Persons.Commons
             //_hand.OnFinishTurn();
             _personEffectsHandler.OnEndTurn();
 
-            IReadOnlyList<Card> discardedCards = _playingZone.DiscardCards();
+            //IReadOnlyList<Card> discardedCards = _playingZone.DiscardCards();
+            _playingZone.DiscardCards();
 
-            if (discardedCards.Count > 0)
-                Bus.Fire(new DiscardCardsSignal(discardedCards));
+            //if (discardedCards.Count > 0)
+            //    Bus.Fire(new DiscardCardsSignal(discardedCards));
         }
 
         public void DiscoverCards(IReadOnlyList<IDiscoverable> cards, string activateMessage, DiscoverResult discoverResult)
@@ -249,9 +251,15 @@ namespace GameFields.Persons.Commons
             }
         }
 
-        public virtual void StartEffect(Effect effect, CardEffectConfig effectData)
+        //public void StartEffect(Effect effect, CardEffectConfig effectData)
+        public void StartEffect(PersonEffect personEffect, bool isRememberEffect = true)
         {
-            LastEffect = effectData;
+            if (isRememberEffect)
+                LastEffect = personEffect.CardEffectConfig;
+
+            StartAction(personEffect.Effect);
+
+            _playingZone.SeatCard(personEffect);
         }
 
         public abstract void StartAction(ICompletable completable);
@@ -337,9 +345,9 @@ namespace GameFields.Persons.Commons
 
         public int BrothersCounter => _personEffectsHandler.BrothersEffectHandler.ExtraCount;
 
-        public void UpgradeBrothers(int startValue, int increaseValue)
+        public void UpgradeBrothers(int increaseValue)
         {
-            _personEffectsHandler.BrothersEffectHandler.Upgrade(startValue, increaseValue);
+            _personEffectsHandler.BrothersEffectHandler.Upgrade(increaseValue);
         }
 
         public void ActivateDoubleEffect(int countTurns)
@@ -367,6 +375,11 @@ namespace GameFields.Persons.Commons
         public void ActivateFateInevitability(int countTurns)
         {
             _personEffectsHandler.FateInevitabilityHandler.Activate(countTurns);
+        }
+
+        public void ActivateScarecrowEffect(int countTurns, Card card)
+        {
+            _personEffectsHandler.ScarecrowEffectHandler.Activate(countTurns, card);
         }
 
         //public void DeactivateSlimeEffect()

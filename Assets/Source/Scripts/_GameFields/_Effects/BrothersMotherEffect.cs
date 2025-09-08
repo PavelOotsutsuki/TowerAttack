@@ -1,21 +1,37 @@
 using System.Collections;
-using System.Collections.Generic;
+using Cards;
+using GameFields.Persons.Commons;
+using GameFields.Persons.EffectHandlers.Brothers;
+using GameFields.Persons.SelectMenues.Commons;
 using UnityEngine;
+using Zenject;
 
-namespace GameFields
+namespace GameFields.Effects
 {
-    public class BrothersMotherEffect : MonoBehaviour
+    public class BrothersMotherEffect : Effect
     {
-        // Start is called before the first frame update
-        void Start()
+        private const int UpgradeCount = 2;
+
+        private readonly Person _activePerson;
+
+        public BrothersMotherEffect(Person activePerson, SignalBus bus, CardEffectData data) : base(bus, data)
         {
-        
+            _activePerson = activePerson;
+
+            Play();
         }
 
-        // Update is called once per frame
-        void Update()
+        public override void End()
         {
-        
+            base.End();
+
+            Debug.Log("Эффект Матери братьев закончен");
+        }
+
+        protected override IEnumerator OnPlaying()
+        {
+            _activePerson.UpgradeBrothers(UpgradeCount);
+            yield break;
         }
     }
 }

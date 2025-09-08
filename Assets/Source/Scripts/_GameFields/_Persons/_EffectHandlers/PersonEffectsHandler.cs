@@ -24,11 +24,13 @@ namespace GameFields.Persons.EffectHandlers
         private readonly FateInevitabilityHandler _fateInevitabilityHandler;
         private readonly JusticeBullEffectHandler _justiceBullEffectHandler;
         private readonly BrothersEffectHandler _brothersEffectHandler;
+        private readonly ScarecrowEffectHandler _scarecrowEffectHandler;
 
         public PersonEffectsHandler(GnomeEffectHandler gnomeEffectHandler, SlimeEffectHandler slimeEffectHandler,
             CurseEffectHandler curseEffectHandler, FireEffectHandler fireEffectHandler, DoubleEffectHandler doubleEffectHandler,
             SkipTurnEffectHandler skipTurnEffectHandler, FateInevitabilityHandler fateInevitabilityHandler,
-            JusticeBullEffectHandler justiceBullEffectHandler, BrothersEffectHandler brothersEffectHandler)
+            JusticeBullEffectHandler justiceBullEffectHandler, BrothersEffectHandler brothersEffectHandler,
+            ScarecrowEffectHandler scarecrowEffectHandler)
         {
             _gnomeEffectHandler = gnomeEffectHandler;
             _slimeEffectHandler = slimeEffectHandler;
@@ -39,6 +41,7 @@ namespace GameFields.Persons.EffectHandlers
             _fateInevitabilityHandler = fateInevitabilityHandler;
             _justiceBullEffectHandler = justiceBullEffectHandler;
             _brothersEffectHandler = brothersEffectHandler;
+            _scarecrowEffectHandler = scarecrowEffectHandler;
         }
 
         public GnomeEffectHandler GnomeEffectCounter => _gnomeEffectHandler;
@@ -50,6 +53,7 @@ namespace GameFields.Persons.EffectHandlers
         public FateInevitabilityHandler FateInevitabilityHandler => _fateInevitabilityHandler;
         public JusticeBullEffectHandler JusticeBullEffectHandler => _justiceBullEffectHandler;
         public BrothersEffectHandler BrothersEffectHandler => _brothersEffectHandler;
+        public ScarecrowEffectHandler ScarecrowEffectHandler => _scarecrowEffectHandler;
 
         public void OnStartTurn()
         {

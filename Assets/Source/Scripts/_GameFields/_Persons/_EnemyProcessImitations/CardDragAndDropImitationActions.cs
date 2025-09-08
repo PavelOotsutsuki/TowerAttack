@@ -75,7 +75,8 @@ namespace GameFields.Persons.EnemyProcessImitations
             yield return new WaitUntil(() => _isMoving == false);
 
             _hand.OnCardPlay();
-            _cardDropPlaceImitation.SeatCard(_activeCard);
+            _activeCard.Play();
+            //_cardDropPlaceImitation.SeatCard(_activeCard);
         }
 
         public void HandTransfer()

@@ -10,6 +10,7 @@ using Tools.Utils;
 using System;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.DrawCards;
+using Zenject;
 
 namespace GameFields.Effects
 {
@@ -33,7 +34,7 @@ namespace GameFields.Effects
         private readonly IDrawCardManager _drawCardManager;
 
         public DetectiveRhodesEffect(Person activePerson, CardTransitManager transitManager, CardLocationViewRoot viewRoot,
-            InformationLabel informationLabel) : base()
+            InformationLabel informationLabel, SignalBus bus, CardEffectData data) : base(bus, data)
         {
             _activePerson = activePerson;
             _transitManager = transitManager;
@@ -107,7 +108,7 @@ namespace GameFields.Effects
 
             //if ((deckResult.Result == deckCard && handResult.Result == handCard) || isTest)
             if (deckResult.Result == deckCard && handResult.Result == handCard)
-                {
+            {
                 TransitFromType handFrom = _activePerson is Player ? TransitFromType.HandEnemy : TransitFromType.HandPlayer;
                 TransitToType handTo = _activePerson is Player ? TransitToType.HandPlayer : TransitToType.HandEnemy;
 
@@ -137,6 +138,8 @@ namespace GameFields.Effects
 
         public override void End()
         {
+            base.End();
+
             Debug.Log("End DetectiveRhodesEffect");
         }
 

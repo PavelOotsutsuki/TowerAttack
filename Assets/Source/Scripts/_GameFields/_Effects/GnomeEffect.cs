@@ -3,6 +3,7 @@ using Cards;
 using GameFields.Persons.Commons;
 using GameFields.Persons.SelectMenues.Commons;
 using UnityEngine;
+using Zenject;
 
 namespace GameFields.Effects
 {
@@ -12,11 +13,18 @@ namespace GameFields.Effects
 
         private bool _endPlaying;
 
-        public GnomeEffect(Person activePerson) : base()
+        public GnomeEffect(Person activePerson, SignalBus bus, CardEffectData data) : base(bus, data)
         {
             _activePerson = activePerson;
 
             Play();
+        }
+
+        public override void End()
+        {
+            base.End();
+
+            Debug.Log("Эффект Гнома закончен");
         }
 
         protected override IEnumerator OnPlaying()

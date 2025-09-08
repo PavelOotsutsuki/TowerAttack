@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Cards;
+using GameFields.Persons.Commons;
 using Tools;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
 namespace GameFields.Persons.Tables
 {
-    public abstract class CardPlayingZone : MonoBehaviour, ICardDropPlace, IAutomaticFillComponents
+    public abstract class CardPlayingZone : MonoBehaviour, ITableCardSeatable, IAutomaticFillComponents
     {
-        private readonly List<Card> _playedCards = new List<Card>();
+        //private readonly List<Card> _playedCards = new List<Card>();
 
         [SerializeField] private RectTransform _rectTransform;
         
@@ -26,36 +27,48 @@ namespace GameFields.Persons.Tables
 
         //public Vector3 GetPosition() => transform.position;
 
-        public void SeatCard(Card card)
+        //public void SeatCard(Card card)
+        //{
+        //    if (HasFreeSeat == false)
+        //        throw new System.Exception("Нет места в " + ToString() + "! Почему не проверил ");
+
+        //    card.Play();
+        //    _table.SeatCard(card);
+        //    //_playedCards.Add(card);
+        //}
+
+        public void SeatCard(PersonEffect personEffect)
         {
             if (HasFreeSeat == false)
                 throw new System.Exception("Нет места в " + ToString() + "! Почему не проверил ");
 
-            card.Play();
-            _table.SeatCard(card);
-            _playedCards.Add(card);
+            _table.SeatCard(personEffect);
+            //_playedCards.Add(card);
         }
 
-        public IReadOnlyList<Card> DiscardCards()
+        public void DiscardCards()
         {
-            List<Card> toDiscard = new List<Card>();
-            
-            foreach (Card playedCard in _playedCards)
+            //List<Card> toDiscard = new List<Card>();
+
+            Card[] playedCards = _table.Cards.ToArray();
+
+            for (int i = playedCards.Length - 1; i >= 0; i--)
             {
-                if (playedCard.TryDiscard())
-                {
-                    toDiscard.Add(playedCard);
-                }
+                _table.TryDiscard(playedCards[i]);
+                //if (playedCard.TryDiscard())
+                //{
+                //    toDiscard.Add(playedCard);
+                //}
             }
             
-            toDiscard = toDiscard.OrderBy(card => card.ReadOnlyRectTransform.GetPositionX()).ToList();
+            //toDiscard = toDiscard.OrderBy(card => card.ReadOnlyRectTransform.GetPositionX()).ToList();
 
-            foreach (Card card in toDiscard)
-                _playedCards.Remove(card);
+            //foreach (Card card in toDiscard)
+            //    playedCards.Remove(card);
 
-            _table.FreeSeats(toDiscard.Select(card => card));
+            //_table.FreeSeats(toDiscard);
             
-            return toDiscard;
+            //return toDiscard;
         }
 
         #region AutomaticFillComponents

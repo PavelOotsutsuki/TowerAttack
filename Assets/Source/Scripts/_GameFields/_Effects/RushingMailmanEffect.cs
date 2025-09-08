@@ -3,6 +3,7 @@ using Cards;
 using GameFields.Persons.Commons;
 using System.Collections;
 using GameFields.Persons.DrawCards;
+using Zenject;
 
 namespace GameFields.Effects
 {
@@ -14,7 +15,7 @@ namespace GameFields.Effects
 
         private bool _isContinue;
 
-        public RushingMailmanEffect(Person activePerson) : base()
+        public RushingMailmanEffect(Person activePerson, SignalBus bus, CardEffectData data) : base(bus, data)
         {
             _drawCardManager = activePerson;
 
@@ -35,10 +36,11 @@ namespace GameFields.Effects
             _isContinue = true;
         }
 
-
         public override void End()
         {
-            //Debug.Log("End patriarch corall effect");
+            base.End();
+
+            Debug.Log("End Несущегося почтальона effect");
         }
     }
 }

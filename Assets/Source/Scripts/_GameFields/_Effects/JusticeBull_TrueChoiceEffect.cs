@@ -2,6 +2,7 @@ using System.Collections;
 using Cards;
 using GameFields.Persons.Commons;
 using UnityEngine;
+using Zenject;
 
 namespace GameFields.Effects
 {
@@ -12,7 +13,7 @@ namespace GameFields.Effects
 
         private bool _endPlaying;
 
-        public JusticeBull_TrueChoiceEffect(Person activePerson) : base()
+        public JusticeBull_TrueChoiceEffect(Person activePerson, SignalBus bus, CardEffectData data) : base(bus, data)
         {
             _activePerson = activePerson;
 
@@ -21,6 +22,8 @@ namespace GameFields.Effects
 
         public override void End()
         {
+            base.End();
+
             Debug.Log("Эффект Быка правосудия(2.1) закончен");
         }
 

@@ -51,6 +51,7 @@ namespace GameFields.Persons.Commons
         private TurnDrawnCards _playerTurnDrawnCards;
 
         private LookCardMenuPlayer _playerLookCardMenu;
+        //private ActiveEffectsList _playerActiveEffectsList = new ActiveEffectsList();
 
         private ForgingZone _forgingZone;
         private HandTransferZone _handTransferZone;
@@ -93,6 +94,8 @@ namespace GameFields.Persons.Commons
         private RechangeFeatureRuleController _enemyRechangeFeatureRuleController;
         private TurnDrawnCards _enemyTurnDrawnCards;
 
+        //private ActiveEffectsList _enemyActiveEffectsList = new ActiveEffectsList();
+
         private SelectNumbersList _attackedNumbersEnemy = new SelectNumbersList();
         private SelectNumbersList _choicedNumbersEnemy = new SelectNumbersList();
         private SelectNumbersList _cursedNumbersEnemyAI = new SelectNumbersList();
@@ -131,6 +134,7 @@ namespace GameFields.Persons.Commons
         private Deck _deck;
         private EndTurnButton _endTurnButton;
         private SeatPool _seatPool;
+        private DiscardManager _discardManager;
 
         private InteractionActivator _interactionActivator;
         private InformationLabel _informationLabel;
@@ -203,6 +207,8 @@ namespace GameFields.Persons.Commons
             _confirmableNumbersPlayer = new ConfirmableNumbers(_attackedNumbersPlayer, _choicedNumbersPlayer, _cursedNumbersPlayer);
             _confirmableNumbersEnemyAI = new ConfirmableNumbers(_attackedNumbersEnemy, _choicedNumbersEnemy, _cursedNumbersEnemyAI);
 
+            _discardManager = new DiscardManager(_enemyTable, _playerTable);
+
             InitPlayersData();
             InitEnemyData();
             //InitCommonData();
@@ -230,10 +236,11 @@ namespace GameFields.Persons.Commons
             SkipTurnEffectHandler skipTurnEffectHandler = new SkipTurnEffectHandler();
             FateInevitabilityHandler fateInevitabilityHandler = new FateInevitabilityHandler(_playerLoseActions, _playerAttackMenu);
             JusticeBullEffectHandler justiceBullEffectHandler = new JusticeBullEffectHandler(_choicedNumbersPlayer, _enemyTower);
+            ScarecrowEffectHandler scarecrowEffectHandler = new ScarecrowEffectHandler(_discardManager);
             _playerBrothersEffectHandler = new BrothersEffectHandler(_playerRechangeFeatureRuleController, cardFeatureRechangables);
             PersonEffectsHandler personEffectsHandler = new PersonEffectsHandler(gnomeEffectHandler, slimeEffectHandler, curseEffectHandler,
                 fireEffectHandler, doubleEffectHandler, skipTurnEffectHandler, fateInevitabilityHandler, justiceBullEffectHandler,
-                _playerBrothersEffectHandler);
+                _playerBrothersEffectHandler, scarecrowEffectHandler);
 
             SkipTurnChecker skipTurnChecker = new SkipTurnChecker(slimeEffectHandler, _playerHand);
             TurnProcessing turnProcessing = new TurnProcessing(_interactionActivator, skipTurnChecker);
@@ -275,9 +282,10 @@ namespace GameFields.Persons.Commons
             FateInevitabilityHandler fateInevitabilityHandler = new FateInevitabilityHandler(_enemyLoseActions, _enemyAttackMenu);
             JusticeBullEffectHandler justiceBullEffectHandler = new JusticeBullEffectHandler(_choicedNumbersEnemy, _playerTower);
             _enemyBrothersEffectHandler = new BrothersEffectHandler(_enemyRechangeFeatureRuleController, cardFeatureRechangables);
+            ScarecrowEffectHandler scarecrowEffectHandler = new ScarecrowEffectHandler(_discardManager);
             PersonEffectsHandler personEffectsHandler = new PersonEffectsHandler(gnomeEffectHandler, slimeEffectHandler, curseEffectHandler,
                 fireEffectHandler, doubleEffectHandler, skipTurnEffectHandler, fateInevitabilityHandler, justiceBullEffectHandler,
-                _enemyBrothersEffectHandler);
+                _enemyBrothersEffectHandler, scarecrowEffectHandler);
 
             SkipTurnChecker skipTurnChecker = new SkipTurnChecker(slimeEffectHandler, _enemyHand);
             CardDragAndDropImitationActions cardDragAndDropImitationActions = new CardDragAndDropImitationActions(_enemyHand, _enemyPlayingZone, _enemyCardAttackZone,

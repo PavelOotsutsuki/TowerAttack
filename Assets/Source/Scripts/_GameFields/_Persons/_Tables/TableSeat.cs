@@ -3,6 +3,7 @@ using Cards;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Movements;
 using System.Collections.Generic;
+using GameFields.Persons.Commons;
 
 namespace GameFields.Persons.Tables
 {
@@ -10,23 +11,34 @@ namespace GameFields.Persons.Tables
     {
         [SerializeField] private RectTransform _rectTransform;
 
-        private Card _card;
+        private PersonEffect _personEffect;
 
-        internal bool IsEmpty => _card == null;
+        internal bool IsEmpty => _personEffect == null;
+        internal PersonEffect PersonEffect => _personEffect;
 
-        internal void SetCard(Card card)
+        //internal void SetCard(Card card)
+        //{
+        //    _card = card;
+        //    _card.ReadOnlyRectTransform.SetParent(_rectTransform);
+
+        //    Movement cardMovement = _card.CardMovement;
+
+        //    cardMovement.MoveLocalInstantly(Vector2.zero, Quaternion.identity.eulerAngles);
+        //}
+
+        internal void SetCard(PersonEffect personEffect)
         {
-            _card = card;
-            _card.ReadOnlyRectTransform.SetParent(_rectTransform);
+            _personEffect = personEffect;
+            _personEffect.Card.ReadOnlyRectTransform.SetParent(_rectTransform);
 
-            Movement cardMovement = _card.CardMovement;
+            Movement cardMovement = _personEffect.Card.CardMovement;
 
             cardMovement.MoveLocalInstantly(Vector2.zero, Quaternion.identity.eulerAngles);
         }
 
-        internal void Reset() => _card = null;
+        internal void Reset() => _personEffect = null;
 
-        internal bool IsCardEqual(Card card) => card == _card;
+        //internal bool IsCardEqual(Card card) => card == _card;
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(TableSeat))]

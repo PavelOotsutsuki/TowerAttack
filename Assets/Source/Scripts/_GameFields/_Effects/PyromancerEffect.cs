@@ -2,6 +2,7 @@ using System.Collections;
 using Cards;
 using GameFields.Persons.Commons;
 using UnityEngine;
+using Zenject;
 
 namespace GameFields.Effects
 {
@@ -9,7 +10,7 @@ namespace GameFields.Effects
     {
         private readonly Person _deactivePerson;
 
-        public PyromancerEffect(Person deactivePerson, int countTurns) : base(countTurns)
+        public PyromancerEffect(Person deactivePerson, SignalBus bus, CardEffectData data) : base(bus, data)
         {
             _deactivePerson = deactivePerson;
 
@@ -18,6 +19,8 @@ namespace GameFields.Effects
 
         public override void End()
         {
+            base.End();
+
             Debug.Log("Эффект Пироманта закончен");
         }
 

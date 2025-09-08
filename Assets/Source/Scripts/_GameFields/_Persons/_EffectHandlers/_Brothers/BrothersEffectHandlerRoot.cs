@@ -12,10 +12,10 @@ namespace GameFields.Persons.EffectHandlers.Brothers
             _enemyBrothersEffectHandler = enemyBrothersEffectHandler;
         }
 
-        public void Upgrade(int startValue, int increaseValue)
+        public void Upgrade(int increaseValue)
         {
-            _playerBrothersEffectHandler.Upgrade(startValue, increaseValue);
-            _enemyBrothersEffectHandler.Upgrade(startValue, increaseValue);
+            _playerBrothersEffectHandler.Upgrade(increaseValue);
+            _enemyBrothersEffectHandler.Upgrade(increaseValue);
         }
     }
 }

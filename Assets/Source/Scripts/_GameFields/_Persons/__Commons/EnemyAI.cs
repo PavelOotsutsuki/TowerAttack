@@ -57,12 +57,12 @@ namespace GameFields.Persons.Commons
             PushStep(new CardActionProcessingEnemyAI(InteractionActivator, completable));
         }
 
-        public override void StartEffect(Effect effect, CardEffectConfig effectConfig)
-        {
-            base.StartEffect(effect, effectConfig);
+        //public override void StartEffect(Effect effect, CardEffectConfig effectConfig)
+        //{
+        //    base.StartEffect(effect, effectConfig);
 
-            StartAction(effect);
-        }
+        //    StartAction(effect);
+        //}
 
         private void StartAttack(PushStepSignalEnemyAI signal)
         {

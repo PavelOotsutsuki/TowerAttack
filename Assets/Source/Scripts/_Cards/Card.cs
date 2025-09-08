@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace Cards
 {
-    public class Card : MonoBehaviour, ICardTransformable, IDiscoverable, ICardNumber, IFeatureRechanger, IAutomaticFillComponents
+    public class Card : MonoBehaviour, ICardTransformable, IDiscoverable, ICardNumber, IFeatureRechanger,/* IDiscardable,*/ IAutomaticFillComponents
     {
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private CardPaper _cardPaper;
@@ -105,28 +105,28 @@ namespace Cards
 
             SetState(_character);
 
-            _cardEffectManager.Play();
+            _cardEffectManager.Play(this);
         }
 
-        public void Discard()
-        {
-            if (_currentState is not CardCharacter)
-            {
-                throw new Exception("Try discard not CardCharacter. Card state: " + _currentState.ToString());
-            }
+        //public void Discard()
+        //{
+        //    if (_currentState is not CardCharacter)
+        //    {
+        //        throw new Exception("Try discard not CardCharacter. Card state: " + _currentState.ToString());
+        //    }
 
-            _cardEffectManager.Discard();
-        }
+        //    _cardEffectManager.Discard();
+        //}
 
-        public bool TryDiscard()
-        {
-            if (_currentState is not CardCharacter)
-            {
-                throw new Exception("Try discard not CardCharacter. Card state: " + _currentState.ToString());
-            }
+        //public bool TryDiscard()
+        //{
+        //    if (_currentState is not CardCharacter)
+        //    {
+        //        throw new Exception("Try discard not CardCharacter. Card state: " + _currentState.ToString());
+        //    }
 
-            return _cardEffectManager.TryDiscard();
-        }
+        //    return _cardEffectManager.TryDiscard();
+        //}
 
         public void SetDiscardSide()
         {

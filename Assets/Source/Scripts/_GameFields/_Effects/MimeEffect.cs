@@ -10,6 +10,7 @@ using Tools.Utils;
 using System;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.DrawCards;
+using Zenject;
 
 namespace GameFields.Effects
 {
@@ -27,7 +28,7 @@ namespace GameFields.Effects
         private readonly InformationLabel _informationLabel;
 
         public MimeEffect(Person activePerson, Person deactivePerson, CardLocationViewRoot viewRoot,
-            InformationLabel informationLabel) : base()
+            InformationLabel informationLabel, SignalBus bus, CardEffectData data) : base(bus, data)
         {
             _activePerson = activePerson;
             _deactivePerson = deactivePerson;
@@ -147,6 +148,8 @@ namespace GameFields.Effects
 
         public override void End()
         {
+            base.End();
+
             Debug.Log("Эффект Мима окончен");
         }
 

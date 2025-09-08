@@ -48,7 +48,7 @@ namespace GameFields.DiscardPiles
 
         private void OnDiscardCardsSignal(DiscardCardsSignal signal)
         {
-            DiscardingCards(signal.Cards).ToUniTask();
+            DiscardingCards(signal.Card).ToUniTask();
         }
 
         //private void SeatCard(Card card)
@@ -160,14 +160,21 @@ namespace GameFields.DiscardPiles
             return discardPileSeat;
         }
 
-        private IEnumerator DiscardingCards(IEnumerable<Card> discardingCards)
+        //private IEnumerator DiscardingCards(IEnumerable<Card> discardingCards)
+        //{
+        //    foreach (Card card in discardingCards)
+        //    {
+        //        DiscardCardAnimation discardCardAnimation = new DiscardCardAnimation(_discardPileConfig.DiscardCardAnimationData, _discardPileConfig.RectTransform, card, SeatCard);
+        //        discardCardAnimation.Play();
+        //        yield return new WaitForSeconds(_discardPileConfig.DiscardDelay);
+        //    }
+        //}
+
+        private IEnumerator DiscardingCards(Card discardingCard)
         {
-            foreach (Card card in discardingCards)
-            {
-                DiscardCardAnimation discardCardAnimation = new DiscardCardAnimation(_discardPileConfig.DiscardCardAnimationData, _discardPileConfig.RectTransform, card, SeatCard);
-                discardCardAnimation.Play();
-                yield return new WaitForSeconds(_discardPileConfig.DiscardDelay);
-            }
+            DiscardCardAnimation discardCardAnimation = new DiscardCardAnimation(_discardPileConfig.DiscardCardAnimationData, _discardPileConfig.RectTransform, discardingCard, SeatCard);
+            discardCardAnimation.Play();
+            yield return new WaitForSeconds(_discardPileConfig.DiscardDelay);
         }
 
         private Vector3 FindCardSeatPosition()

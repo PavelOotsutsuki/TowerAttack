@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Tools.Utils.Orthographyes
 {
@@ -12,7 +13,7 @@ namespace Tools.Utils.Orthographyes
             {
                 { WordType.CARDS, new RussianWordsEndings("карту", "карты", "карт")},
                 { WordType.NUMBERS, new RussianWordsEndings("номер", "номера", "номеров")},
-                { WordType.TIME, new RussianWordsEndings("раз", "раза", "раза")}
+                { WordType.TIME, new RussianWordsEndings("раз", "раза", "раз")}
             };
         }
 
@@ -20,6 +21,8 @@ namespace Tools.Utils.Orthographyes
         {
             //if (wordType == WordType.CARDS || wordType == WordType.NUMBERS)
             //{
+            //Debug.Log(number);
+
                 if (number % 100 > 10 && number % 100 < 21)
                     return _wordsRules[wordType].DefaultEnding;
 

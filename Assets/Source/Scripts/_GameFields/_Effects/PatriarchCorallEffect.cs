@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.DrawCards;
+using Zenject;
 
 namespace GameFields.Effects
 {
@@ -18,7 +19,8 @@ namespace GameFields.Effects
         private readonly CardTransitManager _transitManager;
         private readonly IDrawCardManager _drawCardManager;
 
-        public PatriarchCorallEffect(Person activePerson, CardTransitManager transitManager) : base()
+        public PatriarchCorallEffect(Person activePerson, CardTransitManager transitManager, SignalBus bus,
+            CardEffectData data) : base(bus, data)
         {
             _activePerson = activePerson;
             _transitManager = transitManager;
@@ -60,7 +62,9 @@ namespace GameFields.Effects
 
         public override void End()
         {
-            //Debug.Log("End patriarch corall effect");
+            base.End();
+
+            Debug.Log("End patriarch corall effect");
         }
 
         //private void DiscoverCards()

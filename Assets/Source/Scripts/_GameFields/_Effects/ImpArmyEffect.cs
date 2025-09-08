@@ -2,6 +2,7 @@ using System.Collections;
 using Cards;
 using GameFields.Persons.Commons;
 using UnityEngine;
+using Zenject;
 
 namespace GameFields.Effects
 {
@@ -10,7 +11,7 @@ namespace GameFields.Effects
         private readonly Person _deactivePerson;
         private readonly EffectedCard _effectedCard;
 
-        public ImpArmyEffect(Person deactivePerson, int countTurns) : base(countTurns)
+        public ImpArmyEffect(Person deactivePerson, SignalBus bus, CardEffectData data) : base(bus, data)
         {
             _deactivePerson = deactivePerson;
             _effectedCard = new EffectedCard();
@@ -20,6 +21,8 @@ namespace GameFields.Effects
 
         public override void End()
         {
+            base.End();
+
             _effectedCard.EndEffect();
         }
 

@@ -5,6 +5,7 @@ using GameFields.InformationLabels;
 using GameFields.Persons.Commons;
 using Tools.UI;
 using UnityEngine;
+using Zenject;
 
 namespace GameFields.Effects
 {
@@ -16,16 +17,28 @@ namespace GameFields.Effects
         private readonly Person _activePerson;
 
         private readonly InformationLabel _informationLabel;
-        private readonly Func<EffectType, Action<int>, Effect> _effectCreator;
-        private readonly Action<int> _callback;
+        private readonly Func<EffectType, CardEffectData, Effect> _effectCreator;
+        private readonly CardEffectData _data;
+        //private readonly Action<int> _callback;
 
+        //public JusticeBullVariantEffect(InformationLabel informationLabel,
+        //    Func<EffectType, Action<int>, Effect> effectCreator, Action<int> callback, Person activePerson) : base()
         public JusticeBullVariantEffect(InformationLabel informationLabel,
-            Func<EffectType, Action<int>, Effect> effectCreator, Action<int> callback, Person activePerson) : base()
+            Func<EffectType, CardEffectData, Effect> effectCreator, Person activePerson, SignalBus bus, CardEffectData data)
+            : base(bus, data)
         {
             _informationLabel = informationLabel;
             _effectCreator = effectCreator;
-            _callback = callback;
+            _data = data;
+            //_callback = callback;
             _activePerson = activePerson;
+        }
+
+        public override void End()
+        {
+            base.End();
+
+            Debug.Log("Эффект ВАРИАНТ Быка правосудия закончен");
         }
 
         protected abstract bool IsTrueChoice();
@@ -43,7 +56,8 @@ namespace GameFields.Effects
 
                 yield return new WaitUntil(() => _informationLabel.IsComplete);
 
-                choiceEffect = _effectCreator.Invoke(EffectType.JusticeBull_TrueChoiceEffect, _callback);
+                //choiceEffect = _effectCreator.Invoke(EffectType.JusticeBull_TrueChoiceEffect, _callback);
+                choiceEffect = _effectCreator.Invoke(EffectType.JusticeBull_TrueChoiceEffect, _data);
             }
             else
             {
@@ -54,7 +68,8 @@ namespace GameFields.Effects
 
                 yield return new WaitUntil(() => _informationLabel.IsComplete);
 
-                choiceEffect = _effectCreator.Invoke(EffectType.JusticeBull_FalseChoiceEffect, _callback);
+                //choiceEffect = _effectCreator.Invoke(EffectType.JusticeBull_FalseChoiceEffect, _callback);
+                choiceEffect = _effectCreator.Invoke(EffectType.JusticeBull_FalseChoiceEffect, _data);
             }
 
             _activePerson.ActivateJusticeBullEffect();

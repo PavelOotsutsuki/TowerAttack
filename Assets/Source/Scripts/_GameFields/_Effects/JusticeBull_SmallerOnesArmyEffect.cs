@@ -7,6 +7,7 @@ using GameFields.InformationLabels;
 using GameFields.Persons.Commons;
 using Tools.Settings;
 using UnityEngine;
+using Zenject;
 using Random = UnityEngine.Random;
 
 namespace GameFields.Effects
@@ -15,9 +16,12 @@ namespace GameFields.Effects
     {
         private readonly Person _deactivePerson;
 
+        //public JusticeBull_SmallerOnesArmyEffect(Person deactivePerson, InformationLabel informationLabel,
+        //    Func<EffectType, Action<int>, Effect> effectCreator, Action<int> callback, Person activePerson) :
+        //    base(informationLabel, effectCreator, callback, activePerson)
         public JusticeBull_SmallerOnesArmyEffect(Person deactivePerson, InformationLabel informationLabel,
-            Func<EffectType, Action<int>, Effect> effectCreator, Action<int> callback, Person activePerson) :
-            base(informationLabel, effectCreator, callback, activePerson)
+            Func<EffectType, CardEffectData, Effect> effectCreator, Person activePerson, SignalBus bus, CardEffectData data) :
+            base(informationLabel, effectCreator, activePerson, bus, data)
         {
             _deactivePerson = deactivePerson;
 
@@ -26,6 +30,8 @@ namespace GameFields.Effects
 
         public override void End()
         {
+            base.End();
+
             Debug.Log("Эффект Быка правосудия(1.0) закончен");
         }
 

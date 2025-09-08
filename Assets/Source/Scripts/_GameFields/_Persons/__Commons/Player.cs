@@ -66,17 +66,17 @@ namespace GameFields.Persons.Commons
             _turnProcessing.Completed();
         }
 
-        public override void StartEffect(Effect effect, CardEffectConfig effectConfig)
-        {
-            base.StartEffect(effect, effectConfig);
+        //public override void StartEffect(Effect effect, CardEffectConfig effectConfig)
+        //{
+        //    base.StartEffect(effect, effectConfig);
 
-            //PushStep(new CardEffectProcessingPlayer(InteractionActivator, effect));
-            StartAction(effect);
+        //    //PushStep(new CardEffectProcessingPlayer(InteractionActivator, effect));
+        //    StartAction(effect);
 
-            //PushStep(new CardActionProcessingPlayer(InteractionActivator, effect));
+        //    //PushStep(new CardActionProcessingPlayer(InteractionActivator, effect));
 
-            //_turnProcessing.Completed();
-        }
+        //    //_turnProcessing.Completed();
+        //}
 
         //public override void ActivateSharpSnakeEffect(Action callback)
         //{

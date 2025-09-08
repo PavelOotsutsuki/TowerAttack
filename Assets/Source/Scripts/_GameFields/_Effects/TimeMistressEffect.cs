@@ -2,6 +2,8 @@ using Cards;
 using System.Collections;
 using System.Collections.Generic;
 using GameFields.Persons.Commons;
+using Zenject;
+using UnityEngine;
 
 namespace GameFields.Effects
 {
@@ -11,7 +13,8 @@ namespace GameFields.Effects
         private readonly CardLocationViewRoot _viewRoot;
         private readonly CardTransitManager _transitManager;
 
-        public TimeMistressEffect(Person activePerson, CardLocationViewRoot viewRoot, CardTransitManager transitManager) : base()
+        public TimeMistressEffect(Person activePerson, CardLocationViewRoot viewRoot, CardTransitManager transitManager,
+             SignalBus bus, CardEffectData data) : base(bus, data)
         {
             _activePerson = activePerson;
 
@@ -23,7 +26,9 @@ namespace GameFields.Effects
 
         public override void End()
         {
-            //Debug.Log("Эффект Жадины закончен");
+            base.End();
+
+            Debug.Log("Эффект Повелительницы времени закончен");
         }
 
         protected override IEnumerator OnPlaying()

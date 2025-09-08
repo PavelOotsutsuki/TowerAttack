@@ -2,6 +2,7 @@ using System.Collections;
 using Cards;
 using GameFields.Persons.Commons;
 using UnityEngine;
+using Zenject;
 
 namespace GameFields.Effects
 {
@@ -10,7 +11,7 @@ namespace GameFields.Effects
         private readonly Person _deactivePerson;
         private readonly Person _activePerson;
 
-        public SchemerEffect(Person activePerson, Person deactivePerson, int countTurns) : base(countTurns)
+        public SchemerEffect(Person activePerson, Person deactivePerson, SignalBus bus, CardEffectData data) : base(bus, data)
         {
             _activePerson = activePerson;
             _deactivePerson = deactivePerson;
@@ -20,7 +21,9 @@ namespace GameFields.Effects
 
         public override void End()
         {
-            Debug.Log("Эффект Жыжи закончен");
+            base.End();
+
+            Debug.Log("Эффект Шулера закончен");
         }
 
         protected override IEnumerator OnPlaying()

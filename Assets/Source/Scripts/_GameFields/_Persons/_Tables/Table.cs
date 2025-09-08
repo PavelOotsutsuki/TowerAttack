@@ -1,39 +1,79 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cards;
+using GameFields.Persons.Commons;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
 namespace GameFields.Persons.Tables
 {
-    public abstract class Table : MonoBehaviour, IAutomaticFillComponents
+    public abstract class Table : MonoBehaviour, IDiscardManager, IAutomaticFillComponents
     {
         [SerializeField] private TableSeat[] _tableSeats;
 
         private TableSeat[] _sortedSeats;
 
         public bool HasFreeSeat => _sortedSeats.Any(seat => seat.IsEmpty);
+        public IEnumerable<Card> Cards => _sortedSeats.Where(s => s.IsEmpty == false).Select(s => s.PersonEffect.Card);
 
         public void Init()
         {
             SetCardSeatsIndices();
         }
 
-        public void FreeSeats(IEnumerable<Card> seatables)
+        //public void FreeSeats(IEnumerable<Card> seatables)
+        //{
+        //    foreach (TableSeat seat in _tableSeats)
+        //    {
+        //        if (seatables.Any(card => seat.IsCardEqual(card)))
+        //        {
+        //            seat.Reset();
+        //        }
+        //    }
+        //}
+        public bool HasCard(Card card)
         {
-            foreach (TableSeat seat in _tableSeats)
-            {
-                if (seatables.Any(card => seat.IsCardEqual(card)))
-                {
-                    seat.Reset();
-                }
-            }
+            return _sortedSeats.Where(s => s.IsEmpty == false).Any(s => s.PersonEffect.Card == card);
         }
 
-        public void SeatCard(Card card)
+        public void Discard(Card card)
+        {
+            TableSeat tableSeat = _sortedSeats.FirstOrDefault(s => s.PersonEffect.Card == card);
+            PersonEffect personEffect = tableSeat.PersonEffect;
+
+            if (tableSeat == null)
+                throw new System.Exception("Пытаешься сбросить карты которой нет на столе");
+
+            personEffect.Discard();
+            tableSeat.Reset();
+        }
+
+        public void TryDiscard(Card card)
+        {
+            TableSeat tableSeat = _sortedSeats.FirstOrDefault(s => s.PersonEffect.Card == card);
+            PersonEffect personEffect = tableSeat.PersonEffect;
+
+            if (tableSeat == null)
+                throw new System.Exception("Пытаешься сбросить карты которой нет на столе");
+
+            if (personEffect.TryDiscard())
+            {
+                tableSeat.Reset();
+            }
+
+            //personEffect.DecreaseCounter();
+        }
+
+        //public void SeatCard(Card card)
+        //{
+        //    TableSeat freeCardSeat = GetFreeSeat();
+        //    freeCardSeat.SetCard(card);
+        //}
+
+        public void SeatCard(PersonEffect personEffect)
         {
             TableSeat freeCardSeat = GetFreeSeat();
-            freeCardSeat.SetCard(card);
+            freeCardSeat.SetCard(personEffect);
         }
 
         private TableSeat GetFreeSeat() => _sortedSeats.First(seat => seat.IsEmpty);
@@ -72,6 +112,6 @@ namespace GameFields.Persons.Tables
         {
            return AutomaticFillComponents.DefineComponent(this, ref _tableSeats);
         }
-        #endregion 
+        #endregion
     }
 }

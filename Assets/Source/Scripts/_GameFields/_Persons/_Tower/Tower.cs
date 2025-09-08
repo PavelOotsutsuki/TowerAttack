@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Towers
 {
-    public abstract class Tower : MonoBehaviour, ICardDropPlace, ICardNumberKeeper, IBoomTower, IPersonObject,
+    public abstract class Tower : MonoBehaviour, ITowerCardSeatable, ICardNumberKeeper, IBoomTower, IPersonObject,
         IReadOnlyRectTransformable, ICardFeatureRechangablePlace, ITowerTransitable, IAutomaticFillComponents
     {
         private const SideType DefaultSideType = SideType.Back;
