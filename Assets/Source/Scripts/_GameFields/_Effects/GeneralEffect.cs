@@ -14,7 +14,7 @@ namespace GameFields.Effects
 
         private bool _endPlaying;
 
-        public GeneralEffect(Person activePerson, SignalBus bus, CardEffectData data) : base(bus, data)
+        public GeneralEffect(Person activePerson, EffectData data) : base(data)
         {
             _activePerson = activePerson;
 

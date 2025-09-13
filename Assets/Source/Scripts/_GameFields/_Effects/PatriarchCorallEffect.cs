@@ -19,8 +19,7 @@ namespace GameFields.Effects
         private readonly CardTransitManager _transitManager;
         private readonly IDrawCardManager _drawCardManager;
 
-        public PatriarchCorallEffect(Person activePerson, CardTransitManager transitManager, SignalBus bus,
-            CardEffectData data) : base(bus, data)
+        public PatriarchCorallEffect(Person activePerson, CardTransitManager transitManager, EffectData data) : base(data)
         {
             _activePerson = activePerson;
             _transitManager = transitManager;

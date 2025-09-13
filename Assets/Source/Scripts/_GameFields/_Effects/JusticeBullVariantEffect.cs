@@ -17,19 +17,21 @@ namespace GameFields.Effects
         private readonly Person _activePerson;
 
         private readonly InformationLabel _informationLabel;
-        private readonly Func<EffectType, CardEffectData, Effect> _effectCreator;
-        private readonly CardEffectData _data;
+        private readonly Func<EffectType, CardEffectData, EffectDuration, Effect> _effectCreator;
+        private readonly CardEffectData _cardEffectData;
+        private readonly EffectDuration _effectDuration;
         //private readonly Action<int> _callback;
 
         //public JusticeBullVariantEffect(InformationLabel informationLabel,
         //    Func<EffectType, Action<int>, Effect> effectCreator, Action<int> callback, Person activePerson) : base()
         public JusticeBullVariantEffect(InformationLabel informationLabel,
-            Func<EffectType, CardEffectData, Effect> effectCreator, Person activePerson, SignalBus bus, CardEffectData data)
-            : base(bus, data)
+            Func<EffectType, CardEffectData, EffectDuration, Effect> effectCreator, Person activePerson, EffectData data)
+            : base(data, 0f)
         {
             _informationLabel = informationLabel;
             _effectCreator = effectCreator;
-            _data = data;
+            _cardEffectData = data.CardEffectData;
+            _effectDuration = data.EffectDuration;
             //_callback = callback;
             _activePerson = activePerson;
         }
@@ -57,7 +59,7 @@ namespace GameFields.Effects
                 yield return new WaitUntil(() => _informationLabel.IsComplete);
 
                 //choiceEffect = _effectCreator.Invoke(EffectType.JusticeBull_TrueChoiceEffect, _callback);
-                choiceEffect = _effectCreator.Invoke(EffectType.JusticeBull_TrueChoiceEffect, _data);
+                choiceEffect = _effectCreator.Invoke(EffectType.JusticeBull_TrueChoiceEffect, new CardEffectData(_cardEffectData.Card, 0), _effectDuration);
             }
             else
             {
@@ -69,7 +71,7 @@ namespace GameFields.Effects
                 yield return new WaitUntil(() => _informationLabel.IsComplete);
 
                 //choiceEffect = _effectCreator.Invoke(EffectType.JusticeBull_FalseChoiceEffect, _callback);
-                choiceEffect = _effectCreator.Invoke(EffectType.JusticeBull_FalseChoiceEffect, _data);
+                choiceEffect = _effectCreator.Invoke(EffectType.JusticeBull_FalseChoiceEffect, new CardEffectData(_cardEffectData.Card, 2), _effectDuration);
             }
 
             _activePerson.ActivateJusticeBullEffect();

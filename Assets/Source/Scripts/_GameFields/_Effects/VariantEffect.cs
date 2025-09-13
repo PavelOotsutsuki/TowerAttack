@@ -13,22 +13,24 @@ namespace GameFields.Effects
     {
         private readonly Person _activePerson;
         private readonly VariantCardCreator _variantCardCreator;
-        private readonly Func<EffectType, CardEffectData, Effect> _effectCreator;
+        private readonly Func<EffectType, CardEffectData, EffectDuration, Effect> _effectCreator;
         //private readonly Action<int> _callback;
         private readonly EffectType _effectType;
         private readonly CardEffectData _data;
+        private readonly EffectDuration _effectDuration;
 
         //public VariantEffect(Person activePerson, VariantCardCreator variantCardCreator,
         //    Func<CardEffectConfig, Action<int>, Effect> effectCreator, Action<int> callback,
         //    EffectType effectType) : base()
         public VariantEffect(Person activePerson, VariantCardCreator variantCardCreator,
-            Func<EffectType, CardEffectData , Effect> effectCreator, EffectType effectType, SignalBus bus, CardEffectData data)
-            : base(bus, data)
+            Func<EffectType, CardEffectData, EffectDuration, Effect> effectCreator, EffectType effectType, EffectData data)
+            : base(data, 0f)
         {
             _activePerson = activePerson;
             _variantCardCreator = variantCardCreator;
             _effectCreator = effectCreator;
-            _data = data;
+            _data = data.CardEffectData;
+            _effectDuration = data.EffectDuration;
             //_callback = callback;
             _effectType = effectType;
 
@@ -55,7 +57,8 @@ namespace GameFields.Effects
             CardEffectConfig effectConfig = variantCard.EffectConfig;
 
             //Effect realEffect = _effectCreator.Invoke(effectConfig, _callback);
-            Effect realEffect = _effectCreator.Invoke(effectConfig.Type, new CardEffectData(_data.Card, effectConfig.Duration));
+            Effect realEffect = _effectCreator.Invoke(effectConfig.Type, new CardEffectData(_data.Card, effectConfig.Duration),
+                _effectDuration);
 
             yield return new WaitUntil(() => realEffect.IsComplete);
         }

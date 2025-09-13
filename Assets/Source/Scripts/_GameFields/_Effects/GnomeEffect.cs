@@ -13,7 +13,7 @@ namespace GameFields.Effects
 
         private bool _endPlaying;
 
-        public GnomeEffect(Person activePerson, SignalBus bus, CardEffectData data) : base(bus, data)
+        public GnomeEffect(Person activePerson, EffectData data) : base(data)
         {
             _activePerson = activePerson;
 

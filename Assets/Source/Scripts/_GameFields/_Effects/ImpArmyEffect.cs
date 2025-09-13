@@ -11,7 +11,7 @@ namespace GameFields.Effects
         private readonly Person _deactivePerson;
         private readonly EffectedCard _effectedCard;
 
-        public ImpArmyEffect(Person deactivePerson, SignalBus bus, CardEffectData data) : base(bus, data)
+        public ImpArmyEffect(Person deactivePerson, EffectData data) : base(data)
         {
             _deactivePerson = deactivePerson;
             _effectedCard = new EffectedCard();

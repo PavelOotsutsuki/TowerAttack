@@ -20,8 +20,8 @@ namespace GameFields.Effects
 
         private bool _endPlayingAttack;
 
-        public BigBrotherEffect(Person activePerson, BrothersEffectHandlerRoot brothersEffectHandlerRoot, SignalBus bus,
-            CardEffectData data) : base(bus, data)
+        public BigBrotherEffect(Person activePerson, BrothersEffectHandlerRoot brothersEffectHandlerRoot, EffectData data)
+            : base(data)
         {
             _activePerson = activePerson;
             _drawCardManager = activePerson;

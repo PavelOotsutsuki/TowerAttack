@@ -19,7 +19,7 @@ namespace GameFields.Effects
         private bool _endPlayingAttack;
 
         public MiddleBrotherEffect(Person activePerson, BrothersEffectHandlerRoot brothersEffectHandlerRoot,
-            SignalBus bus, CardEffectData data) : base(bus, data)
+            EffectData data) : base(data)
         {
             _activePerson = activePerson;
             _brothersEffectHandlerRoot = brothersEffectHandlerRoot;

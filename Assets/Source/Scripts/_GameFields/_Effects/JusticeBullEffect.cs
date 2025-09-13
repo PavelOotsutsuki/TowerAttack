@@ -12,8 +12,8 @@ namespace GameFields.Effects
         //    Func<CardEffectConfig, Action<int>, Effect> effectCreator, Action<int> callback, EffectType effectType) :
         //    base(activePerson, variantCardCreator, effectCreator, callback, effectType)
         public JusticeBullEffect(Person activePerson, VariantCardCreator variantCardCreator,
-            Func<EffectType, CardEffectData, Effect> effectCreator, EffectType effectType, SignalBus bus, CardEffectData data) :
-            base(activePerson, variantCardCreator, effectCreator, effectType, bus, data)
+            Func<EffectType, CardEffectData, EffectDuration, Effect> effectCreator, EffectType effectType, EffectData data) :
+            base(activePerson, variantCardCreator, effectCreator, effectType, data)
         { }
 
         public override void End()

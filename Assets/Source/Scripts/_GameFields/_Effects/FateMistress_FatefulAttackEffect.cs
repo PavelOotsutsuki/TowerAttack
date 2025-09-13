@@ -19,8 +19,8 @@ namespace GameFields.Effects
 
         private bool _isEffectComplete;
 
-        public FateMistress_FatefulAttackEffect(Person activePerson, CardLocationViewRoot viewRoot, SignalBus bus, CardEffectData data)
-            : base(bus, data)
+        public FateMistress_FatefulAttackEffect(Person activePerson, CardLocationViewRoot viewRoot, EffectData data)
+            : base(data)
         {
             _activePerson = activePerson;
             //_deactivePerson = deactivePerson;
@@ -42,7 +42,7 @@ namespace GameFields.Effects
             _isEffectComplete = false;
 
             ViewType hand = _activePerson is Player ? ViewType.HandPlayer : ViewType.HandAI;
-            int countCards = _viewRoot.GetAllCards(hand).Count() + 1;
+            int countCards = _viewRoot.GetAllCards(hand).Count();
 
             if (countCards == 0)
             {

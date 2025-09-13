@@ -17,7 +17,7 @@ namespace GameFields.Effects
         private bool _isEffectComplete;
 
         public DumbMonkEffect(Person activePerson, CardLocationViewRoot viewRoot, CardTransitManager transitManager,
-            SignalBus bus, CardEffectData data) : base(bus, data)
+            EffectData data) : base(data)
         {
             _activePerson = activePerson;
             _viewRoot = viewRoot;

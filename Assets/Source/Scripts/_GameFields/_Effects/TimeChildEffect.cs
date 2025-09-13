@@ -12,8 +12,7 @@ namespace GameFields.Effects
         private readonly CardLocationViewRoot _viewRoot;
         private readonly CardTransitManager _transitManager;
 
-        public TimeChildEffect(CardLocationViewRoot viewRoot, CardTransitManager transitManager, SignalBus bus, CardEffectData data)
-            : base(bus, data)
+        public TimeChildEffect(CardLocationViewRoot viewRoot, CardTransitManager transitManager, EffectData data) : base(data)
         {
             _viewRoot = viewRoot;
             _transitManager = transitManager;

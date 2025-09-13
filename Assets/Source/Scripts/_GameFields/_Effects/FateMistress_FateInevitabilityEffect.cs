@@ -11,10 +11,10 @@ namespace GameFields.Effects
         private readonly Person _activePerson;
         private readonly int _duration;
 
-        public FateMistress_FateInevitabilityEffect(Person activePerson, SignalBus bus, CardEffectData data) : base(bus, data)
+        public FateMistress_FateInevitabilityEffect(Person activePerson, EffectData data) : base(data)
         {
             _activePerson = activePerson;
-            _duration = data.Duration;
+            _duration = data.CardEffectData.Duration;
 
             Play();
         }

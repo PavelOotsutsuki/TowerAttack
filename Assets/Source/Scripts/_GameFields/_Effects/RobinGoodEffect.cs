@@ -18,7 +18,7 @@ namespace GameFields.Effects
         private readonly CardLocationViewRoot _cardLocationViewRoot;
 
         public RobinGoodEffect(Person activePerson, Person deactivePerson, CardLocationViewRoot cardLocationViewRoot,
-            SignalBus bus, CardEffectData data) : base(bus, data)
+            EffectData data) : base(data)
         {
             _activePerson = activePerson;
             _deactivePerson = deactivePerson;

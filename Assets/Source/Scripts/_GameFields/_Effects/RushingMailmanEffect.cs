@@ -15,7 +15,7 @@ namespace GameFields.Effects
 
         private bool _isContinue;
 
-        public RushingMailmanEffect(Person activePerson, SignalBus bus, CardEffectData data) : base(bus, data)
+        public RushingMailmanEffect(Person activePerson, EffectData data) : base(data)
         {
             _drawCardManager = activePerson;
 

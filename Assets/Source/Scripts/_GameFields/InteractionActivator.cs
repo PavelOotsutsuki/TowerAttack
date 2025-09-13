@@ -37,6 +37,7 @@ namespace GameFields
             switch (personStep)
             {
                 case StartPlayerTurnView:
+                case PlayerSkipTurnView:
                     SetStartPlayerTurnViewStates();
                     break;
                 case StartTurnDrawPlayer:
@@ -63,6 +64,7 @@ namespace GameFields
                 case EnemyDragAndDropImitation:
                 case CardActionProcessingEnemyAI:
                 case OnBeforeEndTurnProcessing:
+                case EnemySkipTurnView:
                 //case CardEffectProcessingEnemyAI:
                     //case CardAttackProcessingEnemyAI:
                     break;

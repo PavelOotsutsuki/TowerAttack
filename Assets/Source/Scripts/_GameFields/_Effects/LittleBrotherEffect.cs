@@ -18,8 +18,8 @@ namespace GameFields.Effects
         private readonly IDrawCardManager _drawCardManager;
         private readonly BrothersEffectHandlerRoot _brothersEffectHandlerRoot;
 
-        public LittleBrotherEffect(Person activePerson, BrothersEffectHandlerRoot brothersEffectHandlerRoot, SignalBus bus,
-            CardEffectData data) : base(bus, data)
+        public LittleBrotherEffect(Person activePerson, BrothersEffectHandlerRoot brothersEffectHandlerRoot, EffectData data)
+            : base(data)
         {
             _activePerson = activePerson;
             _drawCardManager = activePerson;

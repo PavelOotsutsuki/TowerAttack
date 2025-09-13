@@ -11,21 +11,27 @@ namespace GameFields.Effects
 {
     public abstract class Effect: ICompletable
     {
-        //private readonly float _endEffectDelay = 1f;
-        private readonly int _duration;
+        private readonly float _endEffectDelay;
         private readonly Card _card;
         private readonly SignalBus _bus;
+        private readonly EffectDuration _effectDuration;
 
-        public Effect(SignalBus bus, CardEffectData data)
+        protected readonly int Duration;
+
+        public Effect(EffectData data, float endEffectDelay = GameSettings.DefaultEffectDelayBeforeComplete)
         {
             IsComplete = false;
-            _duration = data.Duration;
-            _card = data.Card;
 
-            _bus = bus;
+            _endEffectDelay = endEffectDelay;
+
+            Duration = data.CardEffectData.Duration;
+            _card = data.CardEffectData.Card;
+            _effectDuration = data.EffectDuration;
+
+            _bus = data.Bus;
         }
 
-        public int Duration => _duration;
+        //public int Duration => _duration;
         public bool IsComplete { get; private set; }
 
         public virtual void End()
@@ -42,9 +48,12 @@ namespace GameFields.Effects
 
         private IEnumerator Playing()
         {
+            _effectDuration.SetDuration(Duration);
+
             yield return OnPlaying();
 
-            yield return new WaitForSeconds(GameSettings.DefaultEffectDelayBeforeComplete);
+            if (Mathf.Approximately(_endEffectDelay, 0f) == false)
+                yield return new WaitForSeconds(_endEffectDelay);
 
             IsComplete = true;
         }

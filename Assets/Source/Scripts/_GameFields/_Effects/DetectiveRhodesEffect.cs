@@ -34,7 +34,7 @@ namespace GameFields.Effects
         private readonly IDrawCardManager _drawCardManager;
 
         public DetectiveRhodesEffect(Person activePerson, CardTransitManager transitManager, CardLocationViewRoot viewRoot,
-            InformationLabel informationLabel, SignalBus bus, CardEffectData data) : base(bus, data)
+            InformationLabel informationLabel, EffectData data) : base(data)
         {
             _activePerson = activePerson;
             _transitManager = transitManager;

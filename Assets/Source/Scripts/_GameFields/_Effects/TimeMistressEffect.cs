@@ -14,7 +14,7 @@ namespace GameFields.Effects
         private readonly CardTransitManager _transitManager;
 
         public TimeMistressEffect(Person activePerson, CardLocationViewRoot viewRoot, CardTransitManager transitManager,
-             SignalBus bus, CardEffectData data) : base(bus, data)
+             EffectData data) : base(data)
         {
             _activePerson = activePerson;
 

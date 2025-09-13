@@ -32,10 +32,10 @@ namespace GameFields.Persons.Commons
             Tower tower, DrawCardRoot drawCardRoot, DiscoverAI discoverImitation, StartTurnDraw startTurnDraw, SignalBus bus,
             HandAI hand, ISelectMenuActivator attackMenu, ISelectMenuActivator choiceMenu, ISelectMenuActivator choiceMenuImitation,
             PersonEffectsHandler personEffectsHandler, LookCardMenuEnemyAI lookCardMenu, LoseActions loseActions,
-            OnBeforeEndTurnProcessing onBeforeEndTurnProcessing) :
+            OnBeforeEndTurnProcessing onBeforeEndTurnProcessing, SkipTurnView skipTurnView) :
             base(cardPlayingZone, drawCardRoot, tower, startTurnDraw,discoverImitation, bus,
                 hand, attackMenu, interactionActivator, choiceMenu, choiceMenuImitation, personEffectsHandler,
-                lookCardMenu, loseActions)
+                lookCardMenu, loseActions, skipTurnView)
         {
             //_gameFieldObjectsActivator = gameFieldObjectsActivator;
             //Bus.Subscribe<StartEffectSignal>(SetCardEffectProcess);
@@ -69,7 +69,7 @@ namespace GameFields.Persons.Commons
             StartAction(signal.Completable);
         }
 
-        protected override void InitSteps()
+        protected override void InitCommonSteps()
         {
             //PushStep(CardEffectProcessing);
             PushStep(_onBeforeEndTurnProcessing);

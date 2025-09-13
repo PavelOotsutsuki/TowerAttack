@@ -37,10 +37,10 @@ namespace GameFields.Persons.Commons
             DiscoverPlayer discover, DrawCardRoot drawCardRoot, StartTurnDraw startTurnDraw, TurnProcessing turnProcessing,
             SignalBus bus, PersonStep startPlayerTurnView, ISelectMenuActivator attackMenu, EndTurnProcessing endTurnProcessing,
             ISelectMenuActivator choiceMenu, ISelectMenuActivator choiceMenuImitation, PersonEffectsHandler personEffectsHandler,
-            InformationLabel informationLabel, LookCardMenuPlayer lookCardMenuPlayer, LoseActions loseActions) :
+            InformationLabel informationLabel, LookCardMenuPlayer lookCardMenuPlayer, LoseActions loseActions, SkipTurnView skipTurnView) :
             base(cardPlayingZone, drawCardRoot, tower, startTurnDraw, discover, bus, hand,
                 attackMenu, interactionActivator, choiceMenu, choiceMenuImitation, personEffectsHandler,
-                lookCardMenuPlayer, loseActions)
+                lookCardMenuPlayer, loseActions, skipTurnView)
         {
             _startPlayerTurnView = startPlayerTurnView;
             _endTurnProcessing = endTurnProcessing;
@@ -94,7 +94,7 @@ namespace GameFields.Persons.Commons
         //    callback?.Invoke();
         //}
 
-        protected override void InitSteps()
+        protected override void InitCommonSteps()
         {
             PushStep(_endTurnProcessing);
             PushStep(_turnProcessing);

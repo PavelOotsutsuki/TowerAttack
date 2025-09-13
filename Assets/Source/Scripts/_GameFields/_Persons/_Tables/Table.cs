@@ -38,11 +38,13 @@ namespace GameFields.Persons.Tables
 
         public void Discard(Card card)
         {
-            TableSeat tableSeat = _sortedSeats.FirstOrDefault(s => s.PersonEffect.Card == card);
-            PersonEffect personEffect = tableSeat.PersonEffect;
+            TableSeat tableSeat = _sortedSeats.Where(s => s.IsEmpty == false).FirstOrDefault(s => s.PersonEffect.Card == card);
+            //TableSeat tableSeat = _sortedSeats.FirstOrDefault(s => s.PersonEffect.Card == card);
 
             if (tableSeat == null)
                 throw new System.Exception("Пытаешься сбросить карты которой нет на столе");
+
+            PersonEffect personEffect = tableSeat.PersonEffect;
 
             personEffect.Discard();
             tableSeat.Reset();
@@ -50,11 +52,13 @@ namespace GameFields.Persons.Tables
 
         public void TryDiscard(Card card)
         {
-            TableSeat tableSeat = _sortedSeats.FirstOrDefault(s => s.PersonEffect.Card == card);
-            PersonEffect personEffect = tableSeat.PersonEffect;
+            TableSeat tableSeat = _sortedSeats.Where(s => s.IsEmpty == false).FirstOrDefault(s => s.PersonEffect.Card == card);
+            //TableSeat tableSeat = _sortedSeats.FirstOrDefault(s => s.PersonEffect.Card == card);
 
             if (tableSeat == null)
                 throw new System.Exception("Пытаешься сбросить карты которой нет на столе");
+
+            PersonEffect personEffect = tableSeat.PersonEffect;
 
             if (personEffect.TryDiscard())
             {

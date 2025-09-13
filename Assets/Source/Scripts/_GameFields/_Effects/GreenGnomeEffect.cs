@@ -7,7 +7,7 @@ namespace GameFields.Effects
 {
     public class GreenGnomeEffect : GnomeEffect
     {
-        public GreenGnomeEffect(Person activePerson, SignalBus bus, CardEffectData data) : base(activePerson, bus, data)
+        public GreenGnomeEffect(Person activePerson, EffectData data) : base(activePerson, data)
         { }
 
         public override void End()

@@ -33,7 +33,7 @@ namespace GameFields.Persons.Commons
         private readonly IBoomTower _boomTower;
         private readonly ICardNumberKeeper _cardNumberKeeper;
         private readonly LoseActions _loseActions;
-
+        private readonly SkipTurnView _skipTurnView;
         //private readonly PersonStep _lastStep;
 
         //protected readonly PersonStep TurnProcess;
@@ -50,7 +50,7 @@ namespace GameFields.Persons.Commons
             StartTurnDraw startTurnDraw, Discover discover, SignalBus bus, /*PersonStep lastStep,*/
             Hand hand, ISelectMenuActivator attackMenu, InteractionActivator gameFieldObjectsActivator,
             ISelectMenuActivator choiceMenu, ISelectMenuActivator choiceMenuImitation, PersonEffectsHandler personEffectsHandler,
-            ILookCardMenu lookCardMenu, LoseActions loseActions)
+            ILookCardMenu lookCardMenu, LoseActions loseActions, SkipTurnView skipTurnView)
         {
             _hand = hand;
             Bus = bus;
@@ -67,6 +67,7 @@ namespace GameFields.Persons.Commons
             _choiceMenuImitation = choiceMenuImitation;
             _lookCardMenu = lookCardMenu;
             _loseActions = loseActions;
+            _skipTurnView = skipTurnView;
             //_lastStep = lastStep;
             InteractionActivator = gameFieldObjectsActivator;
 
@@ -100,10 +101,12 @@ namespace GameFields.Persons.Commons
 
             if (_personEffectsHandler.SkipTurnEffectHandler.IsActive)
             {
-                IsComplete = true;
+                InitSkipSteps();
             }
-
-            InitSteps();
+            else
+            {
+                InitCommonSteps();
+            }
             //_personEffectsHandler.OnStartTurn();
 
             _currentStep = _personSteps.Pop();
@@ -213,7 +216,12 @@ namespace GameFields.Persons.Commons
 
         protected void PushStep(PersonStep turnStep) => _personSteps.Push(turnStep);
 
-        protected abstract void InitSteps();
+        protected abstract void InitCommonSteps();
+
+        private void InitSkipSteps()
+        {
+            PushStep(_skipTurnView);
+        }
         //{
         //    EnqueueStep(_startTurnDraw);
         //    EnqueueStep(_turnProcess);

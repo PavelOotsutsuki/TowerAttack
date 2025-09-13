@@ -18,8 +18,7 @@ namespace GameFields.Effects
 
         private readonly CardLocationViewRoot _cardLocationViewRoot;
 
-        public SharpSnakeEffect(Person activePerson, CardLocationViewRoot cardLocationViewRoot,
-             SignalBus bus, CardEffectData data) : base(bus, data)
+        public SharpSnakeEffect(Person activePerson, CardLocationViewRoot cardLocationViewRoot, EffectData data) : base(data)
         {
             _activePerson = activePerson;
             _isEffectComplete = false;

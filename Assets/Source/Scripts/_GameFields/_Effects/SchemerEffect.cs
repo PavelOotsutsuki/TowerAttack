@@ -11,7 +11,7 @@ namespace GameFields.Effects
         private readonly Person _deactivePerson;
         private readonly Person _activePerson;
 
-        public SchemerEffect(Person activePerson, Person deactivePerson, SignalBus bus, CardEffectData data) : base(bus, data)
+        public SchemerEffect(Person activePerson, Person deactivePerson, EffectData data) : base(data)
         {
             _activePerson = activePerson;
             _deactivePerson = deactivePerson;

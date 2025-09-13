@@ -10,7 +10,7 @@ namespace GameFields.Effects
     {
         private readonly float _delay;
 
-        public VoidEffect(SignalBus bus, CardEffectData data) : base(bus, data)
+        public VoidEffect(EffectData data) : base(data)
         {
             _delay = 1f;
 

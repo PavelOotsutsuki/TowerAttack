@@ -22,15 +22,14 @@ namespace GameFields.Persons.Commons
 
         private readonly CardEffectConfigPair _cardEffectConfigPair;
         private readonly Effect _effect;
+        private readonly EffectDuration _effectDuration;
 
-        private int _duration;
-
-        public PersonEffect(Effect effect, CardEffectConfigPair cardEffectConfigPair)
+        public PersonEffect(Effect effect, EffectDuration effectDuration, CardEffectConfigPair cardEffectConfigPair)
         {
             _cardEffectConfigPair = cardEffectConfigPair;
             _effect = effect;
 
-            _duration = _effect.Duration;
+            _effectDuration = effectDuration;
         }
 
         public Card Card => _cardEffectConfigPair.Card;
@@ -39,19 +38,19 @@ namespace GameFields.Persons.Commons
 
         public void Discard()
         {
-            _duration = 0;
+            _effectDuration.Discard();
 
             TryDiscard();
         }
 
         public void DecreaseCounter()
         {
-            _duration--;
+            _effectDuration.Decrease();
         }
 
         public bool TryDiscard()
         {
-            if (_duration <= 0)
+            if (_effectDuration.CanDiscard)
             {
                 _effect?.End();
                 return true;

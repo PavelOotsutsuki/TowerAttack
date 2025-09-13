@@ -18,8 +18,8 @@ namespace GameFields.Effects
 
         private readonly CardLocationViewRoot _cardLocationViewRoot;
 
-        public UndergrounderEffect(Person activePerson, CardLocationViewRoot cardLocationViewRoot, SignalBus bus, CardEffectData data)
-            : base(bus, data)
+        public UndergrounderEffect(Person activePerson, CardLocationViewRoot cardLocationViewRoot, EffectData data)
+            : base(data)
         {
             _activePerson = activePerson;
             _isEffectComplete = false;

@@ -14,7 +14,7 @@ namespace GameFields.Effects
 
         private readonly Person _activePerson;
 
-        public BrothersMotherEffect(Person activePerson, SignalBus bus, CardEffectData data) : base(bus, data)
+        public BrothersMotherEffect(Person activePerson, EffectData data) : base(data)
         {
             _activePerson = activePerson;
 

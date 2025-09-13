@@ -10,7 +10,7 @@ namespace GameFields.Effects
     {
         private readonly Person _deactivePerson;
 
-        public PyromancerEffect(Person deactivePerson, SignalBus bus, CardEffectData data) : base(bus, data)
+        public PyromancerEffect(Person deactivePerson, EffectData data) : base(data)
         {
             _deactivePerson = deactivePerson;
 

@@ -28,7 +28,7 @@ namespace GameFields.Effects
         private readonly InformationLabel _informationLabel;
 
         public MimeEffect(Person activePerson, Person deactivePerson, CardLocationViewRoot viewRoot,
-            InformationLabel informationLabel, SignalBus bus, CardEffectData data) : base(bus, data)
+            InformationLabel informationLabel, EffectData data) : base(data)
         {
             _activePerson = activePerson;
             _deactivePerson = deactivePerson;

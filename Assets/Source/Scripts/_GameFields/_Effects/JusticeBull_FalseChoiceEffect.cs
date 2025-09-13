@@ -11,7 +11,7 @@ namespace GameFields.Effects
         //private const int CountTurns = 2;
         private readonly Person _activePerson;
 
-        public JusticeBull_FalseChoiceEffect(Person activePerson, SignalBus bus, CardEffectData data) : base(bus, data)
+        public JusticeBull_FalseChoiceEffect(Person activePerson, EffectData data) : base(data)
         {
             _activePerson = activePerson;
 

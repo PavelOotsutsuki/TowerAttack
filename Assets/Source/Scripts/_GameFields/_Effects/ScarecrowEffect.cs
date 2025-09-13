@@ -13,10 +13,10 @@ namespace GameFields.Effects
         private readonly Person _deactivePerson;
         private readonly Card _card;
 
-        public ScarecrowEffect(Person deactivePerson, SignalBus bus, CardEffectData data) : base(bus, data)
+        public ScarecrowEffect(Person deactivePerson, EffectData data) : base(data)
         {
             _deactivePerson = deactivePerson;
-            _card = data.Card;
+            _card = data.CardEffectData.Card;
 
             Play();
         }

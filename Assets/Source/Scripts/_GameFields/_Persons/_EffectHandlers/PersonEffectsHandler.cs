@@ -10,6 +10,7 @@ using Tools;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using GameFields.Persons.EffectHandlers.Brothers;
+using GameFields.Persons.EffectHandlers.Scarecrows;
 
 namespace GameFields.Persons.EffectHandlers
 {

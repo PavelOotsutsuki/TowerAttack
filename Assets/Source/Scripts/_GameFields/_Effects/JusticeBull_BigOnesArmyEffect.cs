@@ -18,8 +18,8 @@ namespace GameFields.Effects
         //    Func<EffectType, Action<int>, Effect> effectCreator, Action<int> callback, Person activePeron) :
         //    base(informationLabel, effectCreator, callback, activePeron)
         public JusticeBull_BigOnesArmyEffect(Person deactivePerson, InformationLabel informationLabel,
-            Func<EffectType, CardEffectData, Effect> effectCreator, Person activePeron, SignalBus bus, CardEffectData data) :
-            base(informationLabel, effectCreator, activePeron, bus, data)
+            Func<EffectType, CardEffectData, EffectDuration, Effect> effectCreator, Person activePeron, EffectData data) :
+            base(informationLabel, effectCreator, activePeron, data)
         {
             _deactivePerson = deactivePerson;
 

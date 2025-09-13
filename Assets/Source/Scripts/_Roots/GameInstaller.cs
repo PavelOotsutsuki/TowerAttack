@@ -16,6 +16,7 @@ using GameFields.Persons.SelectMenues.Commons;
 using GameFields.Persons.SelectMenues.Choices;
 using GameFields.Persons.LookCardMenues;
 using GameFields.Effects;
+using GameFields.Persons.Commons;
 
 namespace Roots
 {
@@ -29,6 +30,7 @@ namespace Roots
         [SerializeField] private DiscardPileConfig _discardPileConfig;
         [SerializeField] private SeatPool _seatPool;
         [SerializeField] private DiscardPile _discardPile;
+        [SerializeField] private SkipTurnLabel _skipTurnLabel;
 
         [SerializeField] private VariantCardCreator _variantCardCreator;
 
@@ -43,6 +45,7 @@ namespace Roots
         [SerializeField] private CardAttackZonePlayer _playerCardAttackZone;
 
         [SerializeField] private LookCardMenuPlayer _lookCardMenuPlayer;
+        [SerializeField] private StartPlayerTurnLabel _startPlayerTurnLabel;
 
         [SerializeField] private ForgingZone _forgingZone;
         [SerializeField] private HandTransferZone _handTransferZone;
@@ -69,6 +72,7 @@ namespace Roots
             Container.Bind<DiscardPileConfig>().FromInstance(_discardPileConfig).AsSingle();
             Container.Bind<SeatPool>().FromInstance(_seatPool).AsSingle();
             Container.Bind<DiscardPile>().AsSingle().NonLazy();
+            Container.Bind<SkipTurnLabel>().FromInstance(_skipTurnLabel).AsSingle();
 
             Container.Bind<VariantCardCreator>().FromInstance(_variantCardCreator).AsSingle();
 
@@ -83,6 +87,7 @@ namespace Roots
             Container.Bind<CardAttackZonePlayer>().FromInstance(_playerCardAttackZone).AsSingle();
 
             Container.Bind<LookCardMenuPlayer>().FromInstance(_lookCardMenuPlayer).AsSingle();
+            Container.Bind<StartPlayerTurnLabel>().FromInstance(_startPlayerTurnLabel).AsSingle();
 
             Container.Bind<ForgingZone>().FromInstance(_forgingZone).AsSingle();
             Container.Bind<HandTransferZone>().FromInstance(_handTransferZone).AsSingle();
