@@ -9,12 +9,12 @@ namespace GameFields.Effects
     public class ImpArmyEffect : Effect
     {
         private readonly Person _deactivePerson;
-        private readonly EffectedCard _effectedCard;
+        private readonly Card _card;
 
         public ImpArmyEffect(Person deactivePerson, EffectData data) : base(data)
         {
             _deactivePerson = deactivePerson;
-            _effectedCard = new EffectedCard();
+            _card = data.CardEffectData.Card;
 
             Play();
         }
@@ -22,13 +22,11 @@ namespace GameFields.Effects
         public override void End()
         {
             base.End();
-
-            _effectedCard.EndEffect();
         }
 
         protected override IEnumerator OnPlaying()
         {
-            _deactivePerson.AddCurse(_effectedCard);
+            _deactivePerson.AddCurse(_card);
             yield break;
         }
     }

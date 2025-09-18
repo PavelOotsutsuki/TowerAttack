@@ -83,10 +83,10 @@ namespace GameFields.Persons.Commons
         //    Bus.Unsubscribe<StartEffectSignal>(SetCardEffectProcess);
         //}
 
-        protected override void OnStartStep()
-        {
-            //GameFieldObjectsActivator.Deactivate();
-        }
+        //protected override void OnStartStep()
+        //{
+        //    //GameFieldObjectsActivator.Deactivate();
+        //}
 
         //public override void ActivateSharpSnakeEffect(Action callback)
         //{

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Cards;
 using GameFields.Effects;
 using GameFields.Persons.Tables;
@@ -24,7 +25,10 @@ namespace GameFields.Persons.EffectHandlers.Scarecrows
 
         public void Activate(int countCards, Card card)
         {
-            _effects.Enqueue(new ScarecrowEffectData(card, countCards));
+            if (_effects.Any(e => e.Card == card) == false)
+            {
+                _effects.Enqueue(new ScarecrowEffectData(card, countCards));
+            }
             //_counter = countCards;
             //_card = card;
         }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Cards;
+using GameFields.Persons.EffectHandlers;
 using UnityEngine;
 using Zenject;
 
@@ -16,8 +17,8 @@ namespace GameFields.Effects
         //public DoubleEffect(Func<CardEffectConfig, Action<int>, Effect> effectCreator, CardEffectConfig effectConfig,
         //    Action<int> callback) :
         public DoubleEffect(Func<CardEffectConfigPair, EffectDuration, Effect> effectCreator, CardEffectConfigPair effectConfig,
-            SignalBus bus, EffectDuration effectDuration) :
-            base(new EffectData(bus, effectConfig.CardEffectData, effectDuration), 0f)
+            SignalBus bus, EffectDuration effectDuration, PersonEffectsHandlerRoot personEffectsHandlerRoot) :
+            base(new EffectData(bus, effectConfig.CardEffectData, effectDuration, personEffectsHandlerRoot), 0f)
         {
             _effectCreator = effectCreator;
             _effectConfig = effectConfig;

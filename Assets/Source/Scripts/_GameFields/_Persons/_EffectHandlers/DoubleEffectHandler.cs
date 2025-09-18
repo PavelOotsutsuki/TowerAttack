@@ -1,25 +1,31 @@
+using System.Collections.Generic;
+using Cards;
+
 namespace GameFields.Persons.EffectHandlers
 {
-    public class DoubleEffectHandler
+    public class DoubleEffectHandler: ILengthyEffectHandler
     {
-        private int _counter;
+        private readonly List<Card> _effectedCards;
 
         public DoubleEffectHandler()
         {
-            _counter = 0;
+            _effectedCards = new List<Card>();
         }
 
-        public bool IsActive => _counter > 0;
+        public bool IsActive => _effectedCards.Count > 0;
 
-        public void Activate(int countTurns)
+        public void Activate(Card card)
         {
-            _counter = countTurns;
+            if (_effectedCards.Contains(card))
+                return;
+
+            _effectedCards.Add(card);
         }
 
-        public void OnEndTurn()
+        public void EndEffect(Card card)
         {
-            if (_counter > 0)
-                _counter--;
+            if (_effectedCards.Contains(card))
+                _effectedCards.Remove(card);
         }
     }
 }

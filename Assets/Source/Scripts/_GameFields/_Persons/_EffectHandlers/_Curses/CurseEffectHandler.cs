@@ -11,14 +11,15 @@ using UnityEngine;
 
 namespace GameFields.Persons.EffectHandlers.Curses
 {
-    public abstract class CurseEffectHandler
+    public abstract class CurseEffectHandler: ILengthyEffectHandler
     {
         private readonly ICardNumberKeeper _tower;
         private readonly InformationLabel _informationLabel;
         private readonly ConfirmableNumbers _confirmableNumbers;
         private readonly SelectNumbersList _cursedList;
 
-        private readonly List<ICompletable> _cursedEffectCards;
+        //private readonly List<ICompletable> _cursedEffectCards;
+        private readonly List<Card> _effectedCards;
 
         public CurseEffectHandler(ICardNumberKeeper tower, InformationLabel informationLabel, ConfirmableNumbers confirmableNumbers,
             SelectNumbersList cursedList)
@@ -28,24 +29,39 @@ namespace GameFields.Persons.EffectHandlers.Curses
 
             _confirmableNumbers = confirmableNumbers;
             _cursedList = cursedList;
-            _cursedEffectCards = new List<ICompletable>();
+            //_effectedCards = new List<ICompletable>();
+            _effectedCards = new List<Card>();
         }
 
-        public void Add(ICompletable effectedCard)
+        //public void Add(ICompletable effectedCard)
+        //{
+        //    _effectedCards.Add(effectedCard);
+        //}
+
+        public void Activate(Card card)
         {
-            _cursedEffectCards.Add(effectedCard);
+            if (_effectedCards.Contains(card))
+                return;
+
+            _effectedCards.Add(card);
+        }
+
+        public void EndEffect(Card card)
+        {
+            if (_effectedCards.Contains(card))
+                _effectedCards.Remove(card);
         }
 
         public void OnStartTurn()
         {
-            if (_cursedEffectCards.Count == 0)
-                return;
+            //if (_effectedCards.Count == 0)
+            //    return;
 
-            for (int i = _cursedEffectCards.Count - 1; i >= 0; i--)
-            {
-                if (_cursedEffectCards[i].IsComplete)
-                    _cursedEffectCards.Remove(_cursedEffectCards[i]);
-            }
+            //for (int i = _effectedCards.Count - 1; i >= 0; i--)
+            //{
+            //    if (_effectedCards[i].IsComplete)
+            //        _effectedCards.Remove(_effectedCards[i]);
+            //}
 
             //foreach (ICompletable effectCard in _cursedEffectCards)
             //{
@@ -53,7 +69,9 @@ namespace GameFields.Persons.EffectHandlers.Curses
             //        _cursedEffectCards.Remove(effectCard);
             //}
 
-            int cursedCount = _cursedEffectCards.Count;
+            int cursedCount = _effectedCards.Count;
+            Debug.Log(cursedCount);
+
 
             if (cursedCount == 0)
                 return;
@@ -108,6 +126,7 @@ namespace GameFields.Persons.EffectHandlers.Curses
             InformationLabelActivateData informationLabelActivateData = new InformationLabelActivateData(labelActivateData, 2f);
             _informationLabel.Activate(informationLabelActivateData);
 
+            Debug.Log("Дошел до сюда");
             PushStep();
         }
 

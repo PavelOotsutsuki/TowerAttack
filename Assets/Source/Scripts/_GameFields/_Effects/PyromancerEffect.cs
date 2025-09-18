@@ -9,10 +9,12 @@ namespace GameFields.Effects
     public class PyromancerEffect : Effect
     {
         private readonly Person _deactivePerson;
+        private readonly Card _card;
 
         public PyromancerEffect(Person deactivePerson, EffectData data) : base(data)
         {
             _deactivePerson = deactivePerson;
+            _card = data.CardEffectData.Card;
 
             Play();
         }
@@ -26,7 +28,7 @@ namespace GameFields.Effects
 
         protected override IEnumerator OnPlaying()
         {
-            _deactivePerson.ActivateFireDraw(Duration);
+            _deactivePerson.ActivateFireDraw(_card);
             yield break;
         }
     }

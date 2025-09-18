@@ -34,7 +34,7 @@ namespace GameFields.Persons.Hands
         [SerializeField] private Transform _containerForDrag; //IPS
         [SerializeField] private Transform _containerForSeats; 
 
-        private readonly Dictionary<Card, EffectedCard> _handCursedCards = new Dictionary<Card, EffectedCard>();
+        private readonly List<Card> _handCursedCards = new List<Card>();
         private List<Seat> _handSeats;
         private Seat _dragCardHandSeat;
         private Transform _dragCardParent; // IPS
@@ -143,9 +143,8 @@ namespace GameFields.Persons.Hands
 
             if (card.IsCurse)
             {
-                EffectedCard effectedCard = new EffectedCard();
-                _curseEffectHandler.Add(effectedCard);
-                _handCursedCards.Add(card, effectedCard);
+                _curseEffectHandler.Activate(card);
+                _handCursedCards.Add(card);
             }
 
             Seat handSeat = _handSeatPool.GetSeat();
@@ -443,9 +442,9 @@ namespace GameFields.Persons.Hands
 
         private void UnbindCurse(Card card)
         {
-            if (_handCursedCards.ContainsKey(card))
+            if (_handCursedCards.Contains(card))
             {
-                _handCursedCards[card].EndEffect();
+                _curseEffectHandler.EndEffect(card);
                 _handCursedCards.Remove(card);
             }
         }

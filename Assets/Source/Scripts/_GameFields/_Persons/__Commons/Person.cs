@@ -88,7 +88,7 @@ namespace GameFields.Persons.Commons
         public bool IsComplete { get; private set; }
         //public PersonEffectsHandler PersonEffectsHandler => _personEffectsHandler;
         public bool IsDoubleEffect => _personEffectsHandler.DoubleEffectHandler.IsActive;
-        public bool IsScarecrowEffectActive => _personEffectsHandler.ScarecrowEffectHandler.TryUse();
+        public bool TryUseScarecrowEffect => _personEffectsHandler.ScarecrowEffectHandler.TryUse();
 
         public void StartStep()
         {
@@ -97,7 +97,8 @@ namespace GameFields.Persons.Commons
             _personSteps.Clear();
 
             //_hand.OnStartTurn();
-            OnStartStep();
+            //OnStartStep();
+            _personEffectsHandler.OnStartTurn();
 
             if (_personEffectsHandler.SkipTurnEffectHandler.IsActive)
             {
@@ -117,13 +118,13 @@ namespace GameFields.Persons.Commons
         protected void AddStartTurnDrawStep()
         {
             PushStep(StartTurnDraw);
-            _personEffectsHandler.OnStartTurn();
+            //_personEffectsHandler.OnStartTurn();
         }
 
         public void FinishTurn()
         {
             //_hand.OnFinishTurn();
-            _personEffectsHandler.OnEndTurn();
+            //_personEffectsHandler.OnEndTurn();
 
             //IReadOnlyList<Card> discardedCards = _playingZone.DiscardCards();
             _playingZone.DiscardCards();
@@ -212,7 +213,7 @@ namespace GameFields.Persons.Commons
         //    _attackMenu.Deactivate();
         //}
 
-        protected abstract void OnStartStep();
+        //protected abstract void OnStartStep();
 
         protected void PushStep(PersonStep turnStep) => _personSteps.Push(turnStep);
 
@@ -265,6 +266,7 @@ namespace GameFields.Persons.Commons
             if (isRememberEffect)
                 LastEffect = personEffect.CardEffectConfig;
 
+            Debug.Log("StartEffect");
             StartAction(personEffect.Effect);
 
             _playingZone.SeatCard(personEffect);
@@ -341,9 +343,9 @@ namespace GameFields.Persons.Commons
             _personEffectsHandler.JusticeBullEffectHandler.Activate();
         }
 
-        public void ActivateSkipTurns(int countTurns)
+        public void ActivateSkipTurns(Card card)
         {
-            _personEffectsHandler.SkipTurnEffectHandler.Activate(countTurns);
+            _personEffectsHandler.SkipTurnEffectHandler.Activate(card);
         }
 
         public bool TryActivateGnomeEffect(out int countTurns)
@@ -358,31 +360,31 @@ namespace GameFields.Persons.Commons
             _personEffectsHandler.BrothersEffectHandler.Upgrade(increaseValue);
         }
 
-        public void ActivateDoubleEffect(int countTurns)
+        public void ActivateDoubleEffect(Card card)
         {
-            _personEffectsHandler.DoubleEffectHandler.Activate(countTurns);
+            _personEffectsHandler.DoubleEffectHandler.Activate(card);
         }
 
-        public void AddCurse(EffectedCard effectedCard)
+        public void AddCurse(Card card)
         {
-            _personEffectsHandler.CurseEffectHandler.Add(effectedCard);
+            _personEffectsHandler.CurseEffectHandler.Activate(card);
         }
 
-        public void ActivateSlimeEffect(int countTurns)
+        public void ActivateSlimeEffect(Card card)
         {
-            _personEffectsHandler.SlimeEffectHandler.Activate(countTurns);
+            _personEffectsHandler.SlimeEffectHandler.Activate(card);
         }
 
         //public abstract void ActivateSharpSnakeEffect(Action callback);
 
-        public void ActivateFireDraw(int countTurns)
+        public void ActivateFireDraw(Card card)
         {
-            _personEffectsHandler.FireEffectHandler.Activate(countTurns);
+            _personEffectsHandler.FireEffectHandler.Activate(card);
         }
 
-        public void ActivateFateInevitability(int countTurns)
+        public void ActivateFateInevitability(Card card, int countTurns)
         {
-            _personEffectsHandler.FateInevitabilityHandler.Activate(countTurns);
+            _personEffectsHandler.FateInevitabilityHandler.Activate(card, countTurns);
         }
 
         public void ActivateScarecrowEffect(int countTurns, Card card)

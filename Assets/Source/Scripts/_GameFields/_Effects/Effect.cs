@@ -6,6 +6,7 @@ using UnityEngine;
 using Zenject;
 using GameFields.Signals;
 using Cards;
+using GameFields.Persons.EffectHandlers;
 
 namespace GameFields.Effects
 {
@@ -15,6 +16,7 @@ namespace GameFields.Effects
         private readonly Card _card;
         private readonly SignalBus _bus;
         private readonly EffectDuration _effectDuration;
+        private readonly PersonEffectsHandlerRoot _personEffectsHandlerRoot;
 
         protected readonly int Duration;
 
@@ -27,6 +29,7 @@ namespace GameFields.Effects
             Duration = data.CardEffectData.Duration;
             _card = data.CardEffectData.Card;
             _effectDuration = data.EffectDuration;
+            _personEffectsHandlerRoot = data.PersonEffectsHandlerRoot;
 
             _bus = data.Bus;
         }
@@ -37,6 +40,7 @@ namespace GameFields.Effects
         public virtual void End()
         {
             _bus.Fire(new DiscardCardsSignal(_card));
+            _personEffectsHandlerRoot.EndEffect(_card);
         }
 
         protected void Play()

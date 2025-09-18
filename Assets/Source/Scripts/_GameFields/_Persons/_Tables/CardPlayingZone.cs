@@ -42,6 +42,9 @@ namespace GameFields.Persons.Tables
             if (HasFreeSeat == false)
                 throw new System.Exception("Нет места в " + ToString() + "! Почему не проверил ");
 
+            if (_table.Cards.Contains(personEffect.Card))
+                return;
+
             _table.SeatCard(personEffect);
             //_playedCards.Add(card);
         }

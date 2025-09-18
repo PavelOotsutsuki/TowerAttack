@@ -1,41 +1,55 @@
+using Cards;
+using System.Collections.Generic;
 using GameFields.Persons.DrawCards;
 
 namespace GameFields.Persons.EffectHandlers.Fires
 {
-    public class FireEffectHandler : IFireEffectHandler
+    public class FireEffectHandler : IFireEffectHandler, ILengthyEffectHandler
     {
         private readonly IFireDrawCardAnimationSetter _cardAnimationManager;
 
-        private int _countTurns;
+        private readonly List<Card> _effectedCards;
 
         public FireEffectHandler(IFireDrawCardAnimationSetter cardAnimationManager)
         {
             _cardAnimationManager = cardAnimationManager;
-
-            _countTurns = 0;
+            _effectedCards = new List<Card>();
         }
 
-        public bool IsFireMode => _countTurns > 0;
+        public bool IsFireMode => _effectedCards.Count > 0;
 
-        public void Activate(int countTurns)
+        public void Activate(Card card)
         {
-            _countTurns = countTurns
-                + 1; // +1 чтобы нейтрализовать эффект "в начале хода"
+            if (_effectedCards.Contains(card))
+                return;
+
+            _effectedCards.Add(card);
 
             _cardAnimationManager.SetFireMode();
         }
 
-        public void OnStartTurn()
+        public void EndEffect(Card card)
         {
-            if (_countTurns > 0)
-            {
-                _countTurns--;
+            if (_effectedCards.Contains(card) == false)
+                return;
 
-                if (_countTurns == 0)
-                {
-                    _cardAnimationManager.SetSimpleMode();
-                }
-            }
+            _effectedCards.Remove(card);
+
+            if (_effectedCards.Count == 0)
+                _cardAnimationManager.SetSimpleMode();
         }
+
+        //public void OnStartTurn()
+        //{
+        //    if (_countTurns > 0)
+        //    {
+        //        _countTurns--;
+
+        //        if (_countTurns == 0)
+        //        {
+        //            _cardAnimationManager.SetSimpleMode();
+        //        }
+        //    }
+        //}
     }
 }

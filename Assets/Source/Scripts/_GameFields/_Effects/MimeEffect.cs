@@ -27,6 +27,9 @@ namespace GameFields.Effects
         private readonly CardLocationViewRoot _viewRoot;
         private readonly InformationLabel _informationLabel;
 
+        private readonly Card _card;
+        private readonly EffectDuration _effectDuration;
+
         public MimeEffect(Person activePerson, Person deactivePerson, CardLocationViewRoot viewRoot,
             InformationLabel informationLabel, EffectData data) : base(data)
         {
@@ -35,6 +38,9 @@ namespace GameFields.Effects
 
             _viewRoot = viewRoot;
             _informationLabel = informationLabel;
+
+            _card = data.CardEffectData.Card;
+            _effectDuration = data.EffectDuration;
 
             Play();
         }
@@ -129,7 +135,8 @@ namespace GameFields.Effects
 
             if (discoverResult.Result == deckTopCard)
             {
-                _deactivePerson.ActivateSkipTurns(2);
+                _deactivePerson.ActivateSkipTurns(_card);
+                _effectDuration.SetDuration(2);
                 activateMessage = TrueChoice;
             }
             else

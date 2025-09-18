@@ -10,11 +10,13 @@ namespace GameFields.Effects
     {
         private readonly Person _activePerson;
         private readonly int _duration;
+        private readonly Card _card;
 
         public FateMistress_FateInevitabilityEffect(Person activePerson, EffectData data) : base(data)
         {
             _activePerson = activePerson;
             _duration = data.CardEffectData.Duration;
+            _card = data.CardEffectData.Card;
 
             Play();
         }
@@ -28,7 +30,7 @@ namespace GameFields.Effects
 
         protected override IEnumerator OnPlaying()
         {
-            _activePerson.ActivateFateInevitability(_duration);
+            _activePerson.ActivateFateInevitability(_card, _duration);
             yield break;
         }
     }

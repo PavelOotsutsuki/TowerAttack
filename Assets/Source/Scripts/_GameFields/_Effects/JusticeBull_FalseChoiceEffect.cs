@@ -10,10 +10,12 @@ namespace GameFields.Effects
     {
         //private const int CountTurns = 2;
         private readonly Person _activePerson;
+        private readonly Card _card;
 
         public JusticeBull_FalseChoiceEffect(Person activePerson, EffectData data) : base(data)
         {
             _activePerson = activePerson;
+            _card = data.CardEffectData.Card;
 
             Play();
         }
@@ -27,7 +29,7 @@ namespace GameFields.Effects
 
         protected override IEnumerator OnPlaying()
         {
-            _activePerson.ActivateSkipTurns(Duration + 1);
+            _activePerson.ActivateSkipTurns(_card);
 
             yield break;
         }

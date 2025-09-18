@@ -1,18 +1,24 @@
+using Cards;
+
 namespace GameFields.Persons.EffectHandlers
 {
     public class FateInevitabilityHandlerEffect
     {
         private readonly int _startTurns;
+        private readonly Card _card;
 
         private int _restTurns;
 
-        public FateInevitabilityHandlerEffect(int countTurns)
+        public FateInevitabilityHandlerEffect(Card card, int countTurns)
         {
             _startTurns = countTurns;
+            _card = card;
             _restTurns = _startTurns;
         }
 
-        public bool CanActivate()
+        public Card Card => _card;
+
+        public bool CanActivate() // Если ход первый, то способность не активируем
         {
             return _startTurns == _restTurns == false;
         }

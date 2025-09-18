@@ -50,6 +50,7 @@ namespace GameFields.Persons.Commons
         private FirePool _playerFirePool;
         private RechangeFeatureRuleController _playerRechangeFeatureRuleController;
         private TurnDrawnCards _playerTurnDrawnCards;
+        private PersonEffectsHandler _playerPersonEffectsHandler;
 
         private LookCardMenuPlayer _playerLookCardMenu;
         //private ActiveEffectsList _playerActiveEffectsList = new ActiveEffectsList();
@@ -95,6 +96,7 @@ namespace GameFields.Persons.Commons
         private FirePool _enemyFirePool;
         private RechangeFeatureRuleController _enemyRechangeFeatureRuleController;
         private TurnDrawnCards _enemyTurnDrawnCards;
+        private PersonEffectsHandler _enemyPersonEffectsHandler;
 
         //private ActiveEffectsList _enemyActiveEffectsList = new ActiveEffectsList();
 
@@ -245,7 +247,7 @@ namespace GameFields.Persons.Commons
             JusticeBullEffectHandler justiceBullEffectHandler = new JusticeBullEffectHandler(_choicedNumbersPlayer, _enemyTower);
             ScarecrowEffectHandler scarecrowEffectHandler = new ScarecrowEffectHandler(_discardManager);
             _playerBrothersEffectHandler = new BrothersEffectHandler(_playerRechangeFeatureRuleController, cardFeatureRechangables);
-            PersonEffectsHandler personEffectsHandler = new PersonEffectsHandler(gnomeEffectHandler, slimeEffectHandler, curseEffectHandler,
+            _playerPersonEffectsHandler = new PersonEffectsHandler(gnomeEffectHandler, slimeEffectHandler, curseEffectHandler,
                 fireEffectHandler, doubleEffectHandler, skipTurnEffectHandler, fateInevitabilityHandler, justiceBullEffectHandler,
                 _playerBrothersEffectHandler, scarecrowEffectHandler);
 
@@ -255,7 +257,7 @@ namespace GameFields.Persons.Commons
 
             StartPlayerTurnView startPlayerTurnView = new StartPlayerTurnView(_interactionActivator, _startPlayerTurnLabel);
             PlayerSkipTurnView skipTurnView = new PlayerSkipTurnView(_interactionActivator, _skipTurnLabel);
-            EndTurnProcessing endTurnProcessing = new EndTurnProcessing(_endTurnButton, _interactionActivator, personEffectsHandler);
+            EndTurnProcessing endTurnProcessing = new EndTurnProcessing(_endTurnButton, _interactionActivator, _playerPersonEffectsHandler);
 
             _forgingZone.Init(_discardPile, _bus, drawCardRoot, gnomeEffectHandler);
             _handTransferZone.Init(_enemyHand, _bus);
@@ -264,7 +266,7 @@ namespace GameFields.Persons.Commons
 
             return new Player(_interactionActivator, _playerHand, _playerPlayingZone, _playerTower, _playerDiscover,
                 drawCardRoot, startTurnDraw, turnProcessing, _bus, startPlayerTurnView, _playerAttackMenu, endTurnProcessing,
-                _playerChoiceMenu, _playerChoiceMenuImitation, personEffectsHandler, _informationLabel, _playerLookCardMenu,
+                _playerChoiceMenu, _playerChoiceMenuImitation, _playerPersonEffectsHandler, _informationLabel, _playerLookCardMenu,
                 _playerLoseActions, skipTurnView);
         }
 
@@ -291,7 +293,7 @@ namespace GameFields.Persons.Commons
             JusticeBullEffectHandler justiceBullEffectHandler = new JusticeBullEffectHandler(_choicedNumbersEnemy, _playerTower);
             _enemyBrothersEffectHandler = new BrothersEffectHandler(_enemyRechangeFeatureRuleController, cardFeatureRechangables);
             ScarecrowEffectHandler scarecrowEffectHandler = new ScarecrowEffectHandler(_discardManager);
-            PersonEffectsHandler personEffectsHandler = new PersonEffectsHandler(gnomeEffectHandler, slimeEffectHandler, curseEffectHandler,
+            _enemyPersonEffectsHandler = new PersonEffectsHandler(gnomeEffectHandler, slimeEffectHandler, curseEffectHandler,
                 fireEffectHandler, doubleEffectHandler, skipTurnEffectHandler, fateInevitabilityHandler, justiceBullEffectHandler,
                 _enemyBrothersEffectHandler, scarecrowEffectHandler);
 
@@ -300,7 +302,7 @@ namespace GameFields.Persons.Commons
                 _discardPile, drawCardRoot, _playerHand);
             StartTurnDrawEnemyAI startTurnDraw = new StartTurnDrawEnemyAI(_interactionActivator, drawCardRoot, _enemyCountStartDrawCards);
             EnemySkipTurnView skipTurnView = new EnemySkipTurnView(_interactionActivator, _skipTurnLabel);
-            OnBeforeEndTurnProcessing onBeforeEndTurnProcessing = new OnBeforeEndTurnProcessing(_interactionActivator, personEffectsHandler);
+            OnBeforeEndTurnProcessing onBeforeEndTurnProcessing = new OnBeforeEndTurnProcessing(_interactionActivator, _enemyPersonEffectsHandler);
 
             HardAIThinkLogic hardAIThinkLogic = new HardAIThinkLogic(_cardWatcher,_deck, _confirmableNumbersEnemyAI, gnomeEffectHandler,
                 _enemyPlayingZone, _enemyHand, fireEffectHandler, _discardPile, _fireRoot);
@@ -314,7 +316,7 @@ namespace GameFields.Persons.Commons
 
             return new EnemyAI(_interactionActivator, enemyDragAndDropImitation, _enemyPlayingZone,
                 _enemyTower, drawCardRoot, _enemyDiscoverImitation, startTurnDraw, _bus, _enemyHand, _enemyAttackMenu,
-                _enemyChoiceMenu, _enemyChoiceMenuImitation, personEffectsHandler, lookCardMenuEnemyAI, _enemyLoseActions,
+                _enemyChoiceMenu, _enemyChoiceMenuImitation, _enemyPersonEffectsHandler, lookCardMenuEnemyAI, _enemyLoseActions,
                 onBeforeEndTurnProcessing, skipTurnView);
         }
 
@@ -331,6 +333,11 @@ namespace GameFields.Persons.Commons
         public BrothersEffectHandlerRoot CreateBrothersEffectHandlerRoot()
         {
             return new BrothersEffectHandlerRoot(_playerBrothersEffectHandler, _enemyBrothersEffectHandler);
+        }
+
+        public PersonEffectsHandlerRoot CreatePersonEffectsHandlerRoot()
+        {
+            return new PersonEffectsHandlerRoot(_enemyPersonEffectsHandler, _playerPersonEffectsHandler);
         }
 
         private void InitPlayersData()

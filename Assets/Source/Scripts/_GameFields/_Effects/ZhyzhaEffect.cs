@@ -9,10 +9,12 @@ namespace GameFields.Effects
     public class ZhyzhaEffect : Effect
     {
         private readonly Person _deactivePerson;
+        private readonly Card _card;
 
         public ZhyzhaEffect(Person deactivePerson, EffectData data) : base(data)
         {
             _deactivePerson = deactivePerson;
+            _card = data.CardEffectData.Card;
 
             Play();
         }
@@ -26,7 +28,7 @@ namespace GameFields.Effects
 
         protected override IEnumerator OnPlaying()
         {
-            _deactivePerson.ActivateSlimeEffect(Duration);
+            _deactivePerson.ActivateSlimeEffect(_card);
             yield break;
             //yield return new WaitForSeconds(10f);
 

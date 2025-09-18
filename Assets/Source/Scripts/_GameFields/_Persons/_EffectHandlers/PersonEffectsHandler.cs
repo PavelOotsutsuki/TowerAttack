@@ -11,6 +11,7 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using GameFields.Persons.EffectHandlers.Brothers;
 using GameFields.Persons.EffectHandlers.Scarecrows;
+using Cards;
 
 namespace GameFields.Persons.EffectHandlers
 {
@@ -26,6 +27,8 @@ namespace GameFields.Persons.EffectHandlers
         private readonly JusticeBullEffectHandler _justiceBullEffectHandler;
         private readonly BrothersEffectHandler _brothersEffectHandler;
         private readonly ScarecrowEffectHandler _scarecrowEffectHandler;
+
+        private readonly IReadOnlyList<ILengthyEffectHandler> _lengthyEffectHandlers;
 
         public PersonEffectsHandler(GnomeEffectHandler gnomeEffectHandler, SlimeEffectHandler slimeEffectHandler,
             CurseEffectHandler curseEffectHandler, FireEffectHandler fireEffectHandler, DoubleEffectHandler doubleEffectHandler,
@@ -43,6 +46,16 @@ namespace GameFields.Persons.EffectHandlers
             _justiceBullEffectHandler = justiceBullEffectHandler;
             _brothersEffectHandler = brothersEffectHandler;
             _scarecrowEffectHandler = scarecrowEffectHandler;
+
+            _lengthyEffectHandlers = new List<ILengthyEffectHandler>()
+            {
+                _slimeEffectHandler,
+                _curseEffectHandler,
+                _fireEffectHandler,
+                _doubleEffectHandler,
+                _skipTurnEffectHandler,
+                _fateInevitabilityHandler
+            };
         }
 
         public GnomeEffectHandler GnomeEffectCounter => _gnomeEffectHandler;
@@ -60,13 +73,21 @@ namespace GameFields.Persons.EffectHandlers
         {
             _curseEffectHandler.OnStartTurn();
             _slimeEffectHandler.OnStartTurn();
-            _fireEffectHandler.OnStartTurn();
+            //_fireEffectHandler.OnStartTurn();
         }
 
-        public void OnEndTurn()
+        //public void OnEndTurn()
+        //{
+        //    //_doubleEffectHandler.OnEndTurn();
+        //    //_skipTurnEffectHandler.OnEndTurn();
+        //}
+
+        public void EndEffect(Card card)
         {
-            _doubleEffectHandler.OnEndTurn();
-            _skipTurnEffectHandler.OnEndTurn();
+            for (int i = 0; i < _lengthyEffectHandlers.Count; i++)
+            {
+                _lengthyEffectHandlers[i].EndEffect(card);
+            }
         }
 
         public void BeforeEndTurn(Action callback)

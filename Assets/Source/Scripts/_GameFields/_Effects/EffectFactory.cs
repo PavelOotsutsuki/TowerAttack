@@ -7,6 +7,7 @@ using Cysharp.Threading.Tasks;
 using GameFields.InformationLabels;
 using GameFields.Persons.Commons;
 using GameFields.Persons.Discovers;
+using GameFields.Persons.EffectHandlers;
 using GameFields.Persons.EffectHandlers.Brothers;
 using GameFields.Persons.Fires;
 using GameFields.Persons.LookCardMenues;
@@ -26,12 +27,13 @@ namespace GameFields.Effects
         private readonly VariantCardCreator _variantCardCreator;
         private readonly BrothersEffectHandlerRoot _brothersEffectHandlerRoot;
         private readonly SignalBus _bus;
+        private readonly PersonEffectsHandlerRoot _personEffectsHandlerRoot;
 
         //private Effect _lastEffect;
 
         public EffectFactory(IPersonsState personsState, CardLocationViewRoot viewRoot, InformationLabel informationLabel,
             CardTransitManager cardTransitManager, VariantCardCreator variantCardCreator, BrothersEffectHandlerRoot brothersEffectHandler,
-            SignalBus bus)
+            SignalBus bus, PersonEffectsHandlerRoot personEffectsHandlerRoot)
         {
             _personsState = personsState;
             _viewRoot = viewRoot;
@@ -40,6 +42,7 @@ namespace GameFields.Effects
             _variantCardCreator = variantCardCreator;
             _brothersEffectHandlerRoot = brothersEffectHandler;
             _bus = bus;
+            _personEffectsHandlerRoot = personEffectsHandlerRoot;
             _voidEffectConfig = ScriptableObject.CreateInstance<CardEffectConfig>();
             //_voidEffectConfig = new CardEffectConfig();
             //_lastEffect = _voidEffect;
@@ -63,7 +66,7 @@ namespace GameFields.Effects
             //    currentEffectConfig = PlayVariantEffect(_variantCardCreator.CreateByEffect(effectConfig.Type));
             //}
 
-            if (_personsState.Active.IsScarecrowEffectActive)
+            if (_personsState.Active.TryUseScarecrowEffect)
             {
                 isRememberEffect = false;
                 currentEffectConfig = _voidEffectConfig;
@@ -75,7 +78,7 @@ namespace GameFields.Effects
             if (_personsState.Active.IsDoubleEffect)
             {
                 //effect = new DoubleEffect(CreateEffect, currentEffectConfig, callback);
-                effect = new DoubleEffect(CreateEffect, trueCardEffectConfigPair, _bus, effectDuration);
+                effect = new DoubleEffect(CreateEffect, trueCardEffectConfigPair, _bus, effectDuration, _personEffectsHandlerRoot);
             }
             else
             {
@@ -108,7 +111,7 @@ namespace GameFields.Effects
         //private Effect CreateEffect(EffectType effecType, Action<int> callback, int duration)
         private Effect CreateEffect(EffectType effecType, CardEffectData data, EffectDuration effectDuration)
         {
-            EffectData effectData = new EffectData(_bus, data, effectDuration);
+            EffectData effectData = new EffectData(_bus, data, effectDuration, _personEffectsHandlerRoot);
 
             Effect effect = effecType switch
             {

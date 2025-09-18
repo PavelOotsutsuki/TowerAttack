@@ -103,12 +103,12 @@ namespace GameFields.Persons.Commons
             PushStep(_startPlayerTurnView);
         }
 
-        protected override void OnStartStep()
-        {
-            //_handBlockable.ForciblyBlock();
-            //GameFieldObjectsActivator.Activate();
-            //_attackMenu.Activate();
-        }
+        //protected override void OnStartStep()
+        //{
+        //    //_handBlockable.ForciblyBlock();
+        //    //GameFieldObjectsActivator.Activate();
+        //    //_attackMenu.Activate();
+        //}
 
         private void StartAttack(PushStepSignalPlayer signal)
         {

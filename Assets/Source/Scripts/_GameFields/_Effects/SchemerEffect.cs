@@ -10,11 +10,13 @@ namespace GameFields.Effects
     {
         private readonly Person _deactivePerson;
         private readonly Person _activePerson;
+        private readonly Card _card;
 
         public SchemerEffect(Person activePerson, Person deactivePerson, EffectData data) : base(data)
         {
             _activePerson = activePerson;
             _deactivePerson = deactivePerson;
+            _card = data.CardEffectData.Card;
 
             Play();
         }
@@ -28,8 +30,10 @@ namespace GameFields.Effects
 
         protected override IEnumerator OnPlaying()
         {
-            _deactivePerson.ActivateDoubleEffect(1);
-            _activePerson.ActivateDoubleEffect(2);
+            //_deactivePerson.ActivateDoubleEffect(1);
+            //_activePerson.ActivateDoubleEffect(2);
+            _deactivePerson.ActivateDoubleEffect(_card);
+            _activePerson.ActivateDoubleEffect(_card);
             yield break;
             //yield return new WaitForSeconds(10f);
 
