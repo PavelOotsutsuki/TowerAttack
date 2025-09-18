@@ -31,8 +31,8 @@ namespace GameFields.Persons.EffectHandlers
 
         public void Activate(Card card, int countTurns)
         {
-            if (_activeEffects.Any(e => e.Card == card))
-                return;
+            //if (_activeEffects.Any(e => e.Card == card))
+            //    return;
 
             FateInevitabilityHandlerEffect fateInevitabilityHandlerEffect = new FateInevitabilityHandlerEffect(card, countTurns);
             _activeEffects.Add(fateInevitabilityHandlerEffect);
@@ -40,11 +40,14 @@ namespace GameFields.Persons.EffectHandlers
 
         public void EndEffect(Card card)
         {
-            FateInevitabilityHandlerEffect findedEffect = _activeEffects.Where(e => e.Card == card).FirstOrDefault();
+            IEnumerable<FateInevitabilityHandlerEffect> findedEffects = _activeEffects.Where(e => e.Card == card);
 
-            if (findedEffect != null)
+            if (findedEffects != null)
             {
-                _activeEffects.Remove(findedEffect);
+                foreach (FateInevitabilityHandlerEffect findedEffect in findedEffects)
+                {
+                    _activeEffects.Remove(findedEffect);
+                }
             }
         }
 

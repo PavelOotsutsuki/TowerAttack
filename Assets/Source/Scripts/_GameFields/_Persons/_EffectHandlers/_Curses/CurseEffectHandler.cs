@@ -21,6 +21,8 @@ namespace GameFields.Persons.EffectHandlers.Curses
         //private readonly List<ICompletable> _cursedEffectCards;
         private readonly List<Card> _effectedCards;
 
+        private bool _deactivateMode = false;
+
         public CurseEffectHandler(ICardNumberKeeper tower, InformationLabel informationLabel, ConfirmableNumbers confirmableNumbers,
             SelectNumbersList cursedList)
         {
@@ -31,6 +33,7 @@ namespace GameFields.Persons.EffectHandlers.Curses
             _cursedList = cursedList;
             //_effectedCards = new List<ICompletable>();
             _effectedCards = new List<Card>();
+            _deactivateMode = false;
         }
 
         //public void Add(ICompletable effectedCard)
@@ -40,15 +43,20 @@ namespace GameFields.Persons.EffectHandlers.Curses
 
         public void Activate(Card card)
         {
-            if (_effectedCards.Contains(card))
-                return;
+            //if (_effectedCards.Contains(card))
+            //    return;
 
             _effectedCards.Add(card);
         }
 
+        public void SetDeactivateMode(bool isDeactivateMode)
+        {
+            _deactivateMode = isDeactivateMode;
+        }
+
         public void EndEffect(Card card)
         {
-            if (_effectedCards.Contains(card))
+            while (_effectedCards.Contains(card))
                 _effectedCards.Remove(card);
         }
 
@@ -70,10 +78,8 @@ namespace GameFields.Persons.EffectHandlers.Curses
             //}
 
             int cursedCount = _effectedCards.Count;
-            Debug.Log(cursedCount);
 
-
-            if (cursedCount == 0)
+            if (cursedCount == 0 || _deactivateMode)
                 return;
 
             string cursedMessage = "";
@@ -126,7 +132,6 @@ namespace GameFields.Persons.EffectHandlers.Curses
             InformationLabelActivateData informationLabelActivateData = new InformationLabelActivateData(labelActivateData, 2f);
             _informationLabel.Activate(informationLabelActivateData);
 
-            Debug.Log("Дошел до сюда");
             PushStep();
         }
 

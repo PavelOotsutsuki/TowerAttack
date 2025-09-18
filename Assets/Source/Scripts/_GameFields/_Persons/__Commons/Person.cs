@@ -98,7 +98,6 @@ namespace GameFields.Persons.Commons
 
             //_hand.OnStartTurn();
             //OnStartStep();
-            _personEffectsHandler.OnStartTurn();
 
             if (_personEffectsHandler.SkipTurnEffectHandler.IsActive)
             {
@@ -108,8 +107,8 @@ namespace GameFields.Persons.Commons
             {
                 InitCommonSteps();
             }
-            //_personEffectsHandler.OnStartTurn();
 
+            _personEffectsHandler.OnStartTurn();
             _currentStep = _personSteps.Pop();
 
             ProcessingTurn().ToUniTask();

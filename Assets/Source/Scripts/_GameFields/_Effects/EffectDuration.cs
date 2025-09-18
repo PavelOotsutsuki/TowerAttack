@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace GameFields.Effects
 {
     public class EffectDuration
@@ -11,7 +13,10 @@ namespace GameFields.Effects
 
         internal void SetDuration(int duration)
         {
-            _duration = duration;
+            Debug.Log($"_duration = {_duration};;; duration = {duration}");
+
+            if (_duration < duration)
+                _duration = duration;
         }
 
         public void Discard()

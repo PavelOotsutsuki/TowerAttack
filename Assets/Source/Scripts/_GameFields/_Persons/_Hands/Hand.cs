@@ -35,6 +35,7 @@ namespace GameFields.Persons.Hands
         [SerializeField] private Transform _containerForSeats; 
 
         private readonly List<Card> _handCursedCards = new List<Card>();
+        private readonly List<Card> _handLuckyHorseshoeCards = new List<Card>();
         private List<Seat> _handSeats;
         private Seat _dragCardHandSeat;
         private Transform _dragCardParent; // IPS
@@ -147,6 +148,12 @@ namespace GameFields.Persons.Hands
                 _handCursedCards.Add(card);
             }
 
+            if (card.IsLuckyHorseshoe)
+            {
+                _curseEffectHandler.SetDeactivateMode(true);
+                _handLuckyHorseshoeCards.Add(card);
+            }
+
             Seat handSeat = _handSeatPool.GetSeat();
             handSeat.transform.SetParent(_containerForSeats);
             handSeat.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
@@ -197,6 +204,7 @@ namespace GameFields.Persons.Hands
             //    throw new Exception("Не найден найденный HandSeat");
             //}
             UnbindCurse(card);
+            UnbindLuckyHorseshoe(card);
 
             _handSeats.Remove(findedHandSeat);
             findedHandSeat.Reset();
@@ -448,6 +456,19 @@ namespace GameFields.Persons.Hands
                 _handCursedCards.Remove(card);
             }
         }
+
+        private void UnbindLuckyHorseshoe(Card card)
+        {
+            if (_handLuckyHorseshoeCards.Contains(card))
+            {
+                _handLuckyHorseshoeCards.Remove(card);
+
+                if (_handLuckyHorseshoeCards.Count == 0)
+                    _curseEffectHandler.SetDeactivateMode(false);
+            }
+        }
+
+        //UnbindLuckyHorseshoe
 
         //private bool TryGetDefaultRandomCard(out Card card)
         //{

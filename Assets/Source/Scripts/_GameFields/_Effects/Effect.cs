@@ -17,8 +17,7 @@ namespace GameFields.Effects
         private readonly SignalBus _bus;
         private readonly EffectDuration _effectDuration;
         private readonly PersonEffectsHandlerRoot _personEffectsHandlerRoot;
-
-        protected readonly int Duration;
+        private readonly int _duration;
 
         public Effect(EffectData data, float endEffectDelay = GameSettings.DefaultEffectDelayBeforeComplete)
         {
@@ -26,7 +25,7 @@ namespace GameFields.Effects
 
             _endEffectDelay = endEffectDelay;
 
-            Duration = data.CardEffectData.Duration;
+            _duration = data.CardEffectData.Duration;
             _card = data.CardEffectData.Card;
             _effectDuration = data.EffectDuration;
             _personEffectsHandlerRoot = data.PersonEffectsHandlerRoot;
@@ -52,7 +51,7 @@ namespace GameFields.Effects
 
         private IEnumerator Playing()
         {
-            _effectDuration.SetDuration(Duration);
+            _effectDuration.SetDuration(_duration);
 
             yield return OnPlaying();
 

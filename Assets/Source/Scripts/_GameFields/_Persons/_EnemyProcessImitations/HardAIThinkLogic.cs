@@ -47,6 +47,8 @@ namespace GameFields.Persons.EnemyProcessImitations
             List<CardCapability> testflags = Utils.GetFlags(cardCapability & (CardCapability.Play |
                 CardCapability.GnomeForging | CardCapability.HandTransfer));
 
+            if (testflags.Count == 0)
+                return CardCapability.Attack;
 
             return testflags[Random.Range(0, testflags.Count)];
 

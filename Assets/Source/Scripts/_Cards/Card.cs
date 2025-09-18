@@ -34,6 +34,7 @@ namespace Cards
         //public EffectType EffectType => _config.Effect.Type;
         public CardCapability CardCapability => _config.CardCapability;
         public bool IsCurse => _cardSpriteModeManager.IsCurse;
+        public bool IsLuckyHorseshoe => _config.Effect.Type == EffectType.LuckyHorseshoe;
 
         internal void Init(IEffectFactory effectFactory, CardViewService cardViewService,
             ICardDragAndDropHandler cardDragAndDropHandler, CurseAnimator curseAnimator)
