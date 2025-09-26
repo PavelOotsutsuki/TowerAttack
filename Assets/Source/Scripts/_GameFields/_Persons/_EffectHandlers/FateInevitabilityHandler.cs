@@ -40,10 +40,12 @@ namespace GameFields.Persons.EffectHandlers
 
         public void EndEffect(Card card)
         {
-            IEnumerable<FateInevitabilityHandlerEffect> findedEffects = _activeEffects.Where(e => e.Card == card);
+            IEnumerable<FateInevitabilityHandlerEffect> findedEffects;
 
-            if (findedEffects != null)
+            if (_activeEffects.Any(e => e.Card == card))
             {
+                findedEffects = _activeEffects.Where(e => e.Card == card);
+
                 foreach (FateInevitabilityHandlerEffect findedEffect in findedEffects)
                 {
                     _activeEffects.Remove(findedEffect);

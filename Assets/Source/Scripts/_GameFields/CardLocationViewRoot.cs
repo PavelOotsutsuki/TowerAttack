@@ -8,6 +8,7 @@ using GameFields.DiscardPiles;
 using GameFields.Persons;
 using GameFields.Persons.Fires;
 using GameFields.Persons.Hands;
+using GameFields.Persons.Tables;
 using GameFields.Persons.Towers;
 using Tools.Utils;
 using UnityEngine;
@@ -31,7 +32,7 @@ namespace GameFields
         //private readonly List<Hand> _hands;
 
         public CardLocationViewRoot(ICardWatcher allCardsWatcher, IDeckView deckView, HandPlayer handPlayer, HandAI handAI,
-            DiscardPile discardPile, FireRoot fireRoot)
+            DiscardPile discardPile, FireRoot fireRoot, Table tablePlayer, Table tableAI)
         {
             _allCardsWatcher = allCardsWatcher;
             _deckView = deckView;
@@ -43,6 +44,8 @@ namespace GameFields
                 { ViewType.FireRoot, fireRoot },
                 { ViewType.HandAI, handAI },
                 { ViewType.HandPlayer, handPlayer },
+                { ViewType.TableAI, tableAI },
+                { ViewType.TablePlayer, tablePlayer }
             }; 
 
             //_handPlayer = handPlayer;

@@ -6,6 +6,8 @@ namespace GameFields
         DiscardPile,
         FireRoot,
         HandPlayer,
-        HandAI
+        HandAI,
+        TablePlayer,
+        TableAI
     }
 }

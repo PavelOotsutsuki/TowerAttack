@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MimeView
   m_EditorClassIdentifier: 
   <Number>k__BackingField: 16
-  <Icon>k__BackingField: {fileID: 21300000, guid: dc82185531b14441aac2719850241332, type: 3}
+  <Icon>k__BackingField: {fileID: 21300000, guid: f9d304e1627304ed0bb744ab7bee3f2d, type: 3}
   <Description>k__BackingField: ...
   <Feature>k__BackingField: "\u0412\u044B \u0441\u043C\u043E\u0442\u0440\u0438\u0442\u0435
     \u0442\u0440\u0438 \u043A\u0430\u0440\u0442\u044B: \u0438\u0437 \u0440\u0443\u043A\u0438

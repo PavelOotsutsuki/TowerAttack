@@ -17,6 +17,7 @@ using GameFields.DiscardPiles;
 using GameFields.Persons.LookCardMenues;
 using GameFields.Persons.EffectHandlers.Brothers;
 using GameFields.Persons.EffectHandlers;
+using GameFields.Persons.Tables;
 
 namespace Roots
 {
@@ -68,13 +69,14 @@ namespace Roots
             CardTransitManager cardTransitManager = _personCreator.CreateCardTransitManager();
             BrothersEffectHandlerRoot brothersEffectHandlerRoot = _personCreator.CreateBrothersEffectHandlerRoot();
             PersonEffectsHandlerRoot personEffectsHandlerRoot = _personCreator.CreatePersonEffectsHandlerRoot();
+            DiscardManager discardManager = _personCreator.DiscardManager;
 
             Destroy(_personCreator.gameObject);
 
             _personsState = new PersonsState(player, enemyAI);
 
             EffectFactory effectFactory = new EffectFactory(_personsState, viewRoot, informationLabel, cardTransitManager,
-                variantCardCreator, brothersEffectHandlerRoot, bus, personEffectsHandlerRoot);
+                variantCardCreator, brothersEffectHandlerRoot, bus, personEffectsHandlerRoot, discardManager);
 
             _cardRoot.Init(effectFactory, cardDescription, cardDragAndDropHandler);
             deck.Init(seatPool, _cardRoot.Cards);

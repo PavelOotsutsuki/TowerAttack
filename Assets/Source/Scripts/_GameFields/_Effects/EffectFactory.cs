@@ -28,12 +28,13 @@ namespace GameFields.Effects
         private readonly BrothersEffectHandlerRoot _brothersEffectHandlerRoot;
         private readonly SignalBus _bus;
         private readonly PersonEffectsHandlerRoot _personEffectsHandlerRoot;
+        private readonly DiscardManager _discardManager;
 
         //private Effect _lastEffect;
 
         public EffectFactory(IPersonsState personsState, CardLocationViewRoot viewRoot, InformationLabel informationLabel,
             CardTransitManager cardTransitManager, VariantCardCreator variantCardCreator, BrothersEffectHandlerRoot brothersEffectHandler,
-            SignalBus bus, PersonEffectsHandlerRoot personEffectsHandlerRoot)
+            SignalBus bus, PersonEffectsHandlerRoot personEffectsHandlerRoot, DiscardManager discardManager)
         {
             _personsState = personsState;
             _viewRoot = viewRoot;
@@ -43,6 +44,7 @@ namespace GameFields.Effects
             _brothersEffectHandlerRoot = brothersEffectHandler;
             _bus = bus;
             _personEffectsHandlerRoot = personEffectsHandlerRoot;
+            _discardManager = discardManager;
             _voidEffectConfig = ScriptableObject.CreateInstance<CardEffectConfig>();
             //_voidEffectConfig = new CardEffectConfig();
             //_lastEffect = _voidEffect;
@@ -164,8 +166,8 @@ namespace GameFields.Effects
                 EffectType.LittleBrother => new LittleBrotherEffect(_personsState.Active, _brothersEffectHandlerRoot, effectData),
                 EffectType.BrothersMother => new BrothersMotherEffect(_personsState.Active, effectData),
                 EffectType.Scarecrow => new ScarecrowEffect(_personsState.Deactive, effectData),
-                EffectType.LuckyHorseshoe => new VoidEffect(effectData),
-                EffectType.WiseMonk => new VoidEffect(effectData),
+                EffectType.LuckyHorseshoe => new VoidEffect(effectData), // Нельзя разыграть, мб стоит выдать экспшн
+                EffectType.WiseMonk => new WiseMonkEffect(_personsState.Deactive, _personsState.Active, _viewRoot, _discardManager, _personEffectsHandlerRoot, effectData),
                 EffectType.CowsHerd => new VoidEffect(effectData),
                 EffectType.HungryOgre => new VoidEffect(effectData),
                 EffectType.Sharper => new VoidEffect(effectData),

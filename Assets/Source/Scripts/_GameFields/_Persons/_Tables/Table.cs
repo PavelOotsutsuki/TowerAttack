@@ -1,24 +1,90 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cards;
 using GameFields.Persons.Commons;
+using Tools.Utils;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
 namespace GameFields.Persons.Tables
 {
-    public abstract class Table : MonoBehaviour, IDiscardManager, IAutomaticFillComponents
+    public abstract class Table : MonoBehaviour, IDiscardManager, ICardView, IAutomaticFillComponents
     {
         [SerializeField] private TableSeat[] _tableSeats;
 
         private TableSeat[] _sortedSeats;
 
         public bool HasFreeSeat => _sortedSeats.Any(seat => seat.IsEmpty);
-        public IEnumerable<Card> Cards => _sortedSeats.Where(s => s.IsEmpty == false).Select(s => s.PersonEffect.Card);
+        public IEnumerable<Card> AllCards => _sortedSeats.Where(s => s.IsEmpty == false).Select(s => s.PersonEffect.Card);
 
         public void Init()
         {
             SetCardSeatsIndices();
+        }
+
+        public IReadOnlyList<Card> ViewRandomCards(int count, IEnumerable<int> exceptions)
+        {
+            List<int> existingIndices = new List<int>();
+            List<Card> result = new List<Card>();
+
+            IReadOnlyList<Card> cards = Utils.Shuffle(AllCards);
+
+            for (int c = 0; c < count; c++)
+            {
+                for (int i = 0; i < cards.Count; i++)
+                {
+                    if (existingIndices.Contains(cards[i].ViewData.Number) == false && exceptions.Contains(cards[i].ViewData.Number) == false)
+                    {
+                        result.Add(cards[i]);
+                        existingIndices.Add(cards[i].ViewData.Number);
+                    }
+                }
+            }
+
+            if (result.Count < count)
+            {
+                for (int c = result.Count - 1; c < count; c++)
+                {
+                    for (int i = 0; i < cards.Count; i++)
+                    {
+                        if (exceptions.Contains(cards[i].ViewData.Number) == false)
+                        {
+                            result.Add(cards[i]);
+                            existingIndices.Add(cards[i].ViewData.Number);
+                        }
+                    }
+                }
+            }
+
+            if (result.Count < count)
+            {
+                for (int c = result.Count - 1; c < count; c++)
+                {
+                    for (int i = 0; i < cards.Count; i++)
+                    {
+                        result.Add(cards[i]);
+                        existingIndices.Add(cards[i].ViewData.Number);
+                    }
+                }
+            }
+
+            if (result.Count < count)
+                throw new Exception("Ошибка вычисления чисел. Слишком мало карт!");
+
+            return result;
+        }
+
+        public bool Contains(int number)
+        {
+            return AllCards.Select(с => с.ViewData.Number).Contains(number);
+        }
+
+        public bool IsHasCards(int count, IEnumerable<int> exceptions = null)
+        {
+            exceptions ??= new List<int>();
+
+            return AllCards.Where(s => exceptions.Contains(s.ViewData.Number) == false).Count() >= count;
         }
 
         //public void FreeSeats(IEnumerable<Card> seatables)

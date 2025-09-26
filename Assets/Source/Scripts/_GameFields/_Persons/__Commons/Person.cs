@@ -265,7 +265,7 @@ namespace GameFields.Persons.Commons
             if (isRememberEffect)
                 LastEffect = personEffect.CardEffectConfig;
 
-            Debug.Log("StartEffect");
+            //Debug.Log("StartEffect");
             StartAction(personEffect.Effect);
 
             _playingZone.SeatCard(personEffect);

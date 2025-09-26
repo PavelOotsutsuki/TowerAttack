@@ -95,12 +95,12 @@ namespace GameFields.Effects
             }
 
             DiscoverResult deckResult = new DiscoverResult();
-            List<ViewType> noContainsForDeck = new List<ViewType>() { ViewType.Deck };
+            List<ViewType> noContainsForDeck = new List<ViewType>() { ViewType.Deck, ViewType.TablePlayer, ViewType.TableAI };
             Discover(deckCard, _countDeckDiscoverCards, _activateDeckDiscoverMessage, deckResult, noContainsForDeck);
             yield return new WaitUntil(() => deckResult.IsComplete);
 
             DiscoverResult handResult = new DiscoverResult();
-            List<ViewType> noContainsForHand = new List<ViewType>() { enemyhandType };
+            List<ViewType> noContainsForHand = new List<ViewType>() { enemyhandType, ViewType.TablePlayer, ViewType.TableAI };
             Discover(handCard, _countHandDiscoverCards, _activateHandDiscoverMessage, handResult, noContainsForHand);
             yield return new WaitUntil(() => handResult.Result != null);
 

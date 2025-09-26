@@ -147,6 +147,8 @@ namespace GameFields.Persons.Commons
         private FireRoot _fireRoot;
         private ICardWatcher _cardWatcher;
 
+        public DiscardManager DiscardManager => _discardManager;
+
         [Inject]
         public void Construct(CardPlayingZonePlayer playerPlayingZone, HandPlayer playerHand, TablePlayer playerTable, TowerPlayer playerTower,
             DiscoverPlayer playerDiscover, AttackMenuPlayer playerAttackMenu, CardPlayingZoneAI enemyPlayingZone, HandAI enemyHand,
@@ -322,7 +324,7 @@ namespace GameFields.Persons.Commons
 
         public CardLocationViewRoot CreateCardLocationViewRoot()
         {
-            return new CardLocationViewRoot(_cardWatcher, _deck, _playerHand, _enemyHand, _discardPile, _fireRoot);
+            return new CardLocationViewRoot(_cardWatcher, _deck, _playerHand, _enemyHand, _discardPile, _fireRoot, _playerTable, _enemyTable);
         }
 
         public CardTransitManager CreateCardTransitManager()

@@ -13,7 +13,7 @@ namespace GameFields.Effects
 
         internal void SetDuration(int duration)
         {
-            Debug.Log($"_duration = {_duration};;; duration = {duration}");
+            //Debug.Log($"_duration = {_duration};;; duration = {duration}");
 
             if (_duration < duration)
                 _duration = duration;

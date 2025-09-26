@@ -115,6 +115,7 @@ namespace GameFields.Persons.Hands
         {
             //UnblockCards(); // Было раньше. Убрал тк, а нахер заблочивать???
             UnbindCurse(_dragCardHandSeat.Card);
+            UnbindLuckyHorseshoe(_dragCardHandSeat.Card);
 
             BlockCards();
             UnbindDragableCard();
@@ -464,7 +465,9 @@ namespace GameFields.Persons.Hands
                 _handLuckyHorseshoeCards.Remove(card);
 
                 if (_handLuckyHorseshoeCards.Count == 0)
+                {
                     _curseEffectHandler.SetDeactivateMode(false);
+                }
             }
         }
 

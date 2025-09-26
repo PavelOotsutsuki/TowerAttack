@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: RedGnomeView
   m_EditorClassIdentifier: 
   <Number>k__BackingField: 17
-  <Icon>k__BackingField: {fileID: 21300000, guid: 3846ec8d37ebc4e7184591a6eeb8d6d5, type: 3}
+  <Icon>k__BackingField: {fileID: 21300000, guid: 89346820bcfb04324ad70cdef1b5c55d, type: 3}
   <Description>k__BackingField: "\u041E\u043D\u0438 \u0441 \u0417\u0435\u043B\u0435\u043D\u044B\u043C
     \u0433\u043D\u043E\u043C\u043E\u0432 \u0432\u0435\u0447\u043D\u043E \u0445\u043E\u0434\u044F\u0442
     \u0432\u043C\u0435\u0441\u0442\u0435 \u043D\u0430 \u043F\u0435\u0448\u0435\u0445\u043E\u0434\u043D\u043E\u043C

@@ -78,7 +78,7 @@ namespace GameFields.Persons.EffectHandlers.Curses
             //}
 
             int cursedCount = _effectedCards.Count;
-
+            //Debug.Log($"cursedCount = {cursedCount}, _deactivateMode = {_deactivateMode}");
             if (cursedCount == 0 || _deactivateMode)
                 return;
 
