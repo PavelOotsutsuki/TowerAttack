@@ -248,10 +248,11 @@ namespace GameFields.Persons.Commons
             FateInevitabilityHandler fateInevitabilityHandler = new FateInevitabilityHandler(_playerLoseActions, _playerAttackMenu);
             JusticeBullEffectHandler justiceBullEffectHandler = new JusticeBullEffectHandler(_choicedNumbersPlayer, _enemyTower);
             ScarecrowEffectHandler scarecrowEffectHandler = new ScarecrowEffectHandler(_discardManager);
+            WiseMonkEffectHandler wiseMonkEffectHandler = new WiseMonkEffectHandler();
             _playerBrothersEffectHandler = new BrothersEffectHandler(_playerRechangeFeatureRuleController, cardFeatureRechangables);
             _playerPersonEffectsHandler = new PersonEffectsHandler(gnomeEffectHandler, slimeEffectHandler, curseEffectHandler,
                 fireEffectHandler, doubleEffectHandler, skipTurnEffectHandler, fateInevitabilityHandler, justiceBullEffectHandler,
-                _playerBrothersEffectHandler, scarecrowEffectHandler);
+                _playerBrothersEffectHandler, scarecrowEffectHandler, wiseMonkEffectHandler);
 
             SkipTurnChecker skipTurnChecker = new SkipTurnChecker(slimeEffectHandler, _playerHand);
             TurnProcessing turnProcessing = new TurnProcessing(_interactionActivator, skipTurnChecker);
@@ -295,9 +296,10 @@ namespace GameFields.Persons.Commons
             JusticeBullEffectHandler justiceBullEffectHandler = new JusticeBullEffectHandler(_choicedNumbersEnemy, _playerTower);
             _enemyBrothersEffectHandler = new BrothersEffectHandler(_enemyRechangeFeatureRuleController, cardFeatureRechangables);
             ScarecrowEffectHandler scarecrowEffectHandler = new ScarecrowEffectHandler(_discardManager);
+            WiseMonkEffectHandler wiseMonkEffectHandler = new WiseMonkEffectHandler();
             _enemyPersonEffectsHandler = new PersonEffectsHandler(gnomeEffectHandler, slimeEffectHandler, curseEffectHandler,
                 fireEffectHandler, doubleEffectHandler, skipTurnEffectHandler, fateInevitabilityHandler, justiceBullEffectHandler,
-                _enemyBrothersEffectHandler, scarecrowEffectHandler);
+                _enemyBrothersEffectHandler, scarecrowEffectHandler, wiseMonkEffectHandler);
 
             SkipTurnChecker skipTurnChecker = new SkipTurnChecker(slimeEffectHandler, _enemyHand);
             CardDragAndDropImitationActions cardDragAndDropImitationActions = new CardDragAndDropImitationActions(_enemyHand, _enemyPlayingZone, _enemyCardAttackZone,
@@ -409,7 +411,7 @@ namespace GameFields.Persons.Commons
         {
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
-                DefineStartPlayerTurnLabel(),
+                //DefineStartPlayerTurnLabel(),
                 DefineTableActivator(),
                 DefineTowerActivator(),
             };
@@ -417,11 +419,11 @@ namespace GameFields.Persons.Commons
             return list;
         }
 
-        [ContextMenu(nameof(DefineStartPlayerTurnLabel))]
-        private ComponentAttachInfo DefineStartPlayerTurnLabel()
-        {
-            return AutomaticFillComponents.DefineComponent(this, ref _startPlayerTurnLabel, ComponentLocationTypes.InScene);
-        }
+        //[ContextMenu(nameof(DefineStartPlayerTurnLabel))]
+        //private ComponentAttachInfo DefineStartPlayerTurnLabel()
+        //{
+        //    return AutomaticFillComponents.DefineComponent(this, ref _startPlayerTurnLabel, ComponentLocationTypes.InScene);
+        //}
 
         [ContextMenu(nameof(DefineTableActivator))]
         private ComponentAttachInfo DefineTableActivator()

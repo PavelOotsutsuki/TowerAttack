@@ -46,6 +46,7 @@ namespace Roots
 
         [SerializeField] private LookCardMenuPlayer _lookCardMenuPlayer;
         [SerializeField] private StartPlayerTurnLabel _startPlayerTurnLabel;
+        [SerializeField] private StartEndGamePanel _startEndGamePanel;
 
         [SerializeField] private ForgingZone _forgingZone;
         [SerializeField] private HandTransferZone _handTransferZone;
@@ -88,6 +89,7 @@ namespace Roots
 
             Container.Bind<LookCardMenuPlayer>().FromInstance(_lookCardMenuPlayer).AsSingle();
             Container.Bind<StartPlayerTurnLabel>().FromInstance(_startPlayerTurnLabel).AsSingle();
+            Container.Bind<StartEndGamePanel>().FromInstance(_startEndGamePanel).AsSingle();
 
             Container.Bind<ForgingZone>().FromInstance(_forgingZone).AsSingle();
             Container.Bind<HandTransferZone>().FromInstance(_handTransferZone).AsSingle();

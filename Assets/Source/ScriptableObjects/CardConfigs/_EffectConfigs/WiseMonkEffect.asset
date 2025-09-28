@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: WiseMonkEffect
   m_EditorClassIdentifier: 
   <Type>k__BackingField: 32
-  <Duration>k__BackingField: 0
+  <Duration>k__BackingField: 1

@@ -89,6 +89,7 @@ namespace GameFields.Persons.Commons
         //public PersonEffectsHandler PersonEffectsHandler => _personEffectsHandler;
         public bool IsDoubleEffect => _personEffectsHandler.DoubleEffectHandler.IsActive;
         public bool TryUseScarecrowEffect => _personEffectsHandler.ScarecrowEffectHandler.TryUse();
+        public bool IsWiseEffectActive => _personEffectsHandler.WiseMonkEffectHandler.IsActive;
 
         public void StartStep()
         {
@@ -389,6 +390,11 @@ namespace GameFields.Persons.Commons
         public void ActivateScarecrowEffect(int countTurns, Card card)
         {
             _personEffectsHandler.ScarecrowEffectHandler.Activate(countTurns, card);
+        }
+
+        public void ActivateWiseMonkEffect(Card card)
+        {
+            _personEffectsHandler.WiseMonkEffectHandler.Activate(card);
         }
 
         //public void DeactivateSlimeEffect()

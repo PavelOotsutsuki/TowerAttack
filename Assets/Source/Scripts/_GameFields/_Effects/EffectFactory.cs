@@ -67,8 +67,12 @@ namespace GameFields.Effects
             //{
             //    currentEffectConfig = PlayVariantEffect(_variantCardCreator.CreateByEffect(effectConfig.Type));
             //}
-
-            if (_personsState.Active.TryUseScarecrowEffect)
+            if (_personsState.Active.IsWiseEffectActive)
+            {
+                isRememberEffect = false;
+                currentEffectConfig = _voidEffectConfig;
+            }
+            else if (_personsState.Active.TryUseScarecrowEffect)
             {
                 isRememberEffect = false;
                 currentEffectConfig = _voidEffectConfig;
@@ -167,7 +171,7 @@ namespace GameFields.Effects
                 EffectType.BrothersMother => new BrothersMotherEffect(_personsState.Active, effectData),
                 EffectType.Scarecrow => new ScarecrowEffect(_personsState.Deactive, effectData),
                 EffectType.LuckyHorseshoe => new VoidEffect(effectData), // Нельзя разыграть, мб стоит выдать экспшн
-                EffectType.WiseMonk => new WiseMonkEffect(_personsState.Deactive, _personsState.Active, _viewRoot, _discardManager, _personEffectsHandlerRoot, effectData),
+                EffectType.WiseMonk => new WiseMonkEffect(_personsState.Deactive, _viewRoot, _discardManager, _personEffectsHandlerRoot, effectData),
                 EffectType.CowsHerd => new VoidEffect(effectData),
                 EffectType.HungryOgre => new VoidEffect(effectData),
                 EffectType.Sharper => new VoidEffect(effectData),

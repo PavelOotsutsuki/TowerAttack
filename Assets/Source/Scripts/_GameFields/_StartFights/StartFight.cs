@@ -34,17 +34,22 @@ namespace GameFields.StartFights
         private HandAI _handAI;
         private TowerPlayer _towerPlayer;
         private TowerAI _towerAI;
+        private StartEndGamePanel _startEndGamePanel;
 
         public bool IsComplete => _startTowerCardSelectionPlayer.IsComplete && _startTowerCardSelectionImitation.IsComplete;
 
         [Inject]
-        private void Construct(Deck deck, HandPlayer handPlayer, HandAI handAI, TowerPlayer towerPlayer, TowerAI towerAI)
+        private void Construct(Deck deck, HandPlayer handPlayer, HandAI handAI, TowerPlayer towerPlayer, TowerAI towerAI,
+            StartEndGamePanel startEndGamePanel)
         {
             _deck = deck;
             _handPlayer = handPlayer;
             _handAI = handAI;
             _towerPlayer = towerPlayer;
             _towerAI = towerAI;
+            _startEndGamePanel = startEndGamePanel;
+
+            _startEndGamePanel.Init();
         }
 
         public void Init(EnemyAI enemyAI)
@@ -60,16 +65,23 @@ namespace GameFields.StartFights
 
         public void StartStep()
         {
-            gameObject.SetActive(true);
-
-            _startTowerCardSelectionPanel.Show();
-            _startTowerCardSelectionLabel.Activate();
-
             WaitingViewStartLabel().ToUniTask();
         }
 
         private IEnumerator WaitingViewStartLabel()
         {
+            yield return new WaitForSeconds(_data.WaitUntilBeginAllProcess);
+
+            _startEndGamePanel.Hide();
+
+            yield return new WaitUntil(() => _startEndGamePanel.IsComplete);
+            yield return new WaitForSeconds(_data.WaitAfterStartEndGamePanelComplete);
+
+            gameObject.SetActive(true);
+
+            _startTowerCardSelectionPanel.Show();
+            _startTowerCardSelectionLabel.Activate();
+
             yield return new WaitForSeconds(_data.WaitToStartDuration);
 
             _startTowerCardSelectionPlayer.StartProcess();

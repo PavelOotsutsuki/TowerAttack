@@ -27,6 +27,7 @@ namespace GameFields.Persons.EffectHandlers
         private readonly JusticeBullEffectHandler _justiceBullEffectHandler;
         private readonly BrothersEffectHandler _brothersEffectHandler;
         private readonly ScarecrowEffectHandler _scarecrowEffectHandler;
+        private readonly WiseMonkEffectHandler _wiseMonkEffectHandler;
 
         private readonly IReadOnlyList<ILengthyEffectHandler> _lengthyEffectHandlers;
 
@@ -34,7 +35,7 @@ namespace GameFields.Persons.EffectHandlers
             CurseEffectHandler curseEffectHandler, FireEffectHandler fireEffectHandler, DoubleEffectHandler doubleEffectHandler,
             SkipTurnEffectHandler skipTurnEffectHandler, FateInevitabilityHandler fateInevitabilityHandler,
             JusticeBullEffectHandler justiceBullEffectHandler, BrothersEffectHandler brothersEffectHandler,
-            ScarecrowEffectHandler scarecrowEffectHandler)
+            ScarecrowEffectHandler scarecrowEffectHandler, WiseMonkEffectHandler wiseMonkEffectHandler)
         {
             _gnomeEffectHandler = gnomeEffectHandler;
             _slimeEffectHandler = slimeEffectHandler;
@@ -46,6 +47,7 @@ namespace GameFields.Persons.EffectHandlers
             _justiceBullEffectHandler = justiceBullEffectHandler;
             _brothersEffectHandler = brothersEffectHandler;
             _scarecrowEffectHandler = scarecrowEffectHandler;
+            _wiseMonkEffectHandler = wiseMonkEffectHandler;
 
             _lengthyEffectHandlers = new List<ILengthyEffectHandler>()
             {
@@ -54,7 +56,8 @@ namespace GameFields.Persons.EffectHandlers
                 _fireEffectHandler,
                 _doubleEffectHandler,
                 _skipTurnEffectHandler,
-                _fateInevitabilityHandler
+                _fateInevitabilityHandler,
+                _wiseMonkEffectHandler
             };
         }
 
@@ -68,6 +71,7 @@ namespace GameFields.Persons.EffectHandlers
         public JusticeBullEffectHandler JusticeBullEffectHandler => _justiceBullEffectHandler;
         public BrothersEffectHandler BrothersEffectHandler => _brothersEffectHandler;
         public ScarecrowEffectHandler ScarecrowEffectHandler => _scarecrowEffectHandler;
+        public WiseMonkEffectHandler WiseMonkEffectHandler => _wiseMonkEffectHandler;
 
         public void OnStartTurn()
         {

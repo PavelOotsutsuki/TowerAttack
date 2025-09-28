@@ -14,16 +14,16 @@ namespace GameFields.Effects
         private readonly DiscardManager _discardManager;
         private readonly PersonEffectsHandlerRoot _effectsHandlerRoot;
         private readonly Person _deactivePerson;
-        private readonly Person _activePerson;
+        private readonly Card _card;
 
-        public WiseMonkEffect(Person deactivePerson, Person activePerson, CardLocationViewRoot viewRoot,
+        public WiseMonkEffect(Person deactivePerson, CardLocationViewRoot viewRoot,
             DiscardManager discardManager, PersonEffectsHandlerRoot effectsHandlerRoot, EffectData data) : base(data)
         {
             _viewRoot = viewRoot;
             _discardManager = discardManager;
             _effectsHandlerRoot = effectsHandlerRoot;
             _deactivePerson = deactivePerson;
-            _activePerson = activePerson;
+            _card = data.CardEffectData.Card;
 
             Play();
         }
@@ -50,6 +50,8 @@ namespace GameFields.Effects
                 _discardManager.Discard(card);
                 _effectsHandlerRoot.EndEffect(card);
             }
+
+            _deactivePerson.ActivateWiseMonkEffect(_card);
 
             yield break;
         }
