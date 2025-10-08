@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using GameFields.InputSettings;
 using GameFields.Persons.Commons;
+using GameFields.Persons.SelectMenues.Attacks;
+using GameFields.Persons.SelectMenues.Choices;
 using GameFields.Persons.Towers;
 using Tools;
 using Tools.UI;
 using Tools.Utils.FillComponents;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace GameFields.Persons.SelectMenues.Commons
 {
@@ -16,23 +20,39 @@ namespace GameFields.Persons.SelectMenues.Commons
         [SerializeField] private SelectModeButton _selectModeButton;
 
         private int _currentNeedForActivate;
+        private InputRoot _inputRoot;
 
         public void Init(ICardNumberKeeper cardNumberKeeper, ISelectResultHandler attackResultHandler, int[] cardNumbers,
-            SelectNumbersList selectedNumbers, ConfirmableNumbers confirmableNumbers)
+            SelectNumbersList selectedNumbers, ConfirmableNumbers confirmableNumbers, InputRoot inputRoot)
         {
-            _selectButton.Init(this);
+            _selectButton.Init(this, inputRoot);
             _selectNumberPanelPlayer.Init(_selectButton, cardNumberKeeper, cardNumbers, selectedNumbers, confirmableNumbers);
             _selectModeButton.Init(_selectNumberPanelPlayer);
+
+            _inputRoot = inputRoot;
 
             SelectMenuLabelTextLogic selectMenuLabelTextLogic = new DefaultSelectMenuLabelTextLogic(GetNeedForActivate);
 
             base.Init(attackResultHandler, _selectNumberPanelPlayer, selectMenuLabelTextLogic);
         }
 
+        public IPointerClickHandler SelectModeButton => _selectModeButton;
+        public IPointerClickHandler SelectButton => _selectButton;
+
         public override void Activate(SelectMenuActivateData activateData)
         {
             if (IsActive == true)
                 return;
+
+            if (this is ChoiceMenuPlayer)
+            {
+                _inputRoot.SetInputType(InputType.ChoiceMenu);
+            }
+
+            if (this is AttackMenuPlayer)
+            {
+                _inputRoot.SetInputType(InputType.AttackMenu);
+            }
 
             _currentNeedForActivate = activateData.NeedSelect;
 

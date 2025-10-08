@@ -3501,6 +3501,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startFight: {fileID: 1173604842}
   _endFight: {fileID: 1546112988}
+  _backgroundMusic: {fileID: 8300000, guid: 4efd4a46f0c4d4d41af7662b13261794, type: 3}
 --- !u!114 &200841578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20811,6 +20812,8 @@ MonoBehaviour:
     <FirstTurnCardsCount>k__BackingField: 3
     <WaitToStartDuration>k__BackingField: 2
     <DelayToViewEnemySolutionLabel>k__BackingField: 0.5
+    <WaitUntilBeginAllProcess>k__BackingField: 1
+    <WaitAfterStartEndGamePanelComplete>k__BackingField: 1
   _playerData:
     <WaitDurationForEnemyFirstCardsDraw>k__BackingField: 1
     <DrawCardsDuration>k__BackingField: 1.5
@@ -22782,6 +22785,7 @@ GameObject:
   - component: {fileID: 1272924795}
   - component: {fileID: 1272924797}
   - component: {fileID: 1272924798}
+  - component: {fileID: 1272924799}
   m_Layer: 0
   m_Name: _gameRoot
   m_TagString: Untagged
@@ -22954,7 +22958,9 @@ MonoBehaviour:
   - {fileID: 2053596825}
   - {fileID: 200841575}
   - {fileID: 1317657962}
+  - {fileID: 1925789444}
   - {fileID: 32918200}
+  - {fileID: 1546112987}
   - {fileID: 935715898}
 --- !u!114 &1272924798
 MonoBehaviour:
@@ -23922,6 +23928,18 @@ MonoBehaviour:
   - {fileID: 1060134982}
   - {fileID: 1607884302}
   _defaultFont: {fileID: 11400000, guid: 906ea7892246f417eaff63e0646446e4, type: 2}
+--- !u!114 &1272924799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1272924791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 041b75d588cb944b79bbe16a651be3ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1274713090 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8866435722021738111, guid: f120653c5923943b0a2c783bca137906, type: 3}
@@ -27900,6 +27918,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cardDescription: {fileID: 715708116}
   _informationLabel: {fileID: 1925789442}
+  _inputRoot: {fileID: 1272924799}
   _deck: {fileID: 250433512}
   _discardPileConfig:
     <RectTransform>k__BackingField: {fileID: 8818931091538225529}

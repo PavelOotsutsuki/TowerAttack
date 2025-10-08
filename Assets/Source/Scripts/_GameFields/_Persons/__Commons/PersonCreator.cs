@@ -29,6 +29,7 @@ using GameFields.Persons.EffectHandlers.Fires;
 using GameFields.Persons.LookCardMenues;
 using GameFields.Persons.EffectHandlers.Brothers;
 using GameFields.Persons.EffectHandlers.Scarecrows;
+using GameFields.InputSettings;
 
 namespace GameFields.Persons.Commons
 {
@@ -140,6 +141,7 @@ namespace GameFields.Persons.Commons
         private SeatPool _seatPool;
         private DiscardManager _discardManager;
         private SkipTurnLabel _skipTurnLabel;
+        private InputRoot _inputRoot;
 
         private InteractionActivator _interactionActivator;
         private InformationLabel _informationLabel;
@@ -156,7 +158,8 @@ namespace GameFields.Persons.Commons
             CardAttackZonePlayer playerCardAttackZone, CardAttackZoneEnemyAI enemyCardAttackZone, ChoiceMenuPlayer playerChoiceMenu,
             ChoiceMenuEnemyAI enemyChoiceMenu, DiscardPile discardPile, ChoiceMenuImitationPlayer choiceMenuImitationPlayer,
             ChoiceMenuImitationEnemyAI choiceMenuImitationEnemyAI, ForgingZone forgingZone, HandTransferZone handTransferZone,
-            LookCardMenuPlayer lookCardMenuPlayer, StartPlayerTurnLabel startPlayerTurnLabel, SkipTurnLabel skipTurnLabel)
+            LookCardMenuPlayer lookCardMenuPlayer, StartPlayerTurnLabel startPlayerTurnLabel, SkipTurnLabel skipTurnLabel,
+            InputRoot inputRoot)
         {
             _playerPlayingZone = playerPlayingZone;
             _playerHand = playerHand;
@@ -186,6 +189,7 @@ namespace GameFields.Persons.Commons
 
             _discardPile = discardPile;
             _skipTurnLabel = skipTurnLabel;
+            _inputRoot = inputRoot;
         }
 
         public void Init(SignalBus bus, Deck deck, EndTurnButton endTurnButton, SeatPool seatPool,
@@ -199,6 +203,8 @@ namespace GameFields.Persons.Commons
             _cardWatcher = cardRoot;
 
             _skipTurnLabel.Init();
+            _inputRoot.Init(_endTurnButton, _playerChoiceMenu.SelectModeButton, _playerAttackMenu.SelectModeButton,
+                _playerChoiceMenu.SelectButton, _playerAttackMenu.SelectButton);
 
             _playerFirePool = new FirePool(_fireContainer.GetTransform());
             _enemyFirePool = new FirePool(_fireContainer.GetTransform());
@@ -208,7 +214,7 @@ namespace GameFields.Persons.Commons
             _enemyRechangeFeatureRuleController = new RechangeFeatureRuleController();
 
             _interactionActivator = new InteractionActivator(cardDragAndDropHandler, _towerActivator, _tableActivator, endTurnButton,
-                cardDragAndDropLightController, _forgingZone, _handTransferZone);
+                cardDragAndDropLightController, _forgingZone, _handTransferZone, _inputRoot);
 
             _seatPool = seatPool;
 
@@ -364,8 +370,10 @@ namespace GameFields.Persons.Commons
                 _playerCardAttackZone, _attackResultHandlerPlayerData);
             ChoiceResultHandlerPlayer choiceResultHandlerPlayer = new ChoiceResultHandlerPlayer(_informationLabel, _informationLabelDataPlayerChoice);
 
-            _playerAttackMenu.Init(_enemyTower, attackResultHandlerPlayer, _cardNumbers, _attackedNumbersPlayer, _confirmableNumbersPlayer);
-            _playerChoiceMenu.Init(_enemyTower, choiceResultHandlerPlayer, _cardNumbers, _choicedNumbersPlayer, _confirmableNumbersPlayer);
+            _playerAttackMenu.Init(_enemyTower, attackResultHandlerPlayer, _cardNumbers, _attackedNumbersPlayer,
+                _confirmableNumbersPlayer, _inputRoot);
+            _playerChoiceMenu.Init(_enemyTower, choiceResultHandlerPlayer, _cardNumbers, _choicedNumbersPlayer,
+                _confirmableNumbersPlayer, _inputRoot);
             _playerChoiceMenuImitation.Init(_enemyTower, choiceResultHandlerPlayer, _cardNumbers, _choicedNumbersPlayer, _confirmableNumbersPlayer);
 
             _playerCardAttackZone.Init(_playerAttackMenu, _enemyTower, _bus);

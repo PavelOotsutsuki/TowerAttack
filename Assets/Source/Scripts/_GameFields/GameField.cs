@@ -14,6 +14,7 @@ namespace GameFields
     {
         [SerializeField] private StartFight _startFight;
         [SerializeField] private EndFight _endFight;
+        [SerializeField] private AudioClip _backgroundMusic;
 
         private EffectFactory _effectFactory;
         private FightStepsController _fightStepsController;
@@ -23,7 +24,8 @@ namespace GameFields
             _startFight.Init(enemyAI);
 
             FightResult fightResult = new FightResult();
-            Fight fight = new Fight(personsState, fightResult, bus, seatPool);
+            Fight fight = new Fight(personsState, fightResult, bus, seatPool
+                , _backgroundMusic);
             _endFight.Init(fightResult);
             _fightStepsController = new FightStepsController(_startFight, fight, _endFight);
 

@@ -1,4 +1,5 @@
 using System.Collections;
+using GameFields.InputSettings;
 using Tools;
 using Tools.UI;
 using UnityEngine;
@@ -9,11 +10,13 @@ namespace GameFields.Persons.SelectMenues.Commons
     {
         private IDeactivatable _clickCallback;
         private Coroutine _workableCoroutine;
+        private InputRoot _inputRoot;
 
-        public void Init(IDeactivatable clickCallback)
+        public void Init(IDeactivatable clickCallback, InputRoot inputRoot)
         {
             _clickCallback = clickCallback;
             IsActive = false;
+            _inputRoot = inputRoot;
 
             base.Init();
 
@@ -48,6 +51,7 @@ namespace GameFields.Persons.SelectMenues.Commons
                 return;
 
             base.Deactivate();
+            _inputRoot.SetInputType(InputType.None);
 
             IsActive = false;
 

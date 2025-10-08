@@ -17,6 +17,7 @@ using GameFields.Persons.SelectMenues.Choices;
 using GameFields.Persons.LookCardMenues;
 using GameFields.Effects;
 using GameFields.Persons.Commons;
+using GameFields.InputSettings;
 
 namespace Roots
 {
@@ -25,6 +26,7 @@ namespace Roots
         [SerializeField] private CardDescription _cardDescription;
 
         [SerializeField] private InformationLabel _informationLabel;
+        [SerializeField] private InputRoot _inputRoot;
 
         [SerializeField] private Deck _deck;
         [SerializeField] private DiscardPileConfig _discardPileConfig;
@@ -68,6 +70,7 @@ namespace Roots
             Container.Bind<CardDescription>().FromInstance(_cardDescription).AsSingle();
 
             Container.Bind<InformationLabel>().FromInstance(_informationLabel).AsSingle();
+            Container.Bind<InputRoot>().FromInstance(_inputRoot).AsSingle();
 
             Container.Bind<Deck>().FromInstance(_deck).AsSingle();
             Container.Bind<DiscardPileConfig>().FromInstance(_discardPileConfig).AsSingle();

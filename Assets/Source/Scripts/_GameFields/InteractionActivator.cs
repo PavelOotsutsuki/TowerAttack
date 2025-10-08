@@ -1,3 +1,4 @@
+using GameFields.InputSettings;
 using GameFields.Persons.Commons;
 using GameFields.Persons.DrawCards;
 using GameFields.Persons.EnemyProcessImitations;
@@ -17,9 +18,11 @@ namespace GameFields
         private readonly IWorkable _forgingZone;
         private readonly IWorkable _handTransferZone;
 
+        private readonly InputRoot _inputRoot;
+
         public InteractionActivator(ICardDragAndDropBlockable dragAndDropBlockable, IWorkable towerEnemy, IWorkable tablePlayer,
             IWorkable endTurnButton, IBlockable cardDragAndDropLightController, IWorkable forgingZone,
-            IWorkable handTransferZone)
+            IWorkable handTransferZone, InputRoot inputRoot)
         {
             _dragAndDropBlockable = dragAndDropBlockable;
             _tower = towerEnemy;
@@ -28,6 +31,8 @@ namespace GameFields
             _cardDragAndDropLightController = cardDragAndDropLightController;
             _forgingZone = forgingZone;
             _handTransferZone = handTransferZone;
+
+            _inputRoot = inputRoot;
         }
 
         public void SetObjectsStates(PersonStep personStep)
@@ -59,14 +64,15 @@ namespace GameFields
                     SetCardActionProcessingPlayerStates();
                     break;
                 case StartTurnDrawEnemyAI:
+                case EnemySkipTurnView:
                     SetEnemyAIStates();
                     break;
                 case EnemyDragAndDropImitation:
                 case CardActionProcessingEnemyAI:
                 case OnBeforeEndTurnProcessing:
-                case EnemySkipTurnView:
-                //case CardEffectProcessingEnemyAI:
+                    //case CardEffectProcessingEnemyAI:
                     //case CardAttackProcessingEnemyAI:
+                    SetEnemyAIActionsStates();
                     break;
                 default:
                     throw new System.Exception("Неизветное состояние PersonStep" + personStep);
@@ -75,6 +81,8 @@ namespace GameFields
 
         private void SetStartPlayerTurnViewStates()
         {
+            _inputRoot.SetInputType(InputType.None);
+
             _dragAndDropBlockable.ForciblyBlock();
             _tower.Deactivate();
             _table.Deactivate();
@@ -87,6 +95,8 @@ namespace GameFields
 
         private void SetStartTurnDrawPlayerStates()
         {
+            _inputRoot.SetInputType(InputType.None);
+
             _dragAndDropBlockable.ForciblyBlock();
             _tower.Deactivate();
             _table.Deactivate();
@@ -100,6 +110,8 @@ namespace GameFields
 
         private void SetTurnProcessingStates()
         {
+            _inputRoot.SetInputType(InputType.FightProcessing);
+
             _dragAndDropBlockable.Unblock();
             _tower.Activate();
             _table.Activate();
@@ -124,6 +136,8 @@ namespace GameFields
 
         private void SetEndTurnProcessingStates()
         {
+            _inputRoot.SetInputType(InputType.EndTurnButton);
+
             _dragAndDropBlockable.Unblock();
             _tower.Deactivate();
             _table.Deactivate();
@@ -136,6 +150,8 @@ namespace GameFields
 
         private void SetEnemyAIStates()
         {
+            _inputRoot.SetInputType(InputType.None);
+
             _dragAndDropBlockable.Unblock();
             _tower.Deactivate();
             _table.Deactivate();
@@ -144,6 +160,19 @@ namespace GameFields
             _forgingZone.Deactivate();
             _handTransferZone.Deactivate();
             //Debug.Log("SetEnemyAIStates");
+        }
+
+        private void SetEnemyAIActionsStates()
+        {
+            _inputRoot.SetInputType(InputType.FightProcessing);
+
+            _dragAndDropBlockable.Unblock();
+            _tower.Deactivate();
+            _table.Deactivate();
+            _endTurnButton.Deactivate();
+            _cardDragAndDropLightController.Block();
+            _forgingZone.Deactivate();
+            _handTransferZone.Deactivate();
         }
     }
 }
