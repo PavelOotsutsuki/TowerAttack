@@ -27,6 +27,7 @@ namespace Roots
 
         [SerializeField] private InformationLabel _informationLabel;
         [SerializeField] private InputRoot _inputRoot;
+        [SerializeField] private SoundRoot _soundRoot;
 
         [SerializeField] private Deck _deck;
         [SerializeField] private DiscardPileConfig _discardPileConfig;
@@ -63,14 +64,19 @@ namespace Roots
         [SerializeField] private AttackMenuEnemyAI _enemyAttackMenu;
         [SerializeField] private CardAttackZoneEnemyAI _enemyCardAttackZone;
 
+        private CardSoundVolume _cardSoundVolume;
+
         public override void InstallBindings()
         {
             DeclareSignals();
 
             Container.Bind<CardDescription>().FromInstance(_cardDescription).AsSingle();
+            _cardSoundVolume = new CardSoundVolume();
+            Container.Bind<CardSoundVolume>().FromInstance(_cardSoundVolume).AsSingle();
 
             Container.Bind<InformationLabel>().FromInstance(_informationLabel).AsSingle();
             Container.Bind<InputRoot>().FromInstance(_inputRoot).AsSingle();
+            Container.Bind<SoundRoot>().FromInstance(_soundRoot).AsSingle();
 
             Container.Bind<Deck>().FromInstance(_deck).AsSingle();
             Container.Bind<DiscardPileConfig>().FromInstance(_discardPileConfig).AsSingle();

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using GameFields.Persons.Commons;
 using GameFields.Seats;
+using Tools;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 using Zenject;
@@ -11,9 +12,10 @@ namespace GameFields
     {
         [SerializeField] private GameField _fightPVE;
 
-        public void Init(PersonsState personsState, EnemyAI enemyAI, SignalBus bus, SeatPool seatPool)
+        public void Init(PersonsState personsState, EnemyAI enemyAI, SignalBus bus, SeatPool seatPool,
+            IActivatable soundRootActivatable)
         {
-            _fightPVE.Init(personsState, enemyAI, bus, seatPool);
+            _fightPVE.Init(personsState, enemyAI, bus, seatPool, soundRootActivatable);
         }
 
         #region AutomaticFillComponents

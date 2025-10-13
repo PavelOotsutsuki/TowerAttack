@@ -7,6 +7,7 @@ using GameFields.Signals;
 using GameFields.EndFights;
 using System;
 using GameFields.Seats;
+using Tools;
 
 namespace GameFields
 {
@@ -20,12 +21,12 @@ namespace GameFields
         private readonly SignalBus _bus;
 
         private readonly SeatPool _seatPool;
-        private readonly AudioClip _audioClip;
+        private readonly IActivatable _soundRootActivatable;
 
         private int _turnNumber;
 
         public Fight(PersonsState personsState, FightResult fightResult, SignalBus bus, SeatPool seatPool
-            , AudioClip audioClip)
+            , IActivatable soundRootActivatable)
         {
             _personsState = personsState;
             _fightResult = fightResult;
@@ -38,7 +39,7 @@ namespace GameFields
             _bus = bus;
             _bus.Subscribe<PersonWinSignal>(SetWinner);
 
-            _audioClip = audioClip;
+            _soundRootActivatable = soundRootActivatable;
         }
 
         ~Fight()
@@ -54,7 +55,7 @@ namespace GameFields
         public void StartStep()
         {
             //GC.Collect();
-            AudioSource.PlayClipAtPoint(_audioClip, Vector3.zero);
+            _soundRootActivatable.Activate();
 
             StartTurn().ToUniTask();
         }

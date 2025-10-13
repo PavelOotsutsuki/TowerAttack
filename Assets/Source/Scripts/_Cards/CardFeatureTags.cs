@@ -33,7 +33,8 @@ namespace Cards
                 if (Enum.TryParse(pair.Tag, false, out WordType wordType))
                 {
                     afterValue += " ";
-                    afterValue += Orthography.GetWordByNumber(wordType, pair.Value);
+                    //afterValue += Orthography.GetWordByNumber(wordType, pair.Value);
+                    afterValue += Orthography.GetWordByNumber(wordType, currentValue);
                 }
 
                 result = result.Replace($"<{pair.Tag}_{pair.Value}>", $"<b>({currentValue})</b>{afterValue}");

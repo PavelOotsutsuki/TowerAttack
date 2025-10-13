@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Zenject;
 using GameFields.EndFights;
 using GameFields.Seats;
+using Tools;
 
 namespace GameFields
 {
@@ -14,18 +15,19 @@ namespace GameFields
     {
         [SerializeField] private StartFight _startFight;
         [SerializeField] private EndFight _endFight;
-        [SerializeField] private AudioClip _backgroundMusic;
+        //[SerializeField] private AudioClip _backgroundMusic;
 
         private EffectFactory _effectFactory;
         private FightStepsController _fightStepsController;
 
-        public void Init(PersonsState personsState, EnemyAI enemyAI, SignalBus bus, SeatPool seatPool)
+        public void Init(PersonsState personsState, EnemyAI enemyAI, SignalBus bus, SeatPool seatPool,
+            IActivatable soundRootActivatable)
         {
             _startFight.Init(enemyAI);
 
             FightResult fightResult = new FightResult();
             Fight fight = new Fight(personsState, fightResult, bus, seatPool
-                , _backgroundMusic);
+                , soundRootActivatable);
             _endFight.Init(fightResult);
             _fightStepsController = new FightStepsController(_startFight, fight, _endFight);
 

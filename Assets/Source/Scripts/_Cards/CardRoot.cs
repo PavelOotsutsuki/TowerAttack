@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Tools;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
@@ -16,7 +17,8 @@ namespace Cards
 
         public IReadOnlyList<Card> Cards => _allCards;
 
-        public void Init(IEffectFactory effectFactory, CardDescription cardDescription, ICardDragAndDropHandler cardDragAndDropHandler)
+        public void Init(IEffectFactory effectFactory, CardDescription cardDescription, ICardDragAndDropHandler cardDragAndDropHandler,
+            CardSoundVolume cardSoundVolume)
         {
             _cardDescription = cardDescription;
             _curseAnimator.Init();
@@ -26,7 +28,7 @@ namespace Cards
 
             _cardViewService = new CardViewService(_bigCardRoot, _cardDescription);
 
-            InitCards(effectFactory, cardDragAndDropHandler);
+            InitCards(effectFactory, cardDragAndDropHandler, cardSoundVolume);
         }
 
         private void InitCardDescription()
@@ -39,13 +41,14 @@ namespace Cards
             _bigCardRoot.Init();
         }
 
-        private void InitCards(IEffectFactory effectFactory, ICardDragAndDropHandler cardDragAndDropHandler)
+        private void InitCards(IEffectFactory effectFactory, ICardDragAndDropHandler cardDragAndDropHandler,
+            CardSoundVolume cardSoundVolume)
         {
             _allCards = new List<Card>();
 
             foreach (Card card in _startCards)
             {
-                card.Init(effectFactory, _cardViewService, cardDragAndDropHandler, _curseAnimator);
+                card.Init(effectFactory, _cardViewService, cardDragAndDropHandler, _curseAnimator, cardSoundVolume);
                 _allCards.Add(card);
             }
         }

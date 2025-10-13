@@ -36,7 +36,8 @@ namespace Roots
 
         [Inject]
         private void Construct(SignalBus bus, Deck deck, SeatPool seatPool, CardDescription cardDescription, HandPlayer handPlayer,
-            InformationLabel informationLabel, LookCardMenuPlayer lookCardMenu, VariantCardCreator variantCardCreator)
+            InformationLabel informationLabel, LookCardMenuPlayer lookCardMenu, VariantCardCreator variantCardCreator,
+            SoundRoot soundRoot, CardSoundVolume cardSoundVolume)
         {
             GameFieldGC.GCOFF();
 
@@ -52,6 +53,7 @@ namespace Roots
 
             lookCardMenu.Init();
             variantCardCreator.Init();
+            soundRoot.Init();
 
             CardDragAndDropLightController cardDragAndDropLightController = _lightControlsCreator.CreateCardDragAndDropLightController();
 
@@ -78,10 +80,10 @@ namespace Roots
             EffectFactory effectFactory = new EffectFactory(_personsState, viewRoot, informationLabel, cardTransitManager,
                 variantCardCreator, brothersEffectHandlerRoot, bus, personEffectsHandlerRoot, discardManager);
 
-            _cardRoot.Init(effectFactory, cardDescription, cardDragAndDropHandler);
+            _cardRoot.Init(effectFactory, cardDescription, cardDragAndDropHandler, cardSoundVolume);
             deck.Init(seatPool, _cardRoot.Cards);
 
-            _gameFieldRoot.Init(_personsState, enemyAI, bus, seatPool);
+            _gameFieldRoot.Init(_personsState, enemyAI, bus, seatPool, soundRoot);
         }
 
         public void OnDestroy()

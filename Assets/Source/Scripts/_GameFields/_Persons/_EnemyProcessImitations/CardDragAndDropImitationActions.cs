@@ -118,13 +118,13 @@ namespace GameFields.Persons.EnemyProcessImitations
         //    ReturningInHand(returnToHandDuration).ToUniTask();
         //}
 
-        //private IEnumerator ReturningInHand(float returnToHandDuration)
-        //{
-        //    yield return new WaitUntil(() => _isMoving == false);
+        public IEnumerator ReturningInHand(float returnToHandDuration)
+        {
+            yield return new WaitUntil(() => _isMoving == false);
 
-        //    _hand.OnCardDrop();
-        //    _cardMovement.MoveLocalSmoothly(Vector2.zero, Vector3.zero, returnToHandDuration, _activeCard.DefaultScaleVector);
-        //}
+            _hand.OnCardDrop();
+            _cardMovement.MoveLocalSmoothly(Vector2.zero, Vector3.zero, returnToHandDuration, _activeCard.DefaultScaleVector);
+        }
 
         private void MoveOnPlace(Vector3 position, float duration)
         {

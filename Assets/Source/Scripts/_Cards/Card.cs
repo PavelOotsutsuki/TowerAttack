@@ -17,6 +17,7 @@ namespace Cards
 
         private readonly Vector3 _defaultScaleVector = new Vector3(1f,1f,1f);
 
+        private CardSoundVolume _cardSoundVolume;
         private CardCharacter _character;
         private CardEffectManager _cardEffectManager;
         private CardViewData _viewData;
@@ -37,11 +38,12 @@ namespace Cards
         public bool IsLuckyHorseshoe => _config.Effect.Type == EffectType.LuckyHorseshoe;
 
         internal void Init(IEffectFactory effectFactory, CardViewService cardViewService,
-            ICardDragAndDropHandler cardDragAndDropHandler, CurseAnimator curseAnimator)
+            ICardDragAndDropHandler cardDragAndDropHandler, CurseAnimator curseAnimator, CardSoundVolume cardSoundVolume)
         {
             ReadOnlyRectTransform = new ReadOnlyRectTransform(_rectTransform);
             _cardEffectManager = new CardEffectManager(_config.Effect, effectFactory);
             _viewData = new CardViewData(_config.CardViewConfig);
+            _cardSoundVolume = cardSoundVolume;
 
             _cardSpriteModeManager = new CardSpriteModeManager(_config.Effect.Type);
             _rectTransform.localScale = _defaultScaleVector;
@@ -159,7 +161,7 @@ namespace Cards
         private void CreateCardCharacter()
         {
             _character = Instantiate(_config.CardCharacter, _rectTransform);
-            _character.Init(_config.AwakeSound);
+            _character.Init(_config.AwakeSound, _cardSoundVolume);
         }
 
         private void CheckStateByNull()

@@ -1,6 +1,7 @@
 using UnityEngine;
 using Tools.Utils.FillComponents;
 using System.Collections.Generic;
+using Tools;
 
 namespace Cards
 {
@@ -9,13 +10,16 @@ namespace Cards
         //[SerializeField] private AudioSource _audioSource;
 
         private AudioClip _awakeSound;
+        private CardSoundVolume _cardSoundVolume;
 
         public bool? IsShown { get; private set; } = null;
 
-        public void Init(AudioClip awakeSound)
+        public void Init(AudioClip awakeSound, CardSoundVolume cardSoundVolume)
         {
             //_audioSource.clip = awakeSound;
             _awakeSound = awakeSound;
+            _cardSoundVolume = cardSoundVolume;
+
             transform.localPosition = Vector2.zero;
 
             IsShown = true;
@@ -30,7 +34,7 @@ namespace Cards
             IsShown = true;
 
             //AudioSource.PlayClipAtPoint(_audioSource.clip, Vector3.zero);
-            AudioSource.PlayClipAtPoint(_awakeSound, Vector3.zero);
+            AudioSource.PlayClipAtPoint(_awakeSound, Vector3.zero, _cardSoundVolume.Volume);
             gameObject.SetActive(true);
         }
 

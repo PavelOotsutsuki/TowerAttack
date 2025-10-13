@@ -86,6 +86,9 @@ namespace GameFields.Persons.EnemyProcessImitations
                 if (_cardImitationActions.CanPlay() == false && currentCapability == CardCapability.Play)
                     continue;
 
+                if (_cardImitationActions.CanPlay() == false)
+                    currentCapability &= ~CardCapability.Play;
+
                 CardCapability type = _thinkLogic.FindActionType(currentCapability);
 
                 //if ((currentCapability & CardCapability.Attack) == CardCapability.Attack)
@@ -172,7 +175,14 @@ namespace GameFields.Persons.EnemyProcessImitations
         {
             _cardImitationActions.MoveOnPlace(_data.CardTranslateInDropPlaceTime);
 
-            yield return _cardImitationActions.Play();
+            if (_cardImitationActions.CanPlay())
+            {
+                yield return _cardImitationActions.Play();
+            }
+            else
+            {
+                yield return _cardImitationActions.ReturningInHand(_data.CardReturnInHandTime);
+            }
         }
 
         private IEnumerator Forging()
