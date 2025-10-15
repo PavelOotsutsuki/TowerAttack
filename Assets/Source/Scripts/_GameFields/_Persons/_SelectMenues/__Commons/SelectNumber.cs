@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Tools;
@@ -116,12 +117,25 @@ namespace GameFields.Persons.SelectMenues.Commons
         //    _animator.PlayErrorAnimation();
         //}
 
+        //private Color _currColor;
+
+        //public void Update()
+        //{
+        //    if (Number == 1)
+        //    {
+        //        if (_currColor != _image.color)
+        //        {
+        //            Debug.Log("COLOR: " + _image.color);
+        //            _currColor = _image.color;
+        //        }
+        //    }
+        //}
+
         private void SetDisableView(Color color)
         {
             //_blockColor = color;
-
-            _image.color = color;
             CanvasGroup.blocksRaycasts = false;
+            _image.color = color;
         }
 
         public override bool CanBeClicked()

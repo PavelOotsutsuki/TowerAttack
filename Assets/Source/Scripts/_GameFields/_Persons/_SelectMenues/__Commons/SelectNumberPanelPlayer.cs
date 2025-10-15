@@ -9,6 +9,7 @@ using Tools;
 using Tools.UI;
 using Tools.Utils.FillComponents;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using static UnityEngine.GraphicsBuffer;
 
 namespace GameFields.Persons.SelectMenues.Commons
@@ -130,6 +131,9 @@ namespace GameFields.Persons.SelectMenues.Commons
 
             foreach (SelectNumber selectedNumber in CurrentSelectedNumbers)
             {
+                new PointerEventData(EventSystem.current).Reset();
+                //selectedNumber.OnPointerExit(new PointerEventData(EventSystem.current));
+
                 if (CardNumberKeeper.Card.IsSuccessChoice(selectedNumber.Number))
                 {
                     //SetChoiceNumber(selectedNumber, ResultType.Success);

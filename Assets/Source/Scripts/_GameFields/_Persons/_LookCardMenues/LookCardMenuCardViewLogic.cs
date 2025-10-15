@@ -27,6 +27,8 @@ namespace GameFields.Persons.LookCardMenues
 
         public void Show(LookCardMenuCardViewLogicData data)
         {
+            IsComplete = false;
+
             _rectTransform.sizeDelta = new Vector2(data.CardWidth, data.CardHeight);
             _rectTransform.localPosition = Vector3.zero;
             //Debug.Log("_rectTransform.sizeDelta: " + _rectTransform.sizeDelta);

@@ -58,6 +58,11 @@ namespace GameFields.Persons.Discovers
             gameObject.SetActive(false);
             _currentResult.SetComplete();
             _currentResult = null;
+
+            foreach (DiscoverSeat seat in Seats)
+            {
+                seat.Reset();
+            }
         }
 
         private void SortDiscoverSeats()

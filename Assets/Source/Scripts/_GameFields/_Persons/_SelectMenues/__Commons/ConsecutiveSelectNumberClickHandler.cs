@@ -21,7 +21,7 @@ namespace GameFields.Persons.SelectMenues.Commons
 
             for (int i = 1; i < NeedForActivate; i++)
             {
-                if (_selectNumbers[currentNumber.Number + i - 1].IsClickable == false)
+                if (_selectNumbers[currentNumber.Number + i - 1].IsDisable)
                     return false;
             }
             // Проверки конец

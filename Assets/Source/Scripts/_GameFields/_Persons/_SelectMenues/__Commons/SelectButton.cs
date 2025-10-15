@@ -40,8 +40,12 @@ namespace GameFields.Persons.SelectMenues.Commons
 
         protected override void OnEnterClick()
         {
+            if (IsActive != true)
+                return;
+
             base.OnEnterClick();
 
+            _inputRoot.SetInputType(InputType.None);
             _clickCallback.Deactivate();
         }
 
@@ -51,7 +55,6 @@ namespace GameFields.Persons.SelectMenues.Commons
                 return;
 
             base.Deactivate();
-            _inputRoot.SetInputType(InputType.None);
 
             IsActive = false;
 

@@ -6,6 +6,8 @@ namespace GameFields.Persons.Discovers
     {
         public override void Show(DiscoverViewLogicData data)
         {
+            IsComplete = false;
+
             RectTransform.sizeDelta = new Vector2(data.CardWidth, data.CardHeight);
             RectTransform.localPosition = Vector3.zero;
 
