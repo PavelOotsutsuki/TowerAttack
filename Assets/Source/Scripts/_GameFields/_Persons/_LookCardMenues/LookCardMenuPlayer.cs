@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cards;
 using Cysharp.Threading.Tasks;
+using GameFields.InputSettings;
 using GameFields.Persons.Discovers;
 using GameFields.Seats;
 using Tools;
@@ -10,6 +11,7 @@ using Tools.Settings;
 using Tools.UI;
 using Tools.Utils.FillComponents;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace GameFields.Persons.LookCardMenues
 {
@@ -24,25 +26,27 @@ namespace GameFields.Persons.LookCardMenues
         //[SerializeField] private float _positionY = 0f;
 
         //private SeatPool _seatPool;
-
+        private InputRoot _inputRoot;
         //private Vector2 _defaultCardSize;
         private bool _isComplete;
 
         //public int MaxSeats => _seats.Length;
+        public IPointerClickHandler LookCardMenuButton => _lookCardMenuButton;
         public bool IsComplete => _isComplete;
 
         public bool? IsActive { get; private set; } = null;
 
-        public void Init()
+        public void Init(InputRoot inputRoot)
         {
             //_defaultCardSize = GameSettings.CardSize;
+            _inputRoot = inputRoot;
 
             _canvasGroup.blocksRaycasts = true;
             _isComplete = false;
 
             _seatPanelRoot.Init();
             _lookCardMenuPanel.Init();
-            _lookCardMenuButton.Init(this);
+            _lookCardMenuButton.Init(this, inputRoot);
 
             gameObject.SetActive(false);
         }
@@ -58,6 +62,7 @@ namespace GameFields.Persons.LookCardMenues
             _isComplete = false;
 
             gameObject.SetActive(true);
+            _inputRoot.SetInputType(InputType.LookCardMenu);
 
             _seatPanelRoot.Activate(data.LookCardMenuSeatPanelRootActivateData);
 

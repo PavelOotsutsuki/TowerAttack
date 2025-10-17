@@ -17,16 +17,18 @@ namespace GameFields.InputSettings
         private IPointerClickHandler _attackSelectModeButtonActivator;
         private IPointerClickHandler _choiceSelectButtonClick;
         private IPointerClickHandler _attackSelectButtonClick;
+        private IPointerClickHandler _lookCardMenuButtonClick;
 
         public void Init(IDeactivatable endTurnButtonDeactivatable, IPointerClickHandler choiceSelectModeButtonActivator,
             IPointerClickHandler attackSelectModeButtonActivator, IPointerClickHandler choiceSelectButtonClick,
-            IPointerClickHandler attackSelectButtonClick)
+            IPointerClickHandler attackSelectButtonClick, IPointerClickHandler lookCardMenuButtonClick)
         {
             _endTurnButtonDeactivatable = endTurnButtonDeactivatable;
             _choiceSelectModeButtonActivator = choiceSelectModeButtonActivator;
             _attackSelectModeButtonActivator = attackSelectModeButtonActivator;
             _choiceSelectButtonClick = choiceSelectButtonClick;
             _attackSelectButtonClick = attackSelectButtonClick;
+            _lookCardMenuButtonClick = lookCardMenuButtonClick;
 
             _inputActions = new InputActions();
 
@@ -264,7 +266,7 @@ namespace GameFields.InputSettings
 
         private void OnEnterLookCardMenu()
         {
-
+            _lookCardMenuButtonClick.OnPointerClick(null);
         }
 
         private void OnEnterChoiceMenu()

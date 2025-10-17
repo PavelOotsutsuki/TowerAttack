@@ -204,7 +204,7 @@ namespace GameFields.Persons.Commons
 
             _skipTurnLabel.Init();
             _inputRoot.Init(_endTurnButton, _playerChoiceMenu.SelectModeButton, _playerAttackMenu.SelectModeButton,
-                _playerChoiceMenu.SelectButton, _playerAttackMenu.SelectButton);
+                _playerChoiceMenu.SelectButton, _playerAttackMenu.SelectButton, _playerLookCardMenu.LookCardMenuButton);
 
             _playerFirePool = new FirePool(_fireContainer.GetTransform());
             _enemyFirePool = new FirePool(_fireContainer.GetTransform());

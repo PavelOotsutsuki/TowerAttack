@@ -1,4 +1,5 @@
 using System.Collections;
+using GameFields.InputSettings;
 using Tools;
 using Tools.UI;
 using UnityEngine;
@@ -10,9 +11,12 @@ namespace GameFields.Persons.LookCardMenues
         private IDeactivatable _clickCallback;
         private Coroutine _workableCoroutine;
 
-        public void Init(IDeactivatable clickCallback)
+        private InputRoot _inputRoot;
+
+        public void Init(IDeactivatable clickCallback, InputRoot inputRoot)
         {
             _clickCallback = clickCallback;
+            _inputRoot = inputRoot;
             IsActive = false;
 
             base.Init();
@@ -32,13 +36,18 @@ namespace GameFields.Persons.LookCardMenues
 
             base.Activate();
 
+            //_inputRoot.SetInputType(InputType.LookCardMenu);
             IsActive = true;
         }
 
         protected override void OnEnterClick()
         {
+            if (IsActive != true)
+                return;
+
             base.OnEnterClick();
 
+            _inputRoot.SetInputType(InputType.None);
             _clickCallback.Deactivate();
         }
 

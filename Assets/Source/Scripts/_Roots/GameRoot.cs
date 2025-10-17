@@ -18,6 +18,7 @@ using GameFields.Persons.LookCardMenues;
 using GameFields.Persons.EffectHandlers.Brothers;
 using GameFields.Persons.EffectHandlers;
 using GameFields.Persons.Tables;
+using GameFields.InputSettings;
 
 namespace Roots
 {
@@ -37,7 +38,7 @@ namespace Roots
         [Inject]
         private void Construct(SignalBus bus, Deck deck, SeatPool seatPool, CardDescription cardDescription, HandPlayer handPlayer,
             InformationLabel informationLabel, LookCardMenuPlayer lookCardMenu, VariantCardCreator variantCardCreator,
-            SoundRoot soundRoot, CardSoundVolume cardSoundVolume)
+            SoundRoot soundRoot, CardSoundVolume cardSoundVolume, InputRoot inputRoot)
         {
             GameFieldGC.GCOFF();
 
@@ -51,7 +52,7 @@ namespace Roots
             _lightControlsCreator.Init();
             _speedUpButtonSortOrder.Init();
 
-            lookCardMenu.Init();
+            lookCardMenu.Init(inputRoot);
             variantCardCreator.Init();
             soundRoot.Init();
 
