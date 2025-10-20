@@ -5,6 +5,7 @@ using Cards;
 using Tools;
 using Tools.Utils.FillComponents;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Zenject;
 
 namespace GameFields.Persons.LookCardMenues
@@ -25,6 +26,9 @@ namespace GameFields.Persons.LookCardMenues
         private int _currentPanelIndex;
         private int _currentMaxIndex;
         private bool _isComplete;
+
+        public IPointerClickHandler RightSwitch => _rightSwitch;
+        public IPointerClickHandler LeftSwitch => _leftSwitch;
 
         public bool? IsActive { get; private set; } = null;
 
@@ -151,6 +155,8 @@ namespace GameFields.Persons.LookCardMenues
 
         private void NextSwitch()
         {
+            HideCardHelpers();
+
             _seatPanels[_currentPanelIndex].gameObject.SetActive(false);
             _currentPanelIndex++;
 
@@ -164,6 +170,8 @@ namespace GameFields.Persons.LookCardMenues
 
         private void PreviousSwitch()
         {
+            HideCardHelpers();
+
             _seatPanels[_currentPanelIndex].gameObject.SetActive(false);
             _currentPanelIndex--;
 
@@ -173,6 +181,12 @@ namespace GameFields.Persons.LookCardMenues
             _seatPanels[_currentPanelIndex].gameObject.SetActive(true);
 
             CheckSwitches();
+        }
+
+        private void HideCardHelpers()
+        {
+            _bigCard.Hide();
+            _description.Hide();
         }
 
         private void CheckSwitches()

@@ -54,6 +54,7 @@ namespace GameFields.Persons.LookCardMenues
             IsActive = false;
 
             Block();
+            HideAll();
 
             gameObject.SetActive(false);
         }
@@ -91,6 +92,11 @@ namespace GameFields.Persons.LookCardMenues
         }
 
         public void OnPointerExit(PointerEventData eventData)
+        {
+            HideAll();
+        }
+
+        private void HideAll()
         {
             _description.Hide();
             _bigCard.Hide();

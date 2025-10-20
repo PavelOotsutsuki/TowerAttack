@@ -32,6 +32,9 @@ namespace GameFields.Persons.LookCardMenues
 
         //public int MaxSeats => _seats.Length;
         public IPointerClickHandler LookCardMenuButton => _lookCardMenuButton;
+        public IPointerClickHandler RightSwitch => _seatPanelRoot.RightSwitch;
+        public IPointerClickHandler LeftSwitch => _seatPanelRoot.LeftSwitch;
+
         public bool IsComplete => _isComplete;
 
         public bool? IsActive { get; private set; } = null;

@@ -26,7 +26,7 @@ namespace Roots
         [SerializeField] private CardDescription _cardDescription;
 
         [SerializeField] private InformationLabel _informationLabel;
-        [SerializeField] private InputRoot _inputRoot;
+        //[SerializeField] private InputRoot _inputRoot;
         [SerializeField] private SoundRoot _soundRoot;
 
         [SerializeField] private Deck _deck;
@@ -75,7 +75,7 @@ namespace Roots
             Container.Bind<CardSoundVolume>().FromInstance(_cardSoundVolume).AsSingle();
 
             Container.Bind<InformationLabel>().FromInstance(_informationLabel).AsSingle();
-            Container.Bind<InputRoot>().FromInstance(_inputRoot).AsSingle();
+            //Container.Bind<InputRoot>().FromInstance(_inputRoot).AsSingle();
             Container.Bind<SoundRoot>().FromInstance(_soundRoot).AsSingle();
 
             Container.Bind<Deck>().FromInstance(_deck).AsSingle();

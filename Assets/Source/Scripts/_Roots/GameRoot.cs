@@ -38,7 +38,7 @@ namespace Roots
         [Inject]
         private void Construct(SignalBus bus, Deck deck, SeatPool seatPool, CardDescription cardDescription, HandPlayer handPlayer,
             InformationLabel informationLabel, LookCardMenuPlayer lookCardMenu, VariantCardCreator variantCardCreator,
-            SoundRoot soundRoot, CardSoundVolume cardSoundVolume, InputRoot inputRoot)
+            SoundRoot soundRoot, CardSoundVolume cardSoundVolume)
         {
             GameFieldGC.GCOFF();
 
@@ -52,7 +52,6 @@ namespace Roots
             _lightControlsCreator.Init();
             _speedUpButtonSortOrder.Init();
 
-            lookCardMenu.Init(inputRoot);
             variantCardCreator.Init();
             soundRoot.Init();
 
@@ -73,6 +72,9 @@ namespace Roots
             BrothersEffectHandlerRoot brothersEffectHandlerRoot = _personCreator.CreateBrothersEffectHandlerRoot();
             PersonEffectsHandlerRoot personEffectsHandlerRoot = _personCreator.CreatePersonEffectsHandlerRoot();
             DiscardManager discardManager = _personCreator.DiscardManager;
+            InputRoot inputRoot = _personCreator.GetInputRoot();
+
+            lookCardMenu.Init(inputRoot);
 
             Destroy(_personCreator.gameObject);
 

@@ -7,21 +7,24 @@ using static UnityEngine.InputSystem.InputAction;
 
 namespace GameFields.InputSettings
 {
-    public class InputRoot : MonoBehaviour
+    public class InputRoot// : MonoBehaviour
     {
-        private InputActions _inputActions;
         private InputType _inputType;
 
-        private IDeactivatable _endTurnButtonDeactivatable;
-        private IPointerClickHandler _choiceSelectModeButtonActivator;
-        private IPointerClickHandler _attackSelectModeButtonActivator;
-        private IPointerClickHandler _choiceSelectButtonClick;
-        private IPointerClickHandler _attackSelectButtonClick;
-        private IPointerClickHandler _lookCardMenuButtonClick;
+        private readonly InputActions _inputActions;
+        private readonly IDeactivatable _endTurnButtonDeactivatable;
+        private readonly IPointerClickHandler _choiceSelectModeButtonActivator;
+        private readonly IPointerClickHandler _attackSelectModeButtonActivator;
+        private readonly IPointerClickHandler _choiceSelectButtonClick;
+        private readonly IPointerClickHandler _attackSelectButtonClick;
+        private readonly IPointerClickHandler _lookCardMenuButtonClick;
+        private readonly IPointerClickHandler _lookCardMenuLeftSwitch;
+        private readonly IPointerClickHandler _lookCardMenuRightSwitch;
 
-        public void Init(IDeactivatable endTurnButtonDeactivatable, IPointerClickHandler choiceSelectModeButtonActivator,
+        public InputRoot(IDeactivatable endTurnButtonDeactivatable, IPointerClickHandler choiceSelectModeButtonActivator,
             IPointerClickHandler attackSelectModeButtonActivator, IPointerClickHandler choiceSelectButtonClick,
-            IPointerClickHandler attackSelectButtonClick, IPointerClickHandler lookCardMenuButtonClick)
+            IPointerClickHandler attackSelectButtonClick, IPointerClickHandler lookCardMenuButtonClick,
+            IPointerClickHandler lookCardMenuLeftSwitch, IPointerClickHandler lookCardMenuRightSwitch)
         {
             _endTurnButtonDeactivatable = endTurnButtonDeactivatable;
             _choiceSelectModeButtonActivator = choiceSelectModeButtonActivator;
@@ -29,6 +32,8 @@ namespace GameFields.InputSettings
             _choiceSelectButtonClick = choiceSelectButtonClick;
             _attackSelectButtonClick = attackSelectButtonClick;
             _lookCardMenuButtonClick = lookCardMenuButtonClick;
+            _lookCardMenuLeftSwitch = lookCardMenuLeftSwitch;
+            _lookCardMenuRightSwitch = lookCardMenuRightSwitch;
 
             _inputActions = new InputActions();
 
@@ -45,15 +50,28 @@ namespace GameFields.InputSettings
             _inputActions.Enable();
         }
 
+        ~InputRoot()
+        {
+            _inputActions.GameField.Enter.performed -= OnEnter;
+            _inputActions.GameField.Esc.performed -= OnEsc;
+            _inputActions.GameField.Q.performed -= OnQ;
+            _inputActions.GameField.LeftArrow.performed -= OnLeftArrow;
+            _inputActions.GameField.RightArrow.performed -= OnRightArrow;
+            _inputActions.GameField.DownArrow.performed -= OnDownArrow;
+            _inputActions.GameField.UpArrow.performed -= OnUpArrow;
+
+            _inputActions?.Disable();
+        }
+
         public void SetInputType(InputType inputType)
         {
             _inputType = inputType;
         }
 
-        private void OnDisable()
-        {
-            _inputActions?.Disable();
-        }
+        //private void OnDisable()
+        //{
+        //    _inputActions?.Disable();
+        //}
 
         private void OnEnter(CallbackContext context)
         {
@@ -241,12 +259,12 @@ namespace GameFields.InputSettings
 
         private void OnLeftArrowLookCardMenu()
         {
-
+            _lookCardMenuLeftSwitch.OnPointerClick(null);
         }
 
         private void OnRightArrowLookCardMenu()
         {
-
+            _lookCardMenuRightSwitch.OnPointerClick(null);
         }
 
         private void OnDownArrowFightMenu()

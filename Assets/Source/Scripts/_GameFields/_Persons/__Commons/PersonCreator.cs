@@ -158,8 +158,7 @@ namespace GameFields.Persons.Commons
             CardAttackZonePlayer playerCardAttackZone, CardAttackZoneEnemyAI enemyCardAttackZone, ChoiceMenuPlayer playerChoiceMenu,
             ChoiceMenuEnemyAI enemyChoiceMenu, DiscardPile discardPile, ChoiceMenuImitationPlayer choiceMenuImitationPlayer,
             ChoiceMenuImitationEnemyAI choiceMenuImitationEnemyAI, ForgingZone forgingZone, HandTransferZone handTransferZone,
-            LookCardMenuPlayer lookCardMenuPlayer, StartPlayerTurnLabel startPlayerTurnLabel, SkipTurnLabel skipTurnLabel,
-            InputRoot inputRoot)
+            LookCardMenuPlayer lookCardMenuPlayer, StartPlayerTurnLabel startPlayerTurnLabel, SkipTurnLabel skipTurnLabel)
         {
             _playerPlayingZone = playerPlayingZone;
             _playerHand = playerHand;
@@ -189,7 +188,7 @@ namespace GameFields.Persons.Commons
 
             _discardPile = discardPile;
             _skipTurnLabel = skipTurnLabel;
-            _inputRoot = inputRoot;
+            //_inputRoot = inputRoot;
         }
 
         public void Init(SignalBus bus, Deck deck, EndTurnButton endTurnButton, SeatPool seatPool,
@@ -203,8 +202,9 @@ namespace GameFields.Persons.Commons
             _cardWatcher = cardRoot;
 
             _skipTurnLabel.Init();
-            _inputRoot.Init(_endTurnButton, _playerChoiceMenu.SelectModeButton, _playerAttackMenu.SelectModeButton,
-                _playerChoiceMenu.SelectButton, _playerAttackMenu.SelectButton, _playerLookCardMenu.LookCardMenuButton);
+            _inputRoot = new InputRoot(_endTurnButton, _playerChoiceMenu.SelectModeButton, _playerAttackMenu.SelectModeButton,
+                _playerChoiceMenu.SelectButton, _playerAttackMenu.SelectButton, _playerLookCardMenu.LookCardMenuButton,
+                _playerLookCardMenu.LeftSwitch, _playerLookCardMenu.RightSwitch);
 
             _playerFirePool = new FirePool(_fireContainer.GetTransform());
             _enemyFirePool = new FirePool(_fireContainer.GetTransform());
@@ -348,6 +348,11 @@ namespace GameFields.Persons.Commons
         public PersonEffectsHandlerRoot CreatePersonEffectsHandlerRoot()
         {
             return new PersonEffectsHandlerRoot(_enemyPersonEffectsHandler, _playerPersonEffectsHandler);
+        }
+
+        public InputRoot GetInputRoot()
+        {
+            return _inputRoot;
         }
 
         private void InitPlayersData()
