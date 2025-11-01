@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Tools.UI
 {
     [RequireComponent(typeof(FadablePanel))]
-    public class FadableConfirmableButton : ConfirmableButton, ICompletable, IWorkable
+    public abstract class FadableConfirmableButton : ConfirmableButton, ICompletable, IWorkable
     {
         [SerializeField] private FadablePanel _fadablePanel;
 

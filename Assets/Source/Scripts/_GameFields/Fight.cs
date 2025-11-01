@@ -8,6 +8,7 @@ using GameFields.EndFights;
 using System;
 using GameFields.Seats;
 using Tools;
+using GameFields.FightMenues;
 
 namespace GameFields
 {
@@ -22,11 +23,12 @@ namespace GameFields
 
         private readonly SeatPool _seatPool;
         private readonly IActivatable _soundRootActivatable;
+        private readonly IActivatable _fightMenuActivateButton;
 
         private int _turnNumber;
 
         public Fight(PersonsState personsState, FightResult fightResult, SignalBus bus, SeatPool seatPool
-            , IActivatable soundRootActivatable)
+            , IActivatable soundRootActivatable, IActivatable fightMenuActivateButton)
         {
             _personsState = personsState;
             _fightResult = fightResult;
@@ -40,6 +42,7 @@ namespace GameFields
             _bus.Subscribe<PersonWinSignal>(SetWinner);
 
             _soundRootActivatable = soundRootActivatable;
+            _fightMenuActivateButton = fightMenuActivateButton;
         }
 
         ~Fight()
@@ -56,6 +59,7 @@ namespace GameFields
         {
             //GC.Collect();
             _soundRootActivatable.Activate();
+            _fightMenuActivateButton.Activate();
 
             StartTurn().ToUniTask();
         }
@@ -83,6 +87,8 @@ namespace GameFields
         private IEnumerator StartTurn()
         {
             yield return new WaitForSeconds(DelayBeforeStartTurn);
+
+
 
             while (IsComplete == false)
             {

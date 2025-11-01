@@ -32,7 +32,6 @@ namespace GameFields.Persons.Commons
         private readonly ILookCardMenu _lookCardMenu;
         private readonly IBoomTower _boomTower;
         private readonly ICardNumberKeeper _cardNumberKeeper;
-        private readonly LoseActions _loseActions;
         private readonly SkipTurnView _skipTurnView;
         //private readonly PersonStep _lastStep;
 
@@ -50,7 +49,7 @@ namespace GameFields.Persons.Commons
             StartTurnDraw startTurnDraw, Discover discover, SignalBus bus, /*PersonStep lastStep,*/
             Hand hand, ISelectMenuActivator attackMenu, InteractionActivator gameFieldObjectsActivator,
             ISelectMenuActivator choiceMenu, ISelectMenuActivator choiceMenuImitation, PersonEffectsHandler personEffectsHandler,
-            ILookCardMenu lookCardMenu, LoseActions loseActions, SkipTurnView skipTurnView)
+            ILookCardMenu lookCardMenu, SkipTurnView skipTurnView)
         {
             _hand = hand;
             Bus = bus;
@@ -66,7 +65,7 @@ namespace GameFields.Persons.Commons
             _choiceMenu = choiceMenu;
             _choiceMenuImitation = choiceMenuImitation;
             _lookCardMenu = lookCardMenu;
-            _loseActions = loseActions;
+            //_loseActions = loseActions;
             _skipTurnView = skipTurnView;
             //_lastStep = lastStep;
             InteractionActivator = gameFieldObjectsActivator;
@@ -173,10 +172,10 @@ namespace GameFields.Persons.Commons
             ActivateSelectMenu(_choiceMenuImitation, countNumbers, callback, restrictionType);
         }
 
-        public void Capitulate()
-        {
-            _loseActions.Activate();
-        }
+        //public void Capitulate()
+        //{
+        //    _loseActions.Activate();
+        //}
 
         public bool IsSuccessChoiceTowerNumber(int number)
         {

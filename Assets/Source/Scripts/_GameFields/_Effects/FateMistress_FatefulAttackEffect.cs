@@ -15,14 +15,16 @@ namespace GameFields.Effects
         private readonly Person _activePerson;
         //private readonly Person _deactivePerson;
         private readonly CardLocationViewRoot _viewRoot;
+        private readonly LoseActionsRoot _loseActionsRoot;
         //private readonly SignalBus _bus;
 
         private bool _isEffectComplete;
 
-        public FateMistress_FatefulAttackEffect(Person activePerson, CardLocationViewRoot viewRoot, EffectData data)
-            : base(data)
+        public FateMistress_FatefulAttackEffect(Person activePerson, LoseActionsRoot loseActionsRoot, CardLocationViewRoot viewRoot,
+            EffectData data) : base(data)
         {
             _activePerson = activePerson;
+            _loseActionsRoot = loseActionsRoot;
             //_deactivePerson = deactivePerson;
             _viewRoot = viewRoot;
             //_bus = bus;
@@ -56,7 +58,7 @@ namespace GameFields.Effects
 
         private void CompleteEffect()
         {
-            _activePerson.Capitulate();
+            _loseActionsRoot.Capitulate(_activePerson);
             //_isEffectComplete = true;
         }
     }

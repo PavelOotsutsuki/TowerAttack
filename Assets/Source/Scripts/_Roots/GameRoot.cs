@@ -19,6 +19,7 @@ using GameFields.Persons.EffectHandlers.Brothers;
 using GameFields.Persons.EffectHandlers;
 using GameFields.Persons.Tables;
 using GameFields.InputSettings;
+using GameFields.FightMenues;
 
 namespace Roots
 {
@@ -38,7 +39,8 @@ namespace Roots
         [Inject]
         private void Construct(SignalBus bus, Deck deck, SeatPool seatPool, CardDescription cardDescription, HandPlayer handPlayer,
             InformationLabel informationLabel, LookCardMenuPlayer lookCardMenu, VariantCardCreator variantCardCreator,
-            SoundRoot soundRoot, CardSoundVolume cardSoundVolume)
+            SoundRoot soundRoot, CardSoundVolume cardSoundVolume, FightMenuActivateButton fightMenuActivateButton,
+            FightMenu fightMenu)
         {
             GameFieldGC.GCOFF();
 
@@ -73,20 +75,22 @@ namespace Roots
             PersonEffectsHandlerRoot personEffectsHandlerRoot = _personCreator.CreatePersonEffectsHandlerRoot();
             DiscardManager discardManager = _personCreator.DiscardManager;
             InputRoot inputRoot = _personCreator.GetInputRoot();
+            LoseActionsRoot loseActionsRoot = _personCreator.CreateLoseActionsRoot();
 
             lookCardMenu.Init(inputRoot);
 
             Destroy(_personCreator.gameObject);
 
             _personsState = new PersonsState(player, enemyAI);
+            //fightMenu.
 
             EffectFactory effectFactory = new EffectFactory(_personsState, viewRoot, informationLabel, cardTransitManager,
-                variantCardCreator, brothersEffectHandlerRoot, bus, personEffectsHandlerRoot, discardManager);
+                variantCardCreator, brothersEffectHandlerRoot, bus, personEffectsHandlerRoot, discardManager, loseActionsRoot);
 
             _cardRoot.Init(effectFactory, cardDescription, cardDragAndDropHandler, cardSoundVolume);
             deck.Init(seatPool, _cardRoot.Cards);
 
-            _gameFieldRoot.Init(_personsState, enemyAI, bus, seatPool, soundRoot);
+            _gameFieldRoot.Init(_personsState, enemyAI, bus, seatPool, soundRoot, fightMenuActivateButton);
         }
 
         public void OnDestroy()

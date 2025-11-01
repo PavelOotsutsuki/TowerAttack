@@ -31,11 +31,11 @@ namespace GameFields.Persons.Commons
         public EnemyAI(InteractionActivator interactionActivator, EnemyDragAndDropImitation enemyDragAndDropImitation, CardPlayingZone cardPlayingZone,
             Tower tower, DrawCardRoot drawCardRoot, DiscoverAI discoverImitation, StartTurnDraw startTurnDraw, SignalBus bus,
             HandAI hand, ISelectMenuActivator attackMenu, ISelectMenuActivator choiceMenu, ISelectMenuActivator choiceMenuImitation,
-            PersonEffectsHandler personEffectsHandler, LookCardMenuEnemyAI lookCardMenu, LoseActions loseActions,
+            PersonEffectsHandler personEffectsHandler, LookCardMenuEnemyAI lookCardMenu,
             OnBeforeEndTurnProcessing onBeforeEndTurnProcessing, SkipTurnView skipTurnView) :
             base(cardPlayingZone, drawCardRoot, tower, startTurnDraw,discoverImitation, bus,
                 hand, attackMenu, interactionActivator, choiceMenu, choiceMenuImitation, personEffectsHandler,
-                lookCardMenu, loseActions, skipTurnView)
+                lookCardMenu, skipTurnView)
         {
             //_gameFieldObjectsActivator = gameFieldObjectsActivator;
             //Bus.Subscribe<StartEffectSignal>(SetCardEffectProcess);

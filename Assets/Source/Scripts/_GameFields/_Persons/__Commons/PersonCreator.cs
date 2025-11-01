@@ -30,6 +30,7 @@ using GameFields.Persons.LookCardMenues;
 using GameFields.Persons.EffectHandlers.Brothers;
 using GameFields.Persons.EffectHandlers.Scarecrows;
 using GameFields.InputSettings;
+using GameFields.FightMenues;
 
 namespace GameFields.Persons.Commons
 {
@@ -54,6 +55,8 @@ namespace GameFields.Persons.Commons
         private PersonEffectsHandler _playerPersonEffectsHandler;
 
         private LookCardMenuPlayer _playerLookCardMenu;
+        private FightMenu _fightMenu;
+        private FightMenuActivateButton _fightMenuActivateButton;
         //private ActiveEffectsList _playerActiveEffectsList = new ActiveEffectsList();
 
         private ForgingZone _forgingZone;
@@ -158,7 +161,8 @@ namespace GameFields.Persons.Commons
             CardAttackZonePlayer playerCardAttackZone, CardAttackZoneEnemyAI enemyCardAttackZone, ChoiceMenuPlayer playerChoiceMenu,
             ChoiceMenuEnemyAI enemyChoiceMenu, DiscardPile discardPile, ChoiceMenuImitationPlayer choiceMenuImitationPlayer,
             ChoiceMenuImitationEnemyAI choiceMenuImitationEnemyAI, ForgingZone forgingZone, HandTransferZone handTransferZone,
-            LookCardMenuPlayer lookCardMenuPlayer, StartPlayerTurnLabel startPlayerTurnLabel, SkipTurnLabel skipTurnLabel)
+            LookCardMenuPlayer lookCardMenuPlayer, StartPlayerTurnLabel startPlayerTurnLabel, SkipTurnLabel skipTurnLabel,
+            FightMenu fightMenu, FightMenuActivateButton fightMenuButton)
         {
             _playerPlayingZone = playerPlayingZone;
             _playerHand = playerHand;
@@ -188,6 +192,9 @@ namespace GameFields.Persons.Commons
 
             _discardPile = discardPile;
             _skipTurnLabel = skipTurnLabel;
+
+            _fightMenu = fightMenu;
+            _fightMenuActivateButton = fightMenuButton;
             //_inputRoot = inputRoot;
         }
 
@@ -204,7 +211,13 @@ namespace GameFields.Persons.Commons
             _skipTurnLabel.Init();
             _inputRoot = new InputRoot(_endTurnButton, _playerChoiceMenu.SelectModeButton, _playerAttackMenu.SelectModeButton,
                 _playerChoiceMenu.SelectButton, _playerAttackMenu.SelectButton, _playerLookCardMenu.LookCardMenuButton,
-                _playerLookCardMenu.LeftSwitch, _playerLookCardMenu.RightSwitch);
+                _playerLookCardMenu.LeftSwitch, _playerLookCardMenu.RightSwitch, _fightMenu, _fightMenu.FightMenuButtonsPanel);
+
+            _enemyLoseActions = new LoseActions(_enemyTower, _enemyTower, _playerHand, _bus);
+            _playerLoseActions = new LoseActions(_playerTower, _playerTower, _playerHand, _bus);
+
+            _fightMenu.Init(_inputRoot, _playerLoseActions);
+            _fightMenuActivateButton.Init(_fightMenu);
 
             _playerFirePool = new FirePool(_fireContainer.GetTransform());
             _enemyFirePool = new FirePool(_fireContainer.GetTransform());
@@ -218,8 +231,6 @@ namespace GameFields.Persons.Commons
 
             _seatPool = seatPool;
 
-            _enemyLoseActions = new LoseActions(_enemyTower, _enemyTower, _playerHand, _bus);
-            _playerLoseActions = new LoseActions(_playerTower, _playerTower, _playerHand, _bus);
 
             _confirmableNumbersPlayer = new ConfirmableNumbers(_attackedNumbersPlayer, _choicedNumbersPlayer, _cursedNumbersPlayer);
             _confirmableNumbersEnemyAI = new ConfirmableNumbers(_attackedNumbersEnemy, _choicedNumbersEnemy, _cursedNumbersEnemyAI);
@@ -276,7 +287,7 @@ namespace GameFields.Persons.Commons
             return new Player(_interactionActivator, _playerHand, _playerPlayingZone, _playerTower, _playerDiscover,
                 drawCardRoot, startTurnDraw, turnProcessing, _bus, startPlayerTurnView, _playerAttackMenu, endTurnProcessing,
                 _playerChoiceMenu, _playerChoiceMenuImitation, _playerPersonEffectsHandler, _informationLabel, _playerLookCardMenu,
-                _playerLoseActions, skipTurnView);
+                skipTurnView);
         }
 
         public EnemyAI CreateEnemyAI()
@@ -326,7 +337,7 @@ namespace GameFields.Persons.Commons
 
             return new EnemyAI(_interactionActivator, enemyDragAndDropImitation, _enemyPlayingZone,
                 _enemyTower, drawCardRoot, _enemyDiscoverImitation, startTurnDraw, _bus, _enemyHand, _enemyAttackMenu,
-                _enemyChoiceMenu, _enemyChoiceMenuImitation, _enemyPersonEffectsHandler, lookCardMenuEnemyAI, _enemyLoseActions,
+                _enemyChoiceMenu, _enemyChoiceMenuImitation, _enemyPersonEffectsHandler, lookCardMenuEnemyAI,
                 onBeforeEndTurnProcessing, skipTurnView);
         }
 
@@ -353,6 +364,11 @@ namespace GameFields.Persons.Commons
         public InputRoot GetInputRoot()
         {
             return _inputRoot;
+        }
+
+        public LoseActionsRoot CreateLoseActionsRoot()
+        {
+            return new LoseActionsRoot(_playerLoseActions, _enemyLoseActions);
         }
 
         private void InitPlayersData()

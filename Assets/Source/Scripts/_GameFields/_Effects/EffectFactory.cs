@@ -29,12 +29,13 @@ namespace GameFields.Effects
         private readonly SignalBus _bus;
         private readonly PersonEffectsHandlerRoot _personEffectsHandlerRoot;
         private readonly DiscardManager _discardManager;
+        private readonly LoseActionsRoot _loseActionsRoot;
 
         //private Effect _lastEffect;
 
         public EffectFactory(IPersonsState personsState, CardLocationViewRoot viewRoot, InformationLabel informationLabel,
             CardTransitManager cardTransitManager, VariantCardCreator variantCardCreator, BrothersEffectHandlerRoot brothersEffectHandler,
-            SignalBus bus, PersonEffectsHandlerRoot personEffectsHandlerRoot, DiscardManager discardManager)
+            SignalBus bus, PersonEffectsHandlerRoot personEffectsHandlerRoot, DiscardManager discardManager, LoseActionsRoot loseActionsRoot)
         {
             _personsState = personsState;
             _viewRoot = viewRoot;
@@ -45,6 +46,7 @@ namespace GameFields.Effects
             _bus = bus;
             _personEffectsHandlerRoot = personEffectsHandlerRoot;
             _discardManager = discardManager;
+            _loseActionsRoot = loseActionsRoot;
             _voidEffectConfig = ScriptableObject.CreateInstance<CardEffectConfig>();
             //_voidEffectConfig = new CardEffectConfig();
             //_lastEffect = _voidEffect;
@@ -149,7 +151,8 @@ namespace GameFields.Effects
                 //new VoidEffect(),
                 //EffectType.FateMistress => new FateMistressEffect(_personsState.Active, _variantCardCreator, CreateEffect, callback, effecType),
                 EffectType.FateMistress => new FateMistressEffect(_personsState.Active, _variantCardCreator, CreateEffect, effecType, effectData),
-                EffectType.FateMistress_FatefulAttack => new FateMistress_FatefulAttackEffect(_personsState.Active, _viewRoot, effectData),
+                EffectType.FateMistress_FatefulAttack => new FateMistress_FatefulAttackEffect(_personsState.Active, _loseActionsRoot,
+                _viewRoot, effectData),
                 //EffectType.FateMistress_FatefulAttack => new FateMistress_FateInevitability(_personsState.Active, effectConfig.Duration),
                 EffectType.FateMistress_FateInevitability => new FateMistress_FateInevitabilityEffect(_personsState.Active, effectData),
                 EffectType.DumbMonk => new DumbMonkEffect(_personsState.Active, _viewRoot, _cardTransitManager, effectData),

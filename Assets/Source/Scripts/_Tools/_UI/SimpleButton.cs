@@ -13,10 +13,13 @@ namespace Tools.UI
         [SerializeField] protected CanvasGroup CanvasGroup;
 
         private IButtonImageChanger _imageChanger;
+        private readonly PointerDisableSettingsRoot _pointerDisableSettingsRoot = new PointerDisableSettingsRoot();
 
         public bool IsClicked { get; protected set; }
         public bool IsDisable => CanvasGroup.blocksRaycasts == false;
         public bool? IsActive { get; protected set; } = null;
+
+        public PointerDisableSettingsRoot PointerDisableSettingsRoot => _pointerDisableSettingsRoot;
 
         public abstract void Init();
 
@@ -50,13 +53,20 @@ namespace Tools.UI
 
         public abstract void OnPointerClick(PointerEventData eventData);
         protected abstract void OnEnterClick();
+        protected abstract void OnEnter();
+        protected abstract void OnExit();
 
         public void OnPointerExit(PointerEventData eventData)
         {
             if (IsDisable)
                 return;
 
+            if (_pointerDisableSettingsRoot.OnPointerExit.IsDisable)
+                return;
+
             _imageChanger.OnPointerExit();
+
+            OnExit();
         }
 
         public void OnPointerUp(PointerEventData eventData)
@@ -73,6 +83,8 @@ namespace Tools.UI
                 return;
 
             _imageChanger.OnPointerEnter();
+
+            OnEnter();
         }
 
         public void OnPointerDown(PointerEventData eventData)

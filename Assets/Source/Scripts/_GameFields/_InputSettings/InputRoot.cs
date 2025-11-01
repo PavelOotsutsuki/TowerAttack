@@ -1,4 +1,5 @@
 using System;
+using GameFields.FightMenues;
 using GameFields.Persons.SelectMenues.Commons;
 using Tools;
 using UnityEngine;
@@ -11,6 +12,9 @@ namespace GameFields.InputSettings
     {
         private InputType _inputType;
 
+        private bool _isFightMenu;
+        private bool _isEnable;
+
         private readonly InputActions _inputActions;
         private readonly IDeactivatable _endTurnButtonDeactivatable;
         private readonly IPointerClickHandler _choiceSelectModeButtonActivator;
@@ -20,11 +24,14 @@ namespace GameFields.InputSettings
         private readonly IPointerClickHandler _lookCardMenuButtonClick;
         private readonly IPointerClickHandler _lookCardMenuLeftSwitch;
         private readonly IPointerClickHandler _lookCardMenuRightSwitch;
+        private readonly IWorkable _fightMenu;
+        private readonly IFocusedButtonEnterHandler _fightMenuButtonsPanel;
 
         public InputRoot(IDeactivatable endTurnButtonDeactivatable, IPointerClickHandler choiceSelectModeButtonActivator,
             IPointerClickHandler attackSelectModeButtonActivator, IPointerClickHandler choiceSelectButtonClick,
             IPointerClickHandler attackSelectButtonClick, IPointerClickHandler lookCardMenuButtonClick,
-            IPointerClickHandler lookCardMenuLeftSwitch, IPointerClickHandler lookCardMenuRightSwitch)
+            IPointerClickHandler lookCardMenuLeftSwitch, IPointerClickHandler lookCardMenuRightSwitch,
+            IWorkable fightMenu, IFocusedButtonEnterHandler fightMenuButtonsPanel)
         {
             _endTurnButtonDeactivatable = endTurnButtonDeactivatable;
             _choiceSelectModeButtonActivator = choiceSelectModeButtonActivator;
@@ -34,10 +41,13 @@ namespace GameFields.InputSettings
             _lookCardMenuButtonClick = lookCardMenuButtonClick;
             _lookCardMenuLeftSwitch = lookCardMenuLeftSwitch;
             _lookCardMenuRightSwitch = lookCardMenuRightSwitch;
+            _fightMenu = fightMenu;
+            _fightMenuButtonsPanel = fightMenuButtonsPanel;
+
+            Disable();
+            _isFightMenu = false;
 
             _inputActions = new InputActions();
-
-            _inputType = InputType.None;
 
             _inputActions.GameField.Enter.performed += OnEnter;
             _inputActions.GameField.Esc.performed += OnEsc;
@@ -63,27 +73,51 @@ namespace GameFields.InputSettings
             _inputActions?.Disable();
         }
 
+        public void Disable()
+        {
+            _isEnable = false;
+        }
+
+        public void ActivateFightMenu()
+        {
+            _isFightMenu = true;
+            Enable();
+        }
+
+        public void DeactivateFightMenu()
+        {
+            _isFightMenu = false;
+            Enable();
+        }
+
         public void SetInputType(InputType inputType)
         {
             _inputType = inputType;
+            Enable();
         }
 
-        //private void OnDisable()
-        //{
-        //    _inputActions?.Disable();
-        //}
+        private void Enable()
+        {
+            _isEnable = true;
+        }
 
         private void OnEnter(CallbackContext context)
         {
+            if (_isEnable == false)
+                return;
+
             Debug.Log($"Enter pressed!: {_inputType}");
+
+            if (_isFightMenu)
+            {
+                OnEnterFightMenu();
+                return;
+            }
 
             switch (_inputType)
             {
                 case InputType.EndTurnButton:
                     OnEnterEndTurnButton();
-                    break;
-                case InputType.FightMenu:
-                    OnEnterFightMenu();
                     break;
                 case InputType.LookCardMenu:
                     OnEnterLookCardMenu();
@@ -95,7 +129,6 @@ namespace GameFields.InputSettings
                     OnEnterAttackMenu();
                     break;
                 case InputType.FightProcessing:
-                case InputType.None:
                     break;
                 default:
                     throw new Exception($"Неизвестный InputType: {_inputType}. Класс: {nameof(InputRoot)}");
@@ -104,30 +137,31 @@ namespace GameFields.InputSettings
 
         private void OnEsc(CallbackContext context)
         {
+            if (_isEnable == false)
+                return;
+
             Debug.Log($"Esc pressed!: {_inputType}");
 
-            switch (_inputType)
+            if (_isFightMenu)
             {
-                case InputType.FightMenu:
-                    CloseFightMenu();
-                    break;
-                case InputType.EndTurnButton:
-                case InputType.FightProcessing:
-                case InputType.LookCardMenu:
-                case InputType.ChoiceMenu:
-                case InputType.AttackMenu:
-                    OpenFightMenu();
-                    break;
-                case InputType.None:
-                    break;
-                default:
-                    throw new Exception($"Неизвестный InputType: {_inputType}. Класс: {nameof(InputRoot)}");
+                CloseFightMenu();
+                return;
             }
+
+            OpenFightMenu();
         }
 
         private void OnQ(CallbackContext context)
         {
+            if (_isEnable == false)
+                return;
+
             Debug.Log($"Q pressed!: {_inputType}");
+
+            if (_isFightMenu)
+            {
+                return;
+            }
 
             switch (_inputType)
             {
@@ -137,11 +171,9 @@ namespace GameFields.InputSettings
                 case InputType.AttackMenu:
                     OnQAttackMenu();
                     break;
-                case InputType.FightMenu:
                 case InputType.EndTurnButton:
                 case InputType.FightProcessing:
                 case InputType.LookCardMenu:
-                case InputType.None:
                     break;
                 default:
                     throw new Exception($"Неизвестный InputType: {_inputType}. Класс: {nameof(InputRoot)}");
@@ -150,19 +182,25 @@ namespace GameFields.InputSettings
 
         private void OnLeftArrow(CallbackContext context)
         {
+            if (_isEnable == false)
+                return;
+
             Debug.Log($"LeftArrow pressed!: {_inputType}");
+
+            if (_isFightMenu)
+            {
+                return;
+            }
 
             switch (_inputType)
             {
                 case InputType.LookCardMenu:
                     OnLeftArrowLookCardMenu();
                     break;
-                case InputType.FightMenu:
                 case InputType.EndTurnButton:
                 case InputType.FightProcessing:
                 case InputType.ChoiceMenu:
                 case InputType.AttackMenu:
-                case InputType.None:
                     break;
                 default:
                     throw new Exception($"Неизвестный InputType: {_inputType}. Класс: {nameof(InputRoot)}");
@@ -171,19 +209,25 @@ namespace GameFields.InputSettings
 
         private void OnRightArrow(CallbackContext context)
         {
+            if (_isEnable == false)
+                return;
+
             Debug.Log($"RightArrow pressed!: {_inputType}");
+
+            if (_isFightMenu)
+            {
+                return;
+            }
 
             switch (_inputType)
             {
                 case InputType.LookCardMenu:
                     OnRightArrowLookCardMenu();
                     break;
-                case InputType.FightMenu:
                 case InputType.EndTurnButton:
                 case InputType.FightProcessing:
                 case InputType.ChoiceMenu:
                 case InputType.AttackMenu:
-                case InputType.None:
                     break;
                 default:
                     throw new Exception($"Неизвестный InputType: {_inputType}. Класс: {nameof(InputRoot)}");
@@ -192,19 +236,24 @@ namespace GameFields.InputSettings
 
         private void OnDownArrow(CallbackContext context)
         {
+            if (_isEnable == false)
+                return;
+
             Debug.Log($"DownArrow pressed!: {_inputType}");
+
+            if (_isFightMenu)
+            {
+                OnDownArrowFightMenu();
+                return;
+            }
 
             switch (_inputType)
             {
-                case InputType.FightMenu:
-                    OnDownArrowFightMenu();
-                    break;
                 case InputType.LookCardMenu:
                 case InputType.EndTurnButton:
                 case InputType.FightProcessing:
                 case InputType.ChoiceMenu:
                 case InputType.AttackMenu:
-                case InputType.None:
                     break;
                 default:
                     throw new Exception($"Неизвестный InputType: {_inputType}. Класс: {nameof(InputRoot)}");
@@ -213,19 +262,24 @@ namespace GameFields.InputSettings
 
         private void OnUpArrow(CallbackContext context)
         {
+            if (_isEnable == false)
+                return;
+
             Debug.Log($"UpArrow pressed!: {_inputType}");
+
+            if (_isFightMenu)
+            {
+                OnUpArrowFightMenu();
+                return;
+            }
 
             switch (_inputType)
             {
-                case InputType.FightMenu:
-                    OnUpArrowFightMenu();
-                    break;
                 case InputType.LookCardMenu:
                 case InputType.EndTurnButton:
                 case InputType.FightProcessing:
                 case InputType.ChoiceMenu:
                 case InputType.AttackMenu:
-                case InputType.None:
                     break;
                 default:
                     throw new Exception($"Неизвестный InputType: {_inputType}. Класс: {nameof(InputRoot)}");
@@ -239,12 +293,12 @@ namespace GameFields.InputSettings
 
         private void OpenFightMenu()
         {
-
+            _fightMenu.Activate();
         }
 
         private void CloseFightMenu()
         {
-
+            _fightMenu.Deactivate();
         }
 
         private void OnQChoiceMenu()
@@ -269,17 +323,17 @@ namespace GameFields.InputSettings
 
         private void OnDownArrowFightMenu()
         {
-
+            _fightMenuButtonsPanel.OnDownArrow();
         }
 
         private void OnUpArrowFightMenu()
         {
-
+            _fightMenuButtonsPanel.OnUpArrow();
         }
 
         private void OnEnterFightMenu()
         {
-
+            _fightMenuButtonsPanel.OnEnterPress();
         }
 
         private void OnEnterLookCardMenu()

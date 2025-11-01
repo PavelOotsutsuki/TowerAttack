@@ -155,8 +155,6 @@ namespace GameFields.Persons.LookCardMenues
 
         private void NextSwitch()
         {
-            HideCardHelpers();
-
             _seatPanels[_currentPanelIndex].gameObject.SetActive(false);
             _currentPanelIndex++;
 
@@ -170,8 +168,6 @@ namespace GameFields.Persons.LookCardMenues
 
         private void PreviousSwitch()
         {
-            HideCardHelpers();
-
             _seatPanels[_currentPanelIndex].gameObject.SetActive(false);
             _currentPanelIndex--;
 
@@ -191,8 +187,11 @@ namespace GameFields.Persons.LookCardMenues
 
         private void CheckSwitches()
         {
+            HideCardHelpers();
+
             SetSwitchState(_rightSwitch, _currentPanelIndex != _currentMaxIndex);
             SetSwitchState(_leftSwitch, _currentPanelIndex > 0);
+
 
             //if (_currentPanelIndex == _currentMaxIndex)
             //{

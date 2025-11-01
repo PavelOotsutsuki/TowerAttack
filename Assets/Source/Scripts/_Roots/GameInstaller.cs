@@ -18,6 +18,7 @@ using GameFields.Persons.LookCardMenues;
 using GameFields.Effects;
 using GameFields.Persons.Commons;
 using GameFields.InputSettings;
+using GameFields.FightMenues;
 
 namespace Roots
 {
@@ -28,6 +29,8 @@ namespace Roots
         [SerializeField] private InformationLabel _informationLabel;
         //[SerializeField] private InputRoot _inputRoot;
         [SerializeField] private SoundRoot _soundRoot;
+        [SerializeField] private FightMenuActivateButton _fightMenuActivateButton;
+        [SerializeField] private FightMenu _fightMenu;
 
         [SerializeField] private Deck _deck;
         [SerializeField] private DiscardPileConfig _discardPileConfig;
@@ -77,6 +80,8 @@ namespace Roots
             Container.Bind<InformationLabel>().FromInstance(_informationLabel).AsSingle();
             //Container.Bind<InputRoot>().FromInstance(_inputRoot).AsSingle();
             Container.Bind<SoundRoot>().FromInstance(_soundRoot).AsSingle();
+            Container.Bind<FightMenuActivateButton>().FromInstance(_fightMenuActivateButton).AsSingle();
+            Container.Bind<FightMenu>().FromInstance(_fightMenu).AsSingle();
 
             Container.Bind<Deck>().FromInstance(_deck).AsSingle();
             Container.Bind<DiscardPileConfig>().FromInstance(_discardPileConfig).AsSingle();

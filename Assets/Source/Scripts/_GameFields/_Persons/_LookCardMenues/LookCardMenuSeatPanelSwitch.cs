@@ -18,8 +18,6 @@ namespace GameFields.Persons.LookCardMenues
 
         protected override void OnEnterClick()
         {
-            base.OnEnterClick();
-
             _onEnterClick?.Invoke();
 
             IsClicked = false;

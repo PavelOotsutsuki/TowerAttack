@@ -14,6 +14,17 @@ namespace Tools.Utils.Movements
             _transform = transform;
         }
 
+        public void Stop()
+        {
+            if (_currentSequence != null)
+            {
+                if (_currentSequence.IsActive())
+                {
+                    _currentSequence.Kill();
+                }
+            }
+        }
+
         public void MoveLocalInstantly(Vector2 position, Vector3 rotation)
         {
             _transform.SetLocalPositionAndRotation(position, Quaternion.Euler(rotation));

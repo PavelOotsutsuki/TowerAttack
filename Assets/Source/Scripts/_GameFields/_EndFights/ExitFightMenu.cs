@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using GameFields.Decks;
 using GameFields.Persons.Hands;
 using GameFields.Persons.Towers;
@@ -11,7 +12,7 @@ using Zenject;
 
 namespace GameFields.EndFights
 {
-    public class ExitFightMenu : MonoBehaviour, IActivatable, IPointerClickHandler
+    public class ExitFightMenu : MonoBehaviour, IActivatable//, IPointerClickHandler
     {
         private StartEndGamePanel _startEndGamePanel;
 
@@ -23,17 +24,31 @@ namespace GameFields.EndFights
 
         public void Init()
         {
-            gameObject.SetActive(false);
+            Deactivate();
         }
 
-        public void OnPointerClick(PointerEventData eventData)
+        public void Update()
         {
-            StartCoroutine(Ending());
+            if (Input.anyKeyDown)
+            {
+                Deactivate();
+                Ending().ToUniTask();
+            }
         }
+
+        //public void OnPointerClick(PointerEventData eventData)
+        //{
+        //    StartCoroutine(Ending());
+        //}
 
         public void Activate()
         {
             gameObject.SetActive(true);
+        }
+
+        private void Deactivate()
+        {
+            gameObject.SetActive(false);
         }
 
         private IEnumerator Ending()

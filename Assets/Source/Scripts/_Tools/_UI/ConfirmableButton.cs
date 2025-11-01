@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 namespace Tools.UI
 {
-    public class ConfirmableButton : SimpleButton
+    public abstract class ConfirmableButton : SimpleButton
     {
         [SerializeField] private MonoBehaviour _IConfirmableButtonImageChanger;
 
@@ -39,7 +39,10 @@ namespace Tools.UI
             OnEnterClick();
         }
 
-        protected override void OnEnterClick()
+        protected override void OnEnter()
+        { }
+
+        protected override void OnExit()
         { }
     }
 }

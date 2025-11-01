@@ -45,6 +45,12 @@ namespace Tools.UI
             _imageChanger.OnPointerClick();
         }
 
+        protected override void OnEnter()
+        { }
+
+        protected override void OnExit()
+        { }
+
         protected override void OnEnterClick()
         {
             _imageChanger.OnEnterClick();

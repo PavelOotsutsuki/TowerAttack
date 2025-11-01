@@ -1,0 +1,161 @@
+using System.Collections;
+using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
+using GameFields.InputSettings;
+using GameFields.Persons.Commons;
+using GameFields.Persons.SelectMenues.Commons;
+using Tools;
+using Tools.UI;
+using Tools.Utils.FillComponents;
+using UnityEngine;
+
+namespace GameFields.FightMenues
+{
+    public class FightMenu : MonoBehaviour, IWorkable, ICompletable, IAutomaticFillComponents
+    {
+        [SerializeField] private FightMenuLabel _fightMenuLabel;
+        [SerializeField] private FightMenuPanel _fightMenuPanel;
+        [SerializeField] private FightMenuButtonsPanel _fightMenuButtonsPanel;
+        [SerializeField] private CanvasGroup _canvasGroup;
+
+        private InputRoot _inputRoot;
+
+        private bool _isComplete;
+
+        public bool? IsActive { get; private set; } = null;
+        public bool IsComplete => _isComplete;
+        public IFocusedButtonEnterHandler FightMenuButtonsPanel => _fightMenuButtonsPanel;
+
+        public void Init(InputRoot inputRoot, LoseActions playerLoseActions)
+        {
+            gameObject.SetActive(false);
+            _isComplete = true;
+            IsActive = false;
+            _canvasGroup.blocksRaycasts = true;
+
+            _inputRoot = inputRoot;
+
+            _fightMenuLabel.Init();
+            _fightMenuPanel.Init();
+            _fightMenuButtonsPanel.Init(playerLoseActions, this);
+        }
+
+        public void Activate()
+        {
+            if (IsActive == true || _isComplete == false)
+                return;
+
+            _inputRoot.Disable();
+            _isComplete = false;
+            IsActive = true;
+
+            gameObject.SetActive(true);
+
+            //_fightMenuLabel.Show();
+            //_fightMenuPanel.Show();
+            Activating().ToUniTask();
+            //_selectResult = new SelectResult();
+
+            //SelectNumberPanelActivateData numberPanelActivateData = new SelectNumberPanelActivateData(activateData.NeedSelect, activateData.RestrictionType, _selectResult);
+            //_selectNumberPanel.Activate(numberPanelActivateData);
+        }
+
+        public void Deactivate()
+        {
+            if (IsActive == false || _isComplete == false)
+                return;
+
+            IsActive = false;
+            _isComplete = false;
+            _inputRoot.Disable();
+            _inputRoot.DeactivateFightMenu();
+
+            Deactivating().ToUniTask();
+        }
+
+        private IEnumerator Activating()
+        {
+            _fightMenuLabel.Show();
+            _fightMenuPanel.Show();
+            _fightMenuButtonsPanel.Activate();
+
+            yield return new WaitUntil(() => _fightMenuLabel.IsComplete && _fightMenuPanel.IsComplete && _fightMenuButtonsPanel.IsComplete);
+
+            _inputRoot.ActivateFightMenu();
+
+            _isComplete = true;
+        }
+
+        private IEnumerator Deactivating()
+        {
+            _fightMenuLabel.Hide();
+            _fightMenuPanel.Hide();
+            _fightMenuButtonsPanel.Deactivate();
+
+            yield return new WaitUntil(() => _fightMenuLabel.IsComplete && _fightMenuPanel.IsComplete && _fightMenuButtonsPanel.IsComplete);
+
+            gameObject.SetActive(false);
+            _inputRoot.DeactivateFightMenu();
+
+            //SetSelectResultData setSelectResultData;
+
+            //if (_selectResult.IsSelectSuccess)
+            //{
+            //    setSelectResultData = new SetSelectResultData(ResultType.Success);
+            //    //_selectResultHandler.SuccessChoice();
+            //}
+            //else
+            //{
+            //    setSelectResultData = new SetSelectResultData(ResultType.Falled);
+            //    //_selectResultHandler.FalledChoice();
+            //}
+
+            //SelectResultHandler.SetResult(_selectResult.Data);
+            //_selectResultHandler.SetResult(_selectResult.Data);
+
+            //yield return new WaitUntil(() => _selectResultHandler.IsComplete);
+
+            _isComplete = true;
+        }
+
+        #region AutomaticFillComponents
+        [ContextMenu(nameof(DefineAllComponents) + nameof(FightMenu))]
+        public List<ComponentAttachInfo> DefineAllComponents()
+        {
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineFightMenuLabel(),
+                DefineFightMenuPanel(),
+                DefineFightMenuButtonsPanel(),
+                DefineCanvasGroup()
+            };
+
+            return list;
+        }
+
+        [ContextMenu(nameof(DefineFightMenuLabel))]
+        private ComponentAttachInfo DefineFightMenuLabel()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _fightMenuLabel, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineFightMenuPanel))]
+        private ComponentAttachInfo DefineFightMenuPanel()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _fightMenuPanel, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineFightMenuButtonsPanel))]
+        private ComponentAttachInfo DefineFightMenuButtonsPanel()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _fightMenuButtonsPanel, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineCanvasGroup))]
+        private ComponentAttachInfo DefineCanvasGroup()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _canvasGroup, ComponentLocationTypes.InThis);
+        }
+        #endregion 
+    }
+}

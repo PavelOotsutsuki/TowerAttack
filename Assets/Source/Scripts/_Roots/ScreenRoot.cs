@@ -40,7 +40,7 @@ namespace Roots
         [ContextMenu(nameof(DefineAllCanvasScalers))]
         private ComponentAttachInfo DefineAllCanvasScalers()
         {
-           return AutomaticFillComponents.DefineComponent(this, ref _allCanvasScalers);
+           return AutomaticFillComponents.DefineComponent(this, ref _allCanvasScalers, true);
         }
         #endregion
     }

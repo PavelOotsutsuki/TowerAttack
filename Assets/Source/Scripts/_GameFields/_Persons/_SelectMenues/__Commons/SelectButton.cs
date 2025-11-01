@@ -43,9 +43,7 @@ namespace GameFields.Persons.SelectMenues.Commons
             if (IsActive != true)
                 return;
 
-            base.OnEnterClick();
-
-            _inputRoot.SetInputType(InputType.None);
+            _inputRoot.Disable();
             _clickCallback.Deactivate();
         }
 
