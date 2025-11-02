@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace GameFields.FightMenues
 {
-    public class FightMenu : MonoBehaviour, IWorkable, ICompletable, IAutomaticFillComponents
+    public class FightMenu : MonoBehaviour, IWorkable, ICompletable, IFightMenuInputActivateWatcher, IAutomaticFillComponents
     {
         [SerializeField] private FightMenuLabel _fightMenuLabel;
         [SerializeField] private FightMenuPanel _fightMenuPanel;
@@ -24,7 +24,8 @@ namespace GameFields.FightMenues
 
         public bool? IsActive { get; private set; } = null;
         public bool IsComplete => _isComplete;
-        public IFocusedButtonEnterHandler FightMenuButtonsPanel => _fightMenuButtonsPanel;
+
+        public IFocusedButtonEnterHandler CurrentFightMenuButtonInputHandler => _fightMenuButtonsPanel;
 
         public void Init(InputRoot inputRoot, LoseActions playerLoseActions)
         {

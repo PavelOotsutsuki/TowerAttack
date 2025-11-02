@@ -1,13 +1,14 @@
 using System.Collections;
 using Cysharp.Threading.Tasks;
 using GameFields.EndTurnButtons;
+using GameFields.InputSettings;
 using GameFields.Persons.Hands;
 using Tools;
 using UnityEngine;
 
 namespace GameFields.Persons.Commons
 {
-    public class TurnProcessing : PersonStep
+    public class TurnProcessing : PersonStep, IInputLogicObject
     {
         private readonly SkipTurnChecker _skipTurnChecker;
 

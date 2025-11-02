@@ -13,7 +13,7 @@ using UnityEngine.EventSystems;
 
 namespace GameFields.Persons.SelectMenues.Commons
 {
-    public class SelectMenuPlayer : SelectMenu
+    public class SelectMenuPlayer : SelectMenu, IInputLogicObject, IQPressHandler, IEnterPressHandler
     {
         [SerializeField] private SelectNumberPanelPlayer _selectNumberPanelPlayer;
         [SerializeField] private SelectButton _selectButton;
@@ -36,29 +36,31 @@ namespace GameFields.Persons.SelectMenues.Commons
             base.Init(attackResultHandler, _selectNumberPanelPlayer, selectMenuLabelTextLogic);
         }
 
-        public IPointerClickHandler SelectModeButton => _selectModeButton;
-        public IPointerClickHandler SelectButton => _selectButton;
+        //public IPointerClickHandler SelectModeButton => _selectModeButton;
+        //public IPointerClickHandler SelectButton => _selectButton;
 
         public override void Activate(SelectMenuActivateData activateData)
         {
             if (IsActive == true)
                 return;
 
-            if (this is ChoiceMenuPlayer)
-            {
-                _inputRoot.SetInputType(InputType.ChoiceMenu);
-            }
-
-            if (this is AttackMenuPlayer)
-            {
-                _inputRoot.SetInputType(InputType.AttackMenu);
-            }
+            _inputRoot.SetInputType(this);
 
             _currentNeedForActivate = activateData.NeedSelect;
 
             base.Activate(activateData);
 
             _selectModeButton.Activate();
+        }
+
+        void IEnterPressHandler.OnEnter()
+        {
+            _selectButton.OnPointerClick(null);
+        }
+
+        void IQPressHandler.OnQ()
+        {
+            _selectModeButton.OnPointerClick(null);
         }
 
         protected override List<ICompletable> FillCompletableElements()

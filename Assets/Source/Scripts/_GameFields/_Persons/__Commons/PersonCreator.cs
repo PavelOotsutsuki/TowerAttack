@@ -209,9 +209,7 @@ namespace GameFields.Persons.Commons
             _cardWatcher = cardRoot;
 
             _skipTurnLabel.Init();
-            _inputRoot = new InputRoot(_endTurnButton, _playerChoiceMenu.SelectModeButton, _playerAttackMenu.SelectModeButton,
-                _playerChoiceMenu.SelectButton, _playerAttackMenu.SelectButton, _playerLookCardMenu.LookCardMenuButton,
-                _playerLookCardMenu.LeftSwitch, _playerLookCardMenu.RightSwitch, _fightMenu, _fightMenu.FightMenuButtonsPanel);
+            _inputRoot = new InputRoot(_endTurnButton, _fightMenu, _fightMenu);
 
             _enemyLoseActions = new LoseActions(_enemyTower, _enemyTower, _playerHand, _bus);
             _playerLoseActions = new LoseActions(_playerTower, _playerTower, _playerHand, _bus);

@@ -1,13 +1,14 @@
 using System.Collections;
 using Cysharp.Threading.Tasks;
 using GameFields.EndTurnButtons;
+using GameFields.InputSettings;
 using GameFields.Persons.EffectHandlers;
 using GameFields.Persons.Hands;
 using UnityEngine;
 
 namespace GameFields.Persons.Commons
 {
-    public class EndTurnProcessing : PersonStep
+    public class EndTurnProcessing : PersonStep, IInputLogicObject
     {
         private readonly IEndTurnButtonStateWatcher _endTurnButtonStateWatcher;
         private readonly PersonEffectsHandler _personEffectsHandler;

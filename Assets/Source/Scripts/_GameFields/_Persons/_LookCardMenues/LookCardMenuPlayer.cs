@@ -15,7 +15,8 @@ using UnityEngine.EventSystems;
 
 namespace GameFields.Persons.LookCardMenues
 {
-    public class LookCardMenuPlayer : MonoBehaviour, ILookCardMenu, IAutomaticFillComponents
+    public class LookCardMenuPlayer : MonoBehaviour, ILookCardMenu, IInputLogicObject, IEnterPressHandler,
+        IRightArrowPressHandler, ILeftArrowPressHandler, IAutomaticFillComponents
     {
         //[SerializeField] private LookCardMenuSeat[] _seats;
         [SerializeField] private LookCardMenuSeatPanelRoot _seatPanelRoot;
@@ -31,9 +32,9 @@ namespace GameFields.Persons.LookCardMenues
         private bool _isComplete;
 
         //public int MaxSeats => _seats.Length;
-        public IPointerClickHandler LookCardMenuButton => _lookCardMenuButton;
-        public IPointerClickHandler RightSwitch => _seatPanelRoot.RightSwitch;
-        public IPointerClickHandler LeftSwitch => _seatPanelRoot.LeftSwitch;
+        //public IPointerClickHandler LookCardMenuButton => _lookCardMenuButton;
+        //public IPointerClickHandler RightSwitch => _seatPanelRoot.RightSwitch;
+        //public IPointerClickHandler LeftSwitch => _seatPanelRoot.LeftSwitch;
 
         public bool IsComplete => _isComplete;
 
@@ -65,7 +66,7 @@ namespace GameFields.Persons.LookCardMenues
             _isComplete = false;
 
             gameObject.SetActive(true);
-            _inputRoot.SetInputType(InputType.LookCardMenu);
+            _inputRoot.SetInputType(this);
 
             _seatPanelRoot.Activate(data.LookCardMenuSeatPanelRootActivateData);
 
@@ -77,13 +78,6 @@ namespace GameFields.Persons.LookCardMenues
             _lookCardMenuPanel.Show();
 
             StartCoroutine(ActivatingButton());
-        }
-
-        private IEnumerator ActivatingButton()
-        {
-            yield return new WaitForSeconds(2f);
-
-            _lookCardMenuButton.Activate();
         }
 
         public void Deactivate()
@@ -100,6 +94,28 @@ namespace GameFields.Persons.LookCardMenues
             _lookCardMenuButton.Deactivate();
 
             Deactivating().ToUniTask();
+        }
+
+        void IEnterPressHandler.OnEnter()
+        {
+            _lookCardMenuButton.OnPointerClick(null);
+        }
+
+        void IRightArrowPressHandler.OnRightArrow()
+        {
+            _seatPanelRoot.RightSwitch.OnPointerClick(null);
+        }
+
+        void ILeftArrowPressHandler.OnLeftArrow()
+        {
+            _seatPanelRoot.LeftSwitch.OnPointerClick(null);
+        }
+
+        private IEnumerator ActivatingButton()
+        {
+            yield return new WaitForSeconds(2f);
+
+            _lookCardMenuButton.Activate();
         }
 
         private IEnumerator Deactivating()
@@ -154,7 +170,6 @@ namespace GameFields.Persons.LookCardMenues
         {
             return AutomaticFillComponents.DefineComponent(this, ref _canvasGroup, ComponentLocationTypes.InThis);
         }
-
         #endregion
     }
 }

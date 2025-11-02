@@ -1,9 +1,10 @@
+using GameFields.InputSettings;
 using GameFields.Persons.Commons;
 using GameFields.Persons.EffectHandlers;
 
 namespace GameFields.Persons.EnemyProcessImitations
 {
-    public class OnBeforeEndTurnProcessing : PersonStep
+    public class OnBeforeEndTurnProcessing : PersonStep, IInputLogicObject
     {
         private readonly PersonEffectsHandler _personEffectsHandler;
 

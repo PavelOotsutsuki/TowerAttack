@@ -1,3 +1,4 @@
+using System;
 using GameFields.InputSettings;
 using GameFields.Persons.Commons;
 using GameFields.Persons.DrawCards;
@@ -48,13 +49,15 @@ namespace GameFields
                 case StartTurnDrawPlayer:
                     SetStartTurnDrawPlayerStates();
                     break;
-                case TurnProcessing:
+                case TurnProcessing turnProcessing:
+                    _inputRoot.SetInputType(turnProcessing);
                     SetTurnProcessingStates();
                     break;
                 //case CardEffectProcessingPlayer:
                 //    SetCardActionProcessingPlayerStates();
                 //    break;
-                case EndTurnProcessing:
+                case EndTurnProcessing endTurnProcessing:
+                    _inputRoot.SetInputType(endTurnProcessing);
                     SetEndTurnProcessingStates();
                     break;
                 //case CardAttackProcessingPlayer:
@@ -67,11 +70,18 @@ namespace GameFields
                 case EnemySkipTurnView:
                     SetEnemyAIStates();
                     break;
-                case EnemyDragAndDropImitation:
-                case CardActionProcessingEnemyAI:
-                case OnBeforeEndTurnProcessing:
+                case EnemyDragAndDropImitation enemyDragAndDropImitation:
+                    _inputRoot.SetInputType(enemyDragAndDropImitation);
+                    SetEnemyAIActionsStates();
+                    break;
+                case CardActionProcessingEnemyAI cardActionProcessingEnemyAI:
+                    _inputRoot.SetInputType(cardActionProcessingEnemyAI);
+                    SetEnemyAIActionsStates();
+                    break;
+                case OnBeforeEndTurnProcessing onBeforeEndTurnProcessing:
                     //case CardEffectProcessingEnemyAI:
                     //case CardAttackProcessingEnemyAI:
+                    _inputRoot.SetInputType(onBeforeEndTurnProcessing);
                     SetEnemyAIActionsStates();
                     break;
                 default:
@@ -110,8 +120,6 @@ namespace GameFields
 
         private void SetTurnProcessingStates()
         {
-            _inputRoot.SetInputType(InputType.FightProcessing);
-
             _dragAndDropBlockable.Unblock();
             _tower.Activate();
             _table.Activate();
@@ -136,8 +144,6 @@ namespace GameFields
 
         private void SetEndTurnProcessingStates()
         {
-            _inputRoot.SetInputType(InputType.EndTurnButton);
-
             _dragAndDropBlockable.Unblock();
             _tower.Deactivate();
             _table.Deactivate();
@@ -164,8 +170,6 @@ namespace GameFields
 
         private void SetEnemyAIActionsStates()
         {
-            _inputRoot.SetInputType(InputType.FightProcessing);
-
             _dragAndDropBlockable.Unblock();
             _tower.Deactivate();
             _table.Deactivate();

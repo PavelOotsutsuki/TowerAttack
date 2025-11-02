@@ -11,10 +11,11 @@ using System.Linq;
 using GameFields.Persons.Commons;
 using Codice.Utils;
 using GameFields.Persons.EffectHandlers;
+using GameFields.InputSettings;
 
 namespace GameFields.Persons.EnemyProcessImitations
 {
-    public class EnemyDragAndDropImitation: PersonStep
+    public class EnemyDragAndDropImitation: PersonStep, IInputLogicObject
     {
         private const int CountLogics = 1;
         //private const float SelectYDirection = 1;
