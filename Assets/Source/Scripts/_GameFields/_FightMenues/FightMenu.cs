@@ -46,7 +46,7 @@ namespace GameFields.FightMenues
             if (IsActive == true || _isComplete == false)
                 return;
 
-            _inputRoot.Disable();
+            _inputRoot.Pause();
             _isComplete = false;
             IsActive = true;
 
@@ -68,7 +68,7 @@ namespace GameFields.FightMenues
 
             IsActive = false;
             _isComplete = false;
-            _inputRoot.Disable();
+            _inputRoot.Pause();
             _inputRoot.DeactivateFightMenu();
 
             Deactivating().ToUniTask();

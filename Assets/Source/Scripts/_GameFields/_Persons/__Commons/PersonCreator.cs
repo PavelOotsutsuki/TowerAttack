@@ -207,12 +207,15 @@ namespace GameFields.Persons.Commons
             _endTurnButton = endTurnButton;
             _informationLabel = informationLabel;
             _cardWatcher = cardRoot;
+            _seatPool = seatPool;
 
             _skipTurnLabel.Init();
             _inputRoot = new InputRoot(_endTurnButton, _fightMenu, _fightMenu);
 
-            _enemyLoseActions = new LoseActions(_enemyTower, _enemyTower, _playerHand, _bus);
-            _playerLoseActions = new LoseActions(_playerTower, _playerTower, _playerHand, _bus);
+            _enemyLoseActions = new LoseActions(_enemyTower, _enemyTower, _playerHand, _bus, _inputRoot, _fightMenu,
+                _fightMenuActivateButton);
+            _playerLoseActions = new LoseActions(_playerTower, _playerTower, _playerHand, _bus, _inputRoot, _fightMenu,
+                _fightMenuActivateButton);
 
             _fightMenu.Init(_inputRoot, _playerLoseActions);
             _fightMenuActivateButton.Init(_fightMenu);
@@ -226,9 +229,6 @@ namespace GameFields.Persons.Commons
 
             _interactionActivator = new InteractionActivator(cardDragAndDropHandler, _towerActivator, _tableActivator, endTurnButton,
                 cardDragAndDropLightController, _forgingZone, _handTransferZone, _inputRoot);
-
-            _seatPool = seatPool;
-
 
             _confirmableNumbersPlayer = new ConfirmableNumbers(_attackedNumbersPlayer, _choicedNumbersPlayer, _cursedNumbersPlayer);
             _confirmableNumbersEnemyAI = new ConfirmableNumbers(_attackedNumbersEnemy, _choicedNumbersEnemy, _cursedNumbersEnemyAI);

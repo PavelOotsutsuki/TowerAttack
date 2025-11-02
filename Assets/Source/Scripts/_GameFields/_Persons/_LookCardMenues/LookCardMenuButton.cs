@@ -45,7 +45,7 @@ namespace GameFields.Persons.LookCardMenues
             if (IsActive != true)
                 return;
 
-            _inputRoot.Disable();
+            _inputRoot.Pause();
             _clickCallback.Deactivate();
         }
 

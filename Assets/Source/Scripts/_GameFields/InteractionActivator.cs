@@ -91,7 +91,7 @@ namespace GameFields
 
         private void SetStartPlayerTurnViewStates()
         {
-            _inputRoot.Disable();
+            _inputRoot.Pause();
 
             _dragAndDropBlockable.ForciblyBlock();
             _tower.Deactivate();
@@ -105,7 +105,7 @@ namespace GameFields
 
         private void SetStartTurnDrawPlayerStates()
         {
-            _inputRoot.Disable();
+            _inputRoot.Pause();
 
             _dragAndDropBlockable.ForciblyBlock();
             _tower.Deactivate();
@@ -156,7 +156,7 @@ namespace GameFields
 
         private void SetEnemyAIStates()
         {
-            _inputRoot.Disable();
+            _inputRoot.Pause();
 
             _dragAndDropBlockable.Unblock();
             _tower.Deactivate();
