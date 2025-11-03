@@ -15,6 +15,8 @@ namespace GameFields
             base.Activate();
 
             SetNormalSettings();
+
+            OnEnterClick(); //Пока тестирую включаю по дефотлу ускорение
         }
 
         protected override void OnEnterClick()

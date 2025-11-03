@@ -5,7 +5,6 @@ using Cysharp.Threading.Tasks;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
 namespace Tools.CommonAnimations
 {

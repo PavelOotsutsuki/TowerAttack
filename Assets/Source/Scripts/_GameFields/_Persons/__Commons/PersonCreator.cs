@@ -200,7 +200,7 @@ namespace GameFields.Persons.Commons
 
         public void Init(SignalBus bus, Deck deck, EndTurnButton endTurnButton, SeatPool seatPool,
             CardDragAndDropHandler cardDragAndDropHandler, CardDragAndDropLightController cardDragAndDropLightController,
-            InformationLabel informationLabel, ICardWatcher cardRoot)
+            InformationLabel informationLabel, ICardWatcher cardRoot, IVolume cardVolume, IVolume musicVolume)
         {
             _bus = bus;
             _deck = deck;
@@ -217,7 +217,7 @@ namespace GameFields.Persons.Commons
             _playerLoseActions = new LoseActions(_playerTower, _playerTower, _playerHand, _bus, _inputRoot, _fightMenu,
                 _fightMenuActivateButton);
 
-            _fightMenu.Init(_inputRoot, _playerLoseActions);
+            _fightMenu.Init(_inputRoot, _playerLoseActions, cardVolume, musicVolume);
             _fightMenuActivateButton.Init(_fightMenu);
 
             _playerFirePool = new FirePool(_fireContainer.GetTransform());

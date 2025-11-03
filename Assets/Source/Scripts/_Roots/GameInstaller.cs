@@ -19,11 +19,13 @@ using GameFields.Effects;
 using GameFields.Persons.Commons;
 using GameFields.InputSettings;
 using GameFields.FightMenues;
+using Tools.Utils.Screens;
 
 namespace Roots
 {
     public class GameInstaller : MonoInstaller
     {
+        [SerializeField] private ScreenRoot _screenRoot;
         [SerializeField] private CardDescription _cardDescription;
 
         [SerializeField] private InformationLabel _informationLabel;
@@ -72,6 +74,8 @@ namespace Roots
         public override void InstallBindings()
         {
             DeclareSignals();
+
+            Container.Bind<ScreenRoot>().FromInstance(_screenRoot).AsSingle();
 
             Container.Bind<CardDescription>().FromInstance(_cardDescription).AsSingle();
             _cardSoundVolume = new CardSoundVolume();

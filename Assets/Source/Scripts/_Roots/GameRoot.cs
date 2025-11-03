@@ -13,13 +13,12 @@ using UnityEngine;
 using Zenject;
 using CanvasSortOrders;
 using GameFields.InformationLabels;
-using GameFields.DiscardPiles;
 using GameFields.Persons.LookCardMenues;
 using GameFields.Persons.EffectHandlers.Brothers;
 using GameFields.Persons.EffectHandlers;
-using GameFields.Persons.Tables;
 using GameFields.InputSettings;
 using GameFields.FightMenues;
+using Tools.Utils.Screens;
 
 namespace Roots
 {
@@ -28,7 +27,6 @@ namespace Roots
         [SerializeField] private EndTurnButton _endTurnButton;
         [SerializeField] private CardRoot _cardRoot;
         [SerializeField] private GameFieldRoot _gameFieldRoot;
-        [SerializeField] private ScreenRoot _screenRoot;
         [SerializeField] private FontRoot _fontRoot;
         [SerializeField] private PersonCreator _personCreator;
         [SerializeField] private ObjectsLightControlsCreator _lightControlsCreator;
@@ -40,11 +38,11 @@ namespace Roots
         private void Construct(SignalBus bus, Deck deck, SeatPool seatPool, CardDescription cardDescription, HandPlayer handPlayer,
             InformationLabel informationLabel, LookCardMenuPlayer lookCardMenu, VariantCardCreator variantCardCreator,
             SoundRoot soundRoot, CardSoundVolume cardSoundVolume, FightMenuActivateButton fightMenuActivateButton,
-            FightMenu fightMenu)
+            ScreenRoot screenRoot)
         {
             GameFieldGC.GCOFF();
 
-            _screenRoot.Init();
+            screenRoot.Init();
             informationLabel.Init();
             _fontRoot.Init();
 
@@ -65,7 +63,7 @@ namespace Roots
                 cardDragAndDropLightController, _speedUpButtonSortOrder);
 
             _personCreator.Init(bus, deck, _endTurnButton, seatPool, cardDragAndDropHandler, cardDragAndDropLightController,
-                informationLabel, _cardRoot);
+                informationLabel, _cardRoot, cardSoundVolume, soundRoot);
 
             Player player = _personCreator.CreatePlayer();
             EnemyAI enemyAI = _personCreator.CreateEnemyAI();
@@ -197,7 +195,6 @@ namespace Roots
                 DefineEndTurnButton(),
                 DefineCardRoot(),
                 DefineGameFieldRoot(),
-                DefineScreenRoot(),
                 DefineFontRoot(),
                 DefinePersonCreator(),
                 DefineObjectsLightControlsCreator()
@@ -222,12 +219,6 @@ namespace Roots
         private ComponentAttachInfo DefineGameFieldRoot()
         {
             return AutomaticFillComponents.DefineComponent(this, ref _gameFieldRoot, ComponentLocationTypes.InThis);
-        }
-
-        [ContextMenu(nameof(DefineScreenRoot))]
-        private ComponentAttachInfo DefineScreenRoot()
-        {
-            return AutomaticFillComponents.DefineComponent(this, ref _screenRoot, ComponentLocationTypes.InThis);
         }
 
         [ContextMenu(nameof(DefineFontRoot))]

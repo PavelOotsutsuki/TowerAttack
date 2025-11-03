@@ -7,9 +7,7 @@ using System;
 using Random = UnityEngine.Random;
 using System.Collections.Generic;
 using Tools.Utils;
-using System.Linq;
 using GameFields.Persons.Commons;
-using Codice.Utils;
 using GameFields.Persons.EffectHandlers;
 using GameFields.InputSettings;
 

@@ -1,11 +1,8 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Tools;
-using Tools.UI;
 using Tools.Utils.FillComponents;
 using UnityEngine;
-using static PlasticPipe.Server.MonitorStats;
 
 namespace GameFields.InformationLabels
 {

@@ -15,19 +15,20 @@ namespace GameFields.FightMenues
     {
         [SerializeField] private FightMenuLabel _fightMenuLabel;
         [SerializeField] private FightMenuPanel _fightMenuPanel;
-        [SerializeField] private FightMenuButtonsPanel _fightMenuButtonsPanel;
+        [SerializeField] private FightMenuButtonsPanelRoot _fightMenuButtonsPanelRoot;
         [SerializeField] private CanvasGroup _canvasGroup;
 
         private InputRoot _inputRoot;
+        //private float _currentTimeScale;
 
         private bool _isComplete;
 
         public bool? IsActive { get; private set; } = null;
         public bool IsComplete => _isComplete;
 
-        public IFocusedButtonEnterHandler CurrentFightMenuButtonInputHandler => _fightMenuButtonsPanel;
+        public IFocusedButtonEnterHandler CurrentFightMenuButtonInputHandler => _fightMenuButtonsPanelRoot.CurrentFightMenuButtonInputHandler;
 
-        public void Init(InputRoot inputRoot, LoseActions playerLoseActions)
+        public void Init(InputRoot inputRoot, LoseActions playerLoseActions, IVolume cardVolume, IVolume musicVolume)
         {
             gameObject.SetActive(false);
             _isComplete = true;
@@ -38,7 +39,7 @@ namespace GameFields.FightMenues
 
             _fightMenuLabel.Init();
             _fightMenuPanel.Init();
-            _fightMenuButtonsPanel.Init(playerLoseActions, this);
+            _fightMenuButtonsPanelRoot.Init(playerLoseActions, this, cardVolume, musicVolume);
         }
 
         public void Activate()
@@ -70,6 +71,7 @@ namespace GameFields.FightMenues
             _isComplete = false;
             _inputRoot.Pause();
             _inputRoot.DeactivateFightMenu();
+            //Time.timeScale = _currentTimeScale;
 
             Deactivating().ToUniTask();
         }
@@ -78,12 +80,14 @@ namespace GameFields.FightMenues
         {
             _fightMenuLabel.Show();
             _fightMenuPanel.Show();
-            _fightMenuButtonsPanel.Activate();
+            _fightMenuButtonsPanelRoot.Activate();
 
-            yield return new WaitUntil(() => _fightMenuLabel.IsComplete && _fightMenuPanel.IsComplete && _fightMenuButtonsPanel.IsComplete);
+            yield return new WaitUntil(() => _fightMenuLabel.IsComplete && _fightMenuPanel.IsComplete && _fightMenuButtonsPanelRoot.IsComplete);
 
             _inputRoot.ActivateFightMenu();
 
+            //_currentTimeScale = Time.timeScale;
+            //Time.timeScale = 0;
             _isComplete = true;
         }
 
@@ -91,9 +95,9 @@ namespace GameFields.FightMenues
         {
             _fightMenuLabel.Hide();
             _fightMenuPanel.Hide();
-            _fightMenuButtonsPanel.Deactivate();
+            _fightMenuButtonsPanelRoot.Deactivate();
 
-            yield return new WaitUntil(() => _fightMenuLabel.IsComplete && _fightMenuPanel.IsComplete && _fightMenuButtonsPanel.IsComplete);
+            yield return new WaitUntil(() => _fightMenuLabel.IsComplete && _fightMenuPanel.IsComplete && _fightMenuButtonsPanelRoot.IsComplete);
 
             gameObject.SetActive(false);
             _inputRoot.DeactivateFightMenu();
@@ -149,7 +153,7 @@ namespace GameFields.FightMenues
         [ContextMenu(nameof(DefineFightMenuButtonsPanel))]
         private ComponentAttachInfo DefineFightMenuButtonsPanel()
         {
-            return AutomaticFillComponents.DefineComponent(this, ref _fightMenuButtonsPanel, ComponentLocationTypes.InChildren);
+            return AutomaticFillComponents.DefineComponent(this, ref _fightMenuButtonsPanelRoot, ComponentLocationTypes.InChildren);
         }
 
         [ContextMenu(nameof(DefineCanvasGroup))]
