@@ -4425,27 +4425,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2451411830209735220, guid: b0310c990d05043b7b956fafd0e51ef5, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2451411830209735220, guid: b0310c990d05043b7b956fafd0e51ef5, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2451411830209735220, guid: b0310c990d05043b7b956fafd0e51ef5, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2451411830209735220, guid: b0310c990d05043b7b956fafd0e51ef5, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2451411830209735220, guid: b0310c990d05043b7b956fafd0e51ef5, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1940
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2451411830209735220, guid: b0310c990d05043b7b956fafd0e51ef5, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 1100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2451411830209735220, guid: b0310c990d05043b7b956fafd0e51ef5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4906,10 +4906,8 @@ MonoBehaviour:
   _selectMenuPanel: {fileID: 2170603010936849293}
   _canvasGroup: {fileID: 1937732041585712849}
   _selectNumberPanelPlayer: {fileID: 3224567459744659312}
-  _data:
-    <SelectMenuLabelText>k__BackingField: "\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435
-      \u043D\u043E\u043C\u0435\u0440\u0430"
   _selectButton: {fileID: 5217844712891728708}
+  _selectModeButton: {fileID: 0}
 --- !u!225 &2880681349072774127 stripped
 CanvasGroup:
   m_CorrespondingSourceObject: {fileID: 8829143852807838014, guid: b0310c990d05043b7b956fafd0e51ef5, type: 3}

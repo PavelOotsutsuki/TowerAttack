@@ -99,7 +99,10 @@ namespace GameFields.EndTurnButtons
             //Vector3 downWay = new Vector2(_data.ButtonTransform.position.x, _data.ButtonTransform.position.y);
             Vector3 downWay = _data.ButtonTransform.localPosition;
 
+            //Debug.Log($"downWay = {downWay}, _data.ButtonTransform.localPosition = {_data.ButtonTransform.localPosition}, _data.ButtonTransform.position = {_data.ButtonTransform.position}" +
+            //    $", _data.ButtonTransform.rotation = {_data.ButtonTransform.rotation}, _data.ButtonTransform.localScale = {_data.ButtonTransform.localScale}");
             _endTurnButtonMovement.MoveLocalLinear(downWay, endRotationVector, duration, scaleVector);
+            //_endTurnButtonMovement.MoveLocalLinear(_startPosition, endRotationVector, duration, scaleVector);
         }
 
         private void InvertDeactiveSide(float duration, float rotation)
@@ -110,7 +113,10 @@ namespace GameFields.EndTurnButtons
             //Vector3 downWay = new Vector2(_data.ButtonTransform.position.x, _data.ButtonTransform.position.y);
             Vector3 downWay = _data.ButtonTransform.localPosition;
 
+    //        Debug.Log($"downWay = {downWay}, _data.ButtonTransform.localPosition = {_data.ButtonTransform.localPosition}, _data.ButtonTransform.position = {_data.ButtonTransform.position}" +
+    //$", _data.ButtonTransform.rotation = {_data.ButtonTransform.rotation}, _data.ButtonTransform.localScale = {_data.ButtonTransform.localScale}");
             _endTurnButtonMovement.MoveLocalSmoothly(downWay, endRotationVector, duration, scaleVector);
+            //_endTurnButtonMovement.MoveLocalSmoothly(_startPosition, endRotationVector, duration, scaleVector);
         }
 
         private void SetLockSide()

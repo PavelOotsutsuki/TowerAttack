@@ -22,7 +22,7 @@ namespace GameFields.EndTurnButtons
         {
             _changeSideAnimator = new ChangeSideAnimator(_data, _button);
 
-            Deactivate();
+            //Deactivate();
         }
 
         //public void Activate()

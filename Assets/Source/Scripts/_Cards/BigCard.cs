@@ -16,8 +16,6 @@ namespace Cards
         [SerializeField] private CardView _cardView;
         [SerializeField] private RectTransform _rectTransform;
         //[SerializeField] private CanvasScaler _canvasScaler;
-        private ICurrentResolutionInfo _currentResolutionInfo;
-
         private float _bigHeight;
         private float _bigWidth;
         private float _sizeFactor;
@@ -29,16 +27,10 @@ namespace Cards
         //public float BigWidth => _bigWidth;
         //public Vector2 Position => _rectTransform.position;
         //public Vector2 Size => _rectTransform.sizeDelta;
-        [Inject]
-        private void Construct(ScreenRoot screenRoot)
-        {
-            _currentResolutionInfo = screenRoot;
-        }
-
         public void Init()
         {
             _rectTransform.rotation = Quaternion.identity;
-            _canvasHeight = _currentResolutionInfo.Y;
+            _canvasHeight = ScreenView.Y();
 
             Hide();
         }

@@ -11,6 +11,7 @@ using Tools.Utils;
 using Tools.Utils.FillComponents;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
+using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
 namespace GameFields.Persons.Hands
@@ -24,8 +25,8 @@ namespace GameFields.Persons.Hands
         [SerializeField, Range(-1, 1)] private float _sortDirection;
 
         [SerializeField, Min(0f)] private float _offsetX = 162.5f;
-        [SerializeField] private float _handLength = 1175f;
-        [SerializeField] private float _startPositionX = 600f;
+        //[SerializeField] private float _handLength = 1175f;
+        //[SerializeField] private float _startPositionX = 600f;
         [SerializeField] private float _startPositionY = 90f;
         [SerializeField] private float _returnInSeatDuration = 0.5f;
         [SerializeField] private RectTransform _rectTransform;
@@ -54,6 +55,7 @@ namespace GameFields.Persons.Hands
 
         public int CountHandSeats => _handSeats.Count;
         public int CountCards => Cards.Count;
+        public float HandLength => _rectTransform.rect.width;
 
         public IEnumerable<Card> AllCards => Cards;
 
@@ -532,27 +534,28 @@ namespace GameFields.Persons.Hands
             float offsetX;
             float positionX;
 
-            if (_handSeats.Count * _offsetX < _handLength / 2)
+            if (_handSeats.Count * _offsetX < HandLength / 2)
             {
                 offsetX = _offsetX;
             }
             else
             {
                 float xFactor = _offsetX * _handSeats.Count;
-                float fullOffsetX = _handLength * xFactor / (xFactor + _handLength / 2);
+                float fullOffsetX = HandLength * xFactor / (xFactor + HandLength / 2);
 
                 offsetX = fullOffsetX / _handSeats.Count;
             }
 
             offsetX *= -1 * _sortDirection;
+            float startPositionX = _rectTransform.rect.width / 2f;
 
             for (int i = 0; i < _handSeats.Count; i++)
             {
-                positionX = _startPositionX + ((_handSeats.Count - 1) / 2f - i) * offsetX;
-                Vector3 positon = new Vector2(positionX + _rectTransform.rect.xMin, _startPositionY + _rectTransform.rect.yMin);
+                positionX = startPositionX + ((_handSeats.Count - 1) / 2f - i) * offsetX;
+                Vector3 position = new Vector2(positionX + _rectTransform.rect.xMin, _startPositionY + _rectTransform.rect.yMin);
                 Vector3 rotation = new Vector3(0f, 0f, StartRotation);
 
-                _handSeats[i].SetLocalPositionValues(positon, rotation, _returnInSeatDuration);
+                _handSeats[i].SetLocalPositionValues(position, rotation, _returnInSeatDuration);
             }
         }
 

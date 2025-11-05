@@ -27,19 +27,7 @@ namespace GameFields.FightMenues
         private IVolume _cardVolume;
         private IVolume _musicVolume;
 
-        private IResolutionInfo _resolutionInfo;
-        private ICurrentResolutionInfo _currentResolutionInfo;
-        private IResolutionSetter _resolutionSetter;
-
         public override bool? IsActive { get; protected set; } = null;
-
-        [Inject]
-        private void Construct(ScreenRoot screenRoot)
-        {
-            _resolutionInfo = screenRoot;
-            _currentResolutionInfo = screenRoot;
-            _resolutionSetter = screenRoot;
-        }
 
         public void Init(Action onClickGoBackOnMainPanelButton, IVolume cardVolume, IVolume musicVolume)
         {
@@ -50,24 +38,21 @@ namespace GameFields.FightMenues
             _cardVolumeSlider.value = cardVolume.Percent;
             _musicVlumeSlider.value = musicVolume.Percent;
 
-            IEnumerable<ResolutionType> resolutionTypes = Enum.GetValues(typeof(ResolutionType)).Cast<ResolutionType>();
-            List<OptionData> optionDatas = new List<OptionData>();
-            int currentIndex = -1;
+            //IEnumerable<ResolutionType> resolutionTypes = Enum.GetValues(typeof(ResolutionType)).Cast<ResolutionType>();
+            //List<OptionData> optionDatas = new List<OptionData>();
+            //int currentIndex = -1;
 
-            foreach (ResolutionType resolutionType in resolutionTypes)
-            {
-                OptionData optionData = new OptionData(_resolutionInfo.GetResolutionText(resolutionType));
-                optionDatas.Add(optionData);
+            //foreach (ResolutionType resolutionType in resolutionTypes)
+            //{
+            //    OptionData optionData = new OptionData(_resolutionInfo.GetResolutionText(resolutionType));
+            //    optionDatas.Add(optionData);
 
-                if (_currentResolutionInfo.Type == resolutionType)
-                    currentIndex = optionDatas.Count - 1;
-            }
+            //    if (_currentResolutionInfo.Type == resolutionType)
+            //        currentIndex = optionDatas.Count - 1;
+            //}
 
-            _screenDropdown.AddOptions(optionDatas);
-            _screenDropdown.value = currentIndex;
-
-            //_screenDropdown.ad
-            //_screenDropdown.value = 
+            //_screenDropdown.AddOptions(optionDatas);
+            //_screenDropdown.value = currentIndex;
 
             _cardVolumeSlider.onValueChanged.AddListener(OnCardSliderValueChanged);
             _musicVlumeSlider.onValueChanged.AddListener(OnMusicSliderValueChanged);
@@ -107,7 +92,7 @@ namespace GameFields.FightMenues
 
         private void OnScreenDropdownValueChanged(int value)
         {
-            _resolutionSetter.SetResolution(_resolutionInfo.GetResolutionType(_screenDropdown.options[value].text));
+            //_resolutionSetter.SetResolution(_resolutionInfo.GetResolutionType(_screenDropdown.options[value].text));
         }
 
         private IEnumerator ActivatingGoBackOnMainPanelButton()

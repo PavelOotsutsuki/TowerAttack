@@ -19,12 +19,14 @@ using GameFields.Persons.EffectHandlers;
 using GameFields.InputSettings;
 using GameFields.FightMenues;
 using Tools.Utils.Screens;
+using System.Collections;
 
 namespace Roots
 {
     public class GameRoot : MonoBehaviour, IAutomaticFillComponents
     {
         [SerializeField] private EndTurnButton _endTurnButton;
+        [SerializeField] private CanvasRoot _canvasRoot;
         [SerializeField] private CardRoot _cardRoot;
         [SerializeField] private GameFieldRoot _gameFieldRoot;
         [SerializeField] private FontRoot _fontRoot;
@@ -37,12 +39,13 @@ namespace Roots
         [Inject]
         private void Construct(SignalBus bus, Deck deck, SeatPool seatPool, CardDescription cardDescription, HandPlayer handPlayer,
             InformationLabel informationLabel, LookCardMenuPlayer lookCardMenu, VariantCardCreator variantCardCreator,
-            SoundRoot soundRoot, CardSoundVolume cardSoundVolume, FightMenuActivateButton fightMenuActivateButton,
-            ScreenRoot screenRoot)
+            SoundRoot soundRoot, CardSoundVolume cardSoundVolume, FightMenuActivateButton fightMenuActivateButton)
         {
+            //StartCoroutine(Initing(bus, deck, seatPool, cardDescription, handPlayer, informationLabel, lookCardMenu, variantCardCreator, soundRoot,
+            //    cardSoundVolume, fightMenuActivateButton, screenRoot));
             GameFieldGC.GCOFF();
 
-            screenRoot.Init();
+            _canvasRoot.Init();
             informationLabel.Init();
             _fontRoot.Init();
 
@@ -90,6 +93,64 @@ namespace Roots
 
             _gameFieldRoot.Init(_personsState, enemyAI, bus, seatPool, soundRoot, fightMenuActivateButton);
         }
+
+        //private IEnumerator Initing(SignalBus bus, Deck deck, SeatPool seatPool, CardDescription cardDescription, HandPlayer handPlayer,
+        //    InformationLabel informationLabel, LookCardMenuPlayer lookCardMenu, VariantCardCreator variantCardCreator,
+        //    SoundRoot soundRoot, CardSoundVolume cardSoundVolume, FightMenuActivateButton fightMenuActivateButton,
+        //    ScreenRoot screenRoot)
+        //{
+        //    yield return new WaitForSeconds(0.1f); // Дадим сцене все прогрузить
+
+        //    GameFieldGC.GCOFF();
+
+        //    screenRoot.Init();
+        //    informationLabel.Init();
+        //    _fontRoot.Init();
+
+        //    seatPool.Init();
+        //    _endTurnButton.Init();
+
+        //    _lightControlsCreator.Init();
+        //    _speedUpButtonSortOrder.Init();
+
+        //    variantCardCreator.Init();
+        //    soundRoot.Init();
+
+        //    CardDragAndDropLightController cardDragAndDropLightController = _lightControlsCreator.CreateCardDragAndDropLightController();
+
+        //    //Destroy(_lightControlsCreator.gameObject);
+
+        //    CardDragAndDropHandler cardDragAndDropHandler = new CardDragAndDropHandler(handPlayer, handPlayer,
+        //        cardDragAndDropLightController, _speedUpButtonSortOrder);
+
+        //    _personCreator.Init(bus, deck, _endTurnButton, seatPool, cardDragAndDropHandler, cardDragAndDropLightController,
+        //        informationLabel, _cardRoot, cardSoundVolume, soundRoot);
+
+        //    Player player = _personCreator.CreatePlayer();
+        //    EnemyAI enemyAI = _personCreator.CreateEnemyAI();
+        //    CardLocationViewRoot viewRoot = _personCreator.CreateCardLocationViewRoot();
+        //    CardTransitManager cardTransitManager = _personCreator.CreateCardTransitManager();
+        //    BrothersEffectHandlerRoot brothersEffectHandlerRoot = _personCreator.CreateBrothersEffectHandlerRoot();
+        //    PersonEffectsHandlerRoot personEffectsHandlerRoot = _personCreator.CreatePersonEffectsHandlerRoot();
+        //    DiscardManager discardManager = _personCreator.DiscardManager;
+        //    InputRoot inputRoot = _personCreator.GetInputRoot();
+        //    LoseActionsRoot loseActionsRoot = _personCreator.CreateLoseActionsRoot();
+
+        //    lookCardMenu.Init(inputRoot);
+
+        //    Destroy(_personCreator.gameObject);
+
+        //    _personsState = new PersonsState(player, enemyAI);
+        //    //fightMenu.
+
+        //    EffectFactory effectFactory = new EffectFactory(_personsState, viewRoot, informationLabel, cardTransitManager,
+        //        variantCardCreator, brothersEffectHandlerRoot, bus, personEffectsHandlerRoot, discardManager, loseActionsRoot);
+
+        //    _cardRoot.Init(effectFactory, cardDescription, cardDragAndDropHandler, cardSoundVolume);
+        //    deck.Init(seatPool, _cardRoot.Cards);
+
+        //    _gameFieldRoot.Init(_personsState, enemyAI, bus, seatPool, soundRoot, fightMenuActivateButton);
+        //}
 
         public void OnDestroy()
         {
@@ -193,6 +254,7 @@ namespace Roots
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
                 DefineEndTurnButton(),
+                DefineCanvasRoot(),
                 DefineCardRoot(),
                 DefineGameFieldRoot(),
                 DefineFontRoot(),
@@ -207,6 +269,12 @@ namespace Roots
         private ComponentAttachInfo DefineEndTurnButton()
         {
             return AutomaticFillComponents.DefineComponent(this, ref _endTurnButton, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineCanvasRoot))]
+        private ComponentAttachInfo DefineCanvasRoot()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _canvasRoot, ComponentLocationTypes.InThis);
         }
 
         [ContextMenu(nameof(DefineCardRoot))]

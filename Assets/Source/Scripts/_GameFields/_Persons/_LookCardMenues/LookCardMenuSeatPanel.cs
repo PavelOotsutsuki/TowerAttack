@@ -75,12 +75,16 @@ namespace GameFields.Persons.LookCardMenues
             //Debug.Log("Convert.ToInt32(1.1f): " + Convert.ToInt32(1.1f));
             //Debug.Log("Convert.ToInt32(1.5f): " + Convert.ToInt32(1.5f));
             //Debug.Log("Convert.ToInt32(1.9f): " + Convert.ToInt32(1.9f));
-
-            _thisWidth = _ROTransform.GetWidth();
-            _thisHeight = _ROTransform.GetHeight();
-
             _defaultCardSize = GameSettings.CardSize;
             _minSeatSize = _defaultCardSize * _minCardSizeScale;
+
+            float indentX = 160f;
+            float indentY = _minSeatSize.y / 2f;
+
+            _thisWidth = _ROTransform.GetWidth() - indentX * 2f + _minSeatSize.x; // Подводим к тому, что indent = _minSeatSize / 2f
+            _thisHeight = _ROTransform.GetHeight() - indentY * 2f + _minSeatSize.y; // Подводим к тому, что indent = _minSeatSize / 2f
+
+
 
             // Тк размер поля должен вмещать в себя не только карты но и indent-ы между картами и на краях, берем что indent = 0.5 * карты
             // Итого: из-за indent-а между картами + 1-го indent-a скраю, надо делить на size карты + size карты / 2f = 1.5f * size карты
@@ -89,10 +93,13 @@ namespace GameFields.Persons.LookCardMenues
             // Пример2: карта 200, поле 700, помещается ровно 2 карты тк + 2 крайних и 1 между indent
             _maxSeatsInWidth = (int)((_thisWidth - _minSeatSize.x / 2f) / (_minSeatSize.x * 1.5f));
             _maxSeatsInHeight = (int)((_thisHeight - _minSeatSize.y / 2f) / (_minSeatSize.y * 1.5f));
+            //_maxSeatsInWidth = (int)((_thisWidth - 2f * indentX + _minSeatSize.x / 2f) / (1.5f * _minSeatSize.x));
+            //_maxSeatsInHeight = (int)((_thisHeight - 2f * indentY + _minSeatSize.y / 2f) / (_minSeatSize.y * 1.5f));
             _maxSeats = _maxSeatsInWidth * _maxSeatsInHeight;
 
             _maxSeatSize = _defaultCardSize * _maxCardSizeScale;
             _maxSeatsInWidthByMaxSeatSize = (int)((_thisWidth - _maxSeatSize.x / 2f) / (_maxSeatSize.x * 1.5f));
+            //_maxSeatsInWidthByMaxSeatSize = (int)((_thisWidth - 2f * indentX + _maxSeatSize.x / 2f) / (1.5f * _maxSeatSize.x));
 
             _lastIndex = -1;
             //_offset = 0f;
@@ -390,7 +397,7 @@ namespace GameFields.Persons.LookCardMenues
                 int restInRow = countAll % countInColumn;
                 int rowWhereIncreaseCountCards = countInColumn - restInRow;
 
-                float widthByWidth = 2f * _thisWidth / (3f * countInRow + 1f);
+                float widthByWidth = 2f * _thisWidth / (3f * (countInRow + restInRow) + 1f);
                 float heightByWidth = widthByWidth * _defaultCardSize.y / _defaultCardSize.x;
 
                 float heightByHeight = 2f * _thisHeight / (3f * countInColumn + 1f);

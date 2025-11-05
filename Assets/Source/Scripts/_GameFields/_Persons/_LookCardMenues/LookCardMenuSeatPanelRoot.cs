@@ -42,10 +42,10 @@ namespace GameFields.Persons.LookCardMenues
 
         public void Init()
         {
-            for (int i = 0; i < _startCountPanels; i++)
-            {
-                CreatePanel();
-            }
+            //for (int i = 0; i < _startCountPanels; i++)
+            //{
+            //    CreatePanel();
+            //}
 
             _rightSwitch.Init(NextSwitch);
             _leftSwitch.Init(PreviousSwitch);
@@ -74,6 +74,8 @@ namespace GameFields.Persons.LookCardMenues
             //    _rightSwitch.gameObject.SetActive(true);
             //    //lookCardMenuSeatPanelActivateData
             //}
+
+            DestroyPanels();
 
             _currentPanelIndex = -1;
 
@@ -218,6 +220,20 @@ namespace GameFields.Persons.LookCardMenues
             _seatPanels.Add(lookCardMenuSeatPanel);
             lookCardMenuSeatPanel.Init(_description, _bigCard);
         }
+
+        private void DestroyPanels()
+        {
+            if (_seatPanels.Count > 0)
+            {
+                foreach (LookCardMenuSeatPanel panel in _seatPanels)
+                {
+                    Destroy(panel.gameObject);
+                }
+
+                _seatPanels.Clear();
+            }
+        }
+
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(LookCardMenuSeatPanelRoot))]

@@ -16,7 +16,7 @@ namespace GameFields
 
             SetNormalSettings();
 
-            OnEnterClick(); //Пока тестирую включаю по дефотлу ускорение
+            //OnEnterClick(); //Пока тестирую включаю по дефотлу ускорение
         }
 
         protected override void OnEnterClick()

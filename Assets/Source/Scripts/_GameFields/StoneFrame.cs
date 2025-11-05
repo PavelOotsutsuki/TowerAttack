@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Tools;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Movements;
+using Tools.Utils.Screens;
 using UnityEngine;
 
 namespace GameFields
@@ -15,6 +16,8 @@ namespace GameFields
         private float _thisHeight;
         private float _thisWidth;
 
+        private readonly List<Stone> _currentStones = new List<Stone>();
+
         //private readonly List<Stone> _points = new List<Stone>();
         //private readonly Dictionary<Stone, Vector2> _stonesInfo = new Dictionary<Stone, Vector2>();
 
@@ -24,6 +27,27 @@ namespace GameFields
         {
             _ROTransform = new ReadOnlyRectTransform(_targetTransform);
 
+            Deactivate();
+        }
+
+        public void Activate()
+        {
+            CreateFrame();
+
+            gameObject.SetActive(true);
+        }
+
+        public void Deactivate()
+        {
+            gameObject.SetActive(false);
+        }
+
+        private void CreateFrame()
+        {
+            ClearFrame();
+            //Vector2 sizeDelta = _ROTransform.GetSizeDelta();
+            //_thisHeight = sizeDelta.y;
+            //_thisWidth = sizeDelta.x;
             _thisHeight = _ROTransform.GetHeight();
             _thisWidth = _ROTransform.GetWidth();
 
@@ -32,6 +56,15 @@ namespace GameFields
             //    ReadOnlyRectTransform stoneTransform = new ReadOnlyRectTransform((RectTransform)stone.transform);
             //    _stonesInfo.Add(stone, stoneTransform.GetRect());
             //}
+
+            //float factorX = ScreenView.GetFactorX();
+            //float factorY = ScreenView.GetFactorY();
+
+            //Debug.Log($"sizeDelta = {_ROTransform.GetSizeDelta()}, rect = {_ROTransform.GetRect()},");
+            //Debug.Log($"factorX = {factorX}, factorY = {factorY}");
+            //factorX = 1f;
+            //factorY = 1f;
+
 
             Vector2 leftUpPoint = new Vector2(_thisWidth / 2f * (-1f), _thisHeight / 2f);
             Vector2 leftDownPoint = new Vector2(_thisWidth / 2f * (-1f), _thisHeight / 2f * (-1f));
@@ -42,18 +75,19 @@ namespace GameFields
             SetPoints(leftDownPoint, rightDownPoint);
             SetPoints(rightDownPoint, rightUpPoint);
             SetPoints(rightUpPoint, leftUpPoint);
-
-            Deactivate();
         }
 
-        public void Activate()
+        private void ClearFrame()
         {
-            gameObject.SetActive(true);
-        }
+            if (_currentStones.Count > 0)
+            {
+                foreach (Stone stone in _currentStones)
+                {
+                    Destroy(stone.gameObject);
+                }
 
-        public void Deactivate()
-        {
-            gameObject.SetActive(false);
+                _currentStones.Clear();
+            }
         }
 
         private void SetPoints(Vector2 startPosition, Vector2 endPosition)
@@ -74,6 +108,9 @@ namespace GameFields
             float? verticalFactor = Mathf.Approximately(direction.x, 0f) ? null : direction.y / direction.x;
             float? horizontalFactor = Mathf.Approximately(direction.y, 0f) ? null : direction.x / direction.y;
 
+            //Debug.Log($"startPosition = {startPosition}, endPosition = {endPosition}, currentPosition = {currentPosition}, " +
+            //    $"verticalFactor: {verticalFactor}, horizontalFactor = {horizontalFactor}");
+
             while (
                 (Mathf.Abs(direction.x) > Mathf.Abs(currentPosition.x - startPosition.x) || Mathf.Approximately(direction.x, 0f)) &&
                 (Mathf.Abs(direction.y) > Mathf.Abs(currentPosition.y - startPosition.y) || Mathf.Approximately(direction.y, 0f))
@@ -83,6 +120,7 @@ namespace GameFields
 
                 Stone stone = Instantiate(template, _targetTransform);
                 //_points.Add(stone);
+                _currentStones.Add(stone);
 
                 float offsetX = Random.Range(StoneWidthMaxOffset * (-1f), StoneWidthMaxOffset);
                 float offsetY = Random.Range(StoneHeightMaxOffset * (-1f), StoneHeightMaxOffset);

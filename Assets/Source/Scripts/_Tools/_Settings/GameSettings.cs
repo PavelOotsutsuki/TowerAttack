@@ -9,7 +9,7 @@ namespace Tools.Settings
         public const LanguageType Language = LanguageType.RU;
         public const float DefaultEffectDelayBeforeComplete = 1f;
         public static readonly Vector2 CardSize = new Vector2(150f, 210f);
-        public static readonly ResolutionType DefaultResolutionType = ResolutionType._1920x1080;
+        public static readonly Vector2 CanvasReferenceResolution = new Vector2(1920f, 1080f);
         public static readonly int[] DefaultCardNumbers = new int[50]
         //{
         //     1, 2, 3, 4, 5, 6, 7, 8, 9,10,
