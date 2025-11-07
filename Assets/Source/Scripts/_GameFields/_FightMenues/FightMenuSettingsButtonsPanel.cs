@@ -3,17 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Tools;
-using System.Linq;
-using Tools.Utils;
 using Tools.Utils.FillComponents;
-using Tools.Utils.Screens;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Zenject;
 using static TMPro.TMP_Dropdown;
-using static UnityEngine.UI.Slider;
 using TMPro;
+using Tools.Utils.Screens;
 
 namespace GameFields.FightMenues
 {
@@ -22,22 +19,29 @@ namespace GameFields.FightMenues
         [SerializeField] private GoBackOnMainPanelButton _goBackOnMainPanelButton;
         [SerializeField] private Slider _cardVolumeSlider;
         [SerializeField] private Slider _musicVlumeSlider;
-        [SerializeField] private TMP_Dropdown _screenDropdown;
+        [SerializeField] private ExtendedDropdown _screenDropdown;
 
         private IVolume _cardVolume;
         private IVolume _musicVolume;
+        private ScreenRoot _screenRoot;
 
         public override bool? IsActive { get; protected set; } = null;
 
+        [Inject]
+        private void Construct(ScreenRoot screenRoot)
+        {
+            _screenRoot = screenRoot;
+        }
+
         public void Init(Action onClickGoBackOnMainPanelButton, IVolume cardVolume, IVolume musicVolume)
         {
+            //_screenDropdown.Init();
             _goBackOnMainPanelButton.Init(onClickGoBackOnMainPanelButton);
             _cardVolume = cardVolume;
             _musicVolume = musicVolume;
 
             _cardVolumeSlider.value = cardVolume.Percent;
             _musicVlumeSlider.value = musicVolume.Percent;
-
             //IEnumerable<ResolutionType> resolutionTypes = Enum.GetValues(typeof(ResolutionType)).Cast<ResolutionType>();
             //List<OptionData> optionDatas = new List<OptionData>();
             //int currentIndex = -1;
@@ -53,6 +57,22 @@ namespace GameFields.FightMenues
 
             //_screenDropdown.AddOptions(optionDatas);
             //_screenDropdown.value = currentIndex;
+
+            IEnumerable<Resolution> resolutions = _screenRoot.Resolutions;
+            List<OptionData> optionDatas = new List<OptionData>();
+            int currentIndex = -1;
+
+            foreach (Resolution resolution in resolutions)
+            {
+                OptionData optionData = new OptionData(_screenRoot.GetResolutionData(resolution));
+                optionDatas.Add(optionData);
+
+                if (_screenRoot.CurrentResolution.Equals(resolution))
+                    currentIndex = optionDatas.Count - 1;
+            }
+
+            _screenDropdown.AddOptions(optionDatas);
+            _screenDropdown.value = currentIndex;
 
             _cardVolumeSlider.onValueChanged.AddListener(OnCardSliderValueChanged);
             _musicVlumeSlider.onValueChanged.AddListener(OnMusicSliderValueChanged);
@@ -92,7 +112,8 @@ namespace GameFields.FightMenues
 
         private void OnScreenDropdownValueChanged(int value)
         {
-            //_resolutionSetter.SetResolution(_resolutionInfo.GetResolutionType(_screenDropdown.options[value].text));
+            string variant = _screenDropdown.options[value].text;
+            _screenRoot.SetResolution(_screenRoot.GetResolutionData(variant));
         }
 
         private IEnumerator ActivatingGoBackOnMainPanelButton()

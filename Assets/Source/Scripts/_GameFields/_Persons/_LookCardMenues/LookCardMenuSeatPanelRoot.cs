@@ -4,6 +4,7 @@ using System.Linq;
 using Cards;
 using Tools;
 using Tools.Utils.FillComponents;
+using Tools.Utils.Screens;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
@@ -25,6 +26,11 @@ namespace GameFields.Persons.LookCardMenues
         private CardDescription _description;
         private int _currentPanelIndex;
         private int _currentMaxIndex;
+
+        private ScreenRoot _screenRoot;
+        private bool _screenChangeMode = false;
+        private LookCardMenuSeatPanelRootActivateData _currentData;
+
         private bool _isComplete;
 
         public IPointerClickHandler RightSwitch => _rightSwitch;
@@ -35,9 +41,10 @@ namespace GameFields.Persons.LookCardMenues
         public bool IsComplete => _isComplete;
 
         [Inject]
-        public void Construct(CardDescription cardDescription)
+        public void Construct(CardDescription cardDescription, ScreenRoot screenRoot)
         {
             _description = cardDescription;
+            _screenRoot = screenRoot;
         }
 
         public void Init()
@@ -59,6 +66,8 @@ namespace GameFields.Persons.LookCardMenues
 
             IsActive = true;
 
+            _currentData = data;
+            _screenRoot.OnChangeResolution += OnScreenChange;
             _stoneFrame.Activate();
 
             SetSwitchState(_rightSwitch, false);
@@ -120,6 +129,14 @@ namespace GameFields.Persons.LookCardMenues
 
             IsActive = false;
             _isComplete = false;
+
+            _screenRoot.OnChangeResolution -= OnScreenChange;
+
+            if (_screenChangeMode)
+            {
+                _screenChangeMode = false;
+                return;
+            }
 
             _stoneFrame.Deactivate();
 
@@ -232,6 +249,13 @@ namespace GameFields.Persons.LookCardMenues
 
                 _seatPanels.Clear();
             }
+        }
+
+        private void OnScreenChange()
+        {
+            _screenChangeMode = true;
+            Deactivate();
+            Activate(_currentData);
         }
 
 

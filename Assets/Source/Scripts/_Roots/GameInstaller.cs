@@ -69,14 +69,19 @@ namespace Roots
         [SerializeField] private CardAttackZoneEnemyAI _enemyCardAttackZone;
 
         private CardSoundVolume _cardSoundVolume;
+        private ScreenRoot _screenRoot;
 
         public override void InstallBindings()
         {
             DeclareSignals();
 
             Container.Bind<CardDescription>().FromInstance(_cardDescription).AsSingle();
+
             _cardSoundVolume = new CardSoundVolume();
             Container.Bind<CardSoundVolume>().FromInstance(_cardSoundVolume).AsSingle();
+
+            _screenRoot = new ScreenRoot();
+            Container.Bind<ScreenRoot>().FromInstance(_screenRoot).AsSingle();
 
             Container.Bind<InformationLabel>().FromInstance(_informationLabel).AsSingle();
             //Container.Bind<InputRoot>().FromInstance(_inputRoot).AsSingle();

@@ -9,9 +9,11 @@ using GameFields.Persons.EffectHandlers.Slimes;
 using GameFields.Seats;
 using Tools.Utils;
 using Tools.Utils.FillComponents;
+using Tools.Utils.Screens;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Zenject;
 using Random = UnityEngine.Random;
 
 namespace GameFields.Persons.Hands
@@ -45,6 +47,8 @@ namespace GameFields.Persons.Hands
         private RechangeFeatureRuleController _ruleController;
         private IDrawnCardWatcher _turnDrawnCards;
         private CurseEffectHandler _curseEffectHandler;
+
+        private ScreenRoot _screenRoot;
 
         //private List<Card> _turnCardsFromDeck;
         private bool _isSlimeEffect = false;
@@ -82,6 +86,12 @@ namespace GameFields.Persons.Hands
         public bool CanSkip => CountCards == 0;
         public bool IsSlimeEffect => _isSlimeEffect;
 
+        [Inject]
+        public void Construct(ScreenRoot screenRoot)
+        {
+            _screenRoot = screenRoot;
+        }
+
         public void Init(SeatPool seatPool, RechangeFeatureRuleController ruleController, IDrawnCardWatcher turnDrawnCards,
             CurseEffectHandler curseEffectHandler)
         {
@@ -93,6 +103,13 @@ namespace GameFields.Persons.Hands
             _turnDrawnCards = turnDrawnCards;
 
             _handSeatPool = seatPool;
+
+            _screenRoot.OnChangeResolution += SortHandSeats;
+        }
+
+        private void OnDestroy()
+        {
+            _screenRoot.OnChangeResolution -= SortHandSeats;
         }
 
         public IEnumerable<IFeatureRechanger> GetRechangableCards()

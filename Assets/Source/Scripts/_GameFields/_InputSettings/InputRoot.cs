@@ -203,6 +203,9 @@ namespace GameFields.InputSettings
         {
             Debug.Log($"Q pressed!: {_currentLogic}");
 
+            if (_isFightMenu)
+                return;
+
             if (_isEnable == false)
                 return;
 
@@ -214,6 +217,9 @@ namespace GameFields.InputSettings
         {
             Debug.Log($"LeftArrow pressed!: {_currentLogic}");
 
+            if (_isFightMenu)
+                return;
+
             if (_isEnable == false)
                 return;
 
@@ -224,6 +230,9 @@ namespace GameFields.InputSettings
         private void OnRightArrow(CallbackContext context)
         {
             Debug.Log($"RightArrow pressed!: {_currentLogic}");
+
+            if (_isFightMenu)
+                return;
 
             if (_isEnable == false)
                 return;
