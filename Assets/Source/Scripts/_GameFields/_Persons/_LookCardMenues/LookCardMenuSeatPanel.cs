@@ -67,7 +67,7 @@ namespace GameFields.Persons.LookCardMenues
 
         public int MaxSeats => _maxSeats;
 
-        public void Init(CardDescription cardDescription, BigCard bigCard)
+        public void Init(BigCardRoot bigCardRoot)
         {
             _ROTransform = new ReadOnlyRectTransform(_rectTransform);
 
@@ -113,7 +113,7 @@ namespace GameFields.Persons.LookCardMenues
             {
                 LookCardMenuSeat seat = Instantiate(_seatTemplate, _seatContainer.GetTransform());
                 _seats[i] = seat;
-                seat.Init(cardDescription, bigCard);
+                seat.Init(bigCardRoot);
             }
 
             _isComplete = true;

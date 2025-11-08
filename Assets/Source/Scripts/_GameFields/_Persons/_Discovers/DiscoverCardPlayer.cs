@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Cards;
 using Cysharp.Threading.Tasks;
@@ -14,13 +15,14 @@ namespace GameFields.Persons.Discovers
         [SerializeField] private CardBlock _cardBlock;
 
         private string _descriptionMessage;
-        private CardDescription _description;
+        private BigCardRoot _bigCardRoot;
         private LabelActivateData _labelData;
+        private BigCardRootActivateData _bigCardRootActivateData;
 
         [Inject]
-        public void Construct(CardDescription cardDescription)
+        public void Construct(BigCardRoot bigCardRoot)
         {
-            _description = cardDescription;
+            _bigCardRoot = bigCardRoot;
         }
 
         public override void Deactivate()
@@ -47,6 +49,8 @@ namespace GameFields.Persons.Discovers
             _cardView.FillData(data.CardViewData);
             _descriptionMessage = data.CardViewData.Description;
             _labelData = new LabelActivateData(_descriptionMessage);
+            BigCardShowData bigCardShowData = new BigCardShowData(new Vector2(data.CardWidth, data.CardHeight), data.ReadOnlyRectTransform, data.CardViewData);
+            _bigCardRootActivateData = new BigCardRootActivateData(bigCardShowData);
 
             DiscoverViewLogicData discoverViewLogicData = new DiscoverViewLogicData(data.CardHeight, data.CardWidth);
 
@@ -59,12 +63,12 @@ namespace GameFields.Persons.Discovers
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            _description.Show(_labelData);
+            _bigCardRoot.Activate(_bigCardRootActivateData);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            _description.Hide();
+            _bigCardRoot.Deactivate();
         }
 
         public override void StartClickActions()
@@ -75,7 +79,8 @@ namespace GameFields.Persons.Discovers
         public void OnPointerClick(PointerEventData eventData)
         {
             _discoverClickHandler.StartClick();
-            _description.Hide();
+
+            _bigCardRoot.Deactivate();
         }
 
         private IEnumerator WaitingToUnblock()

@@ -23,22 +23,25 @@ namespace GameFields.Persons.LookCardMenues
         private ReadOnlyTransform _ROTransform;
 
         private string _descriptionMessage;
-        private CardDescription _description;
-        private BigCard _bigCard;
+        //private CardDescription _description;
+        //private BigCard _bigCard;
+        private BigCardRoot _bigCardRoot;
 
-        private LabelActivateData _labelData;
+        private BigCardRootActivateData _bigCardRootActivateData;
+        //private LabelActivateData _labelData;
         private Vector2 _bigCardSize;
-        private CardViewData _currentViewData;
+        //private CardViewData _currentViewData;
 
         public bool? IsActive { get; private set; } = null;
 
-        public void Init(CardDescription cardDescription, BigCard bigCard)
+        public void Init(BigCardRoot bigCardRoot)
         {
             _ROTransform = new ReadOnlyTransform(_transform);
             _bigCardSize = GameSettings.CardSize * 2f;
 
-            _description = cardDescription;
-            _bigCard = bigCard;
+            //_description = cardDescription;
+            //_bigCard = bigCard;
+            _bigCardRoot = bigCardRoot;
 
             _viewLogic.Init(_viewDuration);
             //gameObject.SetActive(true);
@@ -68,10 +71,11 @@ namespace GameFields.Persons.LookCardMenues
 
             Block();
 
-            _currentViewData = data.CardViewData;
-            _cardView.FillData(_currentViewData);
+            _cardView.FillData(data.CardViewData);
             _descriptionMessage = data.CardViewData.Description;
-            _labelData = new LabelActivateData(_descriptionMessage);
+            BigCardShowData showData = new BigCardShowData(_bigCardSize, _ROTransform, data.CardViewData);
+
+            _bigCardRootActivateData = new BigCardRootActivateData(showData);
 
             LookCardMenuCardViewLogicData lookCardMenuCardViewLogicData = new LookCardMenuCardViewLogicData(data.CardHeight, data.CardWidth);
 
@@ -84,11 +88,13 @@ namespace GameFields.Persons.LookCardMenues
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            _description.Show(_labelData);
+            //_description.Show(_labelData);
 
-            BigCardShowData showData = new BigCardShowData(_bigCardSize, _ROTransform, _currentViewData);
+            //BigCardShowData showData = new BigCardShowData(_bigCardSize, _ROTransform, _currentViewData);
 
-            _bigCard.Show(showData);
+            //_bigCard.Show(showData);
+
+            _bigCardRoot.Activate(_bigCardRootActivateData);
         }
 
         public void OnPointerExit(PointerEventData eventData)
@@ -98,8 +104,7 @@ namespace GameFields.Persons.LookCardMenues
 
         private void HideAll()
         {
-            _description.Hide();
-            _bigCard.Hide();
+            _bigCardRoot.Deactivate();
         }
 
         private IEnumerator WaitingToUnblock()

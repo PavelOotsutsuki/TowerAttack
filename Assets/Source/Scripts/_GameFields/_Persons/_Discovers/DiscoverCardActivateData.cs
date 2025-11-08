@@ -7,16 +7,17 @@ namespace GameFields.Persons.Discovers
     public class DiscoverCardActivateData: IData
     {
         private readonly Vector2 _sizeDelta;
-        private readonly CardViewData _cardViewData;
+        private readonly IDiscoverable _discoverable;
 
-        public DiscoverCardActivateData(Vector2 sizeDelta, CardViewData cardViewData)
+        public DiscoverCardActivateData(Vector2 sizeDelta, IDiscoverable discoverable)
         {
             _sizeDelta = sizeDelta;
-            _cardViewData = cardViewData;
+            _discoverable = discoverable;
         }
 
         public float CardHeight => _sizeDelta.y;
         public float CardWidth => _sizeDelta.x;
-        public CardViewData CardViewData => _cardViewData;
+        public CardViewData CardViewData => _discoverable.ViewData;
+        public ReadOnlyRectTransform ReadOnlyRectTransform => _discoverable.ReadOnlyRectTransform;
     }
 }

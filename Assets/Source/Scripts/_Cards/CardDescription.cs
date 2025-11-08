@@ -2,7 +2,7 @@ using Tools.UI;
 
 namespace Cards
 {
-    public class CardDescription : FadableLabel
+    internal class CardDescription : FadableLabel
     {
         public override void Init()
         {

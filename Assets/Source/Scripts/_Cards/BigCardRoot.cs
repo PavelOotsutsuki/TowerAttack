@@ -11,6 +11,7 @@ namespace Cards
     {
         [SerializeField] private BigCard _bigCard;
         [SerializeField] private BigCardDescription _description;
+        [SerializeField] private CardDescription _cardDescription;
 
         private readonly CardCapabilityDescription _cardCapabilityDescription = new CardCapabilityDescription();
 
@@ -20,6 +21,7 @@ namespace Cards
         {
             _bigCard.Init();
             _description.Init();
+            _cardDescription.Init();
         }
 
         public void Activate(BigCardRootActivateData data)
@@ -30,10 +32,17 @@ namespace Cards
             IsActive = true;
 
             _bigCard.Show(data.BigCardShowData);
+            _cardDescription.Show(data.BigCardShowData.LabelData);
 
-             LabelActivateData labelActivateData = new LabelActivateData(_cardCapabilityDescription.GetDescription(data.CardCapability));
+            //string cardCapabilityDescription = _cardCapabilityDescription.GetDescription(data.BigCardShowData.CardViewData.CardCapability);
+            string cardCapabilityDescription = _cardCapabilityDescription.GetToStringValue(data.BigCardShowData.CardViewData.CardCapability);
 
-            _description.Show(labelActivateData);
+            if (string.IsNullOrWhiteSpace(cardCapabilityDescription) == false)
+            {
+                LabelActivateData labelActivateData = new LabelActivateData(cardCapabilityDescription);
+
+                _description.Show(labelActivateData);
+            }
         }
 
         public void Deactivate()
@@ -45,6 +54,7 @@ namespace Cards
 
             _bigCard.Hide();
             _description.Hide();
+            _cardDescription.Hide();
         }
 
         #region AutomaticFillComponents

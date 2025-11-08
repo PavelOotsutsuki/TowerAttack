@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace Cards
 {
-    public interface ICardTransformable
+    public interface ICardTransformable : IReadOnlyRectTransformable
     {
         public Movement CardMovement {get;}
         public Vector3 DefaultScaleVector { get; }
-        public ReadOnlyRectTransform ReadOnlyRectTransform { get; }
+        //public ReadOnlyRectTransform ReadOnlyRectTransform { get; }
 
         public void SetSide(SideType sideType);
         public void SetActiveInteraction(bool isActive);

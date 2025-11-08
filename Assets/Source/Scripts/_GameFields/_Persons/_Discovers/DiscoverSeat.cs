@@ -29,7 +29,7 @@ namespace GameFields.Persons.Discovers
         {
             _card = card;
             //DiscoverCardActivateData data = new DiscoverCardActivateData(_card.ReadOnlyRectTransform.GetSizeDelta(), _card.ViewData);
-            DiscoverCardActivateData data = new DiscoverCardActivateData(GameSettings.CardSize, _card.ViewData);
+            DiscoverCardActivateData data = new DiscoverCardActivateData(GameSettings.CardSize, _card);
             _discoverCard.Activate(data);
         }
 

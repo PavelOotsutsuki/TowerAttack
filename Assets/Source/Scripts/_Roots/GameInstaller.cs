@@ -25,7 +25,7 @@ namespace Roots
 {
     public class GameInstaller : MonoInstaller
     {
-        [SerializeField] private CardDescription _cardDescription;
+        [SerializeField] private BigCardRoot _bigCardRoot;
 
         [SerializeField] private InformationLabel _informationLabel;
         //[SerializeField] private InputRoot _inputRoot;
@@ -75,7 +75,7 @@ namespace Roots
         {
             DeclareSignals();
 
-            Container.Bind<CardDescription>().FromInstance(_cardDescription).AsSingle();
+            Container.Bind<BigCardRoot>().FromInstance(_bigCardRoot).AsSingle();
 
             _cardSoundVolume = new CardSoundVolume();
             Container.Bind<CardSoundVolume>().FromInstance(_cardSoundVolume).AsSingle();

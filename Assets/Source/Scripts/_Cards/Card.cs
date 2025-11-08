@@ -42,14 +42,14 @@ namespace Cards
         {
             ReadOnlyRectTransform = new ReadOnlyRectTransform(_rectTransform);
             _cardEffectManager = new CardEffectManager(_config.Effect, effectFactory);
-            _viewData = new CardViewData(_config.CardViewConfig);
+            _viewData = new CardViewData(_config.CardViewConfig, _config.CardCapability);
             _cardSoundVolume = cardSoundVolume;
 
             _cardSpriteModeManager = new CardSpriteModeManager(_config.Effect.Type);
             _rectTransform.localScale = _defaultScaleVector;
             CardMovement = new Movement(_rectTransform);
 
-            _cardPaper.Init(this, cardViewService, ViewData, _rectTransform, cardDragAndDropHandler, CardCapability, _cardSpriteModeManager,
+            _cardPaper.Init(this, cardViewService, ViewData, _rectTransform, cardDragAndDropHandler, _cardSpriteModeManager,
                 curseAnimator);
 
             CreateCardCharacter();
@@ -64,7 +64,7 @@ namespace Cards
             _cardSpriteModeManager.SetCurseMode();
             _viewData.ChangeFeature(_viewData.Feature + "\n<b>ПРОКЛЯТ</b>");
             _config.SetCurseMode();
-            _cardPaper.SetView(_viewData, CardCapability);
+            _cardPaper.SetView(_viewData);
         }
 
         public bool IsSuccessChoice(int number)

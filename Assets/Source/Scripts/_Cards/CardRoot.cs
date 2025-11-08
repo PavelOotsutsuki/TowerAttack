@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Tools;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
@@ -7,34 +6,36 @@ namespace Cards
 {
     public class CardRoot : MonoBehaviour, ICardWatcher, IAutomaticFillComponents
     {
-        [SerializeField] private BigCardRoot _bigCardRoot;
+        //[SerializeField] private BigCardRoot _bigCardRoot;
         [SerializeField] private Card[] _startCards;
         [SerializeField] private CurseAnimator _curseAnimator;
 
-        private CardDescription _cardDescription;
+        //private CardDescription _cardDescription;
+        private BigCardRoot _bigCardRoot;
         private CardViewService _cardViewService;
         private List<Card> _allCards;
 
         public IReadOnlyList<Card> Cards => _allCards;
 
-        public void Init(IEffectFactory effectFactory, CardDescription cardDescription, ICardDragAndDropHandler cardDragAndDropHandler,
+        public void Init(IEffectFactory effectFactory, BigCardRoot bigCardRoot, ICardDragAndDropHandler cardDragAndDropHandler,
             CardSoundVolume cardSoundVolume)
         {
-            _cardDescription = cardDescription;
+            //_cardDescription = cardDescription;
+            _bigCardRoot = bigCardRoot;
             _curseAnimator.Init();
 
-            InitCardDescription();
+            //InitCardDescription();
             InitBigCard();
 
-            _cardViewService = new CardViewService(_bigCardRoot, _cardDescription);
+            _cardViewService = new CardViewService(_bigCardRoot);
 
             InitCards(effectFactory, cardDragAndDropHandler, cardSoundVolume);
         }
 
-        private void InitCardDescription()
-        {
-            _cardDescription.Init();
-        }
+        //private void InitCardDescription()
+        //{
+        //    _cardDescription.Init();
+        //}
 
         private void InitBigCard()
         {

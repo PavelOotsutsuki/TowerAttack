@@ -16,13 +16,14 @@ namespace Cards
         public ReadOnlyRectTransform ReadOnlyRectTransform { get; private set; }
         public CardViewData ViewData => _viewData;
         public CardEffectConfig EffectConfig => _config.Effect;
+        //public CardCapability CardCapability => _config.CardCapability;
 
         public void Init()
         {
             ReadOnlyRectTransform = new ReadOnlyRectTransform(_rectTransform);
             ReadOnlyRectTransform.SetSize(GameSettings.CardSize);
 
-            _viewData = new CardViewData(_config.CardViewConfig);
+            _viewData = new CardViewData(_config.CardViewConfig, _config.CardCapability);
         }
 
         #region AutomaticFillComponents

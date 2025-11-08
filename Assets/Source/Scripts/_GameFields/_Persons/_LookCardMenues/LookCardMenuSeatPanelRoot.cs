@@ -13,7 +13,6 @@ namespace GameFields.Persons.LookCardMenues
 {
     public class LookCardMenuSeatPanelRoot : MonoBehaviour, ICompletable, IWorkable<LookCardMenuSeatPanelRootActivateData>, IAutomaticFillComponents
     {
-        [SerializeField] private BigCard _bigCard;
         [SerializeField] private LookCardMenuSeatPanel _seatPanelTemplate;
         [SerializeField] private LookCardMenuSeatPanelContainer _seatPanelContainer;
         [SerializeField] private LookCardMenuSeatPanelRightSwitch _rightSwitch;
@@ -23,7 +22,8 @@ namespace GameFields.Persons.LookCardMenues
 
         private readonly List<LookCardMenuSeatPanel> _seatPanels = new List<LookCardMenuSeatPanel>();
 
-        private CardDescription _description;
+        //private CardDescription _description;
+        private BigCardRoot _bigCardRoot;
         private int _currentPanelIndex;
         private int _currentMaxIndex;
 
@@ -41,9 +41,9 @@ namespace GameFields.Persons.LookCardMenues
         public bool IsComplete => _isComplete;
 
         [Inject]
-        public void Construct(CardDescription cardDescription, ScreenRoot screenRoot)
+        public void Construct(BigCardRoot bigCardRoot, ScreenRoot screenRoot)
         {
-            _description = cardDescription;
+            _bigCardRoot = bigCardRoot;
             _screenRoot = screenRoot;
         }
 
@@ -198,15 +198,14 @@ namespace GameFields.Persons.LookCardMenues
             CheckSwitches();
         }
 
-        private void HideCardHelpers()
-        {
-            _bigCard.Hide();
-            _description.Hide();
-        }
+        //private void HideCardHelpers()
+        //{
+        //    _bigCardRoot.Deactivate();
+        //}
 
         private void CheckSwitches()
         {
-            HideCardHelpers();
+            _bigCardRoot.Deactivate();
 
             SetSwitchState(_rightSwitch, _currentPanelIndex != _currentMaxIndex);
             SetSwitchState(_leftSwitch, _currentPanelIndex > 0);
@@ -235,7 +234,7 @@ namespace GameFields.Persons.LookCardMenues
         {
             LookCardMenuSeatPanel lookCardMenuSeatPanel = Instantiate(_seatPanelTemplate, _seatPanelContainer.GetTransform());
             _seatPanels.Add(lookCardMenuSeatPanel);
-            lookCardMenuSeatPanel.Init(_description, _bigCard);
+            lookCardMenuSeatPanel.Init(_bigCardRoot);
         }
 
         private void DestroyPanels()

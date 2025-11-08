@@ -15,10 +15,10 @@ namespace GameFields.Persons.LookCardMenues
 
         private Movement _seatMovement;
 
-        public void Init(CardDescription cardDescription, BigCard bigCard)
+        public void Init(BigCardRoot bigCardRoot)
         {
             _seatMovement = new Movement(_rectTransform);
-            _lookCardMenuCard.Init(cardDescription, bigCard);
+            _lookCardMenuCard.Init(bigCardRoot);
             Reset();
         }
 

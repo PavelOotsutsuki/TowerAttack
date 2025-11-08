@@ -2,7 +2,7 @@ using Tools;
 
 namespace Cards
 {
-    public interface IDiscoverable
+    public interface IDiscoverable : IReadOnlyRectTransformable
     {
         public CardViewData ViewData { get; }
     }

@@ -37,7 +37,7 @@ namespace Roots
         private PersonsState _personsState;
 
         [Inject]
-        private void Construct(SignalBus bus, Deck deck, SeatPool seatPool, CardDescription cardDescription, HandPlayer handPlayer,
+        private void Construct(SignalBus bus, Deck deck, SeatPool seatPool, BigCardRoot bigCardRoot, HandPlayer handPlayer,
             InformationLabel informationLabel, LookCardMenuPlayer lookCardMenu, VariantCardCreator variantCardCreator,
             SoundRoot soundRoot, CardSoundVolume cardSoundVolume, FightMenuActivateButton fightMenuActivateButton)
         {
@@ -88,7 +88,7 @@ namespace Roots
             EffectFactory effectFactory = new EffectFactory(_personsState, viewRoot, informationLabel, cardTransitManager,
                 variantCardCreator, brothersEffectHandlerRoot, bus, personEffectsHandlerRoot, discardManager, loseActionsRoot);
 
-            _cardRoot.Init(effectFactory, cardDescription, cardDragAndDropHandler, cardSoundVolume);
+            _cardRoot.Init(effectFactory, bigCardRoot, cardDragAndDropHandler, cardSoundVolume);
             deck.Init(seatPool, _cardRoot.Cards);
 
             _gameFieldRoot.Init(_personsState, enemyAI, bus, seatPool, soundRoot, fightMenuActivateButton);

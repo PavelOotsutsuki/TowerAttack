@@ -29,7 +29,7 @@ namespace Cards
         public bool IsFired => _onFireLogic.IsActive == true;
 
         internal void Init(Card me, CardViewService cardViewService, CardViewData cardViewData,
-            RectTransform cardTransform, ICardDragAndDropHandler cardDragAndDropHandler, CardCapability cardCapability,
+            RectTransform cardTransform, ICardDragAndDropHandler cardDragAndDropHandler,
             CardSpriteModeManager cardSpriteModeManager, CurseAnimator curseAnimator)
         {
             ReadOnlyRectTransform readOnlyRectTransform = new ReadOnlyRectTransform(cardTransform);
@@ -38,7 +38,7 @@ namespace Cards
             Vector2 cardSizeBack = GameSettings.CardSize;
 
             _cardSpriteManager.Init(cardSpriteModeManager, curseAnimator);
-            _cardFront.Init(cardViewData, readOnlyRectTransform, cardViewService, cardSizeFront, _cardFrame, cardCapability);
+            _cardFront.Init(cardViewData, readOnlyRectTransform, cardViewService, cardSizeFront, _cardFrame);
             _cardBack.Init(cardSizeBack);
             _onFireLogic.Init();
 
@@ -84,9 +84,9 @@ namespace Cards
             _onFireLogic.Deactivate();
         }
 
-        public void SetView(CardViewData cardViewData, CardCapability cardCapability)
+        public void SetView(CardViewData cardViewData)
         {
-            _cardFront.SetView(cardViewData, cardCapability);
+            _cardFront.SetView(cardViewData);
         }
 
         public void RechangeFeature(IEnumerable<TagValuePair> givenPairs)

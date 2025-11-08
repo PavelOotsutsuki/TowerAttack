@@ -8,5 +8,6 @@ namespace Cards
     {
         [field: SerializeField] public CardViewConfig CardViewConfig { get; private set; }
         [field: SerializeField] internal CardEffectConfig Effect { get; private set; }
+        [field: SerializeField] public CardCapability CardCapability { get; private set; }
     }
 }
