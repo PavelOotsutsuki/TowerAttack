@@ -27,10 +27,11 @@ namespace Cards
         //public float BigWidth => _bigWidth;
         //public Vector2 Position => _rectTransform.position;
         //public Vector2 Size => _rectTransform.sizeDelta;
-        public void Init()
+        public void Init(CardCapabilityDescription cardCapabilityDescription)
         {
             _rectTransform.rotation = Quaternion.identity;
             _canvasHeight = ScreenView.Y();
+            _cardView.Init(cardCapabilityDescription);
 
             Hide();
         }

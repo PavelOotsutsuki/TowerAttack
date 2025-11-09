@@ -26,11 +26,13 @@ namespace Cards
         public bool? IsShown { get; private set; } = null;
 
         internal void Init(CardViewData cardViewData, ReadOnlyRectTransform readOnlyCartRectTransform,
-            CardViewService cardViewService, Vector2 cardSize, CardFrame cardFrame)
+            CardViewService cardViewService, Vector2 cardSize, CardFrame cardFrame,
+            CardCapabilityDescription cardCapabilityDescription)
         {
             _readOnlyCardRectTransform = readOnlyCartRectTransform;
             _cardViewService = cardViewService;
             _cardSize = cardSize;
+            _cardView.Init(cardCapabilityDescription);
             //_cardSpriteManager.Init(cardSpriteModeManager);
             //_cardBlockable = cardBlockable;
             _cardFrame = cardFrame;
@@ -51,7 +53,7 @@ namespace Cards
             _cardView.FillData(cardViewData);
 
             BigCardShowData bigCardShowData = new BigCardShowData(_cardSize, _readOnlyCardRectTransform, cardViewData);
-            _bigCardRootActivateData = new BigCardRootActivateData(bigCardShowData);
+            _bigCardRootActivateData = new BigCardRootActivateData(bigCardShowData, 0f, 2f);
         }
 
         private void OnDisable()

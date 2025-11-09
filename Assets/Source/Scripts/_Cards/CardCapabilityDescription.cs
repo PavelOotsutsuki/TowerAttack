@@ -1,74 +1,124 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace Cards
 {
     public class CardCapabilityDescription
     {
-        private const string AttackDescription = "<b>АТАКА: </b>Атакуйте картой замок, чтобы попытаться угадать номер карты противника. Если угадаете — победа.";
-        private const string PlayDescription = "<b>РАЗЫГРАТЬ КАРТУ: </b>Положите карту на стол, чтобы разыграть её эффект.";
-        private const string SearchDescription = "<b>ПОИСК: </b>Выберите номера карт, противник скажет находится ли одна из них у него в Замке.";
-        private const string CurseDescription = "<b>ПРОКЛЯТЬЕ: </b>Соперник в начале хода игрока узнает случайное число, не являющееся его картой в Замке. Числа не повторяются.";
-        private const string GnomeForgingDescription = "<b>ГНОМИЧЬЯ КОВКА: </b>Вы убираете карту в бито и берете одну карту из колоды. <b>Гномичей выбор</b> увеличивается на +2 карты.";
-        private const string GnomeChoiceDescription = "<b>ГНОМИЧЕЙ ВЫБОР: </b>Вы <b>Ищете</b> несколько карт. Количество карт на <b>Поиск</b> увеличивается от <b>Гномичей ковки</b>. Каждый игрок может использовать этот навык только один раз за игру.";
-        private const string VariantsDescription = "<b>ВАРИАНТ: </b>Эффект зависит от выбранного вами при розыгрыше варианта";
-        private const string BrothersBondsDescription = "<b>БРАТСКИЕ УЗЫ: </b>Эффект братьев увеличивает от сыгранных карт братьев";
-        private const string HandTransferDescription = "<b>ПЕРЕДАЧА: </b>Перенесите карту в руку противника, чтобы отдать её";
+        private const string AttackDescription = "Атакуйте картой замок, чтобы попытаться угадать номер карты противника. Если угадаете — победа.";
+        private const string PlayDescription = "Положите карту на стол, чтобы разыграть её эффект.";
+        private const string SearchDescription = "Выберите номера карт, противник скажет находится ли одна из них у него в Замке.";
+        private const string CurseDescription = "Соперник в начале хода игрока узнает случайное число, не являющееся его картой в Замке. Числа не повторяются.";
+        private const string GnomeForgingDescription = "Вы убираете карту в бито и берете одну карту из колоды. <b>Гномичей выбор</b> увеличивается на +2 карты.";
+        private const string GnomeChoiceDescription = "Вы <b>Ищете</b> несколько карт. Количество карт на <b>Поиск</b> увеличивается от <b>Гномичей ковки</b>. Каждый игрок может использовать этот навык только один раз за игру.";
+        private const string VariantsDescription = "Эффект зависит от выбранного вами при розыгрыше варианта";
+        private const string BrothersBondsDescription = "Эффект братьев увеличивает от сыгранных карт братьев";
+        private const string HandTransferDescription = "Перенесите карту в руку противника, чтобы отдать её";
+
+        private const string RedColorTag = "FF0000";
+        private const string GreenColorTag = "00A107";
+        private const string BlueColorTag = "0000FF";
+        private const string BlackColorTag = "000000";
+        private const string OrangeColorTag = "FF5200";
+        private const string BlackBlueColorTag = "233D8A";
+        private const string YellowColorTag = "B58E0F";
+        private const string PurpleColorTag = "9F0F82";
+        private const string GrayColorTag = "6F5D6B";
+
+        private readonly string AttackColorTag = RedColorTag;
+        private readonly string PlayColorTag = GreenColorTag;
+        private readonly string SearchColorTag = BlueColorTag;
+        private readonly string CurseColorTag = BlackColorTag;
+        private readonly string GnomeForgingColorTag = OrangeColorTag;
+        private readonly string GnomeChoiceColorTag = BlackBlueColorTag;
+        private readonly string VariantsColorTag = YellowColorTag;
+        private readonly string BrothersBondsColorTag = PurpleColorTag;
+        private readonly string HandTransferColorTag = GrayColorTag;
 
         private /*static*/ readonly CardCapability[] _cardCapabilities;
-        private readonly IReadOnlyDictionary<CardCapability, CardCapabilityData> _capabilitiesDescription;
-
-        private delegate bool GetDataAction(CardCapability checkCapability, CardCapability gettedCapability, out string result);
+        //private readonly IReadOnlyDictionary<CardCapability, CardCapabilityData> _capabilitiesDescription;
+        private readonly CardCapabilityLookUp _cardCapabilityLookUp;
 
         public CardCapabilityDescription()
         {
             _cardCapabilities = Enum.GetValues(typeof(CardCapability)).Cast<CardCapability>().ToArray();
 
-            _capabilitiesDescription = new Dictionary<CardCapability, CardCapabilityData>()
+            _cardCapabilityLookUp = new CardCapabilityLookUp();
+
+            _cardCapabilityLookUp.Add(CardCapability.Attack, "CAP_1", "Атака", AttackDescription, AttackColorTag);
+            _cardCapabilityLookUp.Add(CardCapability.Play, "CAP_2", "Разыграть карту", PlayDescription, PlayColorTag);
+            _cardCapabilityLookUp.Add(CardCapability.Search, "CAP_3", "Поиск", SearchDescription, SearchColorTag);
+            _cardCapabilityLookUp.Add(CardCapability.Curse, "CAP_4", "Проклятье", CurseDescription, CurseColorTag);
+            _cardCapabilityLookUp.Add(CardCapability.GnomeForging, "CAP_5", "Гномичья ковка", GnomeForgingDescription,
+                GnomeForgingColorTag);
+            _cardCapabilityLookUp.Add(CardCapability.GnomeChoice, "CAP_6", "Гномичей выбор", GnomeChoiceDescription,
+                GnomeChoiceColorTag);
+            _cardCapabilityLookUp.Add(CardCapability.Variants, "CAP_7", "Вариант", VariantsDescription, VariantsColorTag);
+            _cardCapabilityLookUp.Add(CardCapability.BrothersBonds, "CAP_8", "Братские узы", BrothersBondsDescription,
+                BrothersBondsColorTag);
+            _cardCapabilityLookUp.Add(CardCapability.HandTransfer, "CAP_9", "Передача", HandTransferDescription,
+                HandTransferColorTag);
+        }
+
+        public bool ContainsTag(string tag) => _cardCapabilityLookUp.ContainsTag(tag);
+
+        public string GetCardFeatureText(string tag)
+        {
+            return _cardCapabilityLookUp.GetTextByTag(tag);
+        }
+
+        public string GetAllCapabilitiesToStringValue(CardCapability cardCapability)
+        {
+            string result = "";
+            int valueCounter = 1;
+
+            for (int i = 0; i < _cardCapabilities.Length; i++)
             {
-                { CardCapability.Attack, new CardCapabilityData("АТАКА", AttackDescription)},
-                { CardCapability.Play, new CardCapabilityData("РАЗЫГРАТЬ КАРТУ", PlayDescription)},
-                { CardCapability.Search, new CardCapabilityData("ПОИСК", SearchDescription)},
-                { CardCapability.Curse, new CardCapabilityData("ПРОКЛЯТЬЕ", CurseDescription)},
-                { CardCapability.GnomeForging, new CardCapabilityData("ГНОМИЧЬЯ КОВКА", GnomeForgingDescription)},
-                { CardCapability.GnomeChoice, new CardCapabilityData("ГНОМИЧЕЙ ВЫБОР", GnomeChoiceDescription)},
-                { CardCapability.Variants, new CardCapabilityData("ВАРИАНТ", VariantsDescription)},
-                { CardCapability.BrothersBonds, new CardCapabilityData("БРАТСКИЕ УЗЫ", BrothersBondsDescription)},
-                { CardCapability.HandTransfer, new CardCapabilityData("ПЕРЕДАЧА", HandTransferDescription)}
-            };
+                if (TryGetEnumToStringValue(_cardCapabilities[i], cardCapability, out string localResult))
+                {
+                    localResult = valueCounter++.ToString() + ". " + localResult;
+                    result = ConcatByParagraphStyle(result, localResult);
+                }
+            }
+
+            if (result != "")
+                result = "Свойства:\n" + result;
+
+            return result;
         }
 
-        public string GetToStringValue(CardCapability cardCapability)
-        {
-            GetDataAction getDataAction = TryGetEnumToStringValue;
-
-            return GetData(cardCapability, getDataAction);
-        }
-
-        public string GetDescription(CardCapability cardCapability)
-        {
-            GetDataAction getDataAction = TryGetDescriptionByNoComboEnumValue;
-
-            return GetData(cardCapability, getDataAction);
-        }
-
-        private string GetData(CardCapability cardCapability, GetDataAction getDataAction)
+        public string GetAllCapabilitiesDescription(CardCapability cardCapability)
         {
             string result = "";
 
             for (int i = 0; i < _cardCapabilities.Length; i++)
             {
-                if (getDataAction.Invoke(_cardCapabilities[i], cardCapability, out string localResult))
+                if (TryGetDescriptionByNoComboEnumValue(_cardCapabilities[i], cardCapability, out string localResult))
                 {
-                    if (result != "")
-                        result += "\n\n";
-
-                    result += localResult;
+                    result = ConcatByDoubleParagraphStyle(result, localResult);
                 }
             }
+
+            return result;
+        }
+
+        private string ConcatByDoubleParagraphStyle(string result, string localResult)
+        {
+            if (result != "")
+                result += "\n\n";
+
+            result += localResult;
+
+            return result;
+        }
+
+        private string ConcatByParagraphStyle(string result, string localResult)
+        {
+            if (result != "")
+                result += "\n";
+
+            result += localResult;
 
             return result;
         }
@@ -79,7 +129,9 @@ namespace Cards
             bool isCan = (gettedCapability & checkCapability) == checkCapability;
 
             if (isCan)
-                result = _capabilitiesDescription[checkCapability].ToStringValue;
+            {
+                result = _cardCapabilityLookUp.GetToStringValue(checkCapability);
+            }
 
             return isCan;
         }
@@ -90,7 +142,7 @@ namespace Cards
             bool isCan = (gettedCapability & checkCapability) == checkCapability;
 
             if (isCan)
-                result = _capabilitiesDescription[checkCapability].Description;
+                result = _cardCapabilityLookUp.GetDescription(checkCapability);
 
             return isCan;
         }

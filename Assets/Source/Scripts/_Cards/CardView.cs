@@ -14,8 +14,15 @@ namespace Cards
         [SerializeField] private TMP_Text _name;
         [SerializeField] private TMP_Text _feature;
 
+        private CardCapabilityDescription _cardCapabilityDescription;
+
         private CardFeatureTags _cardFeatureTags = null;
         private CardViewData _cardViewData = null;
+
+        public void Init(CardCapabilityDescription cardCapabilityDescription)
+        {
+            _cardCapabilityDescription = cardCapabilityDescription;
+        }
 
         public void FillData(CardViewData cardViewData)
         {
@@ -56,6 +63,7 @@ namespace Cards
                     throw new Exception("Неверно заданы теги в CardViewConfig (по количеству <>): " + feature);
 
                 List<TagValuePair> result = new List<TagValuePair>();
+                List<DefaultTagValuePair> defaultResult = new List<DefaultTagValuePair>();
                 string featureCopy = feature;
 
                 for (int i = 0; i < beginTagsLength - 1; i++)
@@ -66,6 +74,19 @@ namespace Cards
 
                     if (tag == "b" || tag == "/b")
                     {
+                        featureCopy = featureCopy.Substring(end + 1);
+                        continue;
+                    }
+
+                    //if (tag == "color" || tag == "/color")
+                    //{
+                    //    featureCopy = featureCopy.Substring(end + 1);
+                    //    continue;
+                    //}
+
+                    if (_cardCapabilityDescription.ContainsTag(tag)) // Значит дефолтный тег
+                    {
+                        defaultResult.Add(new DefaultTagValuePair(tag, _cardCapabilityDescription.GetCardFeatureText(tag)));
                         featureCopy = featureCopy.Substring(end + 1);
                         continue;
                     }
@@ -85,7 +106,7 @@ namespace Cards
                     featureCopy = featureCopy.Substring(end + 1);
                 }
 
-                _cardFeatureTags = new CardFeatureTags(feature, result);
+                _cardFeatureTags = new CardFeatureTags(feature, result, defaultResult);
                 return true;
             }
 

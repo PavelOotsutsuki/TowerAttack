@@ -70,6 +70,7 @@ namespace Roots
 
         private CardSoundVolume _cardSoundVolume;
         private ScreenRoot _screenRoot;
+        private CardCapabilityDescription _cardCapabilityDescription;
 
         public override void InstallBindings()
         {
@@ -82,6 +83,9 @@ namespace Roots
 
             _screenRoot = new ScreenRoot();
             Container.Bind<ScreenRoot>().FromInstance(_screenRoot).AsSingle();
+
+            _cardCapabilityDescription = new CardCapabilityDescription();
+            Container.Bind<CardCapabilityDescription>().FromInstance(_cardCapabilityDescription).AsSingle();
 
             Container.Bind<InformationLabel>().FromInstance(_informationLabel).AsSingle();
             //Container.Bind<InputRoot>().FromInstance(_inputRoot).AsSingle();

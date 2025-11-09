@@ -31,6 +31,8 @@ namespace GameFields.Persons.LookCardMenues
         private bool _screenChangeMode = false;
         private LookCardMenuSeatPanelRootActivateData _currentData;
 
+        private CardCapabilityDescription _cardCapabilityDescription;
+
         private bool _isComplete;
 
         public IPointerClickHandler RightSwitch => _rightSwitch;
@@ -41,10 +43,12 @@ namespace GameFields.Persons.LookCardMenues
         public bool IsComplete => _isComplete;
 
         [Inject]
-        public void Construct(BigCardRoot bigCardRoot, ScreenRoot screenRoot)
+        public void Construct(BigCardRoot bigCardRoot, ScreenRoot screenRoot,
+            CardCapabilityDescription cardCapabilityDescription)
         {
             _bigCardRoot = bigCardRoot;
             _screenRoot = screenRoot;
+            _cardCapabilityDescription = cardCapabilityDescription;
         }
 
         public void Init()
@@ -234,7 +238,7 @@ namespace GameFields.Persons.LookCardMenues
         {
             LookCardMenuSeatPanel lookCardMenuSeatPanel = Instantiate(_seatPanelTemplate, _seatPanelContainer.GetTransform());
             _seatPanels.Add(lookCardMenuSeatPanel);
-            lookCardMenuSeatPanel.Init(_bigCardRoot);
+            lookCardMenuSeatPanel.Init(_bigCardRoot, _cardCapabilityDescription);
         }
 
         private void DestroyPanels()

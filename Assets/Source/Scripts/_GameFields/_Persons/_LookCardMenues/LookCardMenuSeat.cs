@@ -3,6 +3,7 @@ using Cards;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Movements;
 using UnityEngine;
+using Zenject;
 
 namespace GameFields.Persons.LookCardMenues
 {
@@ -15,10 +16,10 @@ namespace GameFields.Persons.LookCardMenues
 
         private Movement _seatMovement;
 
-        public void Init(BigCardRoot bigCardRoot)
+        public void Init(BigCardRoot bigCardRoot, CardCapabilityDescription cardCapabilityDescription)
         {
             _seatMovement = new Movement(_rectTransform);
-            _lookCardMenuCard.Init(bigCardRoot);
+            _lookCardMenuCard.Init(bigCardRoot, cardCapabilityDescription);
             Reset();
         }
 

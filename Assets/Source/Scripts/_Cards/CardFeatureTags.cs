@@ -9,11 +9,14 @@ namespace Cards
     {
         private readonly string _featureTemplate;
         private readonly IEnumerable<TagValuePair> _tagValuePairs;
+        private readonly IEnumerable<DefaultTagValuePair> _defaultTagValuePairs;
 
-        public CardFeatureTags(string feature, IEnumerable<TagValuePair> tagValuePairs)
+        public CardFeatureTags(string feature, IEnumerable<TagValuePair> tagValuePairs,
+            IEnumerable<DefaultTagValuePair> defaultTagValuePairs)
         {
             _featureTemplate = feature;
             _tagValuePairs = tagValuePairs;
+            _defaultTagValuePairs = defaultTagValuePairs;
         }
 
         public string CreateFeature(IEnumerable<TagValuePair> givenPairs = null)
@@ -22,7 +25,12 @@ namespace Cards
 
             string result = _featureTemplate;
 
-            foreach (TagValuePair pair in _tagValuePairs)
+            foreach (DefaultTagValuePair pair in _defaultTagValuePairs) // Проверяем дефолтые замены (Capability цвета только пока что)
+            {
+                result = result.Replace($"<{pair.Tag}>", $"{pair.Value}");
+            }
+
+            foreach (TagValuePair pair in _tagValuePairs) // Потом проверяем теги которые могут Update-ится типо <CARDS_5>
             {
                 TagValuePair givenPair = givenPairs.FirstOrDefault(p => p.Tag == pair.Tag);
                 //int currentValue = givenPair == null ? pair.Value : givenPair.Value;

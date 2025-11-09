@@ -15,6 +15,7 @@ namespace Tools.Utils.Screens
 
         private CancellationTokenSource _token;
         private UniTask _waitingToUpdateScreen;
+        private UniTask _waitingToCancelWaitingToUpdateScreen;
 
         public ScreenRoot()
         {
@@ -46,7 +47,7 @@ namespace Tools.Utils.Screens
             _token = new CancellationTokenSource();
             _waitingToUpdateScreen = WaitingToUpdateScreen(resolution).ToUniTask(cancellationToken: _token.Token);
 
-            WaitingToCancelWaitingToUpdateScreen().ToUniTask();
+            _waitingToCancelWaitingToUpdateScreen = WaitingToCancelWaitingToUpdateScreen().ToUniTask(cancellationToken: _token.Token);
         }
 
         private IEnumerator WaitingToUpdateScreen(Resolution resolution)
@@ -68,7 +69,8 @@ namespace Tools.Utils.Screens
 
         private void CancelWaitingToUpdateScreen()
         {
-            if (_waitingToUpdateScreen.Status == UniTaskStatus.Pending)
+            if (_waitingToUpdateScreen.Status == UniTaskStatus.Pending ||
+                _waitingToCancelWaitingToUpdateScreen.Status == UniTaskStatus.Pending)
             {
                 _token.Cancel();
             }

@@ -5,6 +5,7 @@ using Tools;
 using Tools.UI;
 using Tools.Utils.FillComponents;
 using UnityEngine;
+using Zenject;
 
 namespace GameFields.Persons.Towers
 {
@@ -15,17 +16,25 @@ namespace GameFields.Persons.Towers
         [SerializeField] private BigCard _bigCard;
         [SerializeField] private FadablePanel _fadablePanel;
 
+        private CardCapabilityDescription _cardCapabilityDescription;
+
         private bool _isComplete;
         private Coroutine _hiddingCoroutine = null;
 
         public bool? IsShown { get; private set; } = null;
         public bool IsComplete => _isComplete;
 
+        [Inject]
+        public void Construct(CardCapabilityDescription cardCapabilityDescription)
+        {
+            _cardCapabilityDescription = cardCapabilityDescription;
+        }
+
         public void Init()
         {
             _isComplete = true;
 
-            _bigCard.Init();
+            _bigCard.Init(_cardCapabilityDescription);
             _fadablePanel.Init();
 
             IsShown = false;

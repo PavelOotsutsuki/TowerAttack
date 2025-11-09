@@ -320,6 +320,7 @@ namespace GameFields.Persons.Commons
             CardDragAndDropImitationActions cardDragAndDropImitationActions = new CardDragAndDropImitationActions(_enemyHand, _enemyPlayingZone, _enemyCardAttackZone,
                 _discardPile, drawCardRoot, _playerHand);
             StartTurnDrawEnemyAI startTurnDraw = new StartTurnDrawEnemyAI(_interactionActivator, drawCardRoot, _enemyCountStartDrawCards);
+            //StartTurnDrawEnemyAI startTurnDraw = new StartTurnDrawEnemyAI(_interactionActivator, drawCardRoot, 0);
             EnemySkipTurnView skipTurnView = new EnemySkipTurnView(_interactionActivator, _skipTurnLabel);
             OnBeforeEndTurnProcessing onBeforeEndTurnProcessing = new OnBeforeEndTurnProcessing(_interactionActivator, _enemyPersonEffectsHandler);
 

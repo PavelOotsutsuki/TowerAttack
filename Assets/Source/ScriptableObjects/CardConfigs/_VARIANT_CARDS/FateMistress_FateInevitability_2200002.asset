@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <CardViewConfig>k__BackingField: {fileID: 11400000, guid: 1d2b1c28d9e644176ae5a678df602ea2, type: 2}
   <Effect>k__BackingField: {fileID: 11400000, guid: c9b65c10b77e54c86a0fae433035c979, type: 2}
+  <CardCapability>k__BackingField: 1

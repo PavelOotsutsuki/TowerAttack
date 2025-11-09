@@ -18,38 +18,27 @@ namespace Cards
         public IReadOnlyList<Card> Cards => _allCards;
 
         public void Init(IEffectFactory effectFactory, BigCardRoot bigCardRoot, ICardDragAndDropHandler cardDragAndDropHandler,
-            CardSoundVolume cardSoundVolume)
+            CardSoundVolume cardSoundVolume, CardCapabilityDescription cardCapabilityDescription)
         {
             //_cardDescription = cardDescription;
             _bigCardRoot = bigCardRoot;
             _curseAnimator.Init();
 
-            //InitCardDescription();
-            InitBigCard();
+            _bigCardRoot.Init(cardCapabilityDescription);
 
             _cardViewService = new CardViewService(_bigCardRoot);
 
-            InitCards(effectFactory, cardDragAndDropHandler, cardSoundVolume);
+            InitCards(effectFactory, cardDragAndDropHandler, cardSoundVolume, cardCapabilityDescription);
         }
-
-        //private void InitCardDescription()
-        //{
-        //    _cardDescription.Init();
-        //}
-
-        private void InitBigCard()
-        {
-            _bigCardRoot.Init();
-        }
-
         private void InitCards(IEffectFactory effectFactory, ICardDragAndDropHandler cardDragAndDropHandler,
-            CardSoundVolume cardSoundVolume)
+            CardSoundVolume cardSoundVolume, CardCapabilityDescription cardCapabilityDescription)
         {
             _allCards = new List<Card>();
 
             foreach (Card card in _startCards)
             {
-                card.Init(effectFactory, _cardViewService, cardDragAndDropHandler, _curseAnimator, cardSoundVolume);
+                card.Init(effectFactory, _cardViewService, cardDragAndDropHandler, _curseAnimator, cardSoundVolume,
+                    cardCapabilityDescription);
                 _allCards.Add(card);
             }
         }

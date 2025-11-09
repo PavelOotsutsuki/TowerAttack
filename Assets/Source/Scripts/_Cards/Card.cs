@@ -38,7 +38,8 @@ namespace Cards
         public bool IsLuckyHorseshoe => _config.Effect.Type == EffectType.LuckyHorseshoe;
 
         internal void Init(IEffectFactory effectFactory, CardViewService cardViewService,
-            ICardDragAndDropHandler cardDragAndDropHandler, CurseAnimator curseAnimator, CardSoundVolume cardSoundVolume)
+            ICardDragAndDropHandler cardDragAndDropHandler, CurseAnimator curseAnimator, CardSoundVolume cardSoundVolume,
+            CardCapabilityDescription cardCapabilityDescription)
         {
             ReadOnlyRectTransform = new ReadOnlyRectTransform(_rectTransform);
             _cardEffectManager = new CardEffectManager(_config.Effect, effectFactory);
@@ -50,7 +51,7 @@ namespace Cards
             CardMovement = new Movement(_rectTransform);
 
             _cardPaper.Init(this, cardViewService, ViewData, _rectTransform, cardDragAndDropHandler, _cardSpriteModeManager,
-                curseAnimator);
+                curseAnimator, cardCapabilityDescription);
 
             CreateCardCharacter();
             SetState(_cardPaper);

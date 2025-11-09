@@ -34,11 +34,11 @@ namespace GameFields.Persons.LookCardMenues
 
         public bool? IsActive { get; private set; } = null;
 
-        public void Init(BigCardRoot bigCardRoot)
+        public void Init(BigCardRoot bigCardRoot, CardCapabilityDescription cardCapabilityDescription)
         {
             _ROTransform = new ReadOnlyTransform(_transform);
             _bigCardSize = GameSettings.CardSize * 2f;
-
+            _cardView.Init(cardCapabilityDescription);
             //_description = cardDescription;
             //_bigCard = bigCard;
             _bigCardRoot = bigCardRoot;
@@ -75,7 +75,7 @@ namespace GameFields.Persons.LookCardMenues
             _descriptionMessage = data.CardViewData.Description;
             BigCardShowData showData = new BigCardShowData(_bigCardSize, _ROTransform, data.CardViewData);
 
-            _bigCardRootActivateData = new BigCardRootActivateData(showData);
+            _bigCardRootActivateData = new BigCardRootActivateData(showData, 1f, 2f);
 
             LookCardMenuCardViewLogicData lookCardMenuCardViewLogicData = new LookCardMenuCardViewLogicData(data.CardHeight, data.CardWidth);
 

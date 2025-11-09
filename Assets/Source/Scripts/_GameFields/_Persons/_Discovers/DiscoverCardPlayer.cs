@@ -14,15 +14,16 @@ namespace GameFields.Persons.Discovers
         [SerializeField] private CardView _cardView;
         [SerializeField] private CardBlock _cardBlock;
 
-        private string _descriptionMessage;
+        private CardCapabilityDescription _cardCapabilityDescription;
+
         private BigCardRoot _bigCardRoot;
-        private LabelActivateData _labelData;
         private BigCardRootActivateData _bigCardRootActivateData;
 
         [Inject]
-        public void Construct(BigCardRoot bigCardRoot)
+        public void Construct(BigCardRoot bigCardRoot, CardCapabilityDescription cardCapabilityDescription)
         {
             _bigCardRoot = bigCardRoot;
+            _cardCapabilityDescription = cardCapabilityDescription;
         }
 
         public override void Deactivate()
@@ -31,6 +32,7 @@ namespace GameFields.Persons.Discovers
                 return;
 
             IsActive = false;
+            _cardView.Init(_cardCapabilityDescription);
 
             Block();
 
@@ -47,10 +49,8 @@ namespace GameFields.Persons.Discovers
             Block();
 
             _cardView.FillData(data.CardViewData);
-            _descriptionMessage = data.CardViewData.Description;
-            _labelData = new LabelActivateData(_descriptionMessage);
             BigCardShowData bigCardShowData = new BigCardShowData(new Vector2(data.CardWidth, data.CardHeight), data.ReadOnlyRectTransform, data.CardViewData);
-            _bigCardRootActivateData = new BigCardRootActivateData(bigCardShowData);
+            _bigCardRootActivateData = new BigCardRootActivateData(bigCardShowData, 2f, 2f);
 
             DiscoverViewLogicData discoverViewLogicData = new DiscoverViewLogicData(data.CardHeight, data.CardWidth);
 

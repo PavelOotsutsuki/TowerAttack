@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using Tools;
 using Tools.UI;
 using Tools.Utils.FillComponents;
 using UnityEngine;
+using Zenject;
 
 namespace Cards
 {
@@ -13,13 +16,19 @@ namespace Cards
         [SerializeField] private BigCardDescription _description;
         [SerializeField] private CardDescription _cardDescription;
 
-        private readonly CardCapabilityDescription _cardCapabilityDescription = new CardCapabilityDescription();
+        private CardCapabilityDescription _cardCapabilityDescription;
+
+        private CancellationTokenSource _token;
+        private UniTask _activatingBigCard;
+        private UniTask _activatingBigCardDescription;
 
         public bool? IsActive { get; private set; } = null;
 
-        public void Init()
+        public void Init(CardCapabilityDescription cardCapabilityDescription)
         {
-            _bigCard.Init();
+            _cardCapabilityDescription = cardCapabilityDescription;
+
+            _bigCard.Init(_cardCapabilityDescription);
             _description.Init();
             _cardDescription.Init();
         }
@@ -31,18 +40,39 @@ namespace Cards
 
             IsActive = true;
 
-            _bigCard.Show(data.BigCardShowData);
+            CancelActivating();
+
+            _token = new CancellationTokenSource();
+            _activatingBigCard = ActivatingBigCard(data.BigCardShowData, data.BigCardActivateDelay)
+                .ToUniTask(cancellationToken: _token.Token);
+
             _cardDescription.Show(data.BigCardShowData.LabelData);
 
             //string cardCapabilityDescription = _cardCapabilityDescription.GetDescription(data.BigCardShowData.CardViewData.CardCapability);
-            string cardCapabilityDescription = _cardCapabilityDescription.GetToStringValue(data.BigCardShowData.CardViewData.CardCapability);
+            string cardCapabilityDescription = _cardCapabilityDescription.GetAllCapabilitiesToStringValue(data.BigCardShowData.CardViewData.CardCapability);
 
-            if (string.IsNullOrWhiteSpace(cardCapabilityDescription) == false)
+            if (cardCapabilityDescription != "")
             {
                 LabelActivateData labelActivateData = new LabelActivateData(cardCapabilityDescription);
-
-                _description.Show(labelActivateData);
+                _activatingBigCardDescription = ActivatingBigCardDescription(labelActivateData,
+                    data.BigCardDescriptionActivateDelay).ToUniTask(cancellationToken: _token.Token);
             }
+        }
+
+        private IEnumerator ActivatingBigCard(BigCardShowData data, float delay)
+        {
+            if (Mathf.Approximately(delay, 0f) == false)
+                yield return new WaitForSeconds(delay);
+
+            _bigCard.Show(data);
+        }
+
+        private IEnumerator ActivatingBigCardDescription(LabelActivateData data, float delay)
+        {
+            if (Mathf.Approximately(delay, 0f) == false)
+                yield return new WaitForSeconds(delay);
+
+            _description.Show(data);
         }
 
         public void Deactivate()
@@ -51,10 +81,20 @@ namespace Cards
                 return;
 
             IsActive = false;
+            CancelActivating();
 
             _bigCard.Hide();
             _description.Hide();
             _cardDescription.Hide();
+        }
+
+        private void CancelActivating()
+        {
+            if (_activatingBigCard.Status == UniTaskStatus.Pending ||
+                _activatingBigCardDescription.Status == UniTaskStatus.Pending)
+            {
+                _token.Cancel();
+            }
         }
 
         #region AutomaticFillComponents

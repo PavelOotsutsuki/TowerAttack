@@ -30,7 +30,8 @@ namespace Cards
 
         internal void Init(Card me, CardViewService cardViewService, CardViewData cardViewData,
             RectTransform cardTransform, ICardDragAndDropHandler cardDragAndDropHandler,
-            CardSpriteModeManager cardSpriteModeManager, CurseAnimator curseAnimator)
+            CardSpriteModeManager cardSpriteModeManager, CurseAnimator curseAnimator,
+            CardCapabilityDescription cardCapabilityDescription)
         {
             ReadOnlyRectTransform readOnlyRectTransform = new ReadOnlyRectTransform(cardTransform);
 
@@ -38,7 +39,8 @@ namespace Cards
             Vector2 cardSizeBack = GameSettings.CardSize;
 
             _cardSpriteManager.Init(cardSpriteModeManager, curseAnimator);
-            _cardFront.Init(cardViewData, readOnlyRectTransform, cardViewService, cardSizeFront, _cardFrame);
+            _cardFront.Init(cardViewData, readOnlyRectTransform, cardViewService, cardSizeFront, _cardFrame,
+                cardCapabilityDescription);
             _cardBack.Init(cardSizeBack);
             _onFireLogic.Init();
 

@@ -2,22 +2,24 @@ using Tools;
 
 namespace Cards
 {
-    public class CardCapabilityData : IData
+    internal class CardCapabilityData : IData
     {
         //private readonly CardCapability _cardCapability;
         private readonly string _toStringValue;
         private readonly string _description;
+        private readonly string _colorTag;
 
         //public CardCapabilityData(CardCapability cardCapability, string toStringValue, string description)
-        public CardCapabilityData(string toStringValue, string description)
+        public CardCapabilityData(string toStringValue, string description, string colorTag)
         {
             //_cardCapability = cardCapability;
             _toStringValue = toStringValue;
             _description = description;
+            _colorTag = colorTag;
         }
 
         //public CardCapability CardCapability => _cardCapability;
-        public string ToStringValue => _toStringValue;
-        public string Description => _description;
+        public string ToStringValue => $"<b><color=#{_colorTag}>{_toStringValue}</color> </b>";
+        public string Description => $"<b><color=#{_colorTag}>{_toStringValue}:</color> </b>{_description}";
     }
 }
