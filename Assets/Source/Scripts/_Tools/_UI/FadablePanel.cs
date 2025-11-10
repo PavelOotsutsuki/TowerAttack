@@ -30,7 +30,8 @@ namespace Tools.UI
                 return;
 
             IsShown = true;
-            StartFading(_data.FadeUpDuration, _data.MaxAlpha);
+            float duration = _data.FadeUpDuration * ((_data.MaxAlpha - _canvasGroup.alpha) / (_data.MaxAlpha - _data.MinAlpha));
+            StartFading(duration, _data.MaxAlpha);
         }
 
         public void Hide()
@@ -39,7 +40,8 @@ namespace Tools.UI
                 return;
 
             IsShown = false;
-            StartFading(_data.FadeOutDuration, _data.MinAlpha);
+            float duration = _data.FadeOutDuration * ((_data.MinAlpha - _canvasGroup.alpha) / (_data.MinAlpha - _data.MaxAlpha));
+            StartFading(duration, _data.MinAlpha);
         }
 
         private void StartFading(float duration, float targetAlpha)
@@ -75,6 +77,7 @@ namespace Tools.UI
                 yield return null;
             }
 
+            _canvasGroup.alpha = targetAlpha;
             _isComplete = true;
         }
 

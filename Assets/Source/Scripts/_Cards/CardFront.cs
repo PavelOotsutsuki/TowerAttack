@@ -15,7 +15,7 @@ namespace Cards
         //[SerializeField] private CardSpriteManager _cardSpriteManager;
         //[SerializeField] private CardBlock _cardBlock;
 
-        private ReadOnlyRectTransform _readOnlyCardRectTransform;
+        private ReadOnlyRectTransform _ROCardRectTransform;
         private CardViewService _cardViewService;
         private Vector2 _cardSize;
         private BigCardRootActivateData _bigCardRootActivateData;
@@ -25,11 +25,11 @@ namespace Cards
         public bool IsBlock { get; private set; }
         public bool? IsShown { get; private set; } = null;
 
-        internal void Init(CardViewData cardViewData, ReadOnlyRectTransform readOnlyCartRectTransform,
+        internal void Init(CardViewData cardViewData, ReadOnlyRectTransform ROCartRectTransform,
             CardViewService cardViewService, Vector2 cardSize, CardFrame cardFrame,
             CardCapabilityDescription cardCapabilityDescription)
         {
-            _readOnlyCardRectTransform = readOnlyCartRectTransform;
+            _ROCardRectTransform = ROCartRectTransform;
             _cardViewService = cardViewService;
             _cardSize = cardSize;
             _cardView.Init(cardCapabilityDescription);
@@ -52,8 +52,9 @@ namespace Cards
         {
             _cardView.FillData(cardViewData);
 
-            BigCardShowData bigCardShowData = new BigCardShowData(_cardSize, _readOnlyCardRectTransform, cardViewData);
-            _bigCardRootActivateData = new BigCardRootActivateData(bigCardShowData, 0f, 2f);
+            //BigCardShowData bigCardShowData = new BigCardShowData(_cardSize, _ROCardRectTransform, cardViewData);
+            BigCardShowData bigCardShowData = new BigCardShowData(cardViewData);
+            _bigCardRootActivateData = new BigCardRootActivateData(bigCardShowData, BigCardViewType.AroundTarget);
         }
 
         private void OnDisable()
@@ -126,7 +127,7 @@ namespace Cards
 
         private void DefineSmallSize()
         {
-            _readOnlyCardRectTransform.SetSize(_cardSize);
+            _ROCardRectTransform.SetSize(_cardSize);
         }
 
         public void Show()

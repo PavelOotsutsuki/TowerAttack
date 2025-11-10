@@ -49,8 +49,9 @@ namespace GameFields.Persons.Discovers
             Block();
 
             _cardView.FillData(data.CardViewData);
-            BigCardShowData bigCardShowData = new BigCardShowData(new Vector2(data.CardWidth, data.CardHeight), data.ReadOnlyRectTransform, data.CardViewData);
-            _bigCardRootActivateData = new BigCardRootActivateData(bigCardShowData, 2f, 2f);
+            //BigCardShowData bigCardShowData = new BigCardShowData(new Vector2(data.CardWidth, data.CardHeight), data.ReadOnlyRectTransform, data.CardViewData);
+            BigCardShowData bigCardShowData = new BigCardShowData(data.CardViewData);
+            _bigCardRootActivateData = new BigCardRootActivateData(bigCardShowData, BigCardViewType.LeftTop);
 
             DiscoverViewLogicData discoverViewLogicData = new DiscoverViewLogicData(data.CardHeight, data.CardWidth);
 

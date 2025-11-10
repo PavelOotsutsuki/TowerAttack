@@ -6,6 +6,7 @@ using Tools;
 using Tools.Settings;
 using Tools.UI;
 using Tools.Utils.FillComponents;
+using Tools.Utils.Screens;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
@@ -73,9 +74,21 @@ namespace GameFields.Persons.LookCardMenues
 
             _cardView.FillData(data.CardViewData);
             _descriptionMessage = data.CardViewData.Description;
-            BigCardShowData showData = new BigCardShowData(_bigCardSize, _ROTransform, data.CardViewData);
+            //BigCardShowData showData = new BigCardShowData(_bigCardSize, _ROTransform, data.CardViewData);
+            BigCardShowData showData = new BigCardShowData(data.CardViewData);
 
-            _bigCardRootActivateData = new BigCardRootActivateData(showData, 1f, 2f);
+            BigCardViewType bigCardViewType;
+
+            if (_transform.position.x < Screen.currentResolution.width / 2f)
+            {
+                bigCardViewType = BigCardViewType.RightTop;
+            }
+            else
+            {
+                bigCardViewType = BigCardViewType.LeftTop;
+            }
+
+            _bigCardRootActivateData = new BigCardRootActivateData(showData, bigCardViewType);
 
             LookCardMenuCardViewLogicData lookCardMenuCardViewLogicData = new LookCardMenuCardViewLogicData(data.CardHeight, data.CardWidth);
 
