@@ -5,19 +5,24 @@ namespace Cards
     public class BigCardRootActivateData : IData
     {
         private readonly BigCardShowData _bigCardShowData;
-        private readonly float _bigCardActivateDelay;
-        private readonly float _bigCardDescriptionActivateDelay;
+        private readonly CardDescriptionActivateData _cardDescriptionShowData;
+        private readonly CapabilityDescriptionActivateData _capabilityDescriptionShowData;
 
-        public BigCardRootActivateData(BigCardShowData bigCardShowData, float bigCardActivateDelay,
-            float bigCardDescriptionActivateDelay)
+        public BigCardRootActivateData(BigCardShowData bigCardShowData = null,
+            CardDescriptionActivateData cardDescriptionShowData = null,
+            CapabilityDescriptionActivateData capabilityDescriptionShowData = null)
         {
             _bigCardShowData = bigCardShowData;
-            _bigCardActivateDelay = bigCardActivateDelay;
-            _bigCardDescriptionActivateDelay = bigCardDescriptionActivateDelay;
+            _cardDescriptionShowData = cardDescriptionShowData;
+            _capabilityDescriptionShowData = capabilityDescriptionShowData;
         }
 
+        public bool CanActivateBigCard => _bigCardShowData != null;
+        public bool CanActivateCardDescription => _cardDescriptionShowData != null;
+        public bool CanActivateCapabilityDescription => _capabilityDescriptionShowData != null;
+
         public BigCardShowData BigCardShowData => _bigCardShowData;
-        public float BigCardActivateDelay => _bigCardActivateDelay;
-        public float BigCardDescriptionActivateDelay => _bigCardDescriptionActivateDelay;
+        public CardDescriptionActivateData CardDescriptionShowData => _cardDescriptionShowData;
+        public CapabilityDescriptionActivateData CapabilityDescriptionShowData => _capabilityDescriptionShowData;
     }
 }

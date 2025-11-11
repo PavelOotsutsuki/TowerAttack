@@ -14,11 +14,12 @@ namespace GameFields.Persons.Discovers
 
         private Color _defaultColor;
 
-        public override void Init(Action clickCallback, IDiscoverClickHandler discoverClickHandler)
+        public override void Init(Action clickCallback, IDiscoverClickHandler discoverClickHandler, float scaleFactor,
+            float viewDuration)
         {
             _defaultColor = _frameImage.color;
 
-            base.Init(clickCallback, discoverClickHandler);
+            base.Init(clickCallback, discoverClickHandler, scaleFactor, viewDuration);
         }
 
         public override void Deactivate()

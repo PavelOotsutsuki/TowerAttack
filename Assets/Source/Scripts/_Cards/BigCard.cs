@@ -22,7 +22,7 @@ namespace Cards
         private float _canvasHeight;
         private float _screenFactor;
 
-        public bool? IsShown { get; private set; } = null;
+        public bool? IsShown { get; private set; } = false;
 
         //public float BigWidth => _bigWidth;
         //public Vector2 Position => _rectTransform.position;

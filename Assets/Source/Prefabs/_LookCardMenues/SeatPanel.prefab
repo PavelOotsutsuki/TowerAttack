@@ -101,5 +101,5 @@ MonoBehaviour:
   _seatTemplate: {fileID: 7959766995314940463, guid: 69334dbb457bb445c8ff5fa34a3f2a28, type: 3}
   _seatContainer: {fileID: 8532581736128882331}
   _rectTransform: {fileID: 3943349432347135908}
-  _maxCardSizeScale: 2
+  _maxCardSizeScale: 3
   _minCardSizeScale: 1

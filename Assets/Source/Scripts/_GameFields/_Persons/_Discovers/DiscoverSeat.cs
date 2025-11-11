@@ -14,14 +14,15 @@ namespace GameFields.Persons.Discovers
 
         private IDiscoverable _card;
 
-        private Movement _seatMovement;
+        //private Movement _seatMovement;
         private IDiscoverChoiceHandler _discoverChoiceHandler;
 
-        public void Init(IDiscoverChoiceHandler discoverChoiceHandler)
+        public void Init(IDiscoverChoiceHandler discoverChoiceHandler, float scaleFactor,
+            float viewDuration)
         {
-            _seatMovement = new Movement(_rectTransform);
+            //_seatMovement = new Movement(_rectTransform);
             _discoverChoiceHandler = discoverChoiceHandler;
-            _discoverCard.Init(OnDiscoverCardClick, this);
+            _discoverCard.Init(OnDiscoverCardClick, this, scaleFactor, viewDuration);
             Reset();
         }
 
@@ -44,10 +45,19 @@ namespace GameFields.Persons.Discovers
             _discoverCard.Deactivate();
         }
 
-        public void SetLocalPositionValues(Vector3 position, Vector3 rotation, float duration = 0f)
+        public void SetRectTransformValues(float anchorMinX, float anchorMinY, float anchorMaxX, float anchorMaxY,
+            Vector2 anchorPosition)
         {
-            _seatMovement.MoveLocalSmoothly(position, rotation, duration);
+            _rectTransform.anchorMin = new Vector2(anchorMinX, anchorMinY);
+            _rectTransform.anchorMax = new Vector2(anchorMaxX, anchorMaxY);
+
+            _rectTransform.anchoredPosition = anchorPosition;
         }
+
+        //public void SetLocalPositionValues(Vector3 position, Vector3 rotation, float duration = 0f)
+        //{
+        //    _seatMovement.MoveLocalSmoothly(position, rotation, duration);
+        //}
 
         private void OnDiscoverCardClick()
         {

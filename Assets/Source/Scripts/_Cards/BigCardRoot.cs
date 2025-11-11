@@ -1,35 +1,22 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
-using Cysharp.Threading.Tasks;
 using Tools;
-using Tools.UI;
 using Tools.Utils.FillComponents;
 using UnityEngine;
-using Zenject;
 
 namespace Cards
 {
     public class BigCardRoot : MonoBehaviour, IWorkable<BigCardRootActivateData>, IAutomaticFillComponents
     {
         [SerializeField] private BigCard _bigCard;
-        [SerializeField] private BigCardDescription _description;
+        [SerializeField] private CapabilityDescription _capabilityDescription;
         [SerializeField] private CardDescription _cardDescription;
-
-        private CardCapabilityDescription _cardCapabilityDescription;
-
-        private CancellationTokenSource _token;
-        private UniTask _activatingBigCard;
-        private UniTask _activatingBigCardDescription;
-
-        public bool? IsActive { get; private set; } = null;
+        
+        public bool? IsActive { get; private set; } = false;
 
         public void Init(CardCapabilityDescription cardCapabilityDescription)
         {
-            _cardCapabilityDescription = cardCapabilityDescription;
-
-            _bigCard.Init(_cardCapabilityDescription);
-            _description.Init();
+            _bigCard.Init(cardCapabilityDescription);
+            _capabilityDescription.Init(cardCapabilityDescription);
             _cardDescription.Init();
         }
 
@@ -40,39 +27,14 @@ namespace Cards
 
             IsActive = true;
 
-            CancelActivating();
+            if (data.CanActivateBigCard)
+                _bigCard.Show(data.BigCardShowData);
 
-            _token = new CancellationTokenSource();
-            _activatingBigCard = ActivatingBigCard(data.BigCardShowData, data.BigCardActivateDelay)
-                .ToUniTask(cancellationToken: _token.Token);
+            if (data.CanActivateCardDescription)
+                _cardDescription.Show(data.CardDescriptionShowData);
 
-            _cardDescription.Show(data.BigCardShowData.LabelData);
-
-            //string cardCapabilityDescription = _cardCapabilityDescription.GetDescription(data.BigCardShowData.CardViewData.CardCapability);
-            string cardCapabilityDescription = _cardCapabilityDescription.GetAllCapabilitiesToStringValue(data.BigCardShowData.CardViewData.CardCapability);
-
-            if (cardCapabilityDescription != "")
-            {
-                LabelActivateData labelActivateData = new LabelActivateData(cardCapabilityDescription);
-                _activatingBigCardDescription = ActivatingBigCardDescription(labelActivateData,
-                    data.BigCardDescriptionActivateDelay).ToUniTask(cancellationToken: _token.Token);
-            }
-        }
-
-        private IEnumerator ActivatingBigCard(BigCardShowData data, float delay)
-        {
-            if (Mathf.Approximately(delay, 0f) == false)
-                yield return new WaitForSeconds(delay);
-
-            _bigCard.Show(data);
-        }
-
-        private IEnumerator ActivatingBigCardDescription(LabelActivateData data, float delay)
-        {
-            if (Mathf.Approximately(delay, 0f) == false)
-                yield return new WaitForSeconds(delay);
-
-            _description.Show(data);
+            if (data.CanActivateCapabilityDescription)
+                _capabilityDescription.Show(data.CapabilityDescriptionShowData);
         }
 
         public void Deactivate()
@@ -81,20 +43,15 @@ namespace Cards
                 return;
 
             IsActive = false;
-            CancelActivating();
 
-            _bigCard.Hide();
-            _description.Hide();
-            _cardDescription.Hide();
-        }
+            if (_bigCard.IsShown == true)
+                _bigCard.Hide();
 
-        private void CancelActivating()
-        {
-            if (_activatingBigCard.Status == UniTaskStatus.Pending ||
-                _activatingBigCardDescription.Status == UniTaskStatus.Pending)
-            {
-                _token.Cancel();
-            }
+            if (_capabilityDescription.IsShown == true)
+                _capabilityDescription.Hide();
+
+            if (_cardDescription.IsShown == true)
+                _cardDescription.Hide();
         }
 
         #region AutomaticFillComponents
@@ -104,7 +61,8 @@ namespace Cards
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
                 DefineBigCard(),
-                DefineBigCardDescription()
+                DefineCapabilityDescription(),
+                DefineCardDescription()
             };
 
             return list;
@@ -116,10 +74,16 @@ namespace Cards
             return AutomaticFillComponents.DefineComponent(this, ref _bigCard, ComponentLocationTypes.InChildren);
         }
 
-        [ContextMenu(nameof(DefineBigCardDescription))]
-        private ComponentAttachInfo DefineBigCardDescription()
+        [ContextMenu(nameof(DefineCapabilityDescription))]
+        private ComponentAttachInfo DefineCapabilityDescription()
         {
-            return AutomaticFillComponents.DefineComponent(this, ref _description, ComponentLocationTypes.InChildren);
+            return AutomaticFillComponents.DefineComponent(this, ref _capabilityDescription, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineCardDescription))]
+        private ComponentAttachInfo DefineCardDescription()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _cardDescription, ComponentLocationTypes.InScene);
         }
         #endregion
     }

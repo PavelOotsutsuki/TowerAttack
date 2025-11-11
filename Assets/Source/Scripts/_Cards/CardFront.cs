@@ -53,7 +53,11 @@ namespace Cards
             _cardView.FillData(cardViewData);
 
             BigCardShowData bigCardShowData = new BigCardShowData(_cardSize, _readOnlyCardRectTransform, cardViewData);
-            _bigCardRootActivateData = new BigCardRootActivateData(bigCardShowData, 0f, 2f);
+            CardDescriptionActivateData cardDescriptionActivateData = new CardDescriptionActivateData(cardViewData.Description);
+            CapabilityDescriptionActivateData capabilityDescriptionActivateData = new CapabilityDescriptionActivateData(cardViewData.CardCapability);
+
+            _bigCardRootActivateData = new BigCardRootActivateData(bigCardShowData, cardDescriptionActivateData,
+                capabilityDescriptionActivateData);
         }
 
         private void OnDisable()

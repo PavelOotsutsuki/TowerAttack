@@ -96,6 +96,7 @@ namespace GameFields.Persons.LookCardMenues
             //_maxSeatsInWidth = (int)((_thisWidth - 2f * indentX + _minSeatSize.x / 2f) / (1.5f * _minSeatSize.x));
             //_maxSeatsInHeight = (int)((_thisHeight - 2f * indentY + _minSeatSize.y / 2f) / (_minSeatSize.y * 1.5f));
             _maxSeats = _maxSeatsInWidth * _maxSeatsInHeight;
+            _maxSeats = 3;
 
             _maxSeatSize = _defaultCardSize * _maxCardSizeScale;
             _maxSeatsInWidthByMaxSeatSize = (int)((_thisWidth - _maxSeatSize.x / 2f) / (_maxSeatSize.x * 1.5f));

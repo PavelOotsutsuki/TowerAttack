@@ -8,7 +8,7 @@ namespace GameFields.Persons.Discovers
 {
     public abstract class DiscoverCard : MonoBehaviour, IWorkable<DiscoverCardActivateData>, IAutomaticFillComponents
     {
-        [SerializeField, Min(0f)] protected float ViewDuration = 0.5f;
+        //[SerializeField, Min(0f)] protected float ViewDuration = 0.5f;
         [SerializeField] protected DiscoverViewLogic ViewLogic;
 
         protected Action ClickCallback;
@@ -16,9 +16,10 @@ namespace GameFields.Persons.Discovers
 
         public bool? IsActive { get; protected set; } = null;
 
-        public virtual void Init(Action clickCallback, IDiscoverClickHandler discoverClickHandler)
+        public virtual void Init(Action clickCallback, IDiscoverClickHandler discoverClickHandler, float scaleFactor,
+            float viewDuration)
         {
-            ViewLogic.Init(ViewDuration);
+            ViewLogic.Init(viewDuration, scaleFactor);
             _discoverClickHandler = discoverClickHandler;
             ClickCallback = clickCallback;
 

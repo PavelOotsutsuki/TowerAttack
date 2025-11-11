@@ -980,7 +980,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RectTransform: {fileID: 978248841994725072}
-  ScaleFactor: 2
+  ScaleFactor: 3
 --- !u!1 &6520988220802400049
 GameObject:
   m_ObjectHideFlags: 0

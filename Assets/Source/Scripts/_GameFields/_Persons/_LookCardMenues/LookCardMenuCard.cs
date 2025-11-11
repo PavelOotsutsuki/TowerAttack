@@ -22,7 +22,7 @@ namespace GameFields.Persons.LookCardMenues
 
         private ReadOnlyTransform _ROTransform;
 
-        private string _descriptionMessage;
+        //private string _descriptionMessage;
         //private CardDescription _description;
         //private BigCard _bigCard;
         private BigCardRoot _bigCardRoot;
@@ -72,10 +72,11 @@ namespace GameFields.Persons.LookCardMenues
             Block();
 
             _cardView.FillData(data.CardViewData);
-            _descriptionMessage = data.CardViewData.Description;
-            BigCardShowData showData = new BigCardShowData(_bigCardSize, _ROTransform, data.CardViewData);
+            //_descriptionMessage = data.CardViewData.Description;
+            //BigCardShowData showData = new BigCardShowData(_bigCardSize, _ROTransform, data.CardViewData);
+            CardDescriptionActivateData cardDescriptionActivateData = new CardDescriptionActivateData(data.CardViewData.Description);
 
-            _bigCardRootActivateData = new BigCardRootActivateData(showData, 1f, 2f);
+            _bigCardRootActivateData = new BigCardRootActivateData(null, cardDescriptionActivateData, null);
 
             LookCardMenuCardViewLogicData lookCardMenuCardViewLogicData = new LookCardMenuCardViewLogicData(data.CardHeight, data.CardWidth);
 

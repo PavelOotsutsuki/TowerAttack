@@ -7,27 +7,37 @@ using UnityEngine;
 namespace Cards
 {
     [RequireComponent(typeof(FadableLabel))]
-    internal class CardDescription : MonoBehaviour, IViewable<CardDescriptionActivateData>, IAutomaticFillComponents
+    public class CapabilityDescription : MonoBehaviour, IViewable<CapabilityDescriptionActivateData>, IAutomaticFillComponents
     {
         [SerializeField] private FadableLabel _fadableLabel;
 
+        private CardCapabilityDescription _cardCapabilityDescription;
+
         public bool? IsShown { get; private set; } = false;
 
-        public void Init()
+        public void Init(CardCapabilityDescription cardCapabilityDescription)
         {
-            gameObject.SetActive(true);
+            _cardCapabilityDescription = cardCapabilityDescription;
 
             _fadableLabel.Init();
         }
 
-        public void Show(CardDescriptionActivateData data)
+        public void Show(CapabilityDescriptionActivateData data)
         {
             if (IsShown == true)
                 return;
 
             IsShown = true;
 
-            LabelActivateData fadableLabelActivateData = new LabelActivateData(data.Description);
+            string message = _cardCapabilityDescription.GetAllCapabilitiesToStringValue(data.CardCapability);
+
+            if (message == "")
+            {
+                IsShown = false;
+                return;
+            }
+
+            LabelActivateData fadableLabelActivateData = new LabelActivateData(message);
 
             _fadableLabel.Show(fadableLabelActivateData);
         }
