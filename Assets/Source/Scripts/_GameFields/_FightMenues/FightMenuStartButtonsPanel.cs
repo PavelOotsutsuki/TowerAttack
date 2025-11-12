@@ -17,9 +17,10 @@ namespace GameFields.FightMenues
     public class FightMenuStartButtonsPanel : FightMenuButtonsPanel, IFocusWatcher//, IAutomaticFillComponents
     {
         //[SerializeField] private FadablePanel _fadablePanel;
-        [SerializeField] private FightMenuButton _capitulateButton;
-        [SerializeField] private FightMenuButton _settingsButton;
         [SerializeField] private FightMenuButton _resumeButton;
+        [SerializeField] private FightMenuButton _rulesButton;
+        [SerializeField] private FightMenuButton _settingsButton;
+        [SerializeField] private FightMenuButton _capitulateButton;
         [SerializeField] private FightMenuButton _exitButton;
 
         private List<FightMenuButton> _fightMenuButtons;
@@ -37,19 +38,21 @@ namespace GameFields.FightMenues
 
             _fightMenuButtons = new List<FightMenuButton>()
             {
-                _capitulateButton,
-                _settingsButton,
                 _resumeButton,
+                _rulesButton,
+                _settingsButton,
+                _capitulateButton,
                 _exitButton
             };
 
+            _resumeButton.Init(this, () => fightMenuDeactivator.Deactivate());
+            _rulesButton.Init(this, () => fightMenuDeactivator.Deactivate());
+            _settingsButton.Init(this, onSettingsButtonClick);
             _capitulateButton.Init(this, () =>
             {
                 fightMenuDeactivator.Deactivate();
                 playerLoseActions.Activate();
             });
-            _settingsButton.Init(this, onSettingsButtonClick);
-            _resumeButton.Init(this, () => fightMenuDeactivator.Deactivate());
             _exitButton.Init(this, () =>
             {
                 #if UNITY_EDITOR

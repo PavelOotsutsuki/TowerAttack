@@ -63,6 +63,11 @@ namespace GameFields.Persons.LookCardMenues
             _stoneFrame.Init();
         }
 
+        private void OnDestroy()
+        {
+            _screenRoot.OnChangeResolution -= OnScreenChange;
+        }
+
         public void Activate(LookCardMenuSeatPanelRootActivateData data)
         {
             if (IsActive == true)
