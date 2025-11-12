@@ -102,4 +102,4 @@ MonoBehaviour:
   _seatContainer: {fileID: 8532581736128882331}
   _rectTransform: {fileID: 3943349432347135908}
   _maxCardSizeScale: 3
-  _minCardSizeScale: 1
+  _minCardSizeScale: 2

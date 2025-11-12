@@ -15,15 +15,25 @@ namespace GameFields.Persons.LookCardMenues
         [SerializeField] private LookCardMenuSeatContainer _seatContainer;
         [SerializeField] private RectTransform _rectTransform;
 
-        [SerializeField] private float _maxCardSizeScale = 2f;
-        [SerializeField] private float _minCardSizeScale = 1.5f;
+        [SerializeField] private float _maxCardSizeScale = 3f; // Высчитываем вручную размер скейла. Берем в расчетах по максимуму
+                                                              // Если он слишком высок, берем это значение
+        [SerializeField] private float _maxIndentStone = 60f; 
+        [SerializeField] private float _indentArrowX = 100f;
+        [SerializeField] private float _extraIndentX = 10f;
+        [SerializeField] private float _extraIndentY = 25f;
+        [SerializeField] private float _betweenCardsIndentFactor = 4f; // Во сколько раз расстояние между картами меньше размера карт
+
+
+        //[SerializeField] private float _minCardSizeScale = 1.5f;
         //[SerializeField] private float _offset = 400f;
         //[SerializeField] private float _positionY = 0f;
+
+        private readonly int _maxSeats = 3;
+        private readonly Vector2 _defaultCardSize = GameSettings.CardSize;
 
         private LookCardMenuSeat[] _seats;
         private Card[] _cards;
 
-        private Vector2 _defaultCardSize;
         //private int _maxCardsInRow;
         //private int _maxCardsInColumn;
 
@@ -52,18 +62,19 @@ namespace GameFields.Persons.LookCardMenues
         //public int RowsCount => _rowsCount > _maxCardsInRow ? _maxCardsInRow : _rowsCount;
         ReadOnlyRectTransform _ROTransform;
 
-        private float _thisWidth; // width поля 
-        private float _thisHeight; // height поля 
+        //private float _thisWidth; // width поля 
+        //private float _thisHeight; // height поля 
 
-        private Vector2 _minSeatSize; // min размер карты
-        private int _maxSeats; // max кол-во seat-ов, которое поместится в зону
-        private int _maxSeatsInWidth; // max кол-во seat-ов, которое поместится в зоне по width
-        private int _maxSeatsInHeight; // max кол-во seat-ов, которое поместится в зоне по height
+        //private Vector2 _minSeatSize; // min размер карты
+        //private int _maxSeatsInWidth; // max кол-во seat-ов, которое поместится в зоне по width
+        //private int _maxSeatsInHeight; // max кол-во seat-ов, которое поместится в зоне по height
 
-        private Vector2 _maxSeatSize; // max размер карты
-        private int _maxSeatsInWidthByMaxSeatSize; // max кол-во seat-ов больших карт, которое поместится в зоне по width
+        //private Vector2 _maxSeatSize; // max размер карты
+        //private int _maxSeatsInWidthByMaxSeatSize; // max кол-во seat-ов больших карт, которое поместится в зоне по width
 
-        private int _lastIndex; // Последний index seat-ов
+        private Vector2 _cardSize;
+        private float _betweenCardsIndent;
+        //private int _lastIndex; // Последний index seat-ов
 
         public int MaxSeats => _maxSeats;
 
@@ -71,43 +82,44 @@ namespace GameFields.Persons.LookCardMenues
         {
             _ROTransform = new ReadOnlyRectTransform(_rectTransform);
 
-            //Debug.Log("Convert.ToInt32(0.9f): " + Convert.ToInt32(0.9f));
-            //Debug.Log("Convert.ToInt32(1.1f): " + Convert.ToInt32(1.1f));
-            //Debug.Log("Convert.ToInt32(1.5f): " + Convert.ToInt32(1.5f));
-            //Debug.Log("Convert.ToInt32(1.9f): " + Convert.ToInt32(1.9f));
-            _defaultCardSize = GameSettings.CardSize;
-            _minSeatSize = _defaultCardSize * _minCardSizeScale;
+            // Отступ от края по X до карты = половина max размера камня + width стрелки + доп indent для видимости непрямого смыкания
+            float indentX = _maxIndentStone / 2f + _indentArrowX + _extraIndentX;
+            // Отступ от края по Y до карты = половина max размера камня + доп indent для видимости непрямого смыкания
+            float indentY = _maxIndentStone / 2f + _extraIndentY;
+            // Коэффициент высоты/ширины карты, дабы потом правильно выбрать размеры
+            float cardSizeFactor = _defaultCardSize.x / _defaultCardSize.y;
+            // Рабочая область для размещения карт по ширине
+            float thisWorkWidth = _ROTransform.GetWidth() - indentX * 2f;
+            // Рабочая область для размещения карт по высоте
+            float thisWorkHeight = _ROTransform.GetHeight() - indentY * 2f;
 
-            float indentX = 160f;
-            float indentY = _minSeatSize.y / 2f;
+            float maxHeightCard = thisWorkHeight;
+            // Берем за отступы между картами 1/4 размера карты. Получается n карт + (n-1) отступов
+            float maxWeightCard = thisWorkWidth / (_maxSeats + ((_maxSeats - 1) / _betweenCardsIndentFactor));
+            // Считаем сколько будет width если возьмем по максимуму от высоты
+            float wightByMaxHeightCard = maxHeightCard * cardSizeFactor;
+            // Считаем сколько будет height если возьмем по максимуму от ширины
+            float heightByMaxWeightCard = maxWeightCard / cardSizeFactor;
 
-            _thisWidth = _ROTransform.GetWidth() - indentX * 2f + _minSeatSize.x; // Подводим к тому, что indent = _minSeatSize / 2f
-            _thisHeight = _ROTransform.GetHeight() - indentY * 2f + _minSeatSize.y; // Подводим к тому, что indent = _minSeatSize / 2f
+            // Берем наименьшее, иначе не влезет
+            if (heightByMaxWeightCard < maxHeightCard)
+            {
+                _cardSize = new Vector2(maxWeightCard, heightByMaxWeightCard);
+            }
+            else
+            {
+                _cardSize = new Vector2(wightByMaxHeightCard, maxHeightCard);
+            }
 
+            // Если наименьший слишком большой, уменьшаем до максимально большого
+            if (_cardSize.x > _defaultCardSize.x * _maxCardSizeScale)
+                _cardSize = _defaultCardSize * _maxCardSizeScale;
 
+            // Заранее высчитваем indent между картами
+            _betweenCardsIndent = _cardSize.x / _betweenCardsIndentFactor;
 
-            // Тк размер поля должен вмещать в себя не только карты но и indent-ы между картами и на краях, берем что indent = 0.5 * карты
-            // Итого: из-за indent-а между картами + 1-го indent-a скраю, надо делить на size карты + size карты / 2f = 1.5f * size карты
-            // при этом, надо вычесть из поля 1 крайний indent
-            // Пример: карта 200, поле 400, помещается ровно 1 карта тк + 2 крайних indent-a.
-            // Пример2: карта 200, поле 700, помещается ровно 2 карты тк + 2 крайних и 1 между indent
-            _maxSeatsInWidth = (int)((_thisWidth - _minSeatSize.x / 2f) / (_minSeatSize.x * 1.5f));
-            _maxSeatsInHeight = (int)((_thisHeight - _minSeatSize.y / 2f) / (_minSeatSize.y * 1.5f));
-            //_maxSeatsInWidth = (int)((_thisWidth - 2f * indentX + _minSeatSize.x / 2f) / (1.5f * _minSeatSize.x));
-            //_maxSeatsInHeight = (int)((_thisHeight - 2f * indentY + _minSeatSize.y / 2f) / (_minSeatSize.y * 1.5f));
-            _maxSeats = _maxSeatsInWidth * _maxSeatsInHeight;
-            _maxSeats = 3;
+            //_lastIndex = -1;
 
-            _maxSeatSize = _defaultCardSize * _maxCardSizeScale;
-            _maxSeatsInWidthByMaxSeatSize = (int)((_thisWidth - _maxSeatSize.x / 2f) / (_maxSeatSize.x * 1.5f));
-            //_maxSeatsInWidthByMaxSeatSize = (int)((_thisWidth - 2f * indentX + _maxSeatSize.x / 2f) / (1.5f * _maxSeatSize.x));
-
-            _lastIndex = -1;
-            //_offset = 0f;
-            //_maxCardsInRow = Convert.ToInt32((ROTransform.GetWidth() - Indent * 2 + _defaultCardSize.x) / (_defaultCardSize.x * 3f));
-            //_maxCardsInColumn = Convert.ToInt32((ROTransform.GetHeight() + _defaultCardSize.y) / (_defaultCardSize.y * 3f));
-
-            //Debug.Log("_maxCardsInRow " + _maxCardsInRow + ", _maxCardsInColumn " + _maxCardsInColumn + ", all: " + _maxCardsInRow * _maxCardsInColumn);
             _seats = new LookCardMenuSeat[_maxSeats];
 
             for (int i = 0; i < _maxSeats; i++)
@@ -137,9 +149,8 @@ namespace GameFields.Persons.LookCardMenues
             _isComplete = false;
             gameObject.SetActive(true);
 
-
             Card[] cards = data.Cards.ToArray();
-            _lastIndex = -1;
+            //_lastIndex = -1;
 
             int countCards = cards.Length;
 
@@ -153,13 +164,7 @@ namespace GameFields.Persons.LookCardMenues
                 _cards[i] = cards[i];
             }
 
-            //for (int i = 0; i < _cards.Length; i++)
-            //{
-            //    _seats[i].SetCard(_cards[i]);
-            //}
-
-            //SortSeats();
-            InitIndentsAndSizes();
+            SeatCards();
         }
 
         public void Deactivate()
@@ -176,12 +181,67 @@ namespace GameFields.Persons.LookCardMenues
                 _seats[i].Reset();
             }
 
-            //foreach (LookCardMenuSeat seat in _seats)
-            //{
-            //    seat.Reset();
-            //}
-
             _isComplete = true;
+        }
+
+        //private void SeatCards()
+        //{
+        //    int countAll = _cards.Length;
+        //    Vector2 position;
+        //    float positionX;
+        //    // Можно было бы сделать одной формулой, но если будут баги я заебусь вспоминать почему такие формулы, и комменты не помогут 
+        //    if (countAll % 2 == 0) // Если кол-во четное, значит в середине промежуток
+        //    {
+        //        // Все так работает потому что pivot в центре
+        //        // Первая половина с минусом
+        //        for (int i = 0; i < countAll / 2; i++)
+        //        {
+        //            positionX = (_betweenCardsIndent + _cardSize.x) / 2f // Постоянная часть
+        //                + (countAll / 2 - 1 - i) * (_betweenCardsIndent + _cardSize.x);
+        //            positionX *= -1f; // Тк слева
+        //            position = new Vector2(positionX, 0f);
+
+        //            _seats[i].SetLocalPositionValues(position, Quaternion.identity.eulerAngles);
+        //            _seats[i].SetCard(_cards[i], _cardSize);
+        //        }
+
+        //        // Вторая половина с плюсом
+        //        for (int i = countAll / 2; i < countAll; i++)
+        //        {
+        //            positionX = (_betweenCardsIndent + _cardSize.x) / 2f // Постоянная часть
+        //                + (countAll - 1 - i) * (_betweenCardsIndent + _cardSize.x);
+        //            position = new Vector2(positionX, 0f);
+
+        //            _seats[i].SetLocalPositionValues(position, Quaternion.identity.eulerAngles);
+        //            _seats[i].SetCard(_cards[i], _cardSize);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        for (int i = 0; i < countAll; i++)
+        //        {
+
+        //        }
+        //    }
+        //}
+
+        private void SeatCards()
+        {
+            int countAll = _cards.Length;
+
+            float startPositionX = (_betweenCardsIndent + _cardSize.x) * ((countAll - 1) / 2f) * (-1f);
+            float step = _betweenCardsIndent + _cardSize.x;
+            float currentPositionX;
+
+            for (int i = 0; i < countAll; i++)
+            {
+                currentPositionX = startPositionX + step * i;
+
+                Vector2 position = new Vector2(currentPositionX, 0f);
+
+                _seats[i].SetLocalPositionValues(position, Quaternion.identity.eulerAngles);
+                _seats[i].SetCard(_cards[i], _cardSize);
+            }
         }
 
         //private void SortSeats()
@@ -214,23 +274,23 @@ namespace GameFields.Persons.LookCardMenues
         //    }
         //}
 
-        private void InitIndentsAndSizes()
-        {
-            FindColumnsAndRowsCount();
-            //FindIndents();
+        //private void SetIndentsAndPositions()
+        //{
+        //    FindColumnsAndRowsCount();
+        //    //FindIndents();
 
-            //for (int i = 0; i < _cards.Count; i++)
-            //{
-            //    _seats[i].SetLocalPositionValues(CalcNumberPosition(i + 1, _cards.Count), Quaternion.identity.eulerAngles);
-            //    //_selectNumbers[i].Init(CardNumbers[i], CalcNumberPosition(i + 1), new Vector2(NumberWidht, NumberHeight));
-            //}
+        //    //for (int i = 0; i < _cards.Count; i++)
+        //    //{
+        //    //    _seats[i].SetLocalPositionValues(CalcNumberPosition(i + 1, _cards.Count), Quaternion.identity.eulerAngles);
+        //    //    //_selectNumbers[i].Init(CardNumbers[i], CalcNumberPosition(i + 1), new Vector2(NumberWidht, NumberHeight));
+        //    //}
 
-            //foreach (SelectNumber selectNumber in _selectNumbers)
-            //{
-            //    selectNumber.Init(number, CalcNumberPosition(number), new Vector2(_data.NumberWidht, _data.NumberHeight));
-            //    number++;
-            //}
-        }
+        //    //foreach (SelectNumber selectNumber in _selectNumbers)
+        //    //{
+        //    //    selectNumber.Init(number, CalcNumberPosition(number), new Vector2(_data.NumberWidht, _data.NumberHeight));
+        //    //    number++;
+        //    //}
+        //}
 
         //private Vector2 CalcNumberPosition(int cardNumber, int maxCards)
         //{
@@ -276,203 +336,203 @@ namespace GameFields.Persons.LookCardMenues
         //    Debug.Log("_rowsIndent: " + _rowsIndent);
         //}
 
-        private void SeatCards(int countInRow, int countInColumn, int currentRow, Vector2 cardSize, float cardIndentHeight,
-            float cardIndentWidth, float edgeIndentHeight, float edgeIndentWidth)
-        {
-            //Debug.Log("countInRow: " + countInRow);
-            //Debug.Log("countInColumn: " + countInColumn);
-            //Debug.Log("cardSize: " + cardSize);
-            //Debug.Log("cardIndentHeight: " + cardIndentHeight);
-            //Debug.Log("cardIndentWidth: " + cardIndentWidth);
-            //Debug.Log("edgeIndentHeight: " + edgeIndentHeight);
-            //Debug.Log("edgeIndentWidth: " + edgeIndentWidth);
+        //private void SeatCards(int countInRow, int countInColumn, int currentRow, Vector2 cardSize, float cardIndentHeight,
+        //    float cardIndentWidth, float edgeIndentHeight, float edgeIndentWidth)
+        //{
+        //    //Debug.Log("countInRow: " + countInRow);
+        //    //Debug.Log("countInColumn: " + countInColumn);
+        //    //Debug.Log("cardSize: " + cardSize);
+        //    //Debug.Log("cardIndentHeight: " + cardIndentHeight);
+        //    //Debug.Log("cardIndentWidth: " + cardIndentWidth);
+        //    //Debug.Log("edgeIndentHeight: " + edgeIndentHeight);
+        //    //Debug.Log("edgeIndentWidth: " + edgeIndentWidth);
 
 
-            //if (countInRow * countInColumn != _cards.Length)
-            //    throw new Exception($"Ошибка логики расставления карт в {nameof(LookCardMenuSeatPanel)}");
+        //    //if (countInRow * countInColumn != _cards.Length)
+        //    //    throw new Exception($"Ошибка логики расставления карт в {nameof(LookCardMenuSeatPanel)}");
 
-            //for (int row = 0; row < countInColumn; row++)
-            //{
-                for (int column = 0; column < countInRow; column++)
-                {
-                    _lastIndex++;
-                    int currentIndex = _lastIndex;
+        //    //for (int row = 0; row < countInColumn; row++)
+        //    //{
+        //        for (int column = 0; column < countInRow; column++)
+        //        {
+        //            _lastIndex++;
+        //            int currentIndex = _lastIndex;
 
-                    Card card = _cards[currentIndex];
+        //            Card card = _cards[currentIndex];
 
-                    float positionX = edgeIndentWidth + column * cardIndentWidth + column * cardSize.x
-                        + cardSize.x / 2f; // Тк pivot в центре
-                    float localPositionX = positionX - _thisWidth / 2f; // Превращаем позицию расчета в local
+        //            float positionX = edgeIndentWidth + column * cardIndentWidth + column * cardSize.x
+        //                + cardSize.x / 2f; // Тк pivot в центре
+        //            float localPositionX = positionX - _thisWidth / 2f; // Превращаем позицию расчета в local
 
-                    float positionY = edgeIndentHeight + currentRow * cardIndentHeight + currentRow * cardSize.y
-                        + cardSize.y / 2f;
-                    float localPositionY = positionY - _thisHeight / 2f;
+        //            float positionY = edgeIndentHeight + currentRow * cardIndentHeight + currentRow * cardSize.y
+        //                + cardSize.y / 2f;
+        //            float localPositionY = positionY - _thisHeight / 2f;
 
-                    Vector2 position = new Vector2(localPositionX, localPositionY);
+        //            Vector2 position = new Vector2(localPositionX, localPositionY);
 
-                    //Debug.Log("position: " + position);
+        //            //Debug.Log("position: " + position);
 
-                    _seats[currentIndex].SetLocalPositionValues(position, Quaternion.identity.eulerAngles);
-                    _seats[currentIndex].SetCard(card, cardSize);
-                }
-            //}
-        }
+        //            _seats[currentIndex].SetLocalPositionValues(position, Quaternion.identity.eulerAngles);
+        //            _seats[currentIndex].SetCard(card, cardSize);
+        //        }
+        //    //}
+        //}
 
-        private void FindColumnsAndRowsCount()
-        {
-            //int countAll = _selectNumbers.Length;
-            int countAll = _cards.Length;
+        //private void FindColumnsAndRowsCount()
+        //{
+        //    //int countAll = _selectNumbers.Length;
+        //    int countAll = _cards.Length;
 
-            int countInRow;
-            int countInColumn = (countAll - 1) / _maxSeatsInWidth + 1;
-            float scale;
-            Vector2 cardSize;
-            float cardIndentHeight;
-            float cardIndentWidth;
-            float edgeIndentHeight; 
-            float edgeIndentWidth;
+        //    int countInRow;
+        //    int countInColumn = (countAll - 1) / _maxSeatsInWidth + 1;
+        //    float scale;
+        //    Vector2 cardSize;
+        //    float cardIndentHeight;
+        //    float cardIndentWidth;
+        //    float edgeIndentHeight; 
+        //    float edgeIndentWidth;
 
-            if (countAll <= _maxSeatsInWidthByMaxSeatSize) // Если все карты помещаются в 1 строку большим размером
-            {
-                countInRow = countAll;
-                //countInColumn = 1;
+        //    if (countAll <= _maxSeatsInWidthByMaxSeatSize) // Если все карты помещаются в 1 строку большим размером
+        //    {
+        //        countInRow = countAll;
+        //        //countInColumn = 1;
 
-                scale = _maxCardSizeScale;
-                cardSize = _defaultCardSize * scale;
+        //        scale = maxCardSizeScale;
+        //        cardSize = _defaultCardSize * scale;
 
-                cardIndentHeight = cardSize.y / 2f;
-                cardIndentWidth = cardSize.x / 2f;
-                edgeIndentHeight = (_thisHeight
-                    - cardSize.y * countInColumn
-                    - cardIndentHeight * (countInColumn - 1)
-                    ) / 2;
+        //        cardIndentHeight = cardSize.y / 2f;
+        //        cardIndentWidth = cardSize.x / 4f;
+        //        edgeIndentHeight = (_thisHeight
+        //            - cardSize.y * countInColumn
+        //            - cardIndentHeight * (countInColumn - 1)
+        //            ) / 2;
 
-                edgeIndentWidth = (_thisWidth
-                    - cardSize.x * countInRow
-                    - cardIndentWidth * (countInRow - 1)
-                    ) / 2;
+        //        edgeIndentWidth = (_thisWidth
+        //            - cardSize.x * countInRow
+        //            - cardIndentWidth * (countInRow - 1)
+        //            ) / 2;
 
-                SeatCards(countInRow, countInColumn, 0, cardSize, cardIndentHeight, cardIndentWidth, edgeIndentHeight, edgeIndentWidth);
-                return;
-            }
+        //        SeatCards(countInRow, countInColumn, 0, cardSize, cardIndentHeight, cardIndentWidth, edgeIndentHeight, edgeIndentWidth);
+        //        return;
+        //    }
 
-            if (countInColumn == 1) // Если все карты помещаются в 1 строку любым доступным размером
-            {
-                countInRow = countAll;
-                //countInColumn = 1;
+        //    if (countInColumn == 1) // Если все карты помещаются в 1 строку любым доступным размером
+        //    {
+        //        countInRow = countAll;
+        //        //countInColumn = 1;
 
-                //float maxSeatsInWidth = (_thisWidth - _minSeatSize.x / 2f)
-                //    /
-                //    (_minSeatSize.x * 1.5f);
+        //        //float maxSeatsInWidth = (_thisWidth - _minSeatSize.x / 2f)
+        //        //    /
+        //        //    (_minSeatSize.x * 1.5f);
 
-                //width *  ( 3 * count + 1) = 2 * tw
+        //        //width *  ( 3 * count + 1) = 2 * tw
 
-                // Формулы, обратные _maxSeatsInHeight = (int)((_thisHeight - _minSeatSize.y / 2f) / (_minSeatSize.y * 1.5f));
-                float width = 2f * _thisWidth / (3f * countInRow + 1f);
-                float height = width * _defaultCardSize.y / _defaultCardSize.x;
+        //        // Формулы, обратные _maxSeatsInHeight = (int)((_thisHeight - _minSeatSize.y / 2f) / (_minSeatSize.y * 1.5f));
+        //        float width = 2f * _thisWidth / (3f * countInRow + 1f);
+        //        float height = width * _defaultCardSize.y / _defaultCardSize.x;
 
-                cardSize = new Vector2(width, height);
+        //        cardSize = new Vector2(width, height);
 
-                //scale = _minCardSizeScale;
-                //cardSize = _defaultCardSize * scale;
+        //        //scale = _minCardSizeScale;
+        //        //cardSize = _defaultCardSize * scale;
 
-                cardIndentHeight = cardSize.y / 2f;
-                cardIndentWidth = cardSize.x / 2f;
-                edgeIndentHeight = (_thisHeight
-                    - cardSize.y * countInColumn
-                    - cardIndentHeight * (countInColumn - 1)
-                    ) / 2;
+        //        cardIndentHeight = cardSize.y / 2f;
+        //        cardIndentWidth = cardSize.x / 2f;
+        //        edgeIndentHeight = (_thisHeight
+        //            - cardSize.y * countInColumn
+        //            - cardIndentHeight * (countInColumn - 1)
+        //            ) / 2;
 
-                edgeIndentWidth = (_thisWidth
-                    - cardSize.x * countInRow
-                    - cardIndentWidth * (countInRow - 1)
-                    ) / 2;
+        //        edgeIndentWidth = (_thisWidth
+        //            - cardSize.x * countInRow
+        //            - cardIndentWidth * (countInRow - 1)
+        //            ) / 2;
 
-                SeatCards(countInRow, countInColumn, 0, cardSize, cardIndentHeight, cardIndentWidth, edgeIndentHeight, edgeIndentWidth);
-                return;
-            }
+        //        SeatCards(countInRow, countInColumn, 0, cardSize, cardIndentHeight, cardIndentWidth, edgeIndentHeight, edgeIndentWidth);
+        //        return;
+        //    }
 
-            if (countInColumn > 1)
-            {
-                countInRow = countAll / countInColumn;
-                int restInRow = countAll % countInColumn;
-                int rowWhereIncreaseCountCards = countInColumn - restInRow;
+        //    if (countInColumn > 1)
+        //    {
+        //        countInRow = countAll / countInColumn;
+        //        int restInRow = countAll % countInColumn;
+        //        int rowWhereIncreaseCountCards = countInColumn - restInRow;
 
-                float widthByWidth = 2f * _thisWidth / (3f * (countInRow + restInRow) + 1f);
-                float heightByWidth = widthByWidth * _defaultCardSize.y / _defaultCardSize.x;
+        //        float widthByWidth = 2f * _thisWidth / (3f * (countInRow + restInRow) + 1f);
+        //        float heightByWidth = widthByWidth * _defaultCardSize.y / _defaultCardSize.x;
 
-                float heightByHeight = 2f * _thisHeight / (3f * countInColumn + 1f);
-                float widthByHeight = heightByHeight * _defaultCardSize.x / _defaultCardSize.y;
+        //        float heightByHeight = 2f * _thisHeight / (3f * countInColumn + 1f);
+        //        float widthByHeight = heightByHeight * _defaultCardSize.x / _defaultCardSize.y;
 
-                float height = heightByHeight > heightByWidth ? heightByWidth : heightByHeight;
-                float width = widthByHeight > widthByWidth ? widthByWidth : widthByHeight;
+        //        float height = heightByHeight > heightByWidth ? heightByWidth : heightByHeight;
+        //        float width = widthByHeight > widthByWidth ? widthByWidth : widthByHeight;
 
-                cardSize = new Vector2(width, height);
+        //        cardSize = new Vector2(width, height);
 
-                for (int row = 0; row < countInColumn; row++)
-                {
-                    if (row == rowWhereIncreaseCountCards)
-                        countInRow++;
+        //        for (int row = 0; row < countInColumn; row++)
+        //        {
+        //            if (row == rowWhereIncreaseCountCards)
+        //                countInRow++;
 
-                    //Debug.Log("cardSize: " + cardSize);
+        //            //Debug.Log("cardSize: " + cardSize);
 
-                    //scale = _minCardSizeScale;
-                    //cardSize = _defaultCardSize * scale;
+        //            //scale = _minCardSizeScale;
+        //            //cardSize = _defaultCardSize * scale;
 
-                    cardIndentHeight = cardSize.y / 2f;
-                    cardIndentWidth = cardSize.x / 2f;
-                    edgeIndentHeight = (_thisHeight
-                        - cardSize.y * countInColumn
-                        - cardIndentHeight * (countInColumn - 1)
-                        ) / 2;
+        //            cardIndentHeight = cardSize.y / 2f;
+        //            cardIndentWidth = cardSize.x / 2f;
+        //            edgeIndentHeight = (_thisHeight
+        //                - cardSize.y * countInColumn
+        //                - cardIndentHeight * (countInColumn - 1)
+        //                ) / 2;
 
-                    edgeIndentWidth = (_thisWidth
-                        - cardSize.x * countInRow
-                        - cardIndentWidth * (countInRow - 1)
-                        ) / 2;
+        //            edgeIndentWidth = (_thisWidth
+        //                - cardSize.x * countInRow
+        //                - cardIndentWidth * (countInRow - 1)
+        //                ) / 2;
 
-                    SeatCards(countInRow, countInColumn, row, cardSize, cardIndentHeight, cardIndentWidth, edgeIndentHeight, edgeIndentWidth);
-                }
+        //            SeatCards(countInRow, countInColumn, row, cardSize, cardIndentHeight, cardIndentWidth, edgeIndentHeight, edgeIndentWidth);
+        //        }
 
-                return;
-            }
+        //        return;
+        //    }
 
 
 
-            //int qnty = Convert.ToInt32(Math.Sqrt(countAll));
-            //int firstSize;
-            //int secondSize;
-            //for (int i = qnty; i > 0; i--)
-            //{
-            //    //if (countAll % i == 0 && countAll / i <= 10)
-            //    if (countAll % i == 0 && countAll / i <= 5)
-            //    {
-            //        firstSize = countAll / i;
-            //        secondSize = i;
-            //        if (firstSize > secondSize)
-            //        {
-            //            _rowsCount = secondSize;
-            //            _columnsCount = firstSize;
-            //        }
-            //        else
-            //        {
-            //            _rowsCount = firstSize;
-            //            _columnsCount = secondSize;
-            //        }
-            //        _lastRowColumnsCount = _columnsCount;
-            //        CheckRightCalcColumnsAndRows();
-            //        return;
-            //    }
-            //}
-            //_columnsCount = qnty;
-            //_rowsCount = qnty;
-            //while (countAll - _columnsCount * (_rowsCount - 1) > _columnsCount)
-            //{
-            //    _columnsCount++;
-            //}
-            //_lastRowColumnsCount = countAll - _columnsCount * (_rowsCount - 1);
-            //CheckRightCalcColumnsAndRows();
-        }
+        //    //int qnty = Convert.ToInt32(Math.Sqrt(countAll));
+        //    //int firstSize;
+        //    //int secondSize;
+        //    //for (int i = qnty; i > 0; i--)
+        //    //{
+        //    //    //if (countAll % i == 0 && countAll / i <= 10)
+        //    //    if (countAll % i == 0 && countAll / i <= 5)
+        //    //    {
+        //    //        firstSize = countAll / i;
+        //    //        secondSize = i;
+        //    //        if (firstSize > secondSize)
+        //    //        {
+        //    //            _rowsCount = secondSize;
+        //    //            _columnsCount = firstSize;
+        //    //        }
+        //    //        else
+        //    //        {
+        //    //            _rowsCount = firstSize;
+        //    //            _columnsCount = secondSize;
+        //    //        }
+        //    //        _lastRowColumnsCount = _columnsCount;
+        //    //        CheckRightCalcColumnsAndRows();
+        //    //        return;
+        //    //    }
+        //    //}
+        //    //_columnsCount = qnty;
+        //    //_rowsCount = qnty;
+        //    //while (countAll - _columnsCount * (_rowsCount - 1) > _columnsCount)
+        //    //{
+        //    //    _columnsCount++;
+        //    //}
+        //    //_lastRowColumnsCount = countAll - _columnsCount * (_rowsCount - 1);
+        //    //CheckRightCalcColumnsAndRows();
+        //}
 
         //private void CheckRightCalcColumnsAndRows()
         //{
