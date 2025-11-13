@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cards;
 using Cysharp.Threading.Tasks;
 using GameFields.InputSettings;
 using GameFields.Persons.Commons;
@@ -28,7 +29,8 @@ namespace GameFields.FightMenues
 
         public IFocusedButtonEnterHandler CurrentFightMenuButtonInputHandler => _fightMenuButtonsPanelRoot.CurrentFightMenuButtonInputHandler;
 
-        public void Init(InputRoot inputRoot, LoseActions playerLoseActions, IVolume cardVolume, IVolume musicVolume)
+        public void Init(InputRoot inputRoot, LoseActions playerLoseActions, IVolume cardVolume, IVolume musicVolume,
+            CardCapabilityDescription cardCapabilityDescription)
         {
             gameObject.SetActive(false);
             _isComplete = true;
@@ -39,7 +41,7 @@ namespace GameFields.FightMenues
 
             _fightMenuLabel.Init();
             _fightMenuPanel.Init();
-            _fightMenuButtonsPanelRoot.Init(playerLoseActions, this, cardVolume, musicVolume);
+            _fightMenuButtonsPanelRoot.Init(playerLoseActions, this, cardVolume, musicVolume, cardCapabilityDescription);
         }
 
         public void Activate()

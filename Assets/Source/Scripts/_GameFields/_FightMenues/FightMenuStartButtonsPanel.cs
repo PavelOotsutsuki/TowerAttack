@@ -31,7 +31,8 @@ namespace GameFields.FightMenues
         public override bool? IsActive { get; protected set; } = null;
         //public bool IsComplete => _isComplete;
 
-        public void Init(LoseActions playerLoseActions, IDeactivatable fightMenuDeactivator, Action onSettingsButtonClick)
+        public void Init(LoseActions playerLoseActions, IDeactivatable fightMenuDeactivator, Action onSettingsButtonClick,
+            Action onRulesButtonClick)
         {
             //_isComplete = true;
             //_fadablePanel.Init();
@@ -46,7 +47,7 @@ namespace GameFields.FightMenues
             };
 
             _resumeButton.Init(this, () => fightMenuDeactivator.Deactivate());
-            _rulesButton.Init(this, () => fightMenuDeactivator.Deactivate());
+            _rulesButton.Init(this, onRulesButtonClick);
             _settingsButton.Init(this, onSettingsButtonClick);
             _capitulateButton.Init(this, () =>
             {

@@ -20,6 +20,7 @@ namespace Cards
 
         //public CardCapability CardCapability => _cardCapability;
         public string ToStringValue => $"<b><color=#{_colorTag}>{_toStringValue}</color> </b>";
-        public string Description => $"<b><color=#{_colorTag}>{_toStringValue}:</color> </b>{_description}";
+        //public string Description => $"<b><color=#{_colorTag}>{_toStringValue.ToUpper()}:</color> </b>{_description}";
+        public string Description => $"</b>{_description}";
     }
 }

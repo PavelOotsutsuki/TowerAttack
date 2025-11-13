@@ -67,7 +67,7 @@ namespace Roots
                 cardDragAndDropLightController, _speedUpButtonSortOrder);
 
             _personCreator.Init(bus, deck, _endTurnButton, seatPool, cardDragAndDropHandler, cardDragAndDropLightController,
-                informationLabel, _cardRoot, cardSoundVolume, soundRoot);
+                informationLabel, _cardRoot, cardSoundVolume, soundRoot, cardCapabilityDescription);
 
             Player player = _personCreator.CreatePlayer();
             EnemyAI enemyAI = _personCreator.CreateEnemyAI();

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cards;
 using Cysharp.Threading.Tasks;
 using GameFields.Persons.Commons;
 using Tools;
@@ -14,6 +15,7 @@ namespace GameFields.FightMenues
         [SerializeField] private FadablePanel _fadablePanel;
         [SerializeField] private FightMenuStartButtonsPanel _startButtonsPanel;
         [SerializeField] private FightMenuSettingsButtonsPanel _settingsButtonsPanel;
+        [SerializeField] private FightMenuRulesButtonsPanel _rulesButtonsPanel;
 
         private FightMenuButtonsPanel _currentFightMenuButtonsPanel;
         private bool _isComplete;
@@ -22,11 +24,13 @@ namespace GameFields.FightMenues
         public bool IsComplete => _isComplete;
         public IFocusedButtonEnterHandler CurrentFightMenuButtonInputHandler => _currentFightMenuButtonsPanel;
 
-        public void Init(LoseActions playerLoseActions, IDeactivatable fightMenuDeactivator, IVolume cardVolume, IVolume musicVolume)
+        public void Init(LoseActions playerLoseActions, IDeactivatable fightMenuDeactivator, IVolume cardVolume, IVolume musicVolume,
+            CardCapabilityDescription cardCapabilityDescription)
         {
             _fadablePanel.Init();
-            _startButtonsPanel.Init(playerLoseActions, fightMenuDeactivator, SetSettingsPanel);
+            _startButtonsPanel.Init(playerLoseActions, fightMenuDeactivator, SetSettingsPanel, SetRulesPanel);
             _settingsButtonsPanel.Init(SetStartPanel, cardVolume, musicVolume);
+            _rulesButtonsPanel.Init(SetStartPanel, cardCapabilityDescription);
 
             _isComplete = true;
 
@@ -71,6 +75,11 @@ namespace GameFields.FightMenues
             SetPanel(_settingsButtonsPanel);
         }
 
+        private void SetRulesPanel()
+        {
+            SetPanel(_rulesButtonsPanel);
+        }
+
         private void SetPanel(FightMenuButtonsPanel settedPanel)
         {
             if (_currentFightMenuButtonsPanel == settedPanel)
@@ -107,7 +116,8 @@ namespace GameFields.FightMenues
             {
                 DefineFadablePanel(),
                 DefineFightMenuStartButtonsPanel(),
-                DefineFightMenuSoundButtonsPanel()
+                DefineFightMenuSettignsButtonsPanel(),
+                DefineFightMenuRulesButtonsPanel()
             };
 
             return list;
@@ -125,10 +135,16 @@ namespace GameFields.FightMenues
             return AutomaticFillComponents.DefineComponent(this, ref _startButtonsPanel, ComponentLocationTypes.InChildren);
         }
 
-        [ContextMenu(nameof(DefineFightMenuSoundButtonsPanel))]
-        private ComponentAttachInfo DefineFightMenuSoundButtonsPanel()
+        [ContextMenu(nameof(DefineFightMenuSettignsButtonsPanel))]
+        private ComponentAttachInfo DefineFightMenuSettignsButtonsPanel()
         {
             return AutomaticFillComponents.DefineComponent(this, ref _settingsButtonsPanel, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineFightMenuSettignsButtonsPanel))]
+        private ComponentAttachInfo DefineFightMenuRulesButtonsPanel()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _rulesButtonsPanel, ComponentLocationTypes.InChildren);
         }
         #endregion
     }

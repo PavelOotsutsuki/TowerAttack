@@ -34,14 +34,14 @@ namespace GameFields.FightMenues
         {
             base.OnSubmit(eventData);
 
-            _onEnterClick?.Invoke();
+            OnClick();
         }
 
         public override void OnPointerClick(PointerEventData eventData)
         {
             base.OnPointerClick(eventData);
 
-            _onEnterClick?.Invoke();
+            OnClick();
         }
 
         public override void OnPointerEnter(PointerEventData eventData)
@@ -70,6 +70,12 @@ namespace GameFields.FightMenues
             base.OnDeselect(eventData);
 
             OnExit();
+        }
+
+        private void OnClick()
+        {
+            OnExit();
+            _onEnterClick?.Invoke();
         }
 
         private void OnEnter()
