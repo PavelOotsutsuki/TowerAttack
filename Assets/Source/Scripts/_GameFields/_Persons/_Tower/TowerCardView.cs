@@ -1,4 +1,3 @@
-using Cards;
 using System.Collections;
 using System.Collections.Generic;
 using Tools;
@@ -7,7 +6,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Towers
 {
-    public class TowerCardView : MonoBehaviour, IWorkable<BigCardShowData>, IAutomaticFillComponents
+    public class TowerCardView : MonoBehaviour, IWorkable<TowerBigCardShowData>, IAutomaticFillComponents
     {
         [SerializeField] private TowerCardViewPanel _viewPanel;
         [SerializeField] private TowerBigCard _bigCard;
@@ -25,7 +24,7 @@ namespace GameFields.Persons.Towers
             gameObject.SetActive(false);
         }
 
-        public void Activate(BigCardShowData data)
+        public void Activate(TowerBigCardShowData data)
         {
             if (IsActive == true)
                 return;
@@ -62,7 +61,7 @@ namespace GameFields.Persons.Towers
             _activateCoroutine = null;
         }
 
-        private IEnumerator Activating(BigCardShowData data)
+        private IEnumerator Activating(TowerBigCardShowData data)
         {
             if (_deactivateCoroutine != null)
             {

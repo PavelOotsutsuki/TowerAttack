@@ -4,22 +4,31 @@ using Cards;
 using Tools;
 using Tools.UI;
 using Tools.Utils.FillComponents;
+using Tools.Utils.Screens;
 using UnityEngine;
 using Zenject;
 
 namespace GameFields.Persons.Towers
 {
     [RequireComponent(typeof(FadablePanel))]
-    [RequireComponent(typeof(BigCard))]
-    public class TowerBigCard : MonoBehaviour, IViewable<BigCardShowData>, ICompletable, IAutomaticFillComponents
+    public class TowerBigCard : MonoBehaviour, IViewable<TowerBigCardShowData>, ICompletable, IAutomaticFillComponents
     {
-        [SerializeField] private BigCard _bigCard;
+        [SerializeField, Min(1f)] private float _scaleFactor = 2f;
+
+        [SerializeField] private CardView _cardView;
+        [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private FadablePanel _fadablePanel;
 
         private CardCapabilityDescription _cardCapabilityDescription;
 
         private bool _isComplete;
         private Coroutine _hiddingCoroutine = null;
+
+        private float _bigHeight;
+        private float _bigWidth;
+        private float _sizeFactor;
+        private float _canvasHeight;
+        private float _screenFactor;
 
         public bool? IsShown { get; private set; } = null;
         public bool IsComplete => _isComplete;
@@ -34,13 +43,17 @@ namespace GameFields.Persons.Towers
         {
             _isComplete = true;
 
-            _bigCard.Init(_cardCapabilityDescription);
+            _rectTransform.rotation = Quaternion.identity;
+            _canvasHeight = ScreenView.Y();
+            _cardView.Init(_cardCapabilityDescription);
+
+            gameObject.SetActive(false);
             _fadablePanel.Init();
 
             IsShown = false;
         }
 
-        public void Show(BigCardShowData data)
+        public void Show(TowerBigCardShowData data)
         {
             if (IsShown == true)
                 return;
@@ -55,7 +68,15 @@ namespace GameFields.Persons.Towers
 
             _isComplete = false;
 
-            _bigCard.Show(data);
+            _cardView.FillData(data.CardViewData);
+            _sizeFactor = data.CardSize.x / data.CardSize.y;
+            _bigHeight = _canvasHeight / _scaleFactor;
+            _bigWidth = _bigHeight * _sizeFactor;
+            _screenFactor = Screen.height / _canvasHeight;
+            _rectTransform.position = new Vector2(data.PositionX, (_bigHeight / 2f + _canvasHeight / 10f) * _screenFactor);
+            _rectTransform.sizeDelta = new Vector2(_bigWidth, _bigHeight);
+            gameObject.SetActive(true);
+
             _fadablePanel.Show();
         }
 
@@ -80,7 +101,7 @@ namespace GameFields.Persons.Towers
 
             yield return new WaitUntil(() => _fadablePanel.IsComplete);
 
-            _bigCard.Hide();
+            gameObject.SetActive(false);
 
             _isComplete = true;
         }
@@ -91,17 +112,17 @@ namespace GameFields.Persons.Towers
         {
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
-                DefineBigCard(),
+                DefineRectTransform(),
                 DefineFadablePanel()
             };
 
             return list;
         }
 
-        [ContextMenu(nameof(DefineBigCard))]
-        private ComponentAttachInfo DefineBigCard()
+        [ContextMenu(nameof(DefineRectTransform))]
+        private ComponentAttachInfo DefineRectTransform()
         {
-            return AutomaticFillComponents.DefineComponent(this, ref _bigCard, ComponentLocationTypes.InThis);
+            return AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
         }
 
         [ContextMenu(nameof(DefineFadablePanel))]
