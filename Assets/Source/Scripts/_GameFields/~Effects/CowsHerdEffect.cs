@@ -1,21 +1,52 @@
 using System.Collections;
-using System.Collections.Generic;
+using System.Linq;
+using GameFields.Persons;
 using UnityEngine;
 
-namespace GameFields
+namespace GameFields.Effects
 {
-    public class CowsHerdEffect : MonoBehaviour
+    public class CowsHerdEffect : Effect
     {
-        // Start is called before the first frame update
-        void Start()
+        private const int DefaultValueAttack = 2;
+        private const int BonusByEffect = 1;
+
+        private readonly Person _activePerson;
+        private readonly CardLocationViewRoot _viewRoot;
+
+        private bool _endPlayingAttack;
+
+        public CowsHerdEffect(Person activePerson, CardLocationViewRoot viewRoot, EffectData data) : base(data)
         {
-        
+            _activePerson = activePerson;
+            _viewRoot = viewRoot;
+
+            Play();
         }
 
-        // Update is called once per frame
-        void Update()
+        public override void End()
         {
-        
+            base.End();
+
+            Debug.Log("Эффект Стадо коров закончен");
+        }
+
+        protected override IEnumerator OnPlaying()
+        {
+            _endPlayingAttack = false;
+
+            int countAttack = DefaultValueAttack;
+            int countCardsInTable = _viewRoot.GetAllCards(ViewType.TableAI).Count() + _viewRoot.GetAllCards(ViewType.TablePlayer).Count();
+
+            if (countCardsInTable > 0)
+                countAttack += BonusByEffect;
+
+            _activePerson.AttackActivate(countAttack, EndPlayingCallback);
+            yield return new WaitUntil(() => _endPlayingAttack);
+        }
+
+        private void EndPlayingCallback()
+        {
+            _endPlayingAttack = true;
         }
     }
 }

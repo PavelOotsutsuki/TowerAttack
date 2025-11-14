@@ -176,7 +176,7 @@ namespace GameFields.Effects
                 EffectType.Scarecrow => new ScarecrowEffect(_personsState.Deactive, effectData),
                 EffectType.LuckyHorseshoe => new VoidEffect(effectData), // Нельзя разыграть, мб стоит выдать экспшн
                 EffectType.WiseMonk => new WiseMonkEffect(_personsState.Deactive, _viewRoot, _discardManager, _personEffectsHandlerRoot, effectData),
-                EffectType.CowsHerd => new VoidEffect(effectData),
+                EffectType.CowsHerd => new CowsHerdEffect(_personsState.Active, _viewRoot, effectData),
                 EffectType.HungryOgre => new VoidEffect(effectData),
                 EffectType.Sharper => new VoidEffect(effectData),
                 EffectType.Gunner => new VoidEffect(effectData),
