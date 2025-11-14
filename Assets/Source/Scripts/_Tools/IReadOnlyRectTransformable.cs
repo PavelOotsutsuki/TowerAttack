@@ -2,6 +2,6 @@ namespace Tools
 {
     public interface IReadOnlyRectTransformable
     {
-        public ReadOnlyRectTransform ReadOnlyRectTransform { get; }
+        public ReadOnlyRectTransform RORTransform { get; }
     }
 }

@@ -16,13 +16,13 @@ namespace GameFields.Persons.Tables
         
         private Table _table;
 
-        public ReadOnlyRectTransform ReadOnlyRectTransform { get; private set; }
+        public ReadOnlyRectTransform RORTransform { get; private set; }
         public bool HasFreeSeat => _table.HasFreeSeat;
 
         public void Init(Table table)
         {
             _table = table;
-            ReadOnlyRectTransform = new ReadOnlyRectTransform(_rectTransform);
+            RORTransform = new ReadOnlyRectTransform(_rectTransform);
         }
 
         //public Vector3 GetPosition() => transform.position;

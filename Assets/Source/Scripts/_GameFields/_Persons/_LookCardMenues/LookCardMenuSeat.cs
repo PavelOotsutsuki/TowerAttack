@@ -27,7 +27,7 @@ namespace GameFields.Persons.LookCardMenues
         {
             Reset();
 
-            sizeDelta ??= _card.ReadOnlyRectTransform.GetSizeDelta();
+            sizeDelta ??= _card.RORTransform.GetSizeDelta();
 
             _card = card;
             LookCardMenuCardActivateData data = new LookCardMenuCardActivateData(sizeDelta.Value, _card.ViewData);

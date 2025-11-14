@@ -7,9 +7,8 @@ using UnityEngine.UI;
 namespace Cards
 {
     [RequireComponent(typeof(CanvasGroup))]
-    public class CardFrame : MonoBehaviour, IViewable, IAutomaticFillComponents
+    internal class CardFrame : MonoBehaviour, IViewable, IAutomaticFillComponents
     {
-        //[SerializeField] private CardFrameFireAnimation _cardFireAnimation;
         [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private Image _frameImage;
         [SerializeField] private Color _defaultColor;
@@ -20,21 +19,12 @@ namespace Cards
 
         public void Init()
         {
-            //_cardFireAnimation.Init();
             _frameImage.color = _defaultColor;
-
-            //Show();
         }
-
-        //public void Fire()
-        //{
-        //    _cardFireAnimation.Play();
-        //}
 
         public void Block()
         {
             _frameImage.color = _disableFrameColor;
-            //Debug.Log("Красный");
 
             _canvasGroup.blocksRaycasts = false;
         }
@@ -42,7 +32,6 @@ namespace Cards
         public void Unblock()
         {
             _frameImage.color = _enableFrameColor;
-            //Debug.Log("Зеленый");
 
             _canvasGroup.blocksRaycasts = true;
         }
@@ -50,7 +39,6 @@ namespace Cards
         public void Neutral()
         {
             _frameImage.color = _defaultColor;
-            //Debug.Log("Нейтральный");
 
             _canvasGroup.blocksRaycasts = false;
         }
@@ -82,7 +70,6 @@ namespace Cards
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
                 DefineCanvasGroup(),
-                //DefineCardFrameFireAnimation(),
                 DefineImage()
             };
 
@@ -94,12 +81,6 @@ namespace Cards
         {
             return AutomaticFillComponents.DefineComponent(this, ref _canvasGroup, ComponentLocationTypes.InThis);
         }
-
-        //[ContextMenu(nameof(DefineCardFrameFireAnimation))]
-        //private ComponentAttachInfo DefineCardFrameFireAnimation()
-        //{
-        //    return AutomaticFillComponents.DefineComponent(this, ref _cardFireAnimation, ComponentLocationTypes.InThis);
-        //}
 
         [ContextMenu(nameof(DefineImage))]
         private ComponentAttachInfo DefineImage()

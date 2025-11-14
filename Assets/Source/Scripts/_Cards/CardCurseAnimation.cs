@@ -6,7 +6,7 @@ using UnityEngine.UI;
 namespace Cards
 {
     [Serializable]
-    public class CardCurseAnimation : IWorkable
+    internal class CardCurseAnimation : IWorkable
     {
         [SerializeField] private Graphic[] _changedGraphics;
 

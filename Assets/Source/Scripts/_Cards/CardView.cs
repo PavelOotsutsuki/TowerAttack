@@ -48,7 +48,6 @@ namespace Cards
             {
                 _feature.text = _cardFeatureTags.CreateFeature(givenPairs);
                 _cardViewData.ChangeFeature(_cardFeatureTags.UpdateTemplate(givenPairs));
-                //_cardViewData.ChangeFeature(_feature.text);
             }
         }
 

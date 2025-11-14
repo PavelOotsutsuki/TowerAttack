@@ -12,68 +12,42 @@ namespace Cards
         [SerializeField] private CanvasGroup _canvasGroup;
 
         [SerializeField] private CardView _cardView;
-        //[SerializeField] private CardSpriteManager _cardSpriteManager;
-        //[SerializeField] private CardBlock _cardBlock;
 
-        private ReadOnlyRectTransform _readOnlyCardRectTransform;
+        private ReadOnlyRectTransform _RORCardTransform;
         private CardViewService _cardViewService;
         private Vector2 _cardSize;
         private BigCardRootActivateData _bigCardRootActivateData;
-        //private ICardBlockable _cardBlockable;
         private CardFrame _cardFrame;
 
         public bool IsBlock { get; private set; }
         public bool? IsShown { get; private set; } = null;
 
-        internal void Init(CardViewData cardViewData, ReadOnlyRectTransform readOnlyCartRectTransform,
+        internal void Init(CardViewData cardViewData, ReadOnlyRectTransform RORCartTransform,
             CardViewService cardViewService, Vector2 cardSize, CardFrame cardFrame,
             CardCapabilityDescription cardCapabilityDescription)
         {
-            _readOnlyCardRectTransform = readOnlyCartRectTransform;
+            _RORCardTransform = RORCartTransform;
             _cardViewService = cardViewService;
             _cardSize = cardSize;
             _cardView.Init(cardCapabilityDescription);
-            //_cardSpriteManager.Init(cardSpriteModeManager);
-            //_cardBlockable = cardBlockable;
             _cardFrame = cardFrame;
-            //_cardFrame.Init();
 
             IsBlock = false;
 
             DefineSmallSize();
             SetView(cardViewData);
-            //_cardView.FillData(cardViewData);
-
-            //BigCardShowData bigCardShowData = new BigCardShowData(_cardSize, _readOnlyCardRectTransform, cardViewData);
-            //_bigCardRootActivateData = new BigCardRootActivateData(bigCardShowData, cardCapability);
         }
 
         public void SetView(CardViewData cardViewData)
         {
             _cardView.FillData(cardViewData);
 
-            BigCardShowData bigCardShowData = new BigCardShowData(_cardSize, _readOnlyCardRectTransform, cardViewData);
+            BigCardShowData bigCardShowData = new BigCardShowData(_cardSize, _RORCardTransform, cardViewData);
             CardDescriptionActivateData cardDescriptionActivateData = new CardDescriptionActivateData(cardViewData.Description);
             CapabilityDescriptionActivateData capabilityDescriptionActivateData = new CapabilityDescriptionActivateData(cardViewData.CardCapability);
 
             _bigCardRootActivateData = new BigCardRootActivateData(bigCardShowData, cardDescriptionActivateData,
                 capabilityDescriptionActivateData);
-        }
-
-        private void OnDisable()
-        {
-            if (_cardViewService.IsView(this))
-                EndReview();
-        }
-
-        internal void StartReview()
-        {
-            _cardViewService.SetOverview(this, _bigCardRootActivateData, _cardFrame);
-        }
-
-        internal void EndReview()
-        {
-            _cardViewService.SetDefaultView();
         }
 
         public void OnPointerEnter(PointerEventData eventData)
@@ -92,10 +66,22 @@ namespace Cards
             EndReview();
         }
 
-        //public void Fire()
-        //{
-        //    _cardFrame.Fire();
-        //}
+        private void OnDisable()
+        {
+            if (_cardViewService.IsView(this))
+                EndReview();
+        }
+
+        internal void StartReview()
+        {
+            _cardViewService.SetOverview(this, _bigCardRootActivateData, _cardFrame);
+        }
+
+        internal void EndReview()
+        {
+            _cardViewService.SetDefaultView();
+        }
+
         public void RechangeFeature(IEnumerable<TagValuePair> givenPairs)
         {
             _cardView.RechangeFeature(givenPairs);
@@ -103,34 +89,18 @@ namespace Cards
 
         internal void Block()
         {
-            //_cardBlock.Block();
-            //_cardBlockable.Block();
             if (gameObject.activeSelf)
                 _cardFrame.Block();
-
-            //Debug.Log("Block");
-            //_cardSpriteManager.Deactivate();
-
 
             IsBlock = true;
         }
 
         internal void Unblock()
         {
-            //_cardBlock.Unblock();
-            //_cardBlockable.Unblock();
             if (gameObject.activeSelf)
                 _cardFrame.Unblock();
 
-            //Debug.Log("Unblock");
-
-            //_cardSpriteManager.Activate();
             IsBlock = false;
-        }
-
-        private void DefineSmallSize()
-        {
-            _readOnlyCardRectTransform.SetSize(_cardSize);
         }
 
         public void Show()
@@ -141,7 +111,6 @@ namespace Cards
             IsShown = true;
 
             _canvasGroup.alpha = 1;
-            //_cardBlockable.Show();
         }
 
         public void Hide()
@@ -152,7 +121,11 @@ namespace Cards
             IsShown = false;
 
             _canvasGroup.alpha = 0;
-            //_cardBlockable.Hide();
+        }
+
+        private void DefineSmallSize()
+        {
+            _RORCardTransform.SetSize(_cardSize);
         }
 
         #region AutomaticFillComponents
@@ -162,7 +135,6 @@ namespace Cards
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
                 DefineCanvasGroup(),
-                //DefineCardFrame()
             };
 
             return list;
@@ -173,12 +145,6 @@ namespace Cards
         {
            return AutomaticFillComponents.DefineComponent(this, ref _canvasGroup, ComponentLocationTypes.InThis);
         }
-
-        //[ContextMenu(nameof(DefineCardFrame))]
-        //private ComponentAttachInfo DefineCardFrame()
-        //{
-        //    return AutomaticFillComponents.DefineComponent(this, ref _cardFrame, ComponentLocationTypes.InChildren);
-        //}
         #endregion 
     }
 }

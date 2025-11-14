@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Cards
 {
-    public class OnFireLogicActivateData : IData
+    internal class OnFireLogicActivateData : IData
     {
         private readonly CallbackHandler _callbackHandler;
         private readonly WaitForSeconds _delay;

@@ -13,7 +13,7 @@ namespace Cards
         
         public bool? IsActive { get; private set; } = false;
 
-        public void Init(CardCapabilityDescription cardCapabilityDescription)
+        internal void Init(CardCapabilityDescription cardCapabilityDescription)
         {
             _bigCard.Init(cardCapabilityDescription);
             _capabilityDescription.Init(cardCapabilityDescription);

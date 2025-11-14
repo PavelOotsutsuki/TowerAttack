@@ -1,3 +1,4 @@
+using Cards.DependencyInterlayers;
 using UnityEngine;
 
 namespace Cards
@@ -17,11 +18,6 @@ namespace Cards
 
         internal float ReturnInHandDuration => _cardDragAndDropHandler.ReturnInSeatDuration;
         internal bool CanDrag() => _cardDragAndDropHandler.IsDraggable(_card) && _cardFront.IsBlock == false;
-
-        //internal void SetListener(ICardDragAndDropHandler cardDragAndDropHandler)
-        //{
-        //    _cardDragAndDropHandler = cardDragAndDropHandler;
-        //}
 
         internal void StartDrag()
         {
@@ -59,10 +55,9 @@ namespace Cards
             _cardDragAndDropHandler.OnCardDrop();
         }
 
-        internal void PlayCard(ICardDropPlace cardDropPlace)
+        internal void PlayCard()
         {
             _cardDragAndDropHandler.OnCardPlay();
-            //cardDropPlace.SeatCard(_card);
             _card.Play();
         }
 
@@ -70,7 +65,6 @@ namespace Cards
         {
             cardAttackZone.Attack(_card);
             _cardDragAndDropHandler.OnCardPlay();
-            //_cardDragAndDropHandler.OnCardAttack();
         }
 
         internal bool IsForgable()
@@ -97,7 +91,6 @@ namespace Cards
         {
             forgingZone.StartExtraEffect(_card);
             _cardDragAndDropHandler.OnCardPlay();
-            //_cardDragAndDropHandler.OnCardAttack();
         }
 
         internal void StartHandTransfing(IHandTransferable handTransferZone)

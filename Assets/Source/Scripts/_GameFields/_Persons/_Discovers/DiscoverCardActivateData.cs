@@ -18,6 +18,6 @@ namespace GameFields.Persons.Discovers
         public float CardHeight => _sizeDelta.y;
         public float CardWidth => _sizeDelta.x;
         public CardViewData CardViewData => _discoverable.ViewData;
-        public ReadOnlyRectTransform ReadOnlyRectTransform => _discoverable.ReadOnlyRectTransform;
+        public ReadOnlyRectTransform ReadOnlyRectTransform => _discoverable.RORTransform;
     }
 }

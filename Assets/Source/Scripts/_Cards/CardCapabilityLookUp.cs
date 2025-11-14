@@ -4,7 +4,7 @@ using Tools;
 
 namespace Cards
 {
-    public class CardCapabilityLookUp : IData
+    internal class CardCapabilityLookUp : IData
     {
         private readonly Dictionary<CardCapability, CardCapabilityData> _dataByEnum;
         private readonly Dictionary<string, string> _textByTag;

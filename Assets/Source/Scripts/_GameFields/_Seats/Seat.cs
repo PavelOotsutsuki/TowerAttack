@@ -30,7 +30,7 @@ namespace GameFields.Seats
             Card = card;
 
             Card.SetSide(sideType);
-            Card.ReadOnlyRectTransform.SetParent(_transform);
+            Card.RORTransform.SetParent(_transform);
             Movement cardMovement = Card.CardMovement;
             cardMovement.MoveLocalSmoothly(Vector2.zero, Quaternion.identity.eulerAngles, duration, Card.DefaultScaleVector * scaleFactor);
         }

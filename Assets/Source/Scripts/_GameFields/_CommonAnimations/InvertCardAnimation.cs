@@ -32,7 +32,7 @@ namespace GameFields.CommonAnimations
 
             _card = card;
             _cardMovement = _card.CardMovement;
-            _readOnlyCardTransform = _card.ReadOnlyRectTransform;
+            _readOnlyCardTransform = _card.RORTransform;
 
             _playData = data ?? new InvertCardAnimationPlayData(_readOnlyCardTransform.GetLocalPosition(), _readOnlyCardTransform.GetLocalScale(), _readOnlyCardTransform.GetLocalPosition(), _readOnlyCardTransform.GetLocalScale());
 

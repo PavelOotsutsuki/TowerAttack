@@ -6,34 +6,25 @@ namespace Cards
 {
     public class CardRoot : MonoBehaviour, ICardWatcher, IAutomaticFillComponents
     {
-        //[SerializeField] private BigCardRoot _bigCardRoot;
         [SerializeField] private Card[] _startCards;
         [SerializeField] private CurseAnimator _curseAnimator;
 
-        //private CardDescription _cardDescription;
+        private readonly List<Card> _allCards = new List<Card>();
+
         private BigCardRoot _bigCardRoot;
         private CardViewService _cardViewService;
-        private List<Card> _allCards;
 
         public IReadOnlyList<Card> Cards => _allCards;
 
         public void Init(IEffectFactory effectFactory, BigCardRoot bigCardRoot, ICardDragAndDropHandler cardDragAndDropHandler,
             CardSoundVolume cardSoundVolume, CardCapabilityDescription cardCapabilityDescription)
         {
-            //_cardDescription = cardDescription;
             _bigCardRoot = bigCardRoot;
             _curseAnimator.Init();
 
             _bigCardRoot.Init(cardCapabilityDescription);
 
             _cardViewService = new CardViewService(_bigCardRoot);
-
-            InitCards(effectFactory, cardDragAndDropHandler, cardSoundVolume, cardCapabilityDescription);
-        }
-        private void InitCards(IEffectFactory effectFactory, ICardDragAndDropHandler cardDragAndDropHandler,
-            CardSoundVolume cardSoundVolume, CardCapabilityDescription cardCapabilityDescription)
-        {
-            _allCards = new List<Card>();
 
             foreach (Card card in _startCards)
             {

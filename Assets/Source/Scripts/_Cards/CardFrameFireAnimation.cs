@@ -2,6 +2,6 @@ using Tools.CommonAnimations;
 
 namespace Cards
 {
-    public class CardFrameFireAnimation : SpriteAnimation
+    internal class CardFrameFireAnimation : SpriteAnimation
     { }
 }

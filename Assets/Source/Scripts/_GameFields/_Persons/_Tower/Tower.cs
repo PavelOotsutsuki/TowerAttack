@@ -22,7 +22,7 @@ namespace GameFields.Persons.Towers
         private BoomAnimation _boomAnimation;
         private ConfirmableNumbers _confirmableNumbers;
 
-        public ReadOnlyRectTransform ReadOnlyRectTransform { get; private set; }
+        public ReadOnlyRectTransform RORTransform { get; private set; }
         public bool HasFreeSeat => _towerSeat.IsFill() == false;
         public ICardNumber Card => _towerSeat.Card;
 
@@ -31,9 +31,9 @@ namespace GameFields.Persons.Towers
             _towerSeat.Init();
             _confirmableNumbers = confirmableNumbers;
 
-            ReadOnlyRectTransform = new ReadOnlyRectTransform(_rectTransform);
+            RORTransform = new ReadOnlyRectTransform(_rectTransform);
 
-            BoomAnimationConfig boomAnimationConfig = new BoomAnimationConfig(_towerSeat, _stones, ReadOnlyRectTransform
+            BoomAnimationConfig boomAnimationConfig = new BoomAnimationConfig(_towerSeat, _stones, RORTransform
                 , _boomAnimationData);
 
             _boomAnimation = new BoomAnimation(boomAnimationConfig);

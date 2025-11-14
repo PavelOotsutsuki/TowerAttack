@@ -1,5 +1,6 @@
 using System.Collections;
 using Cards;
+using Cards.DependencyInterlayers;
 using GameFields.CommonAnimations;
 using GameFields.DiscardPiles;
 using GameFields.Persons.Commons;
@@ -80,9 +81,9 @@ namespace GameFields.Persons.Towers
         {
             //_currentCard = card;
 
-            ReadOnlyRectTransform towerTransform = _tower.ReadOnlyRectTransform;
+            ReadOnlyRectTransform towerTransform = _tower.RORTransform;
 
-            AttackAnimation attackAnimation = new AttackAnimation(card.CardMovement, card.ReadOnlyRectTransform,
+            AttackAnimation attackAnimation = new AttackAnimation(card.CardMovement, card.RORTransform,
                 towerTransform.GetLocalPosition(), towerTransform.GetRect(), _data.AttackAnimationData);
 
             attackAnimation.Play();

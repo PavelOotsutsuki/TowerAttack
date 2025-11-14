@@ -7,6 +7,7 @@ using Tools.Utils.FillComponents;
 using UnityEngine;
 using Zenject;
 using GameFields.Signals;
+using Cards.DependencyInterlayers;
 
 namespace GameFields.Persons.Hands
 {

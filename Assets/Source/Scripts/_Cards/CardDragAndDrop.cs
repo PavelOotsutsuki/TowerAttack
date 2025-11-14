@@ -2,11 +2,11 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections;
 using Tools.Extensions;
-using Tools;
+using Cards.DependencyInterlayers;
 
 namespace Cards
 {
-    internal class CardDragAndDrop : MonoBehaviour, /*IDragBlockable,*/ IDragHandler, IBeginDragHandler, IEndDragHandler
+    internal class CardDragAndDrop : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
     {
         private Coroutine _viewCardAfterDropInWork;
         private bool _isForciblyDrag;
@@ -14,7 +14,6 @@ namespace Cards
         private Transform _cardTransform;
 
         private CardDragAndDropActions _cardDragAndDropActions;
-        //private Transform _defaultParent; ///IPS
 
         private PointerEventData _currentEventData;
 
@@ -39,7 +38,6 @@ namespace Cards
                 Debug.Log("Reset!");
                 _currentEventData.Reset();
             }
-            //_currentEventData?.Reset();
 
             _isForciblyDrag = true;
 
@@ -57,7 +55,6 @@ namespace Cards
                     Debug.Log("Reset!");
                     _currentEventData.Reset();
                 }
-                //_currentEventData?.Reset();
                 return;
             }
 
@@ -71,8 +68,6 @@ namespace Cards
             IsDragable = true;
             _isForciblyDrag = false;
 
-            //_defaultParent = _cardTransform.parent; ///IPS
-            //_cardTransform.SetParent(_container); ///IPS
             _cardDragAndDropActions.StartDrag();
         }
 
@@ -112,7 +107,7 @@ namespace Cards
                 if (_cardDragAndDropActions.CanDrop(cardDropPlace))
                 {
                     IsDragable = false;
-                    _cardDragAndDropActions.PlayCard(cardDropPlace);
+                    _cardDragAndDropActions.PlayCard();
                     return;
                 }
             }
@@ -149,8 +144,6 @@ namespace Cards
 
         private void StartEndDragActions()
         {
-            //_cardTransform.SetParent(_defaultParent); ///IPS
-
             if (_viewCardAfterDropInWork != null)
             {
                 StopCoroutine(_viewCardAfterDropInWork);

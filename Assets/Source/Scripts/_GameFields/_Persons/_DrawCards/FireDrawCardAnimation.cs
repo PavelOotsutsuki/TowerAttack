@@ -68,9 +68,9 @@ namespace GameFields.Persons.DrawCards
                 _data.InvertCardAnimationData.DelayAfterInvert +
                 _data.FireDrawCardDelay), callbackHandlerFire); // Так, а не потом, потому что надо чтобы sound пироманта пошел сразу
 
-            drawnCard.ReadOnlyRectTransform.SetParent(_data.FireDrawTemporarilyParent);
+            drawnCard.RORTransform.SetParent(_data.FireDrawTemporarilyParent);
 
-            drawnCard.CardMovement.MoveLocalLinear(_data.EndStartMovePosition, drawnCard.ReadOnlyRectTransform.GetRotationVector(),
+            drawnCard.CardMovement.MoveLocalLinear(_data.EndStartMovePosition, drawnCard.RORTransform.GetRotationVector(),
                 _data.StartMoveDuration);
 
             yield return new WaitForSeconds(_data.StartMoveDuration);

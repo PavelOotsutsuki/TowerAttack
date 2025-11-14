@@ -415,7 +415,7 @@ namespace GameFields.Persons.Hands
                 dragCard.SetActiveInteraction(false);
             }
 
-            dragCard.ReadOnlyRectTransform.SetParent(_dragCardParent); // IPS
+            dragCard.RORTransform.SetParent(_dragCardParent); // IPS
             _handSeats.Insert(_handSeatIndex, _dragCardHandSeat);
 
             SortHandSeats();
@@ -427,7 +427,7 @@ namespace GameFields.Persons.Hands
             if (TryFindHandSeat(out Seat handSeat, card))
             {
                 _dragCardParent = card.transform.parent; // IPS
-                card.ReadOnlyRectTransform.SetParent(_containerForDrag); // IPS
+                card.RORTransform.SetParent(_containerForDrag); // IPS
                 _dragCardHandSeat = handSeat;
 
                 _handSeatIndex = _handSeats.IndexOf(_dragCardHandSeat);

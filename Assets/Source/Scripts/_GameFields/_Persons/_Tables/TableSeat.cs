@@ -29,7 +29,7 @@ namespace GameFields.Persons.Tables
         internal void SetCard(PersonEffect personEffect)
         {
             _personEffect = personEffect;
-            _personEffect.Card.ReadOnlyRectTransform.SetParent(_rectTransform);
+            _personEffect.Card.RORTransform.SetParent(_rectTransform);
 
             Movement cardMovement = _personEffect.Card.CardMovement;
 

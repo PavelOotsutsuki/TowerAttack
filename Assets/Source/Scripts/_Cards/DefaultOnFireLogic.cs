@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Cards
 {
     [RequireComponent(typeof(CardFireAnimator))]
-    public class DefaultOnFireLogic : OnFireLogic, IAutomaticFillComponents
+    internal class DefaultOnFireLogic : OnFireLogic, IAutomaticFillComponents
     {
         [SerializeField] private CardFireAnimator _cardFireAnimator;
 
@@ -33,7 +33,6 @@ namespace Cards
             IsActive = false;
 
             _cardFireAnimator.Deactivate();
-            //StartCoroutine(Deactivating());
         }
 
         private IEnumerator Activating(OnFireLogicActivateData data)

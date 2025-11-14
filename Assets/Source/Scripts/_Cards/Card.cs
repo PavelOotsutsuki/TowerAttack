@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace Cards
 {
-    public class Card : MonoBehaviour, ICardTransformable, IDiscoverable, ICardNumber, IFeatureRechanger,/* IDiscardable,*/ IAutomaticFillComponents
+    public class Card : MonoBehaviour, ICardTransformable, IDiscoverable, ICardNumber, IFeatureRechanger, IAutomaticFillComponents
     {
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private CardPaper _cardPaper;
@@ -25,14 +25,12 @@ namespace Cards
 
         private ICardState _currentState;
 
-        public ReadOnlyRectTransform ReadOnlyRectTransform { get; private set; }
+        public ReadOnlyRectTransform RORTransform { get; private set; }
         public Movement CardMovement { get; private set; }
         public Vector3 DefaultScaleVector => _defaultScaleVector;
         public CardViewData ViewData => _viewData;
-        //public bool IsPlayingEffect => _cardEffectManager.IsPlayingEffect;
         public Image Background => _background;
         public SideType CurrentSide => _cardPaper.CurrentSide;
-        //public EffectType EffectType => _config.Effect.Type;
         public CardCapability CardCapability => _config.CardCapability;
         public bool IsCurse => _cardSpriteModeManager.IsCurse;
         public bool IsLuckyHorseshoe => _config.Effect.Type == EffectType.LuckyHorseshoe;
@@ -41,7 +39,7 @@ namespace Cards
             ICardDragAndDropHandler cardDragAndDropHandler, CurseAnimator curseAnimator, CardSoundVolume cardSoundVolume,
             CardCapabilityDescription cardCapabilityDescription)
         {
-            ReadOnlyRectTransform = new ReadOnlyRectTransform(_rectTransform);
+            RORTransform = new ReadOnlyRectTransform(_rectTransform);
             _cardEffectManager = new CardEffectManager(_config.Effect, effectFactory);
             _viewData = new CardViewData(_config.CardViewConfig, _config.CardCapability);
             _cardSoundVolume = cardSoundVolume;
@@ -63,7 +61,7 @@ namespace Cards
                 return;
 
             _cardSpriteModeManager.SetCurseMode();
-            _viewData.ChangeFeature(_viewData.Feature + "\n<b>ПРОКЛЯТ</b>");
+            _viewData.ChangeFeature(_viewData.Feature + "\n<CAP_4>ПРОКЛЯТ</CAP_4>");
             _config.SetCurseMode();
             _cardPaper.SetView(_viewData);
         }
@@ -88,11 +86,6 @@ namespace Cards
             _cardPaper.RechangeFeature(givenPairs);
         }
 
-        //public void SetDragAndDropHandler(ICardDragAndDropHandler cardDragAndDropHandler)
-        //{
-        //    _cardPaper.SetDragAndDropHandler(cardDragAndDropHandler);
-        //}
-
         public void Play()
         {
             CheckStateByNull();
@@ -111,26 +104,6 @@ namespace Cards
 
             _cardEffectManager.Play(this);
         }
-
-        //public void Discard()
-        //{
-        //    if (_currentState is not CardCharacter)
-        //    {
-        //        throw new Exception("Try discard not CardCharacter. Card state: " + _currentState.ToString());
-        //    }
-
-        //    _cardEffectManager.Discard();
-        //}
-
-        //public bool TryDiscard()
-        //{
-        //    if (_currentState is not CardCharacter)
-        //    {
-        //        throw new Exception("Try discard not CardCharacter. Card state: " + _currentState.ToString());
-        //    }
-
-        //    return _cardEffectManager.TryDiscard();
-        //}
 
         public void SetDiscardSide()
         {
@@ -159,27 +132,6 @@ namespace Cards
             _cardPaper.SetActiveInteraction(isActive);
         }
 
-        private void CreateCardCharacter()
-        {
-            _character = Instantiate(_config.CardCharacter, _rectTransform);
-            _character.Init(_config.AwakeSound, _cardSoundVolume);
-        }
-
-        private void CheckStateByNull()
-        {
-            if (_currentState is null)
-            {
-                throw new NullReferenceException("Current card state is null");
-            }
-        }
-
-        private void SetState(ICardState state)
-        {
-            _currentState?.Hide();
-            _currentState = state;
-            _currentState.Show();
-        }
-
         public void Fire(WaitForSeconds delay, CallbackHandler callbackHandler)
         {
             if (_currentState is not CardPaper)
@@ -193,9 +145,7 @@ namespace Cards
         public void Rise()
         {
             if (_currentState is not CardPaper)
-            {
                 throw new Exception("Try rise not CardPaper. Card state: " + _currentState.ToString());
-            }
 
             if (_cardPaper.IsFired == false)
                 throw new Exception("Try rise no fired Card");
@@ -203,6 +153,25 @@ namespace Cards
             gameObject.SetActive(true);
             _rectTransform.localScale = _defaultScaleVector;
             _cardPaper.RiseFromTheAshes();
+        }
+
+        private void CreateCardCharacter()
+        {
+            _character = Instantiate(_config.CardCharacter, _rectTransform);
+            _character.Init(_config.AwakeSound, _cardSoundVolume);
+        }
+
+        private void CheckStateByNull()
+        {
+            if (_currentState is null)
+                throw new NullReferenceException("Current card state is null");
+        }
+
+        private void SetState(ICardState state)
+        {
+            _currentState?.Hide();
+            _currentState = state;
+            _currentState.Show();
         }
 
         #region AutomaticFillComponents

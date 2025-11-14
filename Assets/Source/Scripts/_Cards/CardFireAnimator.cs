@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Tools;
@@ -7,7 +6,7 @@ using UnityEngine;
 
 namespace Cards
 {
-    public class CardFireAnimator : MonoBehaviour, IWorkable, ICompletable
+    internal class CardFireAnimator : MonoBehaviour, IWorkable, ICompletable
     {
         [SerializeField] private CardFrameFireAnimation _cardFrameFireAnimation;
         [SerializeField] private CardFireAnimation _cardFireAnimation;
@@ -26,23 +25,12 @@ namespace Cards
             _cardFireAnimation.Init();
         }
 
-        //public void Play()
-        //{
-        //    _cardFrameFireAnimation.Play();
-        //    _cardFireAnimation.Play();
-        //}
-
         public void Activate()
         {
             if (IsActive == true)
                 return;
 
             IsActive = true;
-
-            //_cardFrameFireAnimation.Activate();
-            //_cardFireAnimation.Activate();
-            //_cardFrameFireAnimation.Activate();
-            //_cardFrameFireAnimation.Activate();
 
             _cardFrameFireAnimation.Play();
             _cardFireAnimation.Play();

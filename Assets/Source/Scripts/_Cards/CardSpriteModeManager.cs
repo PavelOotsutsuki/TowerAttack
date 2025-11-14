@@ -1,6 +1,6 @@
 namespace Cards
 {
-    public class CardSpriteModeManager
+    internal class CardSpriteModeManager
     {
         private bool _isCurse;
 

@@ -5,7 +5,7 @@ using Tools.Utils.Orthographyes;
 
 namespace Cards
 {
-    public class CardFeatureTags
+    internal class CardFeatureTags
     {
         private readonly string _featureTemplate;
         private readonly IEnumerable<TagValuePair> _tagValuePairs;
@@ -33,7 +33,6 @@ namespace Cards
             foreach (TagValuePair pair in _tagValuePairs) // Потом проверяем теги которые могут Update-ится типо <CARDS_5>
             {
                 TagValuePair givenPair = givenPairs.FirstOrDefault(p => p.Tag == pair.Tag);
-                //int currentValue = givenPair == null ? pair.Value : givenPair.Value;
                 int currentValue = givenPair == null || givenPairs == _tagValuePairs ? pair.Value : givenPair.Value + pair.Value;
 
                 string afterValue = "";
@@ -41,7 +40,6 @@ namespace Cards
                 if (Enum.TryParse(pair.Tag, false, out WordType wordType))
                 {
                     afterValue += " ";
-                    //afterValue += Orthography.GetWordByNumber(wordType, pair.Value);
                     afterValue += Orthography.GetWordByNumber(wordType, currentValue);
                 }
 

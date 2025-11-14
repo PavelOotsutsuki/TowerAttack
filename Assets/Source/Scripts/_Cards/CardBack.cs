@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Cards
 {
-    public class CardBack : MonoBehaviour, IAutomaticFillComponents
+    internal class CardBack : MonoBehaviour, IAutomaticFillComponents
     {
         [SerializeField] private RectTransform _rectTransform;
 
@@ -15,11 +15,11 @@ namespace Cards
 
         public void Init(Vector2 size)
         {
-            ReadOnlyRectTransform readOnlyRectTransform = new ReadOnlyRectTransform(_rectTransform);
+            ReadOnlyRectTransform RORTransform = new ReadOnlyRectTransform(_rectTransform);
 
             _cardSize = size;
 
-            readOnlyRectTransform.SetSize(size);
+            RORTransform.SetSize(size);
         }
 
         #region AutomaticFillComponents

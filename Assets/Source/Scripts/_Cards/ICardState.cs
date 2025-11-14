@@ -2,6 +2,6 @@ using Tools;
 
 namespace Cards
 {
-    public interface ICardState: IViewable
+    internal interface ICardState: IViewable
     { }
 }

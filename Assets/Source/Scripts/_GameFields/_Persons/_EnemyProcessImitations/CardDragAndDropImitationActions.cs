@@ -9,6 +9,7 @@ using GameFields.Persons.Hands;
 using Cysharp.Threading.Tasks;
 using GameFields.DiscardPiles;
 using GameFields.Persons.DrawCards;
+using Cards.DependencyInterlayers;
 
 namespace GameFields.Persons.EnemyProcessImitations
 {
@@ -47,7 +48,7 @@ namespace GameFields.Persons.EnemyProcessImitations
         internal void SetCard(Card card)
         {
             _activeCard = card;
-            _readOnlyCardTransform = _activeCard.ReadOnlyRectTransform;
+            _readOnlyCardTransform = _activeCard.RORTransform;
             _cardMovement = _activeCard.CardMovement;
         }
 
@@ -63,7 +64,7 @@ namespace GameFields.Persons.EnemyProcessImitations
         {
             _isMoving = true;
 
-            MoveOnPlace(_cardDropPlaceImitation.ReadOnlyRectTransform.GetPosition(), duration);
+            MoveOnPlace(_cardDropPlaceImitation.RORTransform.GetPosition(), duration);
 
             _hand.OnCardDrag(_activeCard);
         }

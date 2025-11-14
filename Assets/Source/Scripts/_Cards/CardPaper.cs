@@ -6,20 +6,17 @@ using Tools.Settings;
 
 namespace Cards
 {
-    public class CardPaper : MonoBehaviour, ICardState, IAutomaticFillComponents
+    internal class CardPaper : MonoBehaviour, ICardState, IAutomaticFillComponents
     {
         private const SideType DefaultSide = SideType.Back;
         private const bool DefaultInteractionActive = false;
 
-        //[SerializeField] private float _backSizeFactor = 1.0641f;
-        //[SerializeField] private float _backSizeFactor = 1f;
         [SerializeField] private CardBack _cardBack;
         [SerializeField] private CardFront _cardFront;
         [SerializeField] private CardDragAndDrop _cardDragAndDrop;
         [SerializeField] private CardFrame _cardFrame;
         [SerializeField] private OnFireLogic _onFireLogic;
         [SerializeField] private CardSpriteManager _cardSpriteManager;
-        //[SerializeField] private CardFireAnimator _cardFireAnimator;
 
         private CardDragAndDropActions _cardDragAndDropActions;
         private CardSideFlipper _cardSideFlipper;
@@ -59,24 +56,8 @@ namespace Cards
             _cardDragAndDrop.BlockDrag();
         }
 
-        //public void SetDragAndDropHandler(ICardDragAndDropHandler cardDragAndDropHandler)
-        //{
-        //    _cardDragAndDropActions.SetListener(cardDragAndDropHandler);
-        //}
-
         public void Fire(WaitForSeconds delay, CallbackHandler callbackHandler)
         {
-            //switch (_cardSideFlipper.CurrentSide)
-            //{
-            //    case SideType.Front:
-            //        _cardFront.Fire();
-            //        break;
-            //    case SideType.Back:
-            //        _cardFront.Fire();
-            //        break;
-            //    default:
-            //        throw new System.Exception("Неизвестный тип side карты");
-            //}
             OnFireLogicActivateData onFireLogicActivateData = new OnFireLogicActivateData(delay, callbackHandler);
             _onFireLogic.Activate(onFireLogicActivateData);
         }

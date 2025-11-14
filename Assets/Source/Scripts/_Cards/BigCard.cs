@@ -1,11 +1,8 @@
 using UnityEngine;
-using UnityEngine.UI;
 using Tools.Utils.FillComponents;
 using Tools;
 using System.Collections.Generic;
 using Tools.Utils.Screens;
-using Tools.UI;
-using Zenject;
 
 namespace Cards
 {
@@ -15,7 +12,7 @@ namespace Cards
 
         [SerializeField] private CardView _cardView;
         [SerializeField] private RectTransform _rectTransform;
-        //[SerializeField] private CanvasScaler _canvasScaler;
+
         private float _bigHeight;
         private float _bigWidth;
         private float _sizeFactor;
@@ -24,10 +21,7 @@ namespace Cards
 
         public bool? IsShown { get; private set; } = false;
 
-        //public float BigWidth => _bigWidth;
-        //public Vector2 Position => _rectTransform.position;
-        //public Vector2 Size => _rectTransform.sizeDelta;
-        public void Init(CardCapabilityDescription cardCapabilityDescription)
+        internal void Init(CardCapabilityDescription cardCapabilityDescription)
         {
             _rectTransform.rotation = Quaternion.identity;
             _canvasHeight = ScreenView.Y();

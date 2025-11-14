@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Cards
 {
-    public abstract class OnFireLogic : MonoBehaviour, IWorkable<OnFireLogicActivateData>
+    internal abstract class OnFireLogic : MonoBehaviour, IWorkable<OnFireLogicActivateData>
     {
         public bool? IsActive { get; protected set; } = null;
 

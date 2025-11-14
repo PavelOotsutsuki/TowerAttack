@@ -1,4 +1,5 @@
 using Cards;
+using Cards.DependencyInterlayers;
 using GameFields.Persons.Commons;
 
 namespace GameFields.Persons.Tables

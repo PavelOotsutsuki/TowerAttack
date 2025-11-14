@@ -1,20 +1,17 @@
 using Tools;
-using UnityEngine;
 
 namespace Cards
 {
     internal class CardViewService
     {
         private readonly BigCardRoot _bigCardRoot;
-        //private readonly CardDescription _cardDescription;
 
         private IViewable _currentCard;
         private IViewable _currentCardFrame;
 
-        public CardViewService(BigCardRoot bigCardRoot)//, CardDescription cardDescription)
+        public CardViewService(BigCardRoot bigCardRoot)
         {
             _bigCardRoot = bigCardRoot;
-            //_cardDescription = cardDescription;
             _currentCard = null;
         }
 
@@ -30,7 +27,6 @@ namespace Cards
             _currentCard = showableCard;
             _currentCardFrame = cardFrame;
 
-            //_cardDescription.Show(BigCardRootActivateData.BigCardShowData.LabelData);
             _bigCardRoot.Activate(BigCardRootActivateData);
             _currentCard.Hide();
             _currentCardFrame.Hide();
@@ -38,7 +34,6 @@ namespace Cards
 
         public void SetDefaultView()
         {
-            //_cardDescription.Hide();
             _bigCardRoot.Deactivate();
 
             ShowCurrentCard();

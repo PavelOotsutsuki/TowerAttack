@@ -1,6 +1,6 @@
 namespace Cards
 {
-    public class DefaultTagValuePair
+    internal class DefaultTagValuePair
     {
         private readonly string _tag;
         private readonly string _value;

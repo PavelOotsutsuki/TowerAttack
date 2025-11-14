@@ -55,7 +55,7 @@ namespace GameFields.Persons.Fires
 
         private void Seat(Card card)
         {
-            card.ReadOnlyRectTransform.SetParent(_parent);
+            card.RORTransform.SetParent(_parent);
             card.CardMovement.MoveLocalInstantly(FindCardSeatPosition(), FindCardSeatRotation());
         }
 

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Cards
@@ -36,8 +35,7 @@ namespace Cards
         private readonly string BrothersBondsColorTag = PurpleColorTag;
         private readonly string HandTransferColorTag = GrayColorTag;
 
-        private /*static*/ readonly CardCapability[] _cardCapabilities;
-        //private readonly IReadOnlyDictionary<CardCapability, CardCapabilityData> _capabilitiesDescription;
+        private readonly CardCapability[] _cardCapabilities;
         private readonly CardCapabilityLookUp _cardCapabilityLookUp;
 
         public CardCapabilityDescription()

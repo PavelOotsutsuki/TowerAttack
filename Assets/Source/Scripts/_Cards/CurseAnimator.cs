@@ -7,7 +7,7 @@ using UnityEngine.UI;
 namespace Cards
 {
     [Serializable]
-    public class CurseAnimator
+    internal class CurseAnimator
     {
         [SerializeField] private Color _peakColor = new Color(77 / 255f, 73 / 255f, 73 / 255f, 1f);
         [SerializeField] private float _durationIn = 1f;

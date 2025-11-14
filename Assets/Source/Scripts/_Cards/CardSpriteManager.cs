@@ -1,12 +1,11 @@
 using System;
-using System.Collections.Generic;
 using Tools;
 using UnityEngine;
 
 namespace Cards
 {
     [Serializable]
-    public class CardSpriteManager : IWorkable
+    internal class CardSpriteManager : IWorkable
     {
         [SerializeField] private CardCurseAnimation _cardCurseAnimation;
 

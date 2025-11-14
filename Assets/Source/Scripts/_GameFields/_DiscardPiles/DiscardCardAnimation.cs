@@ -30,7 +30,7 @@ namespace GameFields.DiscardPiles
             _invertCardAnimation = new InvertCardAnimation(_data.InvertCardAnimationData);
 
             _card = card;
-            _readOnlyCardTransform = _card.ReadOnlyRectTransform;
+            _readOnlyCardTransform = _card.RORTransform;
             _cardMovement = _card.CardMovement;
         }
 

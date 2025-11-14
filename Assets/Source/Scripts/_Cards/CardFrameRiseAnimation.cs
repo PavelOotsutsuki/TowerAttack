@@ -2,6 +2,6 @@ using Tools.CommonAnimations;
 
 namespace Cards
 {
-    public class CardFrameRiseAnimation : SpriteAnimation
+    internal class CardFrameRiseAnimation : SpriteAnimation
     { }
 }
