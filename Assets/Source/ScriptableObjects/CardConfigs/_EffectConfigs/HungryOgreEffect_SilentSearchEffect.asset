@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5a56921f2bd449dc9206de2d76eb1d0c, type: 3}
-  m_Name: JusticeBullEffect_SmallerOnesArmyEffect
+  m_Name: HungryOgreEffect_SilentSearchEffect
   m_EditorClassIdentifier: 
-  <Type>k__BackingField: 2500001
+  <Type>k__BackingField: 3400001
   <Duration>k__BackingField: 0

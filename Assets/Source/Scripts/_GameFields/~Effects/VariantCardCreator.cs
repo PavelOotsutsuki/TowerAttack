@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Cards;
 using Cards.Effects;
 using Cards.Views;
 using UnityEngine;
@@ -20,8 +19,17 @@ namespace GameFields.Effects
 
         [Header("25: JusticeBull")]
 
-        [SerializeField] private VariantCard _justiceBullEffect_SmallerOnesArmy_template;
-        [SerializeField] private VariantCard _justiceBullEffect_BigOnesArmy_template;
+        [SerializeField] private VariantCard _justiceBull_SmallerOnesArmy_template;
+        [SerializeField] private VariantCard _justiceBull_BigOnesArmy_template;
+
+        [Space]
+        [Header("----------------------------")]
+        [Space]
+
+        [Header("34: HungryOgre")]
+
+        [SerializeField] private VariantCard _hungryOgre_SilentSearch_template;
+        [SerializeField] private VariantCard _hungryOgre_HighProfileCrime_template;
 
         private readonly Dictionary<EffectType, VariantCard[]> _effectsVariantsTemplates = new Dictionary<EffectType, VariantCard[]>(); 
 
@@ -37,8 +45,15 @@ namespace GameFields.Effects
             _effectsVariantsTemplates.Add(EffectType.JusticeBull,
                 new VariantCard[2]
                 {
-                    _justiceBullEffect_SmallerOnesArmy_template,
-                    _justiceBullEffect_BigOnesArmy_template
+                    _justiceBull_SmallerOnesArmy_template,
+                    _justiceBull_BigOnesArmy_template
+                });
+
+            _effectsVariantsTemplates.Add(EffectType.HungryOgre,
+                new VariantCard[2]
+                {
+                    _hungryOgre_SilentSearch_template,
+                    _hungryOgre_HighProfileCrime_template
                 });
         }
 

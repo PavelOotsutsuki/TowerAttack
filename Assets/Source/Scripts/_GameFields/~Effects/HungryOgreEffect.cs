@@ -1,21 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
+using Cards.Effects;
+using GameFields.Persons;
+using System;
 using UnityEngine;
 
-namespace GameFields
+namespace GameFields.Effects
 {
-    public class HungryOgreEffect : MonoBehaviour
+    public class HungryOgreEffect : VariantEffect
     {
-        // Start is called before the first frame update
-        void Start()
-        {
-        
-        }
+        public HungryOgreEffect(Person activePerson, VariantCardCreator variantCardCreator,
+            Func<EffectType, CardEffectData, EffectDuration, Effect> effectCreator, EffectType effectType, EffectData data) :
+            base(activePerson, variantCardCreator, effectCreator, effectType, data)
+        { }
 
-        // Update is called once per frame
-        void Update()
+        public override void End()
         {
-        
+            base.End();
+
+            Debug.Log("Эффект Голодного Огра окончен");
         }
     }
 }

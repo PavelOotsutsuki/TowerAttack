@@ -43,6 +43,8 @@ namespace Cards.Effects
         WiseMonk = 32,
         CowsHerd = 33,
         HungryOgre = 34,
+        HungryOgre_SilentSearch = 3400001,
+        HungryOgre_HighProfileCrime = 3400002,
         Sharper = 35,
         Gunner = 36,
         WhiteGnome = 37,

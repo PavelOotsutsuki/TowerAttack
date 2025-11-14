@@ -177,7 +177,12 @@ namespace GameFields.Effects
                 EffectType.LuckyHorseshoe => new VoidEffect(effectData), // Нельзя разыграть, мб стоит выдать экспшн
                 EffectType.WiseMonk => new WiseMonkEffect(_personsState.Deactive, _viewRoot, _discardManager, _personEffectsHandlerRoot, effectData),
                 EffectType.CowsHerd => new CowsHerdEffect(_personsState.Active, _viewRoot, effectData),
-                EffectType.HungryOgre => new VoidEffect(effectData),
+                EffectType.HungryOgre => new HungryOgreEffect(_personsState.Active, _variantCardCreator, CreateEffect, effecType,
+                effectData),
+                EffectType.HungryOgre_SilentSearch => new HungryOgre_SilentSearchEffect(_personsState.Active, _personsState.Deactive,
+                effectData),
+                EffectType.HungryOgre_HighProfileCrime => new HungryOgre_HighProfileCrimeEffect(_personsState.Active, _personsState.Deactive,
+                effectData),
                 EffectType.Sharper => new VoidEffect(effectData),
                 EffectType.Gunner => new VoidEffect(effectData),
                 EffectType.WhiteGnome => new VoidEffect(effectData),
