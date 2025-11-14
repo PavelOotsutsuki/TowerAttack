@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cards;
+using Cards.Views.BigCardViews;
+using Cards.Views.BigCardViews.Capabilities;
 using Tools;
 using Tools.Settings;
 using Tools.Utils.FillComponents;

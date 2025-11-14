@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Cards;
+using Cards.Views;
 using GameFields.Seats;
 using Tools;
 using Tools.Settings;

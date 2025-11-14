@@ -1,4 +1,10 @@
 using System.Collections.Generic;
+using Cards.Animations.Curses;
+using Cards.Effects;
+using Cards.Insides;
+using Cards.Views;
+using Cards.Views.BigCardViews;
+using Cards.Views.BigCardViews.Capabilities;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 

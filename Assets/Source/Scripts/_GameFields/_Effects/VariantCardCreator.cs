@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Cards;
+using Cards.Effects;
+using Cards.Views;
 using UnityEngine;
 
 namespace GameFields.Effects

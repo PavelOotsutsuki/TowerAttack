@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cards;
+using Cards.Effects;
 using GameFields.InformationLabels;
 using GameFields.Persons.Commons;
 using Tools.Settings;

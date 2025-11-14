@@ -10,6 +10,7 @@ using Tools.Utils;
 using GameFields.Persons.Commons;
 using GameFields.Persons.EffectHandlers;
 using GameFields.InputSettings;
+using Cards.Views;
 
 namespace GameFields.Persons.EnemyProcessImitations
 {

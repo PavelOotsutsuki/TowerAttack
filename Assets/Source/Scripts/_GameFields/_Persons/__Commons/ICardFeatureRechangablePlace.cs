@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Cards;
+using Cards.Views;
 
 namespace GameFields.Persons.Commons
 {

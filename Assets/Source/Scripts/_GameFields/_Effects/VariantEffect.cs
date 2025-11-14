@@ -6,6 +6,8 @@ using GameFields.Persons.Discovers;
 using System.Collections.Generic;
 using System;
 using Zenject;
+using Cards.Effects;
+using Cards.Views;
 
 namespace GameFields.Effects
 {

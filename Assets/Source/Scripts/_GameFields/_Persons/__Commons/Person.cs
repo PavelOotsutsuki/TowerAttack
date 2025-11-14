@@ -15,6 +15,8 @@ using Zenject;
 using GameFields.Persons.SelectMenues.Commons;
 using GameFields.Persons.EffectHandlers;
 using GameFields.Persons.LookCardMenues;
+using Cards.Effects;
+using Cards.Views;
 
 namespace GameFields.Persons.Commons
 {

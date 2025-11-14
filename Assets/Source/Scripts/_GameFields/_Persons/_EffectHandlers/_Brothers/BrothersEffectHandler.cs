@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cards;
+using Cards.Views;
 using GameFields.Persons.Commons;
 using UnityEngine;
 

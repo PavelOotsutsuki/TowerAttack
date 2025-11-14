@@ -1,4 +1,5 @@
 ﻿using Cards;
+using Cards.Views;
 
 namespace GameFields.Persons.Discovers
 {

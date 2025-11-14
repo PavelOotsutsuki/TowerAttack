@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cards;
+using Cards.Views.BigCardViews.Capabilities;
 using Cysharp.Threading.Tasks;
 using GameFields.InputSettings;
 using GameFields.Persons.Commons;

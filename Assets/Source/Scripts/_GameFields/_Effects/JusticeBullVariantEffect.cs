@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Cards;
+using Cards.Effects;
 using GameFields.InformationLabels;
 using GameFields.Persons.Commons;
 using Tools.UI;

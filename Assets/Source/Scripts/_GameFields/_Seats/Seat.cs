@@ -4,6 +4,7 @@ using Tools.Utils.FillComponents;
 using Tools.Utils.Movements;
 using Tools;
 using System.Collections.Generic;
+using Cards.Views;
 
 namespace GameFields.Seats
 {

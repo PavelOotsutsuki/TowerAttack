@@ -20,6 +20,8 @@ using GameFields.InputSettings;
 using GameFields.FightMenues;
 using Tools.Utils.Screens;
 using System.Collections;
+using Cards.Views.BigCardViews.Capabilities;
+using Cards.Views.BigCardViews;
 
 namespace Roots
 {

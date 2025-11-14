@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Cards;
+using Cards.Views;
 using Tools;
 
 namespace GameFields.Persons.Discovers

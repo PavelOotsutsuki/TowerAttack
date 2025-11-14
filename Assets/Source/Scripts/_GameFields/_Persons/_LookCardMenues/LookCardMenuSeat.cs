@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using Cards;
+using Cards.Views.BigCardViews;
+using Cards.Views.BigCardViews.Capabilities;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Movements;
 using UnityEngine;

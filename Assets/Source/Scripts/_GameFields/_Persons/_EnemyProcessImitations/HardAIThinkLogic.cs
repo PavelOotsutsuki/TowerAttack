@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cards;
 using Cards.DependencyInterlayers;
+using Cards.Views;
 using GameFields.Persons.Commons;
 using GameFields.Persons.EffectHandlers;
 using GameFields.Persons.EffectHandlers.Fires;

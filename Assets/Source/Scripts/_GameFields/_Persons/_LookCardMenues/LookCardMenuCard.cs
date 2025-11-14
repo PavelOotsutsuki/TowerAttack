@@ -1,6 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cards;
+using Cards.Insides;
+using Cards.Views;
+using Cards.Views.BigCardViews;
+using Cards.Views.BigCardViews.Capabilities;
+using Cards.Views.BigCardViews.CardDescriptions;
 using Cysharp.Threading.Tasks;
 using Tools;
 using Tools.Settings;

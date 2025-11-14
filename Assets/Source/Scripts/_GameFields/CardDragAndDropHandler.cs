@@ -2,6 +2,7 @@ using Cards;
 using GameFields.Persons.Hands;
 using GameFields.LightControls;
 using CanvasSortOrders;
+using Cards.Insides;
 
 namespace GameFields
 {

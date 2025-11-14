@@ -10,6 +10,7 @@ using System.Linq;
 using Tools.Utils;
 using GameFields.Seats;
 using GameFields.DiscardPiles;
+using Cards.Views;
 
 namespace GameFields.Decks
 {

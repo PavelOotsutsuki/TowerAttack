@@ -9,6 +9,7 @@ using GameFields.Seats;
 using UnityEngine;
 using GameFields.Persons.Hands;
 using GameFields.Persons.Towers;
+using Cards.Views;
 
 namespace GameFields.StartFights
 {

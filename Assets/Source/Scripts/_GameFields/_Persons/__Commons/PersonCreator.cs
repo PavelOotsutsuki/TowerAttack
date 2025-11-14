@@ -31,6 +31,7 @@ using GameFields.Persons.EffectHandlers.Brothers;
 using GameFields.Persons.EffectHandlers.Scarecrows;
 using GameFields.InputSettings;
 using GameFields.FightMenues;
+using Cards.Views.BigCardViews.Capabilities;
 
 namespace GameFields.Persons.Commons
 {

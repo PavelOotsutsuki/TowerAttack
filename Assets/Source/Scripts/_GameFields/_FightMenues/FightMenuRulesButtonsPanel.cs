@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using Cards;
+using Cards.Views;
+using Cards.Views.BigCardViews.Capabilities;
 using Cysharp.Threading.Tasks;
 using GameFields.FightMenues;
 using TMPro;
