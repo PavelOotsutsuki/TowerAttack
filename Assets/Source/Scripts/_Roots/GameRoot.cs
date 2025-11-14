@@ -5,7 +5,7 @@ using GameFields.Decks;
 using GameFields.Effects;
 using GameFields.EndTurnButtons;
 using GameFields.LightControls;
-using GameFields.Persons.Commons;
+using GameFields.Persons;
 using GameFields.Persons.Hands;
 using GameFields.Seats;
 using Tools.Utils.FillComponents;

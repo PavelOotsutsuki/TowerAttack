@@ -1,4 +1,4 @@
-using GameFields.Persons.Commons;
+using GameFields.Persons;
 
 namespace GameFields
 {

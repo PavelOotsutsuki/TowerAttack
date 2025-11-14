@@ -6,7 +6,7 @@ using Cysharp.Threading.Tasks;
 using GameFields.CommonAnimations;
 using GameFields.Decks;
 using GameFields.DiscardPiles;
-using GameFields.Persons.Commons;
+using GameFields.Persons;
 using GameFields.Persons.Fires;
 using GameFields.Persons.Hands;
 using GameFields.Persons.Towers;

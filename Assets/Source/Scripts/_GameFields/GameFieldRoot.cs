@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using GameFields.Persons.Commons;
+using GameFields.Persons;
 using GameFields.Seats;
 using Tools;
 using Tools.Utils.FillComponents;
