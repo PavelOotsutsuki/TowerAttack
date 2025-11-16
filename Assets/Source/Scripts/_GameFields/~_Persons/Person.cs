@@ -300,7 +300,7 @@ namespace GameFields.Persons
             return _drawCardRoot.DrawCards(countCards, callback);
         }
 
-        Card IDrawCardManager.DrawCard(Card card, Action callback)
+        int IDrawCardManager.DrawCard(Card card, Action callback)
         {
             return _drawCardRoot.DrawCard(card, callback);
         }
@@ -369,6 +369,11 @@ namespace GameFields.Persons
         public void AddCurse(Card card)
         {
             _personEffectsHandler.CurseEffectHandler.Activate(card);
+        }
+
+        public void AddCurse(int countTurns)
+        {
+            _personEffectsHandler.CurseEffectHandler.Activate(countTurns);
         }
 
         public void ActivateSlimeEffect(Card card)

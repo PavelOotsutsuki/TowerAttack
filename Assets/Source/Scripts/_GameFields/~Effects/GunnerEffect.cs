@@ -1,21 +1,147 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Cards;
+using Cards.Effects;
+using GameFields.InformationLabels;
+using GameFields.Persons;
+using GameFields.Persons.DrawCards;
+using GameFields.Persons.LookCardMenues;
+using Tools.UI;
 using UnityEngine;
 
-namespace GameFields
+namespace GameFields.Effects
 {
-    public class GunnerEffect : MonoBehaviour
+    public class GunnerEffect : Effect
     {
-        // Start is called before the first frame update
-        void Start()
+        private const string MessagePlayer = "Верхняя и нижняя карта колоды";
+        private const string MessageEnemy = "Противник смотрит нижнюю и верхнюю карту колоды";
+
+        private readonly Person _activePerson;
+        private readonly IDrawCardManager _drawCardManager;
+        private readonly CardLocationViewRoot _viewRoot;
+        private readonly CardTransitManager _transitManager;
+        private readonly EffectProcessSounds _effectProcessSounds;
+        private readonly InformationLabel _informationLabel;
+
+        public GunnerEffect(Person activePerson, CardLocationViewRoot viewRoot, CardTransitManager transitManager,
+            EffectProcessSounds effectProcessSounds, InformationLabel informationLabel, EffectData data) : base(data)
         {
-        
+            _activePerson = activePerson;
+            _drawCardManager = activePerson;
+            _viewRoot = viewRoot;
+            _transitManager = transitManager;
+            _effectProcessSounds = effectProcessSounds;
+            _informationLabel = informationLabel;
+
+            Play();
         }
 
-        // Update is called once per frame
-        void Update()
+        public override void End()
         {
-        
+            base.End();
+
+            Debug.Log("Эффект Артеллериста закончен");
         }
+
+        protected override IEnumerator OnPlaying()
+        {
+            yield return new WaitForSeconds(2f); // Ждем для большего ЭПИКА
+            // Эффект 1. Взятие карты
+            ActivateSound();
+
+            bool effectOneComplete = false;
+
+            _drawCardManager.DrawCards(1, () => effectOneComplete = true);
+            yield return new WaitUntil(() => effectOneComplete);
+            yield return new WaitForSeconds(1f);
+            // Эффект 2. Атака
+            ActivateSound();
+
+            bool effectTwoComplete = false;
+
+            _activePerson.AttackActivate(1, () => effectTwoComplete = true);
+            yield return new WaitUntil(() => effectTwoComplete);
+
+            // Эффект 3. Сжигаем карту
+            ViewType viewType = _activePerson is EnemyAI ? ViewType.HandPlayer : ViewType.HandAI;
+            IReadOnlyList<Card> cards = _viewRoot.GetAllCards(viewType).ToList();
+
+            if (cards.Count > 0)
+            {
+                ActivateSound();
+
+                bool effectThreeComplete = false;
+                int randomCardIndex = Random.Range(0, cards.Count);
+
+                TransitFromType transitFromType;
+                TransitToType transitToType;
+
+                if (viewType == ViewType.HandPlayer)
+                {
+                    transitFromType = TransitFromType.HandPlayer;
+                    transitToType = TransitToType.PlayerFirePool;
+                }
+                else
+                {
+                    transitFromType = TransitFromType.HandEnemy;
+                    transitToType = TransitToType.EnemyFirePool;
+                }
+
+                _transitManager.TransitCard(cards[randomCardIndex], transitFromType, transitToType, () => effectThreeComplete = true);
+                yield return new WaitUntil(() => effectThreeComplete);
+            }
+
+            // Эффект 4. Смотрим верхнюю и нижнюю карту
+
+            Card deckTopCard = null;
+
+            if (_viewRoot.TryViewDeckTopCards(out IReadOnlyList<Card> cardTopDeck, 1))
+            {
+                deckTopCard = cardTopDeck[0];
+            }
+
+            Card deckEndCard = null;
+
+            if (_viewRoot.TryViewDeckLastCards(out IReadOnlyList<Card> cardEndDeck, 1))
+            {
+                deckEndCard = cardEndDeck[0];
+            }
+
+            if (deckTopCard == null || deckEndCard == null)
+                yield break;
+
+            ActivateSound();
+
+            if (_activePerson is Player)
+            {
+                bool effectFourComplete = false;
+                List<Card> lookCards = new List<Card>();
+
+                if (deckTopCard == deckEndCard)
+                {
+                    lookCards.Add(deckTopCard);
+                }
+                else
+                {
+                    lookCards.Add(deckTopCard);
+                    lookCards.Add(deckEndCard);
+                }
+
+                LookCardMenuActivateData lookCardMenuActivateData = new LookCardMenuActivateData(lookCards, MessagePlayer);
+                _activePerson.LookCards(lookCardMenuActivateData, () => effectFourComplete = true);
+                yield return new WaitUntil(() => effectFourComplete);
+            }
+            else
+            {
+                LabelActivateData labelActivateData = new LabelActivateData(MessageEnemy);
+                InformationLabelActivateData informationLabelActivateData = new InformationLabelActivateData(labelActivateData, 6f);
+
+                _informationLabel.Activate(informationLabelActivateData);
+                yield return new WaitUntil(() => _informationLabel.IsComplete);
+            }
+        }
+
+        private void ActivateSound() => _effectProcessSounds.Play(EffectType.Gunner);
     }
 }

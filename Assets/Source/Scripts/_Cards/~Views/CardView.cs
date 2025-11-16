@@ -72,7 +72,7 @@ namespace Cards.Views
                     int end = featureCopy.IndexOf('>');
                     string tag = featureCopy.Substring(start, end - start);
 
-                    if (tag == "b" || tag == "/b" || tag == "/n")
+                    if (tag == "b" || tag == "/b")
                     {
                         featureCopy = featureCopy.Substring(end + 1);
                         continue;

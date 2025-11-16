@@ -1,21 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
+using Cards;
+using GameFields.Persons;
 using UnityEngine;
+using Zenject;
 
-namespace GameFields
+namespace GameFields.Effects
 {
-    public class WhiteGnomeEffect : MonoBehaviour
+    public class WhiteGnomeEffect : GnomeEffect
     {
-        // Start is called before the first frame update
-        void Start()
-        {
-        
-        }
+        public WhiteGnomeEffect(Person activePerson, EffectData data) : base(activePerson, data)
+        { }
 
-        // Update is called once per frame
-        void Update()
+        public override void End()
         {
-        
+            base.End();
+
+            Debug.Log("Эффект Белого Гнома закончен");
         }
     }
 }

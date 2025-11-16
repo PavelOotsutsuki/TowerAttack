@@ -91,7 +91,7 @@ namespace GameFields
             return _views[viewType].AllCards;
         }
 
-        public Card ViewRandomCard(IEnumerable<int> exceptions, IEnumerable<ViewType> noContains = null)
+        public Card ViewRandomCardFromAllCards(IEnumerable<int> exceptions, IEnumerable<ViewType> noContains = null)
         {
             IReadOnlyList<Card> cards = _allCardsWatcher.Cards;
 
@@ -192,6 +192,7 @@ namespace GameFields
             return true;
         }
 
+        // Пытается найти определенное кол-во карт. Если не находит, находит сколько есть. Если ничего нет - false
         public bool TryView(out IReadOnlyList<Card> cards, int countCards, ViewType viewType, IEnumerable<int> exceptions = null)
         {
             exceptions ??= new List<int>();
@@ -199,11 +200,18 @@ namespace GameFields
             ICardView target = _views[viewType];
 
             cards = null;
+            int realCountCards;
 
-            if (target.IsHasCards(countCards, exceptions) == false)
+            for (realCountCards = countCards; realCountCards > 0; realCountCards--)
+            {
+                if (target.IsHasCards(realCountCards, exceptions))
+                    break;
+            }
+
+            if (realCountCards == 0)
                 return false;
 
-            cards = target.ViewRandomCards(countCards, exceptions);
+            cards = target.ViewRandomCards(realCountCards, exceptions);
             return true;
         }
 

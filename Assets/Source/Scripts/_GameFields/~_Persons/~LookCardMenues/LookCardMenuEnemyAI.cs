@@ -1,7 +1,5 @@
 using System.Collections;
 using Cysharp.Threading.Tasks;
-using GameFields.InformationLabels;
-using Tools.UI;
 using UnityEngine;
 
 namespace GameFields.Persons.LookCardMenues
@@ -10,16 +8,13 @@ namespace GameFields.Persons.LookCardMenues
     {
         private bool _isComplete;
 
-        private readonly InformationLabel _informationLabel;
-
         public bool IsComplete => _isComplete;
 
         public bool? IsActive { get; private set; } = null;
 
-        public LookCardMenuEnemyAI(InformationLabel informationLabel)
-        {
-            _informationLabel = informationLabel;
-        }
+        // Логики в классе нет совсем, но пока оставлю тк подозреваю что он все равно понадобится для серверной синхронизации
+        public LookCardMenuEnemyAI() 
+        { }
 
         public void Activate(LookCardMenuActivateData data)
         {
@@ -30,7 +25,7 @@ namespace GameFields.Persons.LookCardMenues
 
             _isComplete = false;
 
-            Activating(data.LabelActivateData).ToUniTask();
+            Activating().ToUniTask();
         }
 
         public void Deactivate()
@@ -41,12 +36,9 @@ namespace GameFields.Persons.LookCardMenues
             IsActive = false;
         }
 
-        private IEnumerator Activating(LabelActivateData labelActivateData)
+        private IEnumerator Activating()
         {
-            InformationLabelActivateData informationLabelActivateData = new InformationLabelActivateData(labelActivateData, 10f);
-            _informationLabel.Activate(informationLabelActivateData);
-
-            yield return new WaitUntil(() => _informationLabel.IsComplete);
+            yield return new WaitForSeconds(0.5f);
 
             _isComplete = true;
 

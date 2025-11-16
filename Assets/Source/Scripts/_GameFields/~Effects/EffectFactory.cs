@@ -31,12 +31,14 @@ namespace GameFields.Effects
         private readonly PersonEffectsHandlerRoot _personEffectsHandlerRoot;
         private readonly DiscardManager _discardManager;
         private readonly LoseActionsRoot _loseActionsRoot;
+        private readonly EffectProcessSounds _effectProcessSounds;
 
         //private Effect _lastEffect;
 
         public EffectFactory(IPersonsState personsState, CardLocationViewRoot viewRoot, InformationLabel informationLabel,
             CardTransitManager cardTransitManager, VariantCardCreator variantCardCreator, BrothersEffectHandlerRoot brothersEffectHandler,
-            SignalBus bus, PersonEffectsHandlerRoot personEffectsHandlerRoot, DiscardManager discardManager, LoseActionsRoot loseActionsRoot)
+            SignalBus bus, PersonEffectsHandlerRoot personEffectsHandlerRoot, DiscardManager discardManager, LoseActionsRoot loseActionsRoot,
+            EffectProcessSounds effectProcessSounds)
         {
             _personsState = personsState;
             _viewRoot = viewRoot;
@@ -48,6 +50,7 @@ namespace GameFields.Effects
             _personEffectsHandlerRoot = personEffectsHandlerRoot;
             _discardManager = discardManager;
             _loseActionsRoot = loseActionsRoot;
+            _effectProcessSounds = effectProcessSounds;
             _voidEffectConfig = ScriptableObject.CreateInstance<CardEffectConfig>();
             //_voidEffectConfig = new CardEffectConfig();
             //_lastEffect = _voidEffect;
@@ -136,7 +139,7 @@ namespace GameFields.Effects
                 EffectType.TimeLord => new VoidEffect(effectData),// new TimeLordEffect(_personsState.Deactive, this),
                 EffectType.ThreeGuys => new ThreeGuysEffect(_personsState.Active, effectData),
                 EffectType.TimeMistress => new TimeMistressEffect(_personsState.Active, _viewRoot, _cardTransitManager, effectData),
-                EffectType.SharpSnake => new SharpSnakeEffect(_personsState.Active, _viewRoot, effectData),
+                EffectType.SharpSnake => new SharpSnakeEffect(_personsState.Active, _viewRoot, _informationLabel, effectData),
                 EffectType.ImpArmy => new ImpArmyEffect(_personsState.Deactive, effectData),
                 EffectType.CursedMark => new VoidEffect(effectData), // Нельзя разыграть, мб стоит выдать экспшн
                 EffectType.RushingMailman => new RushingMailmanEffect(_personsState.Active, effectData),
@@ -144,7 +147,7 @@ namespace GameFields.Effects
                 EffectType.Mime => new MimeEffect(_personsState.Active, _personsState.Deactive, _viewRoot, _informationLabel, effectData),
                 EffectType.RedGnome => new RedGnomeEffect(_personsState.Active, effectData),
                 EffectType.TimeChild => new TimeChildEffect(_viewRoot, _cardTransitManager, effectData),
-                EffectType.Undergrounder => new UndergrounderEffect(_personsState.Active, _viewRoot, effectData),
+                EffectType.Undergrounder => new UndergrounderEffect(_personsState.Active, _viewRoot, _informationLabel, effectData),
                 EffectType.RobinGood => new RobinGoodEffect(_personsState.Active, _personsState.Deactive, _viewRoot, effectData),
                 EffectType.General => new GeneralEffect(_personsState.Active, effectData),
                 //EffectType.FateMistress => _personsState.Active is Player ?
@@ -183,11 +186,12 @@ namespace GameFields.Effects
                 effectData),
                 EffectType.HungryOgre_HighProfileCrime => new HungryOgre_HighProfileCrimeEffect(_personsState.Active, _personsState.Deactive,
                 effectData),
-                EffectType.Sharper => new VoidEffect(effectData),
-                EffectType.Gunner => new VoidEffect(effectData),
-                EffectType.WhiteGnome => new VoidEffect(effectData),
+                EffectType.Sharper => new SharperEffect(_personsState.Active, _viewRoot, _cardTransitManager, effectData),
+                EffectType.Gunner => new GunnerEffect(_personsState.Active, _viewRoot, _cardTransitManager,
+                _effectProcessSounds, _informationLabel, effectData),
+                EffectType.WhiteGnome => new WhiteGnomeEffect(_personsState.Active, effectData),
                 EffectType.MiddleBrother => new MiddleBrotherEffect(_personsState.Active, _brothersEffectHandlerRoot, effectData),
-                EffectType.DeadOgre => new VoidEffect(effectData),
+                EffectType.DeadOgre => new DeadOgreEffect(_personsState.Deactive, effectData),
                 EffectType.OutOfControlBus => new VoidEffect(effectData),
                 EffectType.CursedMailman => new VoidEffect(effectData),
                 EffectType.RightEyedSister => new VoidEffect(effectData),

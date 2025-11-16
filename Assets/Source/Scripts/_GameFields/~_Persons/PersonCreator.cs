@@ -335,7 +335,8 @@ namespace GameFields.Persons
 
             _enemyHand.Init(_seatPool, _enemyRechangeFeatureRuleController, _enemyTurnDrawnCards, curseEffectHandler);
 
-            LookCardMenuEnemyAI lookCardMenuEnemyAI = new LookCardMenuEnemyAI(_informationLabel);
+            //LookCardMenuEnemyAI lookCardMenuEnemyAI = new LookCardMenuEnemyAI(_informationLabel);
+            LookCardMenuEnemyAI lookCardMenuEnemyAI = new LookCardMenuEnemyAI();
 
             return new EnemyAI(_interactionActivator, enemyDragAndDropImitation, _enemyPlayingZone,
                 _enemyTower, drawCardRoot, _enemyDiscoverImitation, startTurnDraw, _bus, _enemyHand, _enemyAttackMenu,

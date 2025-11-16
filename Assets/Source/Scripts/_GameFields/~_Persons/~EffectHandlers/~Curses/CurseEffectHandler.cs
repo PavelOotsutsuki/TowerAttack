@@ -20,6 +20,7 @@ namespace GameFields.Persons.EffectHandlers.Curses
 
         //private readonly List<ICompletable> _cursedEffectCards;
         private readonly List<Card> _effectedCards;
+        private readonly List<CurseEffectWithoutCard> _effectsWithoutCards;
 
         private bool _deactivateMode = false;
 
@@ -33,6 +34,7 @@ namespace GameFields.Persons.EffectHandlers.Curses
             _cursedList = cursedList;
             //_effectedCards = new List<ICompletable>();
             _effectedCards = new List<Card>();
+            _effectsWithoutCards = new List<CurseEffectWithoutCard>();
             _deactivateMode = false;
         }
 
@@ -47,6 +49,11 @@ namespace GameFields.Persons.EffectHandlers.Curses
             //    return;
 
             _effectedCards.Add(card);
+        }
+
+        public void Activate(int countTurns)
+        {
+            _effectsWithoutCards.Add(new CurseEffectWithoutCard(countTurns));
         }
 
         public void SetDeactivateMode(bool isDeactivateMode)
@@ -77,7 +84,7 @@ namespace GameFields.Persons.EffectHandlers.Curses
             //        _cursedEffectCards.Remove(effectCard);
             //}
 
-            int cursedCount = _effectedCards.Count;
+            int cursedCount = _effectedCards.Count + _effectsWithoutCards.Count;
             //Debug.Log($"cursedCount = {cursedCount}, _deactivateMode = {_deactivateMode}");
             if (cursedCount == 0 || _deactivateMode)
                 return;
@@ -131,6 +138,17 @@ namespace GameFields.Persons.EffectHandlers.Curses
             LabelActivateData labelActivateData = new LabelActivateData($"<b>{personCurseFeature}</b>\n{cursedMessage}");
             InformationLabelActivateData informationLabelActivateData = new InformationLabelActivateData(labelActivateData, 2f);
             _informationLabel.Activate(informationLabelActivateData);
+
+            for (int i = 0; i < _effectsWithoutCards.Count; i++ )
+            {
+                _effectsWithoutCards[i].NextTurn();
+
+                if (_effectsWithoutCards[i].CanBeDestroy)
+                {
+                    _effectsWithoutCards.Remove(_effectsWithoutCards[i]);
+                    i--;
+                }
+            }
 
             PushStep();
         }

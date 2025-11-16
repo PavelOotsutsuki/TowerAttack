@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cards;
+using GameFields.InformationLabels;
 using GameFields.Persons;
 using GameFields.Persons.LookCardMenues;
+using Tools.UI;
 using UnityEngine;
 using Zenject;
 
@@ -11,19 +13,20 @@ namespace GameFields.Effects
 {
     public class SharpSnakeEffect : Effect
     {
-        private const string Message = "Соперник смотрит ваши карты...";
+        private const string EnemyMessage = "Соперник смотрит ваши карты...";
+        private const string PlayerMessage = "Карты противника";
 
         private readonly Person _activePerson;
-        private bool _isEffectComplete;
-
         private readonly CardLocationViewRoot _cardLocationViewRoot;
+        private readonly InformationLabel _informationLabel;
 
-        public SharpSnakeEffect(Person activePerson, CardLocationViewRoot cardLocationViewRoot, EffectData data) : base(data)
+        public SharpSnakeEffect(Person activePerson, CardLocationViewRoot cardLocationViewRoot,
+            InformationLabel informationLabel, EffectData data) : base(data)
         {
             _activePerson = activePerson;
-            _isEffectComplete = false;
 
             _cardLocationViewRoot = cardLocationViewRoot;
+            _informationLabel = informationLabel;
 
             Play();
         }
@@ -43,20 +46,24 @@ namespace GameFields.Effects
             IEnumerable<Card> cards = _cardLocationViewRoot.GetAllCards(hand);
 
             if (cards.Count() == 0)
-            {
-                CompleteEffect();
                 yield break;
+
+            bool isEffectComplete = false;
+
+            if (_activePerson is Player)
+            {
+                LookCardMenuActivateData lookCardMenuActivateData = new LookCardMenuActivateData(cards, PlayerMessage);
+                _activePerson.LookCards(lookCardMenuActivateData, () => isEffectComplete = true);
+                yield return new WaitUntil(() => isEffectComplete);
             }
+            else
+            {
+                LabelActivateData labelActivateData = new LabelActivateData(EnemyMessage);
+                InformationLabelActivateData informationLabelActivateData = new InformationLabelActivateData(labelActivateData, 8f);
 
-            LookCardMenuActivateData lookCardMenuActivateData = new LookCardMenuActivateData(cards, Message);
-            _activePerson.LookCards(lookCardMenuActivateData, CompleteEffect);
-
-            yield return new WaitUntil(() => _isEffectComplete);
-        }
-
-        private void CompleteEffect()
-        {
-            _isEffectComplete = true;
+                _informationLabel.Activate(informationLabelActivateData);
+                yield return new WaitUntil(() => _informationLabel.IsComplete);
+            }
         }
     }
 }

@@ -42,7 +42,7 @@ namespace Roots
         private void Construct(SignalBus bus, Deck deck, SeatPool seatPool, BigCardRoot bigCardRoot, HandPlayer handPlayer,
             InformationLabel informationLabel, LookCardMenuPlayer lookCardMenu, VariantCardCreator variantCardCreator,
             SoundRoot soundRoot, CardSoundVolume cardSoundVolume, FightMenuActivateButton fightMenuActivateButton,
-            CardCapabilityDescription cardCapabilityDescription)
+            CardCapabilityDescription cardCapabilityDescription, EffectProcessSounds effectProcessSounds)
         {
             //StartCoroutine(Initing(bus, deck, seatPool, cardDescription, handPlayer, informationLabel, lookCardMenu, variantCardCreator, soundRoot,
             //    cardSoundVolume, fightMenuActivateButton, screenRoot));
@@ -59,6 +59,7 @@ namespace Roots
             _speedUpButtonSortOrder.Init();
 
             variantCardCreator.Init();
+            effectProcessSounds.Init(cardSoundVolume);
             soundRoot.Init();
 
             CardDragAndDropLightController cardDragAndDropLightController = _lightControlsCreator.CreateCardDragAndDropLightController();
@@ -89,7 +90,8 @@ namespace Roots
             //fightMenu.
 
             EffectFactory effectFactory = new EffectFactory(_personsState, viewRoot, informationLabel, cardTransitManager,
-                variantCardCreator, brothersEffectHandlerRoot, bus, personEffectsHandlerRoot, discardManager, loseActionsRoot);
+                variantCardCreator, brothersEffectHandlerRoot, bus, personEffectsHandlerRoot, discardManager, loseActionsRoot,
+                effectProcessSounds);
 
             _cardRoot.Init(effectFactory, bigCardRoot, cardDragAndDropHandler, cardSoundVolume, cardCapabilityDescription);
             deck.Init(seatPool, _cardRoot.Cards);

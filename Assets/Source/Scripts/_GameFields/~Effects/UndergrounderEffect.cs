@@ -1,29 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cards;
+using GameFields.InformationLabels;
 using GameFields.Persons;
 using GameFields.Persons.LookCardMenues;
+using Tools.UI;
 using UnityEngine;
-using Zenject;
 
 namespace GameFields.Effects
 {
     public class UndergrounderEffect : Effect
     {
-        private const string Message = "Соперник смотрит карты в конце колоды...";
+        private const string MessageEnemy = "Соперник смотрит карты в конце колоды...";
+        private const string MessagePlayer = "Карты в конце колоды, начиная с нижней";
         private const int CountLookCards = 3;
 
         private readonly Person _activePerson;
-        private bool _isEffectComplete;
-
         private readonly CardLocationViewRoot _cardLocationViewRoot;
+        private readonly InformationLabel _informationLabel;
 
-        public UndergrounderEffect(Person activePerson, CardLocationViewRoot cardLocationViewRoot, EffectData data)
-            : base(data)
+        public UndergrounderEffect(Person activePerson, CardLocationViewRoot cardLocationViewRoot,
+            InformationLabel informationLabel, EffectData data) : base(data)
         {
             _activePerson = activePerson;
-            _isEffectComplete = false;
-
+            _informationLabel = informationLabel;
             _cardLocationViewRoot = cardLocationViewRoot;
 
             Play();
@@ -42,20 +42,24 @@ namespace GameFields.Effects
             //yield return new WaitUntil(() => _isEffectComplete);
             if (_cardLocationViewRoot.TryViewDeckLastCards(out IReadOnlyList<Card> cards, CountLookCards) == false)
             {
-                CompleteEffect();
                 yield break;
             }
 
-            LookCardMenuActivateData lookCardMenuActivateData = new LookCardMenuActivateData(cards, Message);
-            _activePerson.LookCards(lookCardMenuActivateData, CompleteEffect);
+            if (_activePerson is Player)
+            {
+                bool isEffectComplete = false;
+                LookCardMenuActivateData lookCardMenuActivateData = new LookCardMenuActivateData(cards, MessagePlayer);
+                _activePerson.LookCards(lookCardMenuActivateData, () => isEffectComplete = true);
+                yield return new WaitUntil(() => isEffectComplete);
+            }
+            else
+            {
+                LabelActivateData labelActivateData = new LabelActivateData(MessageEnemy);
+                InformationLabelActivateData informationLabelActivateData = new InformationLabelActivateData(labelActivateData, 6f);
 
-            yield return new WaitUntil(() => _isEffectComplete);
-        }
-
-        private void CompleteEffect()
-        {
-            _isEffectComplete = true;
+                _informationLabel.Activate(informationLabelActivateData);
+                yield return new WaitUntil(() => _informationLabel.IsComplete);
+            }
         }
     }
 }
-

@@ -42,6 +42,7 @@ namespace Roots
         [SerializeField] private SkipTurnLabel _skipTurnLabel;
 
         [SerializeField] private VariantCardCreator _variantCardCreator;
+        [SerializeField] private EffectProcessSounds _effectProcessSounds;
 
         [SerializeField] private HandPlayer _playerHand;
         [SerializeField] private TablePlayer _playerTable;
@@ -102,6 +103,7 @@ namespace Roots
             Container.Bind<SkipTurnLabel>().FromInstance(_skipTurnLabel).AsSingle();
 
             Container.Bind<VariantCardCreator>().FromInstance(_variantCardCreator).AsSingle();
+            Container.Bind<EffectProcessSounds>().FromInstance(_effectProcessSounds).AsSingle();
 
             Container.Bind<HandPlayer>().FromInstance(_playerHand).AsSingle();
             Container.Bind<TablePlayer>().FromInstance(_playerTable).AsSingle();

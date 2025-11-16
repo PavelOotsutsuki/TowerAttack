@@ -152,7 +152,7 @@ namespace GameFields.Effects
 
             for (int i = 0; i < countDiscoverCards - 1; i++)
             {
-                cardsGuess.Add(_viewRoot.ViewRandomCard(cardsGuess.Select(c => c.ViewData.Number), noContains));
+                cardsGuess.Add(_viewRoot.ViewRandomCardFromAllCards(cardsGuess.Select(c => c.ViewData.Number), noContains));
             }
 
             cardsGuess = Utils.Shuffle(cardsGuess);

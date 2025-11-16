@@ -10,7 +10,7 @@ namespace GameFields.Effects
 {
     public class LeftEyedSisterEffect : Effect
     {
-        private const int CountDicoverFromHand = 3;
+        private const int CountDiscoverFromHand = 3;
 
         private readonly Person _activePerson;
         private readonly CardLocationViewRoot _viewRoot;
@@ -40,19 +40,19 @@ namespace GameFields.Effects
 
             //_activePerson
 
-            for (int i = CountDicoverFromHand; i > 0; i--)
+            //for (int i = CountDicoverFromHand; i > 0; i--)
+            //{
+            if (_viewRoot.TryView(out IReadOnlyList<Card> cards, CountDiscoverFromHand, viewType))
             {
-                if (_viewRoot.TryView(out IReadOnlyList<Card> cards, i, viewType))
-                {
-                    DiscoverResult discoverResult = new DiscoverResult();
-                    _activePerson.DiscoverCards(cards, "Выберите новую карту в замок", discoverResult);
+                DiscoverResult discoverResult = new DiscoverResult();
+                _activePerson.DiscoverCards(cards, "Выберите новую карту в замок", discoverResult);
 
-                    yield return new WaitUntil(() => discoverResult.IsComplete);
+                yield return new WaitUntil(() => discoverResult.IsComplete);
 
-                    _transitManager.TryExchangeTower((Card)discoverResult.Result, _activePerson, TowerTransitType.Hand);
-                    yield break;
-                }
+                _transitManager.TryExchangeTower((Card)discoverResult.Result, _activePerson, TowerTransitType.Hand);
+                yield break;
             }
+            //}
 
             yield break;
         }

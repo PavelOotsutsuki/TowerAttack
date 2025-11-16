@@ -14,7 +14,7 @@ using Cards.Views;
 
 namespace GameFields.Decks
 {
-    public class Deck : MonoBehaviour, IAutomaticFillComponents, IDeckTake, IDeckView, ITransitable, ICardsCounter//, IDeckSeatable
+    public class Deck : MonoBehaviour, IAutomaticFillComponents, IDeckTake, IDeckView, IIndexTransitable, ICardsCounter//, IDeckSeatable
     {
         [SerializeField] private DeckCardContainer _cardContainer;
         [SerializeField] private DeckCardBackViewer _cardBackViewer;
@@ -67,33 +67,35 @@ namespace GameFields.Decks
             return _seats.Select(c => c.Card.ViewData.Number).Contains(number);
         }
 
+        public void SeatCard(Card card, int index)
+        {
+            Seat deckSeat = PreSeatCard(card);
+
+            _seats.Insert(index, deckSeat);
+            OnSeatsCountChange?.Invoke();
+        }
+
         public void SeatCard(Card card)
         {
-            //SeatCardWithoutShuffle(card);
-
-            Seat deckSeat = GetSeat();
-            deckSeat.SetCard(card, SideType.Back, 0.5f);
+            Seat deckSeat = PreSeatCard(card);
 
             _seats.Add(deckSeat);
-
-            //int position = Random.Range(0, _seats.Count);
-            //_seats.Insert(position, card);
-
             OnSeatsCountChange?.Invoke();
+            ShuffleCards();
+        }
 
-            //BindCard(card.ReadOnlyRectTransform, card.CardMovement);
-            //Debug.Log("_seats.Count % _countCardsInGroup:" + _seats.Count % _countCardsInGroup);
-            //Debug.Log("_seats.Count:" + _seats.Count);
-            //Debug.Log("_countCardsInGroup:" + _countCardsInGroup);
+        private Seat PreSeatCard(Card card)
+        {
+            Seat deckSeat = GetSeat();
+            deckSeat.SetCard(card, SideType.Back, 0.5f);
 
             if (AllCards.Count() % _countCardsInGroup == 1)
             {
                 _cardBackViewer.Add();
             }
 
-            ShuffleCards();
+            return deckSeat;
         }
-
 
         //public void SeatCardWithoutShuffle(Card card)
         //{
@@ -108,6 +110,16 @@ namespace GameFields.Decks
         public Card TakeTopCard()
         {
             return TakeCardByIndex(_seats.Count - 1);
+        }
+
+        public int IndexOf(Card card)
+        {
+            Seat seat = _seats.Where(s => s.Card == card).FirstOrDefault();
+
+            if (seat == null)
+                throw new Exception("Заебал. Как ты вообще сюда попал. Херли ты берешь карту из деки если её тут нет");
+
+            return _seats.IndexOf(seat);
         }
 
         public bool TryTakeAwayCard(Card card)

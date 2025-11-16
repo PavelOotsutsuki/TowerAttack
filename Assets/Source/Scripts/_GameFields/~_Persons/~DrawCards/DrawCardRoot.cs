@@ -35,8 +35,10 @@ namespace GameFields.Persons.DrawCards
         //    TakeCards(countCards, callback);
         //}
 
-        public Card DrawCard(Card card, Action callback = null)
+        public int DrawCard(Card card, Action callback = null)
         {
+            int index = _deck.IndexOf(card);
+
             if (_deck.TryTakeAwayCard(card) == false)
             {
                 throw new Exception("Пытаемся взять карты которой нет");
@@ -46,7 +48,7 @@ namespace GameFields.Persons.DrawCards
 
             DrawingCards(new List<Card>() { card }, callback).ToUniTask();
 
-            return card;
+            return index;
         }
 
         private List<Card> TakeCards(int countCards, Action callback = null)

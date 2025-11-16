@@ -21,6 +21,7 @@ namespace GameFields.Persons.LookCardMenues
         //[SerializeField] private LookCardMenuSeat[] _seats;
         [SerializeField] private LookCardMenuSeatPanelRoot _seatPanelRoot;
         [SerializeField] private LookCardMenuPanel _lookCardMenuPanel;
+        [SerializeField] private LookCardMenuLabel _lookCardMenuLabel;
         [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private LookCardMenuButton _lookCardMenuButton;
         //[SerializeField] private float _offset = 400f;
@@ -50,6 +51,7 @@ namespace GameFields.Persons.LookCardMenues
 
             _seatPanelRoot.Init();
             _lookCardMenuPanel.Init();
+            _lookCardMenuLabel.Init();
             _lookCardMenuButton.Init(this, inputRoot);
 
             gameObject.SetActive(false);
@@ -76,6 +78,7 @@ namespace GameFields.Persons.LookCardMenues
             //}
             
             _lookCardMenuPanel.Show();
+            _lookCardMenuLabel.Show(data.LabelActivateData);
 
             StartCoroutine(ActivatingButton());
         }
@@ -91,6 +94,7 @@ namespace GameFields.Persons.LookCardMenues
 
             _seatPanelRoot.Deactivate();
             _lookCardMenuPanel.Hide();
+            _lookCardMenuLabel.Hide();
             _lookCardMenuButton.Deactivate();
 
             Deactivating().ToUniTask();
@@ -120,7 +124,8 @@ namespace GameFields.Persons.LookCardMenues
 
         private IEnumerator Deactivating()
         {
-            yield return new WaitUntil(() => _lookCardMenuPanel.IsComplete && _lookCardMenuButton.IsComplete && _seatPanelRoot.IsComplete);
+            yield return new WaitUntil(() => _lookCardMenuPanel.IsComplete && _lookCardMenuButton.IsComplete &&
+            _seatPanelRoot.IsComplete && _lookCardMenuLabel.IsComplete);
 
             //_handBlockable.Unblock();
             _isComplete = true;
@@ -140,6 +145,7 @@ namespace GameFields.Persons.LookCardMenues
             {
                 DefineLookCardMenuSeatPanelRoot(),
                 DefineLookCardMenuPanel(),
+                DefineLookCardMenuLabel(),
                 DefineLookCardMenuButton(),
                 DefineCanvasGroup()
             };
@@ -157,6 +163,12 @@ namespace GameFields.Persons.LookCardMenues
         private ComponentAttachInfo DefineLookCardMenuPanel()
         {
             return AutomaticFillComponents.DefineComponent(this, ref _lookCardMenuPanel, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineLookCardMenuLabel))]
+        private ComponentAttachInfo DefineLookCardMenuLabel()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _lookCardMenuLabel, ComponentLocationTypes.InChildren);
         }
 
         [ContextMenu(nameof(DefineLookCardMenuButton))]
