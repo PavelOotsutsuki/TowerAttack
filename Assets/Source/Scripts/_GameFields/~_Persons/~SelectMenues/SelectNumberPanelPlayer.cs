@@ -40,14 +40,16 @@ namespace GameFields.Persons.SelectMenues
         public bool IsCompleteNumbersHide => _isCompleteNumbersHide;
 
         public void Init(IWorkable selectButton, ICardNumberKeeper cardNumberKeeper, int[] сardNumbers,
-            SelectNumbersList selectedNumbers, ConfirmableNumbers confirmableNumbers)
+            SelectNumbersList selectedNumbers, ConfirmableNumbers confirmableNumbers,
+            LastSelectedNumbersWatcher lastSelectedNumbersWatcher)
         {
             if (_selectNumbers.Length != сardNumbers.Length)
                 throw new Exception("Несовпадение заданного кол-ва номеров и кол-ва объектов AttackNumber");
 
             _selectButton = selectButton;
 
-            base.Init(cardNumberKeeper, сardNumbers, selectedNumbers, confirmableNumbers, _selectNumbers);
+            base.Init(cardNumberKeeper, сardNumbers, selectedNumbers, confirmableNumbers, _selectNumbers,
+                lastSelectedNumbersWatcher);
         }
 
         public void ActivateNumbers(bool isConfirmableActivate)
@@ -117,6 +119,8 @@ namespace GameFields.Persons.SelectMenues
                     CurrentSelectedNumbers.Add(selectNumber);
                 }
             }
+
+            LastSelectedNumbersWatcher.SetNumbers(CurrentSelectedNumbers.Select(sn => sn.Number));
             //Debug.Log("Длина: " + _attackNumbers.Length);
             //for (int i = 0; i < _attackNumbers.Length; i++)
             //{

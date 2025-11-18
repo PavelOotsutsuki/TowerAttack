@@ -1,9 +1,7 @@
 using System.Collections;
-using Cards;
 using GameFields.Persons;
 using GameFields.Persons.SelectMenues;
 using UnityEngine;
-using Zenject;
 
 namespace GameFields.Effects
 {
@@ -11,8 +9,6 @@ namespace GameFields.Effects
     {
         private const int CountNumbers = 3;
         private readonly Person _activePerson;
-
-        private bool _endPlaying;
 
         public BlindOldManEffect(Person activePerson, EffectData data) : base(data)
         {
@@ -30,15 +26,10 @@ namespace GameFields.Effects
 
         protected override IEnumerator OnPlaying()
         {
-            _endPlaying = false;
+            bool endPlaying = false;
 
-            _activePerson.ChoiceActivate(CountNumbers, EndPlayingCallback, RestrictionType.Odd);
-            yield return new WaitUntil(() => _endPlaying);
-        }
-
-        private void EndPlayingCallback()
-        {
-            _endPlaying = true;
+            _activePerson.ChoiceActivate(CountNumbers, () => endPlaying = true, RestrictionType.Odd);
+            yield return new WaitUntil(() => endPlaying);
         }
     }
 }

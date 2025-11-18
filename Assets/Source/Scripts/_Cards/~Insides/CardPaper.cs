@@ -56,6 +56,11 @@ namespace Cards.Insides
             SetActiveInteraction(DefaultInteractionActive);
         }
 
+        public void ResetDrag()
+        {
+            _cardDragAndDrop.ResetDrag();
+        }
+
         public void EndDrag()
         {
             _cardDragAndDrop.BlockDrag();

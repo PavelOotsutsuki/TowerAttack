@@ -1,6 +1,7 @@
 using System.Collections;
 using Cards;
 using GameFields.Persons;
+using UnityEngine;
 
 namespace GameFields.Effects
 {
@@ -20,6 +21,8 @@ namespace GameFields.Effects
         public override void End()
         {
             base.End();
+
+            Debug.Log("Эффект Армии чертей закончен");
         }
 
         protected override IEnumerator OnPlaying()

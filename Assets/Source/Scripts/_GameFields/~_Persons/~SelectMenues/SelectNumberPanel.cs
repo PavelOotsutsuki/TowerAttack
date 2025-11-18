@@ -28,6 +28,7 @@ namespace GameFields.Persons.SelectMenues
         protected ConfirmableNumbers ConfirmableNumbers;
         protected int[] CardNumbers;
         protected List<ISelectNumber> CurrentAvailableNumbers;
+        protected LastSelectedNumbersWatcher LastSelectedNumbersWatcher;
 
         protected bool IsConsecutiveMode;
 
@@ -40,11 +41,13 @@ namespace GameFields.Persons.SelectMenues
         public bool? IsActive { get; private set; } = null;
 
         protected void Init(ICardNumberKeeper cardNumberKeeper, int[] сardNumbers, SelectNumbersList selectedNumbers,
-            ConfirmableNumbers confirmableNumbers, ISelectNumber[] selectNumbers)
+            ConfirmableNumbers confirmableNumbers, ISelectNumber[] selectNumbers,
+            LastSelectedNumbersWatcher lastSelectedNumbersWatcher)
         {
             CardNumberKeeper = cardNumberKeeper;
             CardNumbers = сardNumbers;
             ConfirmableNumbers = confirmableNumbers;
+            LastSelectedNumbersWatcher = lastSelectedNumbersWatcher;
 
             ClearCurrentVariables();
             //SelectResult = null;

@@ -22,6 +22,8 @@ namespace GameFields.Decks
             _startPositionY = startPositionY;
         }
 
+        public int Count => _cardBacks.Count;
+
         public void Add()
         {
             int factor = _cardBacks.Count;

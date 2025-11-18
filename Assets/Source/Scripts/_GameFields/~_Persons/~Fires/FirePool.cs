@@ -35,6 +35,7 @@ namespace GameFields.Persons.Fires
         public void SeatCard(Card card)
         {
             card.gameObject.SetActive(false);
+            card.ResetDrag();
 
             _fireList.Add(card);
 
@@ -55,6 +56,7 @@ namespace GameFields.Persons.Fires
 
         private void Seat(Card card)
         {
+            card.SetActiveInteraction(false);
             card.RORTransform.SetParent(_parent);
             card.CardMovement.MoveLocalInstantly(FindCardSeatPosition(), FindCardSeatRotation());
         }

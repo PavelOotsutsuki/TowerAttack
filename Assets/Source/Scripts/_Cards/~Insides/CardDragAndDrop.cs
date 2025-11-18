@@ -28,16 +28,24 @@ namespace Cards.Insides
             _isNotDraggable = false;
         }
 
+        public void ResetDrag()
+        {
+            IsDragable = false;
+            _isForciblyDrag = false;
+        }
+
         public void BlockDrag()
         {
+            //Debug.Log(_cardTransform.gameObject.name + ": BlockDrag");
+
             if (_currentEventData is null)
                 return;
 
-            if (_currentEventData != null)
-            {
-                Debug.Log("Reset!");
-                _currentEventData.Reset();
-            }
+            //if (_currentEventData != null)
+            //{
+            //    Debug.Log("Not Reset: BlockDrag!");
+            //    //_currentEventData.Reset();
+            //}
 
             _isForciblyDrag = true;
 
@@ -46,15 +54,17 @@ namespace Cards.Insides
 
         public void OnBeginDrag(PointerEventData eventData)
         {
+            //Debug.Log(_cardTransform.gameObject.name + ": OnBeginDrag");
+
             if (_cardDragAndDropActions.CanDrag() == false)
             {
                 _isNotDraggable = true;
 
-                if (_currentEventData != null)
-                {
-                    Debug.Log("Reset!");
-                    _currentEventData.Reset();
-                }
+                //if (_currentEventData != null)
+                //{
+                //    Debug.Log("Not Reset: OnBeginDrag!");
+                //    //_currentEventData.Reset();
+                //}
                 return;
             }
 
@@ -73,6 +83,7 @@ namespace Cards.Insides
 
         public void OnDrag(PointerEventData eventData)
         {
+            //Debug.Log(_cardTransform.gameObject.name + ": OnDrag");
             _currentEventData = eventData;
 
             if (IsDragable == false)
@@ -85,6 +96,7 @@ namespace Cards.Insides
 
         public void OnEndDrag(PointerEventData eventData)
         {
+            //Debug.Log(_cardTransform.gameObject.name + ": OnEndDrag");
             if (IsDragable == false)
                 return;
 
@@ -96,8 +108,7 @@ namespace Cards.Insides
 
             if (_isForciblyDrag)
             {
-                IsDragable = false;
-                _isForciblyDrag = false;
+                ResetDrag();
 
                 return;
             }
@@ -144,6 +155,8 @@ namespace Cards.Insides
 
         private void StartEndDragActions()
         {
+            //Debug.Log(_cardTransform.gameObject.name + ": StartEndDragActions");
+
             if (_viewCardAfterDropInWork != null)
             {
                 StopCoroutine(_viewCardAfterDropInWork);

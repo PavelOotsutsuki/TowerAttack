@@ -89,12 +89,28 @@ namespace GameFields.Decks
             Seat deckSeat = GetSeat();
             deckSeat.SetCard(card, SideType.Back, 0.5f);
 
-            if (AllCards.Count() % _countCardsInGroup == 1)
+            //if (AllCards.Count() % _countCardsInGroup == 1)
+            //{
+            //    _cardBackViewer.Add();
+            //}
+            CheckBackViewer();
+
+            return deckSeat;
+        }
+
+        private void CheckBackViewer()
+        {
+            int countNeed = (AllCards.Count() + (_countCardsInGroup - 1)) / _countCardsInGroup;
+
+            while (countNeed > _cardBackViewer.Count)
             {
                 _cardBackViewer.Add();
             }
 
-            return deckSeat;
+            while (countNeed < _cardBackViewer.Count)
+            {
+                _cardBackViewer.Remove();
+            }
         }
 
         //public void SeatCardWithoutShuffle(Card card)
@@ -230,10 +246,12 @@ namespace GameFields.Decks
 
             OnSeatsCountChange?.Invoke();
 
-            if (AllCards.Count() % _countCardsInGroup == 0)
-            {
-                _cardBackViewer.Remove();
-            }
+            //if (AllCards.Count() % _countCardsInGroup == 0)
+            //{
+            //    _cardBackViewer.Remove();
+            //}
+
+            CheckBackViewer();
         }
 
         //private void BindCard(ReadOnlyTransform cardTransform, Movement cardMovement)

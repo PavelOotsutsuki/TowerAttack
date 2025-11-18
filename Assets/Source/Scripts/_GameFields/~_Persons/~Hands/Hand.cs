@@ -1,21 +1,16 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cards;
 using Cards.Views;
-using GameFields.Persons;
 using GameFields.Persons.EffectHandlers.Curses;
 using GameFields.Persons.EffectHandlers.Slimes;
 using GameFields.Seats;
 using Tools.Utils;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Screens;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
-using UnityEngine.UIElements;
 using Zenject;
-using Random = UnityEngine.Random;
 
 namespace GameFields.Persons.Hands
 {
@@ -122,17 +117,23 @@ namespace GameFields.Persons.Hands
 
         void ICardDragAndDropHandHandler.OnCardDrag(Card card)
         {
+            //Debug.Log("OnCardDrag");
+            //if (card.IsFired)
+            //    return;
+
             StartDragCard(card);
         }
 
         void ICardDragAndDropHandHandler.OnCardDrop()
         {
+            //Debug.Log("OnCardDrop");
             UnblockCards();
             StartEndDragCard(false);
         }
 
         void ICardDragAndDropHandHandler.OnCardPlay()
         {
+            //Debug.Log("OnCardPlay");
             //UnblockCards(); // Было раньше. Убрал тк, а нахер заблочивать???
             UnbindCurse(_dragCardHandSeat.Card);
             UnbindLuckyHorseshoe(_dragCardHandSeat.Card);
@@ -149,6 +150,7 @@ namespace GameFields.Persons.Hands
 
         void ICardDragAndDropHandHandler.OnCardReturnInHand(Card card)
         {
+            //Debug.Log("OnCardReturnInHand");
             card.SetActiveInteraction(_isActiveInteraction);
         }
 
@@ -207,9 +209,11 @@ namespace GameFields.Persons.Hands
 
             if (_dragCardHandSeat == findedHandSeat)
             {
+                //Debug.Log("TryTakeAwayCard: _dragCardHandSeat == findedHandSeat");
                 card.EndDrag();
                 card.SetActiveInteraction(false);
                 ResetDragOptions();
+                //StartEndDragCard(true); 
             }
 
             //if (_handSeats.Contains(findedHandSeat))
@@ -227,14 +231,27 @@ namespace GameFields.Persons.Hands
             UnbindCurse(card);
             UnbindLuckyHorseshoe(card);
 
-            _handSeats.Remove(findedHandSeat);
-            findedHandSeat.Reset();
+            RemoveSeat(findedHandSeat);
 
             //_handSeatPool.ReturnInPool(findedHandSeat);
 
             SortHandSeats();
 
             return isFind;
+        }
+
+        private void RemoveSeat(Seat seat)
+        {
+            int index = _handSeats.IndexOf(seat);
+
+            _handSeats.Remove(seat);
+            seat.Reset();
+
+            if (_handSeatIndex != -1)
+            {
+                if (index < _handSeatIndex)
+                    _handSeatIndex--;
+            }
         }
 
         //private Card UnbindLastCard()
@@ -272,12 +289,14 @@ namespace GameFields.Persons.Hands
 
         public void ForciblyBlock()
         {
+            //Debug.Log("ForciblyBlock");
             StartEndDragCard(true);
             BlockCards();
         }
 
         public void Unblock()
         {
+            //Debug.Log("Unblock");
             UnblockCards();
         }
 
@@ -389,7 +408,7 @@ namespace GameFields.Persons.Hands
         private void UnbindDragableCard()
         {
             //_handSeatPool.ReturnInPool(_dragCardHandSeat);
-
+            //Debug.Log("UnbindDragableCard");
             SortHandSeats();
             ResetDragOptions();
         }
@@ -403,6 +422,7 @@ namespace GameFields.Persons.Hands
 
         private void StartEndDragCard(bool isForced)
         {
+            //Debug.Log($"StartEndDragCard: _handSeatIndex == EmptyIndex: {_handSeatIndex == EmptyIndex}");
             if (_handSeatIndex == EmptyIndex)
                 return;
             
@@ -416,7 +436,11 @@ namespace GameFields.Persons.Hands
                 dragCard.SetActiveInteraction(false);
             }
 
-            dragCard.RORTransform.SetParent(_dragCardParent); // IPS
+            //if (dragCard.IsFired == false)
+            //{
+                dragCard.RORTransform.SetParent(_dragCardParent); // IPS
+            //}
+
             _handSeats.Insert(_handSeatIndex, _dragCardHandSeat);
 
             SortHandSeats();
@@ -425,8 +449,10 @@ namespace GameFields.Persons.Hands
 
         private void StartDragCard(Card card)
         {
+            //Debug.Log($"TryFindHandSeat: ");
             if (TryFindHandSeat(out Seat handSeat, card))
             {
+                //Debug.Log("TRUE");
                 _dragCardParent = card.transform.parent; // IPS
                 card.RORTransform.SetParent(_containerForDrag); // IPS
                 _dragCardHandSeat = handSeat;
@@ -447,6 +473,7 @@ namespace GameFields.Persons.Hands
             //{
             //    isActiveInteraction = false;
             //}
+            //Debug.Log("SetCardsInteraction");
 
             foreach (Seat seat in _handSeats)
             {
@@ -465,6 +492,7 @@ namespace GameFields.Persons.Hands
 
         private void ResetDragOptions()
         {
+            //Debug.Log("ResetDragOptions");
             _handSeatIndex = EmptyIndex;
             _dragCardHandSeat = null;
         }

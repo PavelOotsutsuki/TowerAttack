@@ -85,7 +85,7 @@ namespace GameFields
                     SetEnemyAIActionsStates();
                     break;
                 default:
-                    throw new System.Exception("Неизветное состояние PersonStep" + personStep);
+                    throw new Exception("Неизвестное состояние PersonStep" + personStep);
             }
         }
 

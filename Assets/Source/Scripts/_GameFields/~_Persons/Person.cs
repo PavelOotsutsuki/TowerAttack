@@ -35,6 +35,8 @@ namespace GameFields.Persons
         private readonly IBoomTower _boomTower;
         private readonly ICardNumberKeeper _cardNumberKeeper;
         private readonly SkipTurnView _skipTurnView;
+        private readonly INumbersStateWatcher _numbersStateWatcher;
+        private readonly LastSelectedNumbersWatcher _lastSelectedNumbersWatcher;
         //private readonly PersonStep _lastStep;
 
         //protected readonly PersonStep TurnProcess;
@@ -51,7 +53,8 @@ namespace GameFields.Persons
             StartTurnDraw startTurnDraw, Discover discover, SignalBus bus, /*PersonStep lastStep,*/
             Hand hand, ISelectMenuActivator attackMenu, InteractionActivator gameFieldObjectsActivator,
             ISelectMenuActivator choiceMenu, ISelectMenuActivator choiceMenuImitation, PersonEffectsHandler personEffectsHandler,
-            ILookCardMenu lookCardMenu, SkipTurnView skipTurnView)
+            ILookCardMenu lookCardMenu, SkipTurnView skipTurnView, INumbersStateWatcher numbersStateWatcher,
+            LastSelectedNumbersWatcher lastSelectedNumbersWatcher)
         {
             _hand = hand;
             Bus = bus;
@@ -69,6 +72,8 @@ namespace GameFields.Persons
             _lookCardMenu = lookCardMenu;
             //_loseActions = loseActions;
             _skipTurnView = skipTurnView;
+            _numbersStateWatcher = numbersStateWatcher;
+            _lastSelectedNumbersWatcher = lastSelectedNumbersWatcher;
             //_lastStep = lastStep;
             InteractionActivator = gameFieldObjectsActivator;
 
@@ -91,6 +96,10 @@ namespace GameFields.Persons
         public bool IsDoubleEffect => _personEffectsHandler.DoubleEffectHandler.IsActive;
         public bool TryUseScarecrowEffect => _personEffectsHandler.ScarecrowEffectHandler.TryUse();
         public bool IsWiseEffectActive => _personEffectsHandler.WiseMonkEffectHandler.IsActive;
+
+        public IEnumerable<int> FreeNumbers => _numbersStateWatcher.FreeNumbers;
+        public IEnumerable<int> CheckedNumbers => _numbersStateWatcher.CheckedNumbers;
+        public IEnumerable<int> LastSelectedNumbers => _lastSelectedNumbersWatcher.LastSelectedNumbers;
 
         public void StartStep()
         {

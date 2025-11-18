@@ -23,10 +23,12 @@ namespace GameFields.Persons.SelectMenues
         private InputRoot _inputRoot;
 
         public void Init(ICardNumberKeeper cardNumberKeeper, ISelectResultHandler attackResultHandler, int[] cardNumbers,
-            SelectNumbersList selectedNumbers, ConfirmableNumbers confirmableNumbers, InputRoot inputRoot)
+            SelectNumbersList selectedNumbers, ConfirmableNumbers confirmableNumbers, InputRoot inputRoot,
+            LastSelectedNumbersWatcher lastSelectedNumbersWatcher)
         {
             _selectButton.Init(this, inputRoot);
-            _selectNumberPanelPlayer.Init(_selectButton, cardNumberKeeper, cardNumbers, selectedNumbers, confirmableNumbers);
+            _selectNumberPanelPlayer.Init(_selectButton, cardNumberKeeper, cardNumbers, selectedNumbers, confirmableNumbers,
+                lastSelectedNumbersWatcher);
             _selectModeButton.Init(_selectNumberPanelPlayer);
 
             _inputRoot = inputRoot;

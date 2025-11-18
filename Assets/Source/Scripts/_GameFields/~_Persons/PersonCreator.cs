@@ -68,6 +68,7 @@ namespace GameFields.Persons
         private SelectNumbersList _choicedNumbersPlayer = new SelectNumbersList();
         private SelectNumbersList _cursedNumbersPlayer = new SelectNumbersList();
         private ConfirmableNumbers _confirmableNumbersPlayer;
+        private LastSelectedNumbersWatcher _lastSelectedNumbersWatcherPlayer = new LastSelectedNumbersWatcher();
 
         private BrothersEffectHandler _playerBrothersEffectHandler;
 
@@ -110,6 +111,7 @@ namespace GameFields.Persons
         private SelectNumbersList _choicedNumbersEnemy = new SelectNumbersList();
         private SelectNumbersList _cursedNumbersEnemyAI = new SelectNumbersList();
         private ConfirmableNumbers _confirmableNumbersEnemyAI;
+        private LastSelectedNumbersWatcher _lastSelectedNumbersWatcherEnemyAI = new LastSelectedNumbersWatcher();
 
         private BrothersEffectHandler _enemyBrothersEffectHandler;
 
@@ -288,7 +290,7 @@ namespace GameFields.Persons
             return new Player(_interactionActivator, _playerHand, _playerPlayingZone, _playerTower, _playerDiscover,
                 drawCardRoot, startTurnDraw, turnProcessing, _bus, startPlayerTurnView, _playerAttackMenu, endTurnProcessing,
                 _playerChoiceMenu, _playerChoiceMenuImitation, _playerPersonEffectsHandler, _informationLabel, _playerLookCardMenu,
-                skipTurnView);
+                skipTurnView, _confirmableNumbersPlayer, _lastSelectedNumbersWatcherPlayer);
         }
 
         public EnemyAI CreateEnemyAI()
@@ -341,7 +343,7 @@ namespace GameFields.Persons
             return new EnemyAI(_interactionActivator, enemyDragAndDropImitation, _enemyPlayingZone,
                 _enemyTower, drawCardRoot, _enemyDiscoverImitation, startTurnDraw, _bus, _enemyHand, _enemyAttackMenu,
                 _enemyChoiceMenu, _enemyChoiceMenuImitation, _enemyPersonEffectsHandler, lookCardMenuEnemyAI,
-                onBeforeEndTurnProcessing, skipTurnView);
+                onBeforeEndTurnProcessing, skipTurnView, _confirmableNumbersEnemyAI, _lastSelectedNumbersWatcherEnemyAI);
         }
 
         public CardLocationViewRoot CreateCardLocationViewRoot()
@@ -395,10 +397,11 @@ namespace GameFields.Persons
             ChoiceResultHandlerPlayer choiceResultHandlerPlayer = new ChoiceResultHandlerPlayer(_informationLabel, _informationLabelDataPlayerChoice);
 
             _playerAttackMenu.Init(_enemyTower, attackResultHandlerPlayer, _cardNumbers, _attackedNumbersPlayer,
-                _confirmableNumbersPlayer, _inputRoot);
+                _confirmableNumbersPlayer, _inputRoot, _lastSelectedNumbersWatcherPlayer);
             _playerChoiceMenu.Init(_enemyTower, choiceResultHandlerPlayer, _cardNumbers, _choicedNumbersPlayer,
-                _confirmableNumbersPlayer, _inputRoot);
-            _playerChoiceMenuImitation.Init(_enemyTower, choiceResultHandlerPlayer, _cardNumbers, _choicedNumbersPlayer, _confirmableNumbersPlayer);
+                _confirmableNumbersPlayer, _inputRoot, _lastSelectedNumbersWatcherPlayer);
+            _playerChoiceMenuImitation.Init(_enemyTower, choiceResultHandlerPlayer, _cardNumbers, _choicedNumbersPlayer,
+                _confirmableNumbersPlayer, _lastSelectedNumbersWatcherPlayer);
 
             _playerCardAttackZone.Init(_playerAttackMenu, _enemyTower, _bus);
             //_playerCardAttackZone.Init(_playerChoiceMenu, _enemyTower);
@@ -425,9 +428,12 @@ namespace GameFields.Persons
                 _enemyCardAttackZone, _attackResultHandlerEnemyAIData, _informationLabel, _informationLabelDataEnemyAIAttack);
             ChoiceResultHandlerEnemyAI choiceResultHandlerEnemyAI = new ChoiceResultHandlerEnemyAI(_informationLabel, _informationLabelDataEnemyAIChoice);
 
-            _enemyAttackMenu.Init(_playerTower, attackResultHandlerEnemyAI, _cardNumbers, _attackedNumbersEnemy, _confirmableNumbersEnemyAI);
-            _enemyChoiceMenu.Init(_playerTower, choiceResultHandlerEnemyAI, _cardNumbers, _choicedNumbersEnemy, _confirmableNumbersEnemyAI);
-            _enemyChoiceMenuImitation.Init(_playerTower, choiceResultHandlerEnemyAI, _cardNumbers, _choicedNumbersEnemy, _confirmableNumbersEnemyAI);
+            _enemyAttackMenu.Init(_playerTower, attackResultHandlerEnemyAI, _cardNumbers, _attackedNumbersEnemy,
+                _confirmableNumbersEnemyAI, _lastSelectedNumbersWatcherEnemyAI);
+            _enemyChoiceMenu.Init(_playerTower, choiceResultHandlerEnemyAI, _cardNumbers, _choicedNumbersEnemy,
+                _confirmableNumbersEnemyAI, _lastSelectedNumbersWatcherEnemyAI);
+            _enemyChoiceMenuImitation.Init(_playerTower, choiceResultHandlerEnemyAI, _cardNumbers, _choicedNumbersEnemy,
+                _confirmableNumbersEnemyAI, _lastSelectedNumbersWatcherEnemyAI);
 
             _enemyCardAttackZone.Init(_enemyAttackMenu, _playerTower, _bus);
         }

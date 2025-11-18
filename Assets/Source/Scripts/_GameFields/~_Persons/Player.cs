@@ -37,10 +37,11 @@ namespace GameFields.Persons
             DiscoverPlayer discover, DrawCardRoot drawCardRoot, StartTurnDraw startTurnDraw, TurnProcessing turnProcessing,
             SignalBus bus, PersonStep startPlayerTurnView, ISelectMenuActivator attackMenu, EndTurnProcessing endTurnProcessing,
             ISelectMenuActivator choiceMenu, ISelectMenuActivator choiceMenuImitation, PersonEffectsHandler personEffectsHandler,
-            InformationLabel informationLabel, LookCardMenuPlayer lookCardMenuPlayer, SkipTurnView skipTurnView) :
+            InformationLabel informationLabel, LookCardMenuPlayer lookCardMenuPlayer, SkipTurnView skipTurnView,
+            INumbersStateWatcher numbersStateWatcher, LastSelectedNumbersWatcher lastSelectedNumbersWatcher) :
             base(cardPlayingZone, drawCardRoot, tower, startTurnDraw, discover, bus, hand,
                 attackMenu, interactionActivator, choiceMenu, choiceMenuImitation, personEffectsHandler,
-                lookCardMenuPlayer, skipTurnView)
+                lookCardMenuPlayer, skipTurnView, numbersStateWatcher, lastSelectedNumbersWatcher)
         {
             _startPlayerTurnView = startPlayerTurnView;
             _endTurnProcessing = endTurnProcessing;

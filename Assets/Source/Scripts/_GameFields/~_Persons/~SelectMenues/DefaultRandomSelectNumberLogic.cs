@@ -35,6 +35,9 @@ namespace GameFields.Persons.SelectMenues
                 selectedNumbers.Add(selectedNumber);
             }
 
+            //selectedNumbers.Add(_currentAvailableNumbers.First(n => n.Number == 28));
+            //selectedNumbers.Add(_currentAvailableNumbers.First(n => n.Number == 40));
+            //selectedNumbers.Add(_currentAvailableNumbers.First(n => n.Number == 50));
             return selectedNumbers;
         }
 

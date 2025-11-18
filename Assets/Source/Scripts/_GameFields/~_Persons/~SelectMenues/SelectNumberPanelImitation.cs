@@ -30,11 +30,12 @@ namespace GameFields.Persons.SelectMenues
         //}
 
         public void Init(ICardNumberKeeper cardNumberKeeper, int[] сardNumbers, SelectNumbersList selectedNumbers,
-            ConfirmableNumbers confirmableNumbers)
+            ConfirmableNumbers confirmableNumbers, LastSelectedNumbersWatcher lastSelectedNumbersWatcher)
         {
             _selectNumbers = new SelectNumberImitation[сardNumbers.Length];
 
-            base.Init(cardNumberKeeper, сardNumbers, selectedNumbers, confirmableNumbers, _selectNumbers);
+            base.Init(cardNumberKeeper, сardNumbers, selectedNumbers, confirmableNumbers, _selectNumbers,
+                lastSelectedNumbersWatcher);
         }
 
         protected override void InitNumbers()
@@ -82,6 +83,8 @@ namespace GameFields.Persons.SelectMenues
             //        restrictionNumbers.Add(selectNumber);
             //}
 
+            List<int> lastSelectedNumbers = new List<int>(); 
+
             string labelText = "";
 
             for (int i = 0; i < selectedNumbers.Count; i++)
@@ -90,7 +93,10 @@ namespace GameFields.Persons.SelectMenues
                     labelText += ", ";
 
                 labelText += selectedNumbers[i].Number.ToString();
+                lastSelectedNumbers.Add(selectedNumbers[i].Number);
             }
+
+            LastSelectedNumbersWatcher.SetNumbers(lastSelectedNumbers);
 
             //LabelActivateData informationLableData = new LabelActivateData(labelText);
             //_informationLabel.Activate(informationLableData);

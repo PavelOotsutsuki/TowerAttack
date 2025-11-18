@@ -13,8 +13,6 @@ namespace GameFields.Effects
         private readonly Person _activePerson;
         private readonly CardLocationViewRoot _viewRoot;
 
-        private bool _endPlayingAttack;
-
         public CowsHerdEffect(Person activePerson, CardLocationViewRoot viewRoot, EffectData data) : base(data)
         {
             _activePerson = activePerson;
@@ -32,7 +30,7 @@ namespace GameFields.Effects
 
         protected override IEnumerator OnPlaying()
         {
-            _endPlayingAttack = false;
+            bool endPlayingAttack = false;
 
             int countAttack = DefaultValueAttack;
             int countCardsInTable = _viewRoot.GetAllCards(ViewType.TableAI).Count() + _viewRoot.GetAllCards(ViewType.TablePlayer).Count();
@@ -40,13 +38,8 @@ namespace GameFields.Effects
             if (countCardsInTable > 0)
                 countAttack += BonusByEffect;
 
-            _activePerson.AttackActivate(countAttack, EndPlayingCallback);
-            yield return new WaitUntil(() => _endPlayingAttack);
-        }
-
-        private void EndPlayingCallback()
-        {
-            _endPlayingAttack = true;
+            _activePerson.AttackActivate(countAttack, () => endPlayingAttack = true);
+            yield return new WaitUntil(() => endPlayingAttack);
         }
     }
 }

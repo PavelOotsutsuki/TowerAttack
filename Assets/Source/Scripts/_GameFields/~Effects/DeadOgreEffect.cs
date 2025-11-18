@@ -1,5 +1,6 @@
 using System.Collections;
 using GameFields.Persons;
+using UnityEngine;
 
 namespace GameFields.Effects
 {
@@ -19,6 +20,8 @@ namespace GameFields.Effects
         public override void End()
         {
             base.End();
+
+            Debug.Log("Эффект Мертвого огра закончен");
         }
 
         protected override IEnumerator OnPlaying()

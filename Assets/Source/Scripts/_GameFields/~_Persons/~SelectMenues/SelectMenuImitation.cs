@@ -13,9 +13,11 @@ namespace GameFields.Persons.SelectMenues
         [SerializeField] private SelectMenuImitationData _data;
 
         public void Init(ICardNumberKeeper cardNumberKeeper, ISelectResultHandler selectResultHandler, int[] cardNumbers,
-            SelectNumbersList selectedNumbers, ConfirmableNumbers confirmableNumbers)
+            SelectNumbersList selectedNumbers, ConfirmableNumbers confirmableNumbers,
+            LastSelectedNumbersWatcher lastSelectedNumbersWatcher)
         {
-            _selectNumberPanelImitation.Init(cardNumberKeeper, cardNumbers, selectedNumbers, confirmableNumbers);
+            _selectNumberPanelImitation.Init(cardNumberKeeper, cardNumbers, selectedNumbers, confirmableNumbers,
+                lastSelectedNumbersWatcher);
 
             SelectMenuLabelTextLogic selectMenuLabelTextLogic = new EnemySelectMenuLabelTextLogic(_data.SelectMenuLabelText);
 

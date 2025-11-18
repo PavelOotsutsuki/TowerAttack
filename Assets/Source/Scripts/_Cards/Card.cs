@@ -40,6 +40,7 @@ namespace Cards
         public CardCapability CardCapability => _config.CardCapability;
         public bool IsCurse => _cardSpriteModeManager.IsCurse;
         public bool IsLuckyHorseshoe => _config.Effect.Type == EffectType.LuckyHorseshoe;
+        public bool IsFired => _cardPaper.IsFired;
 
         internal void Init(IEffectFactory effectFactory, CardViewService cardViewService,
             ICardDragAndDropHandler cardDragAndDropHandler, CurseAnimator curseAnimator, CardSoundVolume cardSoundVolume,
@@ -75,6 +76,11 @@ namespace Cards
         public bool IsSuccessChoice(int number)
         {
             return _config.CardViewConfig.Number == number;
+        }
+
+        public void ResetDrag()
+        {
+            _cardPaper.ResetDrag();
         }
 
         public void EndDrag()

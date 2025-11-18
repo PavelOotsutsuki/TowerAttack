@@ -1,15 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using GameFields.Persons.SelectMenues.Attacks;
 using GameFields.Persons.SelectMenues;
 using ModestTree;
 using Tools.Settings;
-using UnityEngine;
 
 namespace GameFields.Persons
 {
-    public class ConfirmableNumbers
+    public class ConfirmableNumbers : INumbersStateWatcher
     {
         private readonly SelectNumbersList _attackedNumbers;
         private readonly SelectNumbersList _choicedNumbers;
@@ -28,6 +25,7 @@ namespace GameFields.Persons
         }
 
         public IEnumerable<int> FreeNumbers => _allNumbers.Except(FullList.SelectedNumbersStates.Select(p => p.Key));
+        public IEnumerable<int> CheckedNumbers => FullList.SelectedNumbersStates.Select(p => p.Key);
 
         public SelectNumbersList FullList
         {

@@ -32,10 +32,11 @@ namespace GameFields.Persons
             Tower tower, DrawCardRoot drawCardRoot, DiscoverAI discoverImitation, StartTurnDraw startTurnDraw, SignalBus bus,
             HandAI hand, ISelectMenuActivator attackMenu, ISelectMenuActivator choiceMenu, ISelectMenuActivator choiceMenuImitation,
             PersonEffectsHandler personEffectsHandler, LookCardMenuEnemyAI lookCardMenu,
-            OnBeforeEndTurnProcessing onBeforeEndTurnProcessing, SkipTurnView skipTurnView) :
+            OnBeforeEndTurnProcessing onBeforeEndTurnProcessing, SkipTurnView skipTurnView,
+            INumbersStateWatcher numbersStateWatcher, LastSelectedNumbersWatcher lastSelectedNumbersWatcher) :
             base(cardPlayingZone, drawCardRoot, tower, startTurnDraw,discoverImitation, bus,
                 hand, attackMenu, interactionActivator, choiceMenu, choiceMenuImitation, personEffectsHandler,
-                lookCardMenu, skipTurnView)
+                lookCardMenu, skipTurnView, numbersStateWatcher, lastSelectedNumbersWatcher)
         {
             //_gameFieldObjectsActivator = gameFieldObjectsActivator;
             //Bus.Subscribe<StartEffectSignal>(SetCardEffectProcess);

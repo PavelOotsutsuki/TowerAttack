@@ -64,6 +64,7 @@ namespace GameFields.InputSettings
 
         public void Pause()
         {
+            Debug.Log("Input: Pause");
             _isEnable = false;
         }
 
@@ -163,6 +164,7 @@ namespace GameFields.InputSettings
 
         private void Unpause()
         {
+            Debug.Log("Input: Unpause");
             _isEnable = true;
         }
 
