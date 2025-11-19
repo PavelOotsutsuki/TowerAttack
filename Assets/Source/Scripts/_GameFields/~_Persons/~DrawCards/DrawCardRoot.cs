@@ -78,14 +78,16 @@ namespace GameFields.Persons.DrawCards
         {
             IsDrawing = true;
 
+            IDrawCardAnimation currentDrawCardAnimation = _currentDrawCardAnimation; 
+
             if (cards.Count > 0)
             {
                 for (int i = 0; i < cards.Count; i++)
                 {
                     Card card = cards[i];
-                    _currentDrawCardAnimation.Play(card);
+                    currentDrawCardAnimation.Play(card);
 
-                    yield return new WaitUntil(() => _currentDrawCardAnimation.IsComplete);
+                    yield return new WaitUntil(() => currentDrawCardAnimation.IsComplete);
                 }
             }
             
