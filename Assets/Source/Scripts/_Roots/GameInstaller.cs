@@ -39,7 +39,8 @@ namespace Roots
         [SerializeField] private DiscardPileConfig _discardPileConfig;
         [SerializeField] private SeatPool _seatPool;
         [SerializeField] private DiscardPile _discardPile;
-        [SerializeField] private SkipTurnLabel _skipTurnLabel;
+        [SerializeField] private SkipTurnLabelPlayer _skipTurnLabelPlayer;
+        [SerializeField] private SkipTurnLabelEnemyAI _skipTurnLabelEnemyAI;
 
         [SerializeField] private VariantCardCreator _variantCardCreator;
         [SerializeField] private EffectProcessSounds _effectProcessSounds;
@@ -100,7 +101,8 @@ namespace Roots
             Container.Bind<DiscardPileConfig>().FromInstance(_discardPileConfig).AsSingle();
             Container.Bind<SeatPool>().FromInstance(_seatPool).AsSingle();
             Container.Bind<DiscardPile>().AsSingle().NonLazy();
-            Container.Bind<SkipTurnLabel>().FromInstance(_skipTurnLabel).AsSingle();
+            Container.Bind<SkipTurnLabelPlayer>().FromInstance(_skipTurnLabelPlayer).AsSingle();
+            Container.Bind<SkipTurnLabelEnemyAI>().FromInstance(_skipTurnLabelEnemyAI).AsSingle();
 
             Container.Bind<VariantCardCreator>().FromInstance(_variantCardCreator).AsSingle();
             Container.Bind<EffectProcessSounds>().FromInstance(_effectProcessSounds).AsSingle();

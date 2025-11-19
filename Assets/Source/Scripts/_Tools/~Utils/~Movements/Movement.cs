@@ -58,6 +58,7 @@ namespace Tools.Utils.Movements
             if (Mathf.Approximately(duration, 0f))
             {
                 MoveLocalInstantly(position, rotation, scaleVector);
+                onCompleteCallback.Invoke();
             }
             else
             {
@@ -147,6 +148,25 @@ namespace Tools.Utils.Movements
             }
         }
 
+        public void MoveLocalLinear(Vector3 position, Vector3 rotation, float duration, Vector3 scaleVector, Action onCompleteCallback)
+        {
+            if (Mathf.Approximately(duration, 0f))
+            {
+                MoveLocalInstantly(position, rotation, scaleVector);
+                onCompleteCallback.Invoke();
+            }
+            else
+            {
+                Sequence sequence = DOTween.Sequence()
+                .Join(_transform.DOLocalMove(position, duration).SetEase(Ease.Linear))
+                .Join(_transform.DOLocalRotate(rotation, duration).SetEase(Ease.Linear))
+                .Join(_transform.DOScale(scaleVector, duration).SetEase(Ease.Linear))
+                .OnComplete(() => onCompleteCallback.Invoke());
+
+                _currentSequence = sequence;
+            }
+        }
+
         public void MoveLocalLinear(Vector3 position, Vector3 rotation, float duration)
         {
             if (Mathf.Approximately(duration, 0f))
@@ -201,6 +221,7 @@ namespace Tools.Utils.Movements
             if (Mathf.Approximately(duration, 0f))
             {
                 MoveInstantly(position, rotation);
+                onCompleteCallback.Invoke();
             }
             else
             {

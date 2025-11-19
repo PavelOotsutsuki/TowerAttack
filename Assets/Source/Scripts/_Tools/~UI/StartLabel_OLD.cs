@@ -7,11 +7,10 @@ using UnityEngine;
 
 namespace Tools.UI
 {
-    public class StartLabel : MonoBehaviour, ICompletable, IActivatable, IAutomaticFillComponents
+    public class StartLabel_OLD : MonoBehaviour, ICompletable, IActivatable, IAutomaticFillComponents
     {
         private const float LifeAlpha = 1f;
         private const float EndAlpha = 0f;
-        private const float EndScale = 1f;
 
         [SerializeField] private TMP_Text _label;
         [SerializeField] private float _startFontSize = 0f;
@@ -19,10 +18,6 @@ namespace Tools.UI
         [SerializeField] private float _endFontSize = 150f;
         [SerializeField] private float _middleDuration = 1f;
         [SerializeField] private float _endDuration = 1f;
-
-        private float _startScale;
-        private float _scaleWay;
-        private Transform _targetTransform;
 
         private Color _startColor;
 
@@ -33,23 +28,17 @@ namespace Tools.UI
             IsComplete = false;
             gameObject.SetActive(false);
 
-            _targetTransform = _label.transform;
-
             _startColor = new Color(_label.color.r, _label.color.g, _label.color.b, LifeAlpha);
-            _startScale = _startFontSize / _middleFontSize;
-            _scaleWay = ((_middleFontSize / _endFontSize) - _startScale) / _middleDuration;
 
             _label.color = _startColor;
-            //_label.fontSize = _startFontSize;
-            _label.fontSize = _endFontSize;
+            _label.fontSize = _startFontSize;
         }
 
         public void Activate()
         {
             IsComplete = false;
             _label.color = _startColor;
-            //_label.fontSize = _startFontSize;
-            _label.fontSize = _endFontSize;
+            _label.fontSize = _startFontSize;
             Activating().ToUniTask();
         }
 
@@ -57,23 +46,17 @@ namespace Tools.UI
         {
             gameObject.SetActive(true);
 
-            //float startScale = _startFontSize / _middleFontSize;
-            //float startFontSize = _label.fontSize;
-            //float fontSizeWay = (_middleFontSize - startFontSize) / _middleDuration;
-
-            float startScale = _startScale;
-            float scaleWay = _scaleWay;
+            float startFontSize = _label.fontSize;
+            float fontSizeWay = (_middleFontSize - startFontSize) / _middleDuration;
 
             for (float time = 0f; time < _middleDuration; time += Time.deltaTime)
             {
-                //_label.fontSize = startFontSize + fontSizeWay * time;
-                float scale = startScale + scaleWay * time;
-                _targetTransform.localScale = new Vector3(scale, scale, scale);
+                _label.fontSize = startFontSize + fontSizeWay * time;
                 yield return null;
             }
 
-            startScale = _targetTransform.localScale.x;
-            scaleWay = (EndScale - startScale) / _endDuration;
+            startFontSize = _label.fontSize;
+            fontSizeWay = (_endFontSize - startFontSize) / _endDuration;
 
             float startAlpha = _label.color.a;
             float alphaWay = (EndAlpha - startAlpha) / _endDuration;
@@ -89,9 +72,7 @@ namespace Tools.UI
 
                 color.a = startAlpha + alphaWay * time;
                 _label.color = color;
-                //_label.fontSize = startFontSize + fontSizeWay * time;
-                float scale = startScale + scaleWay * time;
-                _targetTransform.localScale = new Vector3(scale, scale, scale);
+                _label.fontSize = startFontSize + fontSizeWay * time;
                 yield return null;
             }
 
@@ -114,7 +95,7 @@ namespace Tools.UI
         [ContextMenu(nameof(DefineLabel))]
         private ComponentAttachInfo DefineLabel()
         {
-           return AutomaticFillComponents.DefineComponent(this, ref _label, ComponentLocationTypes.InThis);
+            return AutomaticFillComponents.DefineComponent(this, ref _label, ComponentLocationTypes.InThis);
         }
 
         #endregion

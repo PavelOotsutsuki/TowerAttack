@@ -147,7 +147,8 @@ namespace GameFields.Persons
         private EndTurnButton _endTurnButton;
         private SeatPool _seatPool;
         private DiscardManager _discardManager;
-        private SkipTurnLabel _skipTurnLabel;
+        private SkipTurnLabelPlayer _skipTurnLabelPlayer;
+        private SkipTurnLabelEnemyAI _skipTurnLabelEnemyAI;
         private InputRoot _inputRoot;
 
         private InteractionActivator _interactionActivator;
@@ -165,8 +166,8 @@ namespace GameFields.Persons
             CardAttackZonePlayer playerCardAttackZone, CardAttackZoneEnemyAI enemyCardAttackZone, ChoiceMenuPlayer playerChoiceMenu,
             ChoiceMenuEnemyAI enemyChoiceMenu, DiscardPile discardPile, ChoiceMenuImitationPlayer choiceMenuImitationPlayer,
             ChoiceMenuImitationEnemyAI choiceMenuImitationEnemyAI, ForgingZone forgingZone, HandTransferZone handTransferZone,
-            LookCardMenuPlayer lookCardMenuPlayer, StartPlayerTurnLabel startPlayerTurnLabel, SkipTurnLabel skipTurnLabel,
-            FightMenu fightMenu, FightMenuActivateButton fightMenuButton)
+            LookCardMenuPlayer lookCardMenuPlayer, StartPlayerTurnLabel startPlayerTurnLabel, SkipTurnLabelPlayer skipTurnLabelPlayer,
+            SkipTurnLabelEnemyAI skipTurnLabelEnemyAI, FightMenu fightMenu, FightMenuActivateButton fightMenuButton)
         {
             _playerPlayingZone = playerPlayingZone;
             _playerHand = playerHand;
@@ -195,7 +196,8 @@ namespace GameFields.Persons
             _enemyCardAttackZone = enemyCardAttackZone;
 
             _discardPile = discardPile;
-            _skipTurnLabel = skipTurnLabel;
+            _skipTurnLabelPlayer = skipTurnLabelPlayer;
+            _skipTurnLabelEnemyAI = skipTurnLabelEnemyAI;
 
             _fightMenu = fightMenu;
             _fightMenuActivateButton = fightMenuButton;
@@ -214,7 +216,8 @@ namespace GameFields.Persons
             _cardWatcher = cardRoot;
             _seatPool = seatPool;
 
-            _skipTurnLabel.Init();
+            _skipTurnLabelPlayer.Init();
+            _skipTurnLabelEnemyAI.Init();
             _inputRoot = new InputRoot(_endTurnButton, _fightMenu, _fightMenu);
 
             _enemyLoseActions = new LoseActions(_enemyTower, _enemyTower, _playerHand, _bus, _inputRoot, _fightMenu,
@@ -279,7 +282,7 @@ namespace GameFields.Persons
             StartTurnDrawPlayer startTurnDraw = new StartTurnDrawPlayer(_interactionActivator, drawCardRoot, _playerCountStartDrawCards);
 
             StartPlayerTurnView startPlayerTurnView = new StartPlayerTurnView(_interactionActivator, _startPlayerTurnLabel);
-            PlayerSkipTurnView skipTurnView = new PlayerSkipTurnView(_interactionActivator, _skipTurnLabel);
+            PlayerSkipTurnView skipTurnView = new PlayerSkipTurnView(_interactionActivator, _skipTurnLabelPlayer);
             EndTurnProcessing endTurnProcessing = new EndTurnProcessing(_endTurnButton, _interactionActivator, _playerPersonEffectsHandler);
 
             _forgingZone.Init(_discardPile, _bus, drawCardRoot, gnomeEffectHandler);
@@ -326,7 +329,7 @@ namespace GameFields.Persons
                 _discardPile, drawCardRoot, _playerHand);
             StartTurnDrawEnemyAI startTurnDraw = new StartTurnDrawEnemyAI(_interactionActivator, drawCardRoot, _enemyCountStartDrawCards);
             //StartTurnDrawEnemyAI startTurnDraw = new StartTurnDrawEnemyAI(_interactionActivator, drawCardRoot, 0);
-            EnemySkipTurnView skipTurnView = new EnemySkipTurnView(_interactionActivator, _skipTurnLabel);
+            EnemySkipTurnView skipTurnView = new EnemySkipTurnView(_interactionActivator, _skipTurnLabelEnemyAI);
             OnBeforeEndTurnProcessing onBeforeEndTurnProcessing = new OnBeforeEndTurnProcessing(_interactionActivator, _enemyPersonEffectsHandler);
 
             HardAIThinkLogic hardAIThinkLogic = new HardAIThinkLogic(_cardWatcher,_deck, _confirmableNumbersEnemyAI, gnomeEffectHandler,

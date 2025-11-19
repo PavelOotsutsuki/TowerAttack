@@ -48,6 +48,12 @@ namespace GameFields.Persons.EnemyProcessImitations
         public float DrawCardsDelay => _data.DrawCardsDelay;
         public override bool IsComplete => _isComplete;
 
+        private IEnumerator Skipping()
+        {
+            yield return new WaitForSeconds(1f);
+            _isComplete = true;
+        }
+
         protected override void OnStartStep()
         {
             _isComplete = false;
@@ -56,7 +62,8 @@ namespace GameFields.Persons.EnemyProcessImitations
 
             if (_skipTurnChecker.CanSkip)
             {
-                _isComplete = true;
+                //_isComplete = true;
+                Skipping().ToUniTask();
                 return;
             }
 

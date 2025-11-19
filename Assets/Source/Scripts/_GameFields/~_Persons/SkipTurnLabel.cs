@@ -2,6 +2,6 @@ using Tools.UI;
 
 namespace GameFields.Persons
 {
-    public class SkipTurnLabel : StartLabel
+    public abstract class SkipTurnLabel : StartLabel
     { }
 }
