@@ -24,9 +24,9 @@ namespace Tools.UI
 
         public void Show(LabelActivateData data)
         {
-            Show();
-
             _label.SetText(data.Message);
+
+            Show();
         }
 
         public void Show()

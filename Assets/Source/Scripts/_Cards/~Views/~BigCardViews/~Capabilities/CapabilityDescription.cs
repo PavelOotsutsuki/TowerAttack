@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Tools;
@@ -10,6 +11,10 @@ namespace Cards.Views.BigCardViews.Capabilities
     [RequireComponent(typeof(FadableLabel))]
     public class CapabilityDescription : MonoBehaviour, IViewable<CapabilityDescriptionActivateData>, IAutomaticFillComponents
     {
+        // По опыту
+        private const float ExtraWidth = 205.49f;
+        private const float ExtraHeight = 156.54f;
+
         [SerializeField] private TMP_Text _text;
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private FadableLabel _fadableLabel;
@@ -43,13 +48,15 @@ namespace Cards.Views.BigCardViews.Capabilities
             LabelActivateData fadableLabelActivateData = new LabelActivateData(message);
 
             _fadableLabel.Show(fadableLabelActivateData);
+            // После смены text-a надо поменять width, иначе preferredHeight нормально не расчитывается
+            _rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _text.preferredWidth + ExtraWidth);
 
             // Почему именно такие величины? По опыту
-            float width = _text.preferredWidth + 205.49f;
-            float height = _text.preferredHeight + 156.54f;
+            //_text.ForceMeshUpdate();
+            float width = _text.preferredWidth + ExtraWidth;
+            float height = _text.preferredHeight + ExtraHeight;
 
             _rectTransform.sizeDelta = new Vector2(width, height);
-
         }
 
         public void Hide()
