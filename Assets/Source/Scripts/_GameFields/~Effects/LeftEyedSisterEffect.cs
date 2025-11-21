@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using GameFields.Persons;
 using UnityEngine;
 using GameFields.Persons.Discovers;
-using Zenject;
 
 namespace GameFields.Effects
 {

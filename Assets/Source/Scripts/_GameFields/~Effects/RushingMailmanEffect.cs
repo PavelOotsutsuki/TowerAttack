@@ -1,9 +1,7 @@
 using UnityEngine;
-using Cards;
 using GameFields.Persons;
 using System.Collections;
 using GameFields.Persons.DrawCards;
-using Zenject;
 
 namespace GameFields.Effects
 {
@@ -12,8 +10,6 @@ namespace GameFields.Effects
         private readonly int _countDrawCards = 2;
 
         private readonly IDrawCardManager _drawCardManager;
-
-        private bool _isContinue;
 
         public RushingMailmanEffect(Person activePerson, EffectData data) : base(data)
         {
@@ -24,16 +20,11 @@ namespace GameFields.Effects
 
         protected override IEnumerator OnPlaying()
         {
-            _isContinue = false;
+            bool isContinue = false;
 
-            _drawCardManager?.DrawCards(_countDrawCards, Continue);
+            _drawCardManager?.DrawCards(_countDrawCards, () => isContinue = true);
 
-            yield return new WaitUntil(() => _isContinue);
-        }
-
-        private void Continue()
-        {
-            _isContinue = true;
+            yield return new WaitUntil(() => isContinue);
         }
 
         public override void End()

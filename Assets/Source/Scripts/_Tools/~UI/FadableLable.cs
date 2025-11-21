@@ -22,6 +22,11 @@ namespace Tools.UI
             _fadablePanel.Init();
         }
 
+        public void SetText(string text)
+        {
+            _label.SetText(text);
+        }
+
         public void Show(LabelActivateData data)
         {
             _label.SetText(data.Message);

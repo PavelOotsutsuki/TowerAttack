@@ -31,6 +31,15 @@ namespace GameFields.Effects
         [SerializeField] private VariantCard _hungryOgre_SilentSearch_template;
         [SerializeField] private VariantCard _hungryOgre_HighProfileCrime_template;
 
+        [Space]
+        [Header("----------------------------")]
+        [Space]
+
+        [Header("43: StrongOgre")]
+
+        [SerializeField] private VariantCard _strongOgre_WeakBlow_template;
+        [SerializeField] private VariantCard _strongOgre_StrongBlow_template;
+
         private readonly Dictionary<EffectType, VariantCard[]> _effectsVariantsTemplates = new Dictionary<EffectType, VariantCard[]>(); 
 
         public void Init()
@@ -54,6 +63,13 @@ namespace GameFields.Effects
                 {
                     _hungryOgre_SilentSearch_template,
                     _hungryOgre_HighProfileCrime_template
+                });
+
+            _effectsVariantsTemplates.Add(EffectType.StrongOgre,
+                new VariantCard[2]
+                {
+                    _strongOgre_WeakBlow_template,
+                    _strongOgre_StrongBlow_template
                 });
         }
 

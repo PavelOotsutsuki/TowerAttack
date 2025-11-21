@@ -62,6 +62,11 @@ namespace GameFields.Effects
             Effect realEffect = _effectCreator.Invoke(effectConfig.Type, new CardEffectData(_data.Card, effectConfig.Duration),
                 _effectDuration);
 
+            foreach (VariantCard variant in variantCards)
+            {
+                variant.Destroy();
+            }
+
             yield return new WaitUntil(() => realEffect.IsComplete);
         }
     }

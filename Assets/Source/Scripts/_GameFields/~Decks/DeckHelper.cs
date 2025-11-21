@@ -40,26 +40,53 @@ namespace GameFields.Decks
             {
                 helpView.Init();
             }
+
+            foreach (ICardsCounter cardsCounter in _hookups.Values)
+            {
+                cardsCounter.OnSeatsCountChange += SetText;
+            }
+
+        }
+
+        public void OnDestroy()
+        {
+            foreach (ICardsCounter cardsCounter in _hookups.Values)
+            {
+                if (cardsCounter != null)
+                    cardsCounter.OnSeatsCountChange -= SetText;
+            }
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            foreach (ICardsCounter cardsCounter in _hookups.Values)
-            {
-                cardsCounter.OnSeatsCountChange += Show;
-            }
+            //Debug.Log("OnPointerEnter: DeckHelper");
+
+            //foreach (ICardsCounter cardsCounter in _hookups.Values)
+            //{
+            //    cardsCounter.OnSeatsCountChange += Show;
+            //}
 
             Show();
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            foreach (ICardsCounter cardsCounter in _hookups.Values)
-            {
-                cardsCounter.OnSeatsCountChange -= Show;
-            }
+            //Debug.Log("OnPointerExit: DeckHelper");
+
+            //foreach (ICardsCounter cardsCounter in _hookups.Values)
+            //{
+            //    cardsCounter.OnSeatsCountChange -= Show;
+            //}
 
             Hide();
+        }
+
+        private void SetText()
+        {
+            foreach (KeyValuePair<FadableLabel, ICardsCounter> keyValuePair in _hookups)
+            {
+                keyValuePair.Key.SetText("Карт: " + keyValuePair.Value.CountCards.ToString());
+            }
         }
 
         private void Show()

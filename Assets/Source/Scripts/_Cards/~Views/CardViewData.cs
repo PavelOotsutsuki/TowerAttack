@@ -9,8 +9,8 @@ namespace Cards.Views
         private readonly int _number;
         private readonly string _name;
         private readonly string _description;
-        private readonly CardCapability _cardCapability;
 
+        private CardCapability _cardCapability;
         private string _feature;
 
         internal CardViewData(CardViewConfig config, CardCapability cardCapability)
@@ -33,6 +33,14 @@ namespace Cards.Views
         public void ChangeFeature(string feature)
         {
             _feature = feature;
+        }
+
+        internal void SetCurseMode()
+        {
+            if ((_cardCapability & CardCapability.Curse) == CardCapability.Curse)
+                return;
+
+            _cardCapability |= CardCapability.Curse;
         }
     }
 }

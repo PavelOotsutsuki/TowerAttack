@@ -14,8 +14,9 @@ using Zenject;
 
 namespace GameFields.Persons.Hands
 {
-    public abstract class Hand : MonoBehaviour, ICardDragAndDropHandHandler, IHandBlockable, ICardView, IPersonObject, ICardsCounter,
-        ICardFeatureRechangablePlace, ITransitable, ISlimeEffectWorker, ITurnSkipper, IAutomaticFillComponents
+    public abstract class Hand : MonoBehaviour, ICardDragAndDropHandHandler, IHandBlockable, ICardView, IPersonObject,
+        ICardsCounter, /*ICardsCountChanger,*/ ICardFeatureRechangablePlace, ITransitable, ISlimeEffectWorker, ITurnSkipper,
+        IAutomaticFillComponents
     {
         private const float StartRotation = 0;
         private const int EmptyIndex = -1;
@@ -409,8 +410,8 @@ namespace GameFields.Persons.Hands
         {
             //_handSeatPool.ReturnInPool(_dragCardHandSeat);
             //Debug.Log("UnbindDragableCard");
-            SortHandSeats();
             ResetDragOptions();
+            SortHandSeats();
         }
 
         private void UnblockCards()
@@ -443,8 +444,8 @@ namespace GameFields.Persons.Hands
 
             _handSeats.Insert(_handSeatIndex, _dragCardHandSeat);
 
-            SortHandSeats();
             ResetDragOptions();
+            SortHandSeats();
         }
 
         private void StartDragCard(Card card)
@@ -569,7 +570,7 @@ namespace GameFields.Persons.Hands
         private void SortHandSeats()
         {
             //SetCardsInteraction();
-
+            //Debug.Log($"_handSeats.Count: {CountCards}. EnemyAI? {this is HandAI}");
             OnSeatsCountChange?.Invoke();
 
             if (_handSeats.Count <= 0)

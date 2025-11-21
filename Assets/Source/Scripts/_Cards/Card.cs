@@ -69,7 +69,7 @@ namespace Cards
 
             _cardSpriteModeManager.SetCurseMode();
             _viewData.ChangeFeature(_viewData.Feature + "\n<CAP_4>ПРОКЛЯТ</CAP_4>");
-            _config.SetCurseMode();
+            _viewData.SetCurseMode();
             _cardPaper.SetView(_viewData);
         }
 

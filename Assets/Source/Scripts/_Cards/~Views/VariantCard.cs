@@ -26,6 +26,11 @@ namespace Cards.Views
             _viewData = new CardViewData(_config.CardViewConfig, _config.CardCapability);
         }
 
+        public void Destroy()
+        {
+            Destroy(gameObject);
+        }
+
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(VariantCard))]
         public List<ComponentAttachInfo> DefineAllComponents()

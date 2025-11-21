@@ -54,6 +54,8 @@ namespace Cards.Effects
         CursedMailman = 41,
         RightEyedSister = 42,
         StrongOgre = 43,
+        StrongOgre_WeakBlow = 4300001,
+        StrongOgre_StrongBlow = 4300002,
         MafiaBoss = 44,
         PyromancersManuscript = 45,
         FalsePrince = 46,
