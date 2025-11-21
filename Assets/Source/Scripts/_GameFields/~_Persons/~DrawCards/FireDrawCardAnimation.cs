@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using Cards;
 using Cysharp.Threading.Tasks;
 using GameFields.CommonAnimations;
@@ -23,20 +25,27 @@ namespace GameFields.Persons.DrawCards
             _data = data;
             _firePool = firePool;
 
+            _data.Init();
+
             _isComplete = true;
         }
 
         public bool IsComplete => _isComplete;
 
-        public void Play(Card card)
+        public void Play(IReadOnlyList<Card> cards)
         {
-            Playing(card).ToUniTask();
+            Playing(cards).ToUniTask();
         }
 
-        private IEnumerator Playing(Card drawnCard)
+        private IEnumerator Playing(IReadOnlyList<Card> cards)
         {
             _isComplete = false;
 
+            if (cards.Count <= 0)
+            {
+                _isComplete = true;
+                yield break;
+            }
             ////
             //float endScale = 1.5f;
             //bool isDirectionUp = true;
@@ -60,7 +69,35 @@ namespace GameFields.Persons.DrawCards
             //Vector3 centerScaleVector = new Vector3(CenterScale, CenterScale, CenterScale);
 
             //Vector2 firstPosition = new Vector2(-400f, 200f);
-            CallbackHandler callbackHandlerFire = new CallbackHandler();
+            CallbackHandler lastCallbackHandlerFire = null;
+
+            for (int i = 0; i < cards.Count; i++)
+            {
+                CallbackHandler callbackHandlerFire = new CallbackHandler();
+                lastCallbackHandlerFire = callbackHandlerFire;
+                Firing(cards[i], i, lastCallbackHandlerFire).ToUniTask();
+                yield return new WaitForSeconds(0.2f);
+            }
+
+            yield return new WaitUntil(() => lastCallbackHandlerFire.IsComplete);
+            _isComplete = true;
+        }
+
+        private IEnumerator Firing(Card drawnCard, int level, CallbackHandler callbackHandlerFire)
+        {
+            if (level > 0)
+            {
+                _data.SetNewOffsets(level);
+            }
+            else
+            {
+                _data.ResetOffsets();
+            }
+
+            Vector3 endStartMovePosition = _data.EndStartMovePosition;
+            InvertCardAnimationPlayData playData = _data.InvertCardAnimationPlayData;
+
+            //CallbackHandler callbackHandlerFire = new CallbackHandler();
             drawnCard.Fire(new WaitForSeconds(
                 _data.StartMoveDuration +
                 _data.InvertCardAnimationData.InvertCardFrontDuration +
@@ -70,13 +107,12 @@ namespace GameFields.Persons.DrawCards
 
             drawnCard.RORTransform.SetParent(_data.FireDrawTemporarilyParent);
 
-            drawnCard.CardMovement.MoveLocalLinear(_data.EndStartMovePosition, drawnCard.RORTransform.GetRotationVector(),
+            drawnCard.CardMovement.MoveLocalLinear(endStartMovePosition, drawnCard.RORTransform.GetRotationVector(),
                 _data.StartMoveDuration);
 
             yield return new WaitForSeconds(_data.StartMoveDuration);
 
             InvertCardAnimation invertCardAnimation = new InvertCardAnimation(_data.InvertCardAnimationData);
-            InvertCardAnimationPlayData playData = _data.InvertCardAnimationPlayData;
             invertCardAnimation.Play(drawnCard, playData);
 
             //cardMovement.MoveLocalSmoothly(firstPosition, readOnlyRectTransform.GetRotationVector(), 0.5f, scale);
@@ -89,7 +125,6 @@ namespace GameFields.Persons.DrawCards
             drawnCard.gameObject.SetActive(false);
 
             _firePool.SeatCard(drawnCard);
-            _isComplete = true;
         }
     }
 }

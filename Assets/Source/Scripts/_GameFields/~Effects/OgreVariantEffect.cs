@@ -42,8 +42,8 @@ namespace GameFields.Effects
 
         protected override IEnumerator OnPlaying()
         {
-            yield return _firstCoroutine;
-            yield return _secondCoroutine;
+            yield return _firstCoroutine.Invoke();
+            yield return _secondCoroutine.Invoke();
         }
 
         private IEnumerator Drawing()

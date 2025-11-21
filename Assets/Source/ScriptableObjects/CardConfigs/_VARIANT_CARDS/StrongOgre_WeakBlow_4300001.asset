@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 961f8779e31664b8b93208abc5cc22bb, type: 3}
   m_Name: StrongOgre_WeakBlow_4300001
   m_EditorClassIdentifier: 
-  <CardViewConfig>k__BackingField: {fileID: 0}
+  <CardViewConfig>k__BackingField: {fileID: 11400000, guid: 414e6da72616e4b8fb56763d43fbdc73, type: 2}
   <Effect>k__BackingField: {fileID: 11400000, guid: c36f34db05dcc4854bff4eff46400cd6, type: 2}
   <CardCapability>k__BackingField: 1

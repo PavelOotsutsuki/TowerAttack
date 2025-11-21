@@ -80,17 +80,19 @@ namespace GameFields.Persons.DrawCards
 
             IDrawCardAnimation currentDrawCardAnimation = _currentDrawCardAnimation; 
 
-            if (cards.Count > 0)
-            {
-                for (int i = 0; i < cards.Count; i++)
-                {
-                    Card card = cards[i];
-                    currentDrawCardAnimation.Play(card);
+            //if (cards.Count > 0)
+            //{
+            //    for (int i = 0; i < cards.Count; i++)
+            //    {
+            //        Card card = cards[i];
+            //        currentDrawCardAnimation.Play(card);
 
-                    yield return new WaitUntil(() => currentDrawCardAnimation.IsComplete);
-                }
-            }
-            
+            //        yield return new WaitUntil(() => currentDrawCardAnimation.IsComplete);
+            //    }
+            //}
+            currentDrawCardAnimation.Play(cards);
+            yield return new WaitUntil(() => currentDrawCardAnimation.IsComplete);
+
             callback?.Invoke();
             IsDrawing = false;
             yield break;

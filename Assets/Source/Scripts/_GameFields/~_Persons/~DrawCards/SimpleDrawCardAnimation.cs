@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Cards;
 using Cysharp.Threading.Tasks;
 using GameFields.Persons.Hands;
@@ -25,19 +26,26 @@ namespace GameFields.Persons.DrawCards
 
         public bool IsComplete => _isComplete;
 
-        public void Play(Card card)
+        public void Play(IReadOnlyList<Card> cards)
         {
-            Playing(card).ToUniTask();
+            Playing(cards).ToUniTask();
         }
 
-        private IEnumerator Playing(Card drawnCard)
+        private IEnumerator Playing(IReadOnlyList<Card> cards)
         {
             _isComplete = false;
 
             yield return new WaitForSeconds(_delay);
 
-            _hand.SeatCard(drawnCard);
-            _drawCardAdder.Add(drawnCard);
+            foreach (Card drawnCard in cards)
+            {
+                _hand.SeatCard(drawnCard);
+                _drawCardAdder.Add(drawnCard);
+
+                yield return new WaitForSeconds(_delay);
+            }
+
+            yield return new WaitForSeconds(_delay);
             _isComplete = true;
         }
     }
