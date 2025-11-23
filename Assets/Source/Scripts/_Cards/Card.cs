@@ -4,6 +4,7 @@ using Cards.Animations;
 using Cards.Animations.Curses;
 using Cards.Effects;
 using Cards.Insides;
+using Cards.Sounds;
 using Cards.Views;
 using Cards.Views.BigCardViews.Capabilities;
 using Tools;
@@ -20,10 +21,10 @@ namespace Cards
         [SerializeField] private CardPaper _cardPaper;
         [SerializeField] private CardConfig _config;
         [SerializeField] private Image _background;
+        [SerializeField] private CardSoundLogic _cardSoundLogic;
 
         private readonly Vector3 _defaultScaleVector = new Vector3(1f,1f,1f);
 
-        private CardSoundVolume _cardSoundVolume;
         private CardCharacter _character;
         private CardEffectManager _cardEffectManager;
         private CardViewData _viewData;
@@ -38,25 +39,26 @@ namespace Cards
         public Image Background => _background;
         public SideType CurrentSide => _cardPaper.CurrentSide;
         public CardCapability CardCapability => _config.CardCapability;
+
         public bool IsCurse => _cardSpriteModeManager.IsCurse;
         public bool IsLuckyHorseshoe => _config.Effect.Type == EffectType.LuckyHorseshoe;
         public bool IsFired => _cardPaper.IsFired;
 
         internal void Init(IEffectFactory effectFactory, CardViewService cardViewService,
-            ICardDragAndDropHandler cardDragAndDropHandler, CurseAnimator curseAnimator, CardSoundVolume cardSoundVolume,
-            CardCapabilityDescription cardCapabilityDescription)
+            ICardDragAndDropHandler cardDragAndDropHandler, CurseAnimator curseAnimator,
+            CardCapabilityDescription cardCapabilityDescription, CardSoundRoot cardSoundRoot)
         {
             RORTransform = new ReadOnlyRectTransform(_rectTransform);
-            _cardEffectManager = new CardEffectManager(_config.Effect, effectFactory);
+            _cardSoundLogic.Init(_config.SoundConfig.Sounds);
+            _cardEffectManager = new CardEffectManager(_config.Effect, effectFactory, _cardSoundLogic);
             _viewData = new CardViewData(_config.CardViewConfig, _config.CardCapability);
-            _cardSoundVolume = cardSoundVolume;
 
             _cardSpriteModeManager = new CardSpriteModeManager(_config.Effect.Type);
             _rectTransform.localScale = _defaultScaleVector;
             CardMovement = new Movement(_rectTransform);
 
             _cardPaper.Init(this, cardViewService, ViewData, _rectTransform, cardDragAndDropHandler, _cardSpriteModeManager,
-                curseAnimator, cardCapabilityDescription);
+                curseAnimator, cardCapabilityDescription, cardSoundRoot, _cardSoundLogic);
 
             CreateCardCharacter();
             SetState(_cardPaper);
@@ -170,7 +172,8 @@ namespace Cards
         private void CreateCardCharacter()
         {
             _character = Instantiate(_config.CardCharacter, _rectTransform);
-            _character.Init(_config.AwakeSound, _cardSoundVolume);
+            //_character.Init(_config.SoundConfig, _cardSoundVolume);
+            _character.Init();
         }
 
         private void CheckStateByNull()
@@ -193,7 +196,8 @@ namespace Cards
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
                 DefineRectTransform(),
-                DefineCardPaper()
+                DefineCardPaper(),
+                DefineCardSoundLogic()
             };
 
             return list;
@@ -209,6 +213,12 @@ namespace Cards
         private ComponentAttachInfo DefineCardPaper()
         {
            return AutomaticFillComponents.DefineComponent(this, ref _cardPaper, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineCardSoundLogic))]
+        private ComponentAttachInfo DefineCardSoundLogic()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _cardSoundLogic, ComponentLocationTypes.InThis);
         }
         #endregion
     }

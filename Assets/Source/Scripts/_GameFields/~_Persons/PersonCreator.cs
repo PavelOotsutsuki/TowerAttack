@@ -33,6 +33,7 @@ using GameFields.InputSettings;
 using GameFields.FightMenues;
 using Cards.Views.BigCardViews.Capabilities;
 using GameFields.Persons.EffectHandlers.FateInevitabilities;
+using Cards.Sounds;
 
 namespace GameFields.Persons
 {
@@ -206,15 +207,15 @@ namespace GameFields.Persons
 
         public void Init(SignalBus bus, Deck deck, EndTurnButton endTurnButton, SeatPool seatPool,
             CardDragAndDropHandler cardDragAndDropHandler, CardDragAndDropLightController cardDragAndDropLightController,
-            InformationLabel informationLabel, ICardWatcher cardRoot, IVolume cardVolume, IVolume musicVolume,
+            InformationLabel informationLabel, ICardWatcher cardRoot, CardSoundRoot cardSoundRoot, IVolume musicVolume,
             CardCapabilityDescription cardCapabilityDescription)
         {
             _bus = bus;
             _deck = deck;
             _endTurnButton = endTurnButton;
+            _seatPool = seatPool;
             _informationLabel = informationLabel;
             _cardWatcher = cardRoot;
-            _seatPool = seatPool;
 
             _skipTurnLabelPlayer.Init();
             _skipTurnLabelEnemyAI.Init();
@@ -225,7 +226,7 @@ namespace GameFields.Persons
             _playerLoseActions = new LoseActions(_playerTower, _playerTower, _playerHand, _bus, _inputRoot, _fightMenu,
                 _fightMenuActivateButton);
 
-            _fightMenu.Init(_inputRoot, _playerLoseActions, cardVolume, musicVolume, cardCapabilityDescription);
+            _fightMenu.Init(_inputRoot, _playerLoseActions, cardSoundRoot, musicVolume, cardCapabilityDescription);
             _fightMenuActivateButton.Init(_fightMenu);
 
             _playerFirePool = new FirePool(_fireContainer.GetTransform());

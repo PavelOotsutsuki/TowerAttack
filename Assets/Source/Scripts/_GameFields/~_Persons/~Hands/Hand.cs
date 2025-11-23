@@ -319,6 +319,7 @@ namespace GameFields.Persons.Hands
             IReadOnlyList<Card> cards = Cards;
 
             List<int> existingIndices = new List<int>();
+            List<Card> existingCards = new List<Card>();
             List<Card> result = new List<Card>();
 
             cards = Utils.Shuffle(cards);
@@ -327,9 +328,11 @@ namespace GameFields.Persons.Hands
             {
                 for (int i = 0; i < cards.Count; i++)
                 {
-                    if (existingIndices.Contains(cards[i].ViewData.Number) == false && exceptions.Contains(cards[i].ViewData.Number) == false)
+                    if (existingIndices.Contains(cards[i].ViewData.Number) == false && exceptions.Contains(cards[i].ViewData.Number) == false &&
+                        existingCards.Contains(cards[i]) == false)
                     {
                         result.Add(cards[i]);
+                        existingCards.Add(cards[i]);
                         existingIndices.Add(cards[i].ViewData.Number);
                         break;
                     }
@@ -342,9 +345,10 @@ namespace GameFields.Persons.Hands
                 {
                     for (int i = 0; i < cards.Count; i++)
                     {
-                        if (exceptions.Contains(cards[i].ViewData.Number) == false)
+                        if (exceptions.Contains(cards[i].ViewData.Number) == false && existingCards.Contains(cards[i]) == false)
                         {
                             result.Add(cards[i]);
+                            existingCards.Add(cards[i]);
                             existingIndices.Add(cards[i].ViewData.Number);
                             break;
                         }
@@ -358,8 +362,12 @@ namespace GameFields.Persons.Hands
                 {
                     for (int i = 0; i < cards.Count; i++)
                     {
-                        result.Add(cards[i]);
-                        existingIndices.Add(cards[i].ViewData.Number);
+                        if (existingCards.Contains(cards[i]) == false)
+                        {
+                            result.Add(cards[i]);
+                            existingCards.Add(cards[i]);
+                            existingIndices.Add(cards[i].ViewData.Number);
+                        }
                     }
                 }
             }

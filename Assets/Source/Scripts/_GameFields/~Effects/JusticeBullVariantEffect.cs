@@ -60,7 +60,7 @@ namespace GameFields.Effects
                 yield return new WaitUntil(() => _informationLabel.IsComplete);
 
                 //choiceEffect = _effectCreator.Invoke(EffectType.JusticeBull_TrueChoiceEffect, _callback);
-                choiceEffect = _effectCreator.Invoke(EffectType.JusticeBull_TrueChoiceEffect, new CardEffectData(_cardEffectData.Card, 0), _effectDuration);
+                choiceEffect = _effectCreator.Invoke(EffectType.JusticeBull_TrueChoiceEffect, new CardEffectData(_cardEffectData.Card, 0, null), _effectDuration);
             }
             else
             {
@@ -72,7 +72,7 @@ namespace GameFields.Effects
                 yield return new WaitUntil(() => _informationLabel.IsComplete);
 
                 //choiceEffect = _effectCreator.Invoke(EffectType.JusticeBull_FalseChoiceEffect, _callback);
-                choiceEffect = _effectCreator.Invoke(EffectType.JusticeBull_FalseChoiceEffect, new CardEffectData(_cardEffectData.Card, 2), _effectDuration);
+                choiceEffect = _effectCreator.Invoke(EffectType.JusticeBull_FalseChoiceEffect, new CardEffectData(_cardEffectData.Card, 2, null), _effectDuration);
             }
 
             _activePerson.ActivateJusticeBullEffect();

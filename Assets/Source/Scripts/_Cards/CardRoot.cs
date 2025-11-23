@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Cards.Animations.Curses;
 using Cards.Effects;
 using Cards.Insides;
+using Cards.Sounds;
 using Cards.Views;
 using Cards.Views.BigCardViews;
 using Cards.Views.BigCardViews.Capabilities;
@@ -23,7 +24,7 @@ namespace Cards
         public IReadOnlyList<Card> Cards => _allCards;
 
         public void Init(IEffectFactory effectFactory, BigCardRoot bigCardRoot, ICardDragAndDropHandler cardDragAndDropHandler,
-            CardSoundVolume cardSoundVolume, CardCapabilityDescription cardCapabilityDescription)
+            CardCapabilityDescription cardCapabilityDescription, CardSoundRoot cardSoundRoot)
         {
             _bigCardRoot = bigCardRoot;
             _curseAnimator.Init();
@@ -34,8 +35,8 @@ namespace Cards
 
             foreach (Card card in _startCards)
             {
-                card.Init(effectFactory, _cardViewService, cardDragAndDropHandler, _curseAnimator, cardSoundVolume,
-                    cardCapabilityDescription);
+                card.Init(effectFactory, _cardViewService, cardDragAndDropHandler, _curseAnimator,
+                    cardCapabilityDescription, cardSoundRoot);
                 _allCards.Add(card);
             }
         }

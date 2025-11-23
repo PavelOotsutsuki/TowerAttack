@@ -1,18 +1,20 @@
+using Cards.Sounds;
 using UnityEngine;
 
 namespace Cards.Insides
 {
     internal class CardCharacter : MonoBehaviour, ICardState
     {
-        private AudioClip _awakeSound;
-        private CardSoundVolume _cardSoundVolume;
+        //private AudioClip _awakeSound;
+        //private CardSoundVolume _cardSoundVolume;
 
         public bool? IsShown { get; private set; } = null;
 
-        public void Init(AudioClip awakeSound, CardSoundVolume cardSoundVolume)
+        //public void Init(CardSoundConfig awakeSound, CardSoundVolume cardSoundVolume)
+        public void Init()
         {
-            _awakeSound = awakeSound;
-            _cardSoundVolume = cardSoundVolume;
+            //_awakeSound = awakeSound;
+            //_cardSoundVolume = cardSoundVolume;
 
             transform.localPosition = Vector2.zero;
 
@@ -27,7 +29,7 @@ namespace Cards.Insides
 
             IsShown = true;
 
-            AudioSource.PlayClipAtPoint(_awakeSound, Vector3.zero, _cardSoundVolume.Volume);
+            //AudioSource.PlayClipAtPoint(_awakeSound, Vector3.zero, _cardSoundVolume.Volume);
             gameObject.SetActive(true);
         }
 

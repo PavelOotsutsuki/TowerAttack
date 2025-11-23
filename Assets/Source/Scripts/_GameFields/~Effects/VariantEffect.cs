@@ -59,7 +59,7 @@ namespace GameFields.Effects
             CardEffectConfig effectConfig = variantCard.EffectConfig;
 
             //Effect realEffect = _effectCreator.Invoke(effectConfig, _callback);
-            Effect realEffect = _effectCreator.Invoke(effectConfig.Type, new CardEffectData(_data.Card, effectConfig.Duration),
+            Effect realEffect = _effectCreator.Invoke(effectConfig.Type, new CardEffectData(_data.Card, effectConfig.Duration, null),
                 _effectDuration);
 
             foreach (VariantCard variant in variantCards)

@@ -22,6 +22,7 @@ using Tools.Utils.Screens;
 using System.Collections;
 using Cards.Views.BigCardViews.Capabilities;
 using Cards.Views.BigCardViews;
+using Cards.Sounds;
 
 namespace Roots
 {
@@ -41,8 +42,8 @@ namespace Roots
         [Inject]
         private void Construct(SignalBus bus, Deck deck, SeatPool seatPool, BigCardRoot bigCardRoot, HandPlayer handPlayer,
             InformationLabel informationLabel, LookCardMenuPlayer lookCardMenu, VariantCardCreator variantCardCreator,
-            SoundRoot soundRoot, CardSoundVolume cardSoundVolume, FightMenuActivateButton fightMenuActivateButton,
-            CardCapabilityDescription cardCapabilityDescription, EffectProcessSounds effectProcessSounds)
+            SoundRoot soundRoot, CardSoundRoot cardSoundRoot, FightMenuActivateButton fightMenuActivateButton,
+            CardCapabilityDescription cardCapabilityDescription)
         {
             //StartCoroutine(Initing(bus, deck, seatPool, cardDescription, handPlayer, informationLabel, lookCardMenu, variantCardCreator, soundRoot,
             //    cardSoundVolume, fightMenuActivateButton, screenRoot));
@@ -59,7 +60,6 @@ namespace Roots
             _speedUpButtonSortOrder.Init();
 
             variantCardCreator.Init();
-            effectProcessSounds.Init(cardSoundVolume);
             soundRoot.Init();
 
             CardDragAndDropLightController cardDragAndDropLightController = _lightControlsCreator.CreateCardDragAndDropLightController();
@@ -70,7 +70,7 @@ namespace Roots
                 cardDragAndDropLightController, _speedUpButtonSortOrder);
 
             _personCreator.Init(bus, deck, _endTurnButton, seatPool, cardDragAndDropHandler, cardDragAndDropLightController,
-                informationLabel, _cardRoot, cardSoundVolume, soundRoot, cardCapabilityDescription);
+                informationLabel, _cardRoot, cardSoundRoot, soundRoot, cardCapabilityDescription);
 
             Player player = _personCreator.CreatePlayer();
             EnemyAI enemyAI = _personCreator.CreateEnemyAI();
@@ -91,9 +91,9 @@ namespace Roots
 
             EffectFactory effectFactory = new EffectFactory(_personsState, viewRoot, informationLabel, cardTransitManager,
                 variantCardCreator, brothersEffectHandlerRoot, bus, personEffectsHandlerRoot, discardManager, loseActionsRoot,
-                effectProcessSounds);
+                cardSoundRoot);
 
-            _cardRoot.Init(effectFactory, bigCardRoot, cardDragAndDropHandler, cardSoundVolume, cardCapabilityDescription);
+            _cardRoot.Init(effectFactory, bigCardRoot, cardDragAndDropHandler, cardCapabilityDescription, cardSoundRoot);
             deck.Init(seatPool, _cardRoot.Cards);
 
             _gameFieldRoot.Init(_personsState, enemyAI, bus, seatPool, soundRoot, fightMenuActivateButton);

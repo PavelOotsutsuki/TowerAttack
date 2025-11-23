@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Cards;
 using Cysharp.Threading.Tasks;
-using GameFields.Persons.Hands;
 using UnityEngine;
 
 namespace GameFields.Persons.DrawCards

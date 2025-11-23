@@ -1,14 +1,10 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cards;
 using Cysharp.Threading.Tasks;
 using GameFields.CommonAnimations;
 using GameFields.Persons.Fires;
-using GameFields.Persons.Hands;
 using Tools;
-using Tools.Settings;
-using Tools.Utils.Movements;
 using UnityEngine;
 
 namespace GameFields.Persons.DrawCards

@@ -1,5 +1,6 @@
 using Cards.Effects;
 using Cards.Insides;
+using Cards.Sounds;
 using Tools;
 using UnityEngine;
 
@@ -10,7 +11,7 @@ namespace Cards.Views
     {
         [field: SerializeField] internal CardViewConfig CardViewConfig { get; private set; }
         [field: SerializeField] internal CardCharacter CardCharacter { get; private set; }
-        [field: SerializeField] internal AudioClip AwakeSound { get; private set; }
+        [field: SerializeField] internal CardSoundConfig SoundConfig { get; private set; }
         [field: SerializeField] internal CardEffectConfig Effect { get; private set; }
         [field: SerializeField] internal CardCapability CardCapability { get; private set; }
         [field: SerializeField] internal CardPersonType CardPersonType { get; private set; }

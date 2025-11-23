@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cards;
 using Cards.Effects;
+using Cards.Sounds;
 using Cysharp.Threading.Tasks;
 using GameFields.InformationLabels;
 using GameFields.Persons;
@@ -31,14 +32,14 @@ namespace GameFields.Effects
         private readonly PersonEffectsHandlerRoot _personEffectsHandlerRoot;
         private readonly DiscardManager _discardManager;
         private readonly LoseActionsRoot _loseActionsRoot;
-        private readonly EffectProcessSounds _effectProcessSounds;
+        private readonly CardSoundRoot _cardSoundRoot;
 
         //private Effect _lastEffect;
 
         public EffectFactory(IPersonsState personsState, CardLocationViewRoot viewRoot, InformationLabel informationLabel,
             CardTransitManager cardTransitManager, VariantCardCreator variantCardCreator, BrothersEffectHandlerRoot brothersEffectHandler,
             SignalBus bus, PersonEffectsHandlerRoot personEffectsHandlerRoot, DiscardManager discardManager, LoseActionsRoot loseActionsRoot,
-            EffectProcessSounds effectProcessSounds)
+            CardSoundRoot cardSoundRoot)
         {
             _personsState = personsState;
             _viewRoot = viewRoot;
@@ -50,7 +51,7 @@ namespace GameFields.Effects
             _personEffectsHandlerRoot = personEffectsHandlerRoot;
             _discardManager = discardManager;
             _loseActionsRoot = loseActionsRoot;
-            _effectProcessSounds = effectProcessSounds;
+            _cardSoundRoot = cardSoundRoot;
             _voidEffectConfig = ScriptableObject.CreateInstance<CardEffectConfig>();
             //_voidEffectConfig = new CardEffectConfig();
             //_lastEffect = _voidEffect;
@@ -60,6 +61,11 @@ namespace GameFields.Effects
         //public Effect Create(CardEffectConfig effectConfig, Action<int> callback)
         public void Create(CardEffectConfigPair cardEffectConfigPair)
         {
+            CardSoundLogic currentCardSoundLogic = cardEffectConfigPair.CardEffectData.CardSoundLogic;
+
+            if (currentCardSoundLogic is IAwakeSoundKeeper awakeSoundKeeper)
+                _cardSoundRoot.Play(awakeSoundKeeper.AwakeSound);
+
             bool isRememberEffect = true;
             CardEffectConfig currentEffectConfig = cardEffectConfigPair.CardEffectConfig;
             Effect effect;
@@ -84,21 +90,25 @@ namespace GameFields.Effects
                 currentEffectConfig = _voidEffectConfig;
             }
 
-            CardEffectConfigPair trueCardEffectConfigPair = new CardEffectConfigPair(cardEffectConfigPair.Card, currentEffectConfig);
+            CardEffectConfigPair cardEffectConfigPairForCreateEffect = new CardEffectConfigPair(cardEffectConfigPair.Card, currentEffectConfig, cardEffectConfigPair.CardEffectData.CardSoundLogic);
+            CardEffectConfigPair cardEffectConfigPairForSaveInPerson = new CardEffectConfigPair(cardEffectConfigPair.Card, cardEffectConfigPair.CardEffectConfig, cardEffectConfigPair.CardEffectData.CardSoundLogic);
+
             EffectDuration effectDuration = new EffectDuration();
 
             if (_personsState.Active.IsDoubleEffect)
             {
                 //effect = new DoubleEffect(CreateEffect, currentEffectConfig, callback);
-                effect = new DoubleEffect(CreateEffect, trueCardEffectConfigPair, _bus, effectDuration, _personEffectsHandlerRoot);
+                effect = new DoubleEffect(CreateEffect, cardEffectConfigPairForCreateEffect, _bus, effectDuration, _personEffectsHandlerRoot);
             }
             else
             {
                 //effect = CreateEffect(currentEffectConfig, callback);
-                effect = CreateEffect(trueCardEffectConfigPair, effectDuration);
+                effect = CreateEffect(cardEffectConfigPairForCreateEffect, effectDuration);
             }
 
-            PersonEffect personEffect = new PersonEffect(effect, effectDuration, trueCardEffectConfigPair);
+            // Тут эффект создает реально используемый, а конфиг должен быть разыгранной карты
+
+            PersonEffect personEffect = new PersonEffect(effect, effectDuration, cardEffectConfigPairForSaveInPerson);
             //_personsState.Active.StartEffect(effect, effectConfig);
             _personsState.Active.StartEffect(personEffect, isRememberEffect);
             //_lastEffect = effect;
@@ -188,7 +198,7 @@ namespace GameFields.Effects
                 effectData),
                 EffectType.Sharper => new SharperEffect(_personsState.Active, _viewRoot, _cardTransitManager, effectData),
                 EffectType.Gunner => new GunnerEffect(_personsState.Active, _viewRoot, _cardTransitManager,
-                _effectProcessSounds, _informationLabel, effectData),
+                _cardSoundRoot, _informationLabel, effectData),
                 EffectType.WhiteGnome => new WhiteGnomeEffect(_personsState.Active, effectData),
                 EffectType.MiddleBrother => new MiddleBrotherEffect(_personsState.Active, _brothersEffectHandlerRoot, effectData),
                 EffectType.DeadOgre => new DeadOgreEffect(_personsState.Deactive, effectData),
@@ -203,7 +213,7 @@ namespace GameFields.Effects
                  effectData),
                 EffectType.StrongOgre_StrongBlow => new StrongOgre_StrongBlowEffect(_personsState.Active, _personsState.Deactive,
                  effectData),
-                EffectType.MafiaBoss => new VoidEffect(effectData),
+                EffectType.MafiaBoss => new MafiaBossEffect(_personsState.Active, _viewRoot, _cardTransitManager, effectData),
                 EffectType.PyromancersManuscript => new VoidEffect(effectData),
                 EffectType.FalsePrince => new VoidEffect(effectData),
                 EffectType.BlackGnome => new VoidEffect(effectData),

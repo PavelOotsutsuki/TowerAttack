@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cards;
-using Cards.Effects;
+using Cards.Sounds;
 using GameFields.InformationLabels;
 using GameFields.Persons;
 using GameFields.Persons.DrawCards;
@@ -21,18 +21,28 @@ namespace GameFields.Effects
         private readonly IDrawCardManager _drawCardManager;
         private readonly CardLocationViewRoot _viewRoot;
         private readonly CardTransitManager _transitManager;
-        private readonly EffectProcessSounds _effectProcessSounds;
+        private readonly CardSoundRoot _cardSoundRoot;
         private readonly InformationLabel _informationLabel;
+        private readonly GunnerCardSoundLogic _gunnerCardSoundLogic;
 
         public GunnerEffect(Person activePerson, CardLocationViewRoot viewRoot, CardTransitManager transitManager,
-            EffectProcessSounds effectProcessSounds, InformationLabel informationLabel, EffectData data) : base(data)
+            CardSoundRoot cardSoundRoot, InformationLabel informationLabel, EffectData data) : base(data)
         {
             _activePerson = activePerson;
             _drawCardManager = activePerson;
             _viewRoot = viewRoot;
             _transitManager = transitManager;
-            _effectProcessSounds = effectProcessSounds;
+            _cardSoundRoot = cardSoundRoot;
             _informationLabel = informationLabel;
+
+            if (data.CardEffectData.CardSoundLogic is GunnerCardSoundLogic) // Потому что есть Повторитель, и он уже это не воспроизведет
+            {
+                _gunnerCardSoundLogic = data.CardEffectData.CardSoundLogic as GunnerCardSoundLogic;
+            }
+            else
+            {
+                _gunnerCardSoundLogic = null;
+            }
 
             Play();
         }
@@ -46,9 +56,11 @@ namespace GameFields.Effects
 
         protected override IEnumerator OnPlaying()
         {
+            //_effectProcessSounds.Play();
+
             yield return new WaitForSeconds(2f); // Ждем для большего ЭПИКА
             // Эффект 1. Взятие карты
-            ActivateSound();
+            ActivateShotSound();
 
             bool effectOneComplete = false;
 
@@ -56,7 +68,7 @@ namespace GameFields.Effects
             yield return new WaitUntil(() => effectOneComplete);
             yield return new WaitForSeconds(1f);
             // Эффект 2. Атака
-            ActivateSound();
+            ActivateShotSound();
 
             bool effectTwoComplete = false;
 
@@ -69,7 +81,7 @@ namespace GameFields.Effects
 
             if (cards.Count > 0)
             {
-                ActivateSound();
+                ActivateShotSound();
 
                 bool effectThreeComplete = false;
                 int randomCardIndex = Random.Range(0, cards.Count);
@@ -111,7 +123,7 @@ namespace GameFields.Effects
             if (deckTopCard == null || deckEndCard == null)
                 yield break;
 
-            ActivateSound();
+            ActivateShotSound();
 
             if (_activePerson is Player)
             {
@@ -142,6 +154,10 @@ namespace GameFields.Effects
             }
         }
 
-        private void ActivateSound() => _effectProcessSounds.Play(EffectType.Gunner);
+        private void ActivateShotSound()
+        {
+            if (_gunnerCardSoundLogic != null)
+                _cardSoundRoot.Play(_gunnerCardSoundLogic.ShotSound);
+        }
     }
 }

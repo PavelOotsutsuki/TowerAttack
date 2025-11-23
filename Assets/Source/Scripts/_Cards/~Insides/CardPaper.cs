@@ -8,9 +8,11 @@ using Cards.Animations.Curses;
 using Cards.Animations.Fires;
 using Cards.Views;
 using Cards.Views.BigCardViews.Capabilities;
+using Cards.Sounds;
 
 namespace Cards.Insides
 {
+    [RequireComponent(typeof(CardFireAnimator))]
     internal class CardPaper : MonoBehaviour, ICardState, IAutomaticFillComponents
     {
         private const SideType DefaultSide = SideType.Back;
@@ -20,11 +22,12 @@ namespace Cards.Insides
         [SerializeField] private CardFront _cardFront;
         [SerializeField] private CardDragAndDrop _cardDragAndDrop;
         [SerializeField] private CardFrame _cardFrame;
-        [SerializeField] private OnFireLogic _onFireLogic;
         [SerializeField] private CardSpriteManager _cardSpriteManager;
+        [SerializeField] private CardFireAnimator _cardFireAnimator;
 
         private CardDragAndDropActions _cardDragAndDropActions;
         private CardSideFlipper _cardSideFlipper;
+        private OnFireLogic _onFireLogic;
 
         public bool? IsShown { get; private set; } = null;
         public SideType CurrentSide => _cardSideFlipper.CurrentSide;
@@ -33,7 +36,8 @@ namespace Cards.Insides
         internal void Init(Card me, CardViewService cardViewService, CardViewData cardViewData,
             RectTransform cardTransform, ICardDragAndDropHandler cardDragAndDropHandler,
             CardSpriteModeManager cardSpriteModeManager, CurseAnimator curseAnimator,
-            CardCapabilityDescription cardCapabilityDescription)
+            CardCapabilityDescription cardCapabilityDescription, CardSoundRoot cardSoundRoot,
+            CardSoundLogic cardSoundLogic)
         {
             ReadOnlyRectTransform readOnlyRectTransform = new ReadOnlyRectTransform(cardTransform);
 
@@ -44,7 +48,8 @@ namespace Cards.Insides
             _cardFront.Init(cardViewData, readOnlyRectTransform, cardViewService, cardSizeFront, _cardFrame,
                 cardCapabilityDescription);
             _cardBack.Init(cardSizeBack);
-            _onFireLogic.Init();
+            _cardFireAnimator.Init();
+            _onFireLogic = new OnFireLogic(_cardFireAnimator, cardSoundRoot, cardSoundLogic);
 
             _cardDragAndDropActions = new CardDragAndDropActions(_cardFront, me, cardDragAndDropHandler);
             _cardDragAndDrop.Init(cardTransform, _cardDragAndDropActions);
@@ -140,7 +145,7 @@ namespace Cards.Insides
                 DefineCardFront(),
                 DefineCardDragAndDrop(),
                 DefineCardFrame(),
-                DefineOnFireLogic()
+                DefineCardFireAnimator()
             };
 
             return list;
@@ -170,10 +175,10 @@ namespace Cards.Insides
             return AutomaticFillComponents.DefineComponent(this, ref _cardFrame, ComponentLocationTypes.InChildren);
         }
 
-        [ContextMenu(nameof(DefineOnFireLogic))]
-        private ComponentAttachInfo DefineOnFireLogic()
+        [ContextMenu(nameof(DefineCardFireAnimator))]
+        private ComponentAttachInfo DefineCardFireAnimator()
         {
-            return AutomaticFillComponents.DefineComponent(this, ref _onFireLogic, ComponentLocationTypes.InThis);
+            return AutomaticFillComponents.DefineComponent(this, ref _cardFireAnimator, ComponentLocationTypes.InThis);
         }
         #endregion
     }

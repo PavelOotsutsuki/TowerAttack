@@ -436,7 +436,6 @@ GameObject:
   - component: {fileID: 6776742393676862376}
   - component: {fileID: 567757509716396096}
   - component: {fileID: 5801046121218444597}
-  - component: {fileID: 4493403651954962212}
   - component: {fileID: 4558491234654669404}
   m_Layer: 5
   m_Name: CardPaper
@@ -485,7 +484,6 @@ MonoBehaviour:
   _cardFront: {fileID: 2805773735245598067}
   _cardDragAndDrop: {fileID: 7947053024734069809}
   _cardFrame: {fileID: 149869727242011792}
-  _onFireLogic: {fileID: 4493403651954962212}
   _cardSpriteManager:
     _cardCurseAnimation:
       _changedGraphics:
@@ -496,6 +494,7 @@ MonoBehaviour:
       - {fileID: 4623079778562922855}
       - {fileID: 8887612740147015767}
       - {fileID: 7322916084454620486}
+  _cardFireAnimator: {fileID: 5801046121218444597}
 --- !u!114 &7947053024734069809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -562,19 +561,6 @@ MonoBehaviour:
   _cardFireAnimation: {fileID: 6422188207668851826}
   _cardFrameRiseAnimation: {fileID: 346158198188376384}
   _cardRiseAnimation: {fileID: 5072016522661515514}
---- !u!114 &4493403651954962212
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1001606075633270796}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f41d3d69c71cb41daa7ff9627a18eb50, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _cardFireAnimator: {fileID: 5801046121218444597}
 --- !u!225 &4558491234654669404
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -1520,6 +1506,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5981172514607463790}
   - component: {fileID: -1716699076192243037}
+  - component: {fileID: 3378987100442953070}
   m_Layer: 5
   m_Name: Card
   m_TagString: Untagged
@@ -1563,6 +1550,19 @@ MonoBehaviour:
   _cardPaper: {fileID: 5735171853976598656}
   _config: {fileID: 0}
   _background: {fileID: 9005597812930443901}
+  _cardSoundLogic: {fileID: 3378987100442953070}
+--- !u!114 &3378987100442953070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4147016789588735738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f1c3556612754840b76578f3c53b1a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4603742727300818215
 GameObject:
   m_ObjectHideFlags: 0

@@ -56,8 +56,6 @@ namespace GameFields.Persons.DrawCards
 
             _offsetX = Random.Range(currentLevelOffsetX, currentLevelOffsetX + _minOffsetX);
             _offsetY = Random.Range(currentLevelOffsetY, currentLevelOffsetY + _minOffsetY);
-            Debug.Log($"level={level}, currentLevelOffsetX={currentLevelOffsetX}, currentLevelOffsetY={currentLevelOffsetY}," +
-                $"_offsetX={_offsetX}, _offsetY={_offsetY}");
         }
 
         public void ResetOffsets()

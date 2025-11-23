@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: _config
       value: 
       objectReference: {fileID: 11400000, guid: 199d30bb839ae41f6ad72a6d289bc2de, type: 2}
+    - target: {fileID: -1716699076192243037, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
+      propertyPath: _cardSoundLogic
+      value: 
+      objectReference: {fileID: -7425555004721825849}
     - target: {fileID: 4147016789588735738, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
       propertyPath: m_Name
       value: Gunner_36 Variant
@@ -96,8 +100,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3378987100442953070, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4147016789588735738, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -7425555004721825849}
   m_SourcePrefab: {fileID: 100100000, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
+--- !u!1 &1053433910322563693 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4147016789588735738, guid: bdad7ad2cd75a4b419ec2970be033493, type: 3}
+  m_PrefabInstance: {fileID: 3968697404867542167}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-7425555004721825849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1053433910322563693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b603bb7a97144f04b9a95fda9f90594, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

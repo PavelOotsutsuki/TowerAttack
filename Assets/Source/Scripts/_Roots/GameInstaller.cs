@@ -22,6 +22,7 @@ using GameFields.FightMenues;
 using Tools.Utils.Screens;
 using Cards.Views.BigCardViews;
 using Cards.Views.BigCardViews.Capabilities;
+using Cards.Sounds;
 
 namespace Roots
 {
@@ -43,7 +44,6 @@ namespace Roots
         [SerializeField] private SkipTurnLabelEnemyAI _skipTurnLabelEnemyAI;
 
         [SerializeField] private VariantCardCreator _variantCardCreator;
-        [SerializeField] private EffectProcessSounds _effectProcessSounds;
 
         [SerializeField] private HandPlayer _playerHand;
         [SerializeField] private TablePlayer _playerTable;
@@ -72,7 +72,7 @@ namespace Roots
         [SerializeField] private AttackMenuEnemyAI _enemyAttackMenu;
         [SerializeField] private CardAttackZoneEnemyAI _enemyCardAttackZone;
 
-        private CardSoundVolume _cardSoundVolume;
+        private CardSoundRoot _cardSoundRoot;
         private ScreenRoot _screenRoot;
         private CardCapabilityDescription _cardCapabilityDescription;
 
@@ -82,8 +82,8 @@ namespace Roots
 
             Container.Bind<BigCardRoot>().FromInstance(_bigCardRoot).AsSingle();
 
-            _cardSoundVolume = new CardSoundVolume();
-            Container.Bind<CardSoundVolume>().FromInstance(_cardSoundVolume).AsSingle();
+            _cardSoundRoot = new CardSoundRoot();
+            Container.Bind<CardSoundRoot>().FromInstance(_cardSoundRoot).AsSingle();
 
             _screenRoot = new ScreenRoot();
             Container.Bind<ScreenRoot>().FromInstance(_screenRoot).AsSingle();
@@ -105,7 +105,6 @@ namespace Roots
             Container.Bind<SkipTurnLabelEnemyAI>().FromInstance(_skipTurnLabelEnemyAI).AsSingle();
 
             Container.Bind<VariantCardCreator>().FromInstance(_variantCardCreator).AsSingle();
-            Container.Bind<EffectProcessSounds>().FromInstance(_effectProcessSounds).AsSingle();
 
             Container.Bind<HandPlayer>().FromInstance(_playerHand).AsSingle();
             Container.Bind<TablePlayer>().FromInstance(_playerTable).AsSingle();
