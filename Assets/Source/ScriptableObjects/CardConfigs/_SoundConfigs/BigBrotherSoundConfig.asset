@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: BigBrotherSoundConfig
   m_EditorClassIdentifier: 
   <Sounds>k__BackingField:
-  - {fileID: 8300000, guid: 9ba3701ab0bb043b1be380ef2e78911e, type: 3}
+  - {fileID: 8300000, guid: ca58cb898896444a294af52a96c9264d, type: 3}

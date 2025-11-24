@@ -93,7 +93,7 @@ namespace Roots
                 variantCardCreator, brothersEffectHandlerRoot, bus, personEffectsHandlerRoot, discardManager, loseActionsRoot,
                 cardSoundRoot);
 
-            _cardRoot.Init(effectFactory, bigCardRoot, cardDragAndDropHandler, cardCapabilityDescription, cardSoundRoot);
+            _cardRoot.Init(effectFactory, bigCardRoot, cardDragAndDropHandler, cardCapabilityDescription, cardSoundRoot, _fontRoot);
             deck.Init(seatPool, _cardRoot.Cards);
 
             _gameFieldRoot.Init(_personsState, enemyAI, bus, seatPool, soundRoot, fightMenuActivateButton);

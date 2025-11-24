@@ -2,20 +2,25 @@ using System.Collections.Generic;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 using TMPro;
+using Tools;
 
 namespace Roots
 {
-    internal class FontRoot : MonoBehaviour, IAutomaticFillComponents
+    public class FontRoot : MonoBehaviour, IFontSetter, IAutomaticFillComponents
     {
         [SerializeField] private TMP_Text[] _allTextMechProTexts;
         [SerializeField] private TMP_FontAsset _defaultFont;
 
-        public void Init()
+        internal void Init()
         {
-            foreach (TMP_Text TMP_Text in _allTextMechProTexts)
+            SetFont(_allTextMechProTexts);
+        }
+
+        public void SetFont(IEnumerable<TMP_Text> texts)
+        {
+            foreach (TMP_Text TMP_Text in texts)
             {
                 TMP_Text.font = _defaultFont;
-                //TMP_Text.text = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЬЫЪЭЮЯабвгдеёжзийклмнопрстуфхцчшщьыъэюя1234567890,.!? -:;";
             }
         }
 

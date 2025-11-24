@@ -33,6 +33,7 @@ namespace GameFields.Effects
         private readonly DiscardManager _discardManager;
         private readonly LoseActionsRoot _loseActionsRoot;
         private readonly CardSoundRoot _cardSoundRoot;
+        private readonly AwakeSoundReproducer _awakeSoundReproducer;
 
         //private Effect _lastEffect;
 
@@ -52,6 +53,9 @@ namespace GameFields.Effects
             _discardManager = discardManager;
             _loseActionsRoot = loseActionsRoot;
             _cardSoundRoot = cardSoundRoot;
+
+            _awakeSoundReproducer = new AwakeSoundReproducer(_cardSoundRoot, _viewRoot, _personsState);
+
             _voidEffectConfig = ScriptableObject.CreateInstance<CardEffectConfig>();
             //_voidEffectConfig = new CardEffectConfig();
             //_lastEffect = _voidEffect;
@@ -63,8 +67,7 @@ namespace GameFields.Effects
         {
             CardSoundLogic currentCardSoundLogic = cardEffectConfigPair.CardEffectData.CardSoundLogic;
 
-            if (currentCardSoundLogic is IAwakeSoundKeeper awakeSoundKeeper)
-                _cardSoundRoot.Play(awakeSoundKeeper.AwakeSound);
+            _awakeSoundReproducer.Play(currentCardSoundLogic);
 
             bool isRememberEffect = true;
             CardEffectConfig currentEffectConfig = cardEffectConfigPair.CardEffectConfig;
