@@ -21,7 +21,7 @@ namespace GameFields
         private readonly ITowerTransitable _playerTower;
         private readonly ITransitable _enemyHand;
         private readonly ITowerTransitable _enemyTower;
-        private readonly IIndexTransitable _deck;
+        private readonly ITransitable _deck;
         private readonly ITransitable _discardPile;
         private readonly ICardTakable _fireRoot;
         private readonly ICardSeatable _playerFirePool;
@@ -45,29 +45,29 @@ namespace GameFields
             _enemyFirePool = enemyFirePool;
         }
 
-        public void InsertIntoDeck(Card card, int index, TransitFromType from)
+        //public void InsertIntoDeck(Card card, int index, TransitFromType from)
+        //{
+        //    ICardTakable takable = from switch
+        //    {
+        //        TransitFromType.DiscardPile => _discardPile,
+        //        TransitFromType.HandEnemy => _enemyHand,
+        //        TransitFromType.HandPlayer => _playerHand,
+        //        TransitFromType.FireRoot => _fireRoot,
+        //        _ => throw new Exception($"Ошибка нахождения типа {typeof(TransitFromType)}: {from}")
+        //    };
+
+        //    if (takable.TryTakeAwayCard(card) == false)
+        //        throw new Exception("Ошибка: не найдена карта в from");
+
+        //    _deck.SeatCard(card, index);
+        //}
+
+        public void TransitCard(Card card, TransitFromType from, TransitToType to, Action callback = null, int index = -1)
         {
-            ICardTakable takable = from switch
-            {
-                TransitFromType.DiscardPile => _discardPile,
-                TransitFromType.HandEnemy => _enemyHand,
-                TransitFromType.HandPlayer => _playerHand,
-                TransitFromType.FireRoot => _fireRoot,
-                _ => throw new Exception($"Ошибка нахождения типа {typeof(TransitFromType)}: {from}")
-            };
-
-            if (takable.TryTakeAwayCard(card) == false)
-                throw new Exception("Ошибка: не найдена карта в from");
-
-            _deck.SeatCard(card, index);
+            TransitingCard(card, from, to, index, callback).ToUniTask();
         }
 
-        public void TransitCard(Card card, TransitFromType from, TransitToType to, Action callback = null)
-        {
-            TransitingCard(card, from, to, callback).ToUniTask();
-        }
-
-        private IEnumerator TransitingCard(Card card, TransitFromType from, TransitToType to, Action callback)
+        private IEnumerator TransitingCard(Card card, TransitFromType from, TransitToType to, int index, Action callback)
         {
             ICardTakable takable = from switch
             {
@@ -110,7 +110,7 @@ namespace GameFields
             }
             else
             {
-                seatable.SeatCard(card);
+                seatable.SeatCard(card, index);
                 callback?.Invoke();
             }
         }

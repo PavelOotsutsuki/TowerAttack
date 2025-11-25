@@ -62,6 +62,14 @@ namespace GameFields.Persons.Fires
             return thisCount >= count;
         }
 
+        public int IndexOf(Card card)
+        {
+            if (_playerFirePool.FireList.Contains(card))
+                return _playerFirePool.IndexOf(card);
+
+            return _enemyFirePool.IndexOf(card);
+        }
+
         public bool Contains(int number)
         {
             return AllCards.Select(c => c.ViewData.Number).Contains(number);

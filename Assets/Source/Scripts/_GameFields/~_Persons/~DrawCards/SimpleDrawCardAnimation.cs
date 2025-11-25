@@ -25,12 +25,12 @@ namespace GameFields.Persons.DrawCards
 
         public bool IsComplete => _isComplete;
 
-        public void Play(IReadOnlyList<Card> cards)
+        public void Play(IReadOnlyList<Card> cards, int indexAdd)
         {
-            Playing(cards).ToUniTask();
+            Playing(cards, indexAdd).ToUniTask();
         }
 
-        private IEnumerator Playing(IReadOnlyList<Card> cards)
+        private IEnumerator Playing(IReadOnlyList<Card> cards, int indexAdd)
         {
             _isComplete = false;
 
@@ -38,7 +38,7 @@ namespace GameFields.Persons.DrawCards
 
             foreach (Card drawnCard in cards)
             {
-                _hand.SeatCard(drawnCard);
+                _hand.SeatCard(drawnCard, indexAdd);
                 _drawCardAdder.Add(drawnCard);
 
                 yield return new WaitForSeconds(_delay);

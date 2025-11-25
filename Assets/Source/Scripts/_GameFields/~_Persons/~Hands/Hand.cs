@@ -6,10 +6,12 @@ using Cards.Views;
 using GameFields.Persons.EffectHandlers.Curses;
 using GameFields.Persons.EffectHandlers.Slimes;
 using GameFields.Seats;
+using ModestTree;
 using Tools.Utils;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Screens;
 using UnityEngine;
+using UnityEngine.UIElements;
 using Zenject;
 
 namespace GameFields.Persons.Hands
@@ -160,7 +162,7 @@ namespace GameFields.Persons.Hands
         //    _turnCardsFromDeck.Add(card);
         //}
 
-        public void SeatCard(Card card)
+        public void SeatCard(Card card, int index = -1)
         {
             //card.SetDragAndDropListener(this);
 
@@ -181,7 +183,28 @@ namespace GameFields.Persons.Hands
             Seat handSeat = _handSeatPool.GetSeat();
             handSeat.transform.SetParent(_containerForSeats);
             handSeat.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-            _handSeats.Add(handSeat);
+
+            if (index == -1)
+            {
+                _handSeats.Add(handSeat);
+            }
+            else
+            {
+                if (index < 0 || index > AllCards.Count())
+                    index = AllCards.Count();
+
+                if (_handSeatIndex != -1)
+                    if (_handSeatIndex >= index)
+                        _handSeatIndex++;
+
+                _handSeats.Insert(index, handSeat);
+
+                for (int i = 0; i < _handSeats.Count; i++)
+                {
+                    _handSeats[i].transform.SetAsLastSibling();// Непонятно сколько ресурсов жрет, пока отдельно реализую
+                }
+            }
+
             handSeat.SetCard(card, _sideType, _returnInSeatDuration);
             //card.SetActiveInteraction(_isActiveInteraction);
 
@@ -189,7 +212,6 @@ namespace GameFields.Persons.Hands
 
             SortHandSeats();
         }
-
         //public bool TryGetRandomCard(out Card card)
         //{
         //    card = null;
@@ -207,6 +229,9 @@ namespace GameFields.Persons.Hands
         public bool TryTakeAwayCard(Card card)
         {
             bool isFind = TryFindHandSeat(out Seat findedHandSeat, card);
+
+            if (isFind == false)
+                return false;
 
             if (_dragCardHandSeat == findedHandSeat)
             {
@@ -390,6 +415,13 @@ namespace GameFields.Persons.Hands
                         allCards++;
 
             return allCards >= count;
+        }
+
+        public int IndexOf(Card card)
+        {
+            ForciblyBlock();
+
+            return _handSeats.IndexOf(_handSeats.Where(s => s.Card == card).First());
         }
 
         public bool Contains(int number)
@@ -611,6 +643,7 @@ namespace GameFields.Persons.Hands
                 Vector3 rotation = new Vector3(0f, 0f, StartRotation);
 
                 _handSeats[i].SetLocalPositionValues(position, rotation, _returnInSeatDuration);
+                //_handSeats[i].transform.SetAsLastSibling(); //Непонятно сколько ресурсов жрет, пока отдельно реализую
             }
         }
 

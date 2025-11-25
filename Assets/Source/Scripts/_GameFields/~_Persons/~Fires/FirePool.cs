@@ -32,14 +32,22 @@ namespace GameFields.Persons.Fires
         public IReadOnlyList<Card> FireList => _fireList;
         public int Count => _fireList.Count;
 
-        public void SeatCard(Card card)
+        public void SeatCard(Card card, int index = -1)
         {
+            if (index < 0 || index > _fireList.Count)
+                index = _fireList.Count;
+
             card.gameObject.SetActive(false);
             card.ResetDrag();
 
-            _fireList.Add(card);
-
             Seat(card);
+
+            _fireList.Insert(index, card);
+        }
+
+        public int IndexOf(Card card)
+        {
+           return _fireList.IndexOf(card);
         }
 
         public void Remove(Card card)

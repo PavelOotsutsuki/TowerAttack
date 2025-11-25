@@ -309,9 +309,9 @@ namespace GameFields.Persons
             return _drawCardRoot.DrawCards(countCards, callback);
         }
 
-        int IDrawCardManager.DrawCard(Card card, Action callback)
+        int IDrawCardManager.DrawCard(Card card, Action callback, int indexAdd)
         {
-            return _drawCardRoot.DrawCard(card, callback);
+            return _drawCardRoot.DrawCard(card, callback, indexAdd);
         }
 
         //bool ITowerTransitCheck.IsFill => _tower.HasFreeSeat == false;

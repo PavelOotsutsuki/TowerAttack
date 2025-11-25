@@ -52,16 +52,17 @@ namespace GameFields.DiscardPiles
             DiscardingCards(signal.Card).ToUniTask();
         }
 
-        //private void SeatCard(Card card)
-        public void SeatCard(Card card)
+        public void SeatCard(Card card, int index = -1)
         {
+            if (index < 0 || index > _seats.Count)
+                index = _seats.Count;
+
             card.SetActiveInteraction(false);
-            
+
             Seat discardPileSeat = GetSeat();
             discardPileSeat.SetCard(card, SideType.Back, _discardPileConfig.StartCardTranslateSpeed);
-            
             //TODO: add seat removing
-            _seats.Add(discardPileSeat);
+            _seats.Insert(index, discardPileSeat);
         }
 
         public bool TryTakeAwayCard(Card card)
@@ -153,6 +154,11 @@ namespace GameFields.DiscardPiles
             return _seats.Select(s => s.Card.ViewData.Number).Contains(number);
         }
 
+        public int IndexOf(Card card)
+        {
+            return _seats.IndexOf(_seats.Where(s => s.Card == card).First());
+        }
+
         private Seat GetSeat()
         {
             Seat discardPileSeat = _discardPileSeatPool.GetSeat();
@@ -173,7 +179,7 @@ namespace GameFields.DiscardPiles
 
         private IEnumerator DiscardingCards(Card discardingCard)
         {
-            DiscardCardAnimation discardCardAnimation = new DiscardCardAnimation(_discardPileConfig.DiscardCardAnimationData, _discardPileConfig.RectTransform, discardingCard, SeatCard);
+            DiscardCardAnimation discardCardAnimation = new DiscardCardAnimation(_discardPileConfig.DiscardCardAnimationData, _discardPileConfig.RectTransform, discardingCard, (card) => SeatCard(card, -1));
             discardCardAnimation.Play();
             yield return new WaitForSeconds(_discardPileConfig.DiscardDelay);
         }

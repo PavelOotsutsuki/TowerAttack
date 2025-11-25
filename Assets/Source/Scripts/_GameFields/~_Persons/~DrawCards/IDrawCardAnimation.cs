@@ -6,6 +6,6 @@ namespace GameFields.Persons.DrawCards
 {
     public interface IDrawCardAnimation: ICompletable
     {
-        public void Play(IReadOnlyList<Card> cards);
+        public void Play(IReadOnlyList<Card> cards, int indexAdd);
     }
 }

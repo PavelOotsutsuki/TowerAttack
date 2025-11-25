@@ -35,9 +35,9 @@ namespace GameFields.Persons.DrawCards
         //    TakeCards(countCards, callback);
         //}
 
-        public int DrawCard(Card card, Action callback = null)
+        public int DrawCard(Card card, Action callback = null, int indexAdd = -1)
         {
-            int index = _deck.IndexOf(card);
+            int indexDeck = _deck.IndexOf(card);
 
             if (_deck.TryTakeAwayCard(card) == false)
             {
@@ -46,9 +46,9 @@ namespace GameFields.Persons.DrawCards
 
             _currentDrawCardAnimation = _drawCardAnimationWatcher.CurrentAnimation;
 
-            DrawingCards(new List<Card>() { card }, callback).ToUniTask();
+            DrawingCards(new List<Card>() { card }, callback, indexAdd).ToUniTask();
 
-            return index;
+            return indexDeck;
         }
 
         private List<Card> TakeCards(int countCards, Action callback = null)
@@ -74,7 +74,7 @@ namespace GameFields.Persons.DrawCards
             return drawnCards;
         }
 
-        private IEnumerator DrawingCards(IReadOnlyList<Card> cards, Action callback)
+        private IEnumerator DrawingCards(IReadOnlyList<Card> cards, Action callback, int indexAdd = -1) 
         {
             IsDrawing = true;
 
@@ -90,7 +90,7 @@ namespace GameFields.Persons.DrawCards
             //        yield return new WaitUntil(() => currentDrawCardAnimation.IsComplete);
             //    }
             //}
-            currentDrawCardAnimation.Play(cards);
+            currentDrawCardAnimation.Play(cards, indexAdd);
             yield return new WaitUntil(() => currentDrawCardAnimation.IsComplete);
 
             callback?.Invoke();

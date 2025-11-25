@@ -155,6 +155,13 @@ namespace GameFields
             //return result;
         }
 
+        public int IndexOf(ViewType viewType, Card card)
+        {
+            ICardView cardView = _views[viewType];
+
+            return cardView.IndexOf(card);
+        }
+
         public bool TryViewDeckLastCards(out IReadOnlyList<Card> cards, int countCards)
         {
             cards = null;

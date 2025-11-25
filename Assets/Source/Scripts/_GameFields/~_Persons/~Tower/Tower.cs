@@ -48,6 +48,19 @@ namespace GameFields.Persons.Towers
             return new List<IFeatureRechanger>() { _towerSeat.Card };
         }
 
+        //public virtual void SeatCard(Card card)
+        //{
+        //    if (HasFreeSeat)
+        //    {
+        //        card.SetActiveInteraction(IsCardInteraction);
+        //        _towerSeat.SetCard(card, DefaultSideType, _seatDuration);
+        //    }
+        //    else
+        //    {
+        //        Debug.Log("Если все хорошо этого сообщения не должно быть, вроде как");
+        //    }
+        //}
+
         public virtual void SeatCard(Card card)
         {
             if (HasFreeSeat)

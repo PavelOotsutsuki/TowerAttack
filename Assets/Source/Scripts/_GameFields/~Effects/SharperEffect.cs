@@ -18,16 +18,16 @@ namespace GameFields.Effects
 
         private readonly Person _activePerson;
         private readonly IDrawCardManager _drawCardManager;
-        private readonly CardLocationViewRoot _cardLocationViewRoot;
+        private readonly CardLocationViewRoot _viewRoot;
         private readonly CardTransitManager _transitManager;
 
-        public SharperEffect(Person activePerson, CardLocationViewRoot cardLocationViewRoot, CardTransitManager transitManager,
+        public SharperEffect(Person activePerson, CardLocationViewRoot viewRoot, CardTransitManager transitManager,
             EffectData data) : base(data)
         {
             _activePerson = activePerson;
             _drawCardManager = activePerson;
 
-            _cardLocationViewRoot = cardLocationViewRoot;
+            _viewRoot = viewRoot;
             _transitManager = transitManager;
 
             Play();
@@ -44,12 +44,12 @@ namespace GameFields.Effects
         {
             ViewType hand = _activePerson is Player ? ViewType.HandPlayer : ViewType.HandAI;
 
-            if (_cardLocationViewRoot.TryViewDeckLastCards(out IReadOnlyList<Card> deckCards, CountDeckCards) == false)
+            if (_viewRoot.TryViewDeckLastCards(out IReadOnlyList<Card> deckCards, CountDeckCards) == false)
             {
                 yield break;
             }
 
-            if (_cardLocationViewRoot.TryView(out IReadOnlyList<Card> handCards, CountHandCards, hand) == false)
+            if (_viewRoot.TryView(out IReadOnlyList<Card> handCards, CountHandCards, hand) == false)
             {
                 yield break;
             }
@@ -68,11 +68,12 @@ namespace GameFields.Effects
 
             Card cardFromHand = (Card)handResult.Result;
 
-            int index = _drawCardManager.DrawCard(cardFromDeck);
+            int indexHand = _viewRoot.IndexOf(hand, cardFromHand);
+            int indexDeck = _drawCardManager.DrawCard(cardFromDeck, index: indexHand);
 
             TransitFromType transitFrom = _activePerson is Player ? TransitFromType.HandPlayer : TransitFromType.HandEnemy;
 
-            _transitManager.InsertIntoDeck(cardFromHand, index, transitFrom);
+            _transitManager.TransitCard(cardFromHand, transitFrom, TransitToType.Deck, index: indexDeck);
 
             yield break;
         }

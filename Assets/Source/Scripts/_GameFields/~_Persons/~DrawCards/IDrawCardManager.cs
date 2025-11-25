@@ -7,6 +7,6 @@ namespace GameFields.Persons.DrawCards
     public interface IDrawCardManager
     {
         List<Card> DrawCards(int countCards, Action callback = null);
-        int DrawCard(Card card, Action callback = null);
+        int DrawCard(Card card, Action callback = null, int index = -1);
     }
 }

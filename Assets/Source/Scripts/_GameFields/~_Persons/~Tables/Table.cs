@@ -87,6 +87,17 @@ namespace GameFields.Persons.Tables
             return AllCards.Where(s => exceptions.Contains(s.ViewData.Number) == false).Count() >= count;
         }
 
+        public int IndexOf(Card card)
+        {
+            for (int i = 0; i < _sortedSeats.Length; i++)
+            {
+                if (_sortedSeats[i].PersonEffect.Card == card)
+                    return i;
+            }
+
+            return -1;
+        }
+
         //public void FreeSeats(IEnumerable<Card> seatables)
         //{
         //    foreach (TableSeat seat in _tableSeats)

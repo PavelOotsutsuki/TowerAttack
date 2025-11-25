@@ -14,7 +14,7 @@ using Cards.Views;
 
 namespace GameFields.Decks
 {
-    public class Deck : MonoBehaviour, IAutomaticFillComponents, IDeckTake, IDeckView, IIndexTransitable, ICardsCounter//, IDeckSeatable
+    public class Deck : MonoBehaviour, IAutomaticFillComponents, IDeckTake, IDeckView, ITransitable, ICardsCounter//, IDeckSeatable
     {
         [SerializeField] private DeckCardContainer _cardContainer;
         [SerializeField] private DeckCardBackViewer _cardBackViewer;
@@ -41,7 +41,7 @@ namespace GameFields.Decks
 
             foreach (Card card in cards)
             {
-                SeatCard(card);
+                SeatCard(card, _seats.Count);
                 //Seat deckSeat = GetSeat();
                 //deckSeat.SetCard(card, SideType.Back, 0f);
 
@@ -67,25 +67,13 @@ namespace GameFields.Decks
             return _seats.Select(c => c.Card.ViewData.Number).Contains(number);
         }
 
-        public void SeatCard(Card card, int index)
+        public void SeatCard(Card card, int index = -1)
         {
-            Seat deckSeat = PreSeatCard(card);
+            bool isShuffle = index == -1;
 
-            _seats.Insert(index, deckSeat);
-            OnSeatsCountChange?.Invoke();
-        }
+            if (index < 0 || index > _seats.Count)
+                index = _seats.Count;
 
-        public void SeatCard(Card card)
-        {
-            Seat deckSeat = PreSeatCard(card);
-
-            _seats.Add(deckSeat);
-            OnSeatsCountChange?.Invoke();
-            ShuffleCards();
-        }
-
-        private Seat PreSeatCard(Card card)
-        {
             Seat deckSeat = GetSeat();
             deckSeat.SetCard(card, SideType.Back, 0.5f);
 
@@ -95,7 +83,11 @@ namespace GameFields.Decks
             //}
             CheckBackViewer();
 
-            return deckSeat;
+            _seats.Insert(index, deckSeat);
+            OnSeatsCountChange?.Invoke();
+
+            if (isShuffle)
+                ShuffleCards();
         }
 
         private void CheckBackViewer()

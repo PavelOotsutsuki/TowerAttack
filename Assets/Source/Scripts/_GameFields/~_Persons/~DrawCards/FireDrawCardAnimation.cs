@@ -28,7 +28,7 @@ namespace GameFields.Persons.DrawCards
 
         public bool IsComplete => _isComplete;
 
-        public void Play(IReadOnlyList<Card> cards)
+        public void Play(IReadOnlyList<Card> cards, int indexAdd)
         {
             Playing(cards).ToUniTask();
         }
