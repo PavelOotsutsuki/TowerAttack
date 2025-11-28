@@ -1,10 +1,8 @@
 using System.Collections;
 using System.Linq;
-using Cards;
 using GameFields.Persons;
 using GameFields.Persons.DrawCards;
 using UnityEngine;
-using Zenject;
 
 namespace GameFields.Effects
 {
@@ -13,8 +11,6 @@ namespace GameFields.Effects
         private readonly Person _activePerson;
         private readonly Person _deactivePerson;
 
-        private bool _isEffectComplete;
-
         private readonly CardLocationViewRoot _cardLocationViewRoot;
 
         public RobinGoodEffect(Person activePerson, Person deactivePerson, CardLocationViewRoot cardLocationViewRoot,
@@ -22,7 +18,6 @@ namespace GameFields.Effects
         {
             _activePerson = activePerson;
             _deactivePerson = deactivePerson;
-            _isEffectComplete = false;
 
             _cardLocationViewRoot = cardLocationViewRoot;
 
@@ -58,7 +53,6 @@ namespace GameFields.Effects
 
             if (countCards == 0)
             {
-                CompleteEffect();
                 yield break;
             }
 
@@ -74,14 +68,10 @@ namespace GameFields.Effects
                 gettedPerson = player;
             }
 
-            gettedPerson.DrawCards(countCards, CompleteEffect);
+            bool isDraw = false;
+            gettedPerson.DrawCards(countCards, () => isDraw = true);
 
-            yield return new WaitUntil(() => _isEffectComplete);
-        }
-
-        private void CompleteEffect()
-        {
-            _isEffectComplete = true;
+            yield return new WaitUntil(() => isDraw);
         }
     }
 }

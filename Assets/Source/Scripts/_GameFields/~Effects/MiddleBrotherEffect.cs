@@ -1,10 +1,7 @@
 using System.Collections;
-using Cards;
 using GameFields.Persons;
 using GameFields.Persons.EffectHandlers.Brothers;
-using GameFields.Persons.SelectMenues;
 using UnityEngine;
-using Zenject;
 
 namespace GameFields.Effects
 {
@@ -15,8 +12,6 @@ namespace GameFields.Effects
 
         private readonly Person _activePerson;
         private readonly BrothersEffectHandlerRoot _brothersEffectHandlerRoot;
-
-        private bool _endPlayingAttack;
 
         public MiddleBrotherEffect(Person activePerson, BrothersEffectHandlerRoot brothersEffectHandlerRoot,
             EffectData data) : base(data)
@@ -36,22 +31,17 @@ namespace GameFields.Effects
 
         protected override IEnumerator OnPlaying()
         {
-            _endPlayingAttack = false;
+            bool endAttack = false;
             //_activePerson.ChoiceActivate("Выбрано:", 3);
             int countAttack = _activePerson.BrothersCounter;
-            _activePerson.AttackActivate(StartValue + countAttack, EndPlayingCallback);
+            _activePerson.AttackActivate(StartValue + countAttack, () => endAttack = true);
             //_activePerson.ChoiceActivate(4, EndPlayingCallback, RestrictionType.Consecutive);
             //yield return new WaitUntil(() => _activePerson.IsChoiceComplete);
-            yield return new WaitUntil(() => _endPlayingAttack);
+            yield return new WaitUntil(() => endAttack);
 
             _brothersEffectHandlerRoot.Upgrade(UpgradeCount);
 
             //_deactivePerson.AttackDeactivate();
-        }
-
-        private void EndPlayingCallback()
-        {
-            _endPlayingAttack = true;
         }
     }
 }

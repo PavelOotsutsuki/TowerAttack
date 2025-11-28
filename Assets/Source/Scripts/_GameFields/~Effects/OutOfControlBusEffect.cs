@@ -76,11 +76,67 @@ namespace GameFields.Effects
         private IEnumerator FiringCards(IEnumerable<Card> firedCards, TransitFromType transitFrom, TransitToType transitTo,
             CallbackHandler callbackHandler)
         {
+            ViewType viewType = ViewTransitTypeConverter.ConvertToViewType(transitFrom);
+            int indexOffset = 0; // Смещение индекса для спавна пиромантов из-за сжигания других карт
+            Dictionary<Card, int> firedCardIndexPair = new Dictionary<Card, int>();
+            Card lastPyromancersManuscript = null;
+            Card lastCard = null;
+
             foreach (Card firedCard in firedCards)
             {
-                _transitManager.TransitCard(firedCard, transitFrom, transitTo);
+                int index = _viewRoot.IndexOf(viewType, firedCard);
+                firedCardIndexPair.Add(firedCard, index);
+
+                if (firedCard.IsPyromancersManuscript)
+                {
+                    lastPyromancersManuscript = firedCard;
+                }
+
+                lastCard = firedCard;
+            }
+
+            CallbackHandler lastPyromancersManuscriptFireCallback = null;
+            CallbackHandler lastCardFireCallback = null;
+
+            foreach (Card firedCard in firedCards)
+            {
+                int realIndex = firedCardIndexPair[firedCard] + indexOffset;
+
+                if (lastPyromancersManuscript != null && firedCard == lastPyromancersManuscript)
+                {
+                    lastPyromancersManuscriptFireCallback = new CallbackHandler();
+                    _transitManager.TransitCard(firedCard, transitFrom, transitTo, () => lastPyromancersManuscriptFireCallback.Complete(), index: realIndex);
+                }
+                else
+                {
+                    if (firedCard == lastCard)
+                    {
+                        lastCardFireCallback = new CallbackHandler();
+                        _transitManager.TransitCard(firedCard, transitFrom, transitTo, () => lastCardFireCallback.Complete(), index: realIndex);
+                    }
+                    else
+                    {
+                        _transitManager.TransitCard(firedCard, transitFrom, transitTo, index: realIndex);
+                    }
+                }
+
+                if (firedCard.IsPyromancersManuscript)
+                {
+                    indexOffset += 1; // -1 за счет минус карты, +2 за счет 2 пиромантов
+                }
+                else
+                {
+                    indexOffset -= 1; // -1 за счет минус карты
+                }
+
                 yield return new WaitForSeconds(0.2f);
             }
+
+            if (lastCardFireCallback != null)
+                yield return new WaitUntil(() => lastCardFireCallback.IsComplete);
+
+            if (lastPyromancersManuscriptFireCallback != null)
+                yield return new WaitUntil(()=> lastPyromancersManuscriptFireCallback.IsComplete);
 
             callbackHandler.Complete();
         }

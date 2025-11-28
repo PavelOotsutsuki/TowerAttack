@@ -7,10 +7,9 @@ using GameFields.InformationLabels;
 using Tools.UI;
 using System.Linq;
 using Tools.Utils;
-using System;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.DrawCards;
-using Zenject;
+using System;
 
 namespace GameFields.Effects
 {
@@ -49,7 +48,8 @@ namespace GameFields.Effects
 
         protected override IEnumerator OnPlaying()
         {
-            ViewType enemyhandType = _activePerson is Player ? ViewType.HandAI : ViewType.HandPlayer;
+            //ViewType enemyhandType = _activePerson is Player ? ViewType.HandAI : ViewType.HandPlayer;
+            ViewType enemyHandType = ViewTransitTypeConverter.GetPersonHandViewType(_activePerson, false);
 
             Card deckCard = null;
 
@@ -60,7 +60,7 @@ namespace GameFields.Effects
 
             Card handCard = null;
 
-            if (_viewRoot.TryView(out IReadOnlyList<Card> cardHand, 1, enemyhandType))
+            if (_viewRoot.TryView(out IReadOnlyList<Card> cardHand, 1, enemyHandType))
             {
                 handCard = cardHand[0];
             }
@@ -83,7 +83,7 @@ namespace GameFields.Effects
                 }
                 else
                 {
-                    throw new System.Exception("Ошибка условия вывода сообщения для " + typeof(DetectiveRhodesEffect));
+                    throw new Exception("Ошибка условия вывода сообщения для " + typeof(DetectiveRhodesEffect));
                 }
 
                 LabelActivateData labelActivateData = new LabelActivateData(activateMessage);
@@ -100,7 +100,7 @@ namespace GameFields.Effects
             yield return new WaitUntil(() => deckResult.IsComplete);
 
             DiscoverResult handResult = new DiscoverResult();
-            List<ViewType> noContainsForHand = new List<ViewType>() { enemyhandType, ViewType.TablePlayer, ViewType.TableAI };
+            List<ViewType> noContainsForHand = new List<ViewType>() { enemyHandType, ViewType.TablePlayer, ViewType.TableAI };
             Discover(handCard, _countHandDiscoverCards, _activateHandDiscoverMessage, handResult, noContainsForHand);
             yield return new WaitUntil(() => handResult.Result != null);
 
@@ -109,11 +109,18 @@ namespace GameFields.Effects
             //if ((deckResult.Result == deckCard && handResult.Result == handCard) || isTest)
             if (deckResult.Result == deckCard && handResult.Result == handCard)
             {
-                TransitFromType handFrom = _activePerson is Player ? TransitFromType.HandEnemy : TransitFromType.HandPlayer;
-                TransitToType handTo = _activePerson is Player ? TransitToType.HandPlayer : TransitToType.HandEnemy;
+                //TransitFromType handFrom = _activePerson is Player ? TransitFromType.HandEnemy : TransitFromType.HandPlayer;
+                //TransitToType handTo = _activePerson is Player ? TransitToType.HandPlayer : TransitToType.HandEnemy;
+                TransitFromType handFrom = ViewTransitTypeConverter.GetPersonHandTransitFromType(_activePerson, false);
+                TransitToType handTo = ViewTransitTypeConverter.GetPersonHandTransitToType(_activePerson, true);
 
-                _transitManager.TransitCard(handCard, handFrom, handTo);
-                _drawCardManager.DrawCard(deckCard);
+                bool isTransit = false;
+                bool isDraw = false;
+
+                _transitManager.TransitCard(handCard, handFrom, handTo, callback: () => isTransit = true);
+                _drawCardManager.DrawCard(deckCard, callback: () => isDraw = true);
+
+                yield return new WaitUntil(() => isTransit && isDraw);
             }
             else
             {

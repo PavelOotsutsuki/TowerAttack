@@ -7,7 +7,6 @@ using GameFields.Persons;
 using GameFields.Persons.LookCardMenues;
 using Tools.UI;
 using UnityEngine;
-using Zenject;
 
 namespace GameFields.Effects
 {
@@ -42,7 +41,9 @@ namespace GameFields.Effects
         {
             //_deactivePerson.ActivateSharpSnakeEffect(CompleteEffect);
             //yield return new WaitUntil(() => _isEffectComplete);
-            ViewType hand = _activePerson is Player ? ViewType.HandAI : ViewType.HandPlayer;
+            //ViewType hand = _activePerson is Player ? ViewType.HandAI : ViewType.HandPlayer;
+            ViewType hand = ViewTransitTypeConverter.GetPersonHandViewType(_activePerson, false);
+
             IEnumerable<Card> cards = _cardLocationViewRoot.GetAllCards(hand);
 
             if (cards.Count() == 0)

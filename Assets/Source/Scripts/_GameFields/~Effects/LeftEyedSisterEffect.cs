@@ -35,7 +35,8 @@ namespace GameFields.Effects
 
         protected override IEnumerator OnPlaying()
         {
-            ViewType viewType = _activePerson is Player ? ViewType.HandPlayer : ViewType.HandAI;
+            //ViewType viewType = _activePerson is Player ? ViewType.HandPlayer : ViewType.HandAI;
+            ViewType viewType = ViewTransitTypeConverter.GetPersonHandViewType(_activePerson, true);
 
             //_activePerson
 

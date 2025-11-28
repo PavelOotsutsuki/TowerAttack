@@ -1,11 +1,9 @@
 using UnityEngine;
-using Cards;
 using GameFields.Persons;
 using System.Collections;
 using GameFields.Persons.Discovers;
 using System.Collections.Generic;
 using System;
-using Zenject;
 using Cards.Effects;
 using Cards.Views;
 
@@ -21,9 +19,6 @@ namespace GameFields.Effects
         private readonly CardEffectData _data;
         private readonly EffectDuration _effectDuration;
 
-        //public VariantEffect(Person activePerson, VariantCardCreator variantCardCreator,
-        //    Func<CardEffectConfig, Action<int>, Effect> effectCreator, Action<int> callback,
-        //    EffectType effectType) : base()
         public VariantEffect(Person activePerson, VariantCardCreator variantCardCreator,
             Func<EffectType, CardEffectData, EffectDuration, Effect> effectCreator, EffectType effectType, EffectData data)
             : base(data, 0f)

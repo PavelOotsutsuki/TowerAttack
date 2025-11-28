@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Cards;
 using GameFields.Persons;
 using GameFields.Persons.EffectHandlers;
@@ -38,8 +37,9 @@ namespace GameFields.Effects
         protected override IEnumerator OnPlaying()
         {
             //IEnumerable<Card> playerTableCards = _viewRoot.GetAllCards(ViewType.TablePlayer);
-            ViewType table = _deactivePerson is EnemyAI ? ViewType.TableAI : ViewType.TablePlayer;
-            
+            //ViewType table = _deactivePerson is EnemyAI ? ViewType.TableAI : ViewType.TablePlayer;
+            ViewType table = ViewTransitTypeConverter.GetPersonTableViewType(_deactivePerson, true);
+
             IEnumerable<Card> enemyTableCards = _viewRoot.GetAllCards(table);
 
             //IEnumerable<Card> tableCards = playerTableCards.Union(enemyTableCards);

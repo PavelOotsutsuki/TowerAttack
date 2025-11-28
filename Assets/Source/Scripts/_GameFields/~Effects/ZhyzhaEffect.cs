@@ -2,7 +2,6 @@ using System.Collections;
 using Cards;
 using GameFields.Persons;
 using UnityEngine;
-using Zenject;
 
 namespace GameFields.Effects
 {
@@ -30,9 +29,6 @@ namespace GameFields.Effects
         {
             _deactivePerson.ActivateSlimeEffect(_card);
             yield break;
-            //yield return new WaitForSeconds(10f);
-
-            //_deactivePerson.AttackDeactivate();
         }
     }
 }

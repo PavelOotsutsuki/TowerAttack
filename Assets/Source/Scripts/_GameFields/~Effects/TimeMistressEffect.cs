@@ -2,7 +2,6 @@ using Cards;
 using System.Collections;
 using System.Collections.Generic;
 using GameFields.Persons;
-using Zenject;
 using UnityEngine;
 
 namespace GameFields.Effects
@@ -33,13 +32,19 @@ namespace GameFields.Effects
 
         protected override IEnumerator OnPlaying()
         {
-            TransitToType transitTo = _activePerson is Player ? TransitToType.HandPlayer : TransitToType.HandEnemy;
+            //TransitToType transitTo = _activePerson is Player ? TransitToType.HandPlayer : TransitToType.HandEnemy;
+            TransitToType transitTo = ViewTransitTypeConverter.GetPersonHandTransitToType(_activePerson, true);
+            ViewType discardPile = ViewType.DiscardPile;
+            TransitFromType transitFromType = ViewTransitTypeConverter.ConvertToTransitFromType(discardPile);
 
-            if (_viewRoot.TryView(out IReadOnlyList<Card> cards, 1, ViewType.DiscardPile))
+            if (_viewRoot.TryView(out IReadOnlyList<Card> cards, 1, discardPile))
             {
                 Card card = cards[0];
 
-                _transitManager.TransitCard(card, TransitFromType.DiscardPile, transitTo);
+                bool isTransit = false;
+
+                _transitManager.TransitCard(card, transitFromType, transitTo, () => isTransit = true);
+                yield return new WaitUntil(() => isTransit);
             }
 
             yield break;

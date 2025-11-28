@@ -4,7 +4,6 @@ using System.Linq;
 using Cards;
 using GameFields.Persons;
 using UnityEngine;
-using Zenject;
 
 namespace GameFields.Effects
 {
@@ -13,8 +12,6 @@ namespace GameFields.Effects
         private readonly Person _activePerson;
         private readonly CardLocationViewRoot _viewRoot;
         private readonly CardTransitManager _transitManager;
-
-        private bool _isEffectComplete;
 
         public DumbMonkEffect(Person activePerson, CardLocationViewRoot viewRoot, CardTransitManager transitManager,
             EffectData data) : base(data)
@@ -35,39 +32,32 @@ namespace GameFields.Effects
 
         protected override IEnumerator OnPlaying()
         {
-            _isEffectComplete = false;
-
-            ViewType viewType = _activePerson is Player ? ViewType.HandPlayer : ViewType.HandAI;
+            //ViewType viewType = _activePerson is Player ? ViewType.HandPlayer : ViewType.HandAI;
+            ViewType viewType = ViewTransitTypeConverter.GetPersonHandViewType(_activePerson, true);
             IReadOnlyList<Card> cards = _viewRoot.GetAllCards(viewType).ToList();
 
             if (cards.Count <= 0)
             {
-                EffectComplete();
                 yield break;
             }
 
-            TransitFromType transitFromType;
-            TransitToType transitToType;
+            TransitFromType transitFromType = ViewTransitTypeConverter.ConvertToTransitFromType(viewType);
+            TransitToType transitToType = ViewTransitTypeConverter.GetPersonFirePoolTransitToType(_activePerson, true);
 
-            if (viewType == ViewType.HandPlayer)
-            {
-                transitFromType = TransitFromType.HandPlayer;
-                transitToType = TransitToType.PlayerFirePool;
-            }
-            else
-            {
-                transitFromType = TransitFromType.HandEnemy;
-                transitToType = TransitToType.EnemyFirePool;
-            }
-
-            _transitManager.TransitCard(cards[0], transitFromType, transitToType, EffectComplete);
+            //if (viewType == ViewType.HandPlayer)
+            //{
+            //    transitFromType = TransitFromType.HandPlayer;
+            //    transitToType = TransitToType.PlayerFirePool;
+            //}
+            //else
+            //{
+            //    transitFromType = TransitFromType.HandEnemy;
+            //    transitToType = TransitToType.EnemyFirePool;
+            //}
+            bool isTransit = false;
+            _transitManager.TransitCard(cards[0], transitFromType, transitToType, () => isTransit = true);
             //_activePerson.ActivateFateInevitability(_duration);
-            yield return new WaitUntil(() => _isEffectComplete);
-        }
-
-        private void EffectComplete()
-        {
-            _isEffectComplete = true;
+            yield return new WaitUntil(() => isTransit);
         }
     }
 }

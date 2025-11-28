@@ -1,12 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using Cards;
 using GameFields.Persons;
-using GameFields.Persons.SelectMenues;
-using GameFields.Signals;
 using UnityEngine;
-using Zenject;
 
 namespace GameFields.Effects
 {
@@ -17,8 +12,6 @@ namespace GameFields.Effects
         private readonly CardLocationViewRoot _viewRoot;
         private readonly LoseActionsRoot _loseActionsRoot;
         //private readonly SignalBus _bus;
-
-        private bool _isEffectComplete;
 
         public FateMistress_FatefulAttackEffect(Person activePerson, LoseActionsRoot loseActionsRoot, CardLocationViewRoot viewRoot,
             EffectData data) : base(data)
@@ -41,9 +34,10 @@ namespace GameFields.Effects
 
         protected override IEnumerator OnPlaying()
         {
-            _isEffectComplete = false;
+            bool isEffectComplete = false; 
 
-            ViewType hand = _activePerson is Player ? ViewType.HandPlayer : ViewType.HandAI;
+            //ViewType hand = _activePerson is Player ? ViewType.HandPlayer : ViewType.HandAI;
+            ViewType hand = ViewTransitTypeConverter.GetPersonHandViewType(_activePerson, true);
             int countCards = _viewRoot.GetAllCards(hand).Count();
 
             if (countCards == 0)
@@ -53,7 +47,7 @@ namespace GameFields.Effects
             }
 
             _activePerson.AttackActivate(countCards, CompleteEffect);
-            yield return new WaitUntil(() => _isEffectComplete);
+            yield return new WaitUntil(() => isEffectComplete); // Спойлер - никогда
         }
 
         private void CompleteEffect()

@@ -1,11 +1,8 @@
 using System.Collections;
-using Cards;
 using GameFields.Persons;
 using GameFields.Persons.DrawCards;
 using GameFields.Persons.EffectHandlers.Brothers;
-using GameFields.Persons.SelectMenues;
 using UnityEngine;
-using Zenject;
 
 namespace GameFields.Effects
 {
@@ -17,8 +14,6 @@ namespace GameFields.Effects
         private readonly Person _activePerson;
         private readonly IDrawCardManager _drawCardManager;
         private readonly BrothersEffectHandlerRoot _brothersEffectHandlerRoot;
-
-        private bool _endPlayingAttack;
 
         public BigBrotherEffect(Person activePerson, BrothersEffectHandlerRoot brothersEffectHandlerRoot, EffectData data)
             : base(data)
@@ -39,23 +34,22 @@ namespace GameFields.Effects
 
         protected override IEnumerator OnPlaying()
         {
-            _endPlayingAttack = false;
             //_activePerson.ChoiceActivate("Выбрано:", 3);
             int countAttack = _activePerson.BrothersCounter;
-            _activePerson.AttackActivate(StartValue + countAttack, EndPlayingCallback);
+            bool isAttackComplete = false;
+            _activePerson.AttackActivate(StartValue + countAttack, () => isAttackComplete = true);
             //_activePerson.ChoiceActivate(4, EndPlayingCallback, RestrictionType.Consecutive);
             //yield return new WaitUntil(() => _activePerson.IsChoiceComplete);
-            yield return new WaitUntil(() => _endPlayingAttack);
+            yield return new WaitUntil(() => isAttackComplete);
 
-            _drawCardManager.DrawCards(StartValue + countAttack);
+            bool isDrawComplete = false;
+            _drawCardManager.DrawCards(StartValue + countAttack, () => isDrawComplete = true);
+
+            yield return new WaitUntil(() => isDrawComplete);
+
             _brothersEffectHandlerRoot.Upgrade(UpgradeCount);
 
             //_deactivePerson.AttackDeactivate();
-        }
-
-        private void EndPlayingCallback()
-        {
-            _endPlayingAttack = true;
         }
     }
 }

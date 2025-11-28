@@ -5,7 +5,6 @@ using System.Collections;
 using System.Collections.Generic;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.DrawCards;
-using Zenject;
 
 namespace GameFields.Effects
 {
@@ -48,15 +47,13 @@ namespace GameFields.Effects
 
             yield return new WaitUntil(() => discoverResult.Result != null);
 
-            TransitFromType transitFrom = _activePerson is Player ? TransitFromType.HandPlayer : TransitFromType.HandEnemy;
-            TransitToType transitTo = _activePerson is Player ? TransitToType.HandEnemy : TransitToType.HandPlayer;
+            //TransitFromType transitFrom = _activePerson is Player ? TransitFromType.HandPlayer : TransitFromType.HandEnemy;
+            //TransitToType transitTo = _activePerson is Player ? TransitToType.HandEnemy : TransitToType.HandPlayer;
+            TransitFromType transitFrom = ViewTransitTypeConverter.GetPersonHandTransitFromType(_activePerson, true);
+            TransitToType transitTo = ViewTransitTypeConverter.GetPersonHandTransitToType(_activePerson, false);
 
             _transitManager.TransitCard((Card)discoverResult.Result, transitFrom, transitTo);
 
-            //if (_handTransitTryGet.TryGet(discoverResult.Result))
-            //{
-            //    _handTransitSet.Set(discoverResult.Result);
-            //}
         }
 
         public override void End()
@@ -65,35 +62,5 @@ namespace GameFields.Effects
 
             Debug.Log("End patriarch corall effect");
         }
-
-        //private void DiscoverCards()
-        //{
-        //    if (_cards is null)
-        //    {
-        //        _endPlaying = true;
-        //        return;
-        //    }
-
-        //    if (_cards.Count <= 0)
-        //    {
-        //        _endPlaying = true;
-        //        return;
-        //    }
-
-        //    DiscoverResult discoverResult = new DiscoverResult();
-        //    _activePerson.DiscoverCards(_cards, _activateDiscoverMessage, discoverResult);
-
-
-        //}
-
-        //private void RechangeCards(Card card)
-        //{
-        //    if (_handTransitTryGet.TryGet(card))
-        //    {
-        //        _handTransitSet.Set(card);
-        //    }
-
-        //    _endPlaying = true;
-        //}
     }
 }

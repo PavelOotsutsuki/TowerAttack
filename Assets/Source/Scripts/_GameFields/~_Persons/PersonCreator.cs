@@ -156,7 +156,7 @@ namespace GameFields.Persons
         private InformationLabel _informationLabel;
         private DiscardPile _discardPile;
         private FireRoot _fireRoot;
-        private ICardWatcher _cardWatcher;
+        private CardRoot _cardRoot;
 
         public DiscardManager DiscardManager => _discardManager;
 
@@ -207,7 +207,7 @@ namespace GameFields.Persons
 
         public void Init(SignalBus bus, Deck deck, EndTurnButton endTurnButton, SeatPool seatPool,
             CardDragAndDropHandler cardDragAndDropHandler, CardDragAndDropLightController cardDragAndDropLightController,
-            InformationLabel informationLabel, ICardWatcher cardRoot, CardSoundRoot cardSoundRoot, IVolume musicVolume,
+            InformationLabel informationLabel, CardRoot cardRoot, CardSoundRoot cardSoundRoot, IVolume musicVolume,
             CardCapabilityDescription cardCapabilityDescription)
         {
             _bus = bus;
@@ -215,7 +215,7 @@ namespace GameFields.Persons
             _endTurnButton = endTurnButton;
             _seatPool = seatPool;
             _informationLabel = informationLabel;
-            _cardWatcher = cardRoot;
+            _cardRoot = cardRoot;
 
             _skipTurnLabelPlayer.Init();
             _skipTurnLabelEnemyAI.Init();
@@ -229,8 +229,8 @@ namespace GameFields.Persons
             _fightMenu.Init(_inputRoot, _playerLoseActions, cardSoundRoot, musicVolume, cardCapabilityDescription);
             _fightMenuActivateButton.Init(_fightMenu);
 
-            _playerFirePool = new FirePool(_fireContainer.GetTransform());
-            _enemyFirePool = new FirePool(_fireContainer.GetTransform());
+            _playerFirePool = new FirePool(_fireContainer.GetTransform(), _cardRoot);
+            _enemyFirePool = new FirePool(_fireContainer.GetTransform(), _cardRoot);
             _fireRoot = new FireRoot(_playerFirePool, _enemyFirePool);
 
             _playerRechangeFeatureRuleController = new RechangeFeatureRuleController();
@@ -253,7 +253,7 @@ namespace GameFields.Persons
         public Player CreatePlayer()
         {
             SimpleDrawCardAnimation simpleDrawCardAnimation = new SimpleDrawCardAnimation(_playerHand, _playerTurnDrawnCards, _playerSimpleDrawCardAnimationData);
-            FireDrawCardAnimation fireDrawCardAnimation = new FireDrawCardAnimation(_playerFireDrawCardAnimationData, _playerFirePool);
+            FireDrawCardAnimation fireDrawCardAnimation = new FireDrawCardAnimation(_playerFireDrawCardAnimationData, _playerFirePool, _playerHand);
             DrawCardAnimationManager drawCardAnimationManager = new DrawCardAnimationManager(simpleDrawCardAnimation, fireDrawCardAnimation);
             DrawCardRoot drawCardRoot = new DrawCardRoot(drawCardAnimationManager, _deck);
 
@@ -300,7 +300,7 @@ namespace GameFields.Persons
         public EnemyAI CreateEnemyAI()
         {
             SimpleDrawCardAnimation simpleDrawCardAnimation = new SimpleDrawCardAnimation(_enemyHand, _enemyTurnDrawnCards, _enemyAISimpleDrawCardAnimationData);
-            FireDrawCardAnimation fireDrawCardAnimation = new FireDrawCardAnimation(_enemyAIFireDrawCardAnimationData, _enemyFirePool);
+            FireDrawCardAnimation fireDrawCardAnimation = new FireDrawCardAnimation(_enemyAIFireDrawCardAnimationData, _enemyFirePool, _enemyHand);
             DrawCardAnimationManager drawCardAnimationManager = new DrawCardAnimationManager(simpleDrawCardAnimation, fireDrawCardAnimation);
             DrawCardRoot drawCardRoot = new DrawCardRoot(drawCardAnimationManager, _deck);
 
@@ -333,7 +333,7 @@ namespace GameFields.Persons
             EnemySkipTurnView skipTurnView = new EnemySkipTurnView(_interactionActivator, _skipTurnLabelEnemyAI);
             OnBeforeEndTurnProcessing onBeforeEndTurnProcessing = new OnBeforeEndTurnProcessing(_interactionActivator, _enemyPersonEffectsHandler);
 
-            HardAIThinkLogic hardAIThinkLogic = new HardAIThinkLogic(_cardWatcher,_deck, _confirmableNumbersEnemyAI, gnomeEffectHandler,
+            HardAIThinkLogic hardAIThinkLogic = new HardAIThinkLogic(_cardRoot,_deck, _confirmableNumbersEnemyAI, gnomeEffectHandler,
                 _enemyPlayingZone, _enemyHand, fireEffectHandler, _discardPile, _fireRoot);
             EnemyDragAndDropImitation enemyDragAndDropImitation = new EnemyDragAndDropImitation(cardDragAndDropImitationActions,
                 _enemyDragAndDropImitationData, _interactionActivator, skipTurnChecker, _enemyTurnDrawnCards, _enemyHand,
@@ -352,7 +352,7 @@ namespace GameFields.Persons
 
         public CardLocationViewRoot CreateCardLocationViewRoot()
         {
-            return new CardLocationViewRoot(_cardWatcher, _deck, _playerHand, _enemyHand, _discardPile, _fireRoot, _playerTable, _enemyTable);
+            return new CardLocationViewRoot(_cardRoot, _deck, _playerHand, _enemyHand, _discardPile, _fireRoot, _playerTable, _enemyTable);
         }
 
         public CardTransitManager CreateCardTransitManager()

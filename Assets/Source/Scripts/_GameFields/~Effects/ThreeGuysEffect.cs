@@ -1,9 +1,6 @@
 using System.Collections;
-using Cards;
 using GameFields.Persons;
-using GameFields.Persons.SelectMenues;
 using UnityEngine;
-using Zenject;
 
 namespace GameFields.Effects
 {
@@ -11,8 +8,6 @@ namespace GameFields.Effects
     {
         private const int CountNumbers = 3;
         private readonly Person _activePerson;
-
-        private bool _endPlaying;
 
         public ThreeGuysEffect(Person activePerson, EffectData data) : base(data)
         {
@@ -25,24 +20,16 @@ namespace GameFields.Effects
         {
             base.End();
 
-            Debug.Log("Эффект Четкого букмекера закончен");
+            Debug.Log("Эффект Трех Бугаев закончен");
         }
 
         protected override IEnumerator OnPlaying()
         {
-            _endPlaying = false;
-            //_activePerson.ChoiceActivate("Выбрано:", 3);
-            _activePerson.ChoiceImitationActivate(CountNumbers, EndPlayingCallback);
-            //_activePerson.ChoiceActivate(4, EndPlayingCallback, RestrictionType.Consecutive);
-            //yield return new WaitUntil(() => _activePerson.IsChoiceComplete);
-            yield return new WaitUntil(() => _endPlaying);
+            bool endChoice = false;
 
-            //_deactivePerson.AttackDeactivate();
-        }
+            _activePerson.ChoiceImitationActivate(CountNumbers, () => endChoice = true);
 
-        private void EndPlayingCallback()
-        {
-            _endPlaying = true;
+            yield return new WaitUntil(() => endChoice);
         }
     }
 }

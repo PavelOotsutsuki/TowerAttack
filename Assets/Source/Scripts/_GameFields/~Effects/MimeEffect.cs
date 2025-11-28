@@ -5,12 +5,9 @@ using System.Collections;
 using System.Collections.Generic;
 using GameFields.InformationLabels;
 using Tools.UI;
-using System.Linq;
 using Tools.Utils;
 using System;
 using GameFields.Persons.Discovers;
-using GameFields.Persons.DrawCards;
-using Zenject;
 
 namespace GameFields.Effects
 {
@@ -51,7 +48,8 @@ namespace GameFields.Effects
             LabelActivateData labelActivateData;
             InformationLabelActivateData informationLabelActivateData;
 
-            ViewType enemyhandType = _activePerson is Player ? ViewType.HandAI : ViewType.HandPlayer;
+            //ViewType enemyhandType = _activePerson is Player ? ViewType.HandAI : ViewType.HandPlayer;
+            ViewType enemyhandType = ViewTransitTypeConverter.GetPersonHandViewType(_activePerson, false);
 
             //Card deckCard = null;
 
@@ -159,22 +157,5 @@ namespace GameFields.Effects
 
             Debug.Log("Эффект Мима окончен");
         }
-
-        //private void Discover(Card firstFindedCard, int countDiscoverCards, string activateDiscoverMessage,
-        //    DiscoverResult discoverResult, IEnumerable<ViewType> noContains)
-        //{
-        //    List<Card> cardsGuess = new List<Card>();
-
-        //    cardsGuess.Add(firstFindedCard);
-
-        //    for (int i = 0; i < countDiscoverCards - 1; i++)
-        //    {
-        //        cardsGuess.Add(_viewRoot.ViewRandomCard(cardsGuess.Select(c => c.ViewData.Number), noContains));
-        //    }
-
-        //    cardsGuess = Utils.Shuffle(cardsGuess);
-
-        //    _activePerson.DiscoverCards(cardsGuess, activateDiscoverMessage, discoverResult);
-        //}
     }
 }

@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Cards;
 using Cysharp.Threading.Tasks;
 using GameFields.CommonAnimations;
 using GameFields.Persons.Fires;
+using GameFields.Persons.Hands;
 using Tools;
 using UnityEngine;
 
@@ -13,13 +15,17 @@ namespace GameFields.Persons.DrawCards
     {
         private readonly FireDrawCardAnimationData _data;
         private readonly FirePool _firePool;
+        private readonly ICardSeatable _seatableHand;
+        private readonly ICardView _viewHand;
 
         private bool _isComplete;
 
-        public FireDrawCardAnimation(FireDrawCardAnimationData data, FirePool firePool)
+        public FireDrawCardAnimation(FireDrawCardAnimationData data, FirePool firePool, Hand hand)
         {
             _data = data;
             _firePool = firePool;
+            _seatableHand = hand;
+            _viewHand = hand;
 
             _data.Init();
 
@@ -66,20 +72,27 @@ namespace GameFields.Persons.DrawCards
 
             //Vector2 firstPosition = new Vector2(-400f, 200f);
             CallbackHandler lastCallbackHandlerFire = null;
+            CallbackHandler lastPyromancersManuscriptCallbackHandlerFire = null;
 
             for (int i = 0; i < cards.Count; i++)
             {
                 CallbackHandler callbackHandlerFire = new CallbackHandler();
                 lastCallbackHandlerFire = callbackHandlerFire;
-                Firing(cards[i], i, lastCallbackHandlerFire).ToUniTask();
+
+                if (cards[i].IsPyromancersManuscript)
+                {
+                    lastPyromancersManuscriptCallbackHandlerFire = callbackHandlerFire;
+                }
+
+                Firing(cards[i], i, callbackHandlerFire).ToUniTask();
                 yield return new WaitForSeconds(0.2f);
             }
 
-            yield return new WaitUntil(() => lastCallbackHandlerFire.IsComplete);
+            yield return new WaitUntil(() => lastCallbackHandlerFire.IsComplete && (lastPyromancersManuscriptCallbackHandlerFire == null || lastPyromancersManuscriptCallbackHandlerFire.IsComplete));
             _isComplete = true;
         }
 
-        private IEnumerator Firing(Card drawnCard, int level, CallbackHandler callbackHandlerFire)
+        private IEnumerator Firing(Card drawnCard, int level, CallbackHandler callbackHandlerSeatInFirePool)
         {
             if (level > 0)
             {
@@ -90,6 +103,7 @@ namespace GameFields.Persons.DrawCards
                 _data.ResetOffsets();
             }
 
+            CallbackHandler callbackHandlerFire = new CallbackHandler();
             Vector3 endStartMovePosition = _data.EndStartMovePosition;
             InvertCardAnimationPlayData playData = _data.InvertCardAnimationPlayData;
 
@@ -120,7 +134,9 @@ namespace GameFields.Persons.DrawCards
             //yield return new WaitForSeconds(2.5f);
             drawnCard.gameObject.SetActive(false);
 
-            _firePool.SeatCard(drawnCard);
+            _firePool.SeatCard(drawnCard, _seatableHand, _viewHand.AllCards.Count(), callbackHandlerSeatInFirePool);
+
+            yield return new WaitUntil(() => callbackHandlerSeatInFirePool.IsComplete);
         }
     }
 }

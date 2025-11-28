@@ -1,9 +1,7 @@
 using System.Collections;
-using Cards;
 using GameFields.Persons;
 using GameFields.Persons.SelectMenues;
 using UnityEngine;
-using Zenject;
 
 namespace GameFields.Effects
 {
@@ -11,8 +9,6 @@ namespace GameFields.Effects
     {
         private const int CountNumbers = 3;
         private readonly Person _activePerson;
-
-        private bool _endPlaying;
 
         public CoolBookmakerEffect(Person activePerson, EffectData data) : base(data)
         {
@@ -30,19 +26,14 @@ namespace GameFields.Effects
 
         protected override IEnumerator OnPlaying()
         {
-            _endPlaying = false;
+            bool endChoice = false;
             //_activePerson.ChoiceActivate("Выбрано:", 3);
-            _activePerson.ChoiceActivate(CountNumbers, EndPlayingCallback, RestrictionType.Even);
+            _activePerson.ChoiceActivate(CountNumbers, () => endChoice = true, RestrictionType.Even);
             //_activePerson.ChoiceActivate(4, EndPlayingCallback, RestrictionType.Consecutive);
             //yield return new WaitUntil(() => _activePerson.IsChoiceComplete);
-            yield return new WaitUntil(() => _endPlaying);
+            yield return new WaitUntil(() => endChoice);
 
             //_deactivePerson.AttackDeactivate();
-        }
-
-        private void EndPlayingCallback()
-        {
-            _endPlaying = true;
         }
     }
 }

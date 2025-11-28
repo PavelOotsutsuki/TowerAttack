@@ -29,19 +29,22 @@ namespace GameFields.Effects
 
         protected override IEnumerator OnPlaying()
         {
-            ViewType enemyhandType = _activePerson is Player ? ViewType.HandAI : ViewType.HandPlayer;
+            //ViewType enemyhandType = _activePerson is Player ? ViewType.HandAI : ViewType.HandPlayer;
+            ViewType enemyhandType = ViewTransitTypeConverter.GetPersonHandViewType(_activePerson, false);
 
             if (_viewRoot.TryView(out IReadOnlyList<Card> cardsHand, CountViewCards, enemyhandType) == false)
             {
                 yield break;
             }
 
-            TransitFromType transitFrom = _activePerson is Player ? TransitFromType.HandEnemy : TransitFromType.HandPlayer;
-            TransitToType transitTo = _activePerson is Player ? TransitToType.HandPlayer : TransitToType.HandEnemy;
+            TransitFromType transitFrom = ViewTransitTypeConverter.ConvertToTransitFromType(enemyhandType);
+            TransitToType transitTo = ViewTransitTypeConverter.GetPersonHandTransitToType(_activePerson, true);
 
             if (cardsHand.Count == 1)
             {
-                _transitManager.TransitCard(cardsHand[0], transitFrom, transitTo);
+                bool isTransit = false;
+                _transitManager.TransitCard(cardsHand[0], transitFrom, transitTo, callback: () => isTransit = true);
+                yield return new WaitUntil(() => isTransit);
                 yield break;
             }
 
@@ -67,8 +70,10 @@ namespace GameFields.Effects
 
             _transitManager.TransitCard(cardToTake, transitFrom, transitTo);
 
-            TransitFromType fireFrom = _activePerson is Player ? TransitFromType.HandEnemy : TransitFromType.HandPlayer;
-            TransitToType fireTo = _activePerson is Player ? TransitToType.EnemyFirePool : TransitToType.PlayerFirePool;
+            //TransitFromType fireFrom = _activePerson is Player ? TransitFromType.HandEnemy : TransitFromType.HandPlayer;
+            //TransitToType fireTo = _activePerson is Player ? TransitToType.EnemyFirePool : TransitToType.PlayerFirePool;
+            TransitFromType fireFrom = transitFrom;
+            TransitToType fireTo = ViewTransitTypeConverter.GetPersonFirePoolTransitToType(_activePerson, true);
             bool isFireComplete = false;
 
             _transitManager.TransitCard(cardToFire, fireFrom, fireTo, () => isFireComplete = true);

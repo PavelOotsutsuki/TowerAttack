@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace Cards
 {
-    public class CardRoot : MonoBehaviour, ICardWatcher, IAutomaticFillComponents
+    public class CardRoot : MonoBehaviour, ICardWatcher, ICardCreator, IAutomaticFillComponents
     {
         //[SerializeField] private Card[] _startCards;
         [SerializeField] private CurseAnimator _curseAnimator;

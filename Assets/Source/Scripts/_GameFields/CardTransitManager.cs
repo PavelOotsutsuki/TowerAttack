@@ -24,8 +24,8 @@ namespace GameFields
         private readonly ITransitable _deck;
         private readonly ITransitable _discardPile;
         private readonly ICardTakable _fireRoot;
-        private readonly ICardSeatable _playerFirePool;
-        private readonly ICardSeatable _enemyFirePool;
+        private readonly IFirePoolSeatable _playerFirePool;
+        private readonly IFirePoolSeatable _enemyFirePool;
 
         public CardTransitManager(HandPlayer playerHand, HandAI enemyHand, Tower playerTower, Tower enemyTower, Deck deck,
             DiscardPile discardPile, FireRoot fireRoot, FirePool playerFirePool, FirePool enemyFirePool)
@@ -84,8 +84,8 @@ namespace GameFields
                 TransitToType.HandPlayer => _playerHand,
                 TransitToType.HandEnemy => _enemyHand,
                 TransitToType.DiscardPile => _discardPile,
-                TransitToType.PlayerFirePool => _playerFirePool,
-                TransitToType.EnemyFirePool => _enemyFirePool,
+                TransitToType.PlayerFirePool => null,
+                TransitToType.EnemyFirePool => null,
                 _ => throw new Exception($"Ошибка нахождения типа {typeof(TransitToType)}: {to}")
             };
 
@@ -99,6 +99,31 @@ namespace GameFields
                 card.Fire(new WaitForSeconds(0.1f), callbackHandler);
 
                 yield return new WaitUntil(() => callbackHandler.IsComplete);
+
+                IFirePoolSeatable fireSeatable = to switch
+                {
+                    TransitToType.PlayerFirePool => _playerFirePool,
+                    TransitToType.EnemyFirePool => _enemyFirePool,
+                    _ => throw new Exception($"Ошибка нахождения {typeof(IFirePoolSeatable)} типа {typeof(TransitToType)}: {to}")
+                };
+
+                if (takable.TryTakeAwayCard(card) == false)
+                    throw new Exception("Ошибка: не найдена карта в from");
+
+                ICardSeatable fireNewCardsSeatable = from switch
+                {
+                    TransitFromType.DiscardPile => _discardPile,
+                    TransitFromType.HandEnemy => _enemyHand,
+                    TransitFromType.HandPlayer => _playerHand,
+                    _ => throw new Exception($"Ошибка нахождения типа {typeof(TransitFromType)}: {from}")
+                };
+
+                CallbackHandler callbackHandlerSeatInFirePool = new CallbackHandler();
+                fireSeatable.SeatCard(card, fireNewCardsSeatable, index, callbackHandlerSeatInFirePool);
+
+                yield return new WaitUntil(() => callbackHandlerSeatInFirePool.IsComplete);
+                callback?.Invoke();
+                yield break;
             }
 
             if (takable.TryTakeAwayCard(card) == false)

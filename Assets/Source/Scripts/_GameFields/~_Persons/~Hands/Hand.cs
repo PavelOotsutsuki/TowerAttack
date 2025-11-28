@@ -194,15 +194,24 @@ namespace GameFields.Persons.Hands
                     index = AllCards.Count();
 
                 if (_handSeatIndex != -1)
+                {
                     if (_handSeatIndex >= index)
+                    {
                         _handSeatIndex++;
+                    }
+                    else
+                    {
+                        index--;
+                    }
+                }
+
 
                 _handSeats.Insert(index, handSeat);
 
-                for (int i = 0; i < _handSeats.Count; i++)
-                {
-                    _handSeats[i].transform.SetAsLastSibling();// Непонятно сколько ресурсов жрет, пока отдельно реализую
-                }
+                //for (int i = 0; i < _handSeats.Count; i++)
+                //{
+                //    _handSeats[i].transform.SetAsLastSibling();// Непонятно сколько ресурсов жрет, пока отдельно реализую
+                //}
             }
 
             handSeat.SetCard(card, _sideType, _returnInSeatDuration);
@@ -600,8 +609,10 @@ namespace GameFields.Persons.Hands
 
             if (findedHandSeat == null)
             {
-                if (_dragCardHandSeat.Card == card)
-                    findedHandSeat = _dragCardHandSeat;
+                if (_dragCardHandSeat != null)
+                    if (_dragCardHandSeat.IsFill())
+                        if (_dragCardHandSeat.Card == card)
+                            findedHandSeat = _dragCardHandSeat;
             }
 
             return findedHandSeat != null;
@@ -643,7 +654,7 @@ namespace GameFields.Persons.Hands
                 Vector3 rotation = new Vector3(0f, 0f, StartRotation);
 
                 _handSeats[i].SetLocalPositionValues(position, rotation, _returnInSeatDuration);
-                //_handSeats[i].transform.SetAsLastSibling(); //Непонятно сколько ресурсов жрет, пока отдельно реализую
+                _handSeats[i].transform.SetAsLastSibling(); //Непонятно сколько ресурсов жрет, пока отдельно реализую
             }
         }
 

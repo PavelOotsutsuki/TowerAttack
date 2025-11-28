@@ -76,7 +76,8 @@ namespace GameFields.Effects
             yield return new WaitUntil(() => effectTwoComplete);
 
             // Эффект 3. Сжигаем карту
-            ViewType viewType = _activePerson is EnemyAI ? ViewType.HandPlayer : ViewType.HandAI;
+            //ViewType viewType = _activePerson is EnemyAI ? ViewType.HandPlayer : ViewType.HandAI;
+            ViewType viewType = ViewTransitTypeConverter.GetPersonHandViewType(_activePerson, false);
             IReadOnlyList<Card> cards = _viewRoot.GetAllCards(viewType).ToList();
 
             if (cards.Count > 0)
@@ -86,19 +87,19 @@ namespace GameFields.Effects
                 bool effectThreeComplete = false;
                 int randomCardIndex = Random.Range(0, cards.Count);
 
-                TransitFromType transitFromType;
-                TransitToType transitToType;
+                TransitFromType transitFromType = ViewTransitTypeConverter.ConvertToTransitFromType(viewType);
+                TransitToType transitToType = ViewTransitTypeConverter.GetPersonFirePoolTransitToType(_activePerson, true);
 
-                if (viewType == ViewType.HandPlayer)
-                {
-                    transitFromType = TransitFromType.HandPlayer;
-                    transitToType = TransitToType.PlayerFirePool;
-                }
-                else
-                {
-                    transitFromType = TransitFromType.HandEnemy;
-                    transitToType = TransitToType.EnemyFirePool;
-                }
+                //if (viewType == ViewType.HandPlayer)
+                //{
+                //    transitFromType = TransitFromType.HandPlayer;
+                //    transitToType = TransitToType.PlayerFirePool;
+                //}
+                //else
+                //{
+                //    transitFromType = TransitFromType.HandEnemy;
+                //    transitToType = TransitToType.EnemyFirePool;
+                //}
 
                 _transitManager.TransitCard(cards[randomCardIndex], transitFromType, transitToType, () => effectThreeComplete = true);
                 yield return new WaitUntil(() => effectThreeComplete);

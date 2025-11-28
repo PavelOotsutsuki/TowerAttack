@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using Cards;
 using Cards.Effects;
 using GameFields.Persons.EffectHandlers;
 using UnityEngine;

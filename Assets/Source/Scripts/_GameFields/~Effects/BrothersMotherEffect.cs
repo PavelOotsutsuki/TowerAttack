@@ -1,10 +1,6 @@
 using System.Collections;
-using Cards;
 using GameFields.Persons;
-using GameFields.Persons.EffectHandlers.Brothers;
-using GameFields.Persons.SelectMenues;
 using UnityEngine;
-using Zenject;
 
 namespace GameFields.Effects
 {

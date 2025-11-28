@@ -1,8 +1,6 @@
 
 using System.Collections;
-using Cards;
 using UnityEngine;
-using Zenject;
 
 namespace GameFields.Effects
 {

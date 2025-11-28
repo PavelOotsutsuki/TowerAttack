@@ -1,7 +1,5 @@
-using Cards;
 using GameFields.Persons;
 using UnityEngine;
-using Zenject;
 
 namespace GameFields.Effects
 {

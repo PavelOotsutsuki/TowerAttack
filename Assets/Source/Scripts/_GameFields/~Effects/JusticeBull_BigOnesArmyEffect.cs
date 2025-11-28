@@ -1,12 +1,10 @@
 using System;
 using System.Linq;
-using Cards;
 using Cards.Effects;
 using GameFields.InformationLabels;
 using GameFields.Persons;
 using Tools.Settings;
 using UnityEngine;
-using Zenject;
 using Random = UnityEngine.Random;
 
 namespace GameFields.Effects
@@ -15,9 +13,6 @@ namespace GameFields.Effects
     {
         private readonly Person _deactivePerson;
 
-        //public JusticeBull_BigOnesArmyEffect(Person deactivePerson, InformationLabel informationLabel,
-        //    Func<EffectType, Action<int>, Effect> effectCreator, Action<int> callback, Person activePeron) :
-        //    base(informationLabel, effectCreator, callback, activePeron)
         public JusticeBull_BigOnesArmyEffect(Person deactivePerson, InformationLabel informationLabel,
             Func<EffectType, CardEffectData, EffectDuration, Effect> effectCreator, Person activePeron, EffectData data) :
             base(informationLabel, effectCreator, activePeron, data)

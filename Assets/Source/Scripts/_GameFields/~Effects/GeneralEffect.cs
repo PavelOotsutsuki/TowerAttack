@@ -1,9 +1,7 @@
 using System.Collections;
-using Cards;
 using GameFields.Persons;
 using GameFields.Persons.SelectMenues;
 using UnityEngine;
-using Zenject;
 
 namespace GameFields.Effects
 {
@@ -11,8 +9,6 @@ namespace GameFields.Effects
     {
         private const int CountNumbers = 4;
         private readonly Person _activePerson;
-
-        private bool _endPlaying;
 
         public GeneralEffect(Person activePerson, EffectData data) : base(data)
         {
@@ -30,16 +26,11 @@ namespace GameFields.Effects
 
         protected override IEnumerator OnPlaying()
         {
-            _endPlaying = false;
+            bool endChoice = false;
 
-            _activePerson.ChoiceActivate(CountNumbers, EndPlayingCallback, RestrictionType.Consecutive);
+            _activePerson.ChoiceActivate(CountNumbers, () => endChoice = true, RestrictionType.Consecutive);
 
-            yield return new WaitUntil(() => _endPlaying);
-        }
-
-        private void EndPlayingCallback()
-        {
-            _endPlaying = true;
+            yield return new WaitUntil(() => endChoice);
         }
     }
 }

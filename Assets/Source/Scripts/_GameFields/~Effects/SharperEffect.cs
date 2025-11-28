@@ -42,7 +42,8 @@ namespace GameFields.Effects
 
         protected override IEnumerator OnPlaying()
         {
-            ViewType hand = _activePerson is Player ? ViewType.HandPlayer : ViewType.HandAI;
+            //ViewType hand = _activePerson is Player ? ViewType.HandPlayer : ViewType.HandAI;
+            ViewType hand = ViewTransitTypeConverter.GetPersonHandViewType(_activePerson, true);
 
             if (_viewRoot.TryViewDeckLastCards(out IReadOnlyList<Card> deckCards, CountDeckCards) == false)
             {
@@ -68,13 +69,17 @@ namespace GameFields.Effects
 
             Card cardFromHand = (Card)handResult.Result;
 
+            bool isDraw = false;
+            bool isTransit = false;
+
             int indexHand = _viewRoot.IndexOf(hand, cardFromHand);
-            int indexDeck = _drawCardManager.DrawCard(cardFromDeck, index: indexHand);
+            int indexDeck = _drawCardManager.DrawCard(cardFromDeck, () => isDraw = true, index: indexHand);
 
-            TransitFromType transitFrom = _activePerson is Player ? TransitFromType.HandPlayer : TransitFromType.HandEnemy;
+            TransitFromType transitFrom = ViewTransitTypeConverter.ConvertToTransitFromType(hand);
 
-            _transitManager.TransitCard(cardFromHand, transitFrom, TransitToType.Deck, index: indexDeck);
+            _transitManager.TransitCard(cardFromHand, transitFrom, TransitToType.Deck, () => isTransit = true, index: indexDeck);
 
+            yield return new WaitUntil(() => isDraw && isTransit);
             yield break;
         }
     }
