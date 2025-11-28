@@ -36,10 +36,10 @@ namespace GameFields.Persons.DrawCards
 
         public void Play(IReadOnlyList<Card> cards, int indexAdd)
         {
-            Playing(cards).ToUniTask();
+            Playing(cards, indexAdd).ToUniTask();
         }
 
-        private IEnumerator Playing(IReadOnlyList<Card> cards)
+        private IEnumerator Playing(IReadOnlyList<Card> cards, int indexAdd)
         {
             _isComplete = false;
 
@@ -84,7 +84,7 @@ namespace GameFields.Persons.DrawCards
                     lastPyromancersManuscriptCallbackHandlerFire = callbackHandlerFire;
                 }
 
-                Firing(cards[i], i, callbackHandlerFire).ToUniTask();
+                Firing(cards[i], i, callbackHandlerFire, indexAdd).ToUniTask();
                 yield return new WaitForSeconds(0.2f);
             }
 
@@ -92,7 +92,7 @@ namespace GameFields.Persons.DrawCards
             _isComplete = true;
         }
 
-        private IEnumerator Firing(Card drawnCard, int level, CallbackHandler callbackHandlerSeatInFirePool)
+        private IEnumerator Firing(Card drawnCard, int level, CallbackHandler callbackHandlerSeatInFirePool, int indexAdd)
         {
             if (level > 0)
             {
@@ -134,7 +134,10 @@ namespace GameFields.Persons.DrawCards
             //yield return new WaitForSeconds(2.5f);
             drawnCard.gameObject.SetActive(false);
 
-            _firePool.SeatCard(drawnCard, _seatableHand, _viewHand.AllCards.Count(), callbackHandlerSeatInFirePool);
+            if (indexAdd == -1)
+                indexAdd = _viewHand.AllCards.Count();
+
+            _firePool.SeatCard(drawnCard, _seatableHand, indexAdd, callbackHandlerSeatInFirePool);
 
             yield return new WaitUntil(() => callbackHandlerSeatInFirePool.IsComplete);
         }
