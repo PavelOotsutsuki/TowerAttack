@@ -54,8 +54,11 @@ namespace GameFields.Effects
             //    transitFromType = TransitFromType.HandEnemy;
             //    transitToType = TransitToType.EnemyFirePool;
             //}
+            Card firedCard = cards[0];
+            int index = 0; // Логично
+
             bool isTransit = false;
-            _transitManager.TransitCard(cards[0], transitFromType, transitToType, () => isTransit = true);
+            _transitManager.TransitCard(firedCard, transitFromType, transitToType, () => isTransit = true, index);
             //_activePerson.ActivateFateInevitability(_duration);
             yield return new WaitUntil(() => isTransit);
         }

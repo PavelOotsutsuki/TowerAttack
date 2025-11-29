@@ -95,6 +95,9 @@ namespace GameFields
 
             if (to == TransitToType.PlayerFirePool || to == TransitToType.EnemyFirePool)
             {
+                if (index == -1)
+                    throw new Exception("Не задан индекс сжигания. Задай индекс!");
+
                 CallbackHandler callbackHandler = new CallbackHandler();
                 card.Fire(new WaitForSeconds(0.1f), callbackHandler);
 

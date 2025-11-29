@@ -34,6 +34,7 @@ using GameFields.FightMenues;
 using Cards.Views.BigCardViews.Capabilities;
 using GameFields.Persons.EffectHandlers.FateInevitabilities;
 using Cards.Sounds;
+using Cards.Views;
 
 namespace GameFields.Persons
 {
@@ -229,9 +230,7 @@ namespace GameFields.Persons
             _fightMenu.Init(_inputRoot, _playerLoseActions, cardSoundRoot, musicVolume, cardCapabilityDescription);
             _fightMenuActivateButton.Init(_fightMenu);
 
-            _playerFirePool = new FirePool(_fireContainer.GetTransform(), _cardRoot);
-            _enemyFirePool = new FirePool(_fireContainer.GetTransform(), _cardRoot);
-            _fireRoot = new FireRoot(_playerFirePool, _enemyFirePool);
+            DefineFire();
 
             _playerRechangeFeatureRuleController = new RechangeFeatureRuleController();
             _enemyRechangeFeatureRuleController = new RechangeFeatureRuleController();
@@ -440,6 +439,21 @@ namespace GameFields.Persons
                 _confirmableNumbersEnemyAI, _lastSelectedNumbersWatcherEnemyAI);
 
             _enemyCardAttackZone.Init(_enemyAttackMenu, _playerTower, _bus);
+        }
+
+        private void DefineFire()
+        {
+            PyromancersManuscriptFireAction playerPyromancersManuscriptFireAction = new PyromancersManuscriptFireAction(_cardRoot,
+                SideType.Front, _fireContainer.GetTransform());
+            ExtraFireSeatActionRoot playerExtraFireSeatActionRoot = new ExtraFireSeatActionRoot(playerPyromancersManuscriptFireAction);
+
+            PyromancersManuscriptFireAction enemyPyromancersManuscriptFireAction = new PyromancersManuscriptFireAction(_cardRoot,
+                SideType.Back, _fireContainer.GetTransform());
+            ExtraFireSeatActionRoot enemyExtraFireSeatActionRoot = new ExtraFireSeatActionRoot(enemyPyromancersManuscriptFireAction);
+
+            _playerFirePool = new FirePool(_fireContainer.GetTransform(), playerExtraFireSeatActionRoot);
+            _enemyFirePool = new FirePool(_fireContainer.GetTransform(), enemyExtraFireSeatActionRoot);
+            _fireRoot = new FireRoot(_playerFirePool, _enemyFirePool);
         }
 
         //private void InitCommonData()

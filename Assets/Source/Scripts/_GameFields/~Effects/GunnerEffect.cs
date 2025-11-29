@@ -77,8 +77,8 @@ namespace GameFields.Effects
 
             // Эффект 3. Сжигаем карту
             //ViewType viewType = _activePerson is EnemyAI ? ViewType.HandPlayer : ViewType.HandAI;
-            ViewType viewType = ViewTransitTypeConverter.GetPersonHandViewType(_activePerson, false);
-            IReadOnlyList<Card> cards = _viewRoot.GetAllCards(viewType).ToList();
+            ViewType handViewType = ViewTransitTypeConverter.GetPersonHandViewType(_activePerson, false);
+            IReadOnlyList<Card> cards = _viewRoot.GetAllCards(handViewType).ToList();
 
             if (cards.Count > 0)
             {
@@ -87,7 +87,7 @@ namespace GameFields.Effects
                 bool effectThreeComplete = false;
                 int randomCardIndex = Random.Range(0, cards.Count);
 
-                TransitFromType transitFromType = ViewTransitTypeConverter.ConvertToTransitFromType(viewType);
+                TransitFromType transitFromType = ViewTransitTypeConverter.ConvertToTransitFromType(handViewType);
                 TransitToType transitToType = ViewTransitTypeConverter.GetPersonFirePoolTransitToType(_activePerson, true);
 
                 //if (viewType == ViewType.HandPlayer)
@@ -101,7 +101,10 @@ namespace GameFields.Effects
                 //    transitToType = TransitToType.EnemyFirePool;
                 //}
 
-                _transitManager.TransitCard(cards[randomCardIndex], transitFromType, transitToType, () => effectThreeComplete = true);
+                Card firedCard = cards[randomCardIndex];
+                int index = _viewRoot.IndexOf(handViewType, firedCard);
+
+                _transitManager.TransitCard(cards[randomCardIndex], transitFromType, transitToType, () => effectThreeComplete = true, index);
                 yield return new WaitUntil(() => effectThreeComplete);
             }
 

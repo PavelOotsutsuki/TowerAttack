@@ -74,9 +74,10 @@ namespace GameFields.Effects
             //TransitToType fireTo = _activePerson is Player ? TransitToType.EnemyFirePool : TransitToType.PlayerFirePool;
             TransitFromType fireFrom = transitFrom;
             TransitToType fireTo = ViewTransitTypeConverter.GetPersonFirePoolTransitToType(_activePerson, true);
+            int index = _viewRoot.IndexOf(enemyhandType, cardToFire);
             bool isFireComplete = false;
 
-            _transitManager.TransitCard(cardToFire, fireFrom, fireTo, () => isFireComplete = true);
+            _transitManager.TransitCard(cardToFire, fireFrom, fireTo, () => isFireComplete = true, index);
 
             yield return new WaitUntil(() => isFireComplete);
         }
