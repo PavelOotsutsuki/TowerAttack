@@ -1,4 +1,5 @@
 using Cards;
+using GameFields.CardTransits;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,11 +10,14 @@ namespace GameFields.Effects
     {
         private readonly CardLocationViewRoot _viewRoot;
         private readonly CardTransitManager _transitManager;
+        private readonly ViewTransitTypesRoot _typesRoot;
 
-        public TimeChildEffect(CardLocationViewRoot viewRoot, CardTransitManager transitManager, EffectData data) : base(data)
+        public TimeChildEffect(CardLocationViewRoot viewRoot, CardTransitManager transitManager,
+            ViewTransitTypesRoot typesRoot, EffectData data) : base(data)
         {
             _viewRoot = viewRoot;
             _transitManager = transitManager;
+            _typesRoot = typesRoot;
 
             Play();
         }
@@ -27,16 +31,18 @@ namespace GameFields.Effects
 
         protected override IEnumerator OnPlaying()
         {
-            ViewType fireType = ViewType.FireRoot;
-            IEnumerable<Card> firedCards = _viewRoot.GetAllCards(fireType);
+            FireRootTypes fireRootTypes = _typesRoot.FireRoot;
+            ViewType fireRootView = fireRootTypes.ViewType;
+            IEnumerable<Card> firedCards = _viewRoot.GetAllCards(fireRootView);
             List<Card> isSeats = new List<Card>();
 
             foreach (Card card in firedCards)
             {
                 isSeats.Add(card);
 
-                TransitFromType fromType = ViewTransitTypeConverter.ConvertToTransitFromType(fireType);
-                _transitManager.TransitCard(card, fromType, TransitToType.Deck, () => isSeats.Remove(card));
+                //TransitFromType fromType = ViewTransitTypeConverter.ConvertToTransitFromType(fireType);
+                TransitFromType fireRootFrom = fireRootTypes.FromType;
+                _transitManager.TransitCard(card, fireRootFrom, TransitToType.Deck, () => isSeats.Remove(card));
 
                 yield return new WaitForSeconds(0.2f);
             }

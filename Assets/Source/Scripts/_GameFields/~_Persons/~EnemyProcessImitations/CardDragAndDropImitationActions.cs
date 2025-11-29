@@ -1,15 +1,12 @@
 using Cards;
 using Tools;
 using UnityEngine;
-using Zenject;
-using GameFields.Signals;
 using System.Collections;
 using Tools.Utils.Movements;
 using GameFields.Persons.Hands;
-using Cysharp.Threading.Tasks;
-using GameFields.DiscardPiles;
 using GameFields.Persons.DrawCards;
 using Cards.DependencyInterlayers;
+using GameFields.CardTransits;
 
 namespace GameFields.Persons.EnemyProcessImitations
 {

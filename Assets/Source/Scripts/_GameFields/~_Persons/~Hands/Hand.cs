@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Cards;
 using Cards.Views;
+using GameFields.CardTransits;
 using GameFields.Persons.EffectHandlers.Curses;
 using GameFields.Persons.EffectHandlers.Slimes;
 using GameFields.Seats;
-using ModestTree;
 using Tools.Utils;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Screens;
 using UnityEngine;
-using UnityEngine.UIElements;
 using Zenject;
 
 namespace GameFields.Persons.Hands

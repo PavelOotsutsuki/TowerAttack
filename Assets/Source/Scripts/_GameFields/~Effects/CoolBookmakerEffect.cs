@@ -27,13 +27,8 @@ namespace GameFields.Effects
         protected override IEnumerator OnPlaying()
         {
             bool endChoice = false;
-            //_activePerson.ChoiceActivate("Выбрано:", 3);
             _activePerson.ChoiceActivate(CountNumbers, () => endChoice = true, RestrictionType.Even);
-            //_activePerson.ChoiceActivate(4, EndPlayingCallback, RestrictionType.Consecutive);
-            //yield return new WaitUntil(() => _activePerson.IsChoiceComplete);
             yield return new WaitUntil(() => endChoice);
-
-            //_deactivePerson.AttackDeactivate();
         }
     }
 }

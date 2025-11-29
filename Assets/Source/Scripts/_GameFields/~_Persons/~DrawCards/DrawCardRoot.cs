@@ -5,6 +5,7 @@ using UnityEngine;
 using Cards;
 using Cysharp.Threading.Tasks;
 using GameFields.Decks;
+using GameFields.CardTransits;
 
 namespace GameFields.Persons.DrawCards
 {

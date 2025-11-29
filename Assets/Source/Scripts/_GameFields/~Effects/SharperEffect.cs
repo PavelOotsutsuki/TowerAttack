@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cards;
+using GameFields.CardTransits;
 using GameFields.Persons;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.DrawCards;
@@ -20,12 +21,14 @@ namespace GameFields.Effects
         private readonly IDrawCardManager _drawCardManager;
         private readonly CardLocationViewRoot _viewRoot;
         private readonly CardTransitManager _transitManager;
+        private readonly ViewTransitTypesRoot _typesRoot;
 
         public SharperEffect(Person activePerson, CardLocationViewRoot viewRoot, CardTransitManager transitManager,
-            EffectData data) : base(data)
+            ViewTransitTypesRoot typesRoot, EffectData data) : base(data)
         {
             _activePerson = activePerson;
             _drawCardManager = activePerson;
+            _typesRoot = typesRoot;
 
             _viewRoot = viewRoot;
             _transitManager = transitManager;
@@ -43,14 +46,16 @@ namespace GameFields.Effects
         protected override IEnumerator OnPlaying()
         {
             //ViewType hand = _activePerson is Player ? ViewType.HandPlayer : ViewType.HandAI;
-            ViewType hand = ViewTransitTypeConverter.GetPersonHandViewType(_activePerson, true);
+            //ViewType hand = ViewTransitTypeConverter.GetPersonHandViewType(_activePerson, true);
+            HandTypes activePersonHandTypes = _typesRoot.GetPersonTypes(_activePerson).Hand;
+            ViewType handView = activePersonHandTypes.ViewType;
 
             if (_viewRoot.TryViewDeckLastCards(out IReadOnlyList<Card> deckCards, CountDeckCards) == false)
             {
                 yield break;
             }
 
-            if (_viewRoot.TryView(out IReadOnlyList<Card> handCards, CountHandCards, hand) == false)
+            if (_viewRoot.TryView(out IReadOnlyList<Card> handCards, CountHandCards, handView) == false)
             {
                 yield break;
             }
@@ -72,12 +77,12 @@ namespace GameFields.Effects
             bool isDraw = false;
             bool isTransit = false;
 
-            int indexHand = _viewRoot.IndexOf(hand, cardFromHand);
+            int indexHand = _viewRoot.IndexOf(handView, cardFromHand);
             int indexDeck = _drawCardManager.DrawCard(cardFromDeck, () => isDraw = true, index: indexHand);
 
-            TransitFromType transitFrom = ViewTransitTypeConverter.ConvertToTransitFromType(hand);
+            TransitFromType handFrom = activePersonHandTypes.FromType;
 
-            _transitManager.TransitCard(cardFromHand, transitFrom, TransitToType.Deck, () => isTransit = true, index: indexDeck);
+            _transitManager.TransitCard(cardFromHand, handFrom, TransitToType.Deck, () => isTransit = true, index: indexDeck);
 
             yield return new WaitUntil(() => isDraw && isTransit);
             yield break;

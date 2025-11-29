@@ -1,4 +1,4 @@
-namespace GameFields
+namespace GameFields.CardTransits
 {
     public enum TowerTransitType
     {

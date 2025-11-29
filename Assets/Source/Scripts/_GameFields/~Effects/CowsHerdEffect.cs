@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Linq;
+using GameFields.CardTransits;
 using GameFields.Persons;
 using UnityEngine;
 

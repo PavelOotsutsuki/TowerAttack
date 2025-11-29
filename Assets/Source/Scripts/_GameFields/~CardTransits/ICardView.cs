@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Cards;
 
-namespace GameFields
+namespace GameFields.CardTransits
 {
     public interface ICardView: ICardCheck
     {

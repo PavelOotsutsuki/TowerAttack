@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace GameFields
+namespace GameFields.CardTransits
 {
     public interface ICardCheck
     {

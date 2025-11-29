@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cards;
 using Cysharp.Threading.Tasks;
+using GameFields.CardTransits;
 using GameFields.CommonAnimations;
 using GameFields.Persons.Fires;
 using GameFields.Persons.Hands;

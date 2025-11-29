@@ -1,6 +1,6 @@
 using Cards;
 
-namespace GameFields
+namespace GameFields.CardTransits
 {
     public interface ICardSeatable
     { 

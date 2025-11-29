@@ -10,6 +10,7 @@ using Tools.Utils;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.DrawCards;
 using System;
+using GameFields.CardTransits;
 
 namespace GameFields.Effects
 {
@@ -25,21 +26,25 @@ namespace GameFields.Effects
         private readonly string _activateHandDiscoverMessage = "Какая карта в руке у противника?";
 
         private readonly Person _activePerson;
+        private readonly Person _deactivePerson;
 
         private readonly CardLocationViewRoot _viewRoot;
         private readonly InformationLabel _informationLabel;
         private readonly CardTransitManager _transitManager;
+        private readonly ViewTransitTypesRoot _typesRoot;
 
         private readonly IDrawCardManager _drawCardManager;
 
-        public DetectiveRhodesEffect(Person activePerson, CardTransitManager transitManager, CardLocationViewRoot viewRoot,
-            InformationLabel informationLabel, EffectData data) : base(data)
+        public DetectiveRhodesEffect(Person activePerson, Person deactivePerson, CardTransitManager transitManager, CardLocationViewRoot viewRoot,
+            InformationLabel informationLabel, ViewTransitTypesRoot typesRoot, EffectData data) : base(data)
         {
             _activePerson = activePerson;
+            _deactivePerson = deactivePerson;
             _transitManager = transitManager;
 
             _viewRoot = viewRoot;
             _informationLabel = informationLabel;
+            _typesRoot = typesRoot;
 
             _drawCardManager = activePerson;
 
@@ -49,7 +54,9 @@ namespace GameFields.Effects
         protected override IEnumerator OnPlaying()
         {
             //ViewType enemyhandType = _activePerson is Player ? ViewType.HandAI : ViewType.HandPlayer;
-            ViewType enemyHandType = ViewTransitTypeConverter.GetPersonHandViewType(_activePerson, false);
+            //ViewType enemyHandType = ViewTransitTypeConverter.GetPersonHandViewType(_activePerson, false);
+            HandTypes deactiveHandTypes = _typesRoot.GetPersonTypes(_deactivePerson).Hand;
+            ViewType deactiveHandView = deactiveHandTypes.ViewType;
 
             Card deckCard = null;
 
@@ -60,7 +67,7 @@ namespace GameFields.Effects
 
             Card handCard = null;
 
-            if (_viewRoot.TryView(out IReadOnlyList<Card> cardHand, 1, enemyHandType))
+            if (_viewRoot.TryView(out IReadOnlyList<Card> cardHand, 1, deactiveHandView))
             {
                 handCard = cardHand[0];
             }
@@ -100,7 +107,7 @@ namespace GameFields.Effects
             yield return new WaitUntil(() => deckResult.IsComplete);
 
             DiscoverResult handResult = new DiscoverResult();
-            List<ViewType> noContainsForHand = new List<ViewType>() { enemyHandType, ViewType.TablePlayer, ViewType.TableAI };
+            List<ViewType> noContainsForHand = new List<ViewType>() { deactiveHandView, ViewType.TablePlayer, ViewType.TableAI };
             Discover(handCard, _countHandDiscoverCards, _activateHandDiscoverMessage, handResult, noContainsForHand);
             yield return new WaitUntil(() => handResult.Result != null);
 
@@ -111,8 +118,8 @@ namespace GameFields.Effects
             {
                 //TransitFromType handFrom = _activePerson is Player ? TransitFromType.HandEnemy : TransitFromType.HandPlayer;
                 //TransitToType handTo = _activePerson is Player ? TransitToType.HandPlayer : TransitToType.HandEnemy;
-                TransitFromType handFrom = ViewTransitTypeConverter.GetPersonHandTransitFromType(_activePerson, false);
-                TransitToType handTo = ViewTransitTypeConverter.GetPersonHandTransitToType(_activePerson, true);
+                TransitFromType handFrom = deactiveHandTypes.FromType;
+                TransitToType handTo = _typesRoot.GetPersonTypes(_activePerson).Hand.ToType;
 
                 bool isTransit = false;
                 bool isDraw = false;

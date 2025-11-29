@@ -2,15 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cards;
 using Tools.Utils.FillComponents;
-using Tools;
-using Tools.Utils.Movements;
 using System;
-using Random = UnityEngine.Random;
 using System.Linq;
 using Tools.Utils;
 using GameFields.Seats;
-using GameFields.DiscardPiles;
 using Cards.Views;
+using GameFields.CardTransits;
 
 namespace GameFields.Decks
 {

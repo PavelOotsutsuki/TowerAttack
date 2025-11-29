@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cards;
+using GameFields.CardTransits;
 using GameFields.InformationLabels;
 using GameFields.Persons;
 using GameFields.Persons.LookCardMenues;
@@ -16,16 +17,20 @@ namespace GameFields.Effects
         private const string PlayerMessage = "Карты противника";
 
         private readonly Person _activePerson;
+        private readonly Person _deactivePerson;
         private readonly CardLocationViewRoot _cardLocationViewRoot;
         private readonly InformationLabel _informationLabel;
+        private readonly ViewTransitTypesRoot _typesRoot;
 
-        public SharpSnakeEffect(Person activePerson, CardLocationViewRoot cardLocationViewRoot,
-            InformationLabel informationLabel, EffectData data) : base(data)
+        public SharpSnakeEffect(Person activePerson, Person deactivePerson, CardLocationViewRoot cardLocationViewRoot,
+            InformationLabel informationLabel, ViewTransitTypesRoot typesRoot, EffectData data) : base(data)
         {
             _activePerson = activePerson;
+            _deactivePerson = deactivePerson;
 
             _cardLocationViewRoot = cardLocationViewRoot;
             _informationLabel = informationLabel;
+            _typesRoot = typesRoot;
 
             Play();
         }
@@ -42,9 +47,10 @@ namespace GameFields.Effects
             //_deactivePerson.ActivateSharpSnakeEffect(CompleteEffect);
             //yield return new WaitUntil(() => _isEffectComplete);
             //ViewType hand = _activePerson is Player ? ViewType.HandAI : ViewType.HandPlayer;
-            ViewType hand = ViewTransitTypeConverter.GetPersonHandViewType(_activePerson, false);
+            //ViewType hand = ViewTransitTypeConverter.GetPersonHandViewType(_activePerson, false);
+            ViewType handView = _typesRoot.GetPersonTypes(_deactivePerson).Hand.ViewType;
 
-            IEnumerable<Card> cards = _cardLocationViewRoot.GetAllCards(hand);
+            IEnumerable<Card> cards = _cardLocationViewRoot.GetAllCards(handView);
 
             if (cards.Count() == 0)
                 yield break;

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using GameFields.Persons;
 using UnityEngine;
 using GameFields.Persons.Discovers;
+using GameFields.CardTransits;
 
 namespace GameFields.Effects
 {
@@ -14,14 +15,16 @@ namespace GameFields.Effects
         private readonly Person _activePerson;
         private readonly CardLocationViewRoot _viewRoot;
         private readonly CardTransitManager _transitManager;
+        private readonly ViewTransitTypesRoot _typesRoot;
 
         public LeftEyedSisterEffect(Person activePerson, CardLocationViewRoot viewRoot, CardTransitManager transitManager,
-            EffectData data) : base(data)
+            ViewTransitTypesRoot typesRoot, EffectData data) : base(data)
         {
             _activePerson = activePerson;
 
             _viewRoot = viewRoot;
             _transitManager = transitManager;
+            _typesRoot = typesRoot;
 
             Play();
         }
@@ -36,13 +39,14 @@ namespace GameFields.Effects
         protected override IEnumerator OnPlaying()
         {
             //ViewType viewType = _activePerson is Player ? ViewType.HandPlayer : ViewType.HandAI;
-            ViewType viewType = ViewTransitTypeConverter.GetPersonHandViewType(_activePerson, true);
+            //ViewType viewType = ViewTransitTypeConverter.GetPersonHandViewType(_activePerson, true);
+            ViewType handView = _typesRoot.GetPersonTypes(_activePerson).Hand.ViewType;
 
             //_activePerson
 
             //for (int i = CountDicoverFromHand; i > 0; i--)
             //{
-            if (_viewRoot.TryView(out IReadOnlyList<Card> cards, CountDiscoverFromHand, viewType))
+            if (_viewRoot.TryView(out IReadOnlyList<Card> cards, CountDiscoverFromHand, handView))
             {
                 DiscoverResult discoverResult = new DiscoverResult();
                 _activePerson.DiscoverCards(cards, "Выберите новую карту в замок", discoverResult);

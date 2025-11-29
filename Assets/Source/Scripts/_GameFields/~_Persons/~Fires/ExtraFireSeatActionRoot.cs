@@ -1,4 +1,5 @@
 using Cards;
+using GameFields.CardTransits;
 using Tools;
 
 namespace GameFields.Persons.Fires

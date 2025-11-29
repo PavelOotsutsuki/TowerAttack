@@ -13,7 +13,7 @@ using GameFields.Persons.Towers;
 using Tools;
 using UnityEngine;
 
-namespace GameFields
+namespace GameFields.CardTransits
 {
     public class CardTransitManager
     {

@@ -15,7 +15,7 @@ using UnityEngine;
 using UnityEngine.XR;
 using Random = UnityEngine.Random;
 
-namespace GameFields
+namespace GameFields.CardTransits
 {
     public class CardLocationViewRoot
     {

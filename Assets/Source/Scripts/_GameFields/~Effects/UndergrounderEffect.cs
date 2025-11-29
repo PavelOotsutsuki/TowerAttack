@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cards;
+using GameFields.CardTransits;
 using GameFields.InformationLabels;
 using GameFields.Persons;
 using GameFields.Persons.LookCardMenues;

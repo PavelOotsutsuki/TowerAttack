@@ -1,6 +1,7 @@
 using System.Collections;
 using Cards;
 using Cards.DependencyInterlayers;
+using GameFields.CardTransits;
 using GameFields.Persons.DrawCards;
 using GameFields.Persons.EffectHandlers;
 using GameFields.Persons.Hands;

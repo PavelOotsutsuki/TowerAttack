@@ -8,6 +8,7 @@ using Tools.UI;
 using Tools.Utils;
 using System;
 using GameFields.Persons.Discovers;
+using GameFields.CardTransits;
 
 namespace GameFields.Effects
 {
@@ -23,18 +24,20 @@ namespace GameFields.Effects
 
         private readonly CardLocationViewRoot _viewRoot;
         private readonly InformationLabel _informationLabel;
+        private readonly ViewTransitTypesRoot _typesRoot;
 
         private readonly Card _card;
         private readonly EffectDuration _effectDuration;
 
         public MimeEffect(Person activePerson, Person deactivePerson, CardLocationViewRoot viewRoot,
-            InformationLabel informationLabel, EffectData data) : base(data)
+            InformationLabel informationLabel, ViewTransitTypesRoot typesRoot, EffectData data) : base(data)
         {
             _activePerson = activePerson;
             _deactivePerson = deactivePerson;
 
             _viewRoot = viewRoot;
             _informationLabel = informationLabel;
+            _typesRoot = typesRoot;
 
             _card = data.CardEffectData.Card;
             _effectDuration = data.EffectDuration;
@@ -49,7 +52,8 @@ namespace GameFields.Effects
             InformationLabelActivateData informationLabelActivateData;
 
             //ViewType enemyhandType = _activePerson is Player ? ViewType.HandAI : ViewType.HandPlayer;
-            ViewType enemyhandType = ViewTransitTypeConverter.GetPersonHandViewType(_activePerson, false);
+            //ViewType enemyhandType = ViewTransitTypeConverter.GetPersonHandViewType(_activePerson, false);
+            ViewType handView = _typesRoot.GetPersonTypes(_deactivePerson).Hand.ViewType;
 
             //Card deckCard = null;
 
@@ -60,7 +64,7 @@ namespace GameFields.Effects
 
             Card handCard = null;
 
-            if (_viewRoot.TryView(out IReadOnlyList<Card> cardHand, 1, enemyhandType))
+            if (_viewRoot.TryView(out IReadOnlyList<Card> cardHand, 1, handView))
             {
                 handCard = cardHand[0];
             }

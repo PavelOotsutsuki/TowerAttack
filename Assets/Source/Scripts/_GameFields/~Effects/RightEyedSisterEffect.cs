@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using GameFields.Persons;
 using UnityEngine;
+using GameFields.CardTransits;
 
 namespace GameFields.Effects
 {

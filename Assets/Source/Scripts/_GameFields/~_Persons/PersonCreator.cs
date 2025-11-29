@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using GameFields.CommonAnimations;
 using GameFields.Decks;
 using GameFields.EndTurnButtons;
 using GameFields.LightControls;
@@ -35,6 +34,7 @@ using Cards.Views.BigCardViews.Capabilities;
 using GameFields.Persons.EffectHandlers.FateInevitabilities;
 using Cards.Sounds;
 using Cards.Views;
+using GameFields.CardTransits;
 
 namespace GameFields.Persons
 {

@@ -1,5 +1,6 @@
 using System.Linq;
 using Cards.Sounds;
+using GameFields.CardTransits;
 using GameFields.Persons;
 using UnityEngine;
 

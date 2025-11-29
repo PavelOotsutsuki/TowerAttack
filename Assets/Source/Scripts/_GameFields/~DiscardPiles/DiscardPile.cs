@@ -5,6 +5,7 @@ using System.Linq;
 using Cards;
 using Cards.Views;
 using Cysharp.Threading.Tasks;
+using GameFields.CardTransits;
 using GameFields.Seats;
 using GameFields.Signals;
 using Tools.Utils;

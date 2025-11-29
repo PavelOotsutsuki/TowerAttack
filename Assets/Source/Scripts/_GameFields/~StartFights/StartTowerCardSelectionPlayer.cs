@@ -10,6 +10,7 @@ using UnityEngine;
 using GameFields.Persons.Hands;
 using GameFields.Persons.Towers;
 using Cards.Views;
+using GameFields.CardTransits;
 
 namespace GameFields.StartFights
 {

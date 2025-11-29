@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cards;
 using Cards.Sounds;
+using GameFields.CardTransits;
 using GameFields.InformationLabels;
 using GameFields.Persons;
 using GameFields.Persons.DrawCards;
@@ -18,22 +19,26 @@ namespace GameFields.Effects
         private const string MessageEnemy = "Противник смотрит нижнюю и верхнюю карту колоды";
 
         private readonly Person _activePerson;
+        private readonly Person _deactivePerson;
         private readonly IDrawCardManager _drawCardManager;
         private readonly CardLocationViewRoot _viewRoot;
         private readonly CardTransitManager _transitManager;
         private readonly CardSoundRoot _cardSoundRoot;
         private readonly InformationLabel _informationLabel;
         private readonly GunnerCardSoundLogic _gunnerCardSoundLogic;
+        private readonly ViewTransitTypesRoot _typesRoot;
 
-        public GunnerEffect(Person activePerson, CardLocationViewRoot viewRoot, CardTransitManager transitManager,
-            CardSoundRoot cardSoundRoot, InformationLabel informationLabel, EffectData data) : base(data)
+        public GunnerEffect(Person activePerson, Person deactivePerson, CardLocationViewRoot viewRoot, CardTransitManager transitManager,
+            CardSoundRoot cardSoundRoot, InformationLabel informationLabel, ViewTransitTypesRoot typesRoot, EffectData data) : base(data)
         {
             _activePerson = activePerson;
+            _deactivePerson = deactivePerson;
             _drawCardManager = activePerson;
             _viewRoot = viewRoot;
             _transitManager = transitManager;
             _cardSoundRoot = cardSoundRoot;
             _informationLabel = informationLabel;
+            _typesRoot = typesRoot;
 
             if (data.CardEffectData.CardSoundLogic is GunnerCardSoundLogic) // Потому что есть Повторитель, и он уже это не воспроизведет
             {
@@ -77,7 +82,9 @@ namespace GameFields.Effects
 
             // Эффект 3. Сжигаем карту
             //ViewType viewType = _activePerson is EnemyAI ? ViewType.HandPlayer : ViewType.HandAI;
-            ViewType handViewType = ViewTransitTypeConverter.GetPersonHandViewType(_activePerson, false);
+            //ViewType handViewType = ViewTransitTypeConverter.GetPersonHandViewType(_activePerson, false);
+            HandTypes deactivePersonHandTypes = _typesRoot.GetPersonTypes(_deactivePerson).Hand;
+            ViewType handViewType = deactivePersonHandTypes.ViewType;
             IReadOnlyList<Card> cards = _viewRoot.GetAllCards(handViewType).ToList();
 
             if (cards.Count > 0)
@@ -87,8 +94,8 @@ namespace GameFields.Effects
                 bool effectThreeComplete = false;
                 int randomCardIndex = Random.Range(0, cards.Count);
 
-                TransitFromType transitFromType = ViewTransitTypeConverter.ConvertToTransitFromType(handViewType);
-                TransitToType transitToType = ViewTransitTypeConverter.GetPersonFirePoolTransitToType(_activePerson, true);
+                TransitFromType handFrom = deactivePersonHandTypes.FromType;
+                TransitToType firePoolTo = _typesRoot.GetPersonTypes(_activePerson).FirePool;
 
                 //if (viewType == ViewType.HandPlayer)
                 //{
@@ -104,7 +111,7 @@ namespace GameFields.Effects
                 Card firedCard = cards[randomCardIndex];
                 int index = _viewRoot.IndexOf(handViewType, firedCard);
 
-                _transitManager.TransitCard(cards[randomCardIndex], transitFromType, transitToType, () => effectThreeComplete = true, index);
+                _transitManager.TransitCard(cards[randomCardIndex], handFrom, firePoolTo, () => effectThreeComplete = true, index);
                 yield return new WaitUntil(() => effectThreeComplete);
             }
 

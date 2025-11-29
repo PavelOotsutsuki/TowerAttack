@@ -34,12 +34,9 @@ namespace GameFields.Effects
 
         protected override IEnumerator OnPlaying()
         {
-            //_activePerson.ChoiceActivate("Выбрано:", 3);
             int countAttack = _activePerson.BrothersCounter;
             bool isAttackComplete = false;
             _activePerson.AttackActivate(StartValue + countAttack, () => isAttackComplete = true);
-            //_activePerson.ChoiceActivate(4, EndPlayingCallback, RestrictionType.Consecutive);
-            //yield return new WaitUntil(() => _activePerson.IsChoiceComplete);
             yield return new WaitUntil(() => isAttackComplete);
 
             bool isDrawComplete = false;
@@ -48,8 +45,6 @@ namespace GameFields.Effects
             yield return new WaitUntil(() => isDrawComplete);
 
             _brothersEffectHandlerRoot.Upgrade(UpgradeCount);
-
-            //_deactivePerson.AttackDeactivate();
         }
     }
 }

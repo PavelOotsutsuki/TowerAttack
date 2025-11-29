@@ -8,6 +8,7 @@ using UnityEngine;
 using Zenject;
 using GameFields.Signals;
 using Cards.DependencyInterlayers;
+using GameFields.CardTransits;
 
 namespace GameFields.Persons.Hands
 {

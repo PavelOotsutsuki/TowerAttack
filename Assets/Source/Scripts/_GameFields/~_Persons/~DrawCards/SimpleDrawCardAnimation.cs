@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cards;
 using Cysharp.Threading.Tasks;
+using GameFields.CardTransits;
 using UnityEngine;
 
 namespace GameFields.Persons.DrawCards

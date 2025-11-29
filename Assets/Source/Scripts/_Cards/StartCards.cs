@@ -38,41 +38,47 @@ namespace Cards
 
 
 
-            //for (int i = 1; i < 40; i++)
-            //{
-            //    CardName cardName = (CardName)28;
-            //    _startCardNames.Add(cardName);
-            //}
+            for (int i = 1; i < 40; i++)
+            {
+                CardName cardName = (CardName)28;
+                _startCardNames.Add(cardName);
+            }
 
-            //for (int i = 1; i < 50; i++)
-            //{
-            //    CardName cardName = (CardName)45;
-            //    _startCardNames.Add(cardName);
-            //}
+            for (int i = 1; i < 50; i++)
+            {
+                CardName cardName = (CardName)45;
+                _startCardNames.Add(cardName);
+            }
 
-            //for (int i = 1; i < 10; i++)
-            //{
-            //    CardName cardName = (CardName)44;
-            //    _startCardNames.Add(cardName);
-            //}
+            for (int i = 1; i < 10; i++)
+            {
+                CardName cardName = (CardName)44;
+                _startCardNames.Add(cardName);
+            }
 
-            //for (int i = 1; i < 10; i++)
-            //{
-            //    CardName cardName = (CardName)23;
-            //    _startCardNames.Add(cardName);
-            //}
+            for (int i = 1; i < 10; i++)
+            {
+                CardName cardName = (CardName)23;
+                _startCardNames.Add(cardName);
+            }
 
-            //for (int i = 1; i < 10; i++)
-            //{
-            //    CardName cardName = (CardName)36;
-            //    _startCardNames.Add(cardName);
-            //}
+            for (int i = 1; i < 10; i++)
+            {
+                CardName cardName = (CardName)36;
+                _startCardNames.Add(cardName);
+            }
 
-            //for (int i = 1; i < 20; i++)
-            //{
-            //    CardName cardName = (CardName)40;
-            //    _startCardNames.Add(cardName);
-            //}
+            for (int i = 1; i < 10; i++)
+            {
+                CardName cardName = (CardName)18;
+                _startCardNames.Add(cardName);
+            }
+
+            for (int i = 1; i < 20; i++)
+            {
+                CardName cardName = (CardName)40;
+                _startCardNames.Add(cardName);
+            }
         }
     }
 }

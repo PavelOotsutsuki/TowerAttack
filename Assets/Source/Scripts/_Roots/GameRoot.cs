@@ -23,6 +23,7 @@ using System.Collections;
 using Cards.Views.BigCardViews.Capabilities;
 using Cards.Views.BigCardViews;
 using Cards.Sounds;
+using GameFields.CardTransits;
 
 namespace Roots
 {
@@ -88,10 +89,10 @@ namespace Roots
 
             _personsState = new PersonsState(player, enemyAI);
             //fightMenu.
-
+            ViewTransitTypesRoot typesRoot = new ViewTransitTypesRoot();
             EffectFactory effectFactory = new EffectFactory(_personsState, viewRoot, informationLabel, cardTransitManager,
                 variantCardCreator, brothersEffectHandlerRoot, bus, personEffectsHandlerRoot, discardManager, loseActionsRoot,
-                cardSoundRoot);
+                cardSoundRoot, typesRoot);
 
             _cardRoot.Init(effectFactory, bigCardRoot, cardDragAndDropHandler, cardCapabilityDescription, cardSoundRoot, _fontRoot);
             deck.Init(seatPool, _cardRoot.Cards);

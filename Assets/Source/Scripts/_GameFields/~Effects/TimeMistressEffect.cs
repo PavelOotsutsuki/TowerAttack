@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using GameFields.Persons;
 using UnityEngine;
+using GameFields.CardTransits;
 
 namespace GameFields.Effects
 {
@@ -11,14 +12,16 @@ namespace GameFields.Effects
         private readonly Person _activePerson;
         private readonly CardLocationViewRoot _viewRoot;
         private readonly CardTransitManager _transitManager;
+        private readonly ViewTransitTypesRoot _typesRoot;
 
         public TimeMistressEffect(Person activePerson, CardLocationViewRoot viewRoot, CardTransitManager transitManager,
-             EffectData data) : base(data)
+             ViewTransitTypesRoot typesRoot, EffectData data) : base(data)
         {
             _activePerson = activePerson;
 
             _viewRoot = viewRoot;
             _transitManager = transitManager;
+            _typesRoot = typesRoot;
 
             Play();
         }
@@ -33,17 +36,22 @@ namespace GameFields.Effects
         protected override IEnumerator OnPlaying()
         {
             //TransitToType transitTo = _activePerson is Player ? TransitToType.HandPlayer : TransitToType.HandEnemy;
-            TransitToType transitTo = ViewTransitTypeConverter.GetPersonHandTransitToType(_activePerson, true);
-            ViewType discardPile = ViewType.DiscardPile;
-            TransitFromType transitFromType = ViewTransitTypeConverter.ConvertToTransitFromType(discardPile);
+            //TransitToType transitTo = ViewTransitTypeConverter.GetPersonHandTransitToType(_activePerson, true);
+            //ViewType discardPile = ViewType.DiscardPile;
+            //TransitFromType transitFromType = ViewTransitTypeConverter.ConvertToTransitFromType(discardPile);
+            TransitToType handTo = _typesRoot.GetPersonTypes(_activePerson).Hand.ToType;
+            DiscardPileTypes discardPileTypes = _typesRoot.DiscardPile;
 
-            if (_viewRoot.TryView(out IReadOnlyList<Card> cards, 1, discardPile))
+            ViewType discardPileView = discardPileTypes.ViewType;
+            TransitFromType discardPileFrom = discardPileTypes.FromType;
+
+            if (_viewRoot.TryView(out IReadOnlyList<Card> cards, 1, discardPileView))
             {
                 Card card = cards[0];
 
                 bool isTransit = false;
 
-                _transitManager.TransitCard(card, transitFromType, transitTo, () => isTransit = true);
+                _transitManager.TransitCard(card, discardPileFrom, handTo, () => isTransit = true);
                 yield return new WaitUntil(() => isTransit);
             }
 
