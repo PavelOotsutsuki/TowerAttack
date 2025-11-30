@@ -35,17 +35,23 @@ namespace Cards
 
 
 
-            //for (int i = 1; i < 40; i++)
+            //for (int i = 1; i < 100; i++)
             //{
             //    CardName cardName = (CardName)28;
             //    _startCardNames.Add(cardName);
             //}
 
-            for (int i = 1; i < 50; i++)
-            {
-                CardName cardName = (CardName)50;
-                _startCardNames.Add(cardName);
-            }
+            //for (int i = 1; i < 50; i++)
+            //{
+            //    CardName cardName = (CardName)50;
+            //    _startCardNames.Add(cardName);
+            //}
+
+            //for (int i = 1; i < 50; i++)
+            //{
+            //    CardName cardName = (CardName)45;
+            //    _startCardNames.Add(cardName);
+            //}
 
             //for (int i = 1; i < 10; i++)
             //{

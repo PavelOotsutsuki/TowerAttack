@@ -29,7 +29,7 @@ namespace GameFields.DiscardPiles
 
         private readonly SignalBus _bus;
 
-        public IEnumerable<Card> AllCards => _seats.Select(s => s.Card);
+        public IEnumerable<Card> AllCards => _seats.Select(s => s.Card).ToList(); // ToList - чтобы далее работать с копией
 
         public DiscardPile(SeatPool seatPool, SignalBus bus, DiscardPileConfig discardPileConfig)
         {
