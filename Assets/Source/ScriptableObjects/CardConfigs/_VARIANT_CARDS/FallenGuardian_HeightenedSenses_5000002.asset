@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 961f8779e31664b8b93208abc5cc22bb, type: 3}
   m_Name: FallenGuardian_HeightenedSenses_5000002
   m_EditorClassIdentifier: 
-  <CardViewConfig>k__BackingField: {fileID: 0}
+  <CardViewConfig>k__BackingField: {fileID: 11400000, guid: 765afb02392224c039f2f19b7289cbef, type: 2}
   <Effect>k__BackingField: {fileID: 11400000, guid: c4ed91c1bd65a4c0c87f84c463a1a090, type: 2}
   <CardCapability>k__BackingField: 0

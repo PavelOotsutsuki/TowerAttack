@@ -7389,6 +7389,8 @@ MonoBehaviour:
   _hungryOgre_HighProfileCrime_template: {fileID: 7593170572360689188, guid: 26d51bd622c5d47f699e4235f97edc51, type: 3}
   _strongOgre_WeakBlow_template: {fileID: 3182323132698577644, guid: 1d91aacb6eb6848c09ec7ebad47a1a3c, type: 3}
   _strongOgre_StrongBlow_template: {fileID: 8412176061330390519, guid: 232d016777a8e46feb819c235b8a1a4f, type: 3}
+  _fallenGuardian_NightSight_template: {fileID: 1179236926209524585, guid: 9f9af5f76f72c4fd98487a88e000415e, type: 3}
+  _fallenGuardian_HeightenedSenses_template: {fileID: 3202836970903065814, guid: 01be755ea50f9445d92e5984d13a1af6, type: 3}
 --- !u!1 &773518230
 GameObject:
   m_ObjectHideFlags: 0

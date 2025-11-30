@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 961f8779e31664b8b93208abc5cc22bb, type: 3}
   m_Name: FallenGuardian_NightSight_5000001
   m_EditorClassIdentifier: 
-  <CardViewConfig>k__BackingField: {fileID: 0}
+  <CardViewConfig>k__BackingField: {fileID: 11400000, guid: 82e343474943744a08a26f47d05adaf5, type: 2}
   <Effect>k__BackingField: {fileID: 11400000, guid: 3b9c64293b9af492a92c88affbf35bde, type: 2}
   <CardCapability>k__BackingField: 0
