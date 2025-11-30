@@ -228,12 +228,19 @@ namespace GameFields.Effects
                 EffectType.MafiaBoss => new MafiaBossEffect(_personsState.Active, _personsState.Deactive, _viewRoot, _cardTransitManager,
                 _typesRoot, effectData),
                 EffectType.PyromancersManuscript => new VoidEffect(effectData),
-                EffectType.FalsePrince => new VoidEffect(effectData),
-                EffectType.BlackGnome => new VoidEffect(effectData),
+                EffectType.FalsePrince => new FalsePrinceEffect(_personsState.Active, effectData),
+                EffectType.BlackGnome => new BlackGnomeEffect(_personsState.Active, effectData),
                 EffectType.BigBrother => new BigBrotherEffect(_personsState.Active, _brothersEffectHandlerRoot, effectData),
-                EffectType.LastChance => new VoidEffect(effectData),
-                EffectType.FallenGuardian => new VoidEffect(effectData),
-
+                EffectType.LastChance => new LastChanceEffect(_viewRoot, _cardTransitManager, _typesRoot, effectData),
+                EffectType.FallenGuardian => new FallenGuardianEffect(_personsState.Active, _variantCardCreator, CreateEffect, effecType,
+                effectData),
+                EffectType.FallenGuardian_NightSight => new FallenGuardian_NightSightEffect(_personsState.Deactive, _informationLabel,
+                CreateEffect, _personsState.Active, effectData),
+                EffectType.FallenGuardian_HeightenedSenses => new FallenGuardian_HeightenedSensesEffect(_personsState.Deactive, _informationLabel,
+                CreateEffect, _personsState.Active, effectData),
+                EffectType.FallenGuardian_TrueChoiceEffect => new FallenGuardian_TrueChoiceEffect(effectData),
+                EffectType.FallenGuardian_FalseChoiceEffect => new FallenGuardian_FalseChoiceEffect(_personsState.Active, _viewRoot,
+                _cardTransitManager, _typesRoot, effectData),
                 _ => throw new NullReferenceException("Effect is not founded")
             };
 

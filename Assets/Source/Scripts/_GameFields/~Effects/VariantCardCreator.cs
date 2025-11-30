@@ -40,6 +40,15 @@ namespace GameFields.Effects
         [SerializeField] private VariantCard _strongOgre_WeakBlow_template;
         [SerializeField] private VariantCard _strongOgre_StrongBlow_template;
 
+        [Space]
+        [Header("----------------------------")]
+        [Space]
+
+        [Header("50: FallenGuardian")]
+
+        [SerializeField] private VariantCard _fallenGuardian_NightSight_template;
+        [SerializeField] private VariantCard _fallenGuardian_HeightenedSenses_template;
+
         private readonly Dictionary<EffectType, VariantCard[]> _effectsVariantsTemplates = new Dictionary<EffectType, VariantCard[]>(); 
 
         public void Init()
@@ -70,6 +79,13 @@ namespace GameFields.Effects
                 {
                     _strongOgre_WeakBlow_template,
                     _strongOgre_StrongBlow_template
+                });
+
+            _effectsVariantsTemplates.Add(EffectType.FallenGuardian,
+                new VariantCard[2]
+                {
+                    _fallenGuardian_NightSight_template,
+                    _fallenGuardian_HeightenedSenses_template
                 });
         }
 

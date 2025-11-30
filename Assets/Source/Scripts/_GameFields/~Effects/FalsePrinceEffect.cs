@@ -1,21 +1,34 @@
 using System.Collections;
-using System.Collections.Generic;
+using GameFields.Persons;
+using Tools;
 using UnityEngine;
 
-namespace GameFields
+namespace GameFields.Effects
 {
-    public class FalsePrinceEffect : MonoBehaviour
+    public class FalsePrinceEffect : Effect
     {
-        // Start is called before the first frame update
-        void Start()
+        private readonly Person _activePerson;
+
+        public FalsePrinceEffect(Person activePerson, EffectData data) : base(data)
         {
-        
+            _activePerson = activePerson;
+
+            Play();
         }
 
-        // Update is called once per frame
-        void Update()
+        public override void End()
         {
-        
+            base.End();
+
+            Debug.Log("Эффект Лжепринца закончен");
+        }
+
+        protected override IEnumerator OnPlaying()
+        {
+            CallbackHandler callbackHandler = new CallbackHandler();
+
+            _activePerson.ActivateFalsePrinceEffect(callbackHandler);
+            yield return new WaitUntil(() => callbackHandler.IsComplete);
         }
     }
 }

@@ -9,12 +9,12 @@ namespace GameFields.Persons.EffectHandlers
     {
         private const int BorderlineNumber = 25;
 
-        private readonly SelectNumbersList _choicedNumbersPlayer;
+        private readonly SelectNumbersList _choicedNumbersPerson;
         private readonly ICardNumberKeeper _cardNumberKeeper;
 
-        public JusticeBullEffectHandler(SelectNumbersList choicedNumbersPlayer, ICardNumberKeeper cardNumberKeeper)
+        public JusticeBullEffectHandler(SelectNumbersList choicedNumbersPerson, ICardNumberKeeper cardNumberKeeper)
         {
-            _choicedNumbersPlayer = choicedNumbersPlayer;
+            _choicedNumbersPerson = choicedNumbersPerson;
             _cardNumberKeeper = cardNumberKeeper;
         }
 
@@ -53,7 +53,7 @@ namespace GameFields.Persons.EffectHandlers
             {
                 for (int i = minNumber; i < BorderlineNumber; i++)
                 {
-                    _choicedNumbersPlayer.Add(i, NumberAnimationType.Choice);
+                    _choicedNumbersPerson.Add(i, NumberAnimationType.Choice);
                 }
             }
 
@@ -61,7 +61,7 @@ namespace GameFields.Persons.EffectHandlers
             {
                 for (int i = BorderlineNumber + 1; i <= maxNumber; i++)
                 {
-                    _choicedNumbersPlayer.Add(i, NumberAnimationType.Choice);
+                    _choicedNumbersPerson.Add(i, NumberAnimationType.Choice);
                 }
             }
         }

@@ -1,14 +1,16 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using Cards;
 using Cards.Views;
-using GameFields.Persons;
 using Tools;
 using Tools.Utils.FillComponents;
+using Tools.Utils.Movements;
 using UnityEngine;
 
 namespace GameFields.Persons.Towers
 {
-    public abstract class Tower : MonoBehaviour, ITowerCardSeatable, ICardNumberKeeper, IBoomTower, IPersonObject,
+    public abstract class Tower : MonoBehaviour, ITowerCardSeatable, ICardNumberKeeper, IBoomTower, IPersonObject, ICopyCardCreator,
         IReadOnlyRectTransformable, ICardFeatureRechangablePlace, ITowerTransitable, IAutomaticFillComponents
     {
         private const SideType DefaultSideType = SideType.Back;
@@ -22,15 +24,17 @@ namespace GameFields.Persons.Towers
 
         private BoomAnimation _boomAnimation;
         private ConfirmableNumbers _confirmableNumbers;
+        private ICardCreator _cardCreator;
 
         public ReadOnlyRectTransform RORTransform { get; private set; }
         public bool HasFreeSeat => _towerSeat.IsFill() == false;
         public ICardNumber Card => _towerSeat.Card;
 
-        public virtual void Init(ConfirmableNumbers confirmableNumbers)
+        public virtual void Init(ConfirmableNumbers confirmableNumbers, ICardCreator cardCreator)
         {
             _towerSeat.Init();
             _confirmableNumbers = confirmableNumbers;
+            _cardCreator = cardCreator;
 
             RORTransform = new ReadOnlyRectTransform(_rectTransform);
 
@@ -88,6 +92,11 @@ namespace GameFields.Persons.Towers
             return true;
         }
 
+        void ICopyCardCreator.CreateCopyCard(Action<Card> insertedCardCallback)
+        {
+            StartCoroutine(CreatingCopyCard(insertedCardCallback));
+        }
+
         protected CardViewData GetCardViewData()
         {
             return _towerSeat.Card.ViewData;
@@ -96,6 +105,28 @@ namespace GameFields.Persons.Towers
         void IBoomTower.Boom()
         {
             _boomAnimation.Play();
+        }
+
+        private IEnumerator CreatingCopyCard(Action<Card> insertedCardCallback)
+        {
+            CardName cardName = _towerSeat.Card.CardName;
+
+            Card createdCard = _cardCreator.CreateCard(cardName, _rectTransform);
+
+            Vector3 localPosition = Vector3.zero;
+
+            createdCard.transform.localPosition = localPosition;
+            createdCard.transform.localScale = new Vector3(0,0,0);
+            createdCard.transform.rotation = Quaternion.identity;
+            createdCard.SetSide(SideType.Back);
+
+            Movement cardMovement = createdCard.CardMovement;
+            ReadOnlyRectTransform cardRORTransform = createdCard.RORTransform;
+
+            cardMovement.MoveLocalSmoothly(localPosition, cardRORTransform.GetRotationVector(), 0.5f, createdCard.DefaultScaleVector);
+
+            yield return new WaitForSeconds(0.5f + 0.5f);
+            insertedCardCallback?.Invoke(createdCard);
         }
 
         #region AutomaticFillComponents

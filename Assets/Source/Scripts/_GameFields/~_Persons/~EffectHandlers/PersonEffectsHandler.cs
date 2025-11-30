@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using GameFields.Persons;
 using GameFields.Persons.EffectHandlers.Slimes;
 using GameFields.Persons.EffectHandlers.Curses;
 using GameFields.Persons.EffectHandlers.Fires;
@@ -29,6 +28,8 @@ namespace GameFields.Persons.EffectHandlers
         private readonly BrothersEffectHandler _brothersEffectHandler;
         private readonly ScarecrowEffectHandler _scarecrowEffectHandler;
         private readonly WiseMonkEffectHandler _wiseMonkEffectHandler;
+        private readonly FalsePrinceEffectHandler _falsePrinceEffectHandler;
+        private readonly FallenGuardianEffectHandler _fallenGuardianEffectHandler;
 
         private readonly IReadOnlyList<ILengthyEffectHandler> _lengthyEffectHandlers;
 
@@ -36,7 +37,8 @@ namespace GameFields.Persons.EffectHandlers
             CurseEffectHandler curseEffectHandler, FireEffectHandler fireEffectHandler, DoubleEffectHandler doubleEffectHandler,
             SkipTurnEffectHandler skipTurnEffectHandler, FateInevitabilityHandler fateInevitabilityHandler,
             JusticeBullEffectHandler justiceBullEffectHandler, BrothersEffectHandler brothersEffectHandler,
-            ScarecrowEffectHandler scarecrowEffectHandler, WiseMonkEffectHandler wiseMonkEffectHandler)
+            ScarecrowEffectHandler scarecrowEffectHandler, WiseMonkEffectHandler wiseMonkEffectHandler,
+            FalsePrinceEffectHandler falsePrinceEffectHandler, FallenGuardianEffectHandler fallenGuardianEffectHandler)
         {
             _gnomeEffectHandler = gnomeEffectHandler;
             _slimeEffectHandler = slimeEffectHandler;
@@ -49,6 +51,8 @@ namespace GameFields.Persons.EffectHandlers
             _brothersEffectHandler = brothersEffectHandler;
             _scarecrowEffectHandler = scarecrowEffectHandler;
             _wiseMonkEffectHandler = wiseMonkEffectHandler;
+            _falsePrinceEffectHandler = falsePrinceEffectHandler;
+            _fallenGuardianEffectHandler = fallenGuardianEffectHandler;
 
             _lengthyEffectHandlers = new List<ILengthyEffectHandler>()
             {
@@ -73,6 +77,8 @@ namespace GameFields.Persons.EffectHandlers
         public BrothersEffectHandler BrothersEffectHandler => _brothersEffectHandler;
         public ScarecrowEffectHandler ScarecrowEffectHandler => _scarecrowEffectHandler;
         public WiseMonkEffectHandler WiseMonkEffectHandler => _wiseMonkEffectHandler;
+        public FalsePrinceEffectHandler FalsePrinceEffectHandler => _falsePrinceEffectHandler;
+        public FallenGuardianEffectHandler FallenGuardianEffectHandler => _fallenGuardianEffectHandler;
 
         public void OnStartTurn()
         {

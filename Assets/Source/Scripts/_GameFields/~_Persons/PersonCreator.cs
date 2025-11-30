@@ -272,10 +272,13 @@ namespace GameFields.Persons
             JusticeBullEffectHandler justiceBullEffectHandler = new JusticeBullEffectHandler(_choicedNumbersPlayer, _enemyTower);
             ScarecrowEffectHandler scarecrowEffectHandler = new ScarecrowEffectHandler(_discardManager);
             WiseMonkEffectHandler wiseMonkEffectHandler = new WiseMonkEffectHandler();
+            FalsePrinceEffectHandler falsePrinceEffectHandler = new FalsePrinceEffectHandler(_playerTower, _deck);
+            FallenGuardianEffectHandler fallenGuardianEffectHandler = new FallenGuardianEffectHandler(_choicedNumbersPlayer, _enemyTower);
             _playerBrothersEffectHandler = new BrothersEffectHandler(_playerRechangeFeatureRuleController, cardFeatureRechangables);
             _playerPersonEffectsHandler = new PersonEffectsHandler(gnomeEffectHandler, slimeEffectHandler, curseEffectHandler,
                 fireEffectHandler, doubleEffectHandler, skipTurnEffectHandler, fateInevitabilityHandler, justiceBullEffectHandler,
-                _playerBrothersEffectHandler, scarecrowEffectHandler, wiseMonkEffectHandler);
+                _playerBrothersEffectHandler, scarecrowEffectHandler, wiseMonkEffectHandler, falsePrinceEffectHandler,
+                fallenGuardianEffectHandler);
 
             SkipTurnChecker skipTurnChecker = new SkipTurnChecker(slimeEffectHandler, _playerHand);
             TurnProcessing turnProcessing = new TurnProcessing(_interactionActivator, skipTurnChecker);
@@ -320,9 +323,12 @@ namespace GameFields.Persons
             _enemyBrothersEffectHandler = new BrothersEffectHandler(_enemyRechangeFeatureRuleController, cardFeatureRechangables);
             ScarecrowEffectHandler scarecrowEffectHandler = new ScarecrowEffectHandler(_discardManager);
             WiseMonkEffectHandler wiseMonkEffectHandler = new WiseMonkEffectHandler();
+            FalsePrinceEffectHandler falsePrinceEffectHandler = new FalsePrinceEffectHandler(_enemyTower, _deck);
+            FallenGuardianEffectHandler fallenGuardianEffectHandler = new FallenGuardianEffectHandler(_choicedNumbersEnemy, _playerTower);
             _enemyPersonEffectsHandler = new PersonEffectsHandler(gnomeEffectHandler, slimeEffectHandler, curseEffectHandler,
                 fireEffectHandler, doubleEffectHandler, skipTurnEffectHandler, fateInevitabilityHandler, justiceBullEffectHandler,
-                _enemyBrothersEffectHandler, scarecrowEffectHandler, wiseMonkEffectHandler);
+                _enemyBrothersEffectHandler, scarecrowEffectHandler, wiseMonkEffectHandler, falsePrinceEffectHandler,
+                fallenGuardianEffectHandler);
 
             SkipTurnChecker skipTurnChecker = new SkipTurnChecker(slimeEffectHandler, _enemyHand);
             CardDragAndDropImitationActions cardDragAndDropImitationActions = new CardDragAndDropImitationActions(_enemyHand, _enemyPlayingZone, _enemyCardAttackZone,
@@ -386,7 +392,7 @@ namespace GameFields.Persons
             //_playerHand.Init(seatPool, _playerRechangeFeatureRuleController, _playerTurnDrawnCards);
             _playerTable.Init();
             _playerPlayingZone.Init(_playerTable);
-            _playerTower.Init(_confirmableNumbersEnemyAI);
+            _playerTower.Init(_confirmableNumbersEnemyAI , _cardRoot);
             _playerDiscover.Init();
             _startPlayerTurnLabel.Init();
 
@@ -417,7 +423,7 @@ namespace GameFields.Persons
             //_enemyHand.Init(seatPool, _enemyRechangeFeatureRuleController, _enemyTurnDrawnCards);
             _enemyTable.Init();
             _enemyPlayingZone.Init(_enemyTable);
-            _enemyTower.Init(_confirmableNumbersPlayer);
+            _enemyTower.Init(_confirmableNumbersPlayer, _cardRoot);
 
             _enemyDiscoverImitation.Init();
 

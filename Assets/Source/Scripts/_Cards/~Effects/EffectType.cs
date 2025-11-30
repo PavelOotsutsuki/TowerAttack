@@ -62,6 +62,10 @@ namespace Cards.Effects
         BlackGnome = 47,
         BigBrother = 48,
         LastChance = 49,
-        FallenGuardian = 50
+        FallenGuardian = 50,
+        FallenGuardian_NightSight = 5000001,
+        FallenGuardian_HeightenedSenses = 5000002,
+        FallenGuardian_TrueChoiceEffect = 5000003,
+        FallenGuardian_FalseChoiceEffect = 5000004,
     }
 }

@@ -39,6 +39,7 @@ namespace Cards
         public Image Background => _background;
         public SideType CurrentSide => _cardPaper.CurrentSide;
         public CardCapability CardCapability => _config.CardCapability;
+        public CardName CardName => _config.CardName;
 
         public bool IsCurse => _cardSpriteModeManager.IsCurse;
         public bool IsLuckyHorseshoe => _config.Effect.Type == EffectType.LuckyHorseshoe;

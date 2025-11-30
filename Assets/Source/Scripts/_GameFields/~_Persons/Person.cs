@@ -412,6 +412,16 @@ namespace GameFields.Persons
             _personEffectsHandler.WiseMonkEffectHandler.Activate(card);
         }
 
+        public void ActivateFalsePrinceEffect(CallbackHandler callbackHandler)
+        {
+            _personEffectsHandler.FalsePrinceEffectHandler.Activate(callbackHandler);
+        }
+
+        public void ActivateFallenGuardianEffect()
+        {
+            _personEffectsHandler.FallenGuardianEffectHandler.Activate();
+        }
+
         //public void DeactivateSlimeEffect()
         //{
 

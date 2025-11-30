@@ -18,3 +18,4 @@ MonoBehaviour:
   <Effect>k__BackingField: {fileID: 11400000, guid: 90e0f0ccd5a1948d89c70a79b20d774c, type: 2}
   <CardCapability>k__BackingField: 3
   <CardPersonType>k__BackingField: 0
+  <CardName>k__BackingField: 42

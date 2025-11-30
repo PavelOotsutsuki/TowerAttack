@@ -1,21 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
+using GameFields.Persons;
 using UnityEngine;
 
-namespace GameFields
+namespace GameFields.Effects
 {
-    public class BlackGnomeEffect : MonoBehaviour
+    public class BlackGnomeEffect : GnomeEffect
     {
-        // Start is called before the first frame update
-        void Start()
-        {
-        
-        }
+        public BlackGnomeEffect(Person activePerson, EffectData data) : base(activePerson, data)
+        { }
 
-        // Update is called once per frame
-        void Update()
+        public override void End()
         {
-        
+            base.End();
+
+            Debug.Log("Эффект Черного Гнома закончен");
         }
     }
 }
