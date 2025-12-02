@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: RushingMailman_14
   m_EditorClassIdentifier: 
   <CardViewConfig>k__BackingField: {fileID: 11400000, guid: 1a1d59b2dbc6e49a483ab4bceddd2a3b, type: 2}
-  <CardCharacter>k__BackingField: {fileID: 7233767571375303125, guid: ef63134ca2cff467589c5e301a67a745, type: 3}
+  <CardCharacter>k__BackingField: {fileID: 8390222927803056865, guid: 0ad6cf2d99d1f4cb9919a87f2ce10b17, type: 3}
   <SoundConfig>k__BackingField: {fileID: 11400000, guid: f6928bc07aebe49f58f89fa98816acc9, type: 2}
   <Effect>k__BackingField: {fileID: 11400000, guid: a8125a323ebf74c649decec06aba49c2, type: 2}
   <CardCapability>k__BackingField: 3

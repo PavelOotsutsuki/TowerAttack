@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ThreeGuys_9
   m_EditorClassIdentifier: 
   <CardViewConfig>k__BackingField: {fileID: 11400000, guid: 07b6799818b514ee582244e61bcd4c8e, type: 2}
-  <CardCharacter>k__BackingField: {fileID: 7233767571375303125, guid: ef63134ca2cff467589c5e301a67a745, type: 3}
+  <CardCharacter>k__BackingField: {fileID: 8390222927803056865, guid: 0ad6cf2d99d1f4cb9919a87f2ce10b17, type: 3}
   <SoundConfig>k__BackingField: {fileID: 11400000, guid: 6b614e9b99ed243c1a0220bdd4aec46c, type: 2}
   <Effect>k__BackingField: {fileID: 11400000, guid: e4478365bc0f340dca07ff5c271230b5, type: 2}
   <CardCapability>k__BackingField: 7

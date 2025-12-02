@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Schemer_15
   m_EditorClassIdentifier: 
   <CardViewConfig>k__BackingField: {fileID: 11400000, guid: 9f1c36c28a7a14314a9739d6728f153e, type: 2}
-  <CardCharacter>k__BackingField: {fileID: 7233767571375303125, guid: ef63134ca2cff467589c5e301a67a745, type: 3}
+  <CardCharacter>k__BackingField: {fileID: 8390222927803056865, guid: 0ad6cf2d99d1f4cb9919a87f2ce10b17, type: 3}
   <SoundConfig>k__BackingField: {fileID: 11400000, guid: 61071f2ce92d644678941039fb97895a, type: 2}
   <Effect>k__BackingField: {fileID: 11400000, guid: f71632d568a184271acf97ab79cc1f50, type: 2}
   <CardCapability>k__BackingField: 3

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LuckyHorseshoe_31
   m_EditorClassIdentifier: 
   <CardViewConfig>k__BackingField: {fileID: 11400000, guid: 4e992acdc7acd4a3390e3aad7a6d59f0, type: 2}
-  <CardCharacter>k__BackingField: {fileID: 7233767571375303125, guid: ef63134ca2cff467589c5e301a67a745, type: 3}
+  <CardCharacter>k__BackingField: {fileID: 8390222927803056865, guid: 0ad6cf2d99d1f4cb9919a87f2ce10b17, type: 3}
   <SoundConfig>k__BackingField: {fileID: 11400000, guid: 8d0829faf2407470cb12b13590666f73, type: 2}
   <Effect>k__BackingField: {fileID: 11400000, guid: edd1792cc5146484a9297551a03659f9, type: 2}
   <CardCapability>k__BackingField: 9

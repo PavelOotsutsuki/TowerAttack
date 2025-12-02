@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GreenGnome_27
   m_EditorClassIdentifier: 
   <CardViewConfig>k__BackingField: {fileID: 11400000, guid: 593e39a170dd2490fa3c0d80618a74ae, type: 2}
-  <CardCharacter>k__BackingField: {fileID: 7233767571375303125, guid: ef63134ca2cff467589c5e301a67a745, type: 3}
+  <CardCharacter>k__BackingField: {fileID: 8390222927803056865, guid: 0ad6cf2d99d1f4cb9919a87f2ce10b17, type: 3}
   <SoundConfig>k__BackingField: {fileID: 11400000, guid: 6da8be2c29fa647d99c6860a78b65251, type: 2}
   <Effect>k__BackingField: {fileID: 11400000, guid: bf3a5bd1318c34b3bb1606b58275acaa, type: 2}
   <CardCapability>k__BackingField: 55

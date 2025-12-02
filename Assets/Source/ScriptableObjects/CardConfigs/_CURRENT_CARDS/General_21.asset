@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: General_21
   m_EditorClassIdentifier: 
   <CardViewConfig>k__BackingField: {fileID: 11400000, guid: d4988bcff09154945b6cc7c610392cb0, type: 2}
-  <CardCharacter>k__BackingField: {fileID: 7233767571375303125, guid: ef63134ca2cff467589c5e301a67a745, type: 3}
+  <CardCharacter>k__BackingField: {fileID: 8390222927803056865, guid: 0ad6cf2d99d1f4cb9919a87f2ce10b17, type: 3}
   <SoundConfig>k__BackingField: {fileID: 11400000, guid: b716b2f0f8056426b88327ad9cf44890, type: 2}
   <Effect>k__BackingField: {fileID: 11400000, guid: 197e83b1e82f3448890768103ba129c0, type: 2}
   <CardCapability>k__BackingField: 7

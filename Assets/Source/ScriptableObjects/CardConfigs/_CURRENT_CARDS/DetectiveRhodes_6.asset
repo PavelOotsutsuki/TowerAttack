@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DetectiveRhodes_6
   m_EditorClassIdentifier: 
   <CardViewConfig>k__BackingField: {fileID: 11400000, guid: fc7a965999db64b5c95a0127a7a91675, type: 2}
-  <CardCharacter>k__BackingField: {fileID: 7233767571375303125, guid: ef63134ca2cff467589c5e301a67a745, type: 3}
+  <CardCharacter>k__BackingField: {fileID: 8390222927803056865, guid: 0ad6cf2d99d1f4cb9919a87f2ce10b17, type: 3}
   <SoundConfig>k__BackingField: {fileID: 11400000, guid: 65ea5799ad0584afd87a7734353e11da, type: 2}
   <Effect>k__BackingField: {fileID: 11400000, guid: 12e0d408f04e54ab7be5cee4cb737c9c, type: 2}
   <CardCapability>k__BackingField: 3

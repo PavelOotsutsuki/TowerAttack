@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: WiseMonk_32
   m_EditorClassIdentifier: 
   <CardViewConfig>k__BackingField: {fileID: 11400000, guid: b2e615a570dcf4941b35d0eea8fd6489, type: 2}
-  <CardCharacter>k__BackingField: {fileID: 7233767571375303125, guid: ef63134ca2cff467589c5e301a67a745, type: 3}
+  <CardCharacter>k__BackingField: {fileID: 8390222927803056865, guid: 0ad6cf2d99d1f4cb9919a87f2ce10b17, type: 3}
   <SoundConfig>k__BackingField: {fileID: 11400000, guid: 38167044db59e4b46a773908edb7d0bc, type: 2}
   <Effect>k__BackingField: {fileID: 11400000, guid: 27f6372cb6a1741c79b190072d4f1920, type: 2}
   <CardCapability>k__BackingField: 3

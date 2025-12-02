@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BigBrother_48
   m_EditorClassIdentifier: 
   <CardViewConfig>k__BackingField: {fileID: 11400000, guid: 5a176217e0fd34f3393b9cfe396d1a40, type: 2}
-  <CardCharacter>k__BackingField: {fileID: 7233767571375303125, guid: ef63134ca2cff467589c5e301a67a745, type: 3}
+  <CardCharacter>k__BackingField: {fileID: 8390222927803056865, guid: 0ad6cf2d99d1f4cb9919a87f2ce10b17, type: 3}
   <SoundConfig>k__BackingField: {fileID: 11400000, guid: d1cc725fe43fd43feb4744e89fe6e27c, type: 2}
   <Effect>k__BackingField: {fileID: 11400000, guid: f0da3b7b22dd54d34825426e769c1093, type: 2}
   <CardCapability>k__BackingField: 131

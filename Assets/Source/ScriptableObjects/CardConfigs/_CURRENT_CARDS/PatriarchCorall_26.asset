@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PatriarchCorall_26
   m_EditorClassIdentifier: 
   <CardViewConfig>k__BackingField: {fileID: 11400000, guid: 9ca6c6cd5c2f94376af93836de4ca519, type: 2}
-  <CardCharacter>k__BackingField: {fileID: 7233767571375303125, guid: ef63134ca2cff467589c5e301a67a745, type: 3}
+  <CardCharacter>k__BackingField: {fileID: 8390222927803056865, guid: 0ad6cf2d99d1f4cb9919a87f2ce10b17, type: 3}
   <SoundConfig>k__BackingField: {fileID: 11400000, guid: 69effe1c858b24c2e856acec2ba630c6, type: 2}
   <Effect>k__BackingField: {fileID: 11400000, guid: ad45216c403744c84b2664fda31b501c, type: 2}
   <CardCapability>k__BackingField: 3

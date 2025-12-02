@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BlindOldMan_5
   m_EditorClassIdentifier: 
   <CardViewConfig>k__BackingField: {fileID: 11400000, guid: 7e9c8f9aa4abb44cc9a33ae60094f536, type: 2}
-  <CardCharacter>k__BackingField: {fileID: 7233767571375303125, guid: ef63134ca2cff467589c5e301a67a745, type: 3}
+  <CardCharacter>k__BackingField: {fileID: 8390222927803056865, guid: 0ad6cf2d99d1f4cb9919a87f2ce10b17, type: 3}
   <SoundConfig>k__BackingField: {fileID: 11400000, guid: 71c0cf7d48a4b4861b089604aadce352, type: 2}
   <Effect>k__BackingField: {fileID: 11400000, guid: 22446fdd1caca4bd9b9fbf4f07e63b3a, type: 2}
   <CardCapability>k__BackingField: 7

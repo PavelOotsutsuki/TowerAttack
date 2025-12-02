@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LastChance_49
   m_EditorClassIdentifier: 
   <CardViewConfig>k__BackingField: {fileID: 11400000, guid: 324c543ced7584772ac79392265f2c45, type: 2}
-  <CardCharacter>k__BackingField: {fileID: 7233767571375303125, guid: ef63134ca2cff467589c5e301a67a745, type: 3}
+  <CardCharacter>k__BackingField: {fileID: 8390222927803056865, guid: 0ad6cf2d99d1f4cb9919a87f2ce10b17, type: 3}
   <SoundConfig>k__BackingField: {fileID: 11400000, guid: d5b4d23050151430187691694d72919a, type: 2}
   <Effect>k__BackingField: {fileID: 11400000, guid: 0c9304f228ed94edfbb1365f2a9a287c, type: 2}
   <CardCapability>k__BackingField: 3

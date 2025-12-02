@@ -1,5 +1,6 @@
 using Cards.Sounds;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Cards.Insides
 {
@@ -7,15 +8,16 @@ namespace Cards.Insides
     {
         //private AudioClip _awakeSound;
         //private CardSoundVolume _cardSoundVolume;
+        [SerializeField] private Image _iconImage;
 
         public bool? IsShown { get; private set; } = null;
 
         //public void Init(CardSoundConfig awakeSound, CardSoundVolume cardSoundVolume)
-        public void Init()
+        public void Init(Sprite icon)
         {
             //_awakeSound = awakeSound;
             //_cardSoundVolume = cardSoundVolume;
-
+            _iconImage.sprite = icon;
             transform.localPosition = Vector2.zero;
 
             IsShown = true;

@@ -175,7 +175,7 @@ namespace Cards
         {
             _character = Instantiate(_config.CardCharacter, _rectTransform);
             //_character.Init(_config.SoundConfig, _cardSoundVolume);
-            _character.Init();
+            _character.Init(_config.CardViewConfig.Icon);
         }
 
         private void CheckStateByNull()

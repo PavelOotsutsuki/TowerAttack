@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PyromancersManuscript_45
   m_EditorClassIdentifier: 
   <CardViewConfig>k__BackingField: {fileID: 11400000, guid: 4c9ac6e03775348138e2f40f8c139d5b, type: 2}
-  <CardCharacter>k__BackingField: {fileID: 7233767571375303125, guid: ef63134ca2cff467589c5e301a67a745, type: 3}
+  <CardCharacter>k__BackingField: {fileID: 8390222927803056865, guid: 0ad6cf2d99d1f4cb9919a87f2ce10b17, type: 3}
   <SoundConfig>k__BackingField: {fileID: 11400000, guid: 4906aa343cc364403a8ae32a8c2f4188, type: 2}
   <Effect>k__BackingField: {fileID: 11400000, guid: 8882234c222f748dc87113e106df9ef7, type: 2}
   <CardCapability>k__BackingField: 1
