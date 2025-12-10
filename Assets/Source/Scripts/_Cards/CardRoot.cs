@@ -8,6 +8,7 @@ using Cards.Views.BigCardViews;
 using Cards.Views.BigCardViews.Capabilities;
 using TMPro;
 using Tools;
+using Tools.UI;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
@@ -19,6 +20,7 @@ namespace Cards
         [SerializeField] private CurseAnimator _curseAnimator;
         [SerializeField] private CardCreator _cardCreator;
         [SerializeField] private StartCardsType _startCardsType;
+        [SerializeField] private UIHelper[] _uIHelpers;
 
         private readonly List<Card> _allCards = new List<Card>();
 
@@ -102,6 +104,13 @@ namespace Cards
         private ComponentAttachInfo DefineCardCreator()
         {
             return AutomaticFillComponents.DefineComponent(this, ref _cardCreator, ComponentLocationTypes.InThis);
+        }
+
+
+        [ContextMenu(nameof(DefineUIHelpers))]
+        private ComponentAttachInfo DefineUIHelpers()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _uIHelpers, true);
         }
         #endregion 
     }

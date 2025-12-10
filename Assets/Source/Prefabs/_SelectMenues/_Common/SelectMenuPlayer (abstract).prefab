@@ -354,6 +354,7 @@ GameObject:
   - component: {fileID: 403994639089065288}
   - component: {fileID: 6495112251245684398}
   - component: {fileID: 2697509208639836857}
+  - component: {fileID: 5621722630563678292}
   m_Layer: 0
   m_Name: SelectModeButton
   m_TagString: Untagged
@@ -375,10 +376,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2451411830209735220}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.8235155, y: 0.81100005}
-  m_AnchorMax: {x: 0.8611444, y: 0.874}
-  m_AnchoredPosition: {x: 0.23852539, y: -0.14138794}
-  m_SizeDelta: {x: -1.5228004, y: 1.7173004}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 664.7385, y: 376.35864}
+  m_SizeDelta: {x: 71.47717, y: 70.717285}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8269738042081237833
 CanvasRenderer:
@@ -445,6 +446,7 @@ MonoBehaviour:
   CanvasGroup: {fileID: 8678167750622381248}
   _ISelectableButtonImageChanger: {fileID: 6495112251245684398}
   _fadablePanel: {fileID: 2697509208639836857}
+  _UIHelper: {fileID: 5621722630563678292}
 --- !u!114 &6495112251245684398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -483,6 +485,20 @@ MonoBehaviour:
     <FadeUpDuration>k__BackingField: 0.3
     <FadeOutDuration>k__BackingField: 0.3
     <StartAlpha>k__BackingField: 0
+--- !u!114 &5621722630563678292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4964345998440648697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46e31c6b7e3d84d80a30873f7ced2c81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _textDescription: "\u0421\u043A\u0440\u044B\u0442\u044C \u043F\u043E\u0434\u0441\u043A\u0430\u0437\u043A\u0438"
+  _rectTransform: {fileID: 1941602526942994773}
 --- !u!1 &6187588780534060420
 GameObject:
   m_ObjectHideFlags: 0

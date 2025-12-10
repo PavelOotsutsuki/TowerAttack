@@ -35,6 +35,7 @@ using GameFields.Persons.EffectHandlers.FateInevitabilities;
 using Cards.Sounds;
 using Cards.Views;
 using GameFields.CardTransits;
+using Tools.UI;
 
 namespace GameFields.Persons
 {
@@ -158,6 +159,7 @@ namespace GameFields.Persons
         private DiscardPile _discardPile;
         private FireRoot _fireRoot;
         private CardRoot _cardRoot;
+        private UIHelperDescription _UIHelperDescription;
 
         public DiscardManager DiscardManager => _discardManager;
 
@@ -169,7 +171,8 @@ namespace GameFields.Persons
             ChoiceMenuEnemyAI enemyChoiceMenu, DiscardPile discardPile, ChoiceMenuImitationPlayer choiceMenuImitationPlayer,
             ChoiceMenuImitationEnemyAI choiceMenuImitationEnemyAI, ForgingZone forgingZone, HandTransferZone handTransferZone,
             LookCardMenuPlayer lookCardMenuPlayer, StartPlayerTurnLabel startPlayerTurnLabel, SkipTurnLabelPlayer skipTurnLabelPlayer,
-            SkipTurnLabelEnemyAI skipTurnLabelEnemyAI, FightMenu fightMenu, FightMenuActivateButton fightMenuButton)
+            SkipTurnLabelEnemyAI skipTurnLabelEnemyAI, FightMenu fightMenu, FightMenuActivateButton fightMenuButton,
+            UIHelperDescription UIHelperDescription)
         {
             _playerPlayingZone = playerPlayingZone;
             _playerHand = playerHand;
@@ -203,6 +206,8 @@ namespace GameFields.Persons
 
             _fightMenu = fightMenu;
             _fightMenuActivateButton = fightMenuButton;
+
+            _UIHelperDescription = UIHelperDescription;
             //_inputRoot = inputRoot;
         }
 
@@ -228,7 +233,7 @@ namespace GameFields.Persons
                 _fightMenuActivateButton);
 
             _fightMenu.Init(_inputRoot, _playerLoseActions, cardSoundRoot, musicVolume, cardCapabilityDescription);
-            _fightMenuActivateButton.Init(_fightMenu);
+            _fightMenuActivateButton.Init(_fightMenu, _UIHelperDescription);
 
             DefineFire();
 
@@ -406,9 +411,9 @@ namespace GameFields.Persons
             ChoiceResultHandlerPlayer choiceResultHandlerPlayer = new ChoiceResultHandlerPlayer(_informationLabel, _informationLabelDataPlayerChoice);
 
             _playerAttackMenu.Init(_enemyTower, attackResultHandlerPlayer, _cardNumbers, _attackedNumbersPlayer,
-                _confirmableNumbersPlayer, _inputRoot, _lastSelectedNumbersWatcherPlayer);
+                _confirmableNumbersPlayer, _inputRoot, _lastSelectedNumbersWatcherPlayer, _UIHelperDescription);
             _playerChoiceMenu.Init(_enemyTower, choiceResultHandlerPlayer, _cardNumbers, _choicedNumbersPlayer,
-                _confirmableNumbersPlayer, _inputRoot, _lastSelectedNumbersWatcherPlayer);
+                _confirmableNumbersPlayer, _inputRoot, _lastSelectedNumbersWatcherPlayer, _UIHelperDescription);
             _playerChoiceMenuImitation.Init(_enemyTower, choiceResultHandlerPlayer, _cardNumbers, _choicedNumbersPlayer,
                 _confirmableNumbersPlayer, _lastSelectedNumbersWatcherPlayer);
 

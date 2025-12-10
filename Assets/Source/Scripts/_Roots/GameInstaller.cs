@@ -23,11 +23,14 @@ using Tools.Utils.Screens;
 using Cards.Views.BigCardViews;
 using Cards.Views.BigCardViews.Capabilities;
 using Cards.Sounds;
+using Tools.UI;
 
 namespace Roots
 {
     public class GameInstaller : MonoInstaller
     {
+        [SerializeField] private UIHelperDescription _UIHelperDescription;
+
         [SerializeField] private BigCardRoot _bigCardRoot;
 
         [SerializeField] private InformationLabel _informationLabel;
@@ -79,6 +82,9 @@ namespace Roots
         public override void InstallBindings()
         {
             DeclareSignals();
+
+            Container.Bind<UIHelperDescription>().FromInstance(_UIHelperDescription).AsSingle();
+            _UIHelperDescription.Init();
 
             Container.Bind<BigCardRoot>().FromInstance(_bigCardRoot).AsSingle();
 

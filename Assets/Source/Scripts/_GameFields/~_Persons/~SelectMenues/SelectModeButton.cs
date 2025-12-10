@@ -1,19 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using GameFields.FightMenues;
 using Tools.UI;
+using Tools.Utils.FillComponents;
 using UnityEngine;
 
 namespace GameFields.Persons.SelectMenues
 {
     public class SelectModeButton : FadableSelectableButton
     {
+        [SerializeField] private UIHelper _UIHelper;
+
         private ISelectNumberActivator _selectNumberActivator;
 
-        public void Init(ISelectNumberActivator selectNumberActivator)
+        public void Init(ISelectNumberActivator selectNumberActivator, UIHelperDescription UIHelperDescription)
         {
             base.Init();
 
             _selectNumberActivator = selectNumberActivator;
+            _UIHelper.Init(UIHelperDescription);
         }
 
         protected override void OnEnterClick()
@@ -29,5 +34,26 @@ namespace GameFields.Persons.SelectMenues
 
             _selectNumberActivator.ActivateNumbers(true);
         }
+
+        #region AutomaticFillComponents
+        [ContextMenu(nameof(DefineAllComponents) + nameof(SelectModeButton))]
+        public override List<ComponentAttachInfo> DefineAllComponents()
+        {
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineUIHelper()
+            };
+
+            list.AddRange(base.DefineAllComponents());
+
+            return list;
+        }
+
+        [ContextMenu(nameof(DefineUIHelper))]
+        private ComponentAttachInfo DefineUIHelper()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _UIHelper, ComponentLocationTypes.InThis);
+        }
+        #endregion
     }
 }
