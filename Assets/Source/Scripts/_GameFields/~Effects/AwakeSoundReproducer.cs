@@ -11,12 +11,15 @@ namespace GameFields.Effects
         private readonly CardSoundRoot _cardSoundRoot;
         private readonly CardLocationViewRoot _viewRoot;
         private readonly IPersonsState _personsState;
+        private readonly ViewTransitTypesRoot _typesRoot;
 
-        public AwakeSoundReproducer(CardSoundRoot cardSoundRoot, CardLocationViewRoot viewRoot, IPersonsState personsState)
+        public AwakeSoundReproducer(CardSoundRoot cardSoundRoot, CardLocationViewRoot viewRoot, ViewTransitTypesRoot typesRoot,
+            IPersonsState personsState)
         {
             _cardSoundRoot = cardSoundRoot;
             _viewRoot = viewRoot;
             _personsState = personsState;
+            _typesRoot = typesRoot;
         }
 
         public void Play(CardSoundLogic cardSoundLogic)
@@ -39,7 +42,8 @@ namespace GameFields.Effects
 
         private void MafiaBossAwakeSoundPlay(MafiaBossCardSoundLogic mafiaBossCardSoundLogic)
         {
-            ViewType hand = _personsState.Active is Player ? ViewType.HandAI : ViewType.HandPlayer;
+            //_personsState.Active is Player ? ViewType.HandAI : ViewType.HandPlayer;
+            ViewType hand = _typesRoot.GetPersonTypes(_personsState.Deactive).Hand.ViewType;
             int countCardsInHand = _viewRoot.GetAllCards(hand).Count();
 
             AudioClip awakeClip;

@@ -18,8 +18,6 @@ using GameFields.Persons.EffectHandlers.Brothers;
 using GameFields.Persons.EffectHandlers;
 using GameFields.InputSettings;
 using GameFields.FightMenues;
-using Tools.Utils.Screens;
-using System.Collections;
 using Cards.Views.BigCardViews.Capabilities;
 using Cards.Views.BigCardViews;
 using Cards.Sounds;

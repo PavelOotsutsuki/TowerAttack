@@ -486,6 +486,7 @@ MonoBehaviour:
     <FadeUpDuration>k__BackingField: 0.6
     <FadeOutDuration>k__BackingField: 0.6
     <StartAlpha>k__BackingField: 0
+    <IsDeactivatable>k__BackingField: 0
 --- !u!114 &6340829241078968924
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -517,7 +518,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd028698ce7ed458b9c6b3d67b8dc806, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bigCard: {fileID: 6340829241078968924}
+  _scaleFactor: 2
+  _cardView:
+    _icon: {fileID: 0}
+    _number: {fileID: 0}
+    _name: {fileID: 0}
+    _feature: {fileID: 0}
+  _rectTransform: {fileID: 0}
   _fadablePanel: {fileID: 3302895448003389456}
 --- !u!1 &3839963995475160197
 GameObject:

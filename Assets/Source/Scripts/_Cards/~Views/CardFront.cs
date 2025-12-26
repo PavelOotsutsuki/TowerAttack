@@ -11,7 +11,7 @@ using UnityEngine.EventSystems;
 namespace Cards.Views
 {
     [RequireComponent(typeof(CanvasGroup))]
-    internal class CardFront : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler, IViewable, IAutomaticFillComponents
+    internal class CardFront : MonoBehaviour, IFeatureWatcher, IPointerExitHandler, IPointerEnterHandler, IViewable, IAutomaticFillComponents
     {
         [SerializeField] private CanvasGroup _canvasGroup;
 
@@ -25,6 +25,8 @@ namespace Cards.Views
 
         public bool IsBlock { get; private set; }
         public bool? IsShown { get; private set; } = null;
+
+        public string Feature => _cardView.Feature;
 
         internal void Init(CardViewData cardViewData, ReadOnlyRectTransform RORCartTransform,
             CardViewService cardViewService, Vector2 cardSize, CardFrame cardFrame,

@@ -3,13 +3,15 @@ using Tools;
 using Tools.UI;
 using Tools.Utils.FillComponents;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Cards.Views.BigCardViews.CardDescriptions
 {
     [RequireComponent(typeof(FadableLabel))]
-    internal class CardDescription : MonoBehaviour, IViewable<CardDescriptionActivateData>, IAutomaticFillComponents
+    public class CardDescription : MonoBehaviour, IViewable<CardDescriptionActivateData>, IAutomaticFillComponents
     {
         [SerializeField] private FadableLabel _fadableLabel;
+        [SerializeField] private Image _descriptionImage;
 
         public bool? IsShown { get; private set; } = false;
 
@@ -27,8 +29,10 @@ namespace Cards.Views.BigCardViews.CardDescriptions
 
             IsShown = true;
 
+            _descriptionImage.color = data.ActivateColor;
             LabelActivateData fadableLabelActivateData = new LabelActivateData(data.Description);
 
+            //Debug.Log("CardDescription message: " + data.Description);
             _fadableLabel.Show(fadableLabelActivateData);
         }
 
@@ -48,7 +52,8 @@ namespace Cards.Views.BigCardViews.CardDescriptions
         {
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
-                DefineFadableLabel()
+                DefineFadableLabel(),
+                DefineImage()
             };
 
             return list;
@@ -58,6 +63,12 @@ namespace Cards.Views.BigCardViews.CardDescriptions
         private ComponentAttachInfo DefineFadableLabel()
         {
             return AutomaticFillComponents.DefineComponent(this, ref _fadableLabel, ComponentLocationTypes.InThis);
+        }
+
+        [ContextMenu(nameof(DefineImage))]
+        private ComponentAttachInfo DefineImage()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _descriptionImage, ComponentLocationTypes.InThis);
         }
         #endregion 
     }

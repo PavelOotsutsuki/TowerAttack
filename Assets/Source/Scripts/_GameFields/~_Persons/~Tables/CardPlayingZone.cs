@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Cards;
+using Cards.DependencyInterlayers;
 using GameFields.Persons;
 using Tools;
 using Tools.Utils.FillComponents;
@@ -8,7 +9,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Tables
 {
-    public abstract class CardPlayingZone : MonoBehaviour, ITableCardSeatable, IAutomaticFillComponents
+    public abstract class CardPlayingZone : MonoBehaviour, ICardDropPlace, IAutomaticFillComponents
     {
         //private readonly List<Card> _playedCards = new List<Card>();
 
@@ -17,6 +18,7 @@ namespace GameFields.Persons.Tables
         private Table _table;
 
         public ReadOnlyRectTransform RORTransform { get; private set; }
+
         public bool HasFreeSeat => _table.HasFreeSeat;
 
         public void Init(Table table)

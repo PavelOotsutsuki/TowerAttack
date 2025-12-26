@@ -8,7 +8,7 @@ using UnityEngine.UI;
 namespace Cards.Views
 {
     [Serializable]
-    public class CardView
+    public class CardView : IFeatureWatcher
     {
         [SerializeField] private Image _icon;
         [SerializeField] private TMP_Text _number;
@@ -19,6 +19,8 @@ namespace Cards.Views
 
         private CardFeatureTags _cardFeatureTags = null;
         private CardViewData _cardViewData = null;
+
+        public string Feature => _feature.text;
 
         public void Init(CardCapabilityDescription cardCapabilityDescription)
         {

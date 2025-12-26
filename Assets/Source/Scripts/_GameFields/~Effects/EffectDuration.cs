@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace GameFields.Effects
 {
     public class EffectDuration

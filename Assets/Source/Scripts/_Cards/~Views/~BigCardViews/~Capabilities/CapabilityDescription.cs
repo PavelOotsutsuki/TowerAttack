@@ -45,6 +45,7 @@ namespace Cards.Views.BigCardViews.Capabilities
                 return;
             }
 
+            //Debug.Log("CapabilityDescription message: " + message);
             LabelActivateData fadableLabelActivateData = new LabelActivateData(message);
 
             _fadableLabel.Show(fadableLabelActivateData);

@@ -168,7 +168,7 @@ namespace GameFields.InputSettings
 
         private void OnEnter(CallbackContext context)
         {
-            Debug.Log($"Enter pressed!: {_currentLogic}");
+            //Debug.Log($"Enter pressed!: {_currentLogic}");
 
             if (_isFightMenu)
             {
@@ -185,7 +185,7 @@ namespace GameFields.InputSettings
 
         private void OnEsc(CallbackContext context)
         {
-            Debug.Log($"Esc pressed!: {_currentLogic}");
+            //Debug.Log($"Esc pressed!: {_currentLogic}");
 
             if (_isFightMenu)
             {
@@ -201,7 +201,7 @@ namespace GameFields.InputSettings
 
         private void OnQ(CallbackContext context)
         {
-            Debug.Log($"Q pressed!: {_currentLogic}");
+            //Debug.Log($"Q pressed!: {_currentLogic}");
 
             if (_isFightMenu)
                 return;
@@ -215,7 +215,7 @@ namespace GameFields.InputSettings
 
         private void OnLeftArrow(CallbackContext context)
         {
-            Debug.Log($"LeftArrow pressed!: {_currentLogic}");
+            //Debug.Log($"LeftArrow pressed!: {_currentLogic}");
 
             if (_isFightMenu)
                 return;
@@ -229,7 +229,7 @@ namespace GameFields.InputSettings
 
         private void OnRightArrow(CallbackContext context)
         {
-            Debug.Log($"RightArrow pressed!: {_currentLogic}");
+            //Debug.Log($"RightArrow pressed!: {_currentLogic}");
 
             if (_isFightMenu)
                 return;
@@ -243,7 +243,7 @@ namespace GameFields.InputSettings
 
         private void OnDownArrow(CallbackContext context)
         {
-            Debug.Log($"DownArrow pressed!: {_currentLogic}");
+            //Debug.Log($"DownArrow pressed!: {_currentLogic}");
 
             if (_isFightMenu)
             {
@@ -260,7 +260,7 @@ namespace GameFields.InputSettings
 
         private void OnUpArrow(CallbackContext context)
         {
-            Debug.Log($"UpArrow pressed!: {_currentLogic}");
+            //Debug.Log($"UpArrow pressed!: {_currentLogic}");
 
             if (_isFightMenu)
             {

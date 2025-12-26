@@ -46,9 +46,9 @@ namespace Cards.Insides
             }
         }
 
-        internal bool CanDrop(ICardDropPlace cardDropPlace)
+        internal bool CanDrop(ITableDrop tableDrop)
         {
-            return cardDropPlace.HasFreeSeat;
+            return tableDrop.HasFreeSeat && tableDrop.CanPlay;
         }
 
         internal void StartEndDrag()

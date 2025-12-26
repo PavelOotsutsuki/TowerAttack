@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using GameFields.FightMenues;
 using Tools.UI;
+using Tools.UI.UIHelpers;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
@@ -18,7 +19,7 @@ namespace GameFields.Persons.SelectMenues
             base.Init();
 
             _selectNumberActivator = selectNumberActivator;
-            _UIHelper.Init(UIHelperDescription);
+            _UIHelper.Init(UIHelperDescription, GetHelperText);
         }
 
         protected override void OnEnterClick()
@@ -33,6 +34,14 @@ namespace GameFields.Persons.SelectMenues
             base.OnExitClick();
 
             _selectNumberActivator.ActivateNumbers(true);
+        }
+
+        private string GetHelperText()
+        {
+            if (IsClicked)
+                return "Показать выбранные";
+
+            return "Скрыть выбранные";
         }
 
         #region AutomaticFillComponents

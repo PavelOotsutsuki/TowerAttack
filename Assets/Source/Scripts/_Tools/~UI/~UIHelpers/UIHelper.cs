@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Tools.Utils.FillComponents;
@@ -5,14 +6,14 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
 
-namespace Tools.UI
+namespace Tools.UI.UIHelpers
 {
     public class UIHelper : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IAutomaticFillComponents
     {
-        [SerializeField] private string _textDescription;
         [SerializeField] private RectTransform _rectTransform;
 
         private UIHelperDescription _UIHelperDescription;
+        private Func<string> _textDescriptionGetter;
 
         private Coroutine _activatingCoroutine;
         private Coroutine _deactivatingCoroutine;
@@ -29,9 +30,10 @@ namespace Tools.UI
         //    _UIHelperDescription = (UIHelperDescription)targets[0];
         //}
 
-        public void Init(UIHelperDescription UIHelperDescription)
+        public void Init(UIHelperDescription UIHelperDescription, Func<string> textDescriptionGetter)
         {
             _UIHelperDescription = UIHelperDescription;
+            _textDescriptionGetter = textDescriptionGetter;
         }
 
         public void OnPointerEnter(PointerEventData eventData)
@@ -79,7 +81,7 @@ namespace Tools.UI
                 yield return new WaitForSeconds(0.8f);
             }
 
-            UIHelperDescriptionActivateData activateData = new UIHelperDescriptionActivateData(_textDescription, new ReadOnlyRectTransform(_rectTransform));
+            UIHelperDescriptionActivateData activateData = new UIHelperDescriptionActivateData(_textDescriptionGetter.Invoke(), new ReadOnlyRectTransform(_rectTransform));
             _UIHelperDescription.Activate(activateData);
 
             yield return new WaitUntil(() => _UIHelperDescription.IsComplete);

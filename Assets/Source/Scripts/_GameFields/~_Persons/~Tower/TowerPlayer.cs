@@ -9,7 +9,7 @@ using UnityEngine.EventSystems;
 
 namespace GameFields.Persons.Towers
 {
-    public class TowerPlayer : Tower, IPlayerObject//, IPointerEnterHandler, IPointerExitHandler
+    public class TowerPlayer : Tower,  IPlayerObject//, IPointerEnterHandler, IPointerExitHandler
     {
         //[SerializeField] private TowerCardView _towerCardView;
 

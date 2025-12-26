@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Cards.Views
 {
-    public class CardViewData: IData
+    public class CardViewData: IData//, IFeatureWatcher
     {
         private readonly Sprite _icon;
         private readonly int _number;

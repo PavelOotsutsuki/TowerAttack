@@ -12,15 +12,16 @@ namespace Cards.Views.BigCardViews
     {
         [SerializeField] private BigCard _bigCard;
         [SerializeField] private CapabilityDescription _capabilityDescription;
-        [SerializeField] private CardDescription _cardDescription;
+
+        private CardDescription _cardDescription;
         
         public bool? IsActive { get; private set; } = false;
 
-        internal void Init(CardCapabilityDescription cardCapabilityDescription)
+        internal void Init(CardCapabilityDescription cardCapabilityDescription, CardDescription cardDescription)
         {
             _bigCard.Init(cardCapabilityDescription);
             _capabilityDescription.Init(cardCapabilityDescription);
-            _cardDescription.Init();
+            _cardDescription = cardDescription;
         }
 
         public void Activate(BigCardRootActivateData data)

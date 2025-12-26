@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Tools;
 using Tools.UI;
+using Tools.UI.UIHelpers;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
@@ -18,7 +19,7 @@ namespace GameFields.FightMenues
             base.Init();
 
             _fightMenu = fightMenu;
-            _UIHelper.Init(UIHelperDescription);
+            _UIHelper.Init(UIHelperDescription, () => "Меню");
 
             Deactivate();
         }

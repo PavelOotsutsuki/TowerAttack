@@ -13,7 +13,7 @@ using Cards.Sounds;
 namespace Cards.Insides
 {
     [RequireComponent(typeof(CardFireAnimator))]
-    internal class CardPaper : MonoBehaviour, ICardState, IAutomaticFillComponents
+    internal class CardPaper : MonoBehaviour, IFeatureWatcher, ICardState, IAutomaticFillComponents
     {
         private const SideType DefaultSide = SideType.Back;
         private const bool DefaultInteractionActive = false;
@@ -32,6 +32,7 @@ namespace Cards.Insides
         public bool? IsShown { get; private set; } = null;
         public SideType CurrentSide => _cardSideFlipper.CurrentSide;
         public bool IsFired => _onFireLogic.IsActive == true;
+        public string Feature => _cardFront.Feature;
 
         internal void Init(Card me, CardViewService cardViewService, CardViewData cardViewData,
             RectTransform cardTransform, ICardDragAndDropHandler cardDragAndDropHandler,

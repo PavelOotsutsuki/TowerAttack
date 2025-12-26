@@ -113,9 +113,9 @@ namespace Cards.Insides
                 return;
             }
 
-            if (_cardDragAndDropActions.IsPlayable() && EventSystem.current.TryGetComponentInRaycasts(eventData, out ICardDropPlace cardDropPlace))
+            if (_cardDragAndDropActions.IsPlayable() && EventSystem.current.TryGetComponentInRaycasts(eventData, out ITableDrop tablePlace))
             {
-                if (_cardDragAndDropActions.CanDrop(cardDropPlace))
+                if (_cardDragAndDropActions.CanDrop(tablePlace))
                 {
                     IsDragable = false;
                     _cardDragAndDropActions.PlayCard();

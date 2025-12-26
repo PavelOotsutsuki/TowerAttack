@@ -30,7 +30,10 @@ namespace Tools.UI
                 return;
 
             IsShown = true;
-            //gameObject.SetActive(true);
+
+            if (_data.IsDeactivatable)
+                gameObject.SetActive(true);
+
             StartFading(_data.FadeUpDuration, _data.MaxAlpha);
         }
 
@@ -76,8 +79,9 @@ namespace Tools.UI
                 yield return null;
             }
 
-            //if (_canvasGroup.alpha == 0)
-            //    gameObject.SetActive(false);
+            if (_data.IsDeactivatable)
+                if (_canvasGroup.alpha == 0)
+                    gameObject.SetActive(false);
 
             _isComplete = true;
         }

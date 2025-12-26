@@ -1,6 +1,4 @@
-using UnityEngine;
-
-namespace Tools.UI
+namespace Tools.UI.UIHelpers
 {
     public class UIHelperDescriptionActivateData : IData
     {

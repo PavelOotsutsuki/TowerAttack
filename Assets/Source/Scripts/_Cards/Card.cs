@@ -7,7 +7,9 @@ using Cards.Insides;
 using Cards.Sounds;
 using Cards.Views;
 using Cards.Views.BigCardViews.Capabilities;
+using Cards.Views.BigCardViews.CardDescriptions;
 using Tools;
+using Tools.UI.UIHelpers;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Movements;
 using UnityEngine;
@@ -30,6 +32,8 @@ namespace Cards
         private CardViewData _viewData;
         private CardSpriteModeManager _cardSpriteModeManager;
 
+        private CardDescription _cardDescription;
+
         private ICardState _currentState;
 
         public ReadOnlyRectTransform RORTransform { get; private set; }
@@ -48,9 +52,11 @@ namespace Cards
 
         internal void Init(IEffectFactory effectFactory, CardViewService cardViewService,
             ICardDragAndDropHandler cardDragAndDropHandler, CurseAnimator curseAnimator,
-            CardCapabilityDescription cardCapabilityDescription, CardSoundRoot cardSoundRoot)
+            CardCapabilityDescription cardCapabilityDescription, CardSoundRoot cardSoundRoot,
+            CardDescription cardDescription)
         {
             RORTransform = new ReadOnlyRectTransform(_rectTransform);
+            _cardDescription = cardDescription;
             _cardSoundLogic.Init(_config.SoundConfig.Sounds);
             _cardEffectManager = new CardEffectManager(_config.Effect, effectFactory, _cardSoundLogic);
             _viewData = new CardViewData(_config.CardViewConfig, _config.CardCapability);
@@ -175,7 +181,7 @@ namespace Cards
         {
             _character = Instantiate(_config.CardCharacter, _rectTransform);
             //_character.Init(_config.SoundConfig, _cardSoundVolume);
-            _character.Init(_config.CardViewConfig.Icon);
+            _character.Init(_config.CardViewConfig.Icon, _cardDescription, _cardPaper);
         }
 
         private void CheckStateByNull()

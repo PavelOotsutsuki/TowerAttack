@@ -11,5 +11,6 @@ namespace Tools.UI
         [field: SerializeField] public float FadeUpDuration { get; private set; } = 1.5f;
         [field: SerializeField] public float FadeOutDuration { get; private set; } = 1.5f;
         [field: SerializeField] public float StartAlpha { get; private set; } = 0f;
+        [field: SerializeField] public bool IsDeactivatable { get; private set; } = false;
     }
 }

@@ -57,7 +57,7 @@ namespace GameFields.Effects
             _cardSoundRoot = cardSoundRoot;
             _typesRoot = typesRoot;
 
-            _awakeSoundReproducer = new AwakeSoundReproducer(_cardSoundRoot, _viewRoot, _personsState);
+            _awakeSoundReproducer = new AwakeSoundReproducer(_cardSoundRoot, _viewRoot, typesRoot, _personsState);
 
             _voidEffectConfig = ScriptableObject.CreateInstance<CardEffectConfig>();
             //_voidEffectConfig = new CardEffectConfig();

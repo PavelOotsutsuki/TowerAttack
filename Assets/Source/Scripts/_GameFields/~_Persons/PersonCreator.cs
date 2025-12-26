@@ -36,6 +36,7 @@ using Cards.Sounds;
 using Cards.Views;
 using GameFields.CardTransits;
 using Tools.UI;
+using Tools.UI.UIHelpers;
 
 namespace GameFields.Persons
 {
@@ -45,7 +46,7 @@ namespace GameFields.Persons
 
         [Header("Player Fields:")]
 
-        private CardPlayingZone _playerPlayingZone;
+        private CardPlayingZonePlayer _playerPlayingZone;
         private HandPlayer _playerHand;
         private Table _playerTable;
         private Tower _playerTower;
@@ -128,7 +129,8 @@ namespace GameFields.Persons
 
         [Header("GameFieldObjectsActivator:")]
 
-        [SerializeField] private TableActivator _tableActivator;
+        //[SerializeField] private TableActivator _tableActivator;
+        //private TableActivator _tableActivator;
         [SerializeField] private TowerActivator _towerActivator;
 
         [Space]
@@ -240,7 +242,8 @@ namespace GameFields.Persons
             _playerRechangeFeatureRuleController = new RechangeFeatureRuleController();
             _enemyRechangeFeatureRuleController = new RechangeFeatureRuleController();
 
-            _interactionActivator = new InteractionActivator(cardDragAndDropHandler, _towerActivator, _tableActivator, endTurnButton,
+            TableActivator tableActivator = new TableActivator(_playerPlayingZone);
+            _interactionActivator = new InteractionActivator(cardDragAndDropHandler, _towerActivator, tableActivator, endTurnButton,
                 cardDragAndDropLightController, _forgingZone, _handTransferZone, _inputRoot);
 
             _confirmableNumbersPlayer = new ConfirmableNumbers(_attackedNumbersPlayer, _choicedNumbersPlayer, _cursedNumbersPlayer);
@@ -479,7 +482,7 @@ namespace GameFields.Persons
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
                 //DefineStartPlayerTurnLabel(),
-                DefineTableActivator(),
+                //DefineTableActivator(),
                 DefineTowerActivator(),
             };
 
@@ -492,11 +495,11 @@ namespace GameFields.Persons
         //    return AutomaticFillComponents.DefineComponent(this, ref _startPlayerTurnLabel, ComponentLocationTypes.InScene);
         //}
 
-        [ContextMenu(nameof(DefineTableActivator))]
-        private ComponentAttachInfo DefineTableActivator()
-        {
-            return AutomaticFillComponents.DefineComponent(this, ref _tableActivator, ComponentLocationTypes.InScene);
-        }
+        //[ContextMenu(nameof(DefineTableActivator))]
+        //private ComponentAttachInfo DefineTableActivator()
+        //{
+        //    return AutomaticFillComponents.DefineComponent(this, ref _tableActivator, ComponentLocationTypes.InScene);
+        //}
 
         [ContextMenu(nameof(DefineTowerActivator))]
         private ComponentAttachInfo DefineTowerActivator()

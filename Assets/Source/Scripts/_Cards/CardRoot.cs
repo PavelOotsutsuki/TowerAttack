@@ -6,9 +6,9 @@ using Cards.Sounds;
 using Cards.Views;
 using Cards.Views.BigCardViews;
 using Cards.Views.BigCardViews.Capabilities;
+using Cards.Views.BigCardViews.CardDescriptions;
 using TMPro;
 using Tools;
-using Tools.UI;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
@@ -20,7 +20,8 @@ namespace Cards
         [SerializeField] private CurseAnimator _curseAnimator;
         [SerializeField] private CardCreator _cardCreator;
         [SerializeField] private StartCardsType _startCardsType;
-        [SerializeField] private UIHelper[] _uIHelpers;
+        [SerializeField] private CardDescription _cardDescription;
+        //[SerializeField] private UIHelper[] _uIHelpers;
 
         private readonly List<Card> _allCards = new List<Card>();
 
@@ -42,7 +43,8 @@ namespace Cards
             _cardCreator.Init();
 
             _bigCardRoot = bigCardRoot;
-            _bigCardRoot.Init(cardCapabilityDescription);
+            _cardDescription.Init();
+            _bigCardRoot.Init(cardCapabilityDescription, _cardDescription);
 
             _effectFactory = effectFactory;
             _cardDragAndDropHandler = cardDragAndDropHandler;
@@ -64,7 +66,7 @@ namespace Cards
             Card createdCard = _cardCreator.CreateInstantly(cardName, parent);
 
             createdCard.Init(_effectFactory, _cardViewService, _cardDragAndDropHandler, _curseAnimator,
-                _cardCapabilityDescription, _cardSoundRoot);
+                _cardCapabilityDescription, _cardSoundRoot, _cardDescription);
 
             TMP_Text[] cardTexts = createdCard.gameObject.GetComponentsInChildren<TMP_Text>(true);
             _fontSetter.SetFont(cardTexts);
@@ -75,14 +77,15 @@ namespace Cards
         }
 
         #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineAllComponents))]
+        [ContextMenu(nameof(DefineAllComponents) + nameof(CardRoot))]
         public List<ComponentAttachInfo> DefineAllComponents()
         {
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
                 //DefineAllCards(),
                 DefineBigCardRoot(),
-                DefineCardCreator()
+                DefineCardCreator(),
+                DefineCardDescription()
             };
 
             return list;
@@ -106,12 +109,18 @@ namespace Cards
             return AutomaticFillComponents.DefineComponent(this, ref _cardCreator, ComponentLocationTypes.InThis);
         }
 
-
-        [ContextMenu(nameof(DefineUIHelpers))]
-        private ComponentAttachInfo DefineUIHelpers()
+        [ContextMenu(nameof(DefineCardDescription))]
+        private ComponentAttachInfo DefineCardDescription()
         {
-            return AutomaticFillComponents.DefineComponent(this, ref _uIHelpers, true);
+            return AutomaticFillComponents.DefineComponent(this, ref _cardDescription, ComponentLocationTypes.InScene);
         }
+
+
+        //[ContextMenu(nameof(DefineUIHelpers))]
+        //private ComponentAttachInfo DefineUIHelpers()
+        //{
+        //    return AutomaticFillComponents.DefineComponent(this, ref _uIHelpers, true);
+        //}
         #endregion 
     }
 }
