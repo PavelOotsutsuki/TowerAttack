@@ -18,6 +18,9 @@ namespace GameFields.FightMenues
 {
     public class FightMenuRulesButtonsPanel : FightMenuButtonsPanel, IAutomaticFillComponents
     {
+        private const string DefaultRules = "У каждого игрока есть Замок, в который игрок кладет выбранную карту в начале боя. Ваша цель" +
+            " – угадать номер карты противника. Всего 50 карт, по 1 копии каждой, колода общая.\n";
+
         [SerializeField] private GoBackOnMainPanelButton _goBackOnMainPanelButton;
         [SerializeField] private TMP_Text _label;
         [SerializeField] private ScrollRect _scrollRect;
@@ -28,7 +31,7 @@ namespace GameFields.FightMenues
         {
             _goBackOnMainPanelButton.Init(onClickGoBackOnMainPanelButton);
 
-            _label.text = cardCapabilityDescription.GetAllCapabilitiesDescription((CardCapability)(-1));
+            _label.text = $"{DefaultRules}\n{cardCapabilityDescription.GetAllCapabilitiesDescription((CardCapability)(-1))}";
         }
 
         public override void Activate()

@@ -37,6 +37,7 @@ using Cards.Views;
 using GameFields.CardTransits;
 using Tools.UI;
 using Tools.UI.UIHelpers;
+using GameFields.HistoryMenues;
 
 namespace GameFields.Persons
 {
@@ -63,6 +64,8 @@ namespace GameFields.Persons
         private LookCardMenuPlayer _playerLookCardMenu;
         private FightMenu _fightMenu;
         private FightMenuActivateButton _fightMenuActivateButton;
+        private HistoryMenu _historyMenu;
+        private HistoryMenuActivateButton _historyMenuActivateButton;
         //private ActiveEffectsList _playerActiveEffectsList = new ActiveEffectsList();
 
         private ForgingZone _forgingZone;
@@ -173,8 +176,8 @@ namespace GameFields.Persons
             ChoiceMenuEnemyAI enemyChoiceMenu, DiscardPile discardPile, ChoiceMenuImitationPlayer choiceMenuImitationPlayer,
             ChoiceMenuImitationEnemyAI choiceMenuImitationEnemyAI, ForgingZone forgingZone, HandTransferZone handTransferZone,
             LookCardMenuPlayer lookCardMenuPlayer, StartPlayerTurnLabel startPlayerTurnLabel, SkipTurnLabelPlayer skipTurnLabelPlayer,
-            SkipTurnLabelEnemyAI skipTurnLabelEnemyAI, FightMenu fightMenu, FightMenuActivateButton fightMenuButton,
-            UIHelperDescription UIHelperDescription)
+            SkipTurnLabelEnemyAI skipTurnLabelEnemyAI, FightMenu fightMenu, FightMenuActivateButton fightMenuActivateButton,
+            UIHelperDescription UIHelperDescription, HistoryMenu historyMenu, HistoryMenuActivateButton historyMenuActivateButton)
         {
             _playerPlayingZone = playerPlayingZone;
             _playerHand = playerHand;
@@ -207,7 +210,10 @@ namespace GameFields.Persons
             _skipTurnLabelEnemyAI = skipTurnLabelEnemyAI;
 
             _fightMenu = fightMenu;
-            _fightMenuActivateButton = fightMenuButton;
+            _fightMenuActivateButton = fightMenuActivateButton;
+
+            _historyMenu = historyMenu;
+            _historyMenuActivateButton = historyMenuActivateButton;
 
             _UIHelperDescription = UIHelperDescription;
             //_inputRoot = inputRoot;
@@ -236,6 +242,9 @@ namespace GameFields.Persons
 
             _fightMenu.Init(_inputRoot, _playerLoseActions, cardSoundRoot, musicVolume, cardCapabilityDescription);
             _fightMenuActivateButton.Init(_fightMenu, _UIHelperDescription);
+
+            _historyMenu.Init();
+            _historyMenuActivateButton.Init(_historyMenu, _UIHelperDescription);
 
             DefineFire();
 

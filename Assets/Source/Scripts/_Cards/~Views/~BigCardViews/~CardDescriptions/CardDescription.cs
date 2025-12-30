@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Tools;
 using Tools.UI;
@@ -12,11 +13,13 @@ namespace Cards.Views.BigCardViews.CardDescriptions
     {
         [SerializeField] private FadableLabel _fadableLabel;
         [SerializeField] private Image _descriptionImage;
+        [SerializeField] private Outline _outline;
 
         public bool? IsShown { get; private set; } = false;
 
         public void Init()
         {
+            _outline.enabled = false;
             gameObject.SetActive(true);
 
             _fadableLabel.Init();
@@ -31,6 +34,7 @@ namespace Cards.Views.BigCardViews.CardDescriptions
 
             _descriptionImage.color = data.ActivateColor;
             LabelActivateData fadableLabelActivateData = new LabelActivateData(data.Description);
+            _outline.enabled = data.IsOutline;
 
             //Debug.Log("CardDescription message: " + data.Description);
             _fadableLabel.Show(fadableLabelActivateData);
@@ -53,7 +57,8 @@ namespace Cards.Views.BigCardViews.CardDescriptions
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
                 DefineFadableLabel(),
-                DefineImage()
+                DefineImage(),
+                DefineOutline()
             };
 
             return list;
@@ -69,6 +74,12 @@ namespace Cards.Views.BigCardViews.CardDescriptions
         private ComponentAttachInfo DefineImage()
         {
             return AutomaticFillComponents.DefineComponent(this, ref _descriptionImage, ComponentLocationTypes.InThis);
+        }
+
+        [ContextMenu(nameof(DefineOutline))]
+        private ComponentAttachInfo DefineOutline()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _outline, ComponentLocationTypes.InThis);
         }
         #endregion 
     }

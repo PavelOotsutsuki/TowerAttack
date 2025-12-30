@@ -21,6 +21,7 @@ using Cards.Views.BigCardViews;
 using Cards.Views.BigCardViews.Capabilities;
 using Cards.Sounds;
 using Tools.UI.UIHelpers;
+using GameFields.HistoryMenues;
 
 namespace Roots
 {
@@ -33,8 +34,12 @@ namespace Roots
         [SerializeField] private InformationLabel _informationLabel;
         //[SerializeField] private InputRoot _inputRoot;
         [SerializeField] private SoundRoot _soundRoot;
+
         [SerializeField] private FightMenuActivateButton _fightMenuActivateButton;
         [SerializeField] private FightMenu _fightMenu;
+
+        [SerializeField] private HistoryMenuActivateButton _historyMenuActivateButton;
+        [SerializeField] private HistoryMenu _historyMenu;
 
         [SerializeField] private Deck _deck;
         [SerializeField] private DiscardPileConfig _discardPileConfig;
@@ -97,8 +102,12 @@ namespace Roots
             Container.Bind<InformationLabel>().FromInstance(_informationLabel).AsSingle();
             //Container.Bind<InputRoot>().FromInstance(_inputRoot).AsSingle();
             Container.Bind<SoundRoot>().FromInstance(_soundRoot).AsSingle();
+
             Container.Bind<FightMenuActivateButton>().FromInstance(_fightMenuActivateButton).AsSingle();
             Container.Bind<FightMenu>().FromInstance(_fightMenu).AsSingle();
+
+            Container.Bind<HistoryMenuActivateButton>().FromInstance(_historyMenuActivateButton).AsSingle();
+            Container.Bind<HistoryMenu>().FromInstance(_historyMenu).AsSingle();
 
             Container.Bind<Deck>().FromInstance(_deck).AsSingle();
             Container.Bind<DiscardPileConfig>().FromInstance(_discardPileConfig).AsSingle();

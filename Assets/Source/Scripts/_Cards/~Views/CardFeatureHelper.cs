@@ -8,8 +8,9 @@ namespace Cards.Views
 {
     public class CardFeatureHelper : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        private readonly Color _descriptionActivateColor2 = new Color(236, 146, 146, 255);
-        private readonly Color _descriptionActivateColor1 = new Color(255, 0, 0, 255);
+        //private readonly Color _descriptionActivateColor = new Color32(236, 146, 146, 255); // Розовый 1
+        //private readonly Color _descriptionActivateColor = new Color32(91, 82, 82, 255); 
+        private readonly Color _descriptionActivateColor = new Color32(150, 138, 138, 255);
         //private readonly Color _descriptionActivateColor = Color.red;
         private bool _isActive;
 
@@ -25,9 +26,8 @@ namespace Cards.Views
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            Color descriptionActivateColor = Random.Range(0, 2) == 0? _descriptionActivateColor1 : _descriptionActivateColor2;
             CardDescriptionActivateData activateData = new CardDescriptionActivateData(_textDescriptionGetter.Invoke(),
-                descriptionActivateColor);
+                _descriptionActivateColor, true);
             _cardDescription.Show(activateData);
 
             _isActive = true;

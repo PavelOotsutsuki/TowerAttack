@@ -14,11 +14,14 @@ namespace GameFields.Persons.SelectMenues
 
         private ISelectNumberActivator _selectNumberActivator;
 
+        private UIHelperDescription _UIHelperDescription;
+
         public void Init(ISelectNumberActivator selectNumberActivator, UIHelperDescription UIHelperDescription)
         {
             base.Init();
 
             _selectNumberActivator = selectNumberActivator;
+            _UIHelperDescription = UIHelperDescription;
             _UIHelper.Init(UIHelperDescription, GetHelperText);
         }
 
@@ -27,6 +30,7 @@ namespace GameFields.Persons.SelectMenues
             base.OnEnterClick();
 
             _selectNumberActivator.ActivateNumbers(false);
+            _UIHelperDescription.SetText("Показать выбранные");
         }
 
         protected override void OnExitClick()
@@ -34,6 +38,7 @@ namespace GameFields.Persons.SelectMenues
             base.OnExitClick();
 
             _selectNumberActivator.ActivateNumbers(true);
+            _UIHelperDescription.SetText("Скрыть выбранные");
         }
 
         private string GetHelperText()

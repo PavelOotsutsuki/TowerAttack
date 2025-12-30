@@ -42,7 +42,7 @@ namespace Tools.UI.UIHelpers
             _thisWidth = _rectTransform.rect.width * _startScale.x;
             _thisHeight = _rectTransform.rect.height * _startScale.y;
 
-            Debug.Log($"_startScale={_startScale}\n_rectProportion={_rectProportion}\n_thisWidth={_thisWidth}\n_thisHeight={_thisHeight}\n_rectTransform.rect.width={_rectTransform.rect.width}\n_rectTransform.rect.height={_rectTransform.rect.height}");
+            //Debug.Log($"_startScale={_startScale}\n_rectProportion={_rectProportion}\n_thisWidth={_thisWidth}\n_thisHeight={_thisHeight}\n_rectTransform.rect.width={_rectTransform.rect.width}\n_rectTransform.rect.height={_rectTransform.rect.height}");
         }
 
         public void SetText(string text)
@@ -62,10 +62,10 @@ namespace Tools.UI.UIHelpers
 
             // После смены text-a надо поменять width, иначе preferredHeight нормально не расчитывается
             float startWidth = _rectTransform.rect.width;
-            Debug.Log($"BEFORE: _rectTransform.rect.width={_rectTransform.rect.width}\n_rectTransform.rect.height={_rectTransform.rect.height}\n_text.preferredWidth={_text.preferredWidth}");
+            //Debug.Log($"BEFORE: _rectTransform.rect.width={_rectTransform.rect.width}\n_rectTransform.rect.height={_rectTransform.rect.height}\n_text.preferredWidth={_text.preferredWidth}");
             _rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _text.preferredWidth);
 
-            Debug.Log($"AFTER: _rectTransform.rect.width={_rectTransform.rect.width}\n_rectTransform.rect.height={_rectTransform.rect.height}\n_text.preferredWidth={_text.preferredWidth}");
+            //Debug.Log($"AFTER: _rectTransform.rect.width={_rectTransform.rect.width}\n_rectTransform.rect.height={_rectTransform.rect.height}\n_text.preferredWidth={_text.preferredWidth}");
 
             float preferredWidth = _text.preferredWidth;
 
@@ -73,7 +73,7 @@ namespace Tools.UI.UIHelpers
             float newHeight = Mathf.Sqrt(square / _rectProportion);
             Vector3 newScale = (newHeight / _rectTransform.rect.height) * _startScale;
 
-            Debug.Log($"preferredWidth={preferredWidth}\nsquare={square}\nnewHeight={newHeight}newScale={newScale}");
+            //Debug.Log($"preferredWidth={preferredWidth}\nsquare={square}\nnewHeight={newHeight}newScale={newScale}");
 
             _rectTransform.localScale = newScale;
 

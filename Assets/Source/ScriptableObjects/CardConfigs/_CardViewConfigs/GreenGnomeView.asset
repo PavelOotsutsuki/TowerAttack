@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GreenGnomeView
   m_EditorClassIdentifier: 
   <Number>k__BackingField: 27
-  <Icon>k__BackingField: {fileID: 21300000, guid: 8ca5b4cc369bd4ea689f1238643101d4, type: 3}
+  <Icon>k__BackingField: {fileID: 21300000, guid: e815efff4f7de4afda174811bb29fe3f, type: 3}
   <Description>k__BackingField: "\u041A\u0440\u0430\u0441\u043D\u044B\u0439 \u0433\u043D\u043E\u043C
     \u0432\u0435\u0447\u043D\u043E \u0441\u043F\u0435\u0448\u0438\u0442, \u0417\u0435\u043B\u0435\u043D\u043E\u043C\u0443
     \u043F\u0440\u0438\u0445\u043E\u0434\u0438\u0442\u0441\u044F \u0435\u0433\u043E
