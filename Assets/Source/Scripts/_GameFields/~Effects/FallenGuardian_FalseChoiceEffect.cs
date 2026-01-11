@@ -16,10 +16,10 @@ namespace GameFields.Effects
         private readonly CardTransitManager _transitManager;
         private readonly ViewTransitTypesRoot _typesRoot;
 
-        public FallenGuardian_FalseChoiceEffect(IPersonObject activePerson, CardLocationViewRoot viewRoot,
+        public FallenGuardian_FalseChoiceEffect(CardLocationViewRoot viewRoot,
             CardTransitManager transitManager, ViewTransitTypesRoot typesRoot, EffectData data) : base(data)
         {
-            _activePerson = activePerson;
+            _activePerson = data.ActivePerson;
             _viewRoot = viewRoot;
             _transitManager = transitManager;
             _typesRoot = typesRoot;
@@ -27,12 +27,12 @@ namespace GameFields.Effects
             Play();
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Падшего Хранителя(2.0) закончен");
-        }
+        //    Debug.Log("Эффект Падшего Хранителя(2.0) закончен");
+        //}
 
         protected override IEnumerator OnPlaying()
         {

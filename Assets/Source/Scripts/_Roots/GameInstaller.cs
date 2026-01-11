@@ -21,7 +21,8 @@ using Cards.Views.BigCardViews;
 using Cards.Views.BigCardViews.Capabilities;
 using Cards.Sounds;
 using Tools.UI.UIHelpers;
-using GameFields.HistoryMenues;
+using GameFields.Histories;
+using GameFields.Persons.ConfirmableNumbersView;
 
 namespace Roots
 {
@@ -77,9 +78,13 @@ namespace Roots
         [SerializeField] private AttackMenuEnemyAI _enemyAttackMenu;
         [SerializeField] private CardAttackZoneEnemyAI _enemyCardAttackZone;
 
+        [SerializeField] private ConfirmableNumbersViewRoot _confirmableNumbersViewRoot;
+
         private CardSoundRoot _cardSoundRoot;
         private ScreenRoot _screenRoot;
         private CardCapabilityDescription _cardCapabilityDescription;
+        private FightButtonsActivator _fightButtonsActivator;
+        private HistoryRoot _historyRoot;
 
         public override void InstallBindings()
         {
@@ -96,6 +101,9 @@ namespace Roots
             _screenRoot = new ScreenRoot();
             Container.Bind<ScreenRoot>().FromInstance(_screenRoot).AsSingle();
 
+            _historyRoot = new HistoryRoot(_historyMenu);
+            Container.Bind<HistoryRoot>().FromInstance(_historyRoot).AsSingle();
+
             _cardCapabilityDescription = new CardCapabilityDescription();
             Container.Bind<CardCapabilityDescription>().FromInstance(_cardCapabilityDescription).AsSingle();
 
@@ -108,6 +116,9 @@ namespace Roots
 
             Container.Bind<HistoryMenuActivateButton>().FromInstance(_historyMenuActivateButton).AsSingle();
             Container.Bind<HistoryMenu>().FromInstance(_historyMenu).AsSingle();
+
+            _fightButtonsActivator = new FightButtonsActivator(_fightMenuActivateButton, _historyMenuActivateButton);
+            Container.Bind<FightButtonsActivator>().FromInstance(_fightButtonsActivator).AsSingle();
 
             Container.Bind<Deck>().FromInstance(_deck).AsSingle();
             Container.Bind<DiscardPileConfig>().FromInstance(_discardPileConfig).AsSingle();
@@ -144,6 +155,8 @@ namespace Roots
             Container.Bind<ChoiceMenuImitationEnemyAI>().FromInstance(_enemyChoiceMenuImitation).AsSingle();
             Container.Bind<AttackMenuEnemyAI>().FromInstance(_enemyAttackMenu).AsSingle();
             Container.Bind<CardAttackZoneEnemyAI>().FromInstance(_enemyCardAttackZone).AsSingle();
+
+            Container.Bind<ConfirmableNumbersViewRoot>().FromInstance(_confirmableNumbersViewRoot).AsSingle();
         }
 
         private void DeclareSignals()

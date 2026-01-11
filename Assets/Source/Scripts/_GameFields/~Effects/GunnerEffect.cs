@@ -28,12 +28,12 @@ namespace GameFields.Effects
         private readonly GunnerCardSoundLogic _gunnerCardSoundLogic;
         private readonly ViewTransitTypesRoot _typesRoot;
 
-        public GunnerEffect(Person activePerson, Person deactivePerson, CardLocationViewRoot viewRoot, CardTransitManager transitManager,
+        public GunnerEffect(Person deactivePerson, CardLocationViewRoot viewRoot, CardTransitManager transitManager,
             CardSoundRoot cardSoundRoot, InformationLabel informationLabel, ViewTransitTypesRoot typesRoot, EffectData data) : base(data)
         {
-            _activePerson = activePerson;
+            _activePerson = data.ActivePerson;
             _deactivePerson = deactivePerson;
-            _drawCardManager = activePerson;
+            _drawCardManager = data.ActivePerson;
             _viewRoot = viewRoot;
             _transitManager = transitManager;
             _cardSoundRoot = cardSoundRoot;
@@ -52,12 +52,12 @@ namespace GameFields.Effects
             Play();
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Артеллериста закончен");
-        }
+        //    Debug.Log("Эффект Артеллериста закончен");
+        //}
 
         protected override IEnumerator OnPlaying()
         {

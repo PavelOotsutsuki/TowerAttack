@@ -23,11 +23,11 @@ namespace GameFields.Effects
         private readonly CardTransitManager _transitManager;
         private readonly ViewTransitTypesRoot _typesRoot;
 
-        public SharperEffect(Person activePerson, CardLocationViewRoot viewRoot, CardTransitManager transitManager,
+        public SharperEffect(CardLocationViewRoot viewRoot, CardTransitManager transitManager,
             ViewTransitTypesRoot typesRoot, EffectData data) : base(data)
         {
-            _activePerson = activePerson;
-            _drawCardManager = activePerson;
+            _activePerson = data.ActivePerson;
+            _drawCardManager = data.ActivePerson;
             _typesRoot = typesRoot;
 
             _viewRoot = viewRoot;
@@ -36,12 +36,12 @@ namespace GameFields.Effects
             Play();
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Шулера закончен");
-        }
+        //    Debug.Log("Эффект Шулера закончен");
+        //}
 
         protected override IEnumerator OnPlaying()
         {

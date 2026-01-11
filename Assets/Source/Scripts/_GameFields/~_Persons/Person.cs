@@ -8,7 +8,6 @@ using GameFields.Persons.DrawCards;
 using GameFields.Persons.Hands;
 using GameFields.Persons.Tables;
 using GameFields.Persons.Towers;
-using GameFields.Signals;
 using Tools;
 using UnityEngine;
 using Zenject;
@@ -17,6 +16,7 @@ using GameFields.Persons.EffectHandlers;
 using GameFields.Persons.LookCardMenues;
 using Cards.Effects;
 using Cards.Views;
+using GameFields.Persons.ConfirmableNumbersView;
 
 namespace GameFields.Persons
 {

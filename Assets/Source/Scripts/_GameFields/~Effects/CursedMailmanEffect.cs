@@ -34,11 +34,11 @@ namespace GameFields.Effects
             yield return new WaitUntil(() => isContinue);
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("End Проклятого почтальона effect");
-        }
+        //    Debug.Log("End Проклятого почтальона effect");
+        //}
     }
 }

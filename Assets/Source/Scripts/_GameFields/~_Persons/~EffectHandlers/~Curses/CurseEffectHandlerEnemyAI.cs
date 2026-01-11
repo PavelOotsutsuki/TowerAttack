@@ -1,5 +1,6 @@
 using GameFields.InformationLabels;
 using GameFields.Persons;
+using GameFields.Persons.ConfirmableNumbersView;
 using GameFields.Persons.SelectMenues;
 using GameFields.Persons.Towers;
 using GameFields.Signals;

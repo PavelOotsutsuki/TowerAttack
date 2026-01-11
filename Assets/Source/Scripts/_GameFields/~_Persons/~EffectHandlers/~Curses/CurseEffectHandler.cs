@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Cards;
 using GameFields.InformationLabels;
 using GameFields.Persons;
+using GameFields.Persons.ConfirmableNumbersView;
 using GameFields.Persons.SelectMenues;
 using GameFields.Persons.Towers;
 using Tools;

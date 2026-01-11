@@ -20,10 +20,10 @@ namespace GameFields.Effects
         private readonly CardTransitManager _transitManager;
         private readonly ViewTransitTypesRoot _typesRoot;
 
-        public OutOfControlBusEffect(Person activePerson, IPersonObject deactivePerson, CardLocationViewRoot cardLocationViewRoot,
+        public OutOfControlBusEffect(IPersonObject deactivePerson, CardLocationViewRoot cardLocationViewRoot,
             CardTransitManager transitManager, ViewTransitTypesRoot typesRoot, EffectData data) : base(data)
         {
-            _activePerson = activePerson;
+            _activePerson = data.ActivePerson;
             _deactivePerson = deactivePerson;
             _viewRoot = cardLocationViewRoot;
             _transitManager = transitManager;
@@ -32,12 +32,12 @@ namespace GameFields.Effects
             Play();
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект неуправляемого автобуса закончен");
-        }
+        //    Debug.Log("Эффект неуправляемого автобуса закончен");
+        //}
 
         protected override IEnumerator OnPlaying()
         {

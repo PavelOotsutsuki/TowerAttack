@@ -14,20 +14,20 @@ namespace GameFields.Effects
         private readonly Person _activePerson;
         private readonly CardLocationViewRoot _viewRoot;
 
-        public CowsHerdEffect(Person activePerson, CardLocationViewRoot viewRoot, EffectData data) : base(data)
+        public CowsHerdEffect(CardLocationViewRoot viewRoot, EffectData data) : base(data)
         {
-            _activePerson = activePerson;
+            _activePerson = data.ActivePerson;
             _viewRoot = viewRoot;
 
             Play();
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Стадо коров закончен");
-        }
+        //    Debug.Log("Эффект Стадо коров закончен");
+        //}
 
         protected override IEnumerator OnPlaying()
         {

@@ -20,6 +20,7 @@ namespace GameFields.InputSettings
         private readonly InputActions _inputActions;
         private readonly IDeactivatable _endTurnButtonDeactivatable;
         private readonly IWorkable _fightMenu;
+        private readonly IWorkable _historyMenu;
         private readonly Dictionary<IInputLogicObject, IInputLogic> _logics;
 
         private readonly FightMenuInputLogic _fightMenuInputLogic;
@@ -27,10 +28,11 @@ namespace GameFields.InputSettings
         private IInputLogic _currentLogic;
 
         public InputRoot(IDeactivatable endTurnButtonDeactivatable, IWorkable fightMenu,
-            IFightMenuInputActivateWatcher fightMenuInputActivateWatcher)
+            IFightMenuInputActivateWatcher fightMenuInputActivateWatcher, IWorkable historyMenu)
         {
             _fightMenuInputLogic = new FightMenuInputLogic(fightMenuInputActivateWatcher);
             _fightMenu = fightMenu;
+            _historyMenu = historyMenu;
             _logics = new Dictionary<IInputLogicObject, IInputLogic>();
             _endTurnButtonDeactivatable = endTurnButtonDeactivatable;
 
@@ -40,6 +42,7 @@ namespace GameFields.InputSettings
             _inputActions = new InputActions();
 
             _inputActions.GameField.Esc.performed += OnEsc;
+            _inputActions.GameField.H.performed += OnH;
 
             _inputActions.Enable();
         }
@@ -48,6 +51,7 @@ namespace GameFields.InputSettings
         {
             _inputActions.GameField.Enter.performed -= OnEnter;
             _inputActions.GameField.Esc.performed -= OnEsc;
+            _inputActions.GameField.H.performed -= OnH;
             _inputActions.GameField.Q.performed -= OnQ;
             _inputActions.GameField.LeftArrow.performed -= OnLeftArrow;
             _inputActions.GameField.RightArrow.performed -= OnRightArrow;
@@ -197,6 +201,31 @@ namespace GameFields.InputSettings
                 return;
 
             _fightMenu.Activate();
+        }
+
+        private void OnH(CallbackContext context)
+        {
+            //Debug.Log($"H pressed!: {_currentLogic}");
+
+            //if (_historyMenu.IsActive == true)
+            //{
+            //    _historyMenu.Deactivate();
+            //}
+            //else
+            //{
+            //    _historyMenu.Activate();
+            //}
+
+            if (_historyMenu.IsActive == true)
+            {
+                _historyMenu.Deactivate();
+                return;
+            }
+
+            if (_isEnable == false)
+                return;
+
+            _historyMenu.Activate();
         }
 
         private void OnQ(CallbackContext context)

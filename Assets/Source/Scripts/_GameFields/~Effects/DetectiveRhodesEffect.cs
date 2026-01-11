@@ -35,10 +35,10 @@ namespace GameFields.Effects
 
         private readonly IDrawCardManager _drawCardManager;
 
-        public DetectiveRhodesEffect(Person activePerson, Person deactivePerson, CardTransitManager transitManager, CardLocationViewRoot viewRoot,
+        public DetectiveRhodesEffect(Person deactivePerson, CardTransitManager transitManager, CardLocationViewRoot viewRoot,
             InformationLabel informationLabel, ViewTransitTypesRoot typesRoot, EffectData data) : base(data)
         {
-            _activePerson = activePerson;
+            _activePerson = data.ActivePerson;
             _deactivePerson = deactivePerson;
             _transitManager = transitManager;
 
@@ -46,7 +46,7 @@ namespace GameFields.Effects
             _informationLabel = informationLabel;
             _typesRoot = typesRoot;
 
-            _drawCardManager = activePerson;
+            _drawCardManager = data.ActivePerson;
 
             Play();
         }
@@ -150,12 +150,12 @@ namespace GameFields.Effects
             }
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("End DetectiveRhodesEffect");
-        }
+        //    Debug.Log("End DetectiveRhodesEffect");
+        //}
 
         private void Discover(Card firstFindedCard, int countDiscoverCards, string activateDiscoverMessage,
             DiscoverResult discoverResult, IEnumerable<ViewType> noContains)

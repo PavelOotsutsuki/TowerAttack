@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cards;
 using GameFields.CardTransits;
+using GameFields.Histories;
 using Tools.Utils;
 using UnityEngine;
 
@@ -14,7 +15,7 @@ namespace GameFields.Persons.Fires
         private readonly FirePool _playerFirePool;
         private readonly FirePool _enemyFirePool;
 
-        public FireRoot(FirePool playerFirePool, FirePool enemyFirePool)
+        public FireRoot(FirePoolPlayer playerFirePool, FirePoolEnemy enemyFirePool)
         {
             _playerFirePool = playerFirePool;
             _enemyFirePool = enemyFirePool;

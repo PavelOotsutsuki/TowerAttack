@@ -7,10 +7,11 @@ using GameFields.Persons.Hands;
 using GameFields.Persons.DrawCards;
 using Cards.DependencyInterlayers;
 using GameFields.CardTransits;
+using GameFields.Histories;
 
 namespace GameFields.Persons.EnemyProcessImitations
 {
-    public class CardDragAndDropImitationActions
+    public class CardDragAndDropImitationActions : IEnemyAIObject
     {
         private readonly ICardDragAndDropHandHandler _hand;
         private readonly ICardDropPlace _cardDropPlaceImitation;
@@ -19,6 +20,8 @@ namespace GameFields.Persons.EnemyProcessImitations
         private readonly ICardSeatable _discardPile;
         private readonly IDrawCardManager _drawCardManager;
         private readonly ICardSeatable _handPlayer;
+
+        private readonly HistoryRoot _historyRoot;
 
         private Card _activeCard;
         private ReadOnlyRectTransform _readOnlyCardTransform;
@@ -29,7 +32,7 @@ namespace GameFields.Persons.EnemyProcessImitations
         private bool _isForging;
 
         public CardDragAndDropImitationActions(ICardDragAndDropHandHandler hand, ICardDropPlace cardDropPlaceImitation, IAttackable attackZone,
-            ICardSeatable discardPile, IDrawCardManager drawCardManager, ICardSeatable handPlayer)
+            ICardSeatable discardPile, IDrawCardManager drawCardManager, ICardSeatable handPlayer, HistoryRoot historyRoot)
         {
             _hand = hand;
             _cardDropPlaceImitation = cardDropPlaceImitation;
@@ -38,6 +41,8 @@ namespace GameFields.Persons.EnemyProcessImitations
             _discardPile = discardPile;
             _drawCardManager = drawCardManager;
             _handPlayer = handPlayer;
+
+            _historyRoot = historyRoot;
 
             _isMoving = false;
         }
@@ -83,6 +88,10 @@ namespace GameFields.Persons.EnemyProcessImitations
             _hand.OnCardPlay();
 
             _handPlayer.SeatCard(_activeCard);
+
+            HistoryCardData historyCardData = new HistoryCardData(_activeCard);
+            HistoryData historyData = new HistoryData(this, "Передача: ", historyCardData);
+            _historyRoot.AddMsg(historyData);
         }
 
         public IEnumerator Forging()
@@ -94,6 +103,10 @@ namespace GameFields.Persons.EnemyProcessImitations
 
             _discardPile.SeatCard(_activeCard);
             _drawCardManager.DrawCards(1, ForgingContinue);
+
+            HistoryCardData historyCardData = new HistoryCardData(_activeCard);
+            HistoryData historyData = new HistoryData(this, "Гномичья ковка: ", historyCardData);
+            _historyRoot.AddMsg(historyData);
 
             yield return new WaitUntil(() => _isForging);
         }

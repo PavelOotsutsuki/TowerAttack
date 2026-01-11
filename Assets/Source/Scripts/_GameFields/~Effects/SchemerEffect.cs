@@ -11,21 +11,21 @@ namespace GameFields.Effects
         private readonly Person _activePerson;
         private readonly Card _card;
 
-        public SchemerEffect(Person activePerson, Person deactivePerson, EffectData data) : base(data)
+        public SchemerEffect(Person deactivePerson, EffectData data) : base(data)
         {
-            _activePerson = activePerson;
+            _activePerson = data.ActivePerson;
             _deactivePerson = deactivePerson;
             _card = data.CardEffectData.Card;
 
             Play();
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Шулера закончен");
-        }
+        //    Debug.Log("Эффект Шулера закончен");
+        //}
 
         protected override IEnumerator OnPlaying()
         {

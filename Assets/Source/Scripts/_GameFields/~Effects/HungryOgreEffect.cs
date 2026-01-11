@@ -7,16 +7,16 @@ namespace GameFields.Effects
 {
     public class HungryOgreEffect : VariantEffect
     {
-        public HungryOgreEffect(Person activePerson, VariantCardCreator variantCardCreator,
+        public HungryOgreEffect(VariantCardCreator variantCardCreator,
             Func<EffectType, CardEffectData, EffectDuration, Effect> effectCreator, EffectType effectType, EffectData data) :
-            base(activePerson, variantCardCreator, effectCreator, effectType, data)
+            base(variantCardCreator, effectCreator, effectType, data)
         { }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Голодного Огра окончен");
-        }
+        //    Debug.Log("Эффект Голодного Огра окончен");
+        //}
     }
 }

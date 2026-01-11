@@ -14,10 +14,10 @@ namespace GameFields.Effects
         private readonly CardTransitManager _transitManager;
         private readonly ViewTransitTypesRoot _typesRoot;
 
-        public TimeMistressEffect(Person activePerson, CardLocationViewRoot viewRoot, CardTransitManager transitManager,
+        public TimeMistressEffect(CardLocationViewRoot viewRoot, CardTransitManager transitManager,
              ViewTransitTypesRoot typesRoot, EffectData data) : base(data)
         {
-            _activePerson = activePerson;
+            _activePerson = data.ActivePerson;
 
             _viewRoot = viewRoot;
             _transitManager = transitManager;
@@ -26,12 +26,12 @@ namespace GameFields.Effects
             Play();
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Повелительницы времени закончен");
-        }
+        //    Debug.Log("Эффект Повелительницы времени закончен");
+        //}
 
         protected override IEnumerator OnPlaying()
         {

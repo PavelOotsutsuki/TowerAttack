@@ -20,22 +20,22 @@ namespace GameFields.Effects
         private readonly CardLocationViewRoot _cardLocationViewRoot;
         private readonly InformationLabel _informationLabel;
 
-        public UndergrounderEffect(Person activePerson, CardLocationViewRoot cardLocationViewRoot,
-            InformationLabel informationLabel, EffectData data) : base(data)
+        public UndergrounderEffect(CardLocationViewRoot cardLocationViewRoot, InformationLabel informationLabel,
+            EffectData data) : base(data)
         {
-            _activePerson = activePerson;
+            _activePerson = data.ActivePerson;
             _informationLabel = informationLabel;
             _cardLocationViewRoot = cardLocationViewRoot;
 
             Play();
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Подпольщика закончен");
-        }
+        //    Debug.Log("Эффект Подпольщика закончен");
+        //}
 
         protected override IEnumerator OnPlaying()
         {

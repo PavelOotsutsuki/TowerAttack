@@ -22,12 +22,12 @@ namespace GameFields.Effects
             Play();
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Дитя времени закончен");
-        }
+        //    Debug.Log("Эффект Дитя времени закончен");
+        //}
 
         protected override IEnumerator OnPlaying()
         {

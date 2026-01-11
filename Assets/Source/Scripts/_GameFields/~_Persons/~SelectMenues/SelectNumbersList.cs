@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace GameFields.Persons.SelectMenues
@@ -5,6 +6,8 @@ namespace GameFields.Persons.SelectMenues
     public class SelectNumbersList
     {
         private readonly Dictionary<int, NumberAnimationType> _selectedNumbersStates;
+
+        internal event Action OnChanged;
 
         public IReadOnlyDictionary<int, NumberAnimationType> SelectedNumbersStates => _selectedNumbersStates;
 
@@ -16,7 +19,10 @@ namespace GameFields.Persons.SelectMenues
         public void Add(int selectNumber, NumberAnimationType type)
         {
             if (_selectedNumbersStates.ContainsKey(selectNumber) == false)
+            {
                 _selectedNumbersStates.Add(selectNumber, type);
+                OnChanged?.Invoke();
+            }
         }
 
         public bool Contains(int selectNumber)
@@ -27,6 +33,7 @@ namespace GameFields.Persons.SelectMenues
         public void Clear()
         {
             _selectedNumbersStates.Clear();
+            OnChanged?.Invoke();
         }
 
         public NumberAnimationType GetType(int selectNumber)

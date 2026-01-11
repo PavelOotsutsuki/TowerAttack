@@ -25,12 +25,12 @@ namespace GameFields.Effects
             Play();
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Последнего шанса закончен");
-        }
+        //    Debug.Log("Эффект Последнего шанса закончен");
+        //}
 
         protected override IEnumerator OnPlaying()
         {

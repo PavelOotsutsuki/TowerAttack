@@ -1,6 +1,6 @@
 using Tools.UI.UIHelpers;
 
-namespace GameFields.HistoryMenues
+namespace GameFields.Histories
 {
     public class HistoryMenuActivateButton : MenuActivateButton
     {

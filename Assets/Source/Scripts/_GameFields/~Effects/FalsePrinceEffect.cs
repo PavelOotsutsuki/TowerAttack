@@ -9,19 +9,19 @@ namespace GameFields.Effects
     {
         private readonly Person _activePerson;
 
-        public FalsePrinceEffect(Person activePerson, EffectData data) : base(data)
+        public FalsePrinceEffect(EffectData data) : base(data)
         {
-            _activePerson = activePerson;
+            _activePerson = data.ActivePerson;
 
             Play();
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Лжепринца закончен");
-        }
+        //    Debug.Log("Эффект Лжепринца закончен");
+        //}
 
         protected override IEnumerator OnPlaying()
         {

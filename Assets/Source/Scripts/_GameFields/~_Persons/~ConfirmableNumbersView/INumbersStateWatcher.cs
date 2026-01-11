@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace GameFields.Persons
+namespace GameFields.Persons.ConfirmableNumbersView
 {
     public interface INumbersStateWatcher
     {

@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using Cards.Effects;
+using GameFields.Histories;
+using GameFields.Persons;
 using GameFields.Persons.EffectHandlers;
 using UnityEngine;
 using Zenject;
@@ -17,8 +19,9 @@ namespace GameFields.Effects
         //public DoubleEffect(Func<CardEffectConfig, Action<int>, Effect> effectCreator, CardEffectConfig effectConfig,
         //    Action<int> callback) :
         public DoubleEffect(Func<CardEffectConfigPair, EffectDuration, Effect> effectCreator, CardEffectConfigPair effectConfig,
-            SignalBus bus, EffectDuration effectDuration, PersonEffectsHandlerRoot personEffectsHandlerRoot) :
-            base(new EffectData(bus, effectConfig.CardEffectData, effectDuration, personEffectsHandlerRoot), 0f)
+            SignalBus bus, EffectDuration effectDuration, PersonEffectsHandlerRoot personEffectsHandlerRoot, HistoryRoot historyRoot,
+            Person activePerson) : base(new EffectData(bus, effectConfig.CardEffectData, effectDuration, personEffectsHandlerRoot,
+                historyRoot, activePerson), 0f)
         {
             _effectCreator = effectCreator;
             _effectConfig = effectConfig;
@@ -41,11 +44,11 @@ namespace GameFields.Effects
             yield return new WaitUntil(() => effect2.IsComplete);
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("DoubleEffect completed");
-        }
+        //    Debug.Log("DoubleEffect completed");
+        //}
     }
 }

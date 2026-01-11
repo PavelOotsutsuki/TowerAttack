@@ -7,16 +7,16 @@ namespace GameFields.Effects
 {
     public class StrongOgreEffect : VariantEffect
     {
-        public StrongOgreEffect(Person activePerson, VariantCardCreator variantCardCreator,
+        public StrongOgreEffect(VariantCardCreator variantCardCreator,
             Func<EffectType, CardEffectData, EffectDuration, Effect> effectCreator, EffectType effectType, EffectData data) :
-            base(activePerson, variantCardCreator, effectCreator, effectType, data)
+            base(variantCardCreator, effectCreator, effectType, data)
         { }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Сильного Огра окончен");
-        }
+        //    Debug.Log("Эффект Сильного Огра окончен");
+        //}
     }
 }

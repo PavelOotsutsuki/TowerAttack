@@ -9,10 +9,11 @@ using Zenject;
 using GameFields.Signals;
 using Cards.DependencyInterlayers;
 using GameFields.CardTransits;
+using GameFields.Histories;
 
 namespace GameFields.Persons.Hands
 {
-    public abstract class ExtraEffectZone : MonoBehaviour, IWorkable, ICompletable, IExtraEffectZone
+    public abstract class ExtraEffectZone : MonoBehaviour, IWorkable, ICompletable, IExtraEffectZone, IPlayerObject
     {
         [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private InvertCardAnimationData _invertCardAnimationData;
@@ -20,15 +21,17 @@ namespace GameFields.Persons.Hands
         private ICardSeatable _seatable;
         private SignalBus _bus;
         private InvertCardAnimation _invertCardAnimation;
+        private HistoryRoot _historyRoot;
 
         public bool IsComplete { get; protected set; }
 
         public bool? IsActive { get; private set; } = null;
 
-        public void Init(ICardSeatable cardSeatable, SignalBus signalBus)
+        public void Init(ICardSeatable cardSeatable, SignalBus signalBus, HistoryRoot historyRoot)
         {
             _seatable = cardSeatable;
             _bus = signalBus;
+            _historyRoot = historyRoot;
             _invertCardAnimation = new InvertCardAnimation(_invertCardAnimationData);
         }
 
@@ -56,6 +59,10 @@ namespace GameFields.Persons.Hands
         {
             IsComplete = false;
 
+            HistoryCardData historyCardData = new HistoryCardData(card);
+            HistoryData historyData = new HistoryData(this, GetHistoryMsg(), historyCardData);
+            _historyRoot.AddMsg(historyData);
+
             StartCoroutine(Processing(card));
         }
 
@@ -72,6 +79,7 @@ namespace GameFields.Persons.Hands
             OnEndProcessing();
         }
 
+        protected abstract string GetHistoryMsg();
         protected abstract void OnEndProcessing();
 
         #region AutomaticFillComponents

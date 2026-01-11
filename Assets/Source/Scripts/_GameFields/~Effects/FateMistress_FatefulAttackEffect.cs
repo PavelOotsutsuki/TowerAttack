@@ -15,10 +15,10 @@ namespace GameFields.Effects
         private readonly ViewTransitTypesRoot _typesRoot;
         //private readonly SignalBus _bus;
 
-        public FateMistress_FatefulAttackEffect(Person activePerson, LoseActionsRoot loseActionsRoot, CardLocationViewRoot viewRoot,
+        public FateMistress_FatefulAttackEffect(LoseActionsRoot loseActionsRoot, CardLocationViewRoot viewRoot,
             ViewTransitTypesRoot typesRoot, EffectData data) : base(data)
         {
-            _activePerson = activePerson;
+            _activePerson = data.ActivePerson;
             _loseActionsRoot = loseActionsRoot;
             //_deactivePerson = deactivePerson;
             _viewRoot = viewRoot;
@@ -28,12 +28,12 @@ namespace GameFields.Effects
             Play();
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Судьбоносный удар закончен");
-        }
+        //    Debug.Log("Эффект Судьбоносный удар закончен");
+        //}
 
         protected override IEnumerator OnPlaying()
         {

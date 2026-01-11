@@ -20,10 +20,10 @@ namespace GameFields.Effects
         private readonly CardLocationViewRoot _viewRoot;
         private readonly ViewTransitTypesRoot _typesRoot;
 
-        public MafiaBossEffect(Person activePerson, IPersonObject deactivePerson, CardLocationViewRoot viewRoot,
+        public MafiaBossEffect(IPersonObject deactivePerson, CardLocationViewRoot viewRoot,
             CardTransitManager transitManager, ViewTransitTypesRoot typesRoot, EffectData data) : base(data)
         {
-            _activePerson = activePerson;
+            _activePerson = data.ActivePerson;
             _deactivePerson = deactivePerson;
             _transitManager = transitManager;
             _viewRoot = viewRoot;
@@ -91,11 +91,11 @@ namespace GameFields.Effects
             yield return new WaitUntil(() => isFireComplete);
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Босса Мафии окончен");
-        }
+        //    Debug.Log("Эффект Босса Мафии окончен");
+        //}
     }
 }

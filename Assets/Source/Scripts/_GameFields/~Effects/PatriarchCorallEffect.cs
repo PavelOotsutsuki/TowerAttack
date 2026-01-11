@@ -21,15 +21,15 @@ namespace GameFields.Effects
         private readonly IDrawCardManager _drawCardManager;
         private readonly ViewTransitTypesRoot _typesRoot;
 
-        public PatriarchCorallEffect(Person activePerson, IPersonObject deactivePerson, CardTransitManager transitManager,
+        public PatriarchCorallEffect(IPersonObject deactivePerson, CardTransitManager transitManager,
             ViewTransitTypesRoot typesRoot, EffectData data) : base(data)
         {
-            _activePerson = activePerson;
+            _activePerson = data.ActivePerson;
             _deactivePerson = deactivePerson;
             _transitManager = transitManager;
             _typesRoot = typesRoot;
 
-            _drawCardManager = activePerson;
+            _drawCardManager = data.ActivePerson;
 
             Play();
         }
@@ -64,11 +64,11 @@ namespace GameFields.Effects
 
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("End patriarch corall effect");
-        }
+        //    Debug.Log("End patriarch corall effect");
+        //}
     }
 }

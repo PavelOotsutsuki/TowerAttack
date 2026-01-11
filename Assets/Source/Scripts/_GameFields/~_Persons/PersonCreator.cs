@@ -37,7 +37,8 @@ using Cards.Views;
 using GameFields.CardTransits;
 using Tools.UI;
 using Tools.UI.UIHelpers;
-using GameFields.HistoryMenues;
+using GameFields.Histories;
+using GameFields.Persons.ConfirmableNumbersView;
 
 namespace GameFields.Persons
 {
@@ -50,13 +51,13 @@ namespace GameFields.Persons
         private CardPlayingZonePlayer _playerPlayingZone;
         private HandPlayer _playerHand;
         private Table _playerTable;
-        private Tower _playerTower;
+        private TowerPlayer _playerTower;
         private DiscoverPlayer _playerDiscover;
         private ChoiceMenuPlayer _playerChoiceMenu;
         private ChoiceMenuImitationPlayer _playerChoiceMenuImitation;
         private AttackMenuPlayer _playerAttackMenu;
         private CardAttackZonePlayer _playerCardAttackZone;
-        private FirePool _playerFirePool;
+        private FirePoolPlayer _playerFirePool;
         private RechangeFeatureRuleController _playerRechangeFeatureRuleController;
         private TurnDrawnCards _playerTurnDrawnCards;
         private PersonEffectsHandler _playerPersonEffectsHandler;
@@ -66,6 +67,7 @@ namespace GameFields.Persons
         private FightMenuActivateButton _fightMenuActivateButton;
         private HistoryMenu _historyMenu;
         private HistoryMenuActivateButton _historyMenuActivateButton;
+        private FightButtonsActivator _fightButtonsActivator;
         //private ActiveEffectsList _playerActiveEffectsList = new ActiveEffectsList();
 
         private ForgingZone _forgingZone;
@@ -101,13 +103,13 @@ namespace GameFields.Persons
         private CardPlayingZone _enemyPlayingZone;
         private HandAI _enemyHand;
         private Table _enemyTable;
-        private Tower _enemyTower;
+        private TowerAI _enemyTower;
         private DiscoverAI _enemyDiscoverImitation;
         private ChoiceMenuEnemyAI _enemyChoiceMenu;
         private ChoiceMenuImitationEnemyAI _enemyChoiceMenuImitation;
         private AttackMenuEnemyAI _enemyAttackMenu;
         private CardAttackZoneEnemyAI _enemyCardAttackZone;
-        private FirePool _enemyFirePool;
+        private FirePoolEnemy _enemyFirePool;
         private RechangeFeatureRuleController _enemyRechangeFeatureRuleController;
         private TurnDrawnCards _enemyTurnDrawnCards;
         private PersonEffectsHandler _enemyPersonEffectsHandler;
@@ -165,6 +167,9 @@ namespace GameFields.Persons
         private FireRoot _fireRoot;
         private CardRoot _cardRoot;
         private UIHelperDescription _UIHelperDescription;
+        private HistoryRoot _historyRoot;
+
+        private ConfirmableNumbersViewRoot _confirmableNumbersViewRoot;
 
         public DiscardManager DiscardManager => _discardManager;
 
@@ -177,7 +182,8 @@ namespace GameFields.Persons
             ChoiceMenuImitationEnemyAI choiceMenuImitationEnemyAI, ForgingZone forgingZone, HandTransferZone handTransferZone,
             LookCardMenuPlayer lookCardMenuPlayer, StartPlayerTurnLabel startPlayerTurnLabel, SkipTurnLabelPlayer skipTurnLabelPlayer,
             SkipTurnLabelEnemyAI skipTurnLabelEnemyAI, FightMenu fightMenu, FightMenuActivateButton fightMenuActivateButton,
-            UIHelperDescription UIHelperDescription, HistoryMenu historyMenu, HistoryMenuActivateButton historyMenuActivateButton)
+            UIHelperDescription UIHelperDescription, HistoryMenu historyMenu, HistoryMenuActivateButton historyMenuActivateButton,
+            FightButtonsActivator fightButtonsActivator, ConfirmableNumbersViewRoot confirmableNumbersViewRoot)
         {
             _playerPlayingZone = playerPlayingZone;
             _playerHand = playerHand;
@@ -215,14 +221,17 @@ namespace GameFields.Persons
             _historyMenu = historyMenu;
             _historyMenuActivateButton = historyMenuActivateButton;
 
+            _fightButtonsActivator = fightButtonsActivator;
+
             _UIHelperDescription = UIHelperDescription;
+            _confirmableNumbersViewRoot = confirmableNumbersViewRoot;
             //_inputRoot = inputRoot;
         }
 
         public void Init(SignalBus bus, Deck deck, EndTurnButton endTurnButton, SeatPool seatPool,
             CardDragAndDropHandler cardDragAndDropHandler, CardDragAndDropLightController cardDragAndDropLightController,
             InformationLabel informationLabel, CardRoot cardRoot, CardSoundRoot cardSoundRoot, IVolume musicVolume,
-            CardCapabilityDescription cardCapabilityDescription)
+            CardCapabilityDescription cardCapabilityDescription, HistoryRoot historyRoot)
         {
             _bus = bus;
             _deck = deck;
@@ -230,20 +239,21 @@ namespace GameFields.Persons
             _seatPool = seatPool;
             _informationLabel = informationLabel;
             _cardRoot = cardRoot;
+            _historyRoot = historyRoot;
 
             _skipTurnLabelPlayer.Init();
             _skipTurnLabelEnemyAI.Init();
-            _inputRoot = new InputRoot(_endTurnButton, _fightMenu, _fightMenu);
+            _inputRoot = new InputRoot(_endTurnButton, _fightMenu, _fightMenu, _historyMenu);
 
             _enemyLoseActions = new LoseActions(_enemyTower, _enemyTower, _playerHand, _bus, _inputRoot, _fightMenu,
-                _fightMenuActivateButton);
+                _fightButtonsActivator);
             _playerLoseActions = new LoseActions(_playerTower, _playerTower, _playerHand, _bus, _inputRoot, _fightMenu,
-                _fightMenuActivateButton);
+                _fightButtonsActivator);
 
             _fightMenu.Init(_inputRoot, _playerLoseActions, cardSoundRoot, musicVolume, cardCapabilityDescription);
             _fightMenuActivateButton.Init(_fightMenu, _UIHelperDescription);
 
-            _historyMenu.Init();
+            _historyMenu.Init(historyRoot);
             _historyMenuActivateButton.Init(_historyMenu, _UIHelperDescription);
 
             DefineFire();
@@ -257,6 +267,8 @@ namespace GameFields.Persons
 
             _confirmableNumbersPlayer = new ConfirmableNumbers(_attackedNumbersPlayer, _choicedNumbersPlayer, _cursedNumbersPlayer);
             _confirmableNumbersEnemyAI = new ConfirmableNumbers(_attackedNumbersEnemy, _choicedNumbersEnemy, _cursedNumbersEnemyAI);
+
+            _confirmableNumbersViewRoot.Init(_confirmableNumbersEnemyAI, _confirmableNumbersPlayer);
 
             _discardManager = new DiscardManager(_enemyTable, _playerTable);
 
@@ -305,8 +317,8 @@ namespace GameFields.Persons
             PlayerSkipTurnView skipTurnView = new PlayerSkipTurnView(_interactionActivator, _skipTurnLabelPlayer);
             EndTurnProcessing endTurnProcessing = new EndTurnProcessing(_endTurnButton, _interactionActivator, _playerPersonEffectsHandler);
 
-            _forgingZone.Init(_discardPile, _bus, drawCardRoot, gnomeEffectHandler);
-            _handTransferZone.Init(_enemyHand, _bus);
+            _forgingZone.Init(_discardPile, _bus, drawCardRoot, gnomeEffectHandler, _historyRoot);
+            _handTransferZone.Init(_enemyHand, _bus, _historyRoot);
 
             _playerHand.Init(_seatPool, _playerRechangeFeatureRuleController, _playerTurnDrawnCards, curseEffectHandler);
 
@@ -349,7 +361,7 @@ namespace GameFields.Persons
 
             SkipTurnChecker skipTurnChecker = new SkipTurnChecker(slimeEffectHandler, _enemyHand);
             CardDragAndDropImitationActions cardDragAndDropImitationActions = new CardDragAndDropImitationActions(_enemyHand, _enemyPlayingZone, _enemyCardAttackZone,
-                _discardPile, drawCardRoot, _playerHand);
+                _discardPile, drawCardRoot, _playerHand, _historyRoot);
             StartTurnDrawEnemyAI startTurnDraw = new StartTurnDrawEnemyAI(_interactionActivator, drawCardRoot, _enemyCountStartDrawCards);
             //StartTurnDrawEnemyAI startTurnDraw = new StartTurnDrawEnemyAI(_interactionActivator, drawCardRoot, 0);
             EnemySkipTurnView skipTurnView = new EnemySkipTurnView(_interactionActivator, _skipTurnLabelEnemyAI);
@@ -429,7 +441,7 @@ namespace GameFields.Persons
             _playerChoiceMenuImitation.Init(_enemyTower, choiceResultHandlerPlayer, _cardNumbers, _choicedNumbersPlayer,
                 _confirmableNumbersPlayer, _lastSelectedNumbersWatcherPlayer);
 
-            _playerCardAttackZone.Init(_playerAttackMenu, _enemyTower, _bus);
+            _playerCardAttackZone.Init(_playerAttackMenu, _enemyTower, _bus, _historyRoot);
             //_playerCardAttackZone.Init(_playerChoiceMenu, _enemyTower);
         }
 
@@ -440,7 +452,7 @@ namespace GameFields.Persons
             //_enemyHand.Init(seatPool, _enemyRechangeFeatureRuleController, _enemyTurnDrawnCards);
             _enemyTable.Init();
             _enemyPlayingZone.Init(_enemyTable);
-            _enemyTower.Init(_confirmableNumbersPlayer, _cardRoot);
+            _enemyTower.Init(_confirmableNumbersViewRoot, _confirmableNumbersPlayer, _cardRoot);
 
             _enemyDiscoverImitation.Init();
 
@@ -461,7 +473,7 @@ namespace GameFields.Persons
             _enemyChoiceMenuImitation.Init(_playerTower, choiceResultHandlerEnemyAI, _cardNumbers, _choicedNumbersEnemy,
                 _confirmableNumbersEnemyAI, _lastSelectedNumbersWatcherEnemyAI);
 
-            _enemyCardAttackZone.Init(_enemyAttackMenu, _playerTower, _bus);
+            _enemyCardAttackZone.Init(_enemyAttackMenu, _playerTower, _bus, _historyRoot);
         }
 
         private void DefineFire()
@@ -474,8 +486,10 @@ namespace GameFields.Persons
                 SideType.Back, _fireContainer.GetTransform());
             ExtraFireSeatActionRoot enemyExtraFireSeatActionRoot = new ExtraFireSeatActionRoot(enemyPyromancersManuscriptFireAction);
 
-            _playerFirePool = new FirePool(_fireContainer.GetTransform(), playerExtraFireSeatActionRoot);
-            _enemyFirePool = new FirePool(_fireContainer.GetTransform(), enemyExtraFireSeatActionRoot);
+            _playerFirePool = new FirePoolPlayer(_fireContainer.GetTransform(), playerExtraFireSeatActionRoot,
+                _historyRoot);
+            _enemyFirePool = new FirePoolEnemy(_fireContainer.GetTransform(), enemyExtraFireSeatActionRoot,
+                _historyRoot);
             _fireRoot = new FireRoot(_playerFirePool, _enemyFirePool);
         }
 

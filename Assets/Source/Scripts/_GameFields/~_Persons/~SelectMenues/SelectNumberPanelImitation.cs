@@ -11,6 +11,7 @@ using Random = UnityEngine.Random;
 using GameFields.Persons.SelectMenues.Attacks;
 using GameFields.Persons.Towers;
 using GameFields.Persons;
+using GameFields.Persons.ConfirmableNumbersView;
 
 namespace GameFields.Persons.SelectMenues
 {

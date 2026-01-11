@@ -6,6 +6,7 @@ using Cards.DependencyInterlayers;
 using Cards.Views;
 using GameFields.CardTransits;
 using GameFields.Persons;
+using GameFields.Persons.ConfirmableNumbersView;
 using GameFields.Persons.EffectHandlers;
 using GameFields.Persons.EffectHandlers.Fires;
 using GameFields.Persons.Tables;

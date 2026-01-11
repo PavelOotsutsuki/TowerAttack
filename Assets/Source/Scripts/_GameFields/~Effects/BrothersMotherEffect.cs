@@ -10,19 +10,19 @@ namespace GameFields.Effects
 
         private readonly Person _activePerson;
 
-        public BrothersMotherEffect(Person activePerson, EffectData data) : base(data)
+        public BrothersMotherEffect(EffectData data) : base(data)
         {
-            _activePerson = activePerson;
+            _activePerson = data.ActivePerson;
 
             Play();
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Матери братьев закончен");
-        }
+        //    Debug.Log("Эффект Матери братьев закончен");
+        //}
 
         protected override IEnumerator OnPlaying()
         {

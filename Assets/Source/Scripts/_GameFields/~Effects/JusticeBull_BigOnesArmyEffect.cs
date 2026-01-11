@@ -14,20 +14,20 @@ namespace GameFields.Effects
         private readonly Person _deactivePerson;
 
         public JusticeBull_BigOnesArmyEffect(Person deactivePerson, InformationLabel informationLabel,
-            Func<EffectType, CardEffectData, EffectDuration, Effect> effectCreator, Person activePeron, EffectData data) :
-            base(informationLabel, effectCreator, activePeron, data)
+            Func<EffectType, CardEffectData, EffectDuration, Effect> effectCreator, EffectData data) :
+            base(informationLabel, effectCreator, data)
         {
             _deactivePerson = deactivePerson;
 
             Play();
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Быка правосудия(1.1) закончен");
-        }
+        //    Debug.Log("Эффект Быка правосудия(1.1) закончен");
+        //}
 
         protected override bool IsTrueChoice()
         {

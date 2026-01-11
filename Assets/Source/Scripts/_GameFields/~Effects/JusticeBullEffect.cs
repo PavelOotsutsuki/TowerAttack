@@ -7,16 +7,16 @@ namespace GameFields.Effects
 {
     public class JusticeBullEffect : VariantEffect
     {
-        public JusticeBullEffect(Person activePerson, VariantCardCreator variantCardCreator,
+        public JusticeBullEffect(VariantCardCreator variantCardCreator,
             Func<EffectType, CardEffectData, EffectDuration, Effect> effectCreator, EffectType effectType, EffectData data) :
-            base(activePerson, variantCardCreator, effectCreator, effectType, data)
+            base(variantCardCreator, effectCreator, effectType, data)
         { }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Быка Правосудия окончен");
-        }
+        //    Debug.Log("Эффект Быка Правосудия окончен");
+        //}
     }
 }

@@ -10,19 +10,19 @@ namespace GameFields.Effects
         private const int CountNumbers = 3;
         private readonly Person _activePerson;
 
-        public CoolBookmakerEffect(Person activePerson, EffectData data) : base(data)
+        public CoolBookmakerEffect(EffectData data) : base(data)
         {
-            _activePerson = activePerson;
+            _activePerson = data.ActivePerson;
 
             Play();
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Четкого букмекера закончен");
-        }
+        //    Debug.Log("Эффект Четкого букмекера закончен");
+        //}
 
         protected override IEnumerator OnPlaying()
         {

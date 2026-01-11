@@ -8,15 +8,15 @@ namespace GameFields.Effects
         private const int CountDrawCards = 4;
         private const int CountAttack = 4;
 
-        public StrongOgre_StrongBlowEffect(Person activePerson, Person deactivePerson, EffectData data) :
-            base(activePerson, deactivePerson, CountDrawCards, CountAttack, data)
+        public StrongOgre_StrongBlowEffect(Person deactivePerson, EffectData data) :
+            base(deactivePerson, CountDrawCards, CountAttack, data)
         { }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("End Сильный удар effect");
-        }
+        //    Debug.Log("End Сильный удар effect");
+        //}
     }
 }

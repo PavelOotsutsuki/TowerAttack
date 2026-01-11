@@ -2,6 +2,7 @@ using System.Collections;
 using Cards;
 using Cards.DependencyInterlayers;
 using GameFields.CardTransits;
+using GameFields.Histories;
 using GameFields.Persons.DrawCards;
 using GameFields.Persons.EffectHandlers;
 using GameFields.Persons.Hands;
@@ -17,9 +18,9 @@ namespace GameFields.DiscardPiles
         private GnomeEffectHandler _gnomeEffectHandler;
 
         public void Init(ICardSeatable cardSeatable, SignalBus signalBus, IDrawCardManager drawCardManager,
-            GnomeEffectHandler gnomeEffectHandler)
+            GnomeEffectHandler gnomeEffectHandler, HistoryRoot historyRoot)
         {
-            base.Init(cardSeatable, signalBus);
+            base.Init(cardSeatable, signalBus, historyRoot);
 
             _drawCardManager = drawCardManager;
             _gnomeEffectHandler = gnomeEffectHandler;
@@ -41,6 +42,11 @@ namespace GameFields.DiscardPiles
         private void Continue()
         {
             StartCoroutine(WaitingUntilComplete());
+        }
+
+        protected override string GetHistoryMsg()
+        {
+            return "Гномичья ковка: ";
         }
     }
 }

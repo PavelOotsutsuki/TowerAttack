@@ -22,10 +22,10 @@ namespace GameFields.Persons
         private readonly SignalBus _bus;
         private readonly IDeactivatable _inputRoot;
         private readonly IDeactivatable _fightMenu;
-        private readonly IDeactivatable _fightMenuActivateButton;
+        private readonly IDeactivatable _fightButtonsActivator;
 
         public LoseActions(IBoomTower boomedTower, IPersonObject loser, IHandBlockable handBlockable, SignalBus bus,
-            IDeactivatable inputRoot, IDeactivatable fightMenu, IDeactivatable fightMenuActivateButton)
+            IDeactivatable inputRoot, IDeactivatable fightMenu, IDeactivatable fightButtonsActivator)
         {
             _boomedTower = boomedTower;
             _loser = loser;
@@ -33,7 +33,7 @@ namespace GameFields.Persons
             _bus = bus;
             _inputRoot = inputRoot;
             _fightMenu = fightMenu;
-            _fightMenuActivateButton = fightMenuActivateButton;
+            _fightButtonsActivator = fightButtonsActivator;
 
             _isActive = false;
         }
@@ -52,7 +52,7 @@ namespace GameFields.Persons
         {
             _inputRoot.Deactivate();
             _fightMenu.Deactivate();
-            _fightMenuActivateButton.Deactivate();
+            _fightButtonsActivator.Deactivate();
             _hand.ForciblyBlock();
             _boomedTower.Boom();
 

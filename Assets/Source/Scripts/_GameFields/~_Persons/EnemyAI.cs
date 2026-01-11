@@ -1,5 +1,3 @@
-using Cards;
-using GameFields.Persons.SelectMenues.Attacks;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.DrawCards;
 using GameFields.Persons.Hands;
@@ -9,15 +7,10 @@ using GameFields.Signals;
 using Tools;
 using Zenject;
 using GameFields.Persons.SelectMenues;
-using GameFields.InformationLabels;
 using GameFields.Persons.EffectHandlers;
-using System;
-using System.Collections;
-using Cysharp.Threading.Tasks;
-using Tools.UI;
-using UnityEngine;
 using GameFields.Persons.EnemyProcessImitations;
 using GameFields.Persons.LookCardMenues;
+using GameFields.Persons.ConfirmableNumbersView;
 
 namespace GameFields.Persons
 {

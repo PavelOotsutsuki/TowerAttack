@@ -1,12 +1,14 @@
 using System.Collections.Generic;
 using Cards;
+using Cards.Views;
 using GameFields.CardTransits;
+using GameFields.Histories;
 using Tools;
 using UnityEngine;
 
 namespace GameFields.Persons.Fires
 {
-    public class FirePool : IFirePoolSeatable
+    public abstract class FirePool : IFirePoolSeatable, IPersonObject
     {
         private const float CenterRotation = 90f;
 
@@ -19,12 +21,14 @@ namespace GameFields.Persons.Fires
         private readonly List<Card> _fireList;
         private readonly Transform _parent;
         private readonly ExtraFireSeatActionRoot _extraFireSeatActionRoot;
+        private readonly HistoryRoot _historyRoot;
 
-        public FirePool(Transform parent, ExtraFireSeatActionRoot extraFireSeatActionRoot)
+        public FirePool(Transform parent, ExtraFireSeatActionRoot extraFireSeatActionRoot, HistoryRoot historyRoot)
         {
             _fireList = new List<Card>();
             _parent = parent;
             _extraFireSeatActionRoot = extraFireSeatActionRoot;
+            _historyRoot = historyRoot;
 
             _maxCoordinateX = ((RectTransform)parent).rect.width / 2f;
             _maxCoordinateY = ((RectTransform)parent).rect.height / 2f;
@@ -45,6 +49,11 @@ namespace GameFields.Persons.Fires
             Seat(card);
 
             _fireList.Add(card);
+
+            //string cardName = card.CurrentSide == SideType.Front ? card.Name.ToUpper() : "?";
+
+            HistoryData historyData = new HistoryData(this, "Сожжена карта: ", new HistoryCardData(card));
+            _historyRoot.AddMsg(historyData);
         }
 
         public int IndexOf(Card card)
@@ -57,6 +66,10 @@ namespace GameFields.Persons.Fires
             card.Rise();
 
             _fireList.Remove(card);
+
+            //string cardName = card.CurrentSide == SideType.Front ? card.Name.ToUpper() : "?";
+            HistoryData historyData = new HistoryData(this, "Восстановлена карта: ", new HistoryCardData(card));
+            _historyRoot.AddMsg(historyData);
         }
 
         public void Clear()

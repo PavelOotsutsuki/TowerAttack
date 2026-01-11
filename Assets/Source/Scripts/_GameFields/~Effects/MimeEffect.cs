@@ -29,10 +29,10 @@ namespace GameFields.Effects
         private readonly Card _card;
         private readonly EffectDuration _effectDuration;
 
-        public MimeEffect(Person activePerson, Person deactivePerson, CardLocationViewRoot viewRoot,
+        public MimeEffect(Person deactivePerson, CardLocationViewRoot viewRoot,
             InformationLabel informationLabel, ViewTransitTypesRoot typesRoot, EffectData data) : base(data)
         {
-            _activePerson = activePerson;
+            _activePerson = data.ActivePerson;
             _deactivePerson = deactivePerson;
 
             _viewRoot = viewRoot;
@@ -155,11 +155,11 @@ namespace GameFields.Effects
             yield return new WaitUntil(() => _informationLabel.IsComplete);
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Мима окончен");
-        }
+        //    Debug.Log("Эффект Мима окончен");
+        //}
     }
 }

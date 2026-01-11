@@ -5,14 +5,14 @@ namespace GameFields.Effects
 {
     public class BlueGnomeEffect : GnomeEffect
     {
-        public BlueGnomeEffect(Person activePerson, EffectData data) : base(activePerson, data)
+        public BlueGnomeEffect(EffectData data) : base(data)
         { }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Синего Гнома закончен");
-        }
+        //    Debug.Log("Эффект Синего Гнома закончен");
+        //}
     }
 }

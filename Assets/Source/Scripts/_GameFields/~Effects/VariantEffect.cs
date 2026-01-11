@@ -19,11 +19,11 @@ namespace GameFields.Effects
         private readonly CardEffectData _data;
         private readonly EffectDuration _effectDuration;
 
-        public VariantEffect(Person activePerson, VariantCardCreator variantCardCreator,
+        public VariantEffect(VariantCardCreator variantCardCreator,
             Func<EffectType, CardEffectData, EffectDuration, Effect> effectCreator, EffectType effectType, EffectData data)
             : base(data, 0f)
         {
-            _activePerson = activePerson;
+            _activePerson = data.ActivePerson;
             _variantCardCreator = variantCardCreator;
             _effectCreator = effectCreator;
             _data = data.CardEffectData;
@@ -34,12 +34,12 @@ namespace GameFields.Effects
             Play();
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект ВАРИАНТ окончен");
-        }
+        //    Debug.Log("Эффект ВАРИАНТ окончен");
+        //}
 
         protected override IEnumerator OnPlaying()
         {

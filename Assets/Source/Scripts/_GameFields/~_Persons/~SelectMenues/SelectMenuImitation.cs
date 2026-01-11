@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using GameFields.Persons;
+using GameFields.Persons.ConfirmableNumbersView;
 using GameFields.Persons.Towers;
 using Tools.Utils.FillComponents;
 using UnityEngine;

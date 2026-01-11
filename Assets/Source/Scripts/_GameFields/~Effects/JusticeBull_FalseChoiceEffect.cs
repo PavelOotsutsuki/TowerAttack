@@ -11,20 +11,20 @@ namespace GameFields.Effects
         private readonly Person _activePerson;
         private readonly Card _card;
 
-        public JusticeBull_FalseChoiceEffect(Person activePerson, EffectData data) : base(data)
+        public JusticeBull_FalseChoiceEffect(EffectData data) : base(data)
         {
-            _activePerson = activePerson;
+            _activePerson = data.ActivePerson;
             _card = data.CardEffectData.Card;
 
             Play();
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Быка правосудия(2.0) закончен");
-        }
+        //    Debug.Log("Эффект Быка правосудия(2.0) закончен");
+        //}
 
         protected override IEnumerator OnPlaying()
         {

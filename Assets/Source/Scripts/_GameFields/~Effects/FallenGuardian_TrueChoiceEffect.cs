@@ -7,11 +7,11 @@ namespace GameFields.Effects
         public FallenGuardian_TrueChoiceEffect(EffectData data) : base(data)
         { }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Падшего Хранителя(2.1) закончен");
-        }
+        //    Debug.Log("Эффект Падшего Хранителя(2.1) закончен");
+        //}
     }
 }

@@ -1,21 +1,42 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using GameFields.FightMenues;
+using GameFields.Histories;
+using Tools;
 
 namespace GameFields
 {
-    public class FightButtonsActivator : MonoBehaviour
+    public class FightButtonsActivator : IWorkable
     {
-        // Start is called before the first frame update
-        void Start()
+        private readonly IWorkable _fightMenuActivateButton;
+        private readonly IWorkable _historyMenuActivateButton;
+
+        public FightButtonsActivator(FightMenuActivateButton fightMenuActivateButton, HistoryMenuActivateButton historyMenuActivateButton)
         {
-        
+            _fightMenuActivateButton = fightMenuActivateButton;
+            _historyMenuActivateButton = historyMenuActivateButton;
         }
 
-        // Update is called once per frame
-        void Update()
+        public bool? IsActive { get; private set; } = null;
+
+        public void Activate()
         {
-        
+            if (IsActive == true)
+                return;
+
+            IsActive = true;
+
+            _fightMenuActivateButton.Activate();
+            _historyMenuActivateButton.Activate();
+        }
+
+        public void Deactivate()
+        {
+            if (IsActive == false)
+                return;
+
+            IsActive = false;
+
+            _fightMenuActivateButton.Deactivate();
+            _historyMenuActivateButton.Deactivate();
         }
     }
 }

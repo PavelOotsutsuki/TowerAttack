@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cards;
 using GameFields.Persons;
+using GameFields.Persons.ConfirmableNumbersView;
 using Tools.Settings;
 using Tools.Utils.FillComponents;
 using UnityEngine;

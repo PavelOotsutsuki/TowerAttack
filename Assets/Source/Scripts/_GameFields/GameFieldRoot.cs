@@ -13,9 +13,9 @@ namespace GameFields
         [SerializeField] private GameField _fightPVE;
 
         public void Init(PersonsState personsState, EnemyAI enemyAI, SignalBus bus, SeatPool seatPool,
-            IActivatable soundRootActivatable, IActivatable fightMenuActivateButton)
+            IActivatable soundRootActivatable, IActivatable fightButtonsActivator)
         {
-            _fightPVE.Init(personsState, enemyAI, bus, seatPool, soundRootActivatable, fightMenuActivateButton);
+            _fightPVE.Init(personsState, enemyAI, bus, seatPool, soundRootActivatable, fightButtonsActivator);
         }
 
         #region AutomaticFillComponents

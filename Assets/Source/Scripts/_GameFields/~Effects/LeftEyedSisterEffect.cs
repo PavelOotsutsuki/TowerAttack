@@ -17,10 +17,10 @@ namespace GameFields.Effects
         private readonly CardTransitManager _transitManager;
         private readonly ViewTransitTypesRoot _typesRoot;
 
-        public LeftEyedSisterEffect(Person activePerson, CardLocationViewRoot viewRoot, CardTransitManager transitManager,
+        public LeftEyedSisterEffect(CardLocationViewRoot viewRoot, CardTransitManager transitManager,
             ViewTransitTypesRoot typesRoot, EffectData data) : base(data)
         {
-            _activePerson = activePerson;
+            _activePerson = data.ActivePerson;
 
             _viewRoot = viewRoot;
             _transitManager = transitManager;
@@ -29,12 +29,12 @@ namespace GameFields.Effects
             Play();
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Левоглазой сестры закончен");
-        }
+        //    Debug.Log("Эффект Левоглазой сестры закончен");
+        //}
 
         protected override IEnumerator OnPlaying()
         {

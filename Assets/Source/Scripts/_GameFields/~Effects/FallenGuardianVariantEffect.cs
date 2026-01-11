@@ -22,7 +22,7 @@ namespace GameFields.Effects
         //private readonly Action<int> _callback;
 
         public FallenGuardianVariantEffect(InformationLabel informationLabel,
-            Func<EffectType, CardEffectData, EffectDuration, Effect> effectCreator, Person activePerson, EffectData data)
+            Func<EffectType, CardEffectData, EffectDuration, Effect> effectCreator, EffectData data)
             : base(data, 0f)
         {
             _informationLabel = informationLabel;
@@ -30,15 +30,15 @@ namespace GameFields.Effects
             _cardEffectData = data.CardEffectData;
             _effectDuration = data.EffectDuration;
             //_callback = callback;
-            _activePerson = activePerson;
+            _activePerson = data.ActivePerson;
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект ВАРИАНТ Падшего Хранителя закончен");
-        }
+        //    Debug.Log("Эффект ВАРИАНТ Падшего Хранителя закончен");
+        //}
 
         protected abstract bool IsTrueChoice();
 

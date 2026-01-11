@@ -10,19 +10,19 @@ namespace GameFields.Effects
         private const int CountNumbers = 4;
         private readonly Person _activePerson;
 
-        public GeneralEffect(Person activePerson, EffectData data) : base(data)
+        public GeneralEffect(EffectData data) : base(data)
         {
-            _activePerson = activePerson;
+            _activePerson = data.ActivePerson;
 
             Play();
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Генерала закончен");
-        }
+        //    Debug.Log("Эффект Генерала закончен");
+        //}
 
         protected override IEnumerator OnPlaying()
         {

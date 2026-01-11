@@ -7,6 +7,7 @@ using Cards.Effects;
 using Cards.Sounds;
 using Cysharp.Threading.Tasks;
 using GameFields.CardTransits;
+using GameFields.Histories;
 using GameFields.InformationLabels;
 using GameFields.Persons;
 using GameFields.Persons.Discovers;
@@ -36,13 +37,14 @@ namespace GameFields.Effects
         private readonly CardSoundRoot _cardSoundRoot;
         private readonly AwakeSoundReproducer _awakeSoundReproducer;
         private readonly ViewTransitTypesRoot _typesRoot;
+        private readonly HistoryRoot _historyRoot;
 
         //private Effect _lastEffect;
 
         public EffectFactory(IPersonsState personsState, CardLocationViewRoot viewRoot, InformationLabel informationLabel,
             CardTransitManager cardTransitManager, VariantCardCreator variantCardCreator, BrothersEffectHandlerRoot brothersEffectHandler,
             SignalBus bus, PersonEffectsHandlerRoot personEffectsHandlerRoot, DiscardManager discardManager, LoseActionsRoot loseActionsRoot,
-            CardSoundRoot cardSoundRoot, ViewTransitTypesRoot typesRoot)
+            CardSoundRoot cardSoundRoot, ViewTransitTypesRoot typesRoot, HistoryRoot historyRoot)
         {
             _personsState = personsState;
             _viewRoot = viewRoot;
@@ -56,6 +58,7 @@ namespace GameFields.Effects
             _loseActionsRoot = loseActionsRoot;
             _cardSoundRoot = cardSoundRoot;
             _typesRoot = typesRoot;
+            _historyRoot = historyRoot;
 
             _awakeSoundReproducer = new AwakeSoundReproducer(_cardSoundRoot, _viewRoot, typesRoot, _personsState);
 
@@ -104,7 +107,8 @@ namespace GameFields.Effects
             if (_personsState.Active.IsDoubleEffect)
             {
                 //effect = new DoubleEffect(CreateEffect, currentEffectConfig, callback);
-                effect = new DoubleEffect(CreateEffect, cardEffectConfigPairForCreateEffect, _bus, effectDuration, _personEffectsHandlerRoot);
+                effect = new DoubleEffect(CreateEffect, cardEffectConfigPairForCreateEffect, _bus, effectDuration, _personEffectsHandlerRoot,
+                    _historyRoot, _personsState.Active);
             }
             else
             {
@@ -139,7 +143,7 @@ namespace GameFields.Effects
         //private Effect CreateEffect(EffectType effecType, Action<int> callback, int duration)
         private Effect CreateEffect(EffectType effecType, CardEffectData data, EffectDuration effectDuration)
         {
-            EffectData effectData = new EffectData(_bus, data, effectDuration, _personEffectsHandlerRoot);
+            EffectData effectData = new EffectData(_bus, data, effectDuration, _personEffectsHandlerRoot, _historyRoot, _personsState.Active);
 
             Effect effect = effecType switch
             {
@@ -147,99 +151,83 @@ namespace GameFields.Effects
                 EffectType.Zhyzha => new ZhyzhaEffect(_personsState.Deactive, effectData),
                 EffectType.Greedy => new GreedyEffect(_viewRoot, _cardTransitManager, effectData),
                 EffectType.Pyromancer => new PyromancerEffect(_personsState.Deactive, effectData),
-                EffectType.CoolBookmaker => new CoolBookmakerEffect(_personsState.Active, effectData),
-                EffectType.BlindOldMan => new BlindOldManEffect(_personsState.Active, effectData),
-                EffectType.DetectiveRhodes => new DetectiveRhodesEffect(_personsState.Active, _personsState.Deactive, _cardTransitManager,
+                EffectType.CoolBookmaker => new CoolBookmakerEffect(effectData),
+                EffectType.BlindOldMan => new BlindOldManEffect(effectData),
+                EffectType.DetectiveRhodes => new DetectiveRhodesEffect(_personsState.Deactive, _cardTransitManager,
                 _viewRoot, _informationLabel, _typesRoot, effectData),
-                EffectType.BlueGnome => new BlueGnomeEffect(_personsState.Active, effectData),
+                EffectType.BlueGnome => new BlueGnomeEffect(effectData),
                 EffectType.TimeLord => new VoidEffect(effectData),// new TimeLordEffect(_personsState.Deactive, this),
-                EffectType.ThreeGuys => new ThreeGuysEffect(_personsState.Active, effectData),
-                EffectType.TimeMistress => new TimeMistressEffect(_personsState.Active, _viewRoot, _cardTransitManager,
+                EffectType.ThreeGuys => new ThreeGuysEffect(effectData),
+                EffectType.TimeMistress => new TimeMistressEffect(_viewRoot, _cardTransitManager,
                 _typesRoot, effectData),
-                EffectType.SharpSnake => new SharpSnakeEffect(_personsState.Active, _personsState.Deactive, _viewRoot,
+                EffectType.SharpSnake => new SharpSnakeEffect(_personsState.Deactive, _viewRoot,
                 _informationLabel, _typesRoot, effectData),
                 EffectType.ImpArmy => new ImpArmyEffect(_personsState.Deactive, effectData),
                 EffectType.CursedMark => new VoidEffect(effectData), // Нельзя разыграть, мб стоит выдать экспшн
-                EffectType.RushingMailman => new RushingMailmanEffect(_personsState.Active, effectData),
-                EffectType.Schemer => new SchemerEffect(_personsState.Active, _personsState.Deactive, effectData),
-                EffectType.Mime => new MimeEffect(_personsState.Active, _personsState.Deactive, _viewRoot, _informationLabel,
+                EffectType.RushingMailman => new RushingMailmanEffect(effectData),
+                EffectType.Schemer => new SchemerEffect(_personsState.Deactive, effectData),
+                EffectType.Mime => new MimeEffect(_personsState.Deactive, _viewRoot, _informationLabel,
                 _typesRoot, effectData),
-                EffectType.RedGnome => new RedGnomeEffect(_personsState.Active, effectData),
+                EffectType.RedGnome => new RedGnomeEffect(effectData),
                 EffectType.TimeChild => new TimeChildEffect(_viewRoot, _cardTransitManager, _typesRoot, effectData),
-                EffectType.Undergrounder => new UndergrounderEffect(_personsState.Active, _viewRoot, _informationLabel, effectData),
-                EffectType.RobinGood => new RobinGoodEffect(_personsState.Active, _personsState.Deactive, _viewRoot, effectData),
-                EffectType.General => new GeneralEffect(_personsState.Active, effectData),
-                //EffectType.FateMistress => _personsState.Active is Player ?
-                //new FateMistressEffect(_personsState.Active, _variantCardCreator, CreateEffect, callback) :
-                //new VoidEffect(),
-                //EffectType.FateMistress => new FateMistressEffect(_personsState.Active, _variantCardCreator, CreateEffect, callback, effecType),
-                EffectType.FateMistress => new FateMistressEffect(_personsState.Active, _variantCardCreator, CreateEffect, effecType, effectData),
-                EffectType.FateMistress_FatefulAttack => new FateMistress_FatefulAttackEffect(_personsState.Active, _loseActionsRoot,
-                _viewRoot, _typesRoot, effectData),
-                //EffectType.FateMistress_FatefulAttack => new FateMistress_FateInevitability(_personsState.Active, effectConfig.Duration),
-                EffectType.FateMistress_FateInevitability => new FateMistress_FateInevitabilityEffect(_personsState.Active, effectData),
-                EffectType.DumbMonk => new DumbMonkEffect(_personsState.Active, _viewRoot, _cardTransitManager, _typesRoot, effectData),
-                EffectType.LeftEyedSister => new LeftEyedSisterEffect(_personsState.Active, _viewRoot, _cardTransitManager,
+                EffectType.Undergrounder => new UndergrounderEffect(_viewRoot, _informationLabel, effectData),
+                EffectType.RobinGood => new RobinGoodEffect(_personsState.Deactive, _viewRoot, effectData),
+                EffectType.General => new GeneralEffect(effectData),
+                EffectType.FateMistress => new FateMistressEffect(_variantCardCreator, CreateEffect, effecType, effectData),
+                EffectType.FateMistress_FatefulAttack => new FateMistress_FatefulAttackEffect(_loseActionsRoot, _viewRoot,
                 _typesRoot, effectData),
-                //EffectType.JusticeBull => new JusticeBullEffect(_personsState.Active, _variantCardCreator, CreateEffect, callback, effecType),
-                EffectType.JusticeBull => new JusticeBullEffect(_personsState.Active, _variantCardCreator, CreateEffect, effecType,
+                EffectType.FateMistress_FateInevitability => new FateMistress_FateInevitabilityEffect(effectData),
+                EffectType.DumbMonk => new DumbMonkEffect(_viewRoot, _cardTransitManager, _typesRoot, effectData),
+                EffectType.LeftEyedSister => new LeftEyedSisterEffect(_viewRoot, _cardTransitManager,
+                _typesRoot, effectData),
+                EffectType.JusticeBull => new JusticeBullEffect(_variantCardCreator, CreateEffect, effecType,
                 effectData),
                 EffectType.JusticeBull_SmallerOnesArmy => new JusticeBull_SmallerOnesArmyEffect(_personsState.Deactive, _informationLabel,
-                //CreateEffect, callback, _personsState.Active),
-                CreateEffect, _personsState.Active, effectData),
+                CreateEffect, effectData),
                 EffectType.JusticeBull_BigOnesArmy => new JusticeBull_BigOnesArmyEffect(_personsState.Deactive, _informationLabel,
-                //CreateEffect, callback, _personsState.Active),
-                CreateEffect, _personsState.Active, effectData),
+                CreateEffect, effectData),
                 EffectType.JusticeBull_TrueChoiceEffect => new JusticeBull_TrueChoiceEffect(effectData),
-                EffectType.JusticeBull_FalseChoiceEffect => new JusticeBull_FalseChoiceEffect(_personsState.Active, effectData),
-                EffectType.PatriarchCorall => new PatriarchCorallEffect(_personsState.Active, _personsState.Deactive, _cardTransitManager,
+                EffectType.JusticeBull_FalseChoiceEffect => new JusticeBull_FalseChoiceEffect(effectData),
+                EffectType.PatriarchCorall => new PatriarchCorallEffect(_personsState.Deactive, _cardTransitManager,
                 _typesRoot, effectData),
-                EffectType.GreenGnome => new GreenGnomeEffect(_personsState.Active, effectData),
-                EffectType.LittleBrother => new LittleBrotherEffect(_personsState.Active, _brothersEffectHandlerRoot, effectData),
-                EffectType.BrothersMother => new BrothersMotherEffect(_personsState.Active, effectData),
+                EffectType.GreenGnome => new GreenGnomeEffect(effectData),
+                EffectType.LittleBrother => new LittleBrotherEffect(_brothersEffectHandlerRoot, effectData),
+                EffectType.BrothersMother => new BrothersMotherEffect(effectData),
                 EffectType.Scarecrow => new ScarecrowEffect(_personsState.Deactive, effectData),
                 EffectType.LuckyHorseshoe => new VoidEffect(effectData), // Нельзя разыграть, мб стоит выдать экспшн
                 EffectType.WiseMonk => new WiseMonkEffect(_personsState.Deactive, _viewRoot, _discardManager, _personEffectsHandlerRoot,
                 _typesRoot, effectData),
-                EffectType.CowsHerd => new CowsHerdEffect(_personsState.Active, _viewRoot, effectData),
-                EffectType.HungryOgre => new HungryOgreEffect(_personsState.Active, _variantCardCreator, CreateEffect, effecType,
-                effectData),
-                EffectType.HungryOgre_SilentSearch => new HungryOgre_SilentSearchEffect(_personsState.Active, _personsState.Deactive,
-                effectData),
-                EffectType.HungryOgre_HighProfileCrime => new HungryOgre_HighProfileCrimeEffect(_personsState.Active, _personsState.Deactive,
-                effectData),
-                EffectType.Sharper => new SharperEffect(_personsState.Active, _viewRoot, _cardTransitManager, _typesRoot, effectData),
-                EffectType.Gunner => new GunnerEffect(_personsState.Active, _personsState.Deactive, _viewRoot, _cardTransitManager,
+                EffectType.CowsHerd => new CowsHerdEffect(_viewRoot, effectData),
+                EffectType.HungryOgre => new HungryOgreEffect(_variantCardCreator, CreateEffect, effecType, effectData),
+                EffectType.HungryOgre_SilentSearch => new HungryOgre_SilentSearchEffect(_personsState.Deactive, effectData),
+                EffectType.HungryOgre_HighProfileCrime => new HungryOgre_HighProfileCrimeEffect(_personsState.Deactive, effectData),
+                EffectType.Sharper => new SharperEffect(_viewRoot, _cardTransitManager, _typesRoot, effectData),
+                EffectType.Gunner => new GunnerEffect(_personsState.Deactive, _viewRoot, _cardTransitManager,
                 _cardSoundRoot, _informationLabel, _typesRoot, effectData),
-                EffectType.WhiteGnome => new WhiteGnomeEffect(_personsState.Active, effectData),
-                EffectType.MiddleBrother => new MiddleBrotherEffect(_personsState.Active, _brothersEffectHandlerRoot, effectData),
+                EffectType.WhiteGnome => new WhiteGnomeEffect(effectData),
+                EffectType.MiddleBrother => new MiddleBrotherEffect(_brothersEffectHandlerRoot, effectData),
                 EffectType.DeadOgre => new DeadOgreEffect(_personsState.Deactive, effectData),
-                EffectType.OutOfControlBus => new OutOfControlBusEffect(_personsState.Active, _personsState.Deactive, _viewRoot,
+                EffectType.OutOfControlBus => new OutOfControlBusEffect(_personsState.Deactive, _viewRoot,
                 _cardTransitManager, _typesRoot, effectData),
                 EffectType.CursedMailman => new CursedMailmanEffect(_personsState.Deactive, effectData),
-                EffectType.RightEyedSister => new RightEyedSisterEffect(_personsState.Active, _viewRoot,
-                _cardTransitManager, effectData),
-                EffectType.StrongOgre => new StrongOgreEffect(_personsState.Active, _variantCardCreator, CreateEffect, effecType,
-                effectData),
-                EffectType.StrongOgre_WeakBlow => new StrongOgre_WeakBlowEffect(_personsState.Active, _personsState.Deactive,
-                 effectData),
-                EffectType.StrongOgre_StrongBlow => new StrongOgre_StrongBlowEffect(_personsState.Active, _personsState.Deactive,
-                 effectData),
-                EffectType.MafiaBoss => new MafiaBossEffect(_personsState.Active, _personsState.Deactive, _viewRoot, _cardTransitManager,
+                EffectType.RightEyedSister => new RightEyedSisterEffect(_viewRoot, _cardTransitManager, effectData),
+                EffectType.StrongOgre => new StrongOgreEffect(_variantCardCreator, CreateEffect, effecType, effectData),
+                EffectType.StrongOgre_WeakBlow => new StrongOgre_WeakBlowEffect(_personsState.Deactive, effectData),
+                EffectType.StrongOgre_StrongBlow => new StrongOgre_StrongBlowEffect(_personsState.Deactive, effectData),
+                EffectType.MafiaBoss => new MafiaBossEffect(_personsState.Deactive, _viewRoot, _cardTransitManager,
                 _typesRoot, effectData),
                 EffectType.PyromancersManuscript => new VoidEffect(effectData),
-                EffectType.FalsePrince => new FalsePrinceEffect(_personsState.Active, effectData),
-                EffectType.BlackGnome => new BlackGnomeEffect(_personsState.Active, effectData),
-                EffectType.BigBrother => new BigBrotherEffect(_personsState.Active, _brothersEffectHandlerRoot, effectData),
+                EffectType.FalsePrince => new FalsePrinceEffect(effectData),
+                EffectType.BlackGnome => new BlackGnomeEffect(effectData),
+                EffectType.BigBrother => new BigBrotherEffect(_brothersEffectHandlerRoot, effectData),
                 EffectType.LastChance => new LastChanceEffect(_viewRoot, _cardTransitManager, _typesRoot, effectData),
-                EffectType.FallenGuardian => new FallenGuardianEffect(_personsState.Active, _variantCardCreator, CreateEffect, effecType,
-                effectData),
+                EffectType.FallenGuardian => new FallenGuardianEffect(_variantCardCreator, CreateEffect, effecType, effectData),
                 EffectType.FallenGuardian_NightSight => new FallenGuardian_NightSightEffect(_personsState.Deactive, _informationLabel,
-                CreateEffect, _personsState.Active, effectData),
+                CreateEffect, effectData),
                 EffectType.FallenGuardian_HeightenedSenses => new FallenGuardian_HeightenedSensesEffect(_personsState.Deactive, _informationLabel,
-                CreateEffect, _personsState.Active, effectData),
+                CreateEffect, effectData),
                 EffectType.FallenGuardian_TrueChoiceEffect => new FallenGuardian_TrueChoiceEffect(effectData),
-                EffectType.FallenGuardian_FalseChoiceEffect => new FallenGuardian_FalseChoiceEffect(_personsState.Active, _viewRoot,
+                EffectType.FallenGuardian_FalseChoiceEffect => new FallenGuardian_FalseChoiceEffect(_viewRoot,
                 _cardTransitManager, _typesRoot, effectData),
                 _ => throw new NullReferenceException("Effect is not founded")
             };

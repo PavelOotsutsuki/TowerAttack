@@ -15,10 +15,10 @@ namespace GameFields.Effects
         private readonly CardTransitManager _transitManager;
         private readonly ViewTransitTypesRoot _typesRoot;
 
-        public DumbMonkEffect(Person activePerson, CardLocationViewRoot viewRoot, CardTransitManager transitManager,
+        public DumbMonkEffect(CardLocationViewRoot viewRoot, CardTransitManager transitManager,
             ViewTransitTypesRoot typesRoot, EffectData data) : base(data)
         {
-            _activePerson = activePerson;
+            _activePerson = data.ActivePerson;
             _viewRoot = viewRoot;
             _transitManager = transitManager;
             _typesRoot = typesRoot;
@@ -26,12 +26,12 @@ namespace GameFields.Effects
             Play();
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Глупого Монаха закончен");
-        }
+        //    Debug.Log("Эффект Глупого Монаха закончен");
+        //}
 
         protected override IEnumerator OnPlaying()
         {

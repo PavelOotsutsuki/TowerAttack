@@ -8,6 +8,11 @@ namespace GameFields.Persons.Hands
 {
     public class HandTransferZone : ExtraEffectZone, IHandTransferable
     {
+        protected override string GetHistoryMsg()
+        {
+            return "Передача: ";
+        }
+
         protected override void OnEndProcessing()
         {
             StartCoroutine(WaitingUntilComplete());

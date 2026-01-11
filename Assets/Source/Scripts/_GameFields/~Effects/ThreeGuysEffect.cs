@@ -9,19 +9,19 @@ namespace GameFields.Effects
         private const int CountNumbers = 3;
         private readonly Person _activePerson;
 
-        public ThreeGuysEffect(Person activePerson, EffectData data) : base(data)
+        public ThreeGuysEffect(EffectData data) : base(data)
         {
-            _activePerson = activePerson;
+            _activePerson = data.ActivePerson;
 
             Play();
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Трех Бугаев закончен");
-        }
+        //    Debug.Log("Эффект Трех Бугаев закончен");
+        //}
 
         protected override IEnumerator OnPlaying()
         {

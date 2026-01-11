@@ -22,10 +22,10 @@ namespace GameFields.Effects
         private readonly InformationLabel _informationLabel;
         private readonly ViewTransitTypesRoot _typesRoot;
 
-        public SharpSnakeEffect(Person activePerson, Person deactivePerson, CardLocationViewRoot cardLocationViewRoot,
+        public SharpSnakeEffect(Person deactivePerson, CardLocationViewRoot cardLocationViewRoot,
             InformationLabel informationLabel, ViewTransitTypesRoot typesRoot, EffectData data) : base(data)
         {
-            _activePerson = activePerson;
+            _activePerson = data.ActivePerson;
             _deactivePerson = deactivePerson;
 
             _cardLocationViewRoot = cardLocationViewRoot;
@@ -35,12 +35,12 @@ namespace GameFields.Effects
             Play();
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Зоркой змеи закончен");
-        }
+        //    Debug.Log("Эффект Зоркой змеи закончен");
+        //}
 
         protected override IEnumerator OnPlaying()
         {

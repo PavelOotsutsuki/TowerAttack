@@ -18,12 +18,12 @@ namespace GameFields.Effects
             Play();
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Жыжи закончен");
-        }
+        //    Debug.Log("Эффект Жыжи закончен");
+        //}
 
         protected override IEnumerator OnPlaying()
         {

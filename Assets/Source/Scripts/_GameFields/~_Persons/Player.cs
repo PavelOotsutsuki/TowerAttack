@@ -4,19 +4,13 @@ using GameFields.Persons.Hands;
 using GameFields.Persons.Towers;
 using GameFields.Persons.DrawCards;
 using Zenject;
-using GameFields.Persons.SelectMenues.Attacks;
 using Tools;
-using Cards;
 using GameFields.Signals;
 using GameFields.Persons.SelectMenues;
 using GameFields.InformationLabels;
 using GameFields.Persons.EffectHandlers;
-using System;
-using Tools.UI;
-using UnityEngine;
-using System.Collections;
-using Cysharp.Threading.Tasks;
 using GameFields.Persons.LookCardMenues;
+using GameFields.Persons.ConfirmableNumbersView;
 
 namespace GameFields.Persons
 {

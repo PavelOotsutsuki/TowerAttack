@@ -8,19 +8,19 @@ namespace GameFields.Effects
     {
         private readonly Person _activePerson;
 
-        public GnomeEffect(Person activePerson, EffectData data) : base(data)
+        public GnomeEffect(EffectData data) : base(data)
         {
-            _activePerson = activePerson;
+            _activePerson = data.ActivePerson;
 
             Play();
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Гнома закончен");
-        }
+        //    Debug.Log("Эффект Гнома закончен");
+        //}
 
         protected override IEnumerator OnPlaying()
         {

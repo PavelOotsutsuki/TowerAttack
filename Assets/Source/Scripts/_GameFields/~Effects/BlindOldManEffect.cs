@@ -10,19 +10,19 @@ namespace GameFields.Effects
         private const int CountNumbers = 3;
         private readonly Person _activePerson;
 
-        public BlindOldManEffect(Person activePerson, EffectData data) : base(data)
+        public BlindOldManEffect(EffectData data) : base(data)
         {
-            _activePerson = activePerson;
+            _activePerson = data.ActivePerson;
 
             Play();
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект слепого старца закончен");
-        }
+        //    Debug.Log("Эффект слепого старца закончен");
+        //}
 
         protected override IEnumerator OnPlaying()
         {

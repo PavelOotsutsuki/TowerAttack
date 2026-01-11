@@ -14,10 +14,10 @@ namespace GameFields.Effects
 
         private readonly CardLocationViewRoot _cardLocationViewRoot;
 
-        public RobinGoodEffect(Person activePerson, Person deactivePerson, CardLocationViewRoot cardLocationViewRoot,
+        public RobinGoodEffect(Person deactivePerson, CardLocationViewRoot cardLocationViewRoot,
             EffectData data) : base(data)
         {
-            _activePerson = activePerson;
+            _activePerson = data.ActivePerson;
             _deactivePerson = deactivePerson;
 
             _cardLocationViewRoot = cardLocationViewRoot;
@@ -25,12 +25,12 @@ namespace GameFields.Effects
             Play();
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Робин Гуда закончен");
-        }
+        //    Debug.Log("Эффект Робин Гуда закончен");
+        //}
 
         protected override IEnumerator OnPlaying()
         {

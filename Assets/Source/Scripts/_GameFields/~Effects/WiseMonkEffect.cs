@@ -31,12 +31,12 @@ namespace GameFields.Effects
             Play();
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Мудрого монаха закончен");
-        }
+        //    Debug.Log("Эффект Мудрого монаха закончен");
+        //}
 
         protected override IEnumerator OnPlaying()
         {

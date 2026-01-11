@@ -89,7 +89,7 @@ namespace GameFields.Persons.Towers
             return AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
         }
 
-        [ContextMenu(nameof(DefineRectTransform))]
+        [ContextMenu(nameof(DefineCanvasGroup))]
         private ComponentAttachInfo DefineCanvasGroup()
         {
             return AutomaticFillComponents.DefineComponent(this, ref _canvasGroup, ComponentLocationTypes.InThis);

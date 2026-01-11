@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cards;
 using Cards.Views;
+using GameFields.Persons.ConfirmableNumbersView;
 using Tools;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Movements;

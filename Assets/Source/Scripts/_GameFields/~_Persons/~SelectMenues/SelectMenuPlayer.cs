@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using GameFields.InputSettings;
 using GameFields.Persons;
+using GameFields.Persons.ConfirmableNumbersView;
 using GameFields.Persons.SelectMenues.Attacks;
 using GameFields.Persons.SelectMenues.Choices;
 using GameFields.Persons.Towers;

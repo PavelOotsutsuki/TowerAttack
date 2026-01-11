@@ -5,14 +5,14 @@ namespace GameFields.Effects
 {
     public class RedGnomeEffect : GnomeEffect
     {
-        public RedGnomeEffect(Person activePerson, EffectData data) : base(activePerson, data)
+        public RedGnomeEffect(EffectData data) : base(data)
         { }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Красного Гнома закончен");
-        }
+        //    Debug.Log("Эффект Красного Гнома закончен");
+        //}
     }
 }

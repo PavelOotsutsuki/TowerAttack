@@ -20,12 +20,12 @@ namespace GameFields.Effects
             Play();
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Чучела закончен");
-        }
+        //    Debug.Log("Эффект Чучела закончен");
+        //}
 
         protected override IEnumerator OnPlaying()
         {

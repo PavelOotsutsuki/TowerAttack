@@ -22,6 +22,7 @@ using Cards.Views.BigCardViews.Capabilities;
 using Cards.Views.BigCardViews;
 using Cards.Sounds;
 using GameFields.CardTransits;
+using GameFields.Histories;
 
 namespace Roots
 {
@@ -41,8 +42,8 @@ namespace Roots
         [Inject]
         private void Construct(SignalBus bus, Deck deck, SeatPool seatPool, BigCardRoot bigCardRoot, HandPlayer handPlayer,
             InformationLabel informationLabel, LookCardMenuPlayer lookCardMenu, VariantCardCreator variantCardCreator,
-            SoundRoot soundRoot, CardSoundRoot cardSoundRoot, FightMenuActivateButton fightMenuActivateButton,
-            CardCapabilityDescription cardCapabilityDescription)
+            SoundRoot soundRoot, CardSoundRoot cardSoundRoot, FightButtonsActivator fightButtonsActivator,
+            CardCapabilityDescription cardCapabilityDescription, HistoryRoot historyRoot)
         {
             //StartCoroutine(Initing(bus, deck, seatPool, cardDescription, handPlayer, informationLabel, lookCardMenu, variantCardCreator, soundRoot,
             //    cardSoundVolume, fightMenuActivateButton, screenRoot));
@@ -69,7 +70,7 @@ namespace Roots
                 cardDragAndDropLightController, _speedUpButtonSortOrder);
 
             _personCreator.Init(bus, deck, _endTurnButton, seatPool, cardDragAndDropHandler, cardDragAndDropLightController,
-                informationLabel, _cardRoot, cardSoundRoot, soundRoot, cardCapabilityDescription);
+                informationLabel, _cardRoot, cardSoundRoot, soundRoot, cardCapabilityDescription, historyRoot);
 
             Player player = _personCreator.CreatePlayer();
             EnemyAI enemyAI = _personCreator.CreateEnemyAI();
@@ -90,16 +91,16 @@ namespace Roots
             ViewTransitTypesRoot typesRoot = new ViewTransitTypesRoot();
             EffectFactory effectFactory = new EffectFactory(_personsState, viewRoot, informationLabel, cardTransitManager,
                 variantCardCreator, brothersEffectHandlerRoot, bus, personEffectsHandlerRoot, discardManager, loseActionsRoot,
-                cardSoundRoot, typesRoot);
+                cardSoundRoot, typesRoot, historyRoot);
 
             _cardRoot.Init(effectFactory, bigCardRoot, cardDragAndDropHandler, cardCapabilityDescription, cardSoundRoot, _fontRoot);
             deck.Init(seatPool, _cardRoot.Cards);
 
-            _gameFieldRoot.Init(_personsState, enemyAI, bus, seatPool, soundRoot, fightMenuActivateButton);
+            _gameFieldRoot.Init(_personsState, enemyAI, bus, seatPool, soundRoot, fightButtonsActivator);
         }
 
         //private IEnumerator Initing(SignalBus bus, Deck deck, SeatPool seatPool, CardDescription cardDescription, HandPlayer handPlayer,
-        //    InformationLabel informationLabel, LookCardMenuPlayer lookCardMenu, VariantCardCreator variantCardCreator,
+        //    InformationLabel informationLabel, LookCardMenuPlayer lookCardMenu, VariantC ardCreator variantCardCreator,
         //    SoundRoot soundRoot, CardSoundVolume cardSoundVolume, FightMenuActivateButton fightMenuActivateButton,
         //    ScreenRoot screenRoot)
         //{

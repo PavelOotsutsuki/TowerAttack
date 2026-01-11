@@ -8,15 +8,15 @@ namespace GameFields.Effects
         private const int CountDrawCards = 4;
         private const int CountAttack = 4;
 
-        public HungryOgre_HighProfileCrimeEffect(Person activePerson, Person deactivePerson, EffectData data) :
-            base(activePerson, deactivePerson, CountDrawCards, CountAttack, data)
+        public HungryOgre_HighProfileCrimeEffect(Person deactivePerson, EffectData data) :
+            base(deactivePerson, CountDrawCards, CountAttack, data)
         { }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("End Громкое преступление effect");
-        }
+        //    Debug.Log("End Громкое преступление effect");
+        //}
     }
 }

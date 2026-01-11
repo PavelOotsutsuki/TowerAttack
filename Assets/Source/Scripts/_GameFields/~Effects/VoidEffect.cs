@@ -15,12 +15,12 @@ namespace GameFields.Effects
             Play();
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Пустой эффект закончен");
-        }
+        //    Debug.Log("Пустой эффект закончен");
+        //}
 
         protected override IEnumerator OnPlaying()
         {

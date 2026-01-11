@@ -11,21 +11,21 @@ namespace GameFields.Effects
         private readonly int _duration;
         private readonly Card _card;
 
-        public FateMistress_FateInevitabilityEffect(Person activePerson, EffectData data) : base(data)
+        public FateMistress_FateInevitabilityEffect(EffectData data) : base(data)
         {
-            _activePerson = activePerson;
+            _activePerson = data.ActivePerson;
             _duration = data.CardEffectData.Duration;
             _card = data.CardEffectData.Card;
 
             Play();
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Неизбежность судьбы закончен");
-        }
+        //    Debug.Log("Эффект Неизбежность судьбы закончен");
+        //}
 
         protected override IEnumerator OnPlaying()
         {

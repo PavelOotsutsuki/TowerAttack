@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: WhiteGnomeView
   m_EditorClassIdentifier: 
   <Number>k__BackingField: 37
-  <Icon>k__BackingField: {fileID: 21300000, guid: 5f05b497d1e1045659e26577ef5ef794, type: 3}
+  <Icon>k__BackingField: {fileID: 21300000, guid: f2e285832fbb345e2a19b28cd89d1b23, type: 3}
   <Description>k__BackingField: "\u0411\u0435\u043B\u044B\u0439 \u0433\u043D\u043E\u043C
     \u043F\u0440\u0438\u043D\u044F\u043B \u0432 \u0441\u0435\u0431\u044F \u0432\u0441\u044E
     \u043C\u0443\u0434\u0440\u043E\u0441\u0442\u044C \u043E\u0441\u0442\u0430\u043B\u044C\u043D\u044B\u0445

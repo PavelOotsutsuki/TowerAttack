@@ -23,12 +23,12 @@ namespace GameFields
 
         private readonly SeatPool _seatPool;
         private readonly IActivatable _soundRootActivatable;
-        private readonly IActivatable _fightMenuActivateButton;
+        private readonly IActivatable _fightButtonsActivator;
 
-        private int _turnNumber;
+        private static int _turnNumber;
 
         public Fight(PersonsState personsState, FightResult fightResult, SignalBus bus, SeatPool seatPool
-            , IActivatable soundRootActivatable, IActivatable fightMenuActivateButton)
+            , IActivatable soundRootActivatable, IActivatable fightButtonsActivator)
         {
             _personsState = personsState;
             _fightResult = fightResult;
@@ -42,7 +42,7 @@ namespace GameFields
             _bus.Subscribe<PersonWinSignal>(SetWinner);
 
             _soundRootActivatable = soundRootActivatable;
-            _fightMenuActivateButton = fightMenuActivateButton;
+            _fightButtonsActivator = fightButtonsActivator;
         }
 
         ~Fight()
@@ -50,6 +50,7 @@ namespace GameFields
             _bus.Unsubscribe<PersonWinSignal>(SetWinner);
         }
 
+        public static int TurnNumber => _turnNumber;
         public bool IsComplete { get; private set; }
 
         private ITurnStep ActivePerson => _personsState.Active;
@@ -59,7 +60,7 @@ namespace GameFields
         {
             //GC.Collect();
             _soundRootActivatable.Activate();
-            _fightMenuActivateButton.Activate();
+            _fightButtonsActivator.Activate();
 
             StartTurn().ToUniTask();
         }

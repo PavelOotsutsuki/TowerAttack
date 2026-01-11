@@ -1,10 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using GameFields.Persons.SelectMenues;
 using ModestTree;
 using Tools.Settings;
 
-namespace GameFields.Persons
+namespace GameFields.Persons.ConfirmableNumbersView
 {
     public class ConfirmableNumbers : INumbersStateWatcher
     {
@@ -21,8 +22,21 @@ namespace GameFields.Persons
             _choicedNumbers = choicedNumbers;
             _cursedNumbers = cursedNumbers;
 
+            _attackedNumbers.OnChanged += ActionOnChanged;
+            _choicedNumbers.OnChanged += ActionOnChanged;
+            _cursedNumbers.OnChanged += ActionOnChanged;
+
             _allNumbers = GameSettings.DefaultCardNumbers;
         }
+
+        ~ConfirmableNumbers()
+        {
+            _attackedNumbers.OnChanged -= ActionOnChanged;
+            _choicedNumbers.OnChanged -= ActionOnChanged;
+            _cursedNumbers.OnChanged -= ActionOnChanged;
+        }
+
+        public event Action OnChanged;
 
         public IEnumerable<int> FreeNumbers => _allNumbers.Except(FullList.SelectedNumbersStates.Select(p => p.Key));
         public IEnumerable<int> CheckedNumbers => FullList.SelectedNumbersStates.Select(p => p.Key);
@@ -48,6 +62,11 @@ namespace GameFields.Persons
             _attackedNumbers.Clear();
             _choicedNumbers.Clear();
             _cursedNumbers.Clear();
+        }
+
+        private void ActionOnChanged()
+        {
+            OnChanged?.Invoke();
         }
 
         //private readonly List<IAttackNumber> _acceptNumbers;

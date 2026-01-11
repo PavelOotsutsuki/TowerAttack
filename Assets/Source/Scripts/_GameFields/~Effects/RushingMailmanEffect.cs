@@ -11,9 +11,9 @@ namespace GameFields.Effects
 
         private readonly IDrawCardManager _drawCardManager;
 
-        public RushingMailmanEffect(Person activePerson, EffectData data) : base(data)
+        public RushingMailmanEffect(EffectData data) : base(data)
         {
-            _drawCardManager = activePerson;
+            _drawCardManager = data.ActivePerson;
 
             Play();
         }
@@ -27,11 +27,11 @@ namespace GameFields.Effects
             yield return new WaitUntil(() => isContinue);
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("End Несущегося почтальона effect");
-        }
+        //    Debug.Log("End Несущегося почтальона effect");
+        //}
     }
 }

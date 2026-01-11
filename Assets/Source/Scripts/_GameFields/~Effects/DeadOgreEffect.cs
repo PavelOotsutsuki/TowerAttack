@@ -17,12 +17,12 @@ namespace GameFields.Effects
             Play();
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Мертвого огра закончен");
-        }
+        //    Debug.Log("Эффект Мертвого огра закончен");
+        //}
 
         protected override IEnumerator OnPlaying()
         {

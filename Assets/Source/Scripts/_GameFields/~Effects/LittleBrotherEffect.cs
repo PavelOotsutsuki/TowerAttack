@@ -15,22 +15,22 @@ namespace GameFields.Effects
         private readonly IDrawCardManager _drawCardManager;
         private readonly BrothersEffectHandlerRoot _brothersEffectHandlerRoot;
 
-        public LittleBrotherEffect(Person activePerson, BrothersEffectHandlerRoot brothersEffectHandlerRoot, EffectData data)
+        public LittleBrotherEffect(BrothersEffectHandlerRoot brothersEffectHandlerRoot, EffectData data)
             : base(data)
         {
-            _activePerson = activePerson;
-            _drawCardManager = activePerson;
+            _activePerson = data.ActivePerson;
+            _drawCardManager = data.ActivePerson;
             _brothersEffectHandlerRoot = brothersEffectHandlerRoot;
 
             Play();
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Малого брата закончен");
-        }
+        //    Debug.Log("Эффект Малого брата закончен");
+        //}
 
         protected override IEnumerator OnPlaying()
         {

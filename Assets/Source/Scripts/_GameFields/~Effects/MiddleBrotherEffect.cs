@@ -13,21 +13,21 @@ namespace GameFields.Effects
         private readonly Person _activePerson;
         private readonly BrothersEffectHandlerRoot _brothersEffectHandlerRoot;
 
-        public MiddleBrotherEffect(Person activePerson, BrothersEffectHandlerRoot brothersEffectHandlerRoot,
+        public MiddleBrotherEffect(BrothersEffectHandlerRoot brothersEffectHandlerRoot,
             EffectData data) : base(data)
         {
-            _activePerson = activePerson;
+            _activePerson = data.ActivePerson;
             _brothersEffectHandlerRoot = brothersEffectHandlerRoot;
 
             Play();
         }
 
-        public override void End()
-        {
-            base.End();
+        //public override void End()
+        //{
+        //    base.End();
 
-            Debug.Log("Эффект Среднего брата закончен");
-        }
+        //    Debug.Log("Эффект Среднего брата закончен");
+        //}
 
         protected override IEnumerator OnPlaying()
         {

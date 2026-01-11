@@ -11,6 +11,7 @@ using Tools;
 using Tools.CommonAnimations;
 using UnityEngine;
 using Zenject;
+using GameFields.Histories;
 
 namespace GameFields.Persons.Towers
 {
@@ -23,6 +24,7 @@ namespace GameFields.Persons.Towers
 
         private ISelectMenuActivator _attackMenu;
         private IReadOnlyRectTransformable _tower;
+        private HistoryRoot _historyRoot;
 
         //private DiscardPile _discardPile;
         protected SignalBus Bus;
@@ -54,10 +56,12 @@ namespace GameFields.Persons.Towers
             }
         }
 
-        public void Init(ISelectMenuActivator attackMenu, IReadOnlyRectTransformable tower, SignalBus bus)//, ICompletable attackHandler)
+        public void Init(ISelectMenuActivator attackMenu, IReadOnlyRectTransformable tower, SignalBus bus,
+            HistoryRoot historyRoot)//, ICompletable attackHandler)
         {
             _attackMenu = attackMenu;
             _tower = tower;
+            _historyRoot = historyRoot;
             Bus = bus;
             //AttackHandler = attackHandler;
 
@@ -96,6 +100,10 @@ namespace GameFields.Persons.Towers
             //AttackMenuActivateData attackMenuActivateData = new AttackMenuActivateData(49);
 
             _attackMenu.Activate(attackMenuActivateData);
+
+            HistoryCardData historyCardData = new HistoryCardData(card);
+            HistoryData historyData = new HistoryData(this, "Атака: ", historyCardData);
+            _historyRoot.AddMsg(historyData);
 
             yield return new WaitUntil(() => _attackMenu.IsComplete);
 
