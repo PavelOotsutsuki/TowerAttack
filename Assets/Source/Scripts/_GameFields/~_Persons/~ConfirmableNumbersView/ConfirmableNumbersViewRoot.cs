@@ -29,6 +29,9 @@ namespace GameFields.Persons.ConfirmableNumbersView
             _enemyConfirmableNumbers = enemyConfirmableNumbers;
             _playerConfirmableNumbers = playerConfirmableNumbers;
 
+            SetTextByEnemy();
+            SetTextByPlayer();
+
             _enemyConfirmableNumbers.OnChanged += SetTextByEnemy;
             _playerConfirmableNumbers.OnChanged += SetTextByPlayer;
 
@@ -79,11 +82,11 @@ namespace GameFields.Persons.ConfirmableNumbersView
         {
             StringBuilder stringBuilder = new StringBuilder();
 
-            AppendList(stringBuilder, "ОСТАЛОСЬ", confirmableNumbers.FreeNumbers);
+            AppendList(stringBuilder, "<color=#00A107>ОСТАЛОСЬ</color>", confirmableNumbers.FreeNumbers);
 
             stringBuilder.Append("\n--------------------\n");
 
-            AppendList(stringBuilder, "ВЫБРАНО", confirmableNumbers.CheckedNumbers);
+            AppendList(stringBuilder, "<color=#FF0000>ВЫБРАНО</color>", confirmableNumbers.CheckedNumbers);
 
             label.SetText(stringBuilder.ToString());
         }

@@ -32,7 +32,7 @@ namespace GameFields.Persons.Towers
                 return;
 
             IsActive = true;
-            Debug.Log("TowerEnemyHelper.Activate");
+            //Debug.Log("TowerEnemyHelper.Activate");
 
             _canvasGroup.blocksRaycasts = true;
         }
@@ -43,21 +43,20 @@ namespace GameFields.Persons.Towers
                 return;
 
             IsActive = false;
-            Debug.Log("TowerEnemyHelper.Deactivate");
-
+            //Debug.Log("TowerEnemyHelper.Deactivate");
 
             _canvasGroup.blocksRaycasts = false;
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            Debug.Log("TowerEnemyHelper.OnPointerEnter");
+            //Debug.Log("TowerEnemyHelper.OnPointerEnter");
             _confirmableNumbersViewRoot.Activate();
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            Debug.Log("TowerEnemyHelper.OnPointerExit");
+            //Debug.Log("TowerEnemyHelper.OnPointerExit");
             _confirmableNumbersViewRoot.Deactivate();
         }
 
