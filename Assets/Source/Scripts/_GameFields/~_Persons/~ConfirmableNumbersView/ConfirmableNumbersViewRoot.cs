@@ -5,6 +5,7 @@ using Tools;
 using Tools.UI;
 using Tools.Utils.FillComponents;
 using UnityEngine;
+using System.Linq;
 
 namespace GameFields.Persons.ConfirmableNumbersView
 {
@@ -86,7 +87,7 @@ namespace GameFields.Persons.ConfirmableNumbersView
 
             stringBuilder.Append("\n--------------------\n");
 
-            AppendList(stringBuilder, "<color=#FF0000>ВЫБРАНО</color>", confirmableNumbers.CheckedNumbers);
+            AppendList(stringBuilder, "<color=#FF0000>ВЫБРАНО</color>", confirmableNumbers.CheckedNumbers.OrderBy(n => n));
 
             label.SetText(stringBuilder.ToString());
         }
