@@ -1,7 +1,10 @@
 {
     "name": "StartMenues",
     "rootNamespace": "StartMenues",
-    "references": [],
+    "references": [
+        "GUID:734fcd680d570414eb3d1c29fb8823c9",
+        "GUID:802f65728030c443591527c69c93fe23"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

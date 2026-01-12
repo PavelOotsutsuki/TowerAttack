@@ -6,7 +6,7 @@ namespace GameFields
 {
     public static class GameFieldGC
     {
-        private const int MODE = 3;
+        private const int MODE = 1;
         // 1 - коллектор работает как обычно
         // 2 - ручной вызов коллектора
         // 3 - SustainedLowLatency + ручной вызов коллектора
