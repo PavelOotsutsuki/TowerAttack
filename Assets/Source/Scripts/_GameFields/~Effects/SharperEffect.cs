@@ -1,0 +1,80 @@
+using System.Collections;
+using System.Collections.Generic;
+using Cards;
+using GameFields.Persons;
+using GameFields.Persons.Discovers;
+using GameFields.Persons.DrawCards;
+using UnityEngine;
+
+namespace GameFields.Effects
+{
+    public class SharperEffect : Effect
+    {
+        private const string DiscoverDeckMessage = "Выберете, какую карту возьмете";
+        private const string DiscoverHandMessage = "Выберете, какую карту положите на её место";
+
+        private const int CountDeckCards = 3;
+        private const int CountHandCards = 3;
+
+        private readonly Person _activePerson;
+        private readonly IDrawCardManager _drawCardManager;
+        private readonly CardLocationViewRoot _cardLocationViewRoot;
+        private readonly CardTransitManager _transitManager;
+
+        public SharperEffect(Person activePerson, CardLocationViewRoot cardLocationViewRoot, CardTransitManager transitManager,
+            EffectData data) : base(data)
+        {
+            _activePerson = activePerson;
+            _drawCardManager = activePerson;
+
+            _cardLocationViewRoot = cardLocationViewRoot;
+            _transitManager = transitManager;
+
+            Play();
+        }
+
+        public override void End()
+        {
+            base.End();
+
+            Debug.Log("Эффект Шулера закончен");
+        }
+
+        protected override IEnumerator OnPlaying()
+        {
+            ViewType hand = _activePerson is Player ? ViewType.HandPlayer : ViewType.HandAI;
+
+            if (_cardLocationViewRoot.TryViewDeckLastCards(out IReadOnlyList<Card> deckCards, CountDeckCards) == false)
+            {
+                yield break;
+            }
+
+            if (_cardLocationViewRoot.TryView(out IReadOnlyList<Card> handCards, CountHandCards, hand) == false)
+            {
+                yield break;
+            }
+
+            DiscoverResult deckResult = new DiscoverResult();
+            _activePerson.DiscoverCards(deckCards, DiscoverDeckMessage, deckResult);
+
+            yield return new WaitUntil(() => deckResult.IsComplete);
+
+            Card cardFromDeck = (Card)deckResult.Result;
+
+            DiscoverResult handResult = new DiscoverResult();
+            _activePerson.DiscoverCards(handCards, DiscoverHandMessage, handResult);
+
+            yield return new WaitUntil(() => handResult.Result != null);
+
+            Card cardFromHand = (Card)handResult.Result;
+
+            int index = _drawCardManager.DrawCard(cardFromDeck);
+
+            TransitFromType transitFrom = _activePerson is Player ? TransitFromType.HandPlayer : TransitFromType.HandEnemy;
+
+            _transitManager.InsertIntoDeck(cardFromHand, index, transitFrom);
+
+            yield break;
+        }
+    }
+}

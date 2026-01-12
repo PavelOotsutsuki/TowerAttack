@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7465c289317d843598acc156c84e4215, type: 3}
+  m_Name: MiddleBrother_38
+  m_EditorClassIdentifier: 
+  <CardViewConfig>k__BackingField: {fileID: 11400000, guid: 65ee476fc26404cb9ae57f6b8607fbe0, type: 2}
+  <CardCharacter>k__BackingField: {fileID: 7233767571375303125, guid: ef63134ca2cff467589c5e301a67a745, type: 3}
+  <SoundConfig>k__BackingField: {fileID: 11400000, guid: 702ed74139cb443918eeb9fb13049c27, type: 2}
+  <Effect>k__BackingField: {fileID: 11400000, guid: a099d7f4088e24217bbcc546814a9719, type: 2}
+  <CardCapability>k__BackingField: 131
+  <CardPersonType>k__BackingField: 32
