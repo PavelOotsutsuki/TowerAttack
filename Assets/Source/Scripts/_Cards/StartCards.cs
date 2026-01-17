@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cards.Views;
 
 namespace Cards
 {
@@ -24,15 +25,12 @@ namespace Cards
 
         private void CreateDefaultFiftyCards()
         {
-            //for (int j = 0; j < 3; j++)
-            //{
+
             for (int i = 1; i <= 50; i++)
             {
                 CardName cardName = (CardName)i;
                 _startCardNames.Add(cardName);
             }
-            //}
-
 
 
             //for (int i = 1; i < 100; i++)

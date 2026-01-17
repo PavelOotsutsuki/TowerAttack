@@ -9,7 +9,7 @@ namespace GameFields.Histories
     public class HistoryRoot
     {
         private readonly List<HistoryData> _historyMsg = new List<HistoryData>();
-        private readonly int _maxCountHistoryPositions = 15;
+        private readonly int _maxCountHistoryPositions = 500;
         private readonly IHistoryInputType _historyInputType;
 
         public event Action<string> OnChangedByText;

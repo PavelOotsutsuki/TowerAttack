@@ -61,6 +61,8 @@ namespace GameFields.Persons.EffectHandlers
 
         public bool CanActivate()
         {
+            return true;
+
             if (_gnomeCounterUse <= 0)
                 return false;
 

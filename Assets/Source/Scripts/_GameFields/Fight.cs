@@ -14,7 +14,7 @@ namespace GameFields
 {
     internal class Fight : IFightStep//, IWinnerSetter
     {
-        private const int MaxTurns = 100;
+        private const int MaxTurns = 500;
         private const float DelayBeforeStartTurn = 3f;
 
         private readonly FightResult _fightResult;

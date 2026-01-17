@@ -80,7 +80,7 @@ namespace Cards
                 return;
 
             _cardSpriteModeManager.SetCurseMode();
-            _viewData.ChangeFeature(_viewData.Feature + "\n<CAP_4>ПРОКЛЯТ</CAP_4>");
+            _viewData.ChangeFeature(_config.CardViewConfig.Feature + "\n<CAP_4>ПРОКЛЯТ</CAP_4>");
             _viewData.SetCurseMode();
             _cardPaper.SetView(_viewData);
         }
