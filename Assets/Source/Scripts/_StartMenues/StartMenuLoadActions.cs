@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Tools;
 
 namespace StartMenues
 {
@@ -16,14 +17,17 @@ namespace StartMenues
         [SerializeField] private LoadText _loadText;
         [SerializeField] private StartMenu _startMenu;
 
-        public void Activate()
+        public void Init(IVolume backgroundSoundConfig, IVolume foregroundSoundConfig)
         {
             _loadText.Init();
+            //_startMenu.Init(backgroundSoundConfig, foregroundSoundConfig);
             _startMenu.Init();
-
-            StartCoroutine(Activating());
-
             _stoneSpawner.Init();
+        }
+
+        public void Activate()
+        {
+            StartCoroutine(Activating());
         }
 
         private IEnumerator Activating()

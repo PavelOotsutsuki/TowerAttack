@@ -1,5 +1,6 @@
 using GameFields.InputSettings;
 using Tools;
+using Tools.InputSettings;
 
 namespace GameFields.EndTurnButtons
 {

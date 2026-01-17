@@ -11,6 +11,7 @@ using GameFields.Persons;
 using GameFields.Persons.EffectHandlers;
 using GameFields.InputSettings;
 using Cards.Views;
+using Tools.InputSettings;
 
 namespace GameFields.Persons.EnemyProcessImitations
 {

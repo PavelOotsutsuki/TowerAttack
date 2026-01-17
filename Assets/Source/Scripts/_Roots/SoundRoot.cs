@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using GameFields.EndTurnButtons;
+using Sounds;
 using Tools;
 using Tools.Utils;
 using Tools.Utils.FillComponents;
@@ -16,28 +17,32 @@ namespace Roots
         [SerializeField] private float _delay = 3f;
         [SerializeField, Range(0,1)] private float _maxVolume = 0.1f;
 
+        private IVolume _soundConfig;
+
         private Coroutine _processing;
         private IReadOnlyList<AudioClip> _shuffleClips;
 
         private bool _isPaused;
-        private float _percent = 1f;
 
-        public float Percent => _percent; 
+        public float Percent => _soundConfig.Percent; 
 
-        public void Init()
+        public void Init(IVolume soundConfig)
         {
+            _soundConfig = soundConfig;
+
             if (_backgroundSounds.Length > 0)
             {
                 _shuffleClips = Utils.Shuffle(_backgroundSounds);
             }
 
-            SetVolumePercent(_percent);
+            SetVolumePercent(Percent);
             _isPaused = false;
         }
 
         public void SetVolumePercent(float percent)
         {
-            _audioSource.volume = _maxVolume * percent;
+            _soundConfig.SetVolumePercent(percent);
+            _audioSource.volume = _maxVolume * Percent;
         }
 
         public void Activate()

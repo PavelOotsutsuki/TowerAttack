@@ -7,6 +7,7 @@ using GameFields.InputSettings;
 using GameFields.Persons;
 using GameFields.Persons.SelectMenues;
 using Tools;
+using Tools.InputSettings;
 using Tools.UI;
 using Tools.Utils.FillComponents;
 using UnityEngine;

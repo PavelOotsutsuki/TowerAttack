@@ -21,7 +21,7 @@ namespace GameFields.Persons.SelectMenues
 
             for (int i = 1; i < NeedForActivate; i++)
             {
-                if (_selectNumbers[currentNumber.Number + i - 1].IsDisable)
+                if (_selectNumbers[currentNumber.Number + i - 1].IsTurnOff)
                     return false;
             }
             // Проверки конец

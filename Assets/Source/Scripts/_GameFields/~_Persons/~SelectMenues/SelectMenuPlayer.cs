@@ -7,6 +7,7 @@ using GameFields.Persons.SelectMenues.Attacks;
 using GameFields.Persons.SelectMenues.Choices;
 using GameFields.Persons.Towers;
 using Tools;
+using Tools.InputSettings;
 using Tools.UI;
 using Tools.UI.UIHelpers;
 using Tools.Utils.FillComponents;

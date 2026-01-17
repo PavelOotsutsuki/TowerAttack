@@ -5,18 +5,17 @@ namespace Cards.Sounds
 {
     public class CardSoundRoot : IVolume
     {
+        private readonly IVolume _soundConfig;
         private readonly float _maxVolume = 1f;
 
-        private float _percent;
-
-        public CardSoundRoot()
+        public CardSoundRoot(IVolume soundConfig)
         {
-            _percent = 1f;
+            _soundConfig = soundConfig;
         }
 
-        public float Percent => _percent;
+        public float Percent => _soundConfig.Percent;
 
-        private float Volume => _maxVolume * _percent;
+        private float Volume => _maxVolume * _soundConfig.Percent;
 
         public void Play(AudioClip clip)
         {
@@ -25,7 +24,7 @@ namespace Cards.Sounds
 
         public void SetVolumePercent(float percent)
         {
-            _percent = percent;
+            _soundConfig.SetVolumePercent(percent);
         }
     }
 }

@@ -7,6 +7,7 @@ using GameFields.InputSettings;
 using GameFields.Persons.Discovers;
 using GameFields.Seats;
 using Tools;
+using Tools.InputSettings;
 using Tools.Settings;
 using Tools.UI;
 using Tools.Utils.FillComponents;

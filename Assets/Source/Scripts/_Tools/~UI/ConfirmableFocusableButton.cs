@@ -21,7 +21,7 @@ namespace Tools
         private ReadOnlyTransform _ROTransform;
         private Action _onEnterClick;
 
-        public void Init(IFocusWatcher focusWatcher, Action onEnterClick) 
+        public virtual void Init(IFocusWatcher focusWatcher, Action onEnterClick) 
         {
             _focusWatcher = focusWatcher;
             _onEnterClick = onEnterClick;

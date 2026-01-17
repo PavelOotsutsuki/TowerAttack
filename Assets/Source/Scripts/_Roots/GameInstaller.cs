@@ -23,11 +23,22 @@ using Cards.Sounds;
 using Tools.UI.UIHelpers;
 using GameFields.Histories;
 using GameFields.Persons.ConfirmableNumbersView;
+using Sounds;
 
 namespace Roots
 {
     public class GameInstaller : MonoInstaller
     {
+        [Header("Sounds:")]
+
+        [SerializeField] private BackgroundSoundConfig _backgroundSoundConfig;
+        [SerializeField] private ForegroundSoundConfig _foregroundSoundConfig;
+
+        [Space]
+        [Header("----------------------------")]
+        [Space]
+        [Header("GameFields:")]
+
         [SerializeField] private UIHelperDescription _UIHelperDescription;
 
         [SerializeField] private BigCardRoot _bigCardRoot;
@@ -90,12 +101,15 @@ namespace Roots
         {
             DeclareSignals();
 
+            Container.Bind<BackgroundSoundConfig>().FromScriptableObject(_backgroundSoundConfig).AsSingle();
+            Container.Bind<ForegroundSoundConfig>().FromScriptableObject(_foregroundSoundConfig).AsSingle();
+
             Container.Bind<UIHelperDescription>().FromInstance(_UIHelperDescription).AsSingle();
             _UIHelperDescription.Init();
 
             Container.Bind<BigCardRoot>().FromInstance(_bigCardRoot).AsSingle();
 
-            _cardSoundRoot = new CardSoundRoot();
+            _cardSoundRoot = new CardSoundRoot(_foregroundSoundConfig);
             Container.Bind<CardSoundRoot>().FromInstance(_cardSoundRoot).AsSingle();
 
             _screenRoot = new ScreenRoot();

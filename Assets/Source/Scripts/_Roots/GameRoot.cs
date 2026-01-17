@@ -23,6 +23,7 @@ using Cards.Views.BigCardViews;
 using Cards.Sounds;
 using GameFields.CardTransits;
 using GameFields.Histories;
+using Sounds;
 
 namespace Roots
 {
@@ -43,7 +44,7 @@ namespace Roots
         private void Construct(SignalBus bus, Deck deck, SeatPool seatPool, BigCardRoot bigCardRoot, HandPlayer handPlayer,
             InformationLabel informationLabel, LookCardMenuPlayer lookCardMenu, VariantCardCreator variantCardCreator,
             SoundRoot soundRoot, CardSoundRoot cardSoundRoot, FightButtonsActivator fightButtonsActivator,
-            CardCapabilityDescription cardCapabilityDescription, HistoryRoot historyRoot)
+            CardCapabilityDescription cardCapabilityDescription, HistoryRoot historyRoot, BackgroundSoundConfig backgroundSoundConfig)
         {
             //StartCoroutine(Initing(bus, deck, seatPool, cardDescription, handPlayer, informationLabel, lookCardMenu, variantCardCreator, soundRoot,
             //    cardSoundVolume, fightMenuActivateButton, screenRoot));
@@ -60,7 +61,7 @@ namespace Roots
             _speedUpButtonSortOrder.Init();
 
             variantCardCreator.Init();
-            soundRoot.Init();
+            soundRoot.Init(backgroundSoundConfig);
 
             CardDragAndDropLightController cardDragAndDropLightController = _lightControlsCreator.CreateCardDragAndDropLightController();
 

@@ -8,20 +8,20 @@ namespace Tools.UI
     {
         [SerializeField] private MonoBehaviour _IConfirmableButtonImageChanger;
 
-        private IConfirmableButtonImageChanger _imageChanger;
+        protected IConfirmableButtonImageChanger ImageChanger;
 
         public override void Init()
         {
             try
             {
-                _imageChanger = (IConfirmableButtonImageChanger)_IConfirmableButtonImageChanger;
+                ImageChanger = (IConfirmableButtonImageChanger)_IConfirmableButtonImageChanger;
             }
             catch
             {
-                _imageChanger = GetComponent<IConfirmableButtonImageChanger>();
+                ImageChanger = GetComponent<IConfirmableButtonImageChanger>();
             }
 
-            base.Init(_imageChanger);
+            base.Init(ImageChanger);
         }
 
         public override void OnPointerClick(PointerEventData eventData)
@@ -32,7 +32,7 @@ namespace Tools.UI
                     return;
             }
 
-            _imageChanger.OnPointerClick();
+            ImageChanger.OnPointerClick();
 
             IsClicked = true;
             CanvasGroup.blocksRaycasts = false;

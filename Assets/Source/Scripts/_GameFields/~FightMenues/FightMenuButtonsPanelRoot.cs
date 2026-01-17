@@ -5,6 +5,7 @@ using Cards.Views.BigCardViews.Capabilities;
 using Cysharp.Threading.Tasks;
 using GameFields.Persons;
 using Tools;
+using Tools.InputSettings;
 using Tools.UI;
 using Tools.Utils.FillComponents;
 using UnityEngine;

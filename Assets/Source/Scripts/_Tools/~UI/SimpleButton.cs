@@ -16,7 +16,7 @@ namespace Tools.UI
         private readonly PointerDisableSettingsRoot _pointerDisableSettingsRoot = new PointerDisableSettingsRoot();
 
         public bool IsClicked { get; protected set; }
-        public bool IsDisable => CanvasGroup.blocksRaycasts == false;
+        public bool IsTurnOff => CanvasGroup.blocksRaycasts == false;
         public bool? IsActive { get; protected set; } = null;
 
         public PointerDisableSettingsRoot PointerDisableSettingsRoot => _pointerDisableSettingsRoot;
@@ -58,7 +58,7 @@ namespace Tools.UI
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (IsDisable)
+            if (IsTurnOff)
                 return;
 
             if (_pointerDisableSettingsRoot.OnPointerExit.IsDisable)
@@ -71,7 +71,7 @@ namespace Tools.UI
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            if (IsDisable)
+            if (IsTurnOff)
                 return;
 
             _imageChanger.OnPointerUp();
@@ -79,7 +79,7 @@ namespace Tools.UI
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (IsDisable)
+            if (IsTurnOff)
                 return;
 
             _imageChanger.OnPointerEnter();
@@ -89,7 +89,7 @@ namespace Tools.UI
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            if (IsDisable)
+            if (IsTurnOff)
                 return;
 
             _imageChanger.OnPointerDown();
@@ -97,7 +97,7 @@ namespace Tools.UI
 
         public virtual bool CanBeClicked()
         {
-            return IsDisable == false;
+            return IsTurnOff == false;
         }
 
         #region AutomaticFillComponents

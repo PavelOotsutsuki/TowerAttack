@@ -7,6 +7,7 @@ using GameFields.Persons.EnemyProcessImitations;
 using GameFields.Persons.LookCardMenues;
 using GameFields.Persons.SelectMenues;
 using Tools;
+using Tools.InputSettings;
 using UnityEngine;
 using static UnityEngine.InputSystem.InputAction;
 

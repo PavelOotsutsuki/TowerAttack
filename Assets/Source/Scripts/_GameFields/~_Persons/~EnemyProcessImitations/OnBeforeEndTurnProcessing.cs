@@ -1,6 +1,7 @@
 using GameFields.InputSettings;
 using GameFields.Persons;
 using GameFields.Persons.EffectHandlers;
+using Tools.InputSettings;
 
 namespace GameFields.Persons.EnemyProcessImitations
 {

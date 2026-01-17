@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Sounds;
 using StartMenues;
 using Tools.Utils.FillComponents;
 using UnityEngine;
@@ -11,6 +12,8 @@ namespace Roots
         [SerializeField] private CanvasRoot _canvasRoot;
         [SerializeField] private FontRoot _fontRoot;
         [SerializeField] private StartMenuLoadActions _startMenuLoadActions;
+        [SerializeField] private BackgroundSoundConfig _backgroundSoundConfig;
+        [SerializeField] private ForegroundSoundConfig _foregroundSoundConfig;
 
         private void Start()
         {
@@ -18,6 +21,7 @@ namespace Roots
             //    cardSoundVolume, fightMenuActivateButton, screenRoot));
             _canvasRoot.Init();
             _fontRoot.Init();
+            _startMenuLoadActions.Init(_backgroundSoundConfig, _foregroundSoundConfig);
 
             _startMenuLoadActions.Activate();
         }

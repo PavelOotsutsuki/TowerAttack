@@ -4,6 +4,7 @@ using GameFields.EndTurnButtons;
 using GameFields.InputSettings;
 using GameFields.Persons.Hands;
 using Tools;
+using Tools.InputSettings;
 using UnityEngine;
 
 namespace GameFields.Persons
