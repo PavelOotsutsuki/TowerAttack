@@ -15,7 +15,7 @@ namespace GameFields.FightMenues
     public class FightMenuButtonsPanelRoot_OLD : MonoBehaviour, IWorkable, ICompletable, IAutomaticFillComponents
     {
         [SerializeField] private FadablePanel _fadablePanel;
-        [SerializeField] private FightMenuStartButtonsPanel _startButtonsPanel;
+        [SerializeField] private FightMenuStartButtonsPanel_OLD _startButtonsPanel;
         [SerializeField] private FightMenuSettingsButtonsPanel _settingsButtonsPanel;
         [SerializeField] private FightMenuRulesButtonsPanel _rulesButtonsPanel;
 

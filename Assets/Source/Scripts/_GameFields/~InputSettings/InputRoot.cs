@@ -6,6 +6,7 @@ using GameFields.Persons;
 using GameFields.Persons.EnemyProcessImitations;
 using GameFields.Persons.LookCardMenues;
 using GameFields.Persons.SelectMenues;
+using Menues;
 using Tools;
 using Tools.InputSettings;
 using UnityEngine;
@@ -24,14 +25,14 @@ namespace GameFields.InputSettings
         private readonly IWorkable _historyMenu;
         private readonly Dictionary<IInputLogicObject, IInputLogic> _logics;
 
-        private readonly FightMenuInputLogic _fightMenuInputLogic;
+        private readonly MenuInputLogic _fightMenuInputLogic;
 
         private IInputLogic _currentLogic;
 
         public InputRoot(IDeactivatable endTurnButtonDeactivatable, IWorkable fightMenu,
-            IFightMenuInputActivateWatcher fightMenuInputActivateWatcher, IWorkable historyMenu)
+            IMenuInputActivateWatcher fightMenuInputActivateWatcher, IWorkable historyMenu)
         {
-            _fightMenuInputLogic = new FightMenuInputLogic(fightMenuInputActivateWatcher);
+            _fightMenuInputLogic = new MenuInputLogic(fightMenuInputActivateWatcher);
             _fightMenu = fightMenu;
             _historyMenu = historyMenu;
             _logics = new Dictionary<IInputLogicObject, IInputLogic>();

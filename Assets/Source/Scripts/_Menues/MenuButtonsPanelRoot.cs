@@ -13,16 +13,16 @@ namespace Menues
     public abstract class MenuButtonsPanelRoot : MonoBehaviour, IWorkable, ICompletable, IAutomaticFillComponents
     {
         [SerializeField] private FadablePanel _fadablePanel;
-        [SerializeField] protected MenuStartButtonsPanel StartButtonsPanel;
         [SerializeField] private MenuSettingsButtonsPanel _settingsButtonsPanel;
         [SerializeField] private MenuRulesButtonsPanel _rulesButtonsPanel;
 
-        private MenuButtonsPanel _currentFightMenuButtonsPanel;
+        private MenuStartButtonsPanel _startButtonsPanel;
+        private MenuButtonsPanel _currentMenuButtonsPanel;
         private bool _isComplete;
 
         public bool? IsActive { get; private set; } = null;
         public bool IsComplete => _isComplete;
-        public IFocusedButtonEnterHandler CurrentFightMenuButtonInputHandler => _currentFightMenuButtonsPanel;
+        public IFocusedButtonEnterHandler CurrentMenuButtonInputHandler => _currentMenuButtonsPanel;
 
         //public void Init(LoseActions playerLoseActions, IDeactivatable fightMenuDeactivator, IVolume cardVolume, IVolume musicVolume,
         //    CardCapabilityDescription cardCapabilityDescription)
@@ -37,19 +37,20 @@ namespace Menues
         //    _currentFightMenuButtonsPanel = _startButtonsPanel;
         //}
 
-        protected void Init(IVolume foregroundVolume, IVolume backgroundVolume, CardCapabilityDescription cardCapabilityDescription)
+        protected void Init(IVolume foregroundVolume, IVolume backgroundVolume, CardCapabilityDescription cardCapabilityDescription,
+            MenuStartButtonsPanel startButtonsPanel)
         {
+            _startButtonsPanel = startButtonsPanel;
+
             _fadablePanel.Init();
             //_startButtonsPanel.Init(playerLoseActions, fightMenuDeactivator, SetSettingsPanel, SetRulesPanel);
-
-            InitStartButtonsPanel();
 
             _settingsButtonsPanel.Init(SetStartPanel, foregroundVolume, backgroundVolume);
             _rulesButtonsPanel.Init(SetStartPanel, cardCapabilityDescription);
 
             _isComplete = true;
 
-            _currentFightMenuButtonsPanel = StartButtonsPanel;
+            _currentMenuButtonsPanel = _startButtonsPanel;
         }
 
         public void Activate()
@@ -60,8 +61,8 @@ namespace Menues
             IsActive = true;
             _isComplete = false;
 
-            _currentFightMenuButtonsPanel = StartButtonsPanel;
-            _currentFightMenuButtonsPanel.Activate();
+            _currentMenuButtonsPanel = _startButtonsPanel;
+            _currentMenuButtonsPanel.Activate();
 
             Activating().ToUniTask();
         }
@@ -74,37 +75,35 @@ namespace Menues
             IsActive = false;
             _isComplete = false;
 
-            _currentFightMenuButtonsPanel.Deactivate();
-            _currentFightMenuButtonsPanel = null;
+            _currentMenuButtonsPanel.Deactivate();
+            _currentMenuButtonsPanel = null;
 
             Deactivating().ToUniTask();
         }
 
-        protected abstract void InitStartButtonsPanel();
-
-        private void SetStartPanel()
-        {
-            SetPanel(StartButtonsPanel);
-        }
-
-        private void SetSettingsPanel()
+        protected void SetSettingsPanel()
         {
             SetPanel(_settingsButtonsPanel);
         }
 
-        private void SetRulesPanel()
+        protected void SetRulesPanel()
         {
             SetPanel(_rulesButtonsPanel);
         }
 
+        private void SetStartPanel()
+        {
+            SetPanel(_startButtonsPanel);
+        }
+
         private void SetPanel(MenuButtonsPanel settedPanel)
         {
-            if (_currentFightMenuButtonsPanel == settedPanel)
+            if (_currentMenuButtonsPanel == settedPanel)
                 return;
 
-            _currentFightMenuButtonsPanel?.Deactivate();
-            _currentFightMenuButtonsPanel = settedPanel;
-            _currentFightMenuButtonsPanel.Activate();
+            _currentMenuButtonsPanel?.Deactivate();
+            _currentMenuButtonsPanel = settedPanel;
+            _currentMenuButtonsPanel.Activate();
         }
 
         private IEnumerator Activating()
@@ -133,8 +132,8 @@ namespace Menues
             {
                 DefineFadablePanel(),
                 DefineFightMenuStartButtonsPanel(),
-                DefineFightMenuSettignsButtonsPanel(),
-                DefineFightMenuRulesButtonsPanel()
+                DefineMenuSettignsButtonsPanel(),
+                DefineMenuRulesButtonsPanel()
             };
 
             return list;
@@ -149,17 +148,17 @@ namespace Menues
         [ContextMenu(nameof(DefineFightMenuStartButtonsPanel))]
         private ComponentAttachInfo DefineFightMenuStartButtonsPanel()
         {
-            return AutomaticFillComponents.DefineComponent(this, ref StartButtonsPanel, ComponentLocationTypes.InChildren);
+            return AutomaticFillComponents.DefineComponent(this, ref _startButtonsPanel, ComponentLocationTypes.InChildren);
         }
 
-        [ContextMenu(nameof(DefineFightMenuSettignsButtonsPanel))]
-        private ComponentAttachInfo DefineFightMenuSettignsButtonsPanel()
+        [ContextMenu(nameof(DefineMenuSettignsButtonsPanel))]
+        private ComponentAttachInfo DefineMenuSettignsButtonsPanel()
         {
             return AutomaticFillComponents.DefineComponent(this, ref _settingsButtonsPanel, ComponentLocationTypes.InChildren);
         }
 
-        [ContextMenu(nameof(DefineFightMenuSettignsButtonsPanel))]
-        private ComponentAttachInfo DefineFightMenuRulesButtonsPanel()
+        [ContextMenu(nameof(DefineMenuSettignsButtonsPanel))]
+        private ComponentAttachInfo DefineMenuRulesButtonsPanel()
         {
             return AutomaticFillComponents.DefineComponent(this, ref _rulesButtonsPanel, ComponentLocationTypes.InChildren);
         }

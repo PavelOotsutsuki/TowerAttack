@@ -12,24 +12,26 @@ namespace Menues
     {
         [SerializeField] private MenuLabel _fightMenuLabel;
         [SerializeField] private MenuPanel _fightMenuPanel;
-        [SerializeField] private MenuButtonsPanelRoot _menuButtonsPanelRoot;
         [SerializeField] private CanvasGroup _canvasGroup;
 
         //private InputRoot _inputRoot;
+        private MenuButtonsPanelRoot _menuButtonsPanelRoot;
 
         private bool _isComplete;
 
         public bool? IsActive { get; private set; } = null;
         public bool IsComplete => _isComplete;
 
-        public IFocusedButtonEnterHandler CurrentMenuButtonInputHandler => _menuButtonsPanelRoot.CurrentFightMenuButtonInputHandler;
+        public IFocusedButtonEnterHandler CurrentMenuButtonInputHandler => _menuButtonsPanelRoot.CurrentMenuButtonInputHandler;
 
-        protected void Init()
+        protected void Init(MenuButtonsPanelRoot menuButtonsPanelRoot)
         {
             gameObject.SetActive(false);
             _isComplete = true;
             IsActive = false;
             _canvasGroup.blocksRaycasts = true;
+
+            _menuButtonsPanelRoot = menuButtonsPanelRoot;
 
             //_inputRoot = inputRoot;
 
@@ -108,35 +110,28 @@ namespace Menues
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(Menu))]
-        public List<ComponentAttachInfo> DefineAllComponents()
+        public virtual List<ComponentAttachInfo> DefineAllComponents()
         {
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
-                DefineFightMenuLabel(),
-                DefineFightMenuPanel(),
-                DefineFightMenuButtonsPanel(),
+                DefineMenuLabel(),
+                DefineMenuPanel(),
                 DefineCanvasGroup()
             };
 
             return list;
         }
 
-        [ContextMenu(nameof(DefineFightMenuLabel))]
-        private ComponentAttachInfo DefineFightMenuLabel()
+        [ContextMenu(nameof(DefineMenuLabel))]
+        private ComponentAttachInfo DefineMenuLabel()
         {
             return AutomaticFillComponents.DefineComponent(this, ref _fightMenuLabel, ComponentLocationTypes.InChildren);
         }
 
-        [ContextMenu(nameof(DefineFightMenuPanel))]
-        private ComponentAttachInfo DefineFightMenuPanel()
+        [ContextMenu(nameof(DefineMenuPanel))]
+        private ComponentAttachInfo DefineMenuPanel()
         {
             return AutomaticFillComponents.DefineComponent(this, ref _fightMenuPanel, ComponentLocationTypes.InChildren);
-        }
-
-        [ContextMenu(nameof(DefineFightMenuButtonsPanel))]
-        private ComponentAttachInfo DefineFightMenuButtonsPanel()
-        {
-            return AutomaticFillComponents.DefineComponent(this, ref _menuButtonsPanelRoot, ComponentLocationTypes.InChildren);
         }
 
         [ContextMenu(nameof(DefineCanvasGroup))]

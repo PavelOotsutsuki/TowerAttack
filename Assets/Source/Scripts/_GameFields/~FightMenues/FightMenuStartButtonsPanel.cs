@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using GameFields.Persons;
+using Menues;
 using ModestTree;
 using Tools;
 using Tools.UI;
@@ -14,7 +15,7 @@ using UnityEngine.EventSystems;
 
 namespace GameFields.FightMenues
 {
-    public class FightMenuStartButtonsPanel : FightMenuButtonsPanel, IFocusWatcher//, IAutomaticFillComponents
+    public class FightMenuStartButtonsPanel : MenuStartButtonsPanel//, IAutomaticFillComponents
     {
         //[SerializeField] private FadablePanel _fadablePanel;
         [SerializeField] private FightMenuButton _resumeButton;
@@ -103,7 +104,7 @@ namespace GameFields.FightMenues
             _fightMenuButtons[index].OnPointerEnter(null);
         }
 
-        public void SetFocusedButton(ConfirmableFocusableButton focusedButton)
+        public override void SetFocusedButton(ConfirmableFocusableButton focusedButton)
         {
             if (_currentFocusedButton == focusedButton)
                 return;

@@ -14,10 +14,10 @@ using UnityEngine;
 
 namespace GameFields.FightMenues
 {
-    public class FightMenu_OLD : MonoBehaviour, IWorkable, ICompletable, IFightMenuInputActivateWatcher, IAutomaticFillComponents
+    public class FightMenu_OLD : MonoBehaviour, IWorkable, ICompletable, IFightMenuInputActivateWatcher_OLD, IAutomaticFillComponents
     {
         [SerializeField] private FightMenuLabel _fightMenuLabel;
-        [SerializeField] private FightMenuPanel _fightMenuPanel;
+        [SerializeField] private FightMenuPanel_OLD _fightMenuPanel;
         [SerializeField] private FightMenuButtonsPanelRoot _fightMenuButtonsPanelRoot;
         [SerializeField] private CanvasGroup _canvasGroup;
 
@@ -29,7 +29,7 @@ namespace GameFields.FightMenues
         public bool? IsActive { get; private set; } = null;
         public bool IsComplete => _isComplete;
 
-        public IFocusedButtonEnterHandler CurrentFightMenuButtonInputHandler => _fightMenuButtonsPanelRoot.CurrentFightMenuButtonInputHandler;
+        public IFocusedButtonEnterHandler CurrentFightMenuButtonInputHandler => _fightMenuButtonsPanelRoot.CurrentMenuButtonInputHandler;
 
         public void Init(InputRoot inputRoot, LoseActions playerLoseActions, IVolume cardVolume, IVolume musicVolume,
             CardCapabilityDescription cardCapabilityDescription)

@@ -5,9 +5,9 @@ namespace GameFields.FightMenues
 {
     public class FightMenuInputLogic_OLD : IInputLogic, IEnterPressHandler, IDownArrowPressHandler, IUpArrowPressHandler
     {
-        private readonly IFightMenuInputActivateWatcher _fightMenuInputActivateWatcher;
+        private readonly IFightMenuInputActivateWatcher_OLD _fightMenuInputActivateWatcher;
 
-        public FightMenuInputLogic_OLD(IFightMenuInputActivateWatcher fightMenuInputActivateWatcher)
+        public FightMenuInputLogic_OLD(IFightMenuInputActivateWatcher_OLD fightMenuInputActivateWatcher)
         {
             _fightMenuInputActivateWatcher = fightMenuInputActivateWatcher;
         }
