@@ -12,7 +12,6 @@ namespace StartMenues
         public void SetStoneSpawner(StoneSpawnerParent stoneSpawnerParent)
         {
             _stoneSpawnerParent = stoneSpawnerParent;
-            DontDestroyOnLoad(stoneSpawnerParent.gameObject);
         }
 
         public void ResetStoneSpawner()
