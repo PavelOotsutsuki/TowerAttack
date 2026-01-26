@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Tools;
+using Cards.Views.BigCardViews.Capabilities;
 
 namespace StartMenues
 {
@@ -17,11 +18,16 @@ namespace StartMenues
         [SerializeField] private LoadText _loadText;
         [SerializeField] private StartMenu _startMenu;
 
-        public void Init(IVolume backgroundSoundConfig, IVolume foregroundSoundConfig)
+        private StartMenuSavedData _startMenuSavedData;
+
+        public void Init(IVolume backgroundSoundConfig, IVolume foregroundSoundConfig, CardCapabilityDescription cardCapabilityDescription,
+            StartMenuSavedData startMenuSavedData)
         {
+            _startMenuSavedData = startMenuSavedData;
+
             _loadText.Init();
             //_startMenu.Init(backgroundSoundConfig, foregroundSoundConfig);
-            _startMenu.Init();
+            _startMenu.Init(foregroundSoundConfig, backgroundSoundConfig, cardCapabilityDescription);
             _stoneSpawner.Init();
         }
 
@@ -33,22 +39,31 @@ namespace StartMenues
         private IEnumerator Activating()
         {
             // 1. Просветление экрана
-            _mainCamera.backgroundColor = _startColor;
+            if (_startMenuSavedData.StoneSpawnerParent == null)
+            {
+                _mainCamera.backgroundColor = _startColor;
 
-            yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(0.5f);
 
-            _mainCamera.DOColor(_endColor, _colorChangeDuration).SetEase(Ease.OutQuad);
+                _mainCamera.DOColor(_endColor, _colorChangeDuration).SetEase(Ease.OutQuad);
 
-            yield return new WaitForSeconds(_colorChangeDuration);
+                yield return new WaitForSeconds(_colorChangeDuration);
 
-            // 2. Камнепад
+                // 2. Камнепад
 
-            _loadText.Activate();
-            _stoneSpawner.Activate();
+                _loadText.Activate();
+                _stoneSpawner.Activate();
 
-            yield return new WaitUntil(() => _stoneSpawner.IsComplete);
+                yield return new WaitUntil(() => _stoneSpawner.IsComplete);
 
-            _loadText.Deactivate();
+                _loadText.Deactivate();
+
+                _startMenuSavedData.SetStoneSpawner(_stoneSpawner.StoneSpawnerParent);
+            }
+            else
+            {
+                _stoneSpawner.Init(_stoneSpawner.StoneSpawnerParent);
+            }
 
             // 3. Появление меню
 

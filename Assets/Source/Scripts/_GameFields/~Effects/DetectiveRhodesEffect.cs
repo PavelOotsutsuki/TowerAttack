@@ -114,7 +114,7 @@ namespace GameFields.Effects
             //bool isTest = true;
 
             //if ((deckResult.Result == deckCard && handResult.Result == handCard) || isTest)
-            if (deckResult.Result == deckCard && handResult.Result == handCard)
+            if (ReferenceEquals(deckResult.Result, deckCard) && ReferenceEquals(handResult.Result, handCard))
             {
                 //TransitFromType handFrom = _activePerson is Player ? TransitFromType.HandEnemy : TransitFromType.HandPlayer;
                 //TransitToType handTo = _activePerson is Player ? TransitToType.HandPlayer : TransitToType.HandEnemy;
@@ -134,11 +134,11 @@ namespace GameFields.Effects
                 string activateMessage = "";
 
                 activateMessage += "Выбор из колоды: ";
-                activateMessage += deckResult.Result == deckCard ? TrueChoice : FalseChoice;
+                activateMessage += ReferenceEquals(deckResult.Result, deckCard) ? TrueChoice : FalseChoice;
                 activateMessage += "\n";
 
                 activateMessage += "Выбор из руки: ";
-                activateMessage += handResult.Result == handCard ? TrueChoice : FalseChoice;
+                activateMessage += ReferenceEquals(handResult.Result, handCard) ? TrueChoice : FalseChoice;
 
                 LabelActivateData labelActivateData = new LabelActivateData(activateMessage);
                 InformationLabelActivateData informationLabelActivateData = new InformationLabelActivateData(labelActivateData);

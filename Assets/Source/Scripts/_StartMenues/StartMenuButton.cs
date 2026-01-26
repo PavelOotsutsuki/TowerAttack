@@ -1,7 +1,8 @@
+using Tools;
 using Tools.UI;
 
 namespace StartMenues
 {
-    public class StartMenuButton : ConfirmableFocusableDisablableButton
+    public class StartMenuButton : ConfirmableFocusableButton
     { }
 }

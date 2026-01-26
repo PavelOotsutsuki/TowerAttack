@@ -1629,7 +1629,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 31.1
+  m_fontSize: 30.75
   m_fontSizeBase: 18
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -13639,8 +13639,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1224688059}
-  - component: {fileID: 1224688060}
   - component: {fileID: 1224688061}
+  - component: {fileID: 1224688062}
   m_Layer: 0
   m_Name: RulesPanel
   m_TagString: Untagged
@@ -13669,21 +13669,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 970, y: 652}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1224688060
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1224688058}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb6a30b0f0b384e2285bf7880c7aa92d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _goBackOnMainPanelButton: {fileID: 1064088728}
-  _label: {fileID: 574239189}
-  _scrollRect: {fileID: 1715481340}
 --- !u!225 &1224688061
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -13696,6 +13681,21 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &1224688062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1224688058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 491258112f3a649509d5fe9b7ea12efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _goBackOnMainPanelButton: {fileID: 1064088728}
+  _label: {fileID: 574239189}
+  _scrollRect: {fileID: 1715481340}
 --- !u!1 &1226376327
 GameObject:
   m_ObjectHideFlags: 0
@@ -19646,8 +19646,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1551458925}
   m_HandleRect: {fileID: 1551458924}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 0.9999976
+  m_Value: 1
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -21597,7 +21597,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1816385293}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe15c5e95da0245c495468bceb6a4c59, type: 3}
+  m_Script: {fileID: 11500000, guid: 30103dc49ec494ffebeeddc7c404efa2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _goBackOnMainPanelButton: {fileID: 1483487331}
@@ -24203,7 +24203,6 @@ MonoBehaviour:
   _seatPanelContainer: {fileID: 1615863575}
   _rightSwitch: {fileID: 144176834}
   _leftSwitch: {fileID: 2019302054}
-  _startCountPanels: 2
   _stoneFrame: {fileID: 1595737433}
 --- !u!1 &2027167758
 GameObject:
@@ -27135,7 +27134,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3615900289330698083}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8c321a18907a40b7ba3339a0f925308, type: 3}
+  m_Script: {fileID: 11500000, guid: c425deee967b340558b786a90b0b9e75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _canvasGroup: {fileID: 5584041723566327499}
@@ -27231,9 +27230,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fadablePanel: {fileID: 1480230336805345489}
-  _startButtonsPanel: {fileID: 610110806}
   _settingsButtonsPanel: {fileID: 1816385295}
-  _rulesButtonsPanel: {fileID: 1224688060}
+  _rulesButtonsPanel: {fileID: 1224688062}
+  _fightMenuStartButtonsPanel: {fileID: 610110806}
 --- !u!114 &6921998021588606725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27511,7 +27510,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6539265977007942867}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50a88b3eb49e14f578d895c99d017ddd, type: 3}
+  m_Script: {fileID: 11500000, guid: 8d4c5260985e94542a566fe139368c50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _label: {fileID: 1910896827944303861}
@@ -27764,8 +27763,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _fightMenuLabel: {fileID: 8162240139160221802}
   _fightMenuPanel: {fileID: 6144690881578250383}
-  _fightMenuButtonsPanelRoot: {fileID: 6583762615599480128}
   _canvasGroup: {fileID: 8933076852782795676}
+  _fightMenuButtonsPanelRoot: {fileID: 6583762615599480128}
 --- !u!225 &9192385935736398767
 CanvasGroup:
   m_ObjectHideFlags: 0

@@ -6,7 +6,7 @@ using Tools.Utils.Movements;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Tools
+namespace Tools.UI
 {
     public class ConfirmableFocusableButton : ConfirmableButton
     {

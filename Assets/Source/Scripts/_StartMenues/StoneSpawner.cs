@@ -12,21 +12,31 @@ namespace StartMenues
 
         [SerializeField] private GameObject _stoneTemplate;
         [SerializeField] private Transform _transform;
-        [SerializeField] private Transform _parent;
+        [SerializeField] private Transform _parentForStoneSpawnerParent;
+        [SerializeField] private StoneSpawnerParent _template;
 
+        private StoneSpawnerParent _parent;
         private bool _isComplete;
 
+        public StoneSpawnerParent StoneSpawnerParent => _parent;
         public bool IsComplete => _isComplete;
 
         public void Init()
         {
+            _parent = Instantiate(_template, _parentForStoneSpawnerParent);
+
             for (int i = 0; i < _countStones; i++)
             {
-                GameObject stone = Instantiate(_stoneTemplate, _parent);
+                GameObject stone = Instantiate(_stoneTemplate, _parent.GetTransform());
                 stone.SetActive(false);
 
                 _stones.Add(stone);
             }
+        }
+
+        public void Init(StoneSpawnerParent parent)
+        {
+            _parent = Instantiate(parent, _parentForStoneSpawnerParent);
         }
 
         public void Activate()

@@ -135,7 +135,7 @@ namespace GameFields.Effects
 
             yield return new WaitUntil(() => discoverResult.IsComplete);
 
-            if (discoverResult.Result == deckTopCard)
+            if (ReferenceEquals(discoverResult.Result, deckTopCard))
             {
                 _deactivePerson.ActivateSkipTurns(_card);
                 _effectDuration.SetDuration(2);

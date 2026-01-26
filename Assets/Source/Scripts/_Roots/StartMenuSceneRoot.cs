@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cards.Views.BigCardViews.Capabilities;
 using Sounds;
 using StartMenues;
 using Tools.Utils.FillComponents;
@@ -14,14 +15,19 @@ namespace Roots
         [SerializeField] private StartMenuLoadActions _startMenuLoadActions;
         [SerializeField] private BackgroundSoundConfig _backgroundSoundConfig;
         [SerializeField] private ForegroundSoundConfig _foregroundSoundConfig;
+        [SerializeField] private StartMenuSavedData _startMenuSavedData;
 
-        private void Start()
+        [Inject]
+        private void Construct()
         {
             //StartCoroutine(Initing(bus, deck, seatPool, cardDescription, handPlayer, informationLabel, lookCardMenu, variantCardCreator, soundRoot,
             //    cardSoundVolume, fightMenuActivateButton, screenRoot));
             _canvasRoot.Init();
             _fontRoot.Init();
-            _startMenuLoadActions.Init(_backgroundSoundConfig, _foregroundSoundConfig);
+
+            CardCapabilityDescription cardCapabilityDescription = new CardCapabilityDescription();
+            _startMenuLoadActions.Init(_backgroundSoundConfig, _foregroundSoundConfig, cardCapabilityDescription,
+                _startMenuSavedData);
 
             _startMenuLoadActions.Activate();
         }

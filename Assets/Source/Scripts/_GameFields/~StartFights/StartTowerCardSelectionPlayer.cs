@@ -87,7 +87,7 @@ namespace GameFields.StartFights
             {
                 foreach (Seat seat in _seats)
                 {
-                    if (seat.Card != discoverResult.Result)
+                    if (ReferenceEquals(seat.Card, discoverResult.Result) == false)
                     {
                         _hand.SeatCard(seat.Card);
                         //seat.Card.SetActiveInteraction(true);
@@ -102,7 +102,7 @@ namespace GameFields.StartFights
                 // Ещё раз потому что при SeatCard идет перерасчет и interactable сбрасывается
                 foreach (Seat seat in _seats)
                 {
-                    if (seat.Card != discoverResult.Result)
+                    if (ReferenceEquals(seat.Card, discoverResult.Result) == false)
                     {
                         seat.Card.SetActiveInteraction(false);
                         seat.Reset();

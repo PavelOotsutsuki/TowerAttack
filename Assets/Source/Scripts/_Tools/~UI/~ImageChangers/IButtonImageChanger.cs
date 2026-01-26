@@ -9,5 +9,6 @@ namespace Tools.UI.ImageChangers
         public void OnPointerDown();
         public void OnPointerExit();
         public void OnPointerUp();
+        public void OnDisabled();
     }
 }

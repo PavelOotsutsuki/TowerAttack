@@ -60,7 +60,7 @@ namespace Menues
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
                 DefineGoBackOnMainPanelButton(),
-                DefineTMP_Text(),
+                //DefineTMP_Text(),
                 DefineScrollRect()
             };
 
@@ -73,11 +73,11 @@ namespace Menues
             return AutomaticFillComponents.DefineComponent(this, ref _goBackOnMainPanelButton, ComponentLocationTypes.InChildren);
         }
 
-        [ContextMenu(nameof(DefineTMP_Text))]
-        private ComponentAttachInfo DefineTMP_Text()
-        {
-            return AutomaticFillComponents.DefineComponent(this, ref _label, ComponentLocationTypes.InChildren);
-        }
+        //[ContextMenu(nameof(DefineTMP_Text))]
+        //private ComponentAttachInfo DefineTMP_Text()
+        //{
+        //    return AutomaticFillComponents.DefineComponent(this, ref _label, ComponentLocationTypes.InChildren);
+        //}
 
         [ContextMenu(nameof(DefineScrollRect))]
         private ComponentAttachInfo DefineScrollRect()

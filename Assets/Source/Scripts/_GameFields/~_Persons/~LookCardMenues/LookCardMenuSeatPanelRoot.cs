@@ -19,7 +19,7 @@ namespace GameFields.Persons.LookCardMenues
         [SerializeField] private LookCardMenuSeatPanelContainer _seatPanelContainer;
         [SerializeField] private LookCardMenuSeatPanelRightSwitch _rightSwitch;
         [SerializeField] private LookCardMenuSeatPanelLeftSwitch _leftSwitch;
-        [SerializeField, Min(0)] private int _startCountPanels = 5;
+        //[SerializeField, Min(0)] private int _startCountPanels = 5;
         [SerializeField] private StoneFrame _stoneFrame;
 
         private readonly List<LookCardMenuSeatPanel> _seatPanels = new List<LookCardMenuSeatPanel>();

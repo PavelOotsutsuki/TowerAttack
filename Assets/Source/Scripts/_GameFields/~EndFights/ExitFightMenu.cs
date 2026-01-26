@@ -57,7 +57,8 @@ namespace GameFields.EndFights
 
             yield return new WaitUntil(() => _startEndGamePanel.IsComplete);
 
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            SceneManager.LoadScene("StartMenu");
             //Application.Quit();
         }
     }

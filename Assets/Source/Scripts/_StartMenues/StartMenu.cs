@@ -1,24 +1,67 @@
-using System.Collections;
 using System.Collections.Generic;
-using DG.Tweening;
+using Cards.Views.BigCardViews.Capabilities;
+using Menues;
+using Tools;
+using Tools.Utils.FillComponents;
 using UnityEngine;
 
 namespace StartMenues
 {
-    public class StartMenu : MonoBehaviour
+    public class StartMenu : Menu
     {
-        [SerializeField] private CanvasGroup _canvasGroup;
+        [SerializeField] private StartMenuButtonsPanelRoot _startMenuButtonsPanelRoot;
 
-        public void Init()
+        //private InputRoot _inputRoot;
+
+        public void Init(/*InputRoot inputRoot, */IVolume cardVolume, IVolume musicVolume, CardCapabilityDescription cardCapabilityDescription)
         {
-            gameObject.SetActive(false);
-            _canvasGroup.alpha = 0;
+            //_inputRoot = inputRoot;
+
+            _startMenuButtonsPanelRoot.Init(cardVolume, musicVolume, cardCapabilityDescription);
+
+            base.Init(_startMenuButtonsPanelRoot);
         }
 
-        public void Activate()
+        protected override void OnActivateInput()
         {
-            gameObject.SetActive(true);
-            _canvasGroup.DOFade(1f, 1f);
+            //_inputRoot.Pause();
         }
+
+        protected override void OnDeactivateInput()
+        {
+            //_inputRoot.Pause();
+            //_inputRoot.DeactivateFightMenu();
+        }
+
+        protected override void OnActivatingInput()
+        {
+            //_inputRoot.ActivateFightMenu();
+        }
+
+        protected override void OnDeactivatingInput()
+        {
+            //_inputRoot.DeactivateFightMenu();
+        }
+
+        #region AutomaticFillComponents
+        [ContextMenu(nameof(DefineAllComponents) + nameof(StartMenu))]
+        public override List<ComponentAttachInfo> DefineAllComponents()
+        {
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineStartMenuButtonsPanel(),
+            };
+
+            list.AddRange(base.DefineAllComponents());
+
+            return list;
+        }
+
+        [ContextMenu(nameof(DefineStartMenuButtonsPanel))]
+        private ComponentAttachInfo DefineStartMenuButtonsPanel()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _startMenuButtonsPanelRoot, ComponentLocationTypes.InChildren);
+        }
+        #endregion
     }
 }

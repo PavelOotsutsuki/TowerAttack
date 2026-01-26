@@ -67,7 +67,7 @@ namespace GameFields.Effects
 
             for (int i = 0; i < cardsHand.Count; i++)
             {
-                if (cardsHand[i] == discoverResult.Result)
+                if (ReferenceEquals(cardsHand[i], discoverResult.Result))
                 {
                     cardToTake = cardsHand[i];
                 }

@@ -21,6 +21,8 @@ namespace GameFields.FightMenues
             _inputRoot = inputRoot;
 
             _fightMenuButtonsPanelRoot.Init(playerLoseActions, this, cardVolume, musicVolume, cardCapabilityDescription);
+
+            base.Init(_fightMenuButtonsPanelRoot);
         }
 
         protected override void OnActivateInput()

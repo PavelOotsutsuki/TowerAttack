@@ -17,6 +17,7 @@ namespace Tools.UI
 
         public bool IsClicked { get; protected set; }
         public bool IsTurnOff => CanvasGroup.blocksRaycasts == false;
+        public bool IsDisable { get; private set; }
         public bool? IsActive { get; protected set; } = null;
 
         public PointerDisableSettingsRoot PointerDisableSettingsRoot => _pointerDisableSettingsRoot;
@@ -34,10 +35,15 @@ namespace Tools.UI
                 return;
 
             IsActive = true;
+            IsClicked = false;
+
+            if (IsDisable)
+            {
+                SetDisableView();
+                return;
+            }
 
             _imageChanger.OnActivate();
-
-            IsClicked = false;
             CanvasGroup.blocksRaycasts = true;
         }
 
@@ -93,6 +99,20 @@ namespace Tools.UI
                 return;
 
             _imageChanger.OnPointerDown();
+        }
+
+        public void SetDisableView()
+        {
+            CanvasGroup.blocksRaycasts = false;
+            _imageChanger.OnDisabled();
+            IsDisable = true;
+        }
+
+        public void SetUndisableView()
+        {
+            CanvasGroup.blocksRaycasts = true;
+            _imageChanger.OnActivate();
+            IsDisable = false;
         }
 
         public virtual bool CanBeClicked()

@@ -6,6 +6,7 @@ namespace Tools.UI.ImageChangers
     {
         [SerializeField] protected Color NormalColor;
         [SerializeField] protected Color PressedColor;
+        [SerializeField] protected Color DisabledColor;
 
         [SerializeField] protected Sprite NormalSprite;
         [SerializeField] protected Sprite PressedSprite;
@@ -43,6 +44,12 @@ namespace Tools.UI.ImageChangers
         public void OnPointerUp()
         {
             Image.color = NormalColor;
+            Image.sprite = CurrentSprite;
+        }
+
+        public void OnDisabled()
+        {
+            Image.color = DisabledColor;
             Image.sprite = CurrentSprite;
         }
     }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Tools.UI.ImageChangers
@@ -10,6 +8,7 @@ namespace Tools.UI.ImageChangers
         [SerializeField] protected Color ClickColor;
         [SerializeField] protected Color SelectColor;
         [SerializeField] protected Color PressedColor;
+        [SerializeField] protected Color DisabledColor;
 
         protected Color CurrentColor;
 
@@ -37,6 +36,11 @@ namespace Tools.UI.ImageChangers
         public void OnPointerUp()
         {
             Image.color = CurrentColor;
+        }
+
+        public void OnDisabled()
+        {
+            Image.color = DisabledColor;
         }
     }
 }

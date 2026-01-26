@@ -1,17 +1,17 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Menues;
 using Tools;
 using Tools.UI;
-using Tools.Utils.FillComponents;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 namespace StartMenues
 {
-    public class StartMenuStartButtonsPanel : StartMenuButtonsPanel, IFocusWatcher//, IAutomaticFillComponents
+    public class StartMenuStartButtonsPanel : MenuStartButtonsPanel//, IAutomaticFillComponents
     {
         //[SerializeField] private FadablePanel _fadablePanel;
         [SerializeField] private StartMenuButton _playButton;
@@ -46,7 +46,7 @@ namespace StartMenues
                 _exitButton
             };
 
-            _playButton.Init(this, null);
+            _playButton.Init(this, () => SceneManager.LoadScene("Fight"));
             _campaignButton.Init(this, null);
             _collectionButton.Init(this, null);
             _achievementsButton.Init(this, null);
@@ -64,6 +64,10 @@ namespace StartMenues
                 }
                 #endif
             });
+
+            _campaignButton.SetDisableView();
+            _collectionButton.SetDisableView();
+            _achievementsButton.SetDisableView();
         }
 
         public override void OnEnterPress()
@@ -78,10 +82,14 @@ namespace StartMenues
 
             int index = _fightMenuButtons.IndexOf(_currentFocusedButton);
 
-            index++;
+            do
+            {
+                index++;
 
-            if (index == _fightMenuButtons.Count)
-                index = 0;
+                if (index == _fightMenuButtons.Count)
+                    index = 0;
+            }
+            while (_fightMenuButtons[index].IsDisable);
 
             _fightMenuButtons[index].OnPointerEnter(null);
         }
@@ -93,15 +101,19 @@ namespace StartMenues
 
             int index = _fightMenuButtons.IndexOf(_currentFocusedButton);
 
-            index--;
+            do
+            {
+                index--;
 
-            if (index < 0)
-                index = _fightMenuButtons.Count - 1;
+                if (index < 0)
+                    index = _fightMenuButtons.Count - 1;
+            }
+            while (_fightMenuButtons[index].IsDisable);
 
             _fightMenuButtons[index].OnPointerEnter(null);
         }
 
-        public void SetFocusedButton(ConfirmableFocusableButton focusedButton)
+        public override void SetFocusedButton(ConfirmableFocusableButton focusedButton)
         {
             if (_currentFocusedButton == focusedButton)
                 return;
@@ -129,8 +141,6 @@ namespace StartMenues
 
             base.Activate();
 
-            //_isComplete = false;
-
             foreach (StartMenuButton fightMenuButton in _fightMenuButtons)
             {
                 fightMenuButton.Activate();
@@ -138,9 +148,6 @@ namespace StartMenues
 
             EventSystem.current.SetSelectedGameObject(null);
             _fightMenuButtons[0].OnPointerEnter(null);
-            //SetFocusedButton(_fightMenuButtons[0], true);
-
-            //Activating().ToUniTask();
         }
 
         public override void Deactivate()
@@ -150,14 +157,10 @@ namespace StartMenues
 
             base.Deactivate();
 
-            //_isComplete = false;
-
             foreach (StartMenuButton fightMenuButton in _fightMenuButtons)
             {
                 fightMenuButton.Deactivate();
             }
-
-            //Deactivating().ToUniTask();
         }
 
         private void UnfocuseButton()
@@ -169,42 +172,5 @@ namespace StartMenues
                 _currentFocusedButton = null;
             }
         }
-
-        //private IEnumerator Activating()
-        //{
-        //    _fadablePanel.Show();
-
-        //    yield return new WaitUntil(() => _fadablePanel.IsComplete);
-
-        //    _isComplete = true;
-        //}
-
-        //private IEnumerator Deactivating()
-        //{
-        //    _fadablePanel.Hide();
-
-        //    yield return new WaitUntil(() => _fadablePanel.IsComplete);
-
-        //    _isComplete = true;
-        //}
-
-        //#region AutomaticFillComponents
-        //[ContextMenu(nameof(DefineAllComponents) + nameof(FightMenuButtonsPanel))]
-        //public virtual List<ComponentAttachInfo> DefineAllComponents()
-        //{
-        //    List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
-        //    {
-        //        DefineFadablePanel()
-        //    };
-
-        //    return list;
-        //}
-
-        //[ContextMenu(nameof(DefineFadablePanel))]
-        //private ComponentAttachInfo DefineFadablePanel()
-        //{
-        //    return AutomaticFillComponents.DefineComponent(this, ref _fadablePanel, ComponentLocationTypes.InThis);
-        //}
-        //#endregion
     }
 }
