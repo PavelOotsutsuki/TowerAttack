@@ -15,7 +15,8 @@ namespace Roots
         [SerializeField] private StartMenuLoadActions _startMenuLoadActions;
         [SerializeField] private BackgroundSoundConfig _backgroundSoundConfig;
         [SerializeField] private ForegroundSoundConfig _foregroundSoundConfig;
-        [SerializeField] private StartMenuSavedData _startMenuSavedData;
+        //[SerializeField] private StartMenuSavedData _startMenuSavedData;
+        [SerializeField] private Creator _gameRootCreator;
 
         [Inject]
         private void Construct()
@@ -27,9 +28,14 @@ namespace Roots
 
             CardCapabilityDescription cardCapabilityDescription = new CardCapabilityDescription();
             _startMenuLoadActions.Init(_backgroundSoundConfig, _foregroundSoundConfig, cardCapabilityDescription,
-                _startMenuSavedData);
+                _gameRootCreator);
 
             _startMenuLoadActions.Activate();
+        }
+
+        public void Reactivate()
+        {
+            _startMenuLoadActions.Reactivate();
         }
 
         #region AutomaticFillComponents

@@ -21,14 +21,14 @@ namespace GameFields
         private FightStepsController _fightStepsController;
 
         public void Init(PersonsState personsState, EnemyAI enemyAI, SignalBus bus, SeatPool seatPool,
-            IActivatable soundRootActivatable, IActivatable fightButtonsActivator)
+            IActivatable soundRootActivatable, IActivatable fightButtonsActivator, IDeactivatable onMainMenuSwitcher)
         {
             _startFight.Init(enemyAI);
 
             FightResult fightResult = new FightResult();
             Fight fight = new Fight(personsState, fightResult, bus, seatPool
                 , soundRootActivatable, fightButtonsActivator);
-            _endFight.Init(fightResult);
+            _endFight.Init(fightResult, onMainMenuSwitcher);
             _fightStepsController = new FightStepsController(_startFight, fight, _endFight);
 
             //_fightStepsController.NextStep();

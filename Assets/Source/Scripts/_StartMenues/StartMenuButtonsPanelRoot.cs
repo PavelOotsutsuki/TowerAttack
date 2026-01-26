@@ -11,9 +11,10 @@ namespace StartMenues
     {
         [SerializeField] private StartMenuStartButtonsPanel _startMenuStartButtonsPanel;
 
-        public void Init(IVolume cardVolume, IVolume musicVolume, CardCapabilityDescription cardCapabilityDescription)
+        public void Init(IVolume cardVolume, IVolume musicVolume, CardCapabilityDescription cardCapabilityDescription,
+            IActivatable gameRootActivatable, StartMenu startMenu)
         {
-            _startMenuStartButtonsPanel.Init(SetSettingsPanel, SetRulesPanel);
+            _startMenuStartButtonsPanel.Init(SetSettingsPanel, SetRulesPanel, gameRootActivatable, startMenu);
 
             base.Init(cardVolume, musicVolume, cardCapabilityDescription, _startMenuStartButtonsPanel);
         }

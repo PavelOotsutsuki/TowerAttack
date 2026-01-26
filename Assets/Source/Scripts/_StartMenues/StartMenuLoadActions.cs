@@ -18,16 +18,16 @@ namespace StartMenues
         [SerializeField] private LoadText _loadText;
         [SerializeField] private StartMenu _startMenu;
 
-        private StartMenuSavedData _startMenuSavedData;
+        //private StartMenuSavedData _startMenuSavedData;
 
         public void Init(IVolume backgroundSoundConfig, IVolume foregroundSoundConfig, CardCapabilityDescription cardCapabilityDescription,
-            StartMenuSavedData startMenuSavedData)
+            IActivatable gameRootActivatable)
         {
-            _startMenuSavedData = startMenuSavedData;
+            //_startMenuSavedData = startMenuSavedData;
 
             _loadText.Init();
             //_startMenu.Init(backgroundSoundConfig, foregroundSoundConfig);
-            _startMenu.Init(foregroundSoundConfig, backgroundSoundConfig, cardCapabilityDescription);
+            _startMenu.Init(foregroundSoundConfig, backgroundSoundConfig, cardCapabilityDescription, gameRootActivatable);
             _stoneSpawner.Init();
         }
 
@@ -39,8 +39,8 @@ namespace StartMenues
         private IEnumerator Activating()
         {
             // 1. Просветление экрана
-            if (_startMenuSavedData.StoneSpawnerParent == null)
-            {
+            //if (_startMenuSavedData.StoneSpawnerParent == null)
+            //{
                 _mainCamera.backgroundColor = _startColor;
 
                 yield return new WaitForSeconds(0.5f);
@@ -58,16 +58,22 @@ namespace StartMenues
 
                 _loadText.Deactivate();
 
-                _startMenuSavedData.SetStoneSpawner(_stoneSpawner.StoneSpawnerParent);
-            }
-            else
-            {
-                _stoneSpawner.Init(_stoneSpawner.StoneSpawnerParent);
-            }
+                //_startMenuSavedData.SetStoneSpawner(_stoneSpawner.StoneSpawnerParent);
+            //}
+            //else
+            //{
+            //    _stoneSpawner.Init(_stoneSpawner.StoneSpawnerParent);
+            //}
 
             // 3. Появление меню
 
             _startMenu.Activate();
         }
+
+        public void Reactivate()
+        {
+            _startMenu.Activate();
+        }
+
     }
 }

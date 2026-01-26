@@ -13,11 +13,12 @@ namespace StartMenues
 
         //private InputRoot _inputRoot;
 
-        public void Init(/*InputRoot inputRoot, */IVolume cardVolume, IVolume musicVolume, CardCapabilityDescription cardCapabilityDescription)
+        public void Init(/*InputRoot inputRoot, */IVolume cardVolume, IVolume musicVolume, CardCapabilityDescription cardCapabilityDescription,
+            IActivatable gameRootActivatable)
         {
             //_inputRoot = inputRoot;
 
-            _startMenuButtonsPanelRoot.Init(cardVolume, musicVolume, cardCapabilityDescription);
+            _startMenuButtonsPanelRoot.Init(cardVolume, musicVolume, cardCapabilityDescription, gameRootActivatable, this);
 
             base.Init(_startMenuButtonsPanelRoot);
         }

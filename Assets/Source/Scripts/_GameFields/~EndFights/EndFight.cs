@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Tools;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
@@ -19,7 +20,7 @@ namespace GameFields.EndFights
 
         private bool _isComplete;
 
-        public void Init(IReadonlyFightResult fightResult)
+        public void Init(IReadonlyFightResult fightResult, IDeactivatable onMainMenuSwitcher)
         {
             gameObject.SetActive(false);
             _isComplete = false;
@@ -29,7 +30,7 @@ namespace GameFields.EndFights
             _panel.Init();
             _endFightLabel.Init();
             _exitFightLabel.Init();
-            _exitFightMenu.Init();
+            _exitFightMenu.Init(onMainMenuSwitcher);
         }
 
         public bool IsComplete => _isComplete;

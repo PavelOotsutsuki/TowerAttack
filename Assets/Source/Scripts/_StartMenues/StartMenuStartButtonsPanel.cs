@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using Menues;
 using Tools;
 using Tools.UI;
@@ -23,6 +25,9 @@ namespace StartMenues
         [SerializeField] private StartMenuButton _exitButton;
 
         private List<StartMenuButton> _fightMenuButtons;
+        private IActivatable _gameRootActivatable;
+        private IDeactivatable _startMenuDeactivatable;
+        private ICompletable _startMenuCompletable;
 
         //private bool _isComplete;
         private StartMenuButton _currentFocusedButton;
@@ -30,10 +35,14 @@ namespace StartMenues
         public override bool? IsActive { get; protected set; } = null;
         //public bool IsComplete => _isComplete;
 
-        public void Init(Action onSettingsButtonClick, Action onRulesButtonClick)
+        public void Init(Action onSettingsButtonClick, Action onRulesButtonClick, IActivatable gameRootActivatable,
+            StartMenu startMenuDeactivatable)
         {
             //_isComplete = true;
             //_fadablePanel.Init();
+            _gameRootActivatable = gameRootActivatable;
+            _startMenuDeactivatable = startMenuDeactivatable;
+            _startMenuCompletable = startMenuDeactivatable;
 
             _fightMenuButtons = new List<StartMenuButton>()
             {
@@ -46,7 +55,7 @@ namespace StartMenues
                 _exitButton
             };
 
-            _playButton.Init(this, () => SceneManager.LoadScene("Fight"));
+            _playButton.Init(this, StartPlaying);
             _campaignButton.Init(this, null);
             _collectionButton.Init(this, null);
             _achievementsButton.Init(this, null);
@@ -171,6 +180,21 @@ namespace StartMenues
                 _currentFocusedButton.OnPointerExit(null);
                 _currentFocusedButton = null;
             }
+        }
+
+        private void StartPlaying()
+        {
+            StartingPlaying().ToUniTask();
+        }
+
+        private IEnumerator StartingPlaying()
+        {
+            _startMenuDeactivatable.Deactivate();
+
+            yield return new WaitUntil(() => _startMenuCompletable.IsComplete);
+            yield return new WaitForSeconds(1f);
+
+            _gameRootActivatable.Activate();
         }
     }
 }

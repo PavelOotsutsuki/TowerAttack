@@ -24,6 +24,7 @@ using Cards.Sounds;
 using GameFields.CardTransits;
 using GameFields.Histories;
 using Sounds;
+using Tools;
 
 namespace Roots
 {
@@ -97,7 +98,8 @@ namespace Roots
             _cardRoot.Init(effectFactory, bigCardRoot, cardDragAndDropHandler, cardCapabilityDescription, cardSoundRoot, _fontRoot);
             deck.Init(seatPool, _cardRoot.Cards);
 
-            _gameFieldRoot.Init(_personsState, enemyAI, bus, seatPool, soundRoot, fightButtonsActivator);
+            IDeactivatable onMainMenuSwitcher = FindObjectOfType(typeof(Creator)) as IDeactivatable;
+            _gameFieldRoot.Init(_personsState, enemyAI, bus, seatPool, soundRoot, fightButtonsActivator, onMainMenuSwitcher);
         }
 
         //private IEnumerator Initing(SignalBus bus, Deck deck, SeatPool seatPool, CardDescription cardDescription, HandPlayer handPlayer,

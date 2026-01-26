@@ -15,6 +15,7 @@ namespace GameFields.EndFights
     public class ExitFightMenu : MonoBehaviour, IActivatable//, IPointerClickHandler
     {
         private StartEndGamePanel _startEndGamePanel;
+        private IDeactivatable _onMainMenuSwitcher;
 
         [Inject]
         private void Construct(StartEndGamePanel startEndGamePanel)
@@ -22,8 +23,10 @@ namespace GameFields.EndFights
             _startEndGamePanel = startEndGamePanel;
         }
 
-        public void Init()
+        public void Init(IDeactivatable onMainMenuSwitcher)
         {
+            _onMainMenuSwitcher = onMainMenuSwitcher;
+
             Deactivate();
         }
 
@@ -58,7 +61,9 @@ namespace GameFields.EndFights
             yield return new WaitUntil(() => _startEndGamePanel.IsComplete);
 
             //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            SceneManager.LoadScene("StartMenu");
+
+            _onMainMenuSwitcher.Deactivate();
+            //SceneManager.LoadScene("StartMenu");
             //Application.Quit();
         }
     }
