@@ -20,7 +20,7 @@ namespace GameFields.EndFights
 
         private bool _isComplete;
 
-        public void Init(IReadonlyFightResult fightResult, IDeactivatable onMainMenuSwitcher)
+        public void Init(IReadonlyFightResult fightResult, Action onDestroyPrefab)
         {
             gameObject.SetActive(false);
             _isComplete = false;
@@ -30,7 +30,7 @@ namespace GameFields.EndFights
             _panel.Init();
             _endFightLabel.Init();
             _exitFightLabel.Init();
-            _exitFightMenu.Init(onMainMenuSwitcher);
+            _exitFightMenu.Init(onDestroyPrefab);
         }
 
         public bool IsComplete => _isComplete;

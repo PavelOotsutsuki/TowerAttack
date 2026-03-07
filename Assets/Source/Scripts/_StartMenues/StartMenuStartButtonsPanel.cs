@@ -25,7 +25,7 @@ namespace StartMenues
         [SerializeField] private StartMenuButton _exitButton;
 
         private List<StartMenuButton> _fightMenuButtons;
-        private IActivatable _gameRootActivatable;
+        private Action _onPlayClick;
         private IDeactivatable _startMenuDeactivatable;
         private ICompletable _startMenuCompletable;
 
@@ -35,12 +35,12 @@ namespace StartMenues
         public override bool? IsActive { get; protected set; } = null;
         //public bool IsComplete => _isComplete;
 
-        public void Init(Action onSettingsButtonClick, Action onRulesButtonClick, IActivatable gameRootActivatable,
+        public void Init(Action onSettingsButtonClick, Action onRulesButtonClick, Action onPlayClick,
             StartMenu startMenuDeactivatable)
         {
             //_isComplete = true;
             //_fadablePanel.Init();
-            _gameRootActivatable = gameRootActivatable;
+            _onPlayClick = onPlayClick;
             _startMenuDeactivatable = startMenuDeactivatable;
             _startMenuCompletable = startMenuDeactivatable;
 
@@ -194,7 +194,7 @@ namespace StartMenues
             yield return new WaitUntil(() => _startMenuCompletable.IsComplete);
             yield return new WaitForSeconds(1f);
 
-            _gameRootActivatable.Activate();
+            _onPlayClick?.Invoke();
         }
     }
 }

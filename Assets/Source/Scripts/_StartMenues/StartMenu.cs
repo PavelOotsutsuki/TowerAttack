@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Cards.Views.BigCardViews.Capabilities;
 using Menues;
@@ -14,11 +15,11 @@ namespace StartMenues
         //private InputRoot _inputRoot;
 
         public void Init(/*InputRoot inputRoot, */IVolume cardVolume, IVolume musicVolume, CardCapabilityDescription cardCapabilityDescription,
-            IActivatable gameRootActivatable)
+            Action onPlayClick)
         {
             //_inputRoot = inputRoot;
 
-            _startMenuButtonsPanelRoot.Init(cardVolume, musicVolume, cardCapabilityDescription, gameRootActivatable, this);
+            _startMenuButtonsPanelRoot.Init(cardVolume, musicVolume, cardCapabilityDescription, onPlayClick, this);
 
             base.Init(_startMenuButtonsPanelRoot);
         }

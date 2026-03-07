@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using Tools;
 using Cards.Views.BigCardViews.Capabilities;
+using System;
 
 namespace StartMenues
 {
@@ -11,23 +12,24 @@ namespace StartMenues
     {
         private readonly float _colorChangeDuration = 2f;
 
-        [SerializeField] private Camera _mainCamera;
         [SerializeField] private Color _startColor;
         [SerializeField] private Color _endColor;
         [SerializeField] private StoneSpawner _stoneSpawner;
         [SerializeField] private LoadText _loadText;
         [SerializeField] private StartMenu _startMenu;
 
+        private Camera _mainCamera;
         //private StartMenuSavedData _startMenuSavedData;
 
         public void Init(IVolume backgroundSoundConfig, IVolume foregroundSoundConfig, CardCapabilityDescription cardCapabilityDescription,
-            IActivatable gameRootActivatable)
+            Action onPlayClick)
         {
             //_startMenuSavedData = startMenuSavedData;
+            _mainCamera = Camera.main;
 
             _loadText.Init();
             //_startMenu.Init(backgroundSoundConfig, foregroundSoundConfig);
-            _startMenu.Init(foregroundSoundConfig, backgroundSoundConfig, cardCapabilityDescription, gameRootActivatable);
+            _startMenu.Init(foregroundSoundConfig, backgroundSoundConfig, cardCapabilityDescription, onPlayClick);
             _stoneSpawner.Init();
         }
 

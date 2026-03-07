@@ -1464,14 +1464,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1365550772132586639}
-  - component: {fileID: 8110417881313029551}
   - component: {fileID: 1337820928711796362}
   - component: {fileID: 8291408689434793309}
   - component: {fileID: 6950195793345557426}
   - component: {fileID: 7939435371641739522}
   - component: {fileID: 1379943374972121541}
+  - component: {fileID: 3344999184344243311}
+  - component: {fileID: 5723382980651029022}
   m_Layer: 0
-  m_Name: _gameRoot
+  m_Name: _fightRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1491,29 +1492,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6421560448643167755}
-  - {fileID: 1986955285481274447}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8110417881313029551
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1047420342064119969}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5aa90c220cd7447d2b951fb77fa976d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _endTurnButton: {fileID: 7072742864810498405}
-  _canvasRoot: {fileID: 6950195793345557426}
-  _cardRoot: {fileID: 8291408689434793309}
-  _gameFieldRoot: {fileID: 1337820928711796362}
-  _fontRoot: {fileID: 7939435371641739522}
-  _personCreator: {fileID: 6623014685722226487}
-  _lightControlsCreator: {fileID: 7484531735989112017}
-  _speedUpButtonSortOrder: {fileID: 4729916998590484661}
 --- !u!114 &1337820928711796362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1526,6 +1506,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3abf03eb525a44ac88fb6396f866c890, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _endTurnButton: {fileID: 7072742864810498405}
+  _canvasRoot: {fileID: 6950195793345557426}
+  _cardRoot: {fileID: 8291408689434793309}
+  _fontRoot: {fileID: 7939435371641739522}
+  _personCreator: {fileID: 6623014685722226487}
+  _lightControlsCreator: {fileID: 7484531735989112017}
+  _speedUpButtonSortOrder: {fileID: 4729916998590484661}
   _fightPVE: {fileID: 1096962212225317911}
 --- !u!114 &8291408689434793309
 MonoBehaviour:
@@ -1819,6 +1806,91 @@ MonoBehaviour:
   _template_48_BigBrother: {fileID: 919265072742220496, guid: 74844245e429a476cb74a57551bd8a91, type: 3}
   _template_49_LastChance: {fileID: 4403635186777024959, guid: 365343b7571e8400489247340455bc34, type: 3}
   _template_50_FallenGuardian: {fileID: 752866426036925044, guid: 31c57efe6555248f095495f8cf0ed93c, type: 3}
+--- !u!114 &3344999184344243311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047420342064119969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bba9d3a8e0ac4809a14e298e5f2b9748, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _backgroundSoundConfig: {fileID: 11400000, guid: 2844195ea760e4d6ea83535abdc83e49, type: 2}
+  _foregroundSoundConfig: {fileID: 11400000, guid: 642ad2ea1bb794c4c968ea3826ad8934, type: 2}
+  _UIHelperDescription: {fileID: 3265309160327732252}
+  _bigCardRoot: {fileID: 5804309713533629084}
+  _informationLabel: {fileID: 3128229670668029493}
+  _soundRoot: {fileID: 522019852546061866}
+  _fightMenuActivateButton: {fileID: 7683111596104851806}
+  _fightMenu: {fileID: 8317713250013667560}
+  _historyMenuActivateButton: {fileID: 1275409755323649466}
+  _historyMenu: {fileID: 5975339770785500968}
+  _deck: {fileID: 2539356603429876141}
+  _discardPileConfig:
+    <RectTransform>k__BackingField: {fileID: 4611179216620562604}
+    <CardRotationOffset>k__BackingField: 30
+    <StartCardTranslateSpeed>k__BackingField: 0.5
+    <DiscardDelay>k__BackingField: 0.5
+    <DiscardCardAnimationData>k__BackingField:
+      <StartScaleVector>k__BackingField: {x: 0.5, y: 0.5, z: 0.5}
+      <StartRotation>k__BackingField: {x: 0, y: 0, z: 0}
+      <CardIncreaseDuration>k__BackingField: 0.5
+      <DelayAfterIncrease>k__BackingField: 0.5
+      <InvertCardAnimationData>k__BackingField:
+        <InvertCardFrontDuration>k__BackingField: 0.5
+        <InvertCardBackDuration>k__BackingField: 0.5
+        <DelayAfterInvert>k__BackingField: 0.5
+        <IsIgnoreStartSide>k__BackingField: 0
+        <StartSide>k__BackingField: 0
+  _seatPool: {fileID: 2989443362291287629}
+  _skipTurnLabelPlayer: {fileID: 6215685939171210850}
+  _skipTurnLabelEnemyAI: {fileID: 6274361801518587903}
+  _variantCardCreator: {fileID: 7419626440322650756}
+  _playerHand: {fileID: 6919777344052538315}
+  _playerTable: {fileID: 8869063191228789080}
+  _playerTower: {fileID: 2802966295508572248}
+  _playerDiscover: {fileID: 8531972355864681765}
+  _playerPlayingZone: {fileID: 1155099699455228839}
+  _choiceMenuPlayer: {fileID: 4175478595837426473}
+  _choiceMenuImitationPlayer: {fileID: 567782004563893806}
+  _attackMenuPlayer: {fileID: 5989416289819054760}
+  _playerCardAttackZone: {fileID: 4144826930967542722}
+  _lookCardMenuPlayer: {fileID: 6192904027583558128}
+  _startPlayerTurnLabel: {fileID: 3084517534250330133}
+  _startEndGamePanel: {fileID: 792261403129028525}
+  _forgingZone: {fileID: 6574412673874007836}
+  _handTransferZone: {fileID: 5982414128291922861}
+  _enemyHand: {fileID: 3744656512490674388}
+  _enemyTable: {fileID: 8263497014491207557}
+  _enemyTower: {fileID: 4452280597368031593}
+  _enemyDiscoverImitation: {fileID: 839862110027100094}
+  _enemyPlayingZone: {fileID: 4497774615628136074}
+  _enemyChoiceMenu: {fileID: 7986243295566515512}
+  _enemyChoiceMenuImitation: {fileID: 728897312940735126}
+  _enemyAttackMenu: {fileID: 5390047755520152638}
+  _enemyCardAttackZone: {fileID: 2613195421969521180}
+  _confirmableNumbersViewRoot: {fileID: 1819105957683862676}
+--- !u!114 &5723382980651029022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047420342064119969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08eca9f7688a0a24685b89133b020c8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scriptableObjectInstallers: []
+  _monoInstallers:
+  - {fileID: 3344999184344243311}
+  _installerPrefabs: []
+  _autoRun: 1
+  _kernel: {fileID: 0}
 --- !u!1 &1101099402556143432
 GameObject:
   m_ObjectHideFlags: 0
@@ -2264,7 +2336,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &410515062928679928
 Transform:
   m_ObjectHideFlags: 0
@@ -7214,7 +7286,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5400163225315647518
 Transform:
   m_ObjectHideFlags: 0
@@ -17521,7 +17593,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 456.62903}
+  m_AnchoredPosition: {x: 0, y: 456.629}
   m_SizeDelta: {x: 0, y: 363}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &8421528645989163639
@@ -18844,138 +18916,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &8886580310144246144
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1986955285481274447}
-  - component: {fileID: 7443451677666554453}
-  - component: {fileID: 2135812044499577346}
-  m_Layer: 0
-  m_Name: SceneContext
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1986955285481274447
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8886580310144246144}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1365550772132586639}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7443451677666554453
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8886580310144246144}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89715ad69b973a14899afa2c6730b30b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _scriptableObjectInstallers: []
-  _monoInstallers:
-  - {fileID: 2135812044499577346}
-  _installerPrefabs: []
-  _autoRun: 1
-  OnPreInstall:
-    m_PersistentCalls:
-      m_Calls: []
-  OnPostInstall:
-    m_PersistentCalls:
-      m_Calls: []
-  OnPreResolve:
-    m_PersistentCalls:
-      m_Calls: []
-  OnPostResolve:
-    m_PersistentCalls:
-      m_Calls: []
-  _parentNewObjectsUnderSceneContext: 0
-  _contractNames: []
-  _parentContractNames: []
---- !u!114 &2135812044499577346
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8886580310144246144}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bba9d3a8e0ac4809a14e298e5f2b9748, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _backgroundSoundConfig: {fileID: 11400000, guid: 2844195ea760e4d6ea83535abdc83e49, type: 2}
-  _foregroundSoundConfig: {fileID: 11400000, guid: 642ad2ea1bb794c4c968ea3826ad8934, type: 2}
-  _UIHelperDescription: {fileID: 3265309160327732252}
-  _bigCardRoot: {fileID: 5804309713533629084}
-  _informationLabel: {fileID: 3128229670668029493}
-  _soundRoot: {fileID: 522019852546061866}
-  _fightMenuActivateButton: {fileID: 7683111596104851806}
-  _fightMenu: {fileID: 8317713250013667560}
-  _historyMenuActivateButton: {fileID: 1275409755323649466}
-  _historyMenu: {fileID: 5975339770785500968}
-  _deck: {fileID: 2539356603429876141}
-  _discardPileConfig:
-    <RectTransform>k__BackingField: {fileID: 4611179216620562604}
-    <CardRotationOffset>k__BackingField: 30
-    <StartCardTranslateSpeed>k__BackingField: 0.5
-    <DiscardDelay>k__BackingField: 0.5
-    <DiscardCardAnimationData>k__BackingField:
-      <StartScaleVector>k__BackingField: {x: 0.5, y: 0.5, z: 0.5}
-      <StartRotation>k__BackingField: {x: 0, y: 0, z: 0}
-      <CardIncreaseDuration>k__BackingField: 0.5
-      <DelayAfterIncrease>k__BackingField: 0.5
-      <InvertCardAnimationData>k__BackingField:
-        <InvertCardFrontDuration>k__BackingField: 0.5
-        <InvertCardBackDuration>k__BackingField: 0.5
-        <DelayAfterInvert>k__BackingField: 0.5
-        <IsIgnoreStartSide>k__BackingField: 0
-        <StartSide>k__BackingField: 0
-  _seatPool: {fileID: 2989443362291287629}
-  _skipTurnLabelPlayer: {fileID: 6215685939171210850}
-  _skipTurnLabelEnemyAI: {fileID: 6274361801518587903}
-  _variantCardCreator: {fileID: 7419626440322650756}
-  _playerHand: {fileID: 6919777344052538315}
-  _playerTable: {fileID: 8869063191228789080}
-  _playerTower: {fileID: 2802966295508572248}
-  _playerDiscover: {fileID: 8531972355864681765}
-  _playerPlayingZone: {fileID: 1155099699455228839}
-  _choiceMenuPlayer: {fileID: 4175478595837426473}
-  _choiceMenuImitationPlayer: {fileID: 567782004563893806}
-  _attackMenuPlayer: {fileID: 5989416289819054760}
-  _playerCardAttackZone: {fileID: 4144826930967542722}
-  _lookCardMenuPlayer: {fileID: 6192904027583558128}
-  _startPlayerTurnLabel: {fileID: 3084517534250330133}
-  _startEndGamePanel: {fileID: 792261403129028525}
-  _forgingZone: {fileID: 6574412673874007836}
-  _handTransferZone: {fileID: 5982414128291922861}
-  _enemyHand: {fileID: 3744656512490674388}
-  _enemyTable: {fileID: 8263497014491207557}
-  _enemyTower: {fileID: 4452280597368031593}
-  _enemyDiscoverImitation: {fileID: 839862110027100094}
-  _enemyPlayingZone: {fileID: 4497774615628136074}
-  _enemyChoiceMenu: {fileID: 7986243295566515512}
-  _enemyChoiceMenuImitation: {fileID: 728897312940735126}
-  _enemyAttackMenu: {fileID: 5390047755520152638}
-  _enemyCardAttackZone: {fileID: 2613195421969521180}
-  _confirmableNumbersViewRoot: {fileID: 1819105957683862676}
 --- !u!1 &8904679660499583668
 GameObject:
   m_ObjectHideFlags: 0

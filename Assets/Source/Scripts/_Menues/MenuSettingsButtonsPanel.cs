@@ -23,15 +23,15 @@ namespace Menues
 
         private IVolume _cardVolume;
         private IVolume _musicVolume;
-        private ScreenRoot _screenRoot;
+        //private ScreenRoot _screenRoot;
 
         public override bool? IsActive { get; protected set; } = null;
 
-        [Inject]
-        private void Construct(ScreenRoot screenRoot)
-        {
-            _screenRoot = screenRoot;
-        }
+        //[Inject]
+        //private void Construct(ScreenRoot screenRoot)
+        //{
+        //    _screenRoot = screenRoot;
+        //}
 
         public void Init(Action onClickGoBackOnMainPanelButton, IVolume cardVolume, IVolume musicVolume)
         {
@@ -42,18 +42,18 @@ namespace Menues
             _cardVolumeSlider.value = cardVolume.Percent;
             _musicVlumeSlider.value = musicVolume.Percent;
 
-            IEnumerable<Resolution> resolutions = _screenRoot.Resolutions;
+            //IEnumerable<Resolution> resolutions = _screenRoot.Resolutions;
             List<OptionData> optionDatas = new List<OptionData>();
             int currentIndex = -1;
 
-            foreach (Resolution resolution in resolutions)
-            {
-                OptionData optionData = new OptionData(_screenRoot.GetResolutionData(resolution));
-                optionDatas.Add(optionData);
+            //foreach (Resolution resolution in resolutions)
+            //{
+            //    OptionData optionData = new OptionData(_screenRoot.GetResolutionData(resolution));
+            //    optionDatas.Add(optionData);
 
-                if (_screenRoot.CurrentResolution.Equals(resolution))
-                    currentIndex = optionDatas.Count - 1;
-            }
+            //    if (_screenRoot.CurrentResolution.Equals(resolution))
+            //        currentIndex = optionDatas.Count - 1;
+            //}
 
             _screenDropdown.AddOptions(optionDatas);
             _screenDropdown.value = currentIndex;
@@ -93,7 +93,7 @@ namespace Menues
         private void OnScreenDropdownValueChanged(int value)
         {
             string variant = _screenDropdown.options[value].text;
-            _screenRoot.SetResolution(_screenRoot.GetResolutionData(variant));
+            //_screenRoot.SetResolution(_screenRoot.GetResolutionData(variant));
         }
 
         private IEnumerator ActivatingGoBackOnMainPanelButton()

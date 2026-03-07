@@ -65,8 +65,7 @@ namespace Cards.Views.BigCardViews
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
                 DefineBigCard(),
-                DefineCapabilityDescription(),
-                DefineCardDescription()
+                DefineCapabilityDescription()
             };
 
             return list;
@@ -82,12 +81,6 @@ namespace Cards.Views.BigCardViews
         private ComponentAttachInfo DefineCapabilityDescription()
         {
             return AutomaticFillComponents.DefineComponent(this, ref _capabilityDescription, ComponentLocationTypes.InChildren);
-        }
-
-        [ContextMenu(nameof(DefineCardDescription))]
-        private ComponentAttachInfo DefineCardDescription()
-        {
-            return AutomaticFillComponents.DefineComponent(this, ref _cardDescription, ComponentLocationTypes.InScene);
         }
         #endregion
     }

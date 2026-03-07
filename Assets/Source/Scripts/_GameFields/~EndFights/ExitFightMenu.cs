@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace GameFields.EndFights
     public class ExitFightMenu : MonoBehaviour, IActivatable//, IPointerClickHandler
     {
         private StartEndGamePanel _startEndGamePanel;
-        private IDeactivatable _onMainMenuSwitcher;
+        private Action _onDestroyPrefab;
 
         [Inject]
         private void Construct(StartEndGamePanel startEndGamePanel)
@@ -23,9 +24,9 @@ namespace GameFields.EndFights
             _startEndGamePanel = startEndGamePanel;
         }
 
-        public void Init(IDeactivatable onMainMenuSwitcher)
+        public void Init(Action onDestroyPrefab)
         {
-            _onMainMenuSwitcher = onMainMenuSwitcher;
+            _onDestroyPrefab = onDestroyPrefab;
 
             Deactivate();
         }
@@ -62,7 +63,7 @@ namespace GameFields.EndFights
 
             //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
-            _onMainMenuSwitcher.Deactivate();
+            _onDestroyPrefab?.Invoke();
             //SceneManager.LoadScene("StartMenu");
             //Application.Quit();
         }

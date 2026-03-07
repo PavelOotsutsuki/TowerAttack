@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Cards.Views.BigCardViews.Capabilities;
 using Menues;
@@ -12,9 +13,9 @@ namespace StartMenues
         [SerializeField] private StartMenuStartButtonsPanel _startMenuStartButtonsPanel;
 
         public void Init(IVolume cardVolume, IVolume musicVolume, CardCapabilityDescription cardCapabilityDescription,
-            IActivatable gameRootActivatable, StartMenu startMenu)
+            Action onPlayClick, StartMenu startMenu)
         {
-            _startMenuStartButtonsPanel.Init(SetSettingsPanel, SetRulesPanel, gameRootActivatable, startMenu);
+            _startMenuStartButtonsPanel.Init(SetSettingsPanel, SetRulesPanel, onPlayClick, startMenu);
 
             base.Init(cardVolume, musicVolume, cardCapabilityDescription, _startMenuStartButtonsPanel);
         }

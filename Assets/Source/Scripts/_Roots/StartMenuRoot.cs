@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Cards.Views.BigCardViews.Capabilities;
 using Sounds;
@@ -8,7 +9,7 @@ using Zenject;
 
 namespace Roots
 {
-    public class StartMenuSceneRoot : MonoBehaviour, IAutomaticFillComponents
+    public class StartMenuRoot : MonoBehaviour, IAutomaticFillComponents
     {
         [SerializeField] private CanvasRoot _canvasRoot;
         [SerializeField] private FontRoot _fontRoot;
@@ -16,19 +17,31 @@ namespace Roots
         [SerializeField] private BackgroundSoundConfig _backgroundSoundConfig;
         [SerializeField] private ForegroundSoundConfig _foregroundSoundConfig;
         //[SerializeField] private StartMenuSavedData _startMenuSavedData;
-        [SerializeField] private Creator _gameRootCreator;
+        //[SerializeField] private Creator _gameRootCreator;
 
         [Inject]
         private void Construct()
         {
             //StartCoroutine(Initing(bus, deck, seatPool, cardDescription, handPlayer, informationLabel, lookCardMenu, variantCardCreator, soundRoot,
             //    cardSoundVolume, fightMenuActivateButton, screenRoot));
+            //_canvasRoot.Init();
+            //_fontRoot.Init();
+
+            //CardCapabilityDescription cardCapabilityDescription = new CardCapabilityDescription();
+            //_startMenuLoadActions.Init(_backgroundSoundConfig, _foregroundSoundConfig, cardCapabilityDescription,
+            //    _gameRootCreator);
+
+            //_startMenuLoadActions.Activate();
+        }
+
+        public void Init(Action onPlayClick)
+        {
             _canvasRoot.Init();
             _fontRoot.Init();
 
             CardCapabilityDescription cardCapabilityDescription = new CardCapabilityDescription();
             _startMenuLoadActions.Init(_backgroundSoundConfig, _foregroundSoundConfig, cardCapabilityDescription,
-                _gameRootCreator);
+                onPlayClick);
 
             _startMenuLoadActions.Activate();
         }

@@ -1,25 +1,29 @@
+using System.ComponentModel;
 using StartMenues;
 using Tools;
 using UnityEngine;
+using Zenject;
 
 namespace Roots
 {
     public class Creator : MonoBehaviour, IActivatable, IDeactivatable
     {
         [SerializeField] private Transform _parent;
-        [SerializeField] private GameRoot _gameRootPrefab;
-        [SerializeField] private StartMenuSceneRoot _startMenuSceneRoot;
-        [SerializeField] private StartMenu _startMenu;
+        [SerializeField] private GameObject _gameRootPrefab;
+        [SerializeField] private StartMenuRoot _startMenuSceneRoot;
+        //[SerializeField] private StartMenu _startMenu;
+        [Inject] private DiContainer _diContainer;
 
-        private GameRoot _currentGameRoot;
+        private GameFieldRoot _currentGameRoot;
 
         public void Activate()
         {
-            GameRoot gameRoot = Instantiate(_gameRootPrefab, _parent);
-            gameRoot.gameObject.SetActive(true);
+            GameObject gameRoot = _diContainer.InstantiatePrefab(_gameRootPrefab, _parent);
+            //GameRoot gameRoot = Instantiate(_gameRootPrefab, _parent);
+            //gameRoot.SetActive(true);
             _startMenuSceneRoot.gameObject.SetActive(false);
 
-            _currentGameRoot = gameRoot;
+            _currentGameRoot = gameRoot.GetComponent<GameFieldRoot>();
         }
 
         public void Deactivate()

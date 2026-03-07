@@ -10,13 +10,13 @@ namespace Roots
         //[SerializeField] private BackgroundSoundConfig _backgroundSoundConfig;
         //[SerializeField] private ForegroundSoundConfig _foregroundSoundConfig;
 
-        private ScreenRoot _screenRoot;
+        //private ScreenRoot _screenRoot;
         //private CardCapabilityDescription _cardCapabilityDescription;
 
         public override void InstallBindings()
         {
-            _screenRoot = new ScreenRoot();
-            Container.Bind<ScreenRoot>().FromInstance(_screenRoot).AsSingle();
+            //_screenRoot = new ScreenRoot();
+            //Container.Bind<ScreenRoot>().FromInstance(_screenRoot).AsSingle();
         }
     }
 }
