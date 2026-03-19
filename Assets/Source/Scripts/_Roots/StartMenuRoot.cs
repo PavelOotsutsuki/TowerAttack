@@ -70,6 +70,11 @@ namespace Roots
             _startMenuLoadActions.Reactivate();
         }
 
+        public override void ActivateInputSystem()
+        {
+            _startMenuLoadActions.InputRoot.Activate();
+        }
+
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(StartMenuRoot))]
         public override List<ComponentAttachInfo> DefineAllComponents()

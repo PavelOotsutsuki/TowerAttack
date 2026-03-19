@@ -23,6 +23,8 @@ namespace Roots
             _fontRoot.Init();
         }
 
+        public abstract void ActivateInputSystem();
+
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineGameComponents), false, 10000)] 
         private void DefineGameComponents()

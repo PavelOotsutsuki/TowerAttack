@@ -8,30 +8,29 @@ using UnityEngine;
 
 namespace Menues
 {
-    public abstract class Menu : MonoBehaviour, IWorkable, IHidable, IReactivatable, ICompletable, IMenuInputActivateWatcher, IAutomaticFillComponents
+    public abstract class Menu : MonoBehaviour, IWorkable, ICompletable, IMenuInputActivateWatcher, IAutomaticFillComponents
     {
         [SerializeField] private MenuLabel _fightMenuLabel;
         [SerializeField] private MenuPanel _fightMenuPanel;
         [SerializeField] private CanvasGroup _canvasGroup;
 
         //private InputRoot _inputRoot;
-        private MenuButtonsPanelRoot _menuButtonsPanelRoot;
+        protected MenuButtonsPanelRoot MenuButtonsPanelRoot;
 
-        private bool _isComplete;
 
         public bool? IsActive { get; private set; } = null;
-        public bool IsComplete => _isComplete;
+        public bool IsComplete { get; protected set; }
 
-        public IFocusedButtonEnterHandler CurrentMenuButtonInputHandler => _menuButtonsPanelRoot.CurrentMenuButtonInputHandler;
+        public IFocusedButtonEnterHandler CurrentMenuButtonInputHandler => MenuButtonsPanelRoot.CurrentMenuButtonInputHandler;
 
         protected void Init(MenuButtonsPanelRoot menuButtonsPanelRoot)
         {
             gameObject.SetActive(false);
-            _isComplete = true;
+            IsComplete = true;
             IsActive = false;
             _canvasGroup.blocksRaycasts = true;
 
-            _menuButtonsPanelRoot = menuButtonsPanelRoot;
+            MenuButtonsPanelRoot = menuButtonsPanelRoot;
 
             //_inputRoot = inputRoot;
 
@@ -42,13 +41,13 @@ namespace Menues
 
         public void Activate()
         {
-            if (IsActive == true || _isComplete == false)
+            if (IsActive == true || IsComplete == false)
                 return;
 
             //_inputRoot.Pause();
             OnActivateInput();
 
-            _isComplete = false;
+            IsComplete = false;
             IsActive = true;
 
             gameObject.SetActive(true);
@@ -60,11 +59,11 @@ namespace Menues
 
         public void Deactivate()
         {
-            if (IsActive == false || _isComplete == false)
+            if (IsActive == false || IsComplete == false)
                 return;
 
             IsActive = false;
-            _isComplete = false;
+            IsComplete = false;
             //_inputRoot.Pause();
             //_inputRoot.DeactivateFightMenu();
 
@@ -73,28 +72,20 @@ namespace Menues
             Deactivating().ToUniTask();
         }
 
-        public void Reactivate()
-        {
-            _menuButtonsPanelRoot.Reactivate();
-
-            OnActivatingInput();
-        }
-
-        public abstract void Hide();
         protected abstract void OnDeactivateInput();
 
         private IEnumerator Activating()
         {
             _fightMenuLabel.Show();
             _fightMenuPanel.Show();
-            _menuButtonsPanelRoot.Activate();
+            MenuButtonsPanelRoot.Activate();
 
-            yield return new WaitUntil(() => _fightMenuLabel.IsComplete && _fightMenuPanel.IsComplete && _menuButtonsPanelRoot.IsComplete);
+            yield return new WaitUntil(() => _fightMenuLabel.IsComplete && _fightMenuPanel.IsComplete && MenuButtonsPanelRoot.IsComplete);
 
             //_inputRoot.ActivateFightMenu();
             OnActivatingInput();
 
-            _isComplete = true;
+            IsComplete = true;
         }
 
         protected abstract void OnActivatingInput();
@@ -103,20 +94,20 @@ namespace Menues
         {
             DeactivateChilds();
 
-            yield return new WaitUntil(() => _fightMenuLabel.IsComplete && _fightMenuPanel.IsComplete && _menuButtonsPanelRoot.IsComplete);
+            yield return new WaitUntil(() => _fightMenuLabel.IsComplete && _fightMenuPanel.IsComplete && MenuButtonsPanelRoot.IsComplete);
 
             gameObject.SetActive(false);
             //_inputRoot.DeactivateFightMenu();
             OnDeactivatingInput();
 
-            _isComplete = true;
+            IsComplete = true;
         }
 
         protected virtual void DeactivateChilds()
         {
             _fightMenuLabel.Hide();
             _fightMenuPanel.Hide();
-            _menuButtonsPanelRoot.Deactivate();
+            MenuButtonsPanelRoot.Deactivate();
         }
 
         protected abstract void OnDeactivatingInput();

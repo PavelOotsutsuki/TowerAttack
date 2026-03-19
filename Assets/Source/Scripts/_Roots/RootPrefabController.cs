@@ -56,6 +56,10 @@ namespace Roots
             yield return new WaitForSeconds(0.5f);
 
             _switchRootPrefabPanel.Hide();
+
+            yield return new WaitUntil(() => _switchRootPrefabPanel.IsComplete);
+
+            _currentRootPrefab.ActivateInputSystem();
         }
 
         #region AutomaticFillComponents

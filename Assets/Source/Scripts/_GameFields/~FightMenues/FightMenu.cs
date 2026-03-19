@@ -25,11 +25,6 @@ namespace GameFields.FightMenues
             base.Init(_fightMenuButtonsPanelRoot);
         }
 
-        public override void Hide()
-        {
-            Deactivate();
-        }
-
         protected override void OnActivateInput()
         {
             _inputRoot.Pause();

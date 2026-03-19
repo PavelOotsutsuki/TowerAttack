@@ -14,7 +14,7 @@ using static UnityEngine.InputSystem.InputAction;
 
 namespace GameFields.InputSettings
 {
-    public class GameFieldInputRoot : IDeactivatable
+    public class GameFieldInputRoot : IWorkable
     {
         private bool _isFightMenu;
         private bool _isEnable;
@@ -28,6 +28,8 @@ namespace GameFields.InputSettings
         private readonly MenuInputLogic _fightMenuInputLogic;
 
         private IInputLogic _currentLogic;
+
+        public bool? IsActive { get; private set; } = null;
 
         public GameFieldInputRoot(IDeactivatable endTurnButtonDeactivatable, IWorkable fightMenu,
             IMenuInputActivateWatcher fightMenuInputActivateWatcher, IWorkable historyMenu)
@@ -46,7 +48,7 @@ namespace GameFields.InputSettings
             _inputActions.GameField.Esc.performed += OnEsc;
             _inputActions.GameField.H.performed += OnH;
 
-            _inputActions.Enable();
+            Deactivate();
         }
 
         ~GameFieldInputRoot()
@@ -63,8 +65,21 @@ namespace GameFields.InputSettings
             _inputActions?.Disable();
         }
 
-        void IDeactivatable.Deactivate()
+        public void Activate()
         {
+            if (IsActive == true)
+                return;
+
+            IsActive = true;
+            _inputActions?.Enable();
+        }
+
+        public void Deactivate()
+        {
+            if (IsActive == false)
+                return;
+
+            IsActive = false;
             _inputActions?.Disable();
         }
 

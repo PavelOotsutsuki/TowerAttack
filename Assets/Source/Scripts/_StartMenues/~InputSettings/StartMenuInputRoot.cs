@@ -32,7 +32,7 @@ namespace StartMenues.InputSettings
 
             _inputActions = new InputActions();
 
-            _inputActions.Enable();
+            //_inputActions.Enable();
             _inputActions.StartMenu.Enter.performed += OnEnter;
             //_inputActions.GameField.Q.performed -= OnQ;
             //_inputActions.GameField.LeftArrow.performed -= OnLeftArrow;
@@ -40,7 +40,7 @@ namespace StartMenues.InputSettings
             _inputActions.StartMenu.DownArrow.performed += OnDownArrow;
             _inputActions.StartMenu.UpArrow.performed += OnUpArrow;
             //SetSubscribes();
-            IsActive = true;
+            Deactivate();
         }
 
         ~StartMenuInputRoot()
@@ -72,10 +72,10 @@ namespace StartMenues.InputSettings
             _inputActions?.Disable();
         }
 
-        //public void Pause()
-        //{
-        //    _isEnable = false;
-        //}
+        public void Pause()
+        {
+            _isEnable = false;
+        }
 
         //public void ActivateFightMenu()
         //{
@@ -171,14 +171,16 @@ namespace StartMenues.InputSettings
         //    }
         //}
 
-        //public void Unpause()
-        //{
-        //    _isEnable = true;
-        //}
+        public void Unpause()
+        {
+            _isEnable = true;
+        }
 
         private void OnEnter(CallbackContext context)
         {
             //Debug.Log($"Enter pressed!: {_currentLogic}");
+            if (_isEnable == false)
+                return;
 
             //if (_isFightMenu)
             //{
@@ -279,10 +281,11 @@ namespace StartMenues.InputSettings
         private void OnDownArrow(CallbackContext context)
         {
             //Debug.Log($"DownArrow pressed!: {_currentLogic}");
-
+            if (_isEnable == false)
+                return;
             //if (_isFightMenu)
             //{
-                _startMenuInputLogic.OnDownArrow();
+            _startMenuInputLogic.OnDownArrow();
                 return;
             //}
 
@@ -296,10 +299,11 @@ namespace StartMenues.InputSettings
         private void OnUpArrow(CallbackContext context)
         {
             //Debug.Log($"UpArrow pressed!: {_currentLogic}");
-
+            if (_isEnable == false)
+                return;
             //if (_isFightMenu)
             //{
-                _startMenuInputLogic.OnUpArrow();
+            _startMenuInputLogic.OnUpArrow();
                 return;
             //}
 

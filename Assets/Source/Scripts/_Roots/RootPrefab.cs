@@ -14,6 +14,8 @@ namespace Roots
         private DiContainer _diContainer;
         private Container _container;
 
+        private LocalRoot _localRoot;
+
         public bool? IsActive { get; private set; } = null;
 
         protected void Init(DiContainer diContainer, Container container)
@@ -37,6 +39,7 @@ namespace Roots
             if (CurrentGameObject == null)
             {
                 CurrentGameObject = _diContainer.InstantiatePrefab(_prefab, _container.GetTransform());
+                _localRoot = CurrentGameObject.GetComponent<LocalRoot>();
             }
 
             CurrentGameObject.SetActive(true);
@@ -52,6 +55,11 @@ namespace Roots
             IsActive = false;
 
             OnDeactivate();
+        }
+
+        public void ActivateInputSystem()
+        {
+            _localRoot.ActivateInputSystem();
         }
     }
 }

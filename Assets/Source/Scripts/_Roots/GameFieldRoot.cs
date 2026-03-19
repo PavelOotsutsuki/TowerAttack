@@ -64,6 +64,8 @@ namespace Roots
         private CardCapabilityDescription _cardCapabilityDescription;
         private HistoryRoot _historyRoot;
         private BackgroundSoundConfig _backgroundSoundConfig;
+
+        private GameFieldInputRoot _inputRoot;
         //private FontRoot _fontRoot;
         //private CanvasController _canvasController;
 
@@ -130,10 +132,10 @@ namespace Roots
             BrothersEffectHandlerRoot brothersEffectHandlerRoot = _personCreator.CreateBrothersEffectHandlerRoot();
             PersonEffectsHandlerRoot personEffectsHandlerRoot = _personCreator.CreatePersonEffectsHandlerRoot();
             DiscardManager discardManager = _personCreator.DiscardManager;
-            GameFieldInputRoot inputRoot = _personCreator.GetInputRoot();
+            _inputRoot = _personCreator.GetInputRoot();
             LoseActionsRoot loseActionsRoot = _personCreator.CreateLoseActionsRoot();
 
-            _lookCardMenu.Init(inputRoot);
+            _lookCardMenu.Init(_inputRoot);
 
             Destroy(_personCreator.gameObject);
 
@@ -160,6 +162,11 @@ namespace Roots
         public override void Activate()
         {
             _fightPVE.Activate();
+        }
+
+        public override void ActivateInputSystem()
+        {
+            _inputRoot.Activate();
         }
 
         //private IEnumerator Initing(SignalBus bus, Deck deck, SeatPool seatPool, CardDescription cardDescription, HandPlayer handPlayer,
@@ -219,23 +226,9 @@ namespace Roots
 
         //    _gameFieldRoot.Init(_personsState, enemyAI, bus, seatPool, soundRoot, fightMenuActivateButton);
         //}
-
-        private bool _isSettedActionOnDestroy = false;
-        private Action _onDestroy = null;
-
-        public void SetActionOnDestroy(Action onDestroy)
-        {
-            if (_isSettedActionOnDestroy == false)
-            {
-                _onDestroy = onDestroy;
-                _isSettedActionOnDestroy = true;
-            }
-        }
-
         public void OnDestroy()
         {
             GameFieldGC.GCON();
-            _onDestroy?.Invoke();
         }
 
         #region AutomaticFillComponents

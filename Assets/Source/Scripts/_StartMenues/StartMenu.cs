@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Cards.Views.BigCardViews.Capabilities;
 using Menues;
@@ -9,18 +10,18 @@ using UnityEngine;
 
 namespace StartMenues
 {
-    public class StartMenu : Menu
+    public class StartMenu : Menu, IHidable, IReactivatable
     {
         [SerializeField] private StartMenuButtonsPanelRoot _startMenuButtonsPanelRoot;
 
         private StartMenuInputRoot _inputRoot;
 
-        public void Init(/*InputRoot inputRoot, */IVolume cardVolume, IVolume musicVolume, CardCapabilityDescription cardCapabilityDescription,
+        public void Init(StartMenuInputRoot inputRoot, IVolume cardVolume, IVolume musicVolume, CardCapabilityDescription cardCapabilityDescription,
             Action onPlayClick)
         {
             //_inputRoot = inputRoot;
 
-            _inputRoot = new StartMenuInputRoot(this);
+            _inputRoot = inputRoot;
 
             _startMenuButtonsPanelRoot.Init(cardVolume, musicVolume, cardCapabilityDescription, onPlayClick, this);
 
@@ -28,7 +29,16 @@ namespace StartMenues
             _inputRoot.Activate();
         }
 
-        public override void Hide()
+        public void Reactivate()
+        {
+            IsComplete = false;
+            MenuButtonsPanelRoot.Reactivate();
+
+            OnActivatingInput();
+            IsComplete = true;
+        }
+
+        public void Hide()
         {
             _inputRoot.Deactivate();
         }
@@ -38,27 +48,26 @@ namespace StartMenues
 
         protected override void OnActivateInput()
         {
-            _inputRoot.Deactivate();
+            _inputRoot.Pause();
         }
 
         protected override void OnDeactivateInput()
         {
             //_inputRoot.Pause();
-            _inputRoot.Deactivate();
+            _inputRoot.Pause();
             //_inputRoot.Unpause();
             //_inputRoot.DeactivateFightMenu();
         }
 
         protected override void OnActivatingInput()
         {
-            _inputRoot.Activate();
-            //_inputRoot.Unpause();
+            _inputRoot.Unpause();
             //_inputRoot.ActivateFightMenu();
         }
 
         protected override void OnDeactivatingInput()
         {
-            _inputRoot.Deactivate();
+            _inputRoot.Unpause();
             //_inputRoot.Unpause();
             //_inputRoot.DeactivateFightMenu();
         }

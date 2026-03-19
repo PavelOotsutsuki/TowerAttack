@@ -5,6 +5,7 @@ using DG.Tweening;
 using Tools;
 using Cards.Views.BigCardViews.Capabilities;
 using System;
+using StartMenues.InputSettings;
 
 namespace StartMenues
 {
@@ -19,7 +20,9 @@ namespace StartMenues
         [SerializeField] private StartMenu _startMenu;
 
         private Camera _mainCamera;
+        private StartMenuInputRoot _inputRoot;
         //private StartMenuSavedData _startMenuSavedData;
+        public IActivatable InputRoot => _inputRoot;
 
         public void Init(IVolume backgroundSoundConfig, IVolume foregroundSoundConfig, CardCapabilityDescription cardCapabilityDescription,
             Action onPlayClick)
@@ -27,9 +30,10 @@ namespace StartMenues
             //_startMenuSavedData = startMenuSavedData;
             _mainCamera = Camera.main;
 
+            _inputRoot = new StartMenuInputRoot(_startMenu);
             _loadText.Init();
             //_startMenu.Init(backgroundSoundConfig, foregroundSoundConfig);
-            _startMenu.Init(foregroundSoundConfig, backgroundSoundConfig, cardCapabilityDescription, onPlayClick);
+            _startMenu.Init(_inputRoot, foregroundSoundConfig, backgroundSoundConfig, cardCapabilityDescription, onPlayClick);
             _stoneSpawner.Init();
         }
 
