@@ -29,7 +29,7 @@ namespace GameFields.Persons.LookCardMenues
         //[SerializeField] private float _positionY = 0f;
 
         //private SeatPool _seatPool;
-        private InputRoot _inputRoot;
+        private GameFieldInputRoot _inputRoot;
         //private Vector2 _defaultCardSize;
         private bool _isComplete;
 
@@ -42,7 +42,7 @@ namespace GameFields.Persons.LookCardMenues
 
         public bool? IsActive { get; private set; } = null;
 
-        public void Init(InputRoot inputRoot)
+        public void Init(GameFieldInputRoot inputRoot)
         {
             //_defaultCardSize = GameSettings.CardSize;
             _inputRoot = inputRoot;

@@ -264,7 +264,7 @@ MonoBehaviour:
   _canvasGroup: {fileID: 3057845319147610897}
   _data:
     <MaxAlpha>k__BackingField: 0.972549
-    <MinAlpha>k__BackingField: 0
+    <MinAlpha>k__BackingField: 0.972549
     <FadeUpDuration>k__BackingField: 0.3
     <FadeOutDuration>k__BackingField: 0.1
     <StartAlpha>k__BackingField: 0
@@ -894,7 +894,7 @@ MonoBehaviour:
   _canvasGroup: {fileID: 7659783410351990819}
   _data:
     <MaxAlpha>k__BackingField: 1
-    <MinAlpha>k__BackingField: 0
+    <MinAlpha>k__BackingField: 1
     <FadeUpDuration>k__BackingField: 0.3
     <FadeOutDuration>k__BackingField: 0.1
     <StartAlpha>k__BackingField: 0
@@ -1480,7 +1480,7 @@ MonoBehaviour:
   _canvasGroup: {fileID: 2778726757720440124}
   _data:
     <MaxAlpha>k__BackingField: 1
-    <MinAlpha>k__BackingField: 0
+    <MinAlpha>k__BackingField: 1
     <FadeUpDuration>k__BackingField: 0.3
     <FadeOutDuration>k__BackingField: 0.1
     <StartAlpha>k__BackingField: 0
@@ -2919,9 +2919,9 @@ GameObject:
   - component: {fileID: 6181265368977924845}
   - component: {fileID: 8032295389276172497}
   - component: {fileID: 1670585070274300231}
-  - component: {fileID: 2017927076733300821}
   - component: {fileID: 3210598893982017259}
   - component: {fileID: 7678168153634003785}
+  - component: {fileID: 7069052542627709501}
   m_Layer: 0
   m_Name: _startMenuSceneRoot
   m_TagString: Untagged
@@ -2963,12 +2963,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 493cb66612ea4436cb84bec4026f1651, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _fontRoot: {fileID: 7069052542627709501}
   _canvasRoot: {fileID: 1670585070274300231}
-  _fontRoot: {fileID: 2017927076733300821}
   _startMenuLoadActions: {fileID: 8032295389276172497}
-  _backgroundSoundConfig: {fileID: 11400000, guid: 2844195ea760e4d6ea83535abdc83e49, type: 2}
-  _foregroundSoundConfig: {fileID: 11400000, guid: 642ad2ea1bb794c4c968ea3826ad8934, type: 2}
-  _gameRootCreator: {fileID: 0}
 --- !u!114 &8032295389276172497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3003,7 +3000,37 @@ MonoBehaviour:
   - {fileID: 7095771779383174762}
   - {fileID: 7444415455080060601}
   - {fileID: 4363339419323835535}
---- !u!114 &2017927076733300821
+--- !u!114 &3210598893982017259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4044340661125453777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f857cabd7a3f34905aba6124c495ba88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7678168153634003785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4044340661125453777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08eca9f7688a0a24685b89133b020c8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scriptableObjectInstallers: []
+  _monoInstallers:
+  - {fileID: 3210598893982017259}
+  _installerPrefabs: []
+  _autoRun: 1
+  _kernel: {fileID: 0}
+--- !u!114 &7069052542627709501
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3038,36 +3065,6 @@ MonoBehaviour:
   - {fileID: 2273714776950080613}
   - {fileID: 8009189807325288796}
   _defaultFont: {fileID: 11400000, guid: 906ea7892246f417eaff63e0646446e4, type: 2}
---- !u!114 &3210598893982017259
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4044340661125453777}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f857cabd7a3f34905aba6124c495ba88, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &7678168153634003785
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4044340661125453777}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08eca9f7688a0a24685b89133b020c8e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _scriptableObjectInstallers: []
-  _monoInstallers:
-  - {fileID: 3210598893982017259}
-  _installerPrefabs: []
-  _autoRun: 1
-  _kernel: {fileID: 0}
 --- !u!1 &4115826580222369693
 GameObject:
   m_ObjectHideFlags: 0

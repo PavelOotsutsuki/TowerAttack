@@ -26,7 +26,7 @@ namespace StartMenues
 
         private List<StartMenuButton> _fightMenuButtons;
         private Action _onPlayClick;
-        private IDeactivatable _startMenuDeactivatable;
+        private IHidable _startMenuDeactivatable;
         private ICompletable _startMenuCompletable;
 
         //private bool _isComplete;
@@ -128,7 +128,7 @@ namespace StartMenues
                 return;
 
             if (_fightMenuButtons.Contains(focusedButton) == false)
-                throw new System.Exception("Ну и какого хера ты пытаешься зафокусить неподвластную тебе кнопку???");
+                throw new Exception("Ну и какого хера ты пытаешься зафокусить неподвластную тебе кнопку???");
 
             UnfocuseButton();
 
@@ -189,10 +189,10 @@ namespace StartMenues
 
         private IEnumerator StartingPlaying()
         {
-            _startMenuDeactivatable.Deactivate();
+            _startMenuDeactivatable.Hide();
 
             yield return new WaitUntil(() => _startMenuCompletable.IsComplete);
-            yield return new WaitForSeconds(1f);
+            //yield return new WaitForSeconds(1f);
 
             _onPlayClick?.Invoke();
         }

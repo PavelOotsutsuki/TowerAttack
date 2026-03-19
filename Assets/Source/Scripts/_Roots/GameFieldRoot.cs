@@ -26,15 +26,15 @@ using GameFields.Histories;
 using Sounds;
 using Tools;
 using System;
+using TMPro;
+using UnityEngine.UI;
 
 namespace Roots
 {
-    public class GameFieldRoot : MonoBehaviour, IAutomaticFillComponents
+    public class GameFieldRoot : LocalRoot
     {
         [SerializeField] private EndTurnButton _endTurnButton;
-        [SerializeField] private CanvasRoot _canvasRoot;
         [SerializeField] private CardRoot _cardRoot;
-        [SerializeField] private FontRoot _fontRoot;
         [SerializeField] private PersonCreator _personCreator;
         [SerializeField] private ObjectsLightControlsCreator _lightControlsCreator;
         [SerializeField] private SpeedUpButtonSortOrder _speedUpButtonSortOrder;
@@ -64,7 +64,8 @@ namespace Roots
         private CardCapabilityDescription _cardCapabilityDescription;
         private HistoryRoot _historyRoot;
         private BackgroundSoundConfig _backgroundSoundConfig;
-
+        //private FontRoot _fontRoot;
+        //private CanvasController _canvasController;
 
         [Inject]
         private void Construct(SignalBus bus, Deck deck, SeatPool seatPool, BigCardRoot bigCardRoot, HandPlayer handPlayer,
@@ -74,7 +75,6 @@ namespace Roots
         {
             //StartCoroutine(Initing(bus, deck, seatPool, cardDescription, handPlayer, informationLabel, lookCardMenu, variantCardCreator, soundRoot,
             //    cardSoundVolume, fightMenuActivateButton, screenRoot));
-            Debug.Log("GameRoot: CONSTRUCT");
 
             _bus = bus;
             _deck = deck;
@@ -97,9 +97,12 @@ namespace Roots
         {
             GameFieldGC.GCOFF();
 
-            _canvasRoot.Init();
+            base.Init();
+
             _informationLabel.Init();
-            _fontRoot.Init();
+
+            //TMP_Text[] objectTexts = gameObject.GetComponentsInChildren<TMP_Text>(true);
+            //_fontRoot.SetFont(objectTexts);
 
             _seatPool.Init();
             _endTurnButton.Init();
@@ -118,7 +121,7 @@ namespace Roots
                 cardDragAndDropLightController, _speedUpButtonSortOrder);
 
             _personCreator.Init(_bus, _deck, _endTurnButton, _seatPool, cardDragAndDropHandler, cardDragAndDropLightController,
-                _informationLabel, _cardRoot, _cardSoundRoot, _soundRoot, _cardCapabilityDescription, _historyRoot);
+                _informationLabel, _cardRoot, _cardSoundRoot, _soundRoot, _cardCapabilityDescription, _historyRoot, _soundRoot);
 
             Player player = _personCreator.CreatePlayer();
             EnemyAI enemyAI = _personCreator.CreateEnemyAI();
@@ -127,7 +130,7 @@ namespace Roots
             BrothersEffectHandlerRoot brothersEffectHandlerRoot = _personCreator.CreateBrothersEffectHandlerRoot();
             PersonEffectsHandlerRoot personEffectsHandlerRoot = _personCreator.CreatePersonEffectsHandlerRoot();
             DiscardManager discardManager = _personCreator.DiscardManager;
-            InputRoot inputRoot = _personCreator.GetInputRoot();
+            GameFieldInputRoot inputRoot = _personCreator.GetInputRoot();
             LoseActionsRoot loseActionsRoot = _personCreator.CreateLoseActionsRoot();
 
             _lookCardMenu.Init(inputRoot);
@@ -141,7 +144,7 @@ namespace Roots
                 _variantCardCreator, brothersEffectHandlerRoot, _bus, personEffectsHandlerRoot, discardManager, loseActionsRoot,
                 _cardSoundRoot, typesRoot, _historyRoot);
 
-            _cardRoot.Init(effectFactory, _bigCardRoot, cardDragAndDropHandler, _cardCapabilityDescription, _cardSoundRoot, _fontRoot);
+            _cardRoot.Init(effectFactory, _bigCardRoot, cardDragAndDropHandler, _cardCapabilityDescription, _cardSoundRoot, base.FontSetter);
             _deck.Init(_seatPool, _cardRoot.Cards);
 
 
@@ -152,6 +155,11 @@ namespace Roots
             _fightPVE.Init(_personsState, enemyAI, _bus, _seatPool, _soundRoot, _fightButtonsActivator,
     onDestroyPrefab);
             //_gameFieldRoot.Init(_personsState, enemyAI, _bus, _seatPool, _soundRoot, _fightButtonsActivator, onMainMenuSwitcher);
+        }
+
+        public override void Activate()
+        {
+            _fightPVE.Activate();
         }
 
         //private IEnumerator Initing(SignalBus bus, Deck deck, SeatPool seatPool, CardDescription cardDescription, HandPlayer handPlayer,
@@ -231,109 +239,19 @@ namespace Roots
         }
 
         #region AutomaticFillComponents
-        [ContextMenu(nameof(DefineGameComponents))]
-        private void DefineGameComponents()
-        {
-            List<ComponentAttachInfo> infos = new List<ComponentAttachInfo>();
-
-            List<ComponentAttachInfo> exists = new List<ComponentAttachInfo>();
-            List<ComponentAttachInfo> success = new List<ComponentAttachInfo>();
-            List<ComponentAttachInfo> error = new List<ComponentAttachInfo>();
-            List<ComponentAttachInfo> successButSoMuch = new List<ComponentAttachInfo>();
-            List<ComponentAttachInfo> sceneNotExists = new List<ComponentAttachInfo>();
-            List<ComponentAttachInfo> successForArray = new List<ComponentAttachInfo>();
-            List<ComponentAttachInfo> noWay = new List<ComponentAttachInfo>();
-
-            IAutomaticFillComponents[] gameComponents = GetComponentsInChildren<IAutomaticFillComponents>(true);
-            int allComponents = 0;
-
-            foreach (IAutomaticFillComponents component in gameComponents)
-            {
-                infos.AddRange(component.DefineAllComponents());
-                allComponents++;
-            }
-
-            foreach (ComponentAttachInfo info in infos)
-            {
-                switch (info.ReturnValue)
-                {
-                    case 0:
-                        exists.Add(info);
-                        break;
-                    case 1:
-                        success.Add(info);
-                        break;
-                    case -1:
-                        error.Add(info);
-                        break;
-                    case 2:
-                        successButSoMuch.Add(info);
-                        break;
-                    case -2:
-                        sceneNotExists.Add(info);
-                        break;
-                    case 3:
-                        successForArray.Add(info);
-                        break;
-                    case -3:
-                        noWay.Add(info);
-                        break;
-                    default:
-                        throw new System.Exception("Неизвестный тип возвращаемого значения в ComponentAttachInfo: " + info.ReturnValue);
-                }
-            }
-
-            Debug.Log($"Всего найдено {allComponents} компонентов");
-            Debug.Log("------------------------------------------");
-            ShowInfoByList("Уже заполнено", exists);
-            ShowInfoByList("Успешно заполнены", success);
-            ShowInfoByList("Произошла ошибка", error);
-            ShowInfoByList("Заполнено, но возможно не то", successButSoMuch);
-            ShowInfoByList("Нет на сцене", sceneNotExists);
-            ShowInfoByList("Заполнены массивы", successForArray);
-            ShowInfoByList("Сюда невозможно прийти", noWay);
-
-            Debug.Log("ИТОГО:");
-            Debug.Log("------------------------------------------");
-            ShowResults("Уже заполнено", exists);
-            ShowResults("Успешно заполнены", success);
-            ShowResults("Произошла ошибка", error);
-            ShowResults("Заполнено, но возможно не то", successButSoMuch);
-            ShowResults("Нет на сцене", sceneNotExists);
-            ShowResults("Заполнены массивы", successForArray);
-            ShowResults("Сюда невозможно прийти", noWay);            //Debug.Log($"Удалось найти {gameComponents.Length} gameObject-ов. Из них автоматически заполнились: {allComponents}");
-        }
-
-        private void ShowResults(string allMessage, List<ComponentAttachInfo> currentList)
-        {
-            Debug.Log($"{allMessage}: {currentList.Count}:");
-        }
-
-        private void ShowInfoByList(string allMessage, List<ComponentAttachInfo> currentList)
-        {
-            Debug.Log($"{allMessage}: {currentList.Count}:");
-
-            foreach (ComponentAttachInfo info in currentList)
-            {
-                Debug.Log(info.ComponentInfo);
-            }
-
-            Debug.Log("------------------------------------------");
-        }
-
         [ContextMenu(nameof(DefineAllComponents) + nameof(GameFieldRoot))]
-        public List<ComponentAttachInfo> DefineAllComponents()
+        public override List<ComponentAttachInfo> DefineAllComponents()
         {
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
                 DefineEndTurnButton(),
-                DefineCanvasRoot(),
                 DefineCardRoot(),
-                DefineFontRoot(),
                 DefinePersonCreator(),
                 DefineObjectsLightControlsCreator(),
                 DefineFightPVE()
             };
+
+            list.AddRange(base.DefineAllComponents());
 
             return list;
         }
@@ -344,22 +262,10 @@ namespace Roots
             return AutomaticFillComponents.DefineComponent(this, ref _endTurnButton, ComponentLocationTypes.InChildren);
         }
 
-        [ContextMenu(nameof(DefineCanvasRoot))]
-        private ComponentAttachInfo DefineCanvasRoot()
-        {
-            return AutomaticFillComponents.DefineComponent(this, ref _canvasRoot, ComponentLocationTypes.InThis);
-        }
-
         [ContextMenu(nameof(DefineCardRoot))]
         private ComponentAttachInfo DefineCardRoot()
         {
             return AutomaticFillComponents.DefineComponent(this, ref _cardRoot, ComponentLocationTypes.InThis);
-        }
-
-        [ContextMenu(nameof(DefineFontRoot))]
-        private ComponentAttachInfo DefineFontRoot()
-        {
-            return AutomaticFillComponents.DefineComponent(this, ref _fontRoot, ComponentLocationTypes.InThis);
         }
 
         [ContextMenu(nameof(DefinePersonCreator))]

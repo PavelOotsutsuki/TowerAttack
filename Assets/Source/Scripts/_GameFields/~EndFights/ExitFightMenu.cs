@@ -15,14 +15,14 @@ namespace GameFields.EndFights
 {
     public class ExitFightMenu : MonoBehaviour, IActivatable//, IPointerClickHandler
     {
-        private StartEndGamePanel _startEndGamePanel;
+        //private SwitchRootPanel _startEndGamePanel;
         private Action _onDestroyPrefab;
 
-        [Inject]
-        private void Construct(StartEndGamePanel startEndGamePanel)
-        {
-            _startEndGamePanel = startEndGamePanel;
-        }
+        //[Inject]
+        //private void Construct(SwitchRootPanel startEndGamePanel)
+        //{
+        //    _startEndGamePanel = startEndGamePanel;
+        //}
 
         public void Init(Action onDestroyPrefab)
         {
@@ -36,7 +36,7 @@ namespace GameFields.EndFights
             if (Input.anyKeyDown)
             {
                 Deactivate();
-                Ending().ToUniTask();
+                _onDestroyPrefab?.Invoke();
             }
         }
 
@@ -55,17 +55,17 @@ namespace GameFields.EndFights
             gameObject.SetActive(false);
         }
 
-        private IEnumerator Ending()
-        {
-            _startEndGamePanel.Show();
+        //private IEnumerator Ending()
+        //{
+        //    _startEndGamePanel.Show();
 
-            yield return new WaitUntil(() => _startEndGamePanel.IsComplete);
+        //    yield return new WaitUntil(() => _startEndGamePanel.IsComplete);
 
-            //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        //    //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
-            _onDestroyPrefab?.Invoke();
-            //SceneManager.LoadScene("StartMenu");
-            //Application.Quit();
-        }
+        //    _onDestroyPrefab?.Invoke();
+        //    //SceneManager.LoadScene("StartMenu");
+        //    //Application.Quit();
+        //}
     }
 }

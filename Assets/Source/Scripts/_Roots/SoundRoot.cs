@@ -10,17 +10,20 @@ using UnityEngine;
 namespace Roots
 {
     [RequireComponent(typeof(AudioSource))]
-    public class SoundRoot : MonoBehaviour, IActivatable, IVolume, IAutomaticFillComponents
+    public class SoundRoot : MonoBehaviour, IActivatable, IVolume, ISoundController, IAutomaticFillComponents
     {
         [SerializeField] private AudioSource _audioSource;
         [SerializeField] private AudioClip[] _backgroundSounds;
         [SerializeField] private float _delay = 3f;
         [SerializeField, Range(0,1)] private float _maxVolume = 0.1f;
+        [SerializeField] private float _pausingDuration = 0.5f;
 
         private IVolume _soundConfig;
 
         private Coroutine _processing;
         private IReadOnlyList<AudioClip> _shuffleClips;
+
+        private Coroutine _activeCoroutine = null;
 
         private bool _isPaused;
 
@@ -92,16 +95,58 @@ namespace Roots
 
         private void Pause()
         {
+            if (_activeCoroutine != null)
+                StopCoroutine(_activeCoroutine);
+
+            _activeCoroutine = StartCoroutine(Pausing());
+        }
+
+        private IEnumerator Pausing()
+        {
+            float startVolume = _audioSource.volume;
             _isPaused = true;
+
+            for (float i = 0; i < _pausingDuration; i+= Time.deltaTime)
+            {
+                float step = i / _pausingDuration;
+                _audioSource.volume = startVolume * (1 - step);
+
+                yield return null;
+            }
+
+            _audioSource.volume = 0;
+
             _audioSource.Pause();
             Debug.Log("Pause");
+            _activeCoroutine = null;
         }
 
         private void Unpause()
         {
-            _audioSource.UnPause();
+            if (_activeCoroutine != null)
+                StopCoroutine(_activeCoroutine);
+
+            _activeCoroutine = StartCoroutine(Unpausing());
+        }
+
+        private IEnumerator Unpausing()
+        {
+            float endVolume = _maxVolume * Percent;
             _isPaused = false;
+
+            for (float i = 0; i < _pausingDuration; i += Time.deltaTime)
+            {
+                float step = i / _pausingDuration;
+                _audioSource.volume = endVolume * step;
+
+                yield return null;
+            }
+
+            _audioSource.volume = endVolume;
+
+            _audioSource.UnPause();
             Debug.Log("Unpause");
+            _activeCoroutine = null;
         }
 
         private void Play()

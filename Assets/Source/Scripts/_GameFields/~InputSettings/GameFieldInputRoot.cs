@@ -14,7 +14,7 @@ using static UnityEngine.InputSystem.InputAction;
 
 namespace GameFields.InputSettings
 {
-    public class InputRoot : IDeactivatable
+    public class GameFieldInputRoot : IDeactivatable
     {
         private bool _isFightMenu;
         private bool _isEnable;
@@ -29,7 +29,7 @@ namespace GameFields.InputSettings
 
         private IInputLogic _currentLogic;
 
-        public InputRoot(IDeactivatable endTurnButtonDeactivatable, IWorkable fightMenu,
+        public GameFieldInputRoot(IDeactivatable endTurnButtonDeactivatable, IWorkable fightMenu,
             IMenuInputActivateWatcher fightMenuInputActivateWatcher, IWorkable historyMenu)
         {
             _fightMenuInputLogic = new MenuInputLogic(fightMenuInputActivateWatcher);
@@ -49,7 +49,7 @@ namespace GameFields.InputSettings
             _inputActions.Enable();
         }
 
-        ~InputRoot()
+        ~GameFieldInputRoot()
         {
             _inputActions.GameField.Enter.performed -= OnEnter;
             _inputActions.GameField.Esc.performed -= OnEsc;

@@ -12,7 +12,7 @@ using System;
 
 namespace GameFields
 {
-    public class GameField : MonoBehaviour, IAutomaticFillComponents
+    public class GameField : MonoBehaviour, IActivatable, IAutomaticFillComponents
     {
         [SerializeField] private StartFight _startFight;
         [SerializeField] private EndFight _endFight;
@@ -33,8 +33,14 @@ namespace GameFields
             _fightStepsController = new FightStepsController(_startFight, fight, _endFight);
 
             //_fightStepsController.NextStep();
+            //_fightStepsController.StartStep();
+        }
+
+        public void Activate()
+        {
             _fightStepsController.StartStep();
         }
+
 
         //private void Update()
         //{

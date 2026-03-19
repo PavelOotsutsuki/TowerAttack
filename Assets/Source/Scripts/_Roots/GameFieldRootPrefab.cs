@@ -8,7 +8,7 @@ namespace Roots
 {
     public class GameFieldRootPrefab : RootPrefab, IAutomaticFillComponents
     {
-        [SerializeField] private GameFieldRootContainer _container;
+        [SerializeField] private GameFieldRootContainer _gameFieldRootContainer;
 
         private GameFieldRoot _currentGameFieldRoot;
         private Action _onDestroyPrefab;
@@ -17,13 +17,14 @@ namespace Roots
         {
             _onDestroyPrefab = onDestroyPrefab;
 
-            base.Init(diContainer, _container);
+            base.Init(diContainer, _gameFieldRootContainer);
         }
 
         protected override void OnActivate()
         {
             _currentGameFieldRoot = CurrentGameObject.GetComponent<GameFieldRoot>();
             _currentGameFieldRoot.Init(_onDestroyPrefab);
+            _currentGameFieldRoot.Activate();
         }
 
         protected override void OnDeactivate()
@@ -48,7 +49,7 @@ namespace Roots
         [ContextMenu(nameof(DefineGameFieldRootContainer))]
         private ComponentAttachInfo DefineGameFieldRootContainer()
         {
-            return AutomaticFillComponents.DefineComponent(this, ref _container, ComponentLocationTypes.InThisElseChildren);
+            return AutomaticFillComponents.DefineComponent(this, ref _gameFieldRootContainer, ComponentLocationTypes.InThisElseChildren);
         }
         #endregion
     }

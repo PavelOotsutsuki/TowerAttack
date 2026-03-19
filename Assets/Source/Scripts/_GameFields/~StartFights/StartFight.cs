@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using GameFields.Decks;
 using GameFields.Persons.Hands;
 using GameFields.Persons.Towers;
+using Tools;
 
 namespace GameFields.StartFights
 {
@@ -34,22 +35,19 @@ namespace GameFields.StartFights
         private HandAI _handAI;
         private TowerPlayer _towerPlayer;
         private TowerAI _towerAI;
-        private StartEndGamePanel _startEndGamePanel;
+        //private SwitchRootPanel _switchRootPanel;
 
         public bool IsComplete => _startTowerCardSelectionPlayer.IsComplete && _startTowerCardSelectionImitation.IsComplete;
 
         [Inject]
-        private void Construct(Deck deck, HandPlayer handPlayer, HandAI handAI, TowerPlayer towerPlayer, TowerAI towerAI,
-            StartEndGamePanel startEndGamePanel)
+        private void Construct(Deck deck, HandPlayer handPlayer, HandAI handAI, TowerPlayer towerPlayer, TowerAI towerAI)
         {
             _deck = deck;
             _handPlayer = handPlayer;
             _handAI = handAI;
             _towerPlayer = towerPlayer;
             _towerAI = towerAI;
-            _startEndGamePanel = startEndGamePanel;
-
-            _startEndGamePanel.Init();
+            //_switchRootPanel = switchRootPanel;
         }
 
         public void Init(EnemyAI enemyAI)
@@ -72,9 +70,9 @@ namespace GameFields.StartFights
         {
             yield return new WaitForSeconds(_data.WaitUntilBeginAllProcess);
 
-            _startEndGamePanel.Hide();
+            //_switchRootPanel.Hide();
 
-            yield return new WaitUntil(() => _startEndGamePanel.IsComplete);
+            //yield return new WaitUntil(() => _switchRootPanel.IsComplete);
             yield return new WaitForSeconds(_data.WaitAfterStartEndGamePanelComplete);
 
             gameObject.SetActive(true);

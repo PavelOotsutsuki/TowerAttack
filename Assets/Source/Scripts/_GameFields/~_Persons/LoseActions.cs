@@ -23,9 +23,10 @@ namespace GameFields.Persons
         private readonly IDeactivatable _inputRoot;
         private readonly IDeactivatable _fightMenu;
         private readonly IDeactivatable _fightButtonsActivator;
+        private readonly ISoundController _soundController;
 
         public LoseActions(IBoomTower boomedTower, IPersonObject loser, IHandBlockable handBlockable, SignalBus bus,
-            IDeactivatable inputRoot, IDeactivatable fightMenu, IDeactivatable fightButtonsActivator)
+            IDeactivatable inputRoot, IDeactivatable fightMenu, IDeactivatable fightButtonsActivator, ISoundController soundController)
         {
             _boomedTower = boomedTower;
             _loser = loser;
@@ -34,6 +35,7 @@ namespace GameFields.Persons
             _inputRoot = inputRoot;
             _fightMenu = fightMenu;
             _fightButtonsActivator = fightButtonsActivator;
+            _soundController = soundController;
 
             _isActive = false;
         }
@@ -55,6 +57,7 @@ namespace GameFields.Persons
             _fightButtonsActivator.Deactivate();
             _hand.ForciblyBlock();
             _boomedTower.Boom();
+            _soundController.Stop();
 
             yield return new WaitForSeconds(5f);
 

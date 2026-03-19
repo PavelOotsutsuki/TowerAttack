@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using TMPro;
 using Tools.Settings;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Screens;
@@ -14,15 +16,17 @@ namespace Roots
 
         public void Init()
         {
-            DefineReferenceResolution();
+            SetReferenceResolution(_allCanvasScalers);
         }
 
-        private void DefineReferenceResolution()
+        private void SetReferenceResolution(IEnumerable<CanvasScaler> canvasScalers)
         {
-            foreach (CanvasScaler canvasScaler in _allCanvasScalers)
-            {
-                canvasScaler.referenceResolution = GameSettings.CanvasReferenceResolution;
-            }
+            if (canvasScalers != null)
+                if (canvasScalers.Count() > 0)
+                    foreach (CanvasScaler canvasScaler in canvasScalers)
+                    {
+                        canvasScaler.referenceResolution = GameSettings.CanvasReferenceResolution;
+                    }
         }
 
         #region AutomaticFillComponents

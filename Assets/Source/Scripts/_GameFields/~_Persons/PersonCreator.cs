@@ -159,7 +159,7 @@ namespace GameFields.Persons
         private DiscardManager _discardManager;
         private SkipTurnLabelPlayer _skipTurnLabelPlayer;
         private SkipTurnLabelEnemyAI _skipTurnLabelEnemyAI;
-        private InputRoot _inputRoot;
+        private GameFieldInputRoot _inputRoot;
 
         private InteractionActivator _interactionActivator;
         private InformationLabel _informationLabel;
@@ -231,7 +231,7 @@ namespace GameFields.Persons
         public void Init(SignalBus bus, Deck deck, EndTurnButton endTurnButton, SeatPool seatPool,
             CardDragAndDropHandler cardDragAndDropHandler, CardDragAndDropLightController cardDragAndDropLightController,
             InformationLabel informationLabel, CardRoot cardRoot, CardSoundRoot cardSoundRoot, IVolume musicVolume,
-            CardCapabilityDescription cardCapabilityDescription, HistoryRoot historyRoot)
+            CardCapabilityDescription cardCapabilityDescription, HistoryRoot historyRoot, ISoundController soundController)
         {
             _bus = bus;
             _deck = deck;
@@ -243,12 +243,12 @@ namespace GameFields.Persons
 
             _skipTurnLabelPlayer.Init();
             _skipTurnLabelEnemyAI.Init();
-            _inputRoot = new InputRoot(_endTurnButton, _fightMenu, _fightMenu, _historyMenu);
+            _inputRoot = new GameFieldInputRoot(_endTurnButton, _fightMenu, _fightMenu, _historyMenu);
 
             _enemyLoseActions = new LoseActions(_enemyTower, _enemyTower, _playerHand, _bus, _inputRoot, _fightMenu,
-                _fightButtonsActivator);
+                _fightButtonsActivator, soundController);
             _playerLoseActions = new LoseActions(_playerTower, _playerTower, _playerHand, _bus, _inputRoot, _fightMenu,
-                _fightButtonsActivator);
+                _fightButtonsActivator, soundController);
 
             _fightMenu.Init(_inputRoot, _playerLoseActions, cardSoundRoot, musicVolume, cardCapabilityDescription);
             _fightMenuActivateButton.Init(_fightMenu, _UIHelperDescription);
@@ -404,7 +404,7 @@ namespace GameFields.Persons
             return new PersonEffectsHandlerRoot(_enemyPersonEffectsHandler, _playerPersonEffectsHandler);
         }
 
-        public InputRoot GetInputRoot()
+        public GameFieldInputRoot GetInputRoot()
         {
             return _inputRoot;
         }

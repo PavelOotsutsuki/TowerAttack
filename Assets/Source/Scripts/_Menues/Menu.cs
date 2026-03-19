@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Menues
 {
-    public abstract class Menu : MonoBehaviour, IWorkable, ICompletable, IMenuInputActivateWatcher, IAutomaticFillComponents
+    public abstract class Menu : MonoBehaviour, IWorkable, IHidable, IReactivatable, ICompletable, IMenuInputActivateWatcher, IAutomaticFillComponents
     {
         [SerializeField] private MenuLabel _fightMenuLabel;
         [SerializeField] private MenuPanel _fightMenuPanel;
@@ -73,6 +73,14 @@ namespace Menues
             Deactivating().ToUniTask();
         }
 
+        public void Reactivate()
+        {
+            _menuButtonsPanelRoot.Reactivate();
+
+            OnActivatingInput();
+        }
+
+        public abstract void Hide();
         protected abstract void OnDeactivateInput();
 
         private IEnumerator Activating()
@@ -93,9 +101,7 @@ namespace Menues
 
         private IEnumerator Deactivating()
         {
-            _fightMenuLabel.Hide();
-            _fightMenuPanel.Hide();
-            _menuButtonsPanelRoot.Deactivate();
+            DeactivateChilds();
 
             yield return new WaitUntil(() => _fightMenuLabel.IsComplete && _fightMenuPanel.IsComplete && _menuButtonsPanelRoot.IsComplete);
 
@@ -104,6 +110,13 @@ namespace Menues
             OnDeactivatingInput();
 
             _isComplete = true;
+        }
+
+        protected virtual void DeactivateChilds()
+        {
+            _fightMenuLabel.Hide();
+            _fightMenuPanel.Hide();
+            _menuButtonsPanelRoot.Deactivate();
         }
 
         protected abstract void OnDeactivatingInput();
@@ -139,6 +152,6 @@ namespace Menues
         {
             return AutomaticFillComponents.DefineComponent(this, ref _canvasGroup, ComponentLocationTypes.InThis);
         }
-        #endregion 
+        #endregion
     }
 }

@@ -9,6 +9,7 @@ namespace Roots
 {
     public class RootPrefabController : MonoBehaviour, IAutomaticFillComponents
     {
+        [SerializeField] private SwitchRootPrefabPanel _switchRootPrefabPanel;
         [SerializeField] private StartMenuRootPrefab _startMenuRootPrefab;
         [SerializeField] private GameFieldRootPrefab _gameFieldRootPrefab;
 
@@ -16,6 +17,7 @@ namespace Roots
 
         public void Init(DiContainer diContainer)
         {
+            _switchRootPrefabPanel.Init();
             _startMenuRootPrefab.Init(diContainer, () => SwitchPrefab(_gameFieldRootPrefab));
             _gameFieldRootPrefab.Init(diContainer, () => SwitchPrefab(_startMenuRootPrefab));
         }
@@ -34,9 +36,26 @@ namespace Roots
 
         private void SwitchPrefab(RootPrefab activatingRootPrefab)
         {
-            _currentRootPrefab?.Deactivate();
+            StartCoroutine(SwitchingPrefab(activatingRootPrefab));
+        }
+
+        private IEnumerator SwitchingPrefab(RootPrefab activatingRootPrefab)
+        {
+            if (_currentRootPrefab != null)
+            {
+                _switchRootPrefabPanel.Show();
+                yield return new WaitUntil(() => _switchRootPrefabPanel.IsComplete);
+
+                _currentRootPrefab.Deactivate();
+            }
+
             _currentRootPrefab = activatingRootPrefab;
+
             _currentRootPrefab.Activate();
+
+            yield return new WaitForSeconds(0.5f);
+
+            _switchRootPrefabPanel.Hide();
         }
 
         #region AutomaticFillComponents
@@ -45,11 +64,18 @@ namespace Roots
         {
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
+                DefineSwitchRootPrefabPanel(),
                 DefineStartMenuRootPrefab(),
                 DefineGameFieldRootPrefab()
             };
 
             return list;
+        }
+
+        [ContextMenu(nameof(DefineSwitchRootPrefabPanel))]
+        private ComponentAttachInfo DefineSwitchRootPrefabPanel()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _switchRootPrefabPanel, ComponentLocationTypes.InChildren);
         }
 
         [ContextMenu(nameof(DefineStartMenuRootPrefab))]

@@ -3,6 +3,7 @@ using Tools.Utils.FillComponents;
 using UnityEngine;
 using TMPro;
 using Tools;
+using System.Linq;
 
 namespace Roots
 {
@@ -18,10 +19,12 @@ namespace Roots
 
         public void SetFont(IEnumerable<TMP_Text> texts)
         {
-            foreach (TMP_Text TMP_Text in texts)
-            {
-                TMP_Text.font = _defaultFont;
-            }
+            if (texts != null)
+                if (texts.Count() > 0)
+                    foreach (TMP_Text TMP_Text in texts)
+                    {
+                        TMP_Text.font = _defaultFont;
+                    }
         }
 
         #region AutomaticFillComponents

@@ -8,7 +8,7 @@ namespace Roots
 {
     public class StartMenuRootPrefab : RootPrefab, IAutomaticFillComponents
     {
-        [SerializeField] private StartMenuRootContainer _container;
+        [SerializeField] private StartMenuRootContainer _startMenuRootContainer;
 
         private StartMenuRoot _currentStartMenuRoot;
         private Action _onPlayClick;
@@ -17,7 +17,7 @@ namespace Roots
         {
             _onPlayClick = onPlayClick;
 
-            base.Init(diContainer, _container);
+            base.Init(diContainer, _startMenuRootContainer);
         }
 
         protected override void OnActivate()
@@ -26,6 +26,7 @@ namespace Roots
             {
                 _currentStartMenuRoot = CurrentGameObject.GetComponent<StartMenuRoot>();
                 _currentStartMenuRoot.Init(_onPlayClick);
+                _currentStartMenuRoot.Activate();
             }
             else
             {
@@ -53,7 +54,7 @@ namespace Roots
         [ContextMenu(nameof(DefineStartMenuRootContainer))]
         private ComponentAttachInfo DefineStartMenuRootContainer()
         {
-            return AutomaticFillComponents.DefineComponent(this, ref _container, ComponentLocationTypes.InThisElseChildren);
+            return AutomaticFillComponents.DefineComponent(this, ref _startMenuRootContainer, ComponentLocationTypes.InThisElseChildren);
         }
         #endregion
     }

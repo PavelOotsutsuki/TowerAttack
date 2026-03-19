@@ -4,26 +4,26 @@ namespace Menues
 {
     public class MenuInputLogic : IInputLogic, IEnterPressHandler, IDownArrowPressHandler, IUpArrowPressHandler
     {
-        private readonly IMenuInputActivateWatcher _fightMenuInputActivateWatcher;
+        private readonly IMenuInputActivateWatcher _menuInputActivateWatcher;
 
         public MenuInputLogic(IMenuInputActivateWatcher fightMenuInputActivateWatcher)
         {
-            _fightMenuInputActivateWatcher = fightMenuInputActivateWatcher;
+            _menuInputActivateWatcher = fightMenuInputActivateWatcher;
         }
 
         public void OnEnter()
         {
-            _fightMenuInputActivateWatcher.CurrentMenuButtonInputHandler.OnEnterPress();
+            _menuInputActivateWatcher.CurrentMenuButtonInputHandler.OnEnterPress();
         }
 
         public void OnDownArrow()
         {
-            _fightMenuInputActivateWatcher.CurrentMenuButtonInputHandler.OnDownArrow();
+            _menuInputActivateWatcher.CurrentMenuButtonInputHandler.OnDownArrow();
         }
 
         public void OnUpArrow()
         {
-            _fightMenuInputActivateWatcher.CurrentMenuButtonInputHandler.OnUpArrow();
+            _menuInputActivateWatcher.CurrentMenuButtonInputHandler.OnUpArrow();
         }
     }
 }

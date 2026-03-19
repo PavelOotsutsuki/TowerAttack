@@ -445,108 +445,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!1 &469448037787076862
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2900306332967005809}
-  - component: {fileID: 6075268674932263076}
-  - component: {fileID: 2568394374719739120}
-  - component: {fileID: 5020171332534762307}
-  m_Layer: 0
-  m_Name: StartEndGamePanelCanvas
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &2900306332967005809
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 469448037787076862}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 3382588467561019316}
-  m_Father: {fileID: 6421560448643167755}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 0}
---- !u!223 &6075268674932263076
-Canvas:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 469448037787076862}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
-  m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 9000
-  m_TargetDisplay: 0
---- !u!114 &2568394374719739120
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 469448037787076862}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_UiScaleMode: 1
-  m_ReferencePixelsPerUnit: 100
-  m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 1920, y: 1080}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0.5
-  m_PhysicalUnit: 3
-  m_FallbackScreenDPI: 96
-  m_DefaultSpriteDPI: 96
-  m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
---- !u!114 &5020171332534762307
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 469448037787076862}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!1 &568749567706700069
 GameObject:
   m_ObjectHideFlags: 0
@@ -1467,10 +1365,10 @@ GameObject:
   - component: {fileID: 1337820928711796362}
   - component: {fileID: 8291408689434793309}
   - component: {fileID: 6950195793345557426}
-  - component: {fileID: 7939435371641739522}
   - component: {fileID: 1379943374972121541}
   - component: {fileID: 3344999184344243311}
   - component: {fileID: 5723382980651029022}
+  - component: {fileID: 430781630445114342}
   m_Layer: 0
   m_Name: _fightRoot
   m_TagString: Untagged
@@ -1506,10 +1404,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3abf03eb525a44ac88fb6396f866c890, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _endTurnButton: {fileID: 7072742864810498405}
+  _fontRoot: {fileID: 430781630445114342}
   _canvasRoot: {fileID: 6950195793345557426}
+  _endTurnButton: {fileID: 7072742864810498405}
   _cardRoot: {fileID: 8291408689434793309}
-  _fontRoot: {fileID: 7939435371641739522}
   _personCreator: {fileID: 6623014685722226487}
   _lightControlsCreator: {fileID: 7484531735989112017}
   _speedUpButtonSortOrder: {fileID: 4729916998590484661}
@@ -1559,10 +1457,153 @@ MonoBehaviour:
   - {fileID: 8631939695421141240}
   - {fileID: 934360144819351927}
   - {fileID: 191586909385649965}
-  - {fileID: 2568394374719739120}
   - {fileID: 8773588320196323701}
   - {fileID: 3330419892735249304}
---- !u!114 &7939435371641739522
+--- !u!114 &1379943374972121541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047420342064119969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3943d8e02b94546cf922af9cc44bbe93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _template_1_Zhyzha: {fileID: 7470885784936292446, guid: 3888012a5904341458d911940fc0750b, type: 3}
+  _template_2_Greedy: {fileID: 7777799050504670857, guid: 4a4c7b989dae24516a911a3202e70a21, type: 3}
+  _template_3_Pyromancer: {fileID: 655499856962912830, guid: ddfa45683b0354c4597bba7a0a8b07a4, type: 3}
+  _template_4_CoolBookmaker: {fileID: 3430584159081748531, guid: f120653c5923943b0a2c783bca137906, type: 3}
+  _template_5_BlindOldMan: {fileID: 8315088401685439010, guid: 4ba11daf340ac4b27823e1371b90e30c, type: 3}
+  _template_6_DetectiveRhodes: {fileID: 4269375210868738342, guid: 73daae0a54a824e91b9681f198851411, type: 3}
+  _template_7_BlueGnome: {fileID: 589025246368917208, guid: 31f0e36e8b4cd41d88dc09a9ad48bd28, type: 3}
+  _template_8_TimeLord: {fileID: 1735158253752881435, guid: 6c38921049fc649ca8143b4f0bc11acd, type: 3}
+  _template_9_ThreeGuys: {fileID: 3381801493785582778, guid: 1bd2531bee37e4068995a3382bb2a084, type: 3}
+  _template_10_TimeMistress: {fileID: 3016066808479557101, guid: 3c07e882d3d0543f29b37cf29da87e78, type: 3}
+  _template_11_SharpSnake: {fileID: 3233057885303984200, guid: 3f8b8ff85776741f69a9130072d06cfb, type: 3}
+  _template_12_ImpArmy: {fileID: 2799404891374055871, guid: 32aa1fc86feca4da1837a74ea07cddda, type: 3}
+  _template_13_CursedMark: {fileID: 9014648424470680593, guid: 1e4018d12ae9b4763a41a92bc2c92dca, type: 3}
+  _template_14_RushingMailman: {fileID: 1227930734807705006, guid: 938f09add99ba428d85d887966bba7c2, type: 3}
+  _template_15_Schemer: {fileID: 7263615718610864524, guid: 507c72995e0144064a3cf861e2d097e9, type: 3}
+  _template_16_Mime: {fileID: 518493742023901553, guid: a97afc99a0b5a40609835bc826223970, type: 3}
+  _template_17_RedGnome: {fileID: 4030947307604637701, guid: 89f18a882b93542c1a5485cb2b4b2213, type: 3}
+  _template_18_TimeChild: {fileID: 5290407831981359575, guid: 776c7488bfc0b4571b0344dd0613df4e, type: 3}
+  _template_19_Undergrounder: {fileID: 4351870342644769625, guid: 7fc5038a08a2f415497403080efd5ac6, type: 3}
+  _template_20_RobinGood: {fileID: 1627013175492922350, guid: 8f6fd42c66d244a86b79406c62882d5b, type: 3}
+  _template_21_General: {fileID: 3020868804588686156, guid: f7b34cf03635f4fce9f3edef326eb27f, type: 3}
+  _template_22_FateMistress: {fileID: 1540312026714717812, guid: 043aaddff67794461b473458e147510b, type: 3}
+  _template_23_DumbMonk: {fileID: 8294089144562741609, guid: 375974656b9a240d1b384ee390e39ce9, type: 3}
+  _template_24_LeftEyedSister: {fileID: 2200427110963069214, guid: a783bb850765244fdb91f6c838c1f879, type: 3}
+  _template_25_JusticeBull: {fileID: 1871258948043079442, guid: d9c75e23be14e4f68a79180c062164a4, type: 3}
+  _template_26_PatriarchCorall: {fileID: 622661678552419410, guid: e6e5e2db847f14425bb10adb38f44587, type: 3}
+  _template_27_GreenGnome: {fileID: 7627800755497359380, guid: 486351c0b3adf41a5b5ea7fd5649439a, type: 3}
+  _template_28_LittleBrother: {fileID: 2963987204258435856, guid: 5274ff9a2d2a140279197bc350d03935, type: 3}
+  _template_29_BrothersMother: {fileID: 3927482871593514405, guid: de647560ab8f746118e46eb6cf8b0a5a, type: 3}
+  _template_30_Scarecrow: {fileID: 9031071409512293373, guid: a7ce26e34e99e4a7784df349d12bfd68, type: 3}
+  _template_31_LuckyHorseshoe: {fileID: 2582201111567541773, guid: d29332e4b00fe4e67bac241abd3cff2e, type: 3}
+  _template_32_WiseMonk: {fileID: 8855204141049645398, guid: 8bacd654963b440298c33ec5ca9bf376, type: 3}
+  _template_33_CowsHerd: {fileID: 1497617708882126644, guid: 1d2644f51e4324d78b5e877274bc1c73, type: 3}
+  _template_34_HungryOgre: {fileID: 7597628663243226101, guid: fff266ab273c44cb2be2a2b3585654e3, type: 3}
+  _template_35_Sharper: {fileID: 8673345110385652276, guid: c6e378e94fe8d4d83b4b9e3c2def8f55, type: 3}
+  _template_36_Gunner: {fileID: 6863109842613374516, guid: 0aa011ada252247b2806f02de1c499e2, type: 3}
+  _template_37_WhiteGnome: {fileID: 4299413890113125756, guid: 5587b20f2d6d746a7aca5efe6c4fdf71, type: 3}
+  _template_38_MiddleBrother: {fileID: 3078552729337210386, guid: 758a3d5f09862478a93c8504c7d5b7c0, type: 3}
+  _template_39_DeadOgre: {fileID: 5689146736107008516, guid: f4f5c5fdf4fea461a9843cbeb5bae1de, type: 3}
+  _template_40_OutOfControlBus: {fileID: 2446400203668057624, guid: 5f07296aa37e0454aaf312b15c6d8121, type: 3}
+  _template_41_CursedMailman: {fileID: 643988495363501057, guid: 8396dbf57fbcc408baaefbb590882f4f, type: 3}
+  _template_42_RightEyedSister: {fileID: 7855050129850715364, guid: 02d6f348caa584d778f5380c5f3615af, type: 3}
+  _template_43_StrongOgre: {fileID: 2602230465585647700, guid: d302cc6c09251450b9bfcd4f336a5050, type: 3}
+  _template_44_MafiaBoss: {fileID: 5290613329427505618, guid: 3ea5b28eefaff4241a00e5a4ce8f52a7, type: 3}
+  _template_45_PyromancersManuscript: {fileID: 5013757746372572492, guid: 805ca7de80e10447c9213aae166bb5d4, type: 3}
+  _template_46_FalsePrince: {fileID: 5417571977875173064, guid: ade974f85d93a41609f379212990eab9, type: 3}
+  _template_47_BlackGnome: {fileID: 4805364227926168948, guid: d95d0b23dd7de40dd8f4054799c77bc2, type: 3}
+  _template_48_BigBrother: {fileID: 919265072742220496, guid: 74844245e429a476cb74a57551bd8a91, type: 3}
+  _template_49_LastChance: {fileID: 4403635186777024959, guid: 365343b7571e8400489247340455bc34, type: 3}
+  _template_50_FallenGuardian: {fileID: 752866426036925044, guid: 31c57efe6555248f095495f8cf0ed93c, type: 3}
+--- !u!114 &3344999184344243311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047420342064119969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bba9d3a8e0ac4809a14e298e5f2b9748, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _UIHelperDescription: {fileID: 3265309160327732252}
+  _bigCardRoot: {fileID: 5804309713533629084}
+  _informationLabel: {fileID: 3128229670668029493}
+  _soundRoot: {fileID: 522019852546061866}
+  _fightMenuActivateButton: {fileID: 7683111596104851806}
+  _fightMenu: {fileID: 8317713250013667560}
+  _historyMenuActivateButton: {fileID: 1275409755323649466}
+  _historyMenu: {fileID: 5975339770785500968}
+  _deck: {fileID: 2539356603429876141}
+  _discardPileConfig:
+    <RectTransform>k__BackingField: {fileID: 4611179216620562604}
+    <CardRotationOffset>k__BackingField: 30
+    <StartCardTranslateSpeed>k__BackingField: 0.5
+    <DiscardDelay>k__BackingField: 0.5
+    <DiscardCardAnimationData>k__BackingField:
+      <StartScaleVector>k__BackingField: {x: 0.5, y: 0.5, z: 0.5}
+      <StartRotation>k__BackingField: {x: 0, y: 0, z: 0}
+      <CardIncreaseDuration>k__BackingField: 0.5
+      <DelayAfterIncrease>k__BackingField: 0.5
+      <InvertCardAnimationData>k__BackingField:
+        <InvertCardFrontDuration>k__BackingField: 0.5
+        <InvertCardBackDuration>k__BackingField: 0.5
+        <DelayAfterInvert>k__BackingField: 0.5
+        <IsIgnoreStartSide>k__BackingField: 0
+        <StartSide>k__BackingField: 0
+  _seatPool: {fileID: 2989443362291287629}
+  _skipTurnLabelPlayer: {fileID: 6215685939171210850}
+  _skipTurnLabelEnemyAI: {fileID: 6274361801518587903}
+  _variantCardCreator: {fileID: 7419626440322650756}
+  _playerHand: {fileID: 6919777344052538315}
+  _playerTable: {fileID: 8869063191228789080}
+  _playerTower: {fileID: 2802966295508572248}
+  _playerDiscover: {fileID: 8531972355864681765}
+  _playerPlayingZone: {fileID: 1155099699455228839}
+  _choiceMenuPlayer: {fileID: 4175478595837426473}
+  _choiceMenuImitationPlayer: {fileID: 567782004563893806}
+  _attackMenuPlayer: {fileID: 5989416289819054760}
+  _playerCardAttackZone: {fileID: 4144826930967542722}
+  _lookCardMenuPlayer: {fileID: 6192904027583558128}
+  _startPlayerTurnLabel: {fileID: 3084517534250330133}
+  _forgingZone: {fileID: 6574412673874007836}
+  _handTransferZone: {fileID: 5982414128291922861}
+  _enemyHand: {fileID: 3744656512490674388}
+  _enemyTable: {fileID: 8263497014491207557}
+  _enemyTower: {fileID: 4452280597368031593}
+  _enemyDiscoverImitation: {fileID: 839862110027100094}
+  _enemyPlayingZone: {fileID: 4497774615628136074}
+  _enemyChoiceMenu: {fileID: 7986243295566515512}
+  _enemyChoiceMenuImitation: {fileID: 728897312940735126}
+  _enemyAttackMenu: {fileID: 5390047755520152638}
+  _enemyCardAttackZone: {fileID: 2613195421969521180}
+  _confirmableNumbersViewRoot: {fileID: 1819105957683862676}
+--- !u!114 &5723382980651029022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047420342064119969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08eca9f7688a0a24685b89133b020c8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scriptableObjectInstallers: []
+  _monoInstallers:
+  - {fileID: 3344999184344243311}
+  _installerPrefabs: []
+  _autoRun: 1
+  _kernel: {fileID: 0}
+--- !u!114 &430781630445114342
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1744,153 +1785,6 @@ MonoBehaviour:
   - {fileID: 5770206238726354134}
   - {fileID: 5822403232557235294}
   _defaultFont: {fileID: 11400000, guid: 906ea7892246f417eaff63e0646446e4, type: 2}
---- !u!114 &1379943374972121541
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1047420342064119969}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3943d8e02b94546cf922af9cc44bbe93, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _template_1_Zhyzha: {fileID: 7470885784936292446, guid: 3888012a5904341458d911940fc0750b, type: 3}
-  _template_2_Greedy: {fileID: 7777799050504670857, guid: 4a4c7b989dae24516a911a3202e70a21, type: 3}
-  _template_3_Pyromancer: {fileID: 655499856962912830, guid: ddfa45683b0354c4597bba7a0a8b07a4, type: 3}
-  _template_4_CoolBookmaker: {fileID: 3430584159081748531, guid: f120653c5923943b0a2c783bca137906, type: 3}
-  _template_5_BlindOldMan: {fileID: 8315088401685439010, guid: 4ba11daf340ac4b27823e1371b90e30c, type: 3}
-  _template_6_DetectiveRhodes: {fileID: 4269375210868738342, guid: 73daae0a54a824e91b9681f198851411, type: 3}
-  _template_7_BlueGnome: {fileID: 589025246368917208, guid: 31f0e36e8b4cd41d88dc09a9ad48bd28, type: 3}
-  _template_8_TimeLord: {fileID: 1735158253752881435, guid: 6c38921049fc649ca8143b4f0bc11acd, type: 3}
-  _template_9_ThreeGuys: {fileID: 3381801493785582778, guid: 1bd2531bee37e4068995a3382bb2a084, type: 3}
-  _template_10_TimeMistress: {fileID: 3016066808479557101, guid: 3c07e882d3d0543f29b37cf29da87e78, type: 3}
-  _template_11_SharpSnake: {fileID: 3233057885303984200, guid: 3f8b8ff85776741f69a9130072d06cfb, type: 3}
-  _template_12_ImpArmy: {fileID: 2799404891374055871, guid: 32aa1fc86feca4da1837a74ea07cddda, type: 3}
-  _template_13_CursedMark: {fileID: 9014648424470680593, guid: 1e4018d12ae9b4763a41a92bc2c92dca, type: 3}
-  _template_14_RushingMailman: {fileID: 1227930734807705006, guid: 938f09add99ba428d85d887966bba7c2, type: 3}
-  _template_15_Schemer: {fileID: 7263615718610864524, guid: 507c72995e0144064a3cf861e2d097e9, type: 3}
-  _template_16_Mime: {fileID: 518493742023901553, guid: a97afc99a0b5a40609835bc826223970, type: 3}
-  _template_17_RedGnome: {fileID: 4030947307604637701, guid: 89f18a882b93542c1a5485cb2b4b2213, type: 3}
-  _template_18_TimeChild: {fileID: 5290407831981359575, guid: 776c7488bfc0b4571b0344dd0613df4e, type: 3}
-  _template_19_Undergrounder: {fileID: 4351870342644769625, guid: 7fc5038a08a2f415497403080efd5ac6, type: 3}
-  _template_20_RobinGood: {fileID: 1627013175492922350, guid: 8f6fd42c66d244a86b79406c62882d5b, type: 3}
-  _template_21_General: {fileID: 3020868804588686156, guid: f7b34cf03635f4fce9f3edef326eb27f, type: 3}
-  _template_22_FateMistress: {fileID: 1540312026714717812, guid: 043aaddff67794461b473458e147510b, type: 3}
-  _template_23_DumbMonk: {fileID: 8294089144562741609, guid: 375974656b9a240d1b384ee390e39ce9, type: 3}
-  _template_24_LeftEyedSister: {fileID: 2200427110963069214, guid: a783bb850765244fdb91f6c838c1f879, type: 3}
-  _template_25_JusticeBull: {fileID: 1871258948043079442, guid: d9c75e23be14e4f68a79180c062164a4, type: 3}
-  _template_26_PatriarchCorall: {fileID: 622661678552419410, guid: e6e5e2db847f14425bb10adb38f44587, type: 3}
-  _template_27_GreenGnome: {fileID: 7627800755497359380, guid: 486351c0b3adf41a5b5ea7fd5649439a, type: 3}
-  _template_28_LittleBrother: {fileID: 2963987204258435856, guid: 5274ff9a2d2a140279197bc350d03935, type: 3}
-  _template_29_BrothersMother: {fileID: 3927482871593514405, guid: de647560ab8f746118e46eb6cf8b0a5a, type: 3}
-  _template_30_Scarecrow: {fileID: 9031071409512293373, guid: a7ce26e34e99e4a7784df349d12bfd68, type: 3}
-  _template_31_LuckyHorseshoe: {fileID: 2582201111567541773, guid: d29332e4b00fe4e67bac241abd3cff2e, type: 3}
-  _template_32_WiseMonk: {fileID: 8855204141049645398, guid: 8bacd654963b440298c33ec5ca9bf376, type: 3}
-  _template_33_CowsHerd: {fileID: 1497617708882126644, guid: 1d2644f51e4324d78b5e877274bc1c73, type: 3}
-  _template_34_HungryOgre: {fileID: 7597628663243226101, guid: fff266ab273c44cb2be2a2b3585654e3, type: 3}
-  _template_35_Sharper: {fileID: 8673345110385652276, guid: c6e378e94fe8d4d83b4b9e3c2def8f55, type: 3}
-  _template_36_Gunner: {fileID: 6863109842613374516, guid: 0aa011ada252247b2806f02de1c499e2, type: 3}
-  _template_37_WhiteGnome: {fileID: 4299413890113125756, guid: 5587b20f2d6d746a7aca5efe6c4fdf71, type: 3}
-  _template_38_MiddleBrother: {fileID: 3078552729337210386, guid: 758a3d5f09862478a93c8504c7d5b7c0, type: 3}
-  _template_39_DeadOgre: {fileID: 5689146736107008516, guid: f4f5c5fdf4fea461a9843cbeb5bae1de, type: 3}
-  _template_40_OutOfControlBus: {fileID: 2446400203668057624, guid: 5f07296aa37e0454aaf312b15c6d8121, type: 3}
-  _template_41_CursedMailman: {fileID: 643988495363501057, guid: 8396dbf57fbcc408baaefbb590882f4f, type: 3}
-  _template_42_RightEyedSister: {fileID: 7855050129850715364, guid: 02d6f348caa584d778f5380c5f3615af, type: 3}
-  _template_43_StrongOgre: {fileID: 2602230465585647700, guid: d302cc6c09251450b9bfcd4f336a5050, type: 3}
-  _template_44_MafiaBoss: {fileID: 5290613329427505618, guid: 3ea5b28eefaff4241a00e5a4ce8f52a7, type: 3}
-  _template_45_PyromancersManuscript: {fileID: 5013757746372572492, guid: 805ca7de80e10447c9213aae166bb5d4, type: 3}
-  _template_46_FalsePrince: {fileID: 5417571977875173064, guid: ade974f85d93a41609f379212990eab9, type: 3}
-  _template_47_BlackGnome: {fileID: 4805364227926168948, guid: d95d0b23dd7de40dd8f4054799c77bc2, type: 3}
-  _template_48_BigBrother: {fileID: 919265072742220496, guid: 74844245e429a476cb74a57551bd8a91, type: 3}
-  _template_49_LastChance: {fileID: 4403635186777024959, guid: 365343b7571e8400489247340455bc34, type: 3}
-  _template_50_FallenGuardian: {fileID: 752866426036925044, guid: 31c57efe6555248f095495f8cf0ed93c, type: 3}
---- !u!114 &3344999184344243311
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1047420342064119969}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bba9d3a8e0ac4809a14e298e5f2b9748, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _backgroundSoundConfig: {fileID: 11400000, guid: 2844195ea760e4d6ea83535abdc83e49, type: 2}
-  _foregroundSoundConfig: {fileID: 11400000, guid: 642ad2ea1bb794c4c968ea3826ad8934, type: 2}
-  _UIHelperDescription: {fileID: 3265309160327732252}
-  _bigCardRoot: {fileID: 5804309713533629084}
-  _informationLabel: {fileID: 3128229670668029493}
-  _soundRoot: {fileID: 522019852546061866}
-  _fightMenuActivateButton: {fileID: 7683111596104851806}
-  _fightMenu: {fileID: 8317713250013667560}
-  _historyMenuActivateButton: {fileID: 1275409755323649466}
-  _historyMenu: {fileID: 5975339770785500968}
-  _deck: {fileID: 2539356603429876141}
-  _discardPileConfig:
-    <RectTransform>k__BackingField: {fileID: 4611179216620562604}
-    <CardRotationOffset>k__BackingField: 30
-    <StartCardTranslateSpeed>k__BackingField: 0.5
-    <DiscardDelay>k__BackingField: 0.5
-    <DiscardCardAnimationData>k__BackingField:
-      <StartScaleVector>k__BackingField: {x: 0.5, y: 0.5, z: 0.5}
-      <StartRotation>k__BackingField: {x: 0, y: 0, z: 0}
-      <CardIncreaseDuration>k__BackingField: 0.5
-      <DelayAfterIncrease>k__BackingField: 0.5
-      <InvertCardAnimationData>k__BackingField:
-        <InvertCardFrontDuration>k__BackingField: 0.5
-        <InvertCardBackDuration>k__BackingField: 0.5
-        <DelayAfterInvert>k__BackingField: 0.5
-        <IsIgnoreStartSide>k__BackingField: 0
-        <StartSide>k__BackingField: 0
-  _seatPool: {fileID: 2989443362291287629}
-  _skipTurnLabelPlayer: {fileID: 6215685939171210850}
-  _skipTurnLabelEnemyAI: {fileID: 6274361801518587903}
-  _variantCardCreator: {fileID: 7419626440322650756}
-  _playerHand: {fileID: 6919777344052538315}
-  _playerTable: {fileID: 8869063191228789080}
-  _playerTower: {fileID: 2802966295508572248}
-  _playerDiscover: {fileID: 8531972355864681765}
-  _playerPlayingZone: {fileID: 1155099699455228839}
-  _choiceMenuPlayer: {fileID: 4175478595837426473}
-  _choiceMenuImitationPlayer: {fileID: 567782004563893806}
-  _attackMenuPlayer: {fileID: 5989416289819054760}
-  _playerCardAttackZone: {fileID: 4144826930967542722}
-  _lookCardMenuPlayer: {fileID: 6192904027583558128}
-  _startPlayerTurnLabel: {fileID: 3084517534250330133}
-  _startEndGamePanel: {fileID: 792261403129028525}
-  _forgingZone: {fileID: 6574412673874007836}
-  _handTransferZone: {fileID: 5982414128291922861}
-  _enemyHand: {fileID: 3744656512490674388}
-  _enemyTable: {fileID: 8263497014491207557}
-  _enemyTower: {fileID: 4452280597368031593}
-  _enemyDiscoverImitation: {fileID: 839862110027100094}
-  _enemyPlayingZone: {fileID: 4497774615628136074}
-  _enemyChoiceMenu: {fileID: 7986243295566515512}
-  _enemyChoiceMenuImitation: {fileID: 728897312940735126}
-  _enemyAttackMenu: {fileID: 5390047755520152638}
-  _enemyCardAttackZone: {fileID: 2613195421969521180}
-  _confirmableNumbersViewRoot: {fileID: 1819105957683862676}
---- !u!114 &5723382980651029022
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1047420342064119969}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08eca9f7688a0a24685b89133b020c8e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _scriptableObjectInstallers: []
-  _monoInstallers:
-  - {fileID: 3344999184344243311}
-  _installerPrefabs: []
-  _autoRun: 1
-  _kernel: {fileID: 0}
 --- !u!1 &1101099402556143432
 GameObject:
   m_ObjectHideFlags: 0
@@ -4732,115 +4626,6 @@ MonoBehaviour:
   _endFontSize: 150
   _middleDuration: 0.5
   _endDuration: 2
---- !u!1 &2187827371877319112
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3382588467561019316}
-  - component: {fileID: 7287565934338748022}
-  - component: {fileID: 997729964809802501}
-  - component: {fileID: 1622988206488032148}
-  - component: {fileID: 792261403129028525}
-  m_Layer: 0
-  m_Name: StartEndGamePanel
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &3382588467561019316
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2187827371877319112}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2900306332967005809}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 20}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!225 &7287565934338748022
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2187827371877319112}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 0
-  m_IgnoreParentGroups: 0
---- !u!222 &997729964809802501
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2187827371877319112}
-  m_CullTransparentMesh: 1
---- !u!114 &1622988206488032148
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2187827371877319112}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!114 &792261403129028525
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2187827371877319112}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c010ef4cfc884d64b9d6518a85e0af2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _canvasGroup: {fileID: 7287565934338748022}
-  _data:
-    <MaxAlpha>k__BackingField: 1
-    <MinAlpha>k__BackingField: 0
-    <FadeUpDuration>k__BackingField: 1.5
-    <FadeOutDuration>k__BackingField: 1.5
-    <StartAlpha>k__BackingField: 1
-    <IsDeactivatable>k__BackingField: 0
 --- !u!1 &2249905295192955395
 GameObject:
   m_ObjectHideFlags: 0
@@ -6393,7 +6178,6 @@ Transform:
   - {fileID: 5254738968763493321}
   - {fileID: 8366766690547503529}
   - {fileID: 4041364651446994312}
-  - {fileID: 2900306332967005809}
   - {fileID: 389216131772550772}
   - {fileID: 6739594818715833693}
   m_Father: {fileID: 1365550772132586639}
@@ -13096,7 +12880,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8307414563391076822}
   m_HandleRect: {fileID: 2735894278148120600}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -17450,6 +17234,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 4efd4a46f0c4d4d41af7662b13261794, type: 3}
   _delay: 3
   _maxVolume: 0.1
+  _pausingDuration: 2
 --- !u!1 &8310086668841914701
 GameObject:
   m_ObjectHideFlags: 0
@@ -20608,6 +20393,14 @@ PrefabInstance:
       propertyPath: Seats.Array.size
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 7618030168768946742, guid: ce469e9a2005d4176a420699ea699af7, type: 3}
+      propertyPath: Seats.Array.data[0]
+      value: 
+      objectReference: {fileID: 7873971364275129018}
+    - target: {fileID: 7618030168768946742, guid: ce469e9a2005d4176a420699ea699af7, type: 3}
+      propertyPath: Seats.Array.data[2]
+      value: 
+      objectReference: {fileID: 8903252610929644115}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -20706,6 +20499,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7873971364275129018 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8258192726980130217, guid: ce469e9a2005d4176a420699ea699af7, type: 3}
+  m_PrefabInstance: {fileID: 2296565007194455827}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15b11932703fa4759badfa23b1cc6201, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7916803293053970724 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8214894554671027767, guid: ce469e9a2005d4176a420699ea699af7, type: 3}
@@ -20737,6 +20541,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8903252610929644115 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7228766275867848000, guid: ce469e9a2005d4176a420699ea699af7, type: 3}
+  m_PrefabInstance: {fileID: 2296565007194455827}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15b11932703fa4759badfa23b1cc6201, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &2443609795085259316

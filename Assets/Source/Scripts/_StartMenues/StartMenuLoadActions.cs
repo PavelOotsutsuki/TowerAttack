@@ -8,7 +8,7 @@ using System;
 
 namespace StartMenues
 {
-    public class StartMenuLoadActions : MonoBehaviour
+    public class StartMenuLoadActions : MonoBehaviour, IActivatable, IReactivatable
     {
         private readonly float _colorChangeDuration = 2f;
 
@@ -74,7 +74,7 @@ namespace StartMenues
 
         public void Reactivate()
         {
-            _startMenu.Activate();
+            _startMenu.Reactivate();
         }
 
     }

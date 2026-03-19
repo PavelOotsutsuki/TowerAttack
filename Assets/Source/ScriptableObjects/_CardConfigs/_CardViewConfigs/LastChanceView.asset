@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LastChanceView
   m_EditorClassIdentifier: 
   <Number>k__BackingField: 49
-  <Icon>k__BackingField: {fileID: 21300000, guid: 758d9900016044f72aa88b992d4128fc, type: 3}
+  <Icon>k__BackingField: {fileID: 21300000, guid: e9eb4ffc32f734cd3b5eb0b20e3b9eea, type: 3}
   <Description>k__BackingField: "\u0410 \u0442\u043E\u043B\u043A\u0443 \u0442\u043E?"
   <Feature>k__BackingField: "\u0412\u044B \u0432\u043E\u0437\u0432\u0440\u0430\u0449\u0430\u0435\u0442\u0435
     \u0432 \u043A\u043E\u043B\u043E\u0434\u0443 \u0432\u0441\u0451 \u0431\u0438\u0442\u043E.

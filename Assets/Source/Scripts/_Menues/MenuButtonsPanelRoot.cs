@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Menues
 {
-    public abstract class MenuButtonsPanelRoot : MonoBehaviour, IWorkable, ICompletable, IAutomaticFillComponents
+    public abstract class MenuButtonsPanelRoot : MonoBehaviour, IWorkable, ICompletable, IReactivatable, IAutomaticFillComponents
     {
         [SerializeField] private FadablePanel _fadablePanel;
         [SerializeField] private MenuSettingsButtonsPanel _settingsButtonsPanel;
@@ -79,6 +79,13 @@ namespace Menues
             _currentMenuButtonsPanel = null;
 
             Deactivating().ToUniTask();
+        }
+
+        public void Reactivate()
+        {
+            _currentMenuButtonsPanel?.Deactivate();
+            _currentMenuButtonsPanel = _startButtonsPanel;
+            _currentMenuButtonsPanel.Activate();
         }
 
         protected void SetSettingsPanel()

@@ -13,9 +13,9 @@ namespace GameFields.FightMenues
     {
         [SerializeField] private FightMenuButtonsPanelRoot _fightMenuButtonsPanelRoot;
 
-        private InputRoot _inputRoot;
+        private GameFieldInputRoot _inputRoot;
 
-        public void Init(InputRoot inputRoot, LoseActions playerLoseActions, IVolume cardVolume, IVolume musicVolume,
+        public void Init(GameFieldInputRoot inputRoot, LoseActions playerLoseActions, IVolume cardVolume, IVolume musicVolume,
             CardCapabilityDescription cardCapabilityDescription)
         {
             _inputRoot = inputRoot;
@@ -23,6 +23,11 @@ namespace GameFields.FightMenues
             _fightMenuButtonsPanelRoot.Init(playerLoseActions, this, cardVolume, musicVolume, cardCapabilityDescription);
 
             base.Init(_fightMenuButtonsPanelRoot);
+        }
+
+        public override void Hide()
+        {
+            Deactivate();
         }
 
         protected override void OnActivateInput()

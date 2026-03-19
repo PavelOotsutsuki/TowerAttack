@@ -23,15 +23,15 @@ namespace Menues
 
         private IVolume _cardVolume;
         private IVolume _musicVolume;
-        //private ScreenRoot _screenRoot;
+        private ScreenRoot _screenRoot;
 
         public override bool? IsActive { get; protected set; } = null;
 
-        //[Inject]
-        //private void Construct(ScreenRoot screenRoot)
-        //{
-        //    _screenRoot = screenRoot;
-        //}
+        [Inject]
+        private void Construct(ScreenRoot screenRoot)
+        {
+            _screenRoot = screenRoot;
+        }
 
         public void Init(Action onClickGoBackOnMainPanelButton, IVolume cardVolume, IVolume musicVolume)
         {
@@ -39,24 +39,7 @@ namespace Menues
             _cardVolume = cardVolume;
             _musicVolume = musicVolume;
 
-            _cardVolumeSlider.value = cardVolume.Percent;
-            _musicVlumeSlider.value = musicVolume.Percent;
-
-            //IEnumerable<Resolution> resolutions = _screenRoot.Resolutions;
-            List<OptionData> optionDatas = new List<OptionData>();
-            int currentIndex = -1;
-
-            //foreach (Resolution resolution in resolutions)
-            //{
-            //    OptionData optionData = new OptionData(_screenRoot.GetResolutionData(resolution));
-            //    optionDatas.Add(optionData);
-
-            //    if (_screenRoot.CurrentResolution.Equals(resolution))
-            //        currentIndex = optionDatas.Count - 1;
-            //}
-
-            _screenDropdown.AddOptions(optionDatas);
-            _screenDropdown.value = currentIndex;
+            //SetCurrentValues();
 
             _cardVolumeSlider.onValueChanged.AddListener(OnCardSliderValueChanged);
             _musicVlumeSlider.onValueChanged.AddListener(OnMusicSliderValueChanged);
@@ -68,6 +51,8 @@ namespace Menues
             _cardVolumeSlider.onValueChanged.RemoveListener(OnCardSliderValueChanged);
             _musicVlumeSlider.onValueChanged.RemoveListener(OnMusicSliderValueChanged);
             _screenDropdown.onValueChanged.RemoveListener(OnScreenDropdownValueChanged);
+
+            _screenDropdown.options.Clear();
         }
 
         public override void Activate()
@@ -76,6 +61,8 @@ namespace Menues
                 return;
 
             base.Activate();
+
+            SetCurrentValues();
 
             ActivatingGoBackOnMainPanelButton().ToUniTask();
         }
@@ -90,10 +77,34 @@ namespace Menues
             _musicVolume.SetVolumePercent(value);
         }
 
+        private void SetCurrentValues()
+        {
+            _cardVolumeSlider.value = _cardVolume.Percent;
+            _musicVlumeSlider.value = _musicVolume.Percent;
+
+            _screenDropdown.options.Clear();
+
+            IEnumerable<Resolution> resolutions = _screenRoot.Resolutions;
+            List<OptionData> optionDatas = new List<OptionData>();
+            int currentIndex = -1;
+
+            foreach (Resolution resolution in resolutions)
+            {
+                OptionData optionData = new OptionData(_screenRoot.GetResolutionData(resolution));
+                optionDatas.Add(optionData);
+
+                if (_screenRoot.CurrentResolution.Equals(resolution))
+                    currentIndex = optionDatas.Count - 1;
+            }
+
+            _screenDropdown.AddOptions(optionDatas);
+            _screenDropdown.value = currentIndex;
+        }
+
         private void OnScreenDropdownValueChanged(int value)
         {
             string variant = _screenDropdown.options[value].text;
-            //_screenRoot.SetResolution(_screenRoot.GetResolutionData(variant));
+            _screenRoot.SetResolution(_screenRoot.GetResolutionData(variant));
         }
 
         private IEnumerator ActivatingGoBackOnMainPanelButton()
@@ -114,6 +125,7 @@ namespace Menues
 
             base.Deactivate();
 
+            _screenDropdown.options.Clear();
             _goBackOnMainPanelButton.OnDeselect(new BaseEventData(EventSystem.current));
         }
 

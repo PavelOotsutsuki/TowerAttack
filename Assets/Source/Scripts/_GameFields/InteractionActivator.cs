@@ -19,11 +19,11 @@ namespace GameFields
         private readonly IWorkable _forgingZone;
         private readonly IWorkable _handTransferZone;
 
-        private readonly InputRoot _inputRoot;
+        private readonly GameFieldInputRoot _inputRoot;
 
         public InteractionActivator(ICardDragAndDropBlockable dragAndDropBlockable, IWorkable towerEnemy, IWorkable tablePlayer,
             IWorkable endTurnButton, IBlockable cardDragAndDropLightController, IWorkable forgingZone,
-            IWorkable handTransferZone, InputRoot inputRoot)
+            IWorkable handTransferZone, GameFieldInputRoot inputRoot)
         {
             _dragAndDropBlockable = dragAndDropBlockable;
             _tower = towerEnemy;

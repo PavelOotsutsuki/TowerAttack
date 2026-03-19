@@ -26,19 +26,20 @@ using GameFields.Persons.ConfirmableNumbersView;
 using Sounds;
 using System.Collections.Generic;
 using Tools;
+using System.Linq;
 
 namespace Roots
 {
     public class GameFieldInstaller :  MonoInstaller
     {
-        [Header("Sounds:")]
+        //[Header("Sounds:")]
 
-        [SerializeField] private BackgroundSoundConfig _backgroundSoundConfig;
-        [SerializeField] private ForegroundSoundConfig _foregroundSoundConfig;
+        //[SerializeField] private BackgroundSoundConfig _backgroundSoundConfig;
+        //[SerializeField] private ForegroundSoundConfig _foregroundSoundConfig;
 
-        [Space]
-        [Header("----------------------------")]
-        [Space]
+        //[Space]
+        //[Header("----------------------------")]
+        //[Space]
         [Header("GameFields:")]
 
         [SerializeField] private UIHelperDescription _UIHelperDescription;
@@ -75,7 +76,7 @@ namespace Roots
 
         [SerializeField] private LookCardMenuPlayer _lookCardMenuPlayer;
         [SerializeField] private StartPlayerTurnLabel _startPlayerTurnLabel;
-        [SerializeField] private StartEndGamePanel _startEndGamePanel;
+        //[SerializeField] private SwitchRootPanel _startEndGamePanel;
 
         [SerializeField] private ForgingZone _forgingZone;
         [SerializeField] private HandTransferZone _handTransferZone;
@@ -93,8 +94,8 @@ namespace Roots
         [SerializeField] private ConfirmableNumbersViewRoot _confirmableNumbersViewRoot;
 
         private CardSoundRoot _cardSoundRoot;
-        private ScreenRoot _screenRoot;
-        private CardCapabilityDescription _cardCapabilityDescription;
+        //private ScreenRoot _screenRoot;
+        //private CardCapabilityDescription _cardCapabilityDescription;
         private FightButtonsActivator _fightButtonsActivator;
         private HistoryRoot _historyRoot;
         private DiscardPile _discardPile;
@@ -269,13 +270,14 @@ namespace Roots
 
         //    Debug.Log("GameInstaller УСПЕШНО ВСЕ ЗАБИНДИЛ");
         //}
+        [Inject] private ForegroundSoundConfig _foregroundSoundConfig;
 
         public override void InstallBindings()
         {
-            DeclareSignals();
+            //DeclareSignals();
 
-            Container.Bind<BackgroundSoundConfig>().FromScriptableObject(_backgroundSoundConfig).AsSingle();
-            Container.Bind<ForegroundSoundConfig>().FromScriptableObject(_foregroundSoundConfig).AsSingle();
+            //Container.Bind<BackgroundSoundConfig>().FromScriptableObject(_backgroundSoundConfig).AsSingle();
+            //Container.Bind<ForegroundSoundConfig>().FromScriptableObject(_foregroundSoundConfig).AsSingle();
 
             Container.Bind<UIHelperDescription>().FromInstance(_UIHelperDescription).AsSingle();
             _UIHelperDescription.Init();
@@ -285,14 +287,11 @@ namespace Roots
             _cardSoundRoot = new CardSoundRoot(_foregroundSoundConfig);
             Container.Bind<CardSoundRoot>().FromInstance(_cardSoundRoot).AsSingle();
 
-            _screenRoot = new ScreenRoot();
-            Container.Bind<ScreenRoot>().FromInstance(_screenRoot).AsSingle();
+            //_screenRoot = new ScreenRoot();
+            //Container.Bind<ScreenRoot>().FromInstance(_screenRoot).AsSingle();
 
             _historyRoot = new HistoryRoot(_historyMenu);
             Container.Bind<HistoryRoot>().FromInstance(_historyRoot).AsSingle();
-
-            _cardCapabilityDescription = new CardCapabilityDescription();
-            Container.Bind<CardCapabilityDescription>().FromInstance(_cardCapabilityDescription).AsSingle();
 
             Container.Bind<InformationLabel>().FromInstance(_informationLabel).AsSingle();
             //Container.Bind<InputRoot>().FromInstance(_inputRoot).AsSingle();
@@ -328,7 +327,7 @@ namespace Roots
 
             Container.Bind<LookCardMenuPlayer>().FromInstance(_lookCardMenuPlayer).AsSingle();
             Container.Bind<StartPlayerTurnLabel>().FromInstance(_startPlayerTurnLabel).AsSingle();
-            Container.Bind<StartEndGamePanel>().FromInstance(_startEndGamePanel).AsSingle();
+            //Container.Bind<SwitchRootPanel>().FromInstance(_startEndGamePanel).AsSingle();
 
             Container.Bind<ForgingZone>().FromInstance(_forgingZone).AsSingle();
             Container.Bind<HandTransferZone>().FromInstance(_handTransferZone).AsSingle();
@@ -346,15 +345,15 @@ namespace Roots
             Container.Bind<ConfirmableNumbersViewRoot>().FromInstance(_confirmableNumbersViewRoot).AsSingle();
         }
 
-        private void DeclareSignals()
-        {
-            SignalBusInstaller.Install(Container);
+        //private void DeclareSignals()
+        //{
+        //    SignalBusInstaller.Install(Container);
 
-            Container.DeclareSignal<DiscardCardsSignal>();
-            Container.DeclareSignal<PushStepSignalPlayer>();
-            Container.DeclareSignal<PushStepSignalEnemyAI>();
-            Container.DeclareSignal<PersonWinSignal>();
-        }
+        //    Container.DeclareSignal<DiscardCardsSignal>();
+        //    Container.DeclareSignal<PushStepSignalPlayer>();
+        //    Container.DeclareSignal<PushStepSignalEnemyAI>();
+        //    Container.DeclareSignal<PersonWinSignal>();
+        //}
 
         //private void DeclareSignals()
         //{

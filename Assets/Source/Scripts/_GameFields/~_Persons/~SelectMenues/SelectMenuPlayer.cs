@@ -23,10 +23,10 @@ namespace GameFields.Persons.SelectMenues
         [SerializeField] private SelectModeButton _selectModeButton;
 
         private int _currentNeedForActivate;
-        private InputRoot _inputRoot;
+        private GameFieldInputRoot _inputRoot;
 
         public void Init(ICardNumberKeeper cardNumberKeeper, ISelectResultHandler attackResultHandler, int[] cardNumbers,
-            SelectNumbersList selectedNumbers, ConfirmableNumbers confirmableNumbers, InputRoot inputRoot,
+            SelectNumbersList selectedNumbers, ConfirmableNumbers confirmableNumbers, GameFieldInputRoot inputRoot,
             LastSelectedNumbersWatcher lastSelectedNumbersWatcher, UIHelperDescription UIHelperDescription)
         {
             _selectButton.Init(this, inputRoot);

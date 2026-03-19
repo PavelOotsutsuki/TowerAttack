@@ -11,9 +11,9 @@ namespace GameFields.Persons.LookCardMenues
         private IDeactivatable _clickCallback;
         private Coroutine _workableCoroutine;
 
-        private InputRoot _inputRoot;
+        private GameFieldInputRoot _inputRoot;
 
-        public void Init(IDeactivatable clickCallback, InputRoot inputRoot)
+        public void Init(IDeactivatable clickCallback, GameFieldInputRoot inputRoot)
         {
             _clickCallback = clickCallback;
             _inputRoot = inputRoot;
