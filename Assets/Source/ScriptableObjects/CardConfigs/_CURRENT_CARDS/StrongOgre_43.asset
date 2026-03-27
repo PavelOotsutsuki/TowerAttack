@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7465c289317d843598acc156c84e4215, type: 3}
+  m_Name: StrongOgre_43
+  m_EditorClassIdentifier: 
+  <CardViewConfig>k__BackingField: {fileID: 11400000, guid: c033729affdae4b9bbcc06ecf10bee71, type: 2}
+  <CardCharacter>k__BackingField: {fileID: 7233767571375303125, guid: ef63134ca2cff467589c5e301a67a745, type: 3}
+  <SoundConfig>k__BackingField: {fileID: 11400000, guid: 73b84494845f34444b517375a25dc546, type: 2}
+  <Effect>k__BackingField: {fileID: 11400000, guid: ba6d73aa4fbca419cbdacad075d6a910, type: 2}
+  <CardCapability>k__BackingField: 67
+  <CardPersonType>k__BackingField: 8
+  <CardName>k__BackingField: 43

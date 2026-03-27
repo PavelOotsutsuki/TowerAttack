@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7465c289317d843598acc156c84e4215, type: 3}
+  m_Name: BlindOldMan_5
+  m_EditorClassIdentifier: 
+  <CardViewConfig>k__BackingField: {fileID: 11400000, guid: 7e9c8f9aa4abb44cc9a33ae60094f536, type: 2}
+  <CardCharacter>k__BackingField: {fileID: 7233767571375303125, guid: ef63134ca2cff467589c5e301a67a745, type: 3}
+  <SoundConfig>k__BackingField: {fileID: 11400000, guid: 71c0cf7d48a4b4861b089604aadce352, type: 2}
+  <Effect>k__BackingField: {fileID: 11400000, guid: 22446fdd1caca4bd9b9fbf4f07e63b3a, type: 2}
+  <CardCapability>k__BackingField: 7
+  <CardPersonType>k__BackingField: 0
+  <CardName>k__BackingField: 5
