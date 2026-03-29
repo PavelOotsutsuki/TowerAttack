@@ -1,0 +1,176 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Menues;
+using Tools;
+using Tools.UI;
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
+
+namespace StartMenues
+{
+    public class StartMenuStartButtonsPanel : MenuStartButtonsPanel//, IAutomaticFillComponents
+    {
+        //[SerializeField] private FadablePanel _fadablePanel;
+        [SerializeField] private StartMenuButton _playButton;
+        [SerializeField] private StartMenuButton _campaignButton;
+        [SerializeField] private StartMenuButton _collectionButton;
+        [SerializeField] private StartMenuButton _achievementsButton;
+        [SerializeField] private StartMenuButton _rulesButton;
+        [SerializeField] private StartMenuButton _settingsButton;
+        [SerializeField] private StartMenuButton _exitButton;
+
+        private List<StartMenuButton> _fightMenuButtons;
+
+        //private bool _isComplete;
+        private StartMenuButton _currentFocusedButton;
+
+        public override bool? IsActive { get; protected set; } = null;
+        //public bool IsComplete => _isComplete;
+
+        public void Init(Action onSettingsButtonClick, Action onRulesButtonClick)
+        {
+            //_isComplete = true;
+            //_fadablePanel.Init();
+
+            _fightMenuButtons = new List<StartMenuButton>()
+            {
+                _playButton,
+                _campaignButton,
+                _collectionButton,
+                _achievementsButton,
+                _rulesButton,
+                _settingsButton,
+                _exitButton
+            };
+
+            _playButton.Init(this, () => SceneManager.LoadScene("Fight"));
+            _campaignButton.Init(this, null);
+            _collectionButton.Init(this, null);
+            _achievementsButton.Init(this, null);
+            _rulesButton.Init(this, onRulesButtonClick);
+            _settingsButton.Init(this, onSettingsButtonClick);
+            _exitButton.Init(this, () =>
+            {
+                #if UNITY_EDITOR
+                {
+                    EditorApplication.isPlaying = false;
+                }
+                #else
+                {
+                    Application.Quit();
+                }
+                #endif
+            });
+
+            _campaignButton.SetDisableView();
+            _collectionButton.SetDisableView();
+            _achievementsButton.SetDisableView();
+        }
+
+        public override void OnEnterPress()
+        {
+            _currentFocusedButton?.OnPointerClick(null);
+        }
+
+        public override void OnDownArrow()
+        {
+            if (_currentFocusedButton == null)
+                return;
+
+            int index = _fightMenuButtons.IndexOf(_currentFocusedButton);
+
+            do
+            {
+                index++;
+
+                if (index == _fightMenuButtons.Count)
+                    index = 0;
+            }
+            while (_fightMenuButtons[index].IsDisable);
+
+            _fightMenuButtons[index].OnPointerEnter(null);
+        }
+
+        public override void OnUpArrow()
+        {
+            if (_currentFocusedButton == null)
+                return;
+
+            int index = _fightMenuButtons.IndexOf(_currentFocusedButton);
+
+            do
+            {
+                index--;
+
+                if (index < 0)
+                    index = _fightMenuButtons.Count - 1;
+            }
+            while (_fightMenuButtons[index].IsDisable);
+
+            _fightMenuButtons[index].OnPointerEnter(null);
+        }
+
+        public override void SetFocusedButton(ConfirmableFocusableButton focusedButton)
+        {
+            if (_currentFocusedButton == focusedButton)
+                return;
+
+            if (_fightMenuButtons.Contains(focusedButton) == false)
+                throw new System.Exception("Ну и какого хера ты пытаешься зафокусить неподвластную тебе кнопку???");
+
+            UnfocuseButton();
+
+            foreach (StartMenuButton fightMenuButton in _fightMenuButtons)
+            {
+                if (fightMenuButton == focusedButton)
+                {
+                    _currentFocusedButton = fightMenuButton;
+                    _currentFocusedButton.PointerDisableSettingsRoot.OnPointerExit.Disable();
+                    return;
+                }
+            }
+        }
+
+        public override void Activate()
+        {
+            if (IsActive == true)
+                return;
+
+            base.Activate();
+
+            foreach (StartMenuButton fightMenuButton in _fightMenuButtons)
+            {
+                fightMenuButton.Activate();
+            }
+
+            EventSystem.current.SetSelectedGameObject(null);
+            _fightMenuButtons[0].OnPointerEnter(null);
+        }
+
+        public override void Deactivate()
+        {
+            if (IsActive == false)
+                return;
+
+            base.Deactivate();
+
+            foreach (StartMenuButton fightMenuButton in _fightMenuButtons)
+            {
+                fightMenuButton.Deactivate();
+            }
+        }
+
+        private void UnfocuseButton()
+        {
+            if (_currentFocusedButton != null)
+            {
+                _currentFocusedButton.PointerDisableSettingsRoot.OnPointerExit.Enable();
+                _currentFocusedButton.OnPointerExit(null);
+                _currentFocusedButton = null;
+            }
+        }
+    }
+}
