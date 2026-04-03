@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.EffectHandlers.Scarecrows
 {
-    public class ScarecrowEffectHandler
+    public class ScarecrowEffectHandler: IEffectHandlerActiveWatcher
     {
         private readonly IDiscardManager _discardManager;
         private readonly Queue<ScarecrowEffectData> _effects;
@@ -22,6 +22,8 @@ namespace GameFields.Persons.EffectHandlers.Scarecrows
 
             _discardManager = discardManager;
         }
+
+        public bool IsActive => _effects.Count > 0;
 
         public void Activate(int countCards, Card card)
         {

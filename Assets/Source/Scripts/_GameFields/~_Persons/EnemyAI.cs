@@ -26,10 +26,10 @@ namespace GameFields.Persons
             HandAI hand, ISelectMenuActivator attackMenu, ISelectMenuActivator choiceMenu, ISelectMenuActivator choiceMenuImitation,
             PersonEffectsHandler personEffectsHandler, LookCardMenuEnemyAI lookCardMenu,
             OnBeforeEndTurnProcessing onBeforeEndTurnProcessing, SkipTurnView skipTurnView,
-            INumbersStateWatcher numbersStateWatcher, LastSelectedNumbersWatcher lastSelectedNumbersWatcher) :
+            INumbersStateWatcher numbersStateWatcher, LastSelectedNumbersWatcher lastSelectedNumbersWatcher, PersonEffectKeeper personEffectKeeper) :
             base(cardPlayingZone, drawCardRoot, tower, startTurnDraw,discoverImitation, bus,
                 hand, attackMenu, interactionActivator, choiceMenu, choiceMenuImitation, personEffectsHandler,
-                lookCardMenu, skipTurnView, numbersStateWatcher, lastSelectedNumbersWatcher)
+                lookCardMenu, skipTurnView, numbersStateWatcher, lastSelectedNumbersWatcher, personEffectKeeper)
         {
             //_gameFieldObjectsActivator = gameFieldObjectsActivator;
             //Bus.Subscribe<StartEffectSignal>(SetCardEffectProcess);

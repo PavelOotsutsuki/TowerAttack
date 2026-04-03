@@ -5,31 +5,31 @@ namespace GameFields.Persons
 {
     public class DiscardManager: IDiscardManager
     {
-        private readonly IDiscardManager _enemytable;
-        private readonly IDiscardManager _playertable;
+        private readonly IDiscardManager _enemyTable;
+        private readonly IDiscardManager _playerTable;
 
         public DiscardManager(IDiscardManager tableEnemy, IDiscardManager tablePlayer)
         {
-            _enemytable = tableEnemy;
-            _playertable = tablePlayer;
+            _enemyTable = tableEnemy;
+            _playerTable = tablePlayer;
         }
 
         public void Discard(Card card)
         {
-            if (_enemytable.HasCard(card))
+            if (_enemyTable.HasCard(card))
             {
-                _enemytable.Discard(card);
+                _enemyTable.Discard(card);
             }
 
-            if (_playertable.HasCard(card))
+            if (_playerTable.HasCard(card))
             {
-                _playertable.Discard(card);
+                _playerTable.Discard(card);
             }
         }
 
         public bool HasCard(Card card)
         {
-            return _enemytable.HasCard(card) || _playertable.HasCard(card);
+            return _enemyTable.HasCard(card) || _playerTable.HasCard(card);
         }
     }
 }

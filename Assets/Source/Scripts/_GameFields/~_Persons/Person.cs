@@ -37,6 +37,7 @@ namespace GameFields.Persons
         private readonly SkipTurnView _skipTurnView;
         private readonly INumbersStateWatcher _numbersStateWatcher;
         private readonly LastSelectedNumbersWatcher _lastSelectedNumbersWatcher;
+        private readonly PersonEffectKeeper _personEffectKeeper;
         //private readonly PersonStep _lastStep;
 
         //protected readonly PersonStep TurnProcess;
@@ -54,7 +55,7 @@ namespace GameFields.Persons
             Hand hand, ISelectMenuActivator attackMenu, InteractionActivator gameFieldObjectsActivator,
             ISelectMenuActivator choiceMenu, ISelectMenuActivator choiceMenuImitation, PersonEffectsHandler personEffectsHandler,
             ILookCardMenu lookCardMenu, SkipTurnView skipTurnView, INumbersStateWatcher numbersStateWatcher,
-            LastSelectedNumbersWatcher lastSelectedNumbersWatcher)
+            LastSelectedNumbersWatcher lastSelectedNumbersWatcher, PersonEffectKeeper personEffectKeeper)
         {
             _hand = hand;
             Bus = bus;
@@ -74,6 +75,7 @@ namespace GameFields.Persons
             _skipTurnView = skipTurnView;
             _numbersStateWatcher = numbersStateWatcher;
             _lastSelectedNumbersWatcher = lastSelectedNumbersWatcher;
+            _personEffectKeeper = personEffectKeeper;
             //_lastStep = lastStep;
             InteractionActivator = gameFieldObjectsActivator;
 
@@ -81,7 +83,6 @@ namespace GameFields.Persons
 
             _personSteps = new Stack<PersonStep>();
 
-            LastEffect = ScriptableObject.CreateInstance<CardEffectConfig>();
             //Bus.Subscribe<StartEffectSignal>(SetCardEffectProcess);
         }
 
@@ -90,7 +91,8 @@ namespace GameFields.Persons
             //Bus.Unsubscribe<StartEffectSignal>(SetCardEffectProcess);
         }
 
-        public CardEffectConfig LastEffect { get; private set; }
+        public CardEffectConfig LastEffect => _personEffectKeeper.LastEffect;
+        //public IReadOnlyPersonEffect LastPersonEffect { get; private set; }
         public bool IsComplete { get; private set; }
         //public PersonEffectsHandler PersonEffectsHandler => _personEffectsHandler;
         public bool IsDoubleEffect => _personEffectsHandler.DoubleEffectHandler.IsActive;
@@ -274,7 +276,7 @@ namespace GameFields.Persons
         public void StartEffect(PersonEffect personEffect, bool isRememberEffect = true)
         {
             if (isRememberEffect)
-                LastEffect = personEffect.CardEffectConfig;
+                _personEffectKeeper.SetLastPersonEffect(personEffect);
 
             //Debug.Log("StartEffect");
             StartAction(personEffect.Effect);

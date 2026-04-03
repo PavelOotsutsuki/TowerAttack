@@ -45,7 +45,10 @@ namespace GameFields.Persons.Tables
                 throw new System.Exception("Нет места в " + ToString() + "! Почему не проверил ");
 
             if (_table.AllCards.Contains(personEffect.Card))
+            {
+                Debug.Log("Но как такое возможно? Как оно сюда попало???");
                 return;
+            }    
 
             _table.SeatCard(personEffect);
             //_playedCards.Add(card);

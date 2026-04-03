@@ -4,7 +4,7 @@ using Cards;
 
 namespace GameFields.Persons.EffectHandlers
 {
-    public class SkipTurnEffectHandler : ILengthyEffectHandler
+    public class SkipTurnEffectHandler : IEffectHandlerActiveWatcher, ILengthyEffectHandler
     {
         private readonly List<Card> _effectedCards;
 

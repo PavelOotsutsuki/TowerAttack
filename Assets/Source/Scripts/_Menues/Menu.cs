@@ -103,7 +103,7 @@ namespace Menues
             IsComplete = true;
         }
 
-        protected virtual void DeactivateChilds()
+        private void DeactivateChilds()
         {
             _fightMenuLabel.Hide();
             _fightMenuPanel.Hide();

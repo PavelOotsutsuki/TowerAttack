@@ -47,7 +47,7 @@ namespace GameFields.Histories
             if (IsDuplicate(historyData))
                 return;
 
-            // Проверяем входит ли в копию
+            // Проверяем должна ли входить в существующую
             if (IsExtra(historyData) == false)
             {
                 if (_historyMsg.Count == _maxCountHistoryPositions)

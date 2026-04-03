@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.EffectHandlers.FateInevitabilities
 {
-    public class FateInevitabilityHandler: ILengthyEffectHandler
+    public class FateInevitabilityHandler: IEffectHandlerActiveWatcher, ILengthyEffectHandler
     {
         private readonly LoseActions _loseActions;
         private readonly ISelectMenuActivator _attackMenu;
@@ -23,6 +23,8 @@ namespace GameFields.Persons.EffectHandlers.FateInevitabilities
 
             _activeEffects = new List<FateInevitabilityHandlerEffect>();
         }
+
+        public bool IsActive => _activeEffects.Count > 0;
 
         public void BeforeEndTurn(CallbackHandler callbackHandler)
         {

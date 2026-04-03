@@ -4,7 +4,7 @@ using GameFields.Persons.DrawCards;
 
 namespace GameFields.Persons.EffectHandlers.Fires
 {
-    public class FireEffectHandler : IFireEffectHandler, ILengthyEffectHandler
+    public class FireEffectHandler : IEffectHandlerActiveWatcher, ILengthyEffectHandler
     {
         private readonly IFireDrawCardAnimationSetter _cardAnimationManager;
 
@@ -16,7 +16,7 @@ namespace GameFields.Persons.EffectHandlers.Fires
             _effectedCards = new List<Card>();
         }
 
-        public bool IsFireMode => _effectedCards.Count > 0;
+        public bool IsActive => _effectedCards.Count > 0;
 
         public void Activate(Card card)
         {

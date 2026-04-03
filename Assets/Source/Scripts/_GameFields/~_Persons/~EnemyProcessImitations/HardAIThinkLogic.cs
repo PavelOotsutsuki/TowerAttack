@@ -1,21 +1,18 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cards;
 using Cards.DependencyInterlayers;
 using Cards.Views;
 using GameFields.CardTransits;
-using GameFields.Persons;
 using GameFields.Persons.ConfirmableNumbersView;
 using GameFields.Persons.EffectHandlers;
 using GameFields.Persons.EffectHandlers.Fires;
-using GameFields.Persons.Tables;
 using Tools.Utils;
 using UnityEngine;
 
 namespace GameFields.Persons.EnemyProcessImitations
 {
-    public class HardAIThinkLogic
+    public class HardAIThinkLogic : IAIThinkLogic
     {
         private readonly ICardWatcher _cardWatcher;
         private readonly ICardCheck _deck;
@@ -23,12 +20,12 @@ namespace GameFields.Persons.EnemyProcessImitations
         private readonly GnomeEffectHandler _gnomeEffectHandler;
         private readonly ICardDropPlace _table;
         private readonly ICardView _handEnemy;
-        private readonly IFireEffectHandler _fireEffectHandler;
+        private readonly IEffectHandlerActiveWatcher _fireEffectHandler;
         private readonly ICardView _discardPile;
         private readonly ICardView _fireRoot;
 
         public HardAIThinkLogic(ICardWatcher cardWatcher, ICardCheck deck, ConfirmableNumbers confirmableNumbers,
-            GnomeEffectHandler gnomeEffectHandler, ICardDropPlace table, ICardView handEnemy, IFireEffectHandler fireEffectHandler,
+            GnomeEffectHandler gnomeEffectHandler, ICardDropPlace table, ICardView handEnemy, IEffectHandlerActiveWatcher fireEffectHandler,
             ICardView discardPile, ICardView fireRoot)
         {
             _cardWatcher = cardWatcher;
@@ -46,15 +43,9 @@ namespace GameFields.Persons.EnemyProcessImitations
         private int PlayedGnomeCards => _discardPile.AllCards.Where(c => (c.CardCapability & CardCapability.GnomeChoice) == CardCapability.GnomeChoice).Count()
             + _fireRoot.AllCards.Where(c => (c.CardCapability & CardCapability.GnomeChoice) == CardCapability.GnomeChoice).Count();
 
-        public CardCapability FindActionType(CardCapability cardCapability)
+        public CardCapability FindActionType(Card workCard)
         {
-            List<CardCapability> testflags = Utils.GetFlags(cardCapability & (CardCapability.Play |
-                CardCapability.GnomeForging | CardCapability.HandTransfer));
-
-            if (testflags.Count == 0)
-                return CardCapability.Attack;
-
-            return testflags[Random.Range(0, testflags.Count)];
+            CardCapability cardCapability = workCard.CardCapability;
 
             List<CardCapability> flags = Utils.GetFlags(cardCapability & (CardCapability.Attack | CardCapability.Play |
                 CardCapability.GnomeForging | CardCapability.HandTransfer));
@@ -96,7 +87,7 @@ namespace GameFields.Persons.EnemyProcessImitations
                         int gnomeForgingProbability = 7; // По дефолту будет 7. Если мы разыграли GnomeChoice, то эффективность
                                                          // зависит только от того нужно ли брать карту
 
-                        if (_fireEffectHandler.IsFireMode) 
+                        if (_fireEffectHandler.IsActive) 
                             gnomeForgingProbability -= 5; 
 
                         if (_deck.IsHasCards(1))
@@ -117,7 +108,7 @@ namespace GameFields.Persons.EnemyProcessImitations
                     int gnomeForgingProbability = 7; // По дефолту будет 7. Если мы разыграли не хотим ковать по кол-ву угаданных
                                                      // номеров, то эффективность зависит только от того нужно ли брать карту
 
-                    if (_fireEffectHandler.IsFireMode)
+                    if (_fireEffectHandler.IsActive)
                         gnomeForgingProbability -= 5;
 
                     if (_deck.IsHasCards(1))
@@ -142,7 +133,7 @@ namespace GameFields.Persons.EnemyProcessImitations
                     int gnomeForgingProbability = 7; // По дефолту будет 7. Если мы очень хотим разыграть,
                                                      // то эффективность ковки зависит только от того нужно ли брать карту
 
-                    if (_fireEffectHandler.IsFireMode)
+                    if (_fireEffectHandler.IsActive)
                         gnomeForgingProbability -= 5;
 
                     if (_deck.IsHasCards(1))
@@ -161,7 +152,7 @@ namespace GameFields.Persons.EnemyProcessImitations
                     int gnomeForgingProbability = 15; // По дефолту будет 15. Если мы очень хотим разыграть,
                                                      // то эффективность ковки зависит только от того нужно ли брать карту
 
-                    if (_fireEffectHandler.IsFireMode)
+                    if (_fireEffectHandler.IsActive)
                         gnomeForgingProbability -= 5;
 
                     if (_deck.IsHasCards(1))
@@ -180,7 +171,7 @@ namespace GameFields.Persons.EnemyProcessImitations
                     int gnomeForgingProbability = 35; // По дефолту будет 35. Если мы очень хотим разыграть,
                                                       // то эффективность ковки зависит только от того нужно ли брать карту
 
-                    if (_fireEffectHandler.IsFireMode)
+                    if (_fireEffectHandler.IsActive)
                         gnomeForgingProbability -= 5;
 
                     if (_deck.IsHasCards(1))
@@ -208,7 +199,8 @@ namespace GameFields.Persons.EnemyProcessImitations
             //Debug.Log($"{countAll}: countAll");
             //Debug.Log($"{countFree}: countFree");
 
-            int probabilityPlay = countFree * 100 / countAll;
+            //int probabilityPlay = countFree * 100 / countAll;
+            int probabilityPlay = 30 + countFree * 70 / countAll;
 
             if (probabilityPlay > 99)
                 probabilityPlay = 99;

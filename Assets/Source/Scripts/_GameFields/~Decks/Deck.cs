@@ -49,7 +49,7 @@ namespace GameFields.Decks
                 //BindCard(card.ReadOnlyRectTransform, card.CardMovement);
             }
 
-            ShuffleCards();
+            //ShuffleCards();
         }
 
         public bool IsHasCards(int count, IEnumerable<int> exceptions = null)

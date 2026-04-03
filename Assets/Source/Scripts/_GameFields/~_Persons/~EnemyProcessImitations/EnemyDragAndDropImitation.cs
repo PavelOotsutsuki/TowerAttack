@@ -12,6 +12,7 @@ using GameFields.Persons.EffectHandlers;
 using GameFields.InputSettings;
 using Cards.Views;
 using Tools.InputSettings;
+using System.Linq;
 
 namespace GameFields.Persons.EnemyProcessImitations
 {
@@ -27,13 +28,13 @@ namespace GameFields.Persons.EnemyProcessImitations
         private readonly SkipTurnChecker _skipTurnChecker;
         private readonly IDrawnCardWatcher _drawnCardWatcher;
         private readonly GnomeEffectHandler _gnomeEffectHandler;
-        private readonly HardAIThinkLogic _thinkLogic; 
+        private readonly IAIThinkLogic _thinkLogic; 
 
         private bool _isComplete;
 
         internal EnemyDragAndDropImitation(CardDragAndDropImitationActions cardImitationActions, EnemyDragAndDropImitationData data,
             InteractionActivator interactionActivator, SkipTurnChecker skipTurnChecker, IDrawnCardWatcher drawnCardWatcher, Hand hand,
-            HardAIThinkLogic hardAIThinkLogic, GnomeEffectHandler gnomeEffectHandler) : base(interactionActivator)
+            IAIThinkLogic AIThinkLogic, GnomeEffectHandler gnomeEffectHandler) : base(interactionActivator)
         {
             _isComplete = false;
             _data = data;
@@ -42,7 +43,7 @@ namespace GameFields.Persons.EnemyProcessImitations
             _skipTurnChecker = skipTurnChecker;
             _drawnCardWatcher = drawnCardWatcher;
             _gnomeEffectHandler = gnomeEffectHandler;
-            _thinkLogic = hardAIThinkLogic;
+            _thinkLogic = AIThinkLogic;
         }
 
         public int CountDrawCards => _data.CountDrawCards;
@@ -59,6 +60,8 @@ namespace GameFields.Persons.EnemyProcessImitations
         {
             _isComplete = false;
 
+            Debug.Log("EnemyDragAndDropImitation.OnStartStep()");
+
             _skipTurnChecker.Activate();
 
             if (_skipTurnChecker.CanSkip)
@@ -72,18 +75,22 @@ namespace GameFields.Persons.EnemyProcessImitations
 
             //int logicNumber = Random.Range(1, CountLogics + 1);
 
-            IEnumerable<Card> workCardList;
+            List<Card> workCardList;
 
             if (_hand.IsSlimeEffect)
             {
                 workCardList = Utils.Shuffle(_drawnCardWatcher.DrawnCards);
+                Debug.Log("_drawnCardWatcher.DrawnCards: " + _drawnCardWatcher.DrawnCards.Count());
             }
             else
             {
                 workCardList = Utils.Shuffle(_hand.AllCards);
+                Debug.Log("_hand.AllCards: " + _hand.AllCards.Count());
             }
 
             //List<Func<IEnumerator>> enableAIEndLogic = new List<Func<IEnumerator>>();
+
+            Dictionary<Card, CardCapability> cardActions = new Dictionary<Card, CardCapability>();
 
             foreach (Card workCard in workCardList)
             {
@@ -94,45 +101,26 @@ namespace GameFields.Persons.EnemyProcessImitations
                 if (_cardImitationActions.CanPlay() == false && currentCapability == CardCapability.Play)
                     continue;
 
-                if (_cardImitationActions.CanPlay() == false)
-                    currentCapability &= ~CardCapability.Play;
+                //if (_cardImitationActions.CanPlay() == false)
+                //    currentCapability &= ~CardCapability.Play;
 
-                CardCapability type = _thinkLogic.FindActionType(currentCapability);
+                CardCapability type = _thinkLogic.FindActionType(workCard);
+                cardActions.Add(workCard, type);
+            }
 
-                //if ((currentCapability & CardCapability.Attack) == CardCapability.Attack)
-                //{
-                //    enableAIEndLogic.Add(Attack);
-                //}
+            if (cardActions.Count > 0)
+            {
+                if (cardActions.ContainsValue(CardCapability.Attack) && cardActions.Values.Distinct().Count() > 1)
+                {
+                    foreach (KeyValuePair<Card, CardCapability> keyValuePair in cardActions)
+                    {
+                        if (keyValuePair.Value == CardCapability.Attack)
+                            workCardList.Remove(keyValuePair.Key);
+                    }
+                }
 
-                //if ((currentCapability & CardCapability.Play) == CardCapability.Play && _cardImitationActions.CanPlay())
-                //{
-                //    if ((currentCapability & CardCapability.GnomeChoice) == CardCapability.GnomeChoice)
-                //    {
-                //        if (_gnomeEffectHandler.CanActivate())
-                //        {
-                //            enableAIEndLogic.Add(Play);
-                //        }
-                //    }
-                //    else
-                //    {
-                //        enableAIEndLogic.Add(Play);
-                //    }
-                //}
-
-                //if ((currentCapability & CardCapability.GnomeForging) == CardCapability.GnomeForging)
-                //{
-                //    enableAIEndLogic.Add(Forging);
-                //}
-
-                //if ((currentCapability & CardCapability.HandTransfer) == CardCapability.HandTransfer)
-                //{
-                //    enableAIEndLogic.Add(HandTransfer);
-                //}
-
-                //if (enableAIEndLogic.Count == 0)
-                //    continue;
-
-                //int endActionIndex = Random.Range(0, enableAIEndLogic.Count);
+                Card workCard = workCardList[0];
+                CardCapability type = cardActions[workCard];
 
                 Func<IEnumerator> endAction = type switch
                 {
@@ -153,21 +141,92 @@ namespace GameFields.Persons.EnemyProcessImitations
 
                 Processing(dragAndDropBehaviour, endAction).ToUniTask();
 
-                //_cardImitationActions.SetCard(workCard);
-
-                //if (endActionIndex == 1)
-                //{
-                //    //DragAndDropBehaviour1().ToUniTask();
-                //    DragAndDropBehaviour2().ToUniTask();
-                //}
-
-                //if (endActionIndex == 2)
-                //{
-                //    DragAndDropBehaviour2().ToUniTask();
-                //}
-
                 return;
             }
+
+            //foreach (Card workCard in workCardList)
+            //{
+            //    //enableAIEndLogic.Clear();
+
+            //    CardCapability currentCapability = workCard.CardCapability;
+
+            //    if (_cardImitationActions.CanPlay() == false && currentCapability == CardCapability.Play)
+            //        continue;
+
+            //    //if (_cardImitationActions.CanPlay() == false)
+            //    //    currentCapability &= ~CardCapability.Play;
+
+            //    CardCapability type = _thinkLogic.FindActionType(workCard);
+
+            //    //if ((currentCapability & CardCapability.Attack) == CardCapability.Attack)
+            //    //{
+            //    //    enableAIEndLogic.Add(Attack);
+            //    //}
+
+            //    //if ((currentCapability & CardCapability.Play) == CardCapability.Play && _cardImitationActions.CanPlay())
+            //    //{
+            //    //    if ((currentCapability & CardCapability.GnomeChoice) == CardCapability.GnomeChoice)
+            //    //    {
+            //    //        if (_gnomeEffectHandler.CanActivate())
+            //    //        {
+            //    //            enableAIEndLogic.Add(Play);
+            //    //        }
+            //    //    }
+            //    //    else
+            //    //    {
+            //    //        enableAIEndLogic.Add(Play);
+            //    //    }
+            //    //}
+
+            //    //if ((currentCapability & CardCapability.GnomeForging) == CardCapability.GnomeForging)
+            //    //{
+            //    //    enableAIEndLogic.Add(Forging);
+            //    //}
+
+            //    //if ((currentCapability & CardCapability.HandTransfer) == CardCapability.HandTransfer)
+            //    //{
+            //    //    enableAIEndLogic.Add(HandTransfer);
+            //    //}
+
+            //    //if (enableAIEndLogic.Count == 0)
+            //    //    continue;
+
+            //    //int endActionIndex = Random.Range(0, enableAIEndLogic.Count);
+
+            //    Func<IEnumerator> endAction = type switch
+            //    {
+            //        CardCapability.Attack => Attack,
+            //        CardCapability.Play => Play,
+            //        CardCapability.GnomeForging => Forging,
+            //        CardCapability.HandTransfer => HandTransfer,
+            //        _ => throw new Exception("Найден неизвестный CardCapability: " + type)
+            //    };
+
+            //    int logicNumber = Random.Range(1, CountLogics + 1);
+
+            //    DragAndDropBehaviour dragAndDropBehaviour = logicNumber switch
+            //    {
+            //        1 => new DragAndDropBehaviour1(_data, _cardImitationActions, workCard),
+            //        _ => throw new NullReferenceException("Задан неверный индекс логики поведения Enemy: " + logicNumber)
+            //    };
+
+            //    Processing(dragAndDropBehaviour, endAction).ToUniTask();
+
+            //    //_cardImitationActions.SetCard(workCard);
+
+            //    //if (endActionIndex == 1)
+            //    //{
+            //    //    //DragAndDropBehaviour1().ToUniTask();
+            //    //    DragAndDropBehaviour2().ToUniTask();
+            //    //}
+
+            //    //if (endActionIndex == 2)
+            //    //{
+            //    //    DragAndDropBehaviour2().ToUniTask();
+            //    //}
+
+            //    return;
+            //}
 
             _isComplete = true;
         }

@@ -4,7 +4,7 @@ using Cards;
 
 namespace GameFields.Persons.EffectHandlers
 {
-    public class WiseMonkEffectHandler : ILengthyEffectHandler
+    public class WiseMonkEffectHandler : IEffectHandlerActiveWatcher, ILengthyEffectHandler
     {
         private readonly List<Card> _effectedCards;
 

@@ -43,9 +43,6 @@ namespace StartMenues
             _inputRoot.Deactivate();
         }
 
-        protected override void DeactivateChilds()
-        { }
-
         protected override void OnActivateInput()
         {
             _inputRoot.Pause();

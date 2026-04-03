@@ -44,6 +44,7 @@ namespace Cards
         public SideType CurrentSide => _cardPaper.CurrentSide;
         public CardCapability CardCapability => _config.CardCapability;
         public CardName CardName => _config.CardName;
+        public CardEffectConfig EffectConfig => _config.Effect;
         public bool IsVisibleByPlayer => _cardPaper.CurrentSide == SideType.Front || _currentState is CardCharacter;
         //public string Name => _config.CardViewConfig.Name;
 

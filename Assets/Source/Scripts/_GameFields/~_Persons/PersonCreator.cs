@@ -78,12 +78,21 @@ namespace GameFields.Persons
         private SelectNumbersList _cursedNumbersPlayer = new SelectNumbersList();
         private ConfirmableNumbers _confirmableNumbersPlayer;
         private LastSelectedNumbersWatcher _lastSelectedNumbersWatcherPlayer = new LastSelectedNumbersWatcher();
+        private PersonEffectKeeper _playerEffectKeeper;
 
         private BrothersEffectHandler _playerBrothersEffectHandler;
 
         private LoseActions _playerLoseActions;
 
         private StartPlayerTurnLabel _startPlayerTurnLabel;
+
+        private SkipTurnEffectHandler _skipTurnEffectHandlerPlayer;
+        private FateInevitabilityHandler _fateInevitabilityHandlerPlayer;
+        private ScarecrowEffectHandler _scarecrowEffectHandlerPlayer;
+        private WiseMonkEffectHandler _wiseMonkEffectHandlerPlayer;
+
+        private DrawCardRoot _drawCardRootPlayer;
+        private FireEffectHandler _fireEffectHandlerPlayer;
 
         [SerializeField] private int _playerCountStartDrawCards = 1;
         [SerializeField] private AttackResultHandlerData _attackResultHandlerPlayerData;
@@ -121,10 +130,14 @@ namespace GameFields.Persons
         private SelectNumbersList _cursedNumbersEnemyAI = new SelectNumbersList();
         private ConfirmableNumbers _confirmableNumbersEnemyAI;
         private LastSelectedNumbersWatcher _lastSelectedNumbersWatcherEnemyAI = new LastSelectedNumbersWatcher();
+        private PersonEffectKeeper _enemyEffectKeeper;
 
         private BrothersEffectHandler _enemyBrothersEffectHandler;
 
         private LoseActions _enemyLoseActions;
+
+        private DrawCardRoot _drawCardRootEnemy;
+        private FireEffectHandler _fireEffectHandlerEnemy;
 
         [SerializeField] private int _enemyCountStartDrawCards = 1;
         
@@ -272,6 +285,9 @@ namespace GameFields.Persons
 
             _discardManager = new DiscardManager(_enemyTable, _playerTable);
 
+            _playerEffectKeeper = new PersonEffectKeeper();
+            _enemyEffectKeeper = new PersonEffectKeeper();
+
             InitPlayersData();
             InitEnemyData();
             //InitCommonData();
@@ -280,11 +296,6 @@ namespace GameFields.Persons
 
         public Player CreatePlayer()
         {
-            SimpleDrawCardAnimation simpleDrawCardAnimation = new SimpleDrawCardAnimation(_playerHand, _playerTurnDrawnCards, _playerSimpleDrawCardAnimationData);
-            FireDrawCardAnimation fireDrawCardAnimation = new FireDrawCardAnimation(_playerFireDrawCardAnimationData, _playerFirePool, _playerHand);
-            DrawCardAnimationManager drawCardAnimationManager = new DrawCardAnimationManager(simpleDrawCardAnimation, fireDrawCardAnimation);
-            DrawCardRoot drawCardRoot = new DrawCardRoot(drawCardAnimationManager, _deck);
-
             SlimeEffectHandler slimeEffectHandler = new SlimeEffectHandler(_playerHand, _playerTurnDrawnCards);
             List<ICardFeatureRechangablePlace> cardFeatureRechangables = new List<ICardFeatureRechangablePlace>()
             {
@@ -294,47 +305,37 @@ namespace GameFields.Persons
             GnomeEffectHandler gnomeEffectHandler = new GnomeEffectHandler(_playerRechangeFeatureRuleController, cardFeatureRechangables);
             CurseEffectHandlerPlayer curseEffectHandler = new CurseEffectHandlerPlayer(_playerTower, _informationLabel, _confirmableNumbersEnemyAI,
                 _cursedNumbersEnemyAI, _bus);
-            FireEffectHandler fireEffectHandler = new FireEffectHandler(drawCardAnimationManager);
             DoubleEffectHandler doubleEffectHandler = new DoubleEffectHandler();
-            SkipTurnEffectHandler skipTurnEffectHandler = new SkipTurnEffectHandler();
-            FateInevitabilityHandler fateInevitabilityHandler = new FateInevitabilityHandler(_playerLoseActions, _playerAttackMenu);
             JusticeBullEffectHandler justiceBullEffectHandler = new JusticeBullEffectHandler(_choicedNumbersPlayer, _enemyTower);
-            ScarecrowEffectHandler scarecrowEffectHandler = new ScarecrowEffectHandler(_discardManager);
-            WiseMonkEffectHandler wiseMonkEffectHandler = new WiseMonkEffectHandler();
             FalsePrinceEffectHandler falsePrinceEffectHandler = new FalsePrinceEffectHandler(_playerTower, _deck);
             FallenGuardianEffectHandler fallenGuardianEffectHandler = new FallenGuardianEffectHandler(_choicedNumbersPlayer, _enemyTower);
             _playerBrothersEffectHandler = new BrothersEffectHandler(_playerRechangeFeatureRuleController, cardFeatureRechangables);
             _playerPersonEffectsHandler = new PersonEffectsHandler(gnomeEffectHandler, slimeEffectHandler, curseEffectHandler,
-                fireEffectHandler, doubleEffectHandler, skipTurnEffectHandler, fateInevitabilityHandler, justiceBullEffectHandler,
-                _playerBrothersEffectHandler, scarecrowEffectHandler, wiseMonkEffectHandler, falsePrinceEffectHandler,
+                _fireEffectHandlerPlayer, doubleEffectHandler, _skipTurnEffectHandlerPlayer, _fateInevitabilityHandlerPlayer, justiceBullEffectHandler,
+                _playerBrothersEffectHandler, _scarecrowEffectHandlerPlayer, _wiseMonkEffectHandlerPlayer, falsePrinceEffectHandler,
                 fallenGuardianEffectHandler);
 
             SkipTurnChecker skipTurnChecker = new SkipTurnChecker(slimeEffectHandler, _playerHand);
             TurnProcessing turnProcessing = new TurnProcessing(_interactionActivator, skipTurnChecker);
-            StartTurnDrawPlayer startTurnDraw = new StartTurnDrawPlayer(_interactionActivator, drawCardRoot, _playerCountStartDrawCards);
+            StartTurnDrawPlayer startTurnDraw = new StartTurnDrawPlayer(_interactionActivator, _drawCardRootPlayer, _playerCountStartDrawCards);
 
             StartPlayerTurnView startPlayerTurnView = new StartPlayerTurnView(_interactionActivator, _startPlayerTurnLabel);
             PlayerSkipTurnView skipTurnView = new PlayerSkipTurnView(_interactionActivator, _skipTurnLabelPlayer);
             EndTurnProcessing endTurnProcessing = new EndTurnProcessing(_endTurnButton, _interactionActivator, _playerPersonEffectsHandler);
 
-            _forgingZone.Init(_discardPile, _bus, drawCardRoot, gnomeEffectHandler, _historyRoot);
+            _forgingZone.Init(_discardPile, _bus, _drawCardRootPlayer, gnomeEffectHandler, _historyRoot);
             _handTransferZone.Init(_enemyHand, _bus, _historyRoot);
 
             _playerHand.Init(_seatPool, _playerRechangeFeatureRuleController, _playerTurnDrawnCards, curseEffectHandler);
 
             return new Player(_interactionActivator, _playerHand, _playerPlayingZone, _playerTower, _playerDiscover,
-                drawCardRoot, startTurnDraw, turnProcessing, _bus, startPlayerTurnView, _playerAttackMenu, endTurnProcessing,
+                _drawCardRootPlayer, startTurnDraw, turnProcessing, _bus, startPlayerTurnView, _playerAttackMenu, endTurnProcessing,
                 _playerChoiceMenu, _playerChoiceMenuImitation, _playerPersonEffectsHandler, _informationLabel, _playerLookCardMenu,
-                skipTurnView, _confirmableNumbersPlayer, _lastSelectedNumbersWatcherPlayer);
+                skipTurnView, _confirmableNumbersPlayer, _lastSelectedNumbersWatcherPlayer, _playerEffectKeeper);
         }
 
         public EnemyAI CreateEnemyAI()
         {
-            SimpleDrawCardAnimation simpleDrawCardAnimation = new SimpleDrawCardAnimation(_enemyHand, _enemyTurnDrawnCards, _enemyAISimpleDrawCardAnimationData);
-            FireDrawCardAnimation fireDrawCardAnimation = new FireDrawCardAnimation(_enemyAIFireDrawCardAnimationData, _enemyFirePool, _enemyHand);
-            DrawCardAnimationManager drawCardAnimationManager = new DrawCardAnimationManager(simpleDrawCardAnimation, fireDrawCardAnimation);
-            DrawCardRoot drawCardRoot = new DrawCardRoot(drawCardAnimationManager, _deck);
-
             SlimeEffectHandler slimeEffectHandler = new SlimeEffectHandler(_enemyHand, _enemyTurnDrawnCards);
             List<ICardFeatureRechangablePlace> cardFeatureRechangables = new List<ICardFeatureRechangablePlace>()
             {
@@ -344,7 +345,6 @@ namespace GameFields.Persons
             GnomeEffectHandler gnomeEffectHandler = new GnomeEffectHandler(_enemyRechangeFeatureRuleController, cardFeatureRechangables);
             CurseEffectHandlerEnemyAI curseEffectHandler = new CurseEffectHandlerEnemyAI(_enemyTower, _informationLabel, _confirmableNumbersPlayer,
                 _cursedNumbersPlayer, _bus);
-            FireEffectHandler fireEffectHandler = new FireEffectHandler(drawCardAnimationManager);
             DoubleEffectHandler doubleEffectHandler = new DoubleEffectHandler();
             SkipTurnEffectHandler skipTurnEffectHandler = new SkipTurnEffectHandler();
             FateInevitabilityHandler fateInevitabilityHandler = new FateInevitabilityHandler(_enemyLoseActions, _enemyAttackMenu);
@@ -355,20 +355,25 @@ namespace GameFields.Persons
             FalsePrinceEffectHandler falsePrinceEffectHandler = new FalsePrinceEffectHandler(_enemyTower, _deck);
             FallenGuardianEffectHandler fallenGuardianEffectHandler = new FallenGuardianEffectHandler(_choicedNumbersEnemy, _playerTower);
             _enemyPersonEffectsHandler = new PersonEffectsHandler(gnomeEffectHandler, slimeEffectHandler, curseEffectHandler,
-                fireEffectHandler, doubleEffectHandler, skipTurnEffectHandler, fateInevitabilityHandler, justiceBullEffectHandler,
+                _fireEffectHandlerEnemy, doubleEffectHandler, skipTurnEffectHandler, fateInevitabilityHandler, justiceBullEffectHandler,
                 _enemyBrothersEffectHandler, scarecrowEffectHandler, wiseMonkEffectHandler, falsePrinceEffectHandler,
                 fallenGuardianEffectHandler);
 
             SkipTurnChecker skipTurnChecker = new SkipTurnChecker(slimeEffectHandler, _enemyHand);
             CardDragAndDropImitationActions cardDragAndDropImitationActions = new CardDragAndDropImitationActions(_enemyHand, _enemyPlayingZone, _enemyCardAttackZone,
-                _discardPile, drawCardRoot, _playerHand, _historyRoot);
-            StartTurnDrawEnemyAI startTurnDraw = new StartTurnDrawEnemyAI(_interactionActivator, drawCardRoot, _enemyCountStartDrawCards);
+                _discardPile, _drawCardRootEnemy, _playerHand, _historyRoot);
+            StartTurnDrawEnemyAI startTurnDraw = new StartTurnDrawEnemyAI(_interactionActivator, _drawCardRootEnemy, _enemyCountStartDrawCards);
             //StartTurnDrawEnemyAI startTurnDraw = new StartTurnDrawEnemyAI(_interactionActivator, drawCardRoot, 0);
             EnemySkipTurnView skipTurnView = new EnemySkipTurnView(_interactionActivator, _skipTurnLabelEnemyAI);
             OnBeforeEndTurnProcessing onBeforeEndTurnProcessing = new OnBeforeEndTurnProcessing(_interactionActivator, _enemyPersonEffectsHandler);
 
-            HardAIThinkLogic hardAIThinkLogic = new HardAIThinkLogic(_cardRoot,_deck, _confirmableNumbersEnemyAI, gnomeEffectHandler,
-                _enemyPlayingZone, _enemyHand, fireEffectHandler, _discardPile, _fireRoot);
+            //HardAIThinkLogic hardAIThinkLogic = new HardAIThinkLogic(_cardRoot,_deck, _confirmableNumbersEnemyAI, gnomeEffectHandler,
+            //    _enemyPlayingZone, _enemyHand, fireEffectHandler, _discardPile, _fireRoot);
+            VeryHardAIThinkLogic hardAIThinkLogic = new VeryHardAIThinkLogic(_cardRoot, _deck, _confirmableNumbersEnemyAI, gnomeEffectHandler,
+                _enemyPlayingZone, _enemyHand, _fireEffectHandlerEnemy, _discardPile, _fireRoot, _playerHand, _playerEffectKeeper, _confirmableNumbersPlayer,
+                _enemyBrothersEffectHandler, _enemyTable, _playerTable, _skipTurnEffectHandlerPlayer, _fateInevitabilityHandlerPlayer, _fireEffectHandlerPlayer,
+                _wiseMonkEffectHandlerPlayer, _scarecrowEffectHandlerPlayer);
+
             EnemyDragAndDropImitation enemyDragAndDropImitation = new EnemyDragAndDropImitation(cardDragAndDropImitationActions,
                 _enemyDragAndDropImitationData, _interactionActivator, skipTurnChecker, _enemyTurnDrawnCards, _enemyHand,
                 hardAIThinkLogic, gnomeEffectHandler);
@@ -379,9 +384,9 @@ namespace GameFields.Persons
             LookCardMenuEnemyAI lookCardMenuEnemyAI = new LookCardMenuEnemyAI();
 
             return new EnemyAI(_interactionActivator, enemyDragAndDropImitation, _enemyPlayingZone,
-                _enemyTower, drawCardRoot, _enemyDiscoverImitation, startTurnDraw, _bus, _enemyHand, _enemyAttackMenu,
+                _enemyTower, _drawCardRootEnemy, _enemyDiscoverImitation, startTurnDraw, _bus, _enemyHand, _enemyAttackMenu,
                 _enemyChoiceMenu, _enemyChoiceMenuImitation, _enemyPersonEffectsHandler, lookCardMenuEnemyAI,
-                onBeforeEndTurnProcessing, skipTurnView, _confirmableNumbersEnemyAI, _lastSelectedNumbersWatcherEnemyAI);
+                onBeforeEndTurnProcessing, skipTurnView, _confirmableNumbersEnemyAI, _lastSelectedNumbersWatcherEnemyAI, _enemyEffectKeeper);
         }
 
         public CardLocationViewRoot CreateCardLocationViewRoot()
@@ -443,6 +448,23 @@ namespace GameFields.Persons
 
             _playerCardAttackZone.Init(_playerAttackMenu, _enemyTower, _bus, _historyRoot);
             //_playerCardAttackZone.Init(_playerChoiceMenu, _enemyTower);
+
+            _skipTurnEffectHandlerPlayer = new SkipTurnEffectHandler();
+            _fateInevitabilityHandlerPlayer = new FateInevitabilityHandler(_playerLoseActions, _playerAttackMenu);
+            _scarecrowEffectHandlerPlayer = new ScarecrowEffectHandler(_discardManager);
+            _wiseMonkEffectHandlerPlayer = new WiseMonkEffectHandler();
+
+            CreateDrawCardRootPlayer();
+        }
+
+        private void CreateDrawCardRootPlayer()
+        {
+            SimpleDrawCardAnimation simpleDrawCardAnimation = new SimpleDrawCardAnimation(_playerHand, _playerTurnDrawnCards, _playerSimpleDrawCardAnimationData);
+            FireDrawCardAnimation fireDrawCardAnimation = new FireDrawCardAnimation(_playerFireDrawCardAnimationData, _playerFirePool, _playerHand);
+            DrawCardAnimationManager drawCardAnimationManager = new DrawCardAnimationManager(simpleDrawCardAnimation, fireDrawCardAnimation);
+            _drawCardRootPlayer = new DrawCardRoot(drawCardAnimationManager, _deck);
+
+            _fireEffectHandlerPlayer = new FireEffectHandler(drawCardAnimationManager);
         }
 
         private void InitEnemyData()
@@ -474,6 +496,18 @@ namespace GameFields.Persons
                 _confirmableNumbersEnemyAI, _lastSelectedNumbersWatcherEnemyAI);
 
             _enemyCardAttackZone.Init(_enemyAttackMenu, _playerTower, _bus, _historyRoot);
+
+            CreateDrawCardRootEnemy();
+        }
+
+        private void CreateDrawCardRootEnemy()
+        {
+            SimpleDrawCardAnimation simpleDrawCardAnimation = new SimpleDrawCardAnimation(_enemyHand, _enemyTurnDrawnCards, _enemyAISimpleDrawCardAnimationData);
+            FireDrawCardAnimation fireDrawCardAnimation = new FireDrawCardAnimation(_enemyAIFireDrawCardAnimationData, _enemyFirePool, _enemyHand);
+            DrawCardAnimationManager drawCardAnimationManager = new DrawCardAnimationManager(simpleDrawCardAnimation, fireDrawCardAnimation);
+            _drawCardRootEnemy = new DrawCardRoot(drawCardAnimationManager, _deck);
+
+            _fireEffectHandlerEnemy = new FireEffectHandler(drawCardAnimationManager);
         }
 
         private void DefineFire()

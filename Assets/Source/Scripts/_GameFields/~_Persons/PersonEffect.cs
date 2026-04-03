@@ -1,26 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using Cards;
 using Cards.Effects;
 using GameFields.Effects;
-using UnityEngine;
 
 namespace GameFields.Persons
 {
-    public class PersonEffect
+    public class PersonEffect: IReadOnlyPersonEffect
     {
-        //private readonly Card _card;
-        //private readonly CardEffectConfig _cardEffectConfig;
-
-        //public CardEffectConfigPair(Card card, CardEffectConfig cardEffectConfig)
-        //{
-        //    _card = card;
-        //    _cardEffectConfig = cardEffectConfig;
-        //}
-
-        //public Card Card => _card;
-        //public CardEffectConfig CardEffectConfig => _cardEffectConfig;
-
         private readonly CardEffectConfigPair _cardEffectConfigPair;
         private readonly Effect _effect;
         private readonly EffectDuration _effectDuration;
