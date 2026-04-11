@@ -27,6 +27,7 @@ using Sounds;
 using System.Collections.Generic;
 using Tools;
 using System.Linq;
+using GameFields.Backgrounds;
 
 namespace Roots
 {
@@ -92,6 +93,8 @@ namespace Roots
         [SerializeField] private CardAttackZoneEnemyAI _enemyCardAttackZone;
 
         [SerializeField] private ConfirmableNumbersViewRoot _confirmableNumbersViewRoot;
+
+        [SerializeField] private BackgroundRoot _backgroundRoot;
 
         private CardSoundRoot _cardSoundRoot;
         //private ScreenRoot _screenRoot;
@@ -343,6 +346,8 @@ namespace Roots
             Container.Bind<CardAttackZoneEnemyAI>().FromInstance(_enemyCardAttackZone).AsSingle();
 
             Container.Bind<ConfirmableNumbersViewRoot>().FromInstance(_confirmableNumbersViewRoot).AsSingle();
+
+            Container.Bind<BackgroundRoot>().FromInstance(_backgroundRoot).AsSingle();
         }
 
         //private void DeclareSignals()

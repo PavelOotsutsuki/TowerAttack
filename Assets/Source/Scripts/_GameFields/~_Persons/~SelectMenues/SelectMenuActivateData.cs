@@ -1,4 +1,5 @@
 using Tools;
+using Tools.Settings;
 
 namespace GameFields.Persons.SelectMenues
 {
@@ -9,7 +10,15 @@ namespace GameFields.Persons.SelectMenues
 
         public SelectMenuActivateData(int needSelect, RestrictionType? restrictionType = null)
         {
-            _needSelect = needSelect;
+            if (GameSettings.DefaultCardNumbers.Length < needSelect)
+            {
+                _needSelect = GameSettings.DefaultCardNumbers.Length;
+            }
+            else
+            {
+                _needSelect = needSelect;
+            }
+
             _restrictionType = restrictionType;
         }
 

@@ -1,10 +1,9 @@
 using Cards;
-using Cards.Views;
 
 namespace GameFields.Persons.EnemyProcessImitations
 {
     public interface IAIThinkLogic
     {
-        public CardCapability FindActionType(Card workCard);
+        public CapabilityProbability FindActionType(Card workCard);
     }
 }

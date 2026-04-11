@@ -11,7 +11,7 @@ namespace GameFields.Persons.EnemyProcessImitations
         public EasyAIThinkLogic()
         { }
 
-        public CardCapability FindActionType(Card workCard)
+        public CapabilityProbability FindActionType(Card workCard)
         {
             CardCapability cardCapability = workCard.CardCapability;
 
@@ -19,9 +19,9 @@ namespace GameFields.Persons.EnemyProcessImitations
                 CardCapability.GnomeForging | CardCapability.HandTransfer));
 
             if (testflags.Count == 0)
-                return CardCapability.Attack;
+                return new CapabilityProbability(CardCapability.Attack, 100);
 
-            return testflags[Random.Range(0, testflags.Count)];
+            return new CapabilityProbability(testflags[Random.Range(0, testflags.Count)], 100);
         }
     }
 }

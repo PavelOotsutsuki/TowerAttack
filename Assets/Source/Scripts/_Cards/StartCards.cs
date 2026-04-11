@@ -26,11 +26,25 @@ namespace Cards
         private void CreateDefaultFiftyCards()
         {
 
-            //for (int i = 1; i <= 50; i++)
-            //{
-            //    CardName cardName = (CardName)i;
-            //    _startCardNames.Add(cardName);
-            //}
+            for (int i = 1; i <= 50; i++)
+            {
+                CardName cardName = (CardName)i;
+                _startCardNames.Add(cardName);
+            }
+
+            /*
+            for (int i = 1; i <= 25; i++)
+            {
+                CardName cardName = (CardName)42;
+                _startCardNames.Add(cardName);
+            }
+
+            for (int i = 1; i <= 25; i++)
+            {
+                CardName cardName = (CardName)25;
+                _startCardNames.Add(cardName);
+            }
+            */
 
             /*
             for (int i = 1; i <= 40; i++)
@@ -52,38 +66,6 @@ namespace Cards
             }
             */
 
-
-            /*
-            for (int i = 1; i <= 4; i++)
-            {
-                CardName cardName = (CardName)45;
-                _startCardNames.Add(cardName);
-            }
-
-            for (int i = 1; i <= 2; i++)
-            {
-                CardName cardName = (CardName)3;
-                _startCardNames.Add(cardName);
-            }
-
-            for (int i = 1; i <= 2; i++)
-            {
-                CardName cardName = (CardName)1;
-                _startCardNames.Add(cardName);
-            }
-            */
-
-            _startCardNames.Add((CardName)45);
-            _startCardNames.Add((CardName)1);
-            _startCardNames.Add((CardName)3);
-            _startCardNames.Add((CardName)3);
-            _startCardNames.Add((CardName)40);
-            _startCardNames.Add((CardName)3);
-            _startCardNames.Add((CardName)40);
-            _startCardNames.Add((CardName)40);
-            _startCardNames.Add((CardName)40);
-            _startCardNames.Add((CardName)3);
-            _startCardNames.Add((CardName)1);
 
 
             //for (int i = 1; i < 100; i++)
@@ -133,6 +115,44 @@ namespace Cards
             //    CardName cardName = (CardName)40;
             //    _startCardNames.Add(cardName);
             //}
+
+            #region Test_При_Жыже_Не_Активируются_Сожженые_из_45_пироманты_при_взятии
+            // Тест на Player
+            /*
+            _startCardNames.Add((CardName)45);
+            _startCardNames.Add((CardName)1);
+            _startCardNames.Add((CardName)3);
+            _startCardNames.Add((CardName)3);
+            _startCardNames.Add((CardName)40);
+            _startCardNames.Add((CardName)3);
+            _startCardNames.Add((CardName)40);
+            _startCardNames.Add((CardName)40);
+            _startCardNames.Add((CardName)40);
+            _startCardNames.Add((CardName)3);
+            _startCardNames.Add((CardName)1);
+            */
+
+            // Тест на Enemy
+            /*
+            for (int i = 1; i <= 4; i++)
+            {
+                CardName cardName = (CardName)45;
+                _startCardNames.Add(cardName);
+            }
+
+            for (int i = 1; i <= 2; i++)
+            {
+                CardName cardName = (CardName)3;
+                _startCardNames.Add(cardName);
+            }
+
+            for (int i = 1; i <= 2; i++)
+            {
+                CardName cardName = (CardName)1;
+                _startCardNames.Add(cardName);
+            }
+            */
+            #endregion
         }
     }
 }

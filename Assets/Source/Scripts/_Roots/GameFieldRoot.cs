@@ -28,6 +28,7 @@ using Tools;
 using System;
 using TMPro;
 using UnityEngine.UI;
+using GameFields.Backgrounds;
 
 namespace Roots
 {
@@ -64,8 +65,10 @@ namespace Roots
         private CardCapabilityDescription _cardCapabilityDescription;
         private HistoryRoot _historyRoot;
         private BackgroundSoundConfig _backgroundSoundConfig;
+        private BackgroundRoot _backgroundRoot;
 
         private GameFieldInputRoot _inputRoot;
+
         //private FontRoot _fontRoot;
         //private CanvasController _canvasController;
 
@@ -73,7 +76,8 @@ namespace Roots
         private void Construct(SignalBus bus, Deck deck, SeatPool seatPool, BigCardRoot bigCardRoot, HandPlayer handPlayer,
             InformationLabel informationLabel, LookCardMenuPlayer lookCardMenu, VariantCardCreator variantCardCreator,
             SoundRoot soundRoot, CardSoundRoot cardSoundRoot, FightButtonsActivator fightButtonsActivator,
-            CardCapabilityDescription cardCapabilityDescription, HistoryRoot historyRoot, BackgroundSoundConfig backgroundSoundConfig)
+            CardCapabilityDescription cardCapabilityDescription, HistoryRoot historyRoot, BackgroundSoundConfig backgroundSoundConfig,
+            BackgroundRoot backgroundRoot)
         {
             //StartCoroutine(Initing(bus, deck, seatPool, cardDescription, handPlayer, informationLabel, lookCardMenu, variantCardCreator, soundRoot,
             //    cardSoundVolume, fightMenuActivateButton, screenRoot));
@@ -92,6 +96,7 @@ namespace Roots
             _cardCapabilityDescription = cardCapabilityDescription;
             _historyRoot = historyRoot;
             _backgroundSoundConfig = backgroundSoundConfig;
+            _backgroundRoot = backgroundRoot;
         }
 
         //public void Init(bool isPVE)
@@ -100,6 +105,9 @@ namespace Roots
             GameFieldGC.GCOFF();
 
             base.Init();
+
+            _backgroundRoot.Init();
+            _backgroundRoot.Activate();
 
             _informationLabel.Init();
 

@@ -28,13 +28,14 @@ namespace GameFields.Persons.EnemyProcessImitations
         private readonly SkipTurnChecker _skipTurnChecker;
         private readonly IDrawnCardWatcher _drawnCardWatcher;
         private readonly GnomeEffectHandler _gnomeEffectHandler;
-        private readonly IAIThinkLogic _thinkLogic; 
+        private readonly IAIThinkLogic _mainAIThinkLogic; 
+        private readonly IAIThinkLogic _extraAIThinkLogic;
 
         private bool _isComplete;
 
         internal EnemyDragAndDropImitation(CardDragAndDropImitationActions cardImitationActions, EnemyDragAndDropImitationData data,
             InteractionActivator interactionActivator, SkipTurnChecker skipTurnChecker, IDrawnCardWatcher drawnCardWatcher, Hand hand,
-            IAIThinkLogic AIThinkLogic, GnomeEffectHandler gnomeEffectHandler) : base(interactionActivator)
+            IAIThinkLogic mainAIThinkLogic, GnomeEffectHandler gnomeEffectHandler) : base(interactionActivator)
         {
             _isComplete = false;
             _data = data;
@@ -43,7 +44,8 @@ namespace GameFields.Persons.EnemyProcessImitations
             _skipTurnChecker = skipTurnChecker;
             _drawnCardWatcher = drawnCardWatcher;
             _gnomeEffectHandler = gnomeEffectHandler;
-            _thinkLogic = AIThinkLogic;
+            _mainAIThinkLogic = mainAIThinkLogic;
+            _extraAIThinkLogic = new EasyAIThinkLogic();
         }
 
         public int CountDrawCards => _data.CountDrawCards;
@@ -90,7 +92,7 @@ namespace GameFields.Persons.EnemyProcessImitations
 
             //List<Func<IEnumerator>> enableAIEndLogic = new List<Func<IEnumerator>>();
 
-            Dictionary<Card, CardCapability> cardActions = new Dictionary<Card, CardCapability>();
+            Dictionary<Card, CapabilityProbability> cardActions = new Dictionary<Card, CapabilityProbability>();
 
             foreach (Card workCard in workCardList)
             {
@@ -103,45 +105,66 @@ namespace GameFields.Persons.EnemyProcessImitations
 
                 //if (_cardImitationActions.CanPlay() == false)
                 //    currentCapability &= ~CardCapability.Play;
+                Debug.Log(workCard.CardName);
+                CapabilityProbability type = _mainAIThinkLogic.FindActionType(workCard);
 
-                CardCapability type = _thinkLogic.FindActionType(workCard);
-                cardActions.Add(workCard, type);
+                if (type == null)
+                {
+                    Debug.Log("Вернул null");
+                }
+                else
+                {
+                    cardActions.Add(workCard, type);
+                }
             }
+
+            IEnumerable<CardCapability> values = cardActions.Select(p => p.Value.CardCapability);
 
             if (cardActions.Count > 0)
             {
-                if (cardActions.ContainsValue(CardCapability.Attack) && cardActions.Values.Distinct().Count() > 1)
+                if (values.Contains(CardCapability.Attack) && values.Distinct().Except(new List<CardCapability> { CardCapability.Attack, CardCapability.HandTransfer }).Count() > 0)
                 {
-                    foreach (KeyValuePair<Card, CardCapability> keyValuePair in cardActions)
+                    Debug.Log("Удаляем атаки");
+                    foreach (KeyValuePair<Card, CapabilityProbability> keyValuePair in cardActions)
                     {
-                        if (keyValuePair.Value == CardCapability.Attack)
+                        // Проклятые карты не убираем из выборки
+                        if (keyValuePair.Key.IsCurse)
+                            continue;
+
+                        if (keyValuePair.Value.CardCapability == CardCapability.Attack)
                             workCardList.Remove(keyValuePair.Key);
                     }
                 }
 
-                Card workCard = workCardList[0];
-                CardCapability type = cardActions[workCard];
+                Card workCard = cardActions.Where(p => workCardList.Contains(p.Key)).OrderByDescending(p => p.Value.Probability).FirstOrDefault().Key;
+                //Card workCard = workCardList[0];
+                CardCapability type = cardActions[workCard].CardCapability;
 
-                Func<IEnumerator> endAction = type switch
-                {
-                    CardCapability.Attack => Attack,
-                    CardCapability.Play => Play,
-                    CardCapability.GnomeForging => Forging,
-                    CardCapability.HandTransfer => HandTransfer,
-                    _ => throw new Exception("Найден неизвестный CardCapability: " + type)
-                };
-
-                int logicNumber = Random.Range(1, CountLogics + 1);
-
-                DragAndDropBehaviour dragAndDropBehaviour = logicNumber switch
-                {
-                    1 => new DragAndDropBehaviour1(_data, _cardImitationActions, workCard),
-                    _ => throw new NullReferenceException("Задан неверный индекс логики поведения Enemy: " + logicNumber)
-                };
-
-                Processing(dragAndDropBehaviour, endAction).ToUniTask();
-
+                StartActionWithWorkCard(workCard, type);
                 return;
+            }
+
+            if (workCardList.Count > 0)
+            {
+                Debug.Log("EXTRA LOGIC");
+                throw new Exception("ПОКА ЭКСПШЕН если логика не нашла ни единого варианта");
+                //foreach (Card workCard in workCardList)
+                //{
+                //    //enableAIEndLogic.Clear();
+
+                //    CardCapability currentCapability = workCard.CardCapability;
+
+                //    if (_cardImitationActions.CanPlay() == false && currentCapability == CardCapability.Play)
+                //        continue;
+
+                //    //if (_cardImitationActions.CanPlay() == false)
+                //    //    currentCapability &= ~CardCapability.Play;
+                //    Debug.Log(workCard.CardName);
+                //    CardCapability type = _extraAIThinkLogic.FindActionType(workCard).CardCapability;
+
+
+
+                //}
             }
 
             //foreach (Card workCard in workCardList)
@@ -229,6 +252,28 @@ namespace GameFields.Persons.EnemyProcessImitations
             //}
 
             _isComplete = true;
+        }
+
+        private void StartActionWithWorkCard(Card workCard, CardCapability type)
+        {
+            Func<IEnumerator> endAction = type switch
+            {
+                CardCapability.Attack => Attack,
+                CardCapability.Play => Play,
+                CardCapability.GnomeForging => Forging,
+                CardCapability.HandTransfer => HandTransfer,
+                _ => throw new Exception("Найден неизвестный CardCapability: " + type)
+            };
+
+            int logicNumber = Random.Range(1, CountLogics + 1);
+
+            DragAndDropBehaviour dragAndDropBehaviour = logicNumber switch
+            {
+                1 => new DragAndDropBehaviour1(_data, _cardImitationActions, workCard),
+                _ => throw new NullReferenceException("Задан неверный индекс логики поведения Enemy: " + logicNumber)
+            };
+
+            Processing(dragAndDropBehaviour, endAction).ToUniTask();
         }
 
         private IEnumerator Attack()

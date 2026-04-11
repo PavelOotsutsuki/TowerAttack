@@ -43,7 +43,7 @@ namespace GameFields.Persons.EnemyProcessImitations
         private int PlayedGnomeCards => _discardPile.AllCards.Where(c => (c.CardCapability & CardCapability.GnomeChoice) == CardCapability.GnomeChoice).Count()
             + _fireRoot.AllCards.Where(c => (c.CardCapability & CardCapability.GnomeChoice) == CardCapability.GnomeChoice).Count();
 
-        public CardCapability FindActionType(Card workCard)
+        public CapabilityProbability FindActionType(Card workCard)
         {
             CardCapability cardCapability = workCard.CardCapability;
 
@@ -69,8 +69,8 @@ namespace GameFields.Persons.EnemyProcessImitations
                 if (_table.HasFreeSeat == false)
                     flags.Remove(CardCapability.Play);
 
-            if (flags.Count == 1)
-                return flags[0];
+            //if (flags.Count == 1)
+            //    return new CapabilityProbability(flags[0], 100);
 
             Dictionary<CardCapability, int> probability = new Dictionary<CardCapability, int>();
             // Пытаемся пойти нетривиальным путем (не Attack и не Play)
@@ -212,11 +212,11 @@ namespace GameFields.Persons.EnemyProcessImitations
             return CalculateByProbability(probability);
         }
 
-        private CardCapability CalculateByProbability(IReadOnlyDictionary<CardCapability, int> probability)
+        private CapabilityProbability CalculateByProbability(IReadOnlyDictionary<CardCapability, int> probability)
         {
             int maxValue = probability.Select(p => p.Value).Sum();
 
-            int randomValue = Random.Range(0, maxValue);
+            int randomValue = Random.Range(1, maxValue + 1);
             int summ = 0;
 
             #region Debug
@@ -234,14 +234,14 @@ namespace GameFields.Persons.EnemyProcessImitations
             {
                 if (randomValue < pair.Value + summ)
                 {
-                    return pair.Key;
+                    return new CapabilityProbability(pair.Key, pair.Value);
                 }
 
                 summ += pair.Value;
             }
 
             Debug.Log("Сюда никогда не дойдет");
-            return probability.Last().Key;
+            return new CapabilityProbability(probability.Last().Key, 20);
         }
     }
 }
