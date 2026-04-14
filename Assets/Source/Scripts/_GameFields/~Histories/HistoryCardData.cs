@@ -12,7 +12,7 @@ namespace GameFields.Histories
         public HistoryCardData(Card card)
         {
             _canView = card.IsVisibleByPlayer;
-            _canView = true; // УБРАТЬ!
+            //_canView = true; // УБРАТЬ!
             _cardViewData = _canView ? card.ViewData : null;
         }
 

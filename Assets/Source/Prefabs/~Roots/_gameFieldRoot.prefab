@@ -12956,7 +12956,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8307414563391076822}
   m_HandleRect: {fileID: 2735894278148120600}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -17309,6 +17309,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 751af43f3efcb412ab14afbece44f606, type: 3}
   - {fileID: 8300000, guid: 52c5d3255abfe4a038c18ec5123e6bd0, type: 3}
   - {fileID: 8300000, guid: ad3114173aa3b4a6a9e90655661dbdd7, type: 3}
+  - {fileID: 8300000, guid: 011678f95a2f144c18440592801bd63f, type: 3}
   _delay: 3
   _maxVolume: 0.1
   _pausingDuration: 2
@@ -17455,7 +17456,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 456.62897}
+  m_AnchoredPosition: {x: 0, y: 456.62903}
   m_SizeDelta: {x: 0, y: 363}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &8421528645989163639
@@ -22796,7 +22797,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -1956323984752673927, guid: e92509d3b05db4a738f18a406b474f8f, type: 3}
       propertyPath: _sideType
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -1956323984752673927, guid: e92509d3b05db4a738f18a406b474f8f, type: 3}
       propertyPath: _containerForDrag

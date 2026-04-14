@@ -327,8 +327,8 @@ namespace GameFields.Persons.EnemyProcessImitations
             if (minPlayChance > 100)
                 minPlayChance = 99;
 
-            if (minPlayChance < 0)
-                minPlayChance = 0;
+            //if (minPlayChance < 0)
+            //    minPlayChance = 0;
 
             Dictionary<CardCapability, int> probability = new Dictionary<CardCapability, int>();
             // Тривиальный путь. Что лучше, разыграть карту или атаковать?
@@ -343,12 +343,15 @@ namespace GameFields.Persons.EnemyProcessImitations
             //int probabilityPlay = countFree * 100 / countAll;
             int probabilityPlay = minPlayChance * 2 + countFree * (100 - minPlayChance) / countAll;
 
+            if (probabilityPlay < 0)
+                probabilityPlay = 0;
+
             // Если включены двойные эффекты, эффективность розыгрыша уделичивается на minPlayChance. Для некоторых карт конечно ничего не меняется, но впадлу писать скрипт для всех отдельно
             //if (_tableEnemy.AllCards.Select(c => c.CardName).Contains(CardName.Schemer) || _tablePlayer.AllCards.Select(c => c.CardName).Contains(CardName.Schemer))
             //    probabilityPlay += minPlayChance;
 
-            //if (probabilityPlay > 99)
-            //    probabilityPlay = 99;
+                //if (probabilityPlay > 99)
+                //    probabilityPlay = 99;
 
             int probabilityAttack = 100 - probabilityPlay;
 
@@ -541,7 +544,7 @@ namespace GameFields.Persons.EnemyProcessImitations
             int enemyHandCardsCount = _handEnemy.AllCards.Count();
             int playerHandCardsCount = _handPlayer.AllCards.Count();
 
-            return GetDefaultCapability(playerHandCardsCount - 1 - enemyHandCardsCount * 5);
+            return GetDefaultCapability((playerHandCardsCount - 1 - enemyHandCardsCount) * 5);
 
             //if (enemyHandCardsCount < playerHandCardsCount - 1)
             //{
@@ -875,7 +878,7 @@ namespace GameFields.Persons.EnemyProcessImitations
             int factor = Convert.ToInt32((100f / GameSettings.DefaultCardNumbers.Length) * countCheckedNumbers + extraCount);
 
             // Не ну если 0, то смысла прям вообще 0
-            if (factor == 0)
+            if (countCheckedNumbers == 0)
                 return new CapabilityProbability(CardCapability.Attack, 5);
 
             return GetDefaultCapability(factor);
@@ -1117,6 +1120,10 @@ namespace GameFields.Persons.EnemyProcessImitations
 
             // Чем больше выбрано карт, тем больше шанс разыграть.
             int factor = Convert.ToInt32((100f / GameSettings.DefaultCardNumbers.Length) * countCheckedNumbers + extraCount);
+
+            // Не ну если 0, то смысла прям вообще 0
+            if (countCheckedNumbers == 0)
+                return new CapabilityProbability(CardCapability.Attack, 5);
 
             return GetDefaultCapability(factor);
         }
