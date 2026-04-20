@@ -1,0 +1,95 @@
+using GameFields.Persons.Discovers;
+using GameFields.Persons.DrawCards;
+using GameFields.Persons.Hands;
+using GameFields.Persons.Tables;
+using GameFields.Persons.Towers;
+using GameFields.Signals;
+using Tools;
+using Zenject;
+using GameFields.Persons.SelectMenues;
+using GameFields.Persons.EffectHandlers;
+using GameFields.Persons.EnemyProcessImitations;
+using GameFields.Persons.LookCardMenues;
+using GameFields.Persons.ConfirmableNumbersView;
+
+namespace GameFields.Persons
+{
+    public class EnemyAI : Person, IEnemyAIObject
+    {
+        //private readonly IDeactivatable _gameFieldObjectsActivator;
+        private readonly EnemyDragAndDropImitation _enemyDragAndDropImitation;
+        private readonly OnBeforeEndTurnProcessing _onBeforeEndTurnProcessing;
+        private readonly HandAI _handEnemy;
+
+        public EnemyAI(InteractionActivator interactionActivator, EnemyDragAndDropImitation enemyDragAndDropImitation, CardPlayingZone cardPlayingZone,
+            Tower tower, DrawCardRoot drawCardRoot, DiscoverAI discoverImitation, StartTurnDraw startTurnDraw, SignalBus bus,
+            HandAI hand, ISelectMenuActivator attackMenu, ISelectMenuActivator choiceMenu, ISelectMenuActivator choiceMenuImitation,
+            PersonEffectsHandler personEffectsHandler, LookCardMenuEnemyAI lookCardMenu,
+            OnBeforeEndTurnProcessing onBeforeEndTurnProcessing, SkipTurnView skipTurnView,
+            INumbersStateWatcher numbersStateWatcher, LastSelectedNumbersWatcher lastSelectedNumbersWatcher, PersonEffectKeeper personEffectKeeper) :
+            base(cardPlayingZone, drawCardRoot, tower, startTurnDraw,discoverImitation, bus,
+                hand, attackMenu, interactionActivator, choiceMenu, choiceMenuImitation, personEffectsHandler,
+                lookCardMenu, skipTurnView, numbersStateWatcher, lastSelectedNumbersWatcher, personEffectKeeper)
+        {
+            //_gameFieldObjectsActivator = gameFieldObjectsActivator;
+            //Bus.Subscribe<StartEffectSignal>(SetCardEffectProcess);
+            _enemyDragAndDropImitation = enemyDragAndDropImitation;
+            _onBeforeEndTurnProcessing = onBeforeEndTurnProcessing;
+            _handEnemy = hand;
+
+            Bus.Subscribe<PushStepSignalEnemyAI>(StartAttack);
+        }
+
+        ~EnemyAI()
+        {
+            Bus.Unsubscribe<PushStepSignalEnemyAI>(StartAttack);
+        }
+
+        public override void StartAction(ICompletable completable)
+        {
+            //Debug.Log(completable.ToString());
+            PushStep(new CardActionProcessingEnemyAI(InteractionActivator, completable));
+        }
+
+        //public override void StartEffect(Effect effect, CardEffectConfig effectConfig)
+        //{
+        //    base.StartEffect(effect, effectConfig);
+
+        //    StartAction(effect);
+        //}
+
+        private void StartAttack(PushStepSignalEnemyAI signal)
+        {
+            StartAction(signal.Completable);
+        }
+
+        protected override void InitCommonSteps()
+        {
+            //PushStep(CardEffectProcessing);
+            PushStep(_onBeforeEndTurnProcessing);
+            PushStep(_enemyDragAndDropImitation);
+            AddStartTurnDrawStep();
+            //PushStep(StartTurnDraw);
+        }
+
+        //~EnemyAI()
+        //{
+        //    Bus.Unsubscribe<StartEffectSignal>(SetCardEffectProcess);
+        //}
+
+        //protected override void OnStartStep()
+        //{
+        //    //GameFieldObjectsActivator.Deactivate();
+        //}
+
+        //public override void ActivateSharpSnakeEffect(Action callback)
+        //{
+        //    _handEnemy.ActivateSharpSnakeEffect(callback);
+        //}
+
+        //private void SetCardEffectProcess(StartEffectSignal signal)
+        //{
+        //    EnqueueStep(new CardEffectProcessing(signal.Card));
+        //}
+    }
+}
