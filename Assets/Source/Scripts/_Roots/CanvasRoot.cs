@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace Roots
 {
-    internal class CanvasRoot : MonoBehaviour, IAutomaticFillComponents
+    public class CanvasRoot : MonoBehaviour, IAutomaticFillComponents
     {
         [SerializeField] private CanvasScaler[] _allCanvasScalers;
         //[SerializeField] private Vector2 _defaultReferenceResolution = new Vector2(1920f, 1080f);

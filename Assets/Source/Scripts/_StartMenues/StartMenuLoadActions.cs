@@ -6,6 +6,8 @@ using Tools;
 using Cards.Views.BigCardViews.Capabilities;
 using System;
 using StartMenues.InputSettings;
+using Zenject;
+using Tools.Loads;
 
 namespace StartMenues
 {
@@ -16,13 +18,21 @@ namespace StartMenues
         [SerializeField] private Color _startColor;
         [SerializeField] private Color _endColor;
         [SerializeField] private StoneSpawner _stoneSpawner;
-        [SerializeField] private LoadText _loadText;
+        //[SerializeField] private LoadText _loadText;
         [SerializeField] private StartMenu _startMenu;
+
+        private LoadRoot _loadRoot;
 
         private Camera _mainCamera;
         private StartMenuInputRoot _inputRoot;
         //private StartMenuSavedData _startMenuSavedData;
         public IActivatable InputRoot => _inputRoot;
+
+        [Inject]
+        public void Construct(LoadRoot loadRoot)
+        {
+            _loadRoot = loadRoot;
+        }
 
         public void Init(IVolume backgroundSoundConfig, IVolume foregroundSoundConfig, CardCapabilityDescription cardCapabilityDescription,
             Action onPlayClick)
@@ -31,7 +41,7 @@ namespace StartMenues
             _mainCamera = Camera.main;
 
             _inputRoot = new StartMenuInputRoot(_startMenu);
-            _loadText.Init();
+            _loadRoot.Init();
             //_startMenu.Init(backgroundSoundConfig, foregroundSoundConfig);
             _startMenu.Init(_inputRoot, foregroundSoundConfig, backgroundSoundConfig, cardCapabilityDescription, onPlayClick);
             _stoneSpawner.Init();
@@ -57,12 +67,12 @@ namespace StartMenues
 
                 // 2. Камнепад
 
-                _loadText.Activate();
+                _loadRoot.Activate();
                 _stoneSpawner.Activate();
 
                 yield return new WaitUntil(() => _stoneSpawner.IsComplete);
 
-                _loadText.Deactivate();
+                _loadRoot.Deactivate();
 
                 //_startMenuSavedData.SetStoneSpawner(_stoneSpawner.StoneSpawnerParent);
             //}

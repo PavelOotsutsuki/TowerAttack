@@ -55,6 +55,24 @@ namespace StartMenues.InputSettings
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LeftArrow"",
+                    ""type"": ""Button"",
+                    ""id"": ""16f24924-4859-4dd5-ae0c-2ea0fea5d5a6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RightArrow"",
+                    ""type"": ""Button"",
+                    ""id"": ""5052714e-147d-4104-992f-8c71180c5784"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -90,6 +108,28 @@ namespace StartMenues.InputSettings
                     ""action"": ""UpArrow"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""471d982d-1f72-432e-9603-e0ee8771e58b"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LeftArrow"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d1c47fd1-2289-44af-ad33-4b8c963ccd81"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RightArrow"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -101,6 +141,8 @@ namespace StartMenues.InputSettings
             m_StartMenu_Enter = m_StartMenu.FindAction("Enter", throwIfNotFound: true);
             m_StartMenu_DownArrow = m_StartMenu.FindAction("DownArrow", throwIfNotFound: true);
             m_StartMenu_UpArrow = m_StartMenu.FindAction("UpArrow", throwIfNotFound: true);
+            m_StartMenu_LeftArrow = m_StartMenu.FindAction("LeftArrow", throwIfNotFound: true);
+            m_StartMenu_RightArrow = m_StartMenu.FindAction("RightArrow", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -165,6 +207,8 @@ namespace StartMenues.InputSettings
         private readonly InputAction m_StartMenu_Enter;
         private readonly InputAction m_StartMenu_DownArrow;
         private readonly InputAction m_StartMenu_UpArrow;
+        private readonly InputAction m_StartMenu_LeftArrow;
+        private readonly InputAction m_StartMenu_RightArrow;
         public struct StartMenuActions
         {
             private @InputActions m_Wrapper;
@@ -172,6 +216,8 @@ namespace StartMenues.InputSettings
             public InputAction @Enter => m_Wrapper.m_StartMenu_Enter;
             public InputAction @DownArrow => m_Wrapper.m_StartMenu_DownArrow;
             public InputAction @UpArrow => m_Wrapper.m_StartMenu_UpArrow;
+            public InputAction @LeftArrow => m_Wrapper.m_StartMenu_LeftArrow;
+            public InputAction @RightArrow => m_Wrapper.m_StartMenu_RightArrow;
             public InputActionMap Get() { return m_Wrapper.m_StartMenu; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -190,6 +236,12 @@ namespace StartMenues.InputSettings
                 @UpArrow.started += instance.OnUpArrow;
                 @UpArrow.performed += instance.OnUpArrow;
                 @UpArrow.canceled += instance.OnUpArrow;
+                @LeftArrow.started += instance.OnLeftArrow;
+                @LeftArrow.performed += instance.OnLeftArrow;
+                @LeftArrow.canceled += instance.OnLeftArrow;
+                @RightArrow.started += instance.OnRightArrow;
+                @RightArrow.performed += instance.OnRightArrow;
+                @RightArrow.canceled += instance.OnRightArrow;
             }
 
             private void UnregisterCallbacks(IStartMenuActions instance)
@@ -203,6 +255,12 @@ namespace StartMenues.InputSettings
                 @UpArrow.started -= instance.OnUpArrow;
                 @UpArrow.performed -= instance.OnUpArrow;
                 @UpArrow.canceled -= instance.OnUpArrow;
+                @LeftArrow.started -= instance.OnLeftArrow;
+                @LeftArrow.performed -= instance.OnLeftArrow;
+                @LeftArrow.canceled -= instance.OnLeftArrow;
+                @RightArrow.started -= instance.OnRightArrow;
+                @RightArrow.performed -= instance.OnRightArrow;
+                @RightArrow.canceled -= instance.OnRightArrow;
             }
 
             public void RemoveCallbacks(IStartMenuActions instance)
@@ -225,6 +283,8 @@ namespace StartMenues.InputSettings
             void OnEnter(InputAction.CallbackContext context);
             void OnDownArrow(InputAction.CallbackContext context);
             void OnUpArrow(InputAction.CallbackContext context);
+            void OnLeftArrow(InputAction.CallbackContext context);
+            void OnRightArrow(InputAction.CallbackContext context);
         }
     }
 }

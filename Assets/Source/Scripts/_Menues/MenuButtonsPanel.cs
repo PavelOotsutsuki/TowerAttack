@@ -6,7 +6,7 @@ namespace Menues
 {
     public abstract class MenuButtonsPanel : MonoBehaviour, IWorkable, IFocusedButtonEnterHandler
     {
-        public abstract bool? IsActive { get; protected set; }
+        public bool? IsActive { get; protected set; } = null;
 
         public virtual void Activate()
         {
@@ -29,5 +29,7 @@ namespace Menues
         public abstract void OnDownArrow();
         public abstract void OnEnterPress();
         public abstract void OnUpArrow();
+        public abstract void OnLeftArrow();
+        public abstract void OnRightArrow();
     }
 }

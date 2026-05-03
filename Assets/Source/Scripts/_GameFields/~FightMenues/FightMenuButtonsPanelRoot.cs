@@ -17,7 +17,7 @@ namespace GameFields.FightMenues
         {
             _fightMenuStartButtonsPanel.Init(playerLoseActions, fightMenuDeactivator, SetSettingsPanel, SetRulesPanel);
 
-            base.Init(cardVolume, musicVolume, cardCapabilityDescription, _fightMenuStartButtonsPanel);
+            base.Init(cardVolume, musicVolume, cardCapabilityDescription, _fightMenuStartButtonsPanel, _fightMenuStartButtonsPanel);
         }
 
         #region AutomaticFillComponents

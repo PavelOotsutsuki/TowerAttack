@@ -18,7 +18,7 @@ namespace Menues
         [SerializeField] private TMP_Text _label;
         [SerializeField] private ScrollRect _scrollRect;
 
-        public override bool? IsActive { get; protected set; } = null;
+        //public override bool? IsActive { get; protected set; } = null;
 
         public void Init(Action onClickGoBackOnMainPanelButton, CardCapabilityDescription cardCapabilityDescription)
         {
@@ -51,6 +51,12 @@ namespace Menues
         { }
 
         public override void OnUpArrow()
+        { }
+
+        public override void OnLeftArrow()
+        { }
+
+        public override void OnRightArrow()
         { }
 
         #region AutomaticFillComponents

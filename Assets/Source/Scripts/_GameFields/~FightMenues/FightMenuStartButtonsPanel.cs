@@ -8,6 +8,7 @@ using Menues;
 using ModestTree;
 using Tools;
 using Tools.UI;
+using Tools.Utils;
 using Tools.Utils.FillComponents;
 using UnityEditor;
 using UnityEngine;
@@ -15,7 +16,7 @@ using UnityEngine.EventSystems;
 
 namespace GameFields.FightMenues
 {
-    public class FightMenuStartButtonsPanel : MenuStartButtonsPanel//, IAutomaticFillComponents
+    public class FightMenuStartButtonsPanel : CustomFocusMenuButtonsPanel//, IAutomaticFillComponents
     {
         //[SerializeField] private FadablePanel _fadablePanel;
         [SerializeField] private FightMenuButton _resumeButton;
@@ -29,7 +30,7 @@ namespace GameFields.FightMenues
         //private bool _isComplete;
         private FightMenuButton _currentFocusedButton;
 
-        public override bool? IsActive { get; protected set; } = null;
+        //public override bool? IsActive { get; protected set; } = null;
         //public bool IsComplete => _isComplete;
 
         public void Init(LoseActions playerLoseActions, IDeactivatable fightMenuDeactivator, Action onSettingsButtonClick,
@@ -55,18 +56,7 @@ namespace GameFields.FightMenues
                 fightMenuDeactivator.Deactivate();
                 playerLoseActions.Activate();
             });
-            _exitButton.Init(this, () =>
-            {
-                #if UNITY_EDITOR
-                {
-                    EditorApplication.isPlaying = false;
-                }
-                #else
-                {
-                    Application.Quit();
-                }
-                #endif
-            });
+            _exitButton.Init(this, Utils.Quit);
         }
 
         public override void OnEnterPress()
@@ -104,13 +94,13 @@ namespace GameFields.FightMenues
             _fightMenuButtons[index].OnPointerEnter(null);
         }
 
-        public override void SetFocusedButton(ConfirmableFocusableButton focusedButton)
+        public override void SetFocused(ConfirmableFocusableButton focusedButton)
         {
             if (_currentFocusedButton == focusedButton)
                 return;
 
             if (_fightMenuButtons.Contains(focusedButton) == false)
-                throw new System.Exception("Ну и какого хера ты пытаешься зафокусить неподвластную тебе кнопку???");
+                throw new Exception("Ну и какого хера ты пытаешься зафокусить неподвластную тебе кнопку???");
 
             UnfocuseButton();
 
@@ -171,6 +161,16 @@ namespace GameFields.FightMenues
                 _currentFocusedButton.OnPointerExit(null);
                 _currentFocusedButton = null;
             }
+        }
+
+        public override void OnLeftArrow()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void OnRightArrow()
+        {
+            throw new NotImplementedException();
         }
 
         //private IEnumerator Activating()

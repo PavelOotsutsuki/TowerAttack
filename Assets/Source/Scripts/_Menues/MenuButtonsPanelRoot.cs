@@ -16,8 +16,9 @@ namespace Menues
         [SerializeField] private MenuSettingsButtonsPanel _settingsButtonsPanel;
         [SerializeField] private MenuRulesButtonsPanel _rulesButtonsPanel;
 
-        private MenuStartButtonsPanel _startButtonsPanel;
+        private CustomFocusMenuButtonsPanel _startButtonsPanel;
         private MenuButtonsPanel _currentMenuButtonsPanel;
+        private MenuButtonsPanel _mainButtonsPanel;
         private bool _isComplete;
 
         public bool? IsActive { get; private set; } = null;
@@ -38,15 +39,16 @@ namespace Menues
         //}
 
         protected void Init(IVolume foregroundVolume, IVolume backgroundVolume, CardCapabilityDescription cardCapabilityDescription,
-            MenuStartButtonsPanel startButtonsPanel)
+            CustomFocusMenuButtonsPanel startButtonsPanel, CustomFocusMenuButtonsPanel mainButtonsPanel)
         {
             _startButtonsPanel = startButtonsPanel;
+            _mainButtonsPanel = mainButtonsPanel;
 
             _fadablePanel.Init();
             //_startButtonsPanel.Init(playerLoseActions, fightMenuDeactivator, SetSettingsPanel, SetRulesPanel);
 
-            _settingsButtonsPanel.Init(SetStartPanel, foregroundVolume, backgroundVolume);
-            _rulesButtonsPanel.Init(SetStartPanel, cardCapabilityDescription);
+            _settingsButtonsPanel.Init(SetMainPanel, foregroundVolume, backgroundVolume);
+            _rulesButtonsPanel.Init(SetMainPanel, cardCapabilityDescription);
 
             _isComplete = true;
 
@@ -84,7 +86,7 @@ namespace Menues
         public void Reactivate()
         {
             _currentMenuButtonsPanel?.Deactivate();
-            _currentMenuButtonsPanel = _startButtonsPanel;
+            _currentMenuButtonsPanel = _mainButtonsPanel;
             _currentMenuButtonsPanel.Activate();
         }
 
@@ -98,12 +100,7 @@ namespace Menues
             SetPanel(_rulesButtonsPanel);
         }
 
-        private void SetStartPanel()
-        {
-            SetPanel(_startButtonsPanel);
-        }
-
-        private void SetPanel(MenuButtonsPanel settedPanel)
+        protected void SetPanel(MenuButtonsPanel settedPanel)
         {
             if (_currentMenuButtonsPanel == settedPanel)
                 return;
@@ -111,6 +108,11 @@ namespace Menues
             _currentMenuButtonsPanel?.Deactivate();
             _currentMenuButtonsPanel = settedPanel;
             _currentMenuButtonsPanel.Activate();
+        }
+
+        private void SetMainPanel()
+        {
+            SetPanel(_mainButtonsPanel);
         }
 
         private IEnumerator Activating()

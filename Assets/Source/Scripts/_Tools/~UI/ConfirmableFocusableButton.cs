@@ -16,12 +16,12 @@ namespace Tools.UI
         [SerializeField] private float _focusOutDuration = 0.5f;
 
         private Vector3 _defaultScale;
-        private IFocusWatcher _focusWatcher;
+        private IFocusCustomButtonWatcher _focusWatcher;
         private Movement _movement;
         private ReadOnlyTransform _ROTransform;
         private Action _onEnterClick;
 
-        public virtual void Init(IFocusWatcher focusWatcher, Action onEnterClick) 
+        public virtual void Init(IFocusCustomButtonWatcher focusWatcher, Action onEnterClick) 
         {
             _focusWatcher = focusWatcher;
             _onEnterClick = onEnterClick;
@@ -42,7 +42,7 @@ namespace Tools.UI
         {
             base.OnEnter();
 
-            _focusWatcher.SetFocusedButton(this);
+            _focusWatcher.SetFocused(this);
             _movement.Stop();
             _movement.MoveLocalSmoothly(_ROTransform.GetLocalPosition(), _ROTransform.GetRotationVector(), _focusInDuration, _defaultScale * _scaleFactor);
         }

@@ -25,7 +25,7 @@ namespace Menues
         private IVolume _musicVolume;
         private ScreenRoot _screenRoot;
 
-        public override bool? IsActive { get; protected set; } = null;
+        //public override bool? IsActive { get; protected set; } = null;
 
         [Inject]
         private void Construct(ScreenRoot screenRoot)
@@ -138,6 +138,12 @@ namespace Menues
         { }
 
         public override void OnUpArrow()
+        { }
+
+        public override void OnLeftArrow()
+        { }
+
+        public override void OnRightArrow()
         { }
 
         #region AutomaticFillComponents

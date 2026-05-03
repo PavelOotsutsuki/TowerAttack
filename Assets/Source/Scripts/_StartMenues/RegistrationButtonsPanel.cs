@@ -1,71 +1,71 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Cysharp.Threading.Tasks;
 using Menues;
-using Tools;
+using TMPro;
+using Tools.Loads;
 using Tools.UI;
 using Tools.Utils;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
+using Zenject;
 
 namespace StartMenues
 {
-    public class StartMenuStartButtonsPanel : CustomFocusMenuButtonsPanel//, IAutomaticFillComponents
+    public class RegistrationButtonsPanel : CustomFocusMenuButtonsPanel
     {
-        //[SerializeField] private FadablePanel _fadablePanel;
-        [SerializeField] private StartMenuButton _playButton;
-        [SerializeField] private StartMenuButton _campaignButton;
-        [SerializeField] private StartMenuButton _collectionButton;
-        [SerializeField] private StartMenuButton _achievementsButton;
-        [SerializeField] private StartMenuButton _rulesButton;
-        [SerializeField] private StartMenuButton _settingsButton;
-        [SerializeField] private StartMenuButton _exitButton;
+        //[SerializeField] private TMP_InputField _registraitionButton;
+        //[SerializeField] private TMP_InputField _registraitionButton;
+        [SerializeField] private ConfirmableFocusableButton _registraitionButton;
+        [SerializeField] private ConfirmableFocusableButton _backButton;
+        [SerializeField] private ConfirmableFocusableButton _exitButton;
+        
+        private LoadRoot _loadRoot;
 
-        private List<StartMenuButton> _startMenuButtons;
-        private Action _onPlayClick;
-        private IHidable _startMenuDeactivatable;
-        private ICompletable _startMenuCompletable;
+        private List<ConfirmableFocusableButton> _startMenuButtons;
+        private Action _switchOnMainPanel;
 
-        //private bool _isComplete;
-        private StartMenuButton _currentFocusedButton;
+        private ConfirmableFocusableButton _currentFocusedButton;
 
-        //public override bool? IsActive { get; protected set; } = null;
-        //public bool IsComplete => _isComplete;
+        [Inject]
+        public void Construct(LoadRoot loadRoot)
+        {
+            _loadRoot = loadRoot;
+        }
 
-        public void Init(Action onSettingsButtonClick, Action onRulesButtonClick, Action onPlayClick,
-            StartMenu startMenuDeactivatable)
+        public void Init(Action switchOnMainPanel, Action onBackButtonClick)
         {
             //_isComplete = true;
             //_fadablePanel.Init();
-            _onPlayClick = onPlayClick;
-            _startMenuDeactivatable = startMenuDeactivatable;
-            _startMenuCompletable = startMenuDeactivatable;
+            _switchOnMainPanel = switchOnMainPanel;
 
-            _startMenuButtons = new List<StartMenuButton>()
+            _startMenuButtons = new List<ConfirmableFocusableButton>()
             {
-                _playButton,
-                _campaignButton,
-                _collectionButton,
-                _achievementsButton,
-                _rulesButton,
-                _settingsButton,
+                _registraitionButton,
+                _backButton,
                 _exitButton
             };
 
-            _playButton.Init(this, StartPlaying);
-            _campaignButton.Init(this, null);
-            _collectionButton.Init(this, null);
-            _achievementsButton.Init(this, null);
-            _rulesButton.Init(this, onRulesButtonClick);
-            _settingsButton.Init(this, onSettingsButtonClick);
+            _backButton.Init(this, onBackButtonClick);
+            _registraitionButton.Init(this, OnRegistration);
             _exitButton.Init(this, Utils.Quit);
-            _campaignButton.SetDisableView();
-            _collectionButton.SetDisableView();
-            _achievementsButton.SetDisableView();
+        }
+
+        private void OnRegistration()
+        {
+            StartCoroutine(RegistrationProcessing());
+        }
+
+        private IEnumerator RegistrationProcessing()
+        {
+            _loadRoot.Activate();
+
+            yield return new WaitForSeconds(3f);
+
+            _loadRoot.Deactivate();
+
+            _switchOnMainPanel.Invoke();
         }
 
         public override void OnEnterPress()
@@ -169,21 +169,6 @@ namespace StartMenues
                 _currentFocusedButton.OnPointerExit(null);
                 _currentFocusedButton = null;
             }
-        }
-
-        private void StartPlaying()
-        {
-            StartingPlaying().ToUniTask();
-        }
-
-        private IEnumerator StartingPlaying()
-        {
-            _startMenuDeactivatable.Hide();
-
-            yield return new WaitUntil(() => _startMenuCompletable.IsComplete);
-            //yield return new WaitForSeconds(1f);
-
-            _onPlayClick?.Invoke();
         }
 
         public override void OnLeftArrow()

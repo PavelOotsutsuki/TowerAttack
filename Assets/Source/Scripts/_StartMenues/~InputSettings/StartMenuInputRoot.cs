@@ -35,8 +35,8 @@ namespace StartMenues.InputSettings
             //_inputActions.Enable();
             _inputActions.StartMenu.Enter.performed += OnEnter;
             //_inputActions.GameField.Q.performed -= OnQ;
-            //_inputActions.GameField.LeftArrow.performed -= OnLeftArrow;
-            //_inputActions.GameField.RightArrow.performed -= OnRightArrow;
+            _inputActions.StartMenu.LeftArrow.performed += OnLeftArrow;
+            _inputActions.StartMenu.RightArrow.performed += OnRightArrow;
             _inputActions.StartMenu.DownArrow.performed += OnDownArrow;
             _inputActions.StartMenu.UpArrow.performed += OnUpArrow;
             //SetSubscribes();
@@ -46,6 +46,8 @@ namespace StartMenues.InputSettings
         ~StartMenuInputRoot()
         {
             _inputActions.StartMenu.Enter.performed -= OnEnter;
+            _inputActions.StartMenu.LeftArrow.performed -= OnLeftArrow;
+            _inputActions.StartMenu.RightArrow.performed -= OnRightArrow;
             _inputActions.StartMenu.DownArrow.performed -= OnDownArrow;
             _inputActions.StartMenu.UpArrow.performed -= OnUpArrow;
 
@@ -250,33 +252,45 @@ namespace StartMenues.InputSettings
         //        qPressHandler.OnQ();
         //}
 
-        //private void OnLeftArrow(CallbackContext context)
-        //{
-        //    //Debug.Log($"LeftArrow pressed!: {_currentLogic}");
+        private void OnLeftArrow(CallbackContext context)
+        {
+            if (_isEnable == false)
+                return;
 
-        //    if (_isFightMenu)
-        //        return;
+            _startMenuInputLogic.OnLeftArrow();
+                return;
 
-        //    if (_isEnable == false)
-        //        return;
+            //Debug.Log($"LeftArrow pressed!: {_currentLogic}");
 
-        //    if (_currentLogic is ILeftArrowPressHandler leftArrowPressHandler)
-        //        leftArrowPressHandler.OnLeftArrow();
-        //}
+            //if (_isFightMenu)
+            //    return;
 
-        //private void OnRightArrow(CallbackContext context)
-        //{
-        //    //Debug.Log($"RightArrow pressed!: {_currentLogic}");
+            //if (_isEnable == false)
+            //    return;
 
-        //    if (_isFightMenu)
-        //        return;
+            //if (_currentLogic is ILeftArrowPressHandler leftArrowPressHandler)
+            //    leftArrowPressHandler.OnLeftArrow();
+        }
 
-        //    if (_isEnable == false)
-        //        return;
+        private void OnRightArrow(CallbackContext context)
+        {
+            if (_isEnable == false)
+                return;
 
-        //    if (_currentLogic is IRightArrowPressHandler rightArrowPressHandler)
-        //        rightArrowPressHandler.OnRightArrow();
-        //}
+            _startMenuInputLogic.OnRightArrow();
+                return;
+
+            //Debug.Log($"RightArrow pressed!: {_currentLogic}");
+
+            //if (_isFightMenu)
+            //    return;
+
+            //if (_isEnable == false)
+            //    return;
+
+            //if (_currentLogic is IRightArrowPressHandler rightArrowPressHandler)
+            //    rightArrowPressHandler.OnRightArrow();
+        }
 
         private void OnDownArrow(CallbackContext context)
         {

@@ -9,7 +9,7 @@ using UnityEngine.EventSystems;
 
 namespace Menues
 {
-    public abstract class MenuStartButtonsPanel : MenuButtonsPanel, IFocusWatcher//, IAutomaticFillComponents
+    public abstract class CustomFocusMenuButtonsPanel : MenuButtonsPanel, IFocusCustomButtonWatcher//, IAutomaticFillComponents
     {
         //[SerializeField] private FadablePanel _fadablePanel;
 
@@ -204,6 +204,6 @@ namespace Menues
         //    return AutomaticFillComponents.DefineComponent(this, ref _fadablePanel, ComponentLocationTypes.InThis);
         //}
         //#endregion
-        public abstract void SetFocusedButton(ConfirmableFocusableButton focudedButton);
+        public abstract void SetFocused(ConfirmableFocusableButton focudedButton);
     }
 }

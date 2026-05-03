@@ -8,6 +8,8 @@ namespace Roots
     public class GameRoot : MonoBehaviour, IAutomaticFillComponents
     {
         [SerializeField] private RootPrefabController _rootPrefabController;
+        [SerializeField] private CanvasRoot _canvasRoot;
+        [SerializeField] private FontRoot _fontRoot;
 
         private DiContainer _diContainer;
 
@@ -19,6 +21,9 @@ namespace Roots
 
         public void Start()
         {
+            _canvasRoot.Init();
+            _fontRoot.Init();
+
             StartGame();
         }
 
@@ -124,7 +129,9 @@ namespace Roots
         {
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
-                DefineRootPrefabController()
+                DefineRootPrefabController(),
+                DefineCanvasRoot(),
+                DefineFontRoot()
             };
 
             return list;
@@ -134,6 +141,18 @@ namespace Roots
         private ComponentAttachInfo DefineRootPrefabController()
         {
             return AutomaticFillComponents.DefineComponent(this, ref _rootPrefabController, ComponentLocationTypes.InThis);
+        }
+
+        [ContextMenu(nameof(DefineCanvasRoot))]
+        private ComponentAttachInfo DefineCanvasRoot()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _canvasRoot, ComponentLocationTypes.InThis);
+        }
+
+        [ContextMenu(nameof(DefineFontRoot))]
+        private ComponentAttachInfo DefineFontRoot()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _fontRoot, ComponentLocationTypes.InThis);
         }
         #endregion
     }

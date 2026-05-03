@@ -34,10 +34,11 @@ namespace StartMenues
             }
         }
 
-        public void Init(StoneSpawnerParent parent)
-        {
-            _parent = Instantiate(parent, _parentForStoneSpawnerParent);
-        }
+        // Не используется, но может понадобится
+        //public void Init(StoneSpawnerParent parent)
+        //{
+        //    _parent = Instantiate(parent, _parentForStoneSpawnerParent);
+        //}
 
         public void Activate()
         {

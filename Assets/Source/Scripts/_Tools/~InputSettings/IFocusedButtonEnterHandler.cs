@@ -5,5 +5,7 @@ namespace Tools.InputSettings
         public void OnEnterPress();
         public void OnDownArrow();
         public void OnUpArrow();
+        public void OnLeftArrow();
+        public void OnRightArrow();
     }
 }

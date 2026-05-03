@@ -2,7 +2,7 @@ using Tools.InputSettings;
 
 namespace Menues
 {
-    public class MenuInputLogic : IInputLogic, IEnterPressHandler, IDownArrowPressHandler, IUpArrowPressHandler
+    public class MenuInputLogic : IInputLogic, IEnterPressHandler, IDownArrowPressHandler, IUpArrowPressHandler, ILeftArrowPressHandler, IRightArrowPressHandler
     {
         private readonly IMenuInputActivateWatcher _menuInputActivateWatcher;
 
@@ -24,6 +24,16 @@ namespace Menues
         public void OnUpArrow()
         {
             _menuInputActivateWatcher.CurrentMenuButtonInputHandler.OnUpArrow();
+        }
+
+        public void OnLeftArrow()
+        {
+            _menuInputActivateWatcher.CurrentMenuButtonInputHandler.OnLeftArrow();
+        }
+
+        public void OnRightArrow()
+        {
+            _menuInputActivateWatcher.CurrentMenuButtonInputHandler.OnRightArrow();
         }
     }
 }

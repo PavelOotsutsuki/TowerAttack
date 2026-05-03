@@ -1,7 +1,7 @@
 using Cards.Views.BigCardViews.Capabilities;
-using GameFields.Seats;
 using GameFields.Signals;
 using Sounds;
+using Tools.Loads;
 using Tools.Utils.Screens;
 using UnityEngine;
 using Zenject;
@@ -15,6 +15,10 @@ namespace Roots
         [SerializeField] private ForegroundSoundConfig _foregroundSoundConfig;
         [SerializeField] private BackgroundSoundConfig _backgroundSoundConfig;
 
+        [Header("Loads:")]
+
+        [SerializeField] private LoadRoot _loadRoot;
+
         private ScreenRoot _screenRoot;
         private CardCapabilityDescription _cardCapabilityDescription;
 
@@ -24,6 +28,8 @@ namespace Roots
 
             Container.Bind<BackgroundSoundConfig>().FromScriptableObject(_backgroundSoundConfig).AsSingle();
             Container.Bind<ForegroundSoundConfig>().FromScriptableObject(_foregroundSoundConfig).AsSingle();
+
+            Container.Bind<LoadRoot>().FromInstance(_loadRoot).AsSingle();
 
             _screenRoot = new ScreenRoot();
             Container.Bind<ScreenRoot>().FromInstance(_screenRoot).AsSingle();
