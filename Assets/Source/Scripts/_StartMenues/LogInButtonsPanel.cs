@@ -52,6 +52,15 @@ namespace StartMenues
             _logInButton.Init(this, OnLogIn);
             _registraitionButton.Init(this, onRegistraitionButtonClick);
             _exitButton.Init(this, Utils.Quit);
+
+            //_logInButton.Init(this, TestAction);
+            //_registraitionButton.Init(this, TestAction);
+            //_exitButton.Init(this, TestAction);
+        }
+
+        private void TestAction()
+        {
+
         }
 
         private void OnLogIn()

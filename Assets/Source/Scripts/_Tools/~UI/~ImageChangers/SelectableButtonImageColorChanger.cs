@@ -16,5 +16,15 @@ namespace Tools.UI.ImageChangers
         {
             Image.color = NormalColor;
         }
+
+        public override void OnPointerEnter()
+        {
+            Image.color = SelectColor;
+        }
+
+        public override void OnPointerExit()
+        {
+            Image.color = CurrentColor;
+        }
     }
 }

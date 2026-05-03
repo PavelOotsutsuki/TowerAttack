@@ -452,6 +452,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rootPrefabController: {fileID: 770232834}
+  _canvasRoot: {fileID: 770232838}
+  _fontRoot: {fileID: 770232837}
 --- !u!114 &770232836
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -18,5 +18,17 @@ namespace Tools.UI.ImageChangers
             Image.color = NormalColor;
             Image.sprite = NormalSprite;
         }
+
+        public override void OnPointerEnter()
+        {
+            Image.color = NormalColor;
+            Image.sprite = SelectSprite;
+        }
+
+        public override void OnPointerExit()
+        {
+            Image.color = NormalColor;
+            Image.sprite = CurrentSprite;
+        }
     }
 }

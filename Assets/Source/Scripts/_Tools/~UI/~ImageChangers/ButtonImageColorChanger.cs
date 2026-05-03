@@ -23,15 +23,8 @@ namespace Tools.UI.ImageChangers
             Image.color = PressedColor;
         }
 
-        public void OnPointerEnter()
-        {
-            Image.color = SelectColor;
-        }
-
-        public void OnPointerExit()
-        {
-            Image.color = CurrentColor;
-        }
+        public abstract void OnPointerEnter();
+        public abstract void OnPointerExit();
 
         public void OnPointerUp()
         {

@@ -8,5 +8,19 @@ namespace Tools.UI.ImageChangers
             Image.sprite = ClickSprite;
             CurrentSprite = Image.sprite;
         }
+
+        public override void OnPointerEnter()
+        {
+            Image.color = NormalColor;
+            Image.sprite = SelectSprite;
+            CurrentSprite = SelectSprite;
+        }
+
+        public override void OnPointerExit()
+        {
+            CurrentSprite = NormalSprite;
+            Image.color = NormalColor;
+            Image.sprite = CurrentSprite;
+        }
     }
 }

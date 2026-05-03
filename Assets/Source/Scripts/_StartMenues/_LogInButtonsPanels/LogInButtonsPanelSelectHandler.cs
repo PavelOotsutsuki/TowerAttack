@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using Tools.InputSettings;
 using Tools.UI;
@@ -22,6 +24,7 @@ namespace StartMenues.LogInButtonsPanels
 
         private readonly Dictionary<object, NextFocusData> _allFocusable;
         private object _currentFocused;
+        //private object _lastCurrentFocused;
 
         public LogInButtonsPanelSelectHandler(ExtendedTMP_InputField loginIF, ExtendedTMP_InputField passwordIF, ConfirmableFocusableButton logInButton,
             ConfirmableFocusableButton registraitionButton, ConfirmableFocusableButton exitButton)
@@ -59,7 +62,24 @@ namespace StartMenues.LogInButtonsPanels
         public void Activate()
         {
             Select(_loginIF);
+
+            //Test_changeCurrentFocused().ToUniTask();
         }
+
+        //private IEnumerator Test_changeCurrentFocused()
+        //{
+        //    while (true)
+        //    {
+        //        yield return new WaitForSeconds(0.5f);
+
+        //        if (_currentFocused != _lastCurrentFocused)
+        //        {
+        //            Debug.Log($"_lastCurrentFocused: {_lastCurrentFocused}, _currentFocused: {_currentFocused}");
+        //            _lastCurrentFocused = _currentFocused;
+        //        }
+        //    }
+        //}
+
 
         public void SetFocused(ConfirmableFocusableButton focused)
         {
@@ -151,18 +171,19 @@ namespace StartMenues.LogInButtonsPanels
             if (nextFocusData == null)
                 return;
 
-            object OnDown = nextFocusData.GetSide(inputSideType);
+            object OnSide = nextFocusData.GetSide(inputSideType);
 
-            if (OnDown == null)
+            if (OnSide == null)
                 return;
 
-            UnfocuseCurrent();
-            Select(OnDown);
+            Select(OnSide);
         }
 
 
         private void Select(object selectableObject)
         {
+            UnfocuseCurrent();
+
             switch (selectableObject)
             {
                 case TMP_InputField inputField:
@@ -181,6 +202,8 @@ namespace StartMenues.LogInButtonsPanels
 
         private void UnfocuseCurrent()
         {
+            EventSystem.current.SetSelectedGameObject(null);
+
             if (_currentFocused != null)
             {
                 switch (_currentFocused)
@@ -197,6 +220,16 @@ namespace StartMenues.LogInButtonsPanels
                 }
 
                 _currentFocused = null;
+            }
+
+            foreach (object focusableKey in _allFocusable.Keys.Where(k => k is TMP_InputField))
+            {
+                switch (focusableKey)
+                {
+                    case TMP_InputField TMP_InputField:
+                        TMP_InputField.DeactivateInputField();
+                        break;
+                }
             }
         }
     }

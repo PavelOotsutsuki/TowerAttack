@@ -42,15 +42,25 @@ namespace Tools.UI
         {
             base.OnEnter();
 
-            _focusWatcher.SetFocused(this);
-            _movement.Stop();
-            _movement.MoveLocalSmoothly(_ROTransform.GetLocalPosition(), _ROTransform.GetRotationVector(), _focusInDuration, _defaultScale * _scaleFactor);
+            OnFocus();
         }
 
         protected override void OnExit()
         {
             base.OnExit();
 
+            OnUnfocus();
+        }
+
+        private void OnFocus()
+        {
+            _focusWatcher.SetFocused(this);
+            _movement.Stop();
+            _movement.MoveLocalSmoothly(_ROTransform.GetLocalPosition(), _ROTransform.GetRotationVector(), _focusInDuration, _defaultScale * _scaleFactor);
+        }
+
+        private void OnUnfocus()
+        {
             _movement.Stop();
             _movement.MoveLocalSmoothly(_ROTransform.GetLocalPosition(), _ROTransform.GetRotationVector(), _focusOutDuration, _defaultScale);
         }
