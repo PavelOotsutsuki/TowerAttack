@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3416286140901556360}
   - component: {fileID: 7652543897633162841}
   - component: {fileID: 2395326290838237053}
-  - component: {fileID: 6977233115796576787}
+  - component: {fileID: 987158633697464331}
   m_Layer: 0
   m_Name: StartMenuButton
   m_TagString: Untagged
@@ -109,7 +109,7 @@ MonoBehaviour:
   SelectColor: {r: 0.2707473, g: 0.83137256, b: 0.12156862, a: 1}
   PressedColor: {r: 0.10196079, g: 0.50980395, b: 0.054901965, a: 1}
   DisabledColor: {r: 0.21960784, g: 0.15294118, b: 0.15294118, a: 0.654902}
---- !u!114 &6977233115796576787
+--- !u!114 &987158633697464331
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -118,7 +118,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5772413985830673761}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46f1b94adfc0a4a8a929dc6d8e15d963, type: 3}
+  m_Script: {fileID: 11500000, guid: 9281b2eaf11484b0497f2bd353f84966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   CanvasGroup: {fileID: 7652543897633162841}

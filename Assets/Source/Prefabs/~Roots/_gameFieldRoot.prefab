@@ -4713,7 +4713,7 @@ GameObject:
   - component: {fileID: 1791828528432017993}
   - component: {fileID: 4406570840811221168}
   m_Layer: 0
-  m_Name: StartButtonsPanel
+  m_Name: MainButtonsPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13202,7 +13202,7 @@ MonoBehaviour:
   _fadablePanel: {fileID: 6775608353821430017}
   _settingsButtonsPanel: {fileID: 7605760719699346746}
   _rulesButtonsPanel: {fileID: 3586348927282167213}
-  _fightMenuStartButtonsPanel: {fileID: 4406570840811221168}
+  _fightMenuMainButtonsPanel: {fileID: 4406570840811221168}
 --- !u!1 &6100570434219951111
 GameObject:
   m_ObjectHideFlags: 0
@@ -17456,7 +17456,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 456.62903}
+  m_AnchoredPosition: {x: 0, y: 456.6289}
   m_SizeDelta: {x: 0, y: 363}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &8421528645989163639

@@ -10,14 +10,14 @@ namespace GameFields.FightMenues
 {
     public class FightMenuButtonsPanelRoot : MenuButtonsPanelRoot
     {
-        [SerializeField] private FightMenuStartButtonsPanel _fightMenuStartButtonsPanel;
+        [SerializeField] private FightMenuMainButtonsPanel _fightMenuMainButtonsPanel;
 
         public void Init(LoseActions playerLoseActions, IDeactivatable fightMenuDeactivator, IVolume cardVolume, IVolume musicVolume,
             CardCapabilityDescription cardCapabilityDescription)
         {
-            _fightMenuStartButtonsPanel.Init(playerLoseActions, fightMenuDeactivator, SetSettingsPanel, SetRulesPanel);
+            _fightMenuMainButtonsPanel.Init(playerLoseActions, fightMenuDeactivator, SetSettingsPanel, SetRulesPanel);
 
-            base.Init(cardVolume, musicVolume, cardCapabilityDescription, _fightMenuStartButtonsPanel, _fightMenuStartButtonsPanel);
+            base.Init(cardVolume, musicVolume, cardCapabilityDescription, _fightMenuMainButtonsPanel, _fightMenuMainButtonsPanel);
         }
 
         #region AutomaticFillComponents
@@ -26,7 +26,7 @@ namespace GameFields.FightMenues
         {
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
-                DefineFightMenuStartButtonsPanel()
+                DefineFightMainStartButtonsPanel()
             };
 
             list.AddRange(base.DefineAllComponents());
@@ -34,10 +34,10 @@ namespace GameFields.FightMenues
             return list;
         }
 
-        [ContextMenu(nameof(DefineFightMenuStartButtonsPanel))]
-        private ComponentAttachInfo DefineFightMenuStartButtonsPanel()
+        [ContextMenu(nameof(DefineFightMainStartButtonsPanel))]
+        private ComponentAttachInfo DefineFightMainStartButtonsPanel()
         {
-            return AutomaticFillComponents.DefineComponent(this, ref _fightMenuStartButtonsPanel, ComponentLocationTypes.InChildren);
+            return AutomaticFillComponents.DefineComponent(this, ref _fightMenuMainButtonsPanel, ComponentLocationTypes.InChildren);
         }
         #endregion
     }

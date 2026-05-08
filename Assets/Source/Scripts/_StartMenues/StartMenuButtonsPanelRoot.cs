@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using Cards.Views.BigCardViews.Capabilities;
 using Menues;
+using StartMenues.LogInButtonsPanels;
+using StartMenues.RegistrationButtonsPanels;
 using Tools;
 using Tools.Utils.FillComponents;
 using UnityEngine;
@@ -12,22 +14,22 @@ namespace StartMenues
     {
         [SerializeField] private LogInButtonsPanel _logInButtonsPanel;
         [SerializeField] private RegistrationButtonsPanel _registrationButtonsPanel;
-        [SerializeField] private StartMenuStartButtonsPanel _startMenuStartButtonsPanel;
+        [SerializeField] private StartMenuMainButtonsPanel _startMenuMainButtonsPanel;
 
         public void Init(IVolume cardVolume, IVolume musicVolume, CardCapabilityDescription cardCapabilityDescription,
             Action onPlayClick, StartMenu startMenu)
         {
             _logInButtonsPanel.Init(SetMainPanel, SetRegistrationPanel);
             _registrationButtonsPanel.Init(SetMainPanel, SetLogInPanel);
-            _startMenuStartButtonsPanel.Init(SetSettingsPanel, SetRulesPanel, onPlayClick, startMenu);
+            _startMenuMainButtonsPanel.Init(SetSettingsPanel, SetRulesPanel, onPlayClick, startMenu);
 
             //base.Init(cardVolume, musicVolume, cardCapabilityDescription, _startMenuStartButtonsPanel);
-            base.Init(cardVolume, musicVolume, cardCapabilityDescription, _logInButtonsPanel, _startMenuStartButtonsPanel);
+            base.Init(cardVolume, musicVolume, cardCapabilityDescription, _logInButtonsPanel, _startMenuMainButtonsPanel);
         }
 
         private void SetMainPanel()
         {
-            SetPanel(_startMenuStartButtonsPanel);
+            SetPanel(_startMenuMainButtonsPanel);
         }
 
         private void SetLogInPanel()
@@ -71,7 +73,7 @@ namespace StartMenues
         [ContextMenu(nameof(DefineStartMenuStartButtonsPanel))]
         private ComponentAttachInfo DefineStartMenuStartButtonsPanel()
         {
-            return AutomaticFillComponents.DefineComponent(this, ref _startMenuStartButtonsPanel, ComponentLocationTypes.InChildren);
+            return AutomaticFillComponents.DefineComponent(this, ref _startMenuMainButtonsPanel, ComponentLocationTypes.InChildren);
         }
         #endregion
     }

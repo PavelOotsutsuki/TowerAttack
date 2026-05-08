@@ -140,7 +140,6 @@ namespace Menues
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
                 DefineFadablePanel(),
-                DefineFightMenuStartButtonsPanel(),
                 DefineMenuSettignsButtonsPanel(),
                 DefineMenuRulesButtonsPanel()
             };
@@ -152,12 +151,6 @@ namespace Menues
         private ComponentAttachInfo DefineFadablePanel()
         {
             return AutomaticFillComponents.DefineComponent(this, ref _fadablePanel, ComponentLocationTypes.InThis);
-        }
-
-        [ContextMenu(nameof(DefineFightMenuStartButtonsPanel))]
-        private ComponentAttachInfo DefineFightMenuStartButtonsPanel()
-        {
-            return AutomaticFillComponents.DefineComponent(this, ref _startButtonsPanel, ComponentLocationTypes.InChildren);
         }
 
         [ContextMenu(nameof(DefineMenuSettignsButtonsPanel))]

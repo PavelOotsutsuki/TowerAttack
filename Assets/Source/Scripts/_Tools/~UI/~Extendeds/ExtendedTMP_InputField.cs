@@ -7,7 +7,7 @@ namespace Tools.UI.Extendeds
     public class ExtendedTMP_InputField : TMP_InputField
     {
         //private Action _onPointerClick;
-        public event Action<TMP_InputField> OnPointerClickEvent;
+        public event Action<ExtendedTMP_InputField> OnPointerClickEvent;
 
         public override void OnPointerClick(PointerEventData eventData)
         {
