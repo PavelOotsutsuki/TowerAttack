@@ -11,6 +11,7 @@ namespace Roots
     {
         [SerializeField] private TMP_Text[] _allTextMechProTexts;
         [SerializeField] private TMP_FontAsset _defaultFont;
+        [SerializeField] private TMP_Text[] _exceptions;
 
         internal void Init()
         {
@@ -23,7 +24,8 @@ namespace Roots
                 if (texts.Count() > 0)
                     foreach (TMP_Text TMP_Text in texts)
                     {
-                        TMP_Text.font = _defaultFont;
+                        if (_exceptions.Contains(TMP_Text) == false)
+                            TMP_Text.font = _defaultFont;
                     }
         }
 

@@ -9,6 +9,7 @@ using Tools.Utils;
 using UnityEngine;
 //using UnityEngine.EventSystems;
 using Zenject;
+using static TMPro.TMP_InputField;
 
 namespace StartMenues.RegistrationButtonsPanels
 {
@@ -54,6 +55,9 @@ namespace StartMenues.RegistrationButtonsPanels
             _backButton.Init(this, onBackButtonClick);
             _registraitionButton.Init(this, OnRegistration);
             _exitButton.Init(this, Utils.Quit);
+
+            _passwordIF.inputType = InputType.Password;
+            _passwordAgainIF.inputType = InputType.Password;
         }
 
         private void OnRegistration()

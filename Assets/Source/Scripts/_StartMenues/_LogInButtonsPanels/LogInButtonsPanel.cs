@@ -8,7 +8,7 @@ using Tools.UI.Extendeds;
 using Tools.Utils;
 using UnityEngine;
 using Zenject;
-using ISelectHandler = Menues.ISelectHandler;
+using static TMPro.TMP_InputField;
 
 namespace StartMenues.LogInButtonsPanels
 {
@@ -24,6 +24,7 @@ namespace StartMenues.LogInButtonsPanels
 
         //private List<ConfirmableFocusableButton> _focusableButtons;
         private Action _switchOnMainPanel;
+        private string _enteredPassword = "";
         //private LogInButtonsPanelSelectHandler _selectHandler;
 
         [Inject]
@@ -52,10 +53,19 @@ namespace StartMenues.LogInButtonsPanels
             _registraitionButton.Init(this, onRegistraitionButtonClick);
             _exitButton.Init(this, Utils.Quit);
 
+            _passwordIF.inputType = InputType.Password;
+
+            //_passwordIF.onValueChanged.AddListener(OnPasswordValueChanged);
+
             //_logInButton.Init(this, TestAction);
             //_registraitionButton.Init(this, TestAction);
             //_exitButton.Init(this, TestAction);
         }
+
+        //private void OnDestroy()
+        //{
+        //    _passwordIF.onValueChanged.RemoveListener(OnPasswordValueChanged);
+        //}
 
         //private void TestAction()
         //{
