@@ -25,6 +25,11 @@ namespace GameFields.LightControls
             _isActivatable = true;
         }
 
+        ~LightController()
+        {
+            _token.Dispose();
+        }
+
         public bool? IsActive { get; private set; } = false;
 
         public void Activate(LightControllerActivateData data)

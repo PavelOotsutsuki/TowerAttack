@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Cards.Views.BigCardViews.Capabilities;
 using Menues;
+using Servers.DTO;
 using StartMenues.LogInButtonsPanels;
 using StartMenues.RegistrationButtonsPanels;
 using Tools;
@@ -19,9 +20,11 @@ namespace StartMenues
         public void Init(IVolume cardVolume, IVolume musicVolume, CardCapabilityDescription cardCapabilityDescription,
             Action onPlayClick, StartMenu startMenu)
         {
-            _logInButtonsPanel.Init(SetMainPanel, SetRegistrationPanel);
-            _registrationButtonsPanel.Init(SetMainPanel, SetLogInPanel);
-            _startMenuMainButtonsPanel.Init(SetSettingsPanel, SetRulesPanel, onPlayClick, startMenu);
+            UserData userData = new UserData();
+
+            _logInButtonsPanel.Init(SetMainPanel, SetRegistrationPanel, userData);
+            _registrationButtonsPanel.Init(SetMainPanel, SetLogInPanel, userData);
+            _startMenuMainButtonsPanel.Init(SetSettingsPanel, SetRulesPanel, onPlayClick, startMenu, userData);
 
             //base.Init(cardVolume, musicVolume, cardCapabilityDescription, _startMenuStartButtonsPanel);
             base.Init(cardVolume, musicVolume, cardCapabilityDescription, _logInButtonsPanel, _startMenuMainButtonsPanel);

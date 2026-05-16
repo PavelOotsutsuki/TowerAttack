@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Menues;
+using Servers.DTO;
 using Tools;
 using Tools.UI;
 using Tools.Utils;
@@ -21,10 +22,14 @@ namespace StartMenues
         [SerializeField] private ConfirmableFocusableButton _rulesButton;
         [SerializeField] private ConfirmableFocusableButton _settingsButton;
         [SerializeField] private ConfirmableFocusableButton _exitButton;
+        [SerializeField] private Label _labelLogin;
+        [SerializeField] private Label _labelLvl;
+        [SerializeField] private Label _labelEx;
 
         private Action _onPlayClick;
         private IHidable _startMenuDeactivatable;
         private ICompletable _startMenuCompletable;
+        private UserData _userData;
 
         //private bool _isComplete;
         //private ConfirmableFocusableButton _currentFocusedButton;
@@ -34,13 +39,14 @@ namespace StartMenues
         //public bool IsComplete => _isComplete;
 
         public void Init(Action onSettingsButtonClick, Action onRulesButtonClick, Action onPlayClick,
-            StartMenu startMenuDeactivatable)
+            StartMenu startMenuDeactivatable, UserData userData)
         {
             //_isComplete = true;
             //_fadablePanel.Init();
             _onPlayClick = onPlayClick;
             _startMenuDeactivatable = startMenuDeactivatable;
             _startMenuCompletable = startMenuDeactivatable;
+            _userData = userData;
 
             List<ConfirmableFocusableButton> focusableButtons = new List<ConfirmableFocusableButton>()
             {
@@ -56,6 +62,9 @@ namespace StartMenues
             ISelectHandler selectHandler = new MainButtonsPanelSelectHandler(focusableButtons);
             base.Init(selectHandler, focusableButtons);
 
+            _labelLogin.Init();
+            _labelLvl.Init();
+            _labelEx.Init();
 
             _playButton.Init(this, StartPlaying);
             _campaignButton.Init(this, null);
@@ -68,6 +77,18 @@ namespace StartMenues
             _campaignButton.SetDisableView();
             _collectionButton.SetDisableView();
             _achievementsButton.SetDisableView();
+        }
+
+        public override void Activate()
+        {
+            if (IsActive == true)
+                return;
+
+            base.Activate();
+
+            _labelLogin.SetText(_userData.UserName);
+            _labelLvl.SetText("Lvl: " + _userData.Level);
+            _labelEx.SetText("EX: " + _userData.Score + "/100");
         }
 
         private void StartPlaying()

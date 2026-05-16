@@ -1,5 +1,6 @@
 using Cards.Views.BigCardViews.Capabilities;
 using GameFields.Signals;
+using Servers;
 using Sounds;
 using Tools.Loads;
 using Tools.Utils.Screens;
@@ -19,6 +20,7 @@ namespace Roots
 
         [SerializeField] private LoadRoot _loadRoot;
 
+        private DBRoot _dBRoot;
         private ScreenRoot _screenRoot;
         private CardCapabilityDescription _cardCapabilityDescription;
 
@@ -30,6 +32,9 @@ namespace Roots
             Container.Bind<ForegroundSoundConfig>().FromScriptableObject(_foregroundSoundConfig).AsSingle();
 
             Container.Bind<LoadRoot>().FromInstance(_loadRoot).AsSingle();
+
+            _dBRoot = new DBRoot();
+            Container.Bind<DBRoot>().FromInstance(_dBRoot).AsSingle();
 
             _screenRoot = new ScreenRoot();
             Container.Bind<ScreenRoot>().FromInstance(_screenRoot).AsSingle();

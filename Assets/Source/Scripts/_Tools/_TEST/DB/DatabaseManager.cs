@@ -20,14 +20,21 @@ public class DatabaseManager : MonoBehaviour
         //WriteData("Unity_Герой", 500);
         //ReadData("Unity_Герой");
 
-        StartCoroutine(OnStart());
+        //StartCoroutine(OnStart());
     }
 
     public IEnumerator OnStart()
     {
         yield return new WaitForSeconds(5f);
 
-        using (UnityWebRequest request = UnityWebRequest.Get("https://localhost:7206/WeatherForecast"))
+        //using (UnityWebRequest request = UnityWebRequest.Get("https://localhost:7206/WeatherForecast"))
+        //WWWForm wWWForm = new WWWForm();
+        //wWWForm.AddField("");
+        
+        //Uri uri = new Uri()
+        //UnityWebRequest.Post(()
+
+        using (UnityWebRequest request = UnityWebRequest.Get("https://localhost:7206/api/Players"))
         {
             request.certificateHandler = new BypassCertificate();
             yield return request.SendWebRequest();

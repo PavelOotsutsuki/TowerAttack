@@ -1,7 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Menues;
+using Servers;
+using Servers.DTO;
 using Tools.Loads;
 using Tools.UI;
 using Tools.UI.Extendeds;
@@ -21,6 +26,9 @@ namespace StartMenues.LogInButtonsPanels
         [SerializeField] private ConfirmableFocusableButton _exitButton;
 
         private LoadRoot _loadRoot;
+        private DBRoot _dBRoot;
+        private UserData _userData;
+        private CancellationTokenSource _tokenSource;
 
         //private List<ConfirmableFocusableButton> _focusableButtons;
         private Action _switchOnMainPanel;
@@ -28,16 +36,18 @@ namespace StartMenues.LogInButtonsPanels
         //private LogInButtonsPanelSelectHandler _selectHandler;
 
         [Inject]
-        public void Construct(LoadRoot loadRoot)
+        public void Construct(LoadRoot loadRoot, DBRoot dBRoot)
         {
             _loadRoot = loadRoot;
+            _dBRoot = dBRoot;
         }
 
-        public void Init(Action switchOnMainPanel, Action onRegistraitionButtonClick)
+        public void Init(Action switchOnMainPanel, Action onRegistraitionButtonClick, UserData userData)
         {
             //_isComplete = true;
             //_fadablePanel.Init();
             _switchOnMainPanel = switchOnMainPanel;
+            _userData = userData;
             ISelectHandler selectHandler = new LogInButtonsPanelSelectHandler(_loginIF, _passwordIF, _logInButton, _registraitionButton, _exitButton);
 
             List<ConfirmableFocusableButton> focusableButtons = new List<ConfirmableFocusableButton>()
@@ -74,18 +84,43 @@ namespace StartMenues.LogInButtonsPanels
 
         private void OnLogIn()
         {
-            StartCoroutine(LogInProcessing());
+            _tokenSource?.Dispose();
+            _tokenSource = new CancellationTokenSource();
+            CancellationToken token = _tokenSource.Token;
+
+            LogInProcessing(token).Forget();
         }
 
-        private IEnumerator LogInProcessing()
+        private async UniTaskVoid LogInProcessing(CancellationToken token)
         {
-            _loadRoot.Activate();
+            try
+            {
+                _loadRoot.Activate();
 
-            yield return new WaitForSeconds(3f);
+                GetUserDTO user = await _dBRoot.GetUser(_loginIF.text.Trim(), _passwordIF.text, token);
+                Debug.Log(user);
+                _userData.SetUserData(user);
+                await UniTask.Delay(1000, cancellationToken: token);
+                //yield return new WaitForSeconds(3f);
 
-            _loadRoot.Deactivate();
+                _loadRoot.Deactivate();
 
-            _switchOnMainPanel.Invoke();
+                _switchOnMainPanel.Invoke();
+            }
+            catch (Exception ex)
+            {
+                Debug.Log($"Ошибка {nameof(LogInButtonsPanel)}-->{nameof(LogInProcessing)}: {ex.Message}");
+                _logInButton.Deactivate();
+                _logInButton.Activate();
+                _loadRoot.Deactivate();
+                _tokenSource.Cancel();
+            }
+        }
+
+        private void OnDestroy()
+        {
+            _tokenSource?.Cancel();
+            _tokenSource?.Dispose();
         }
     }
 }
