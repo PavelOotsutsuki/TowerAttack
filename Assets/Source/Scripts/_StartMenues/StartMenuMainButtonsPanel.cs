@@ -1,13 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using Menues;
+using Servers;
 using Servers.DTO;
 using Tools;
+using Tools.Loads;
 using Tools.UI;
 using Tools.Utils;
 using UnityEngine;
+using Zenject;
 using ISelectHandler = Menues.ISelectHandler;
 
 namespace StartMenues
@@ -26,10 +30,11 @@ namespace StartMenues
         [SerializeField] private Label _labelLvl;
         [SerializeField] private Label _labelEx;
 
+        private DBRoot _dBRoot;
+
         private Action _onPlayClick;
         private IHidable _startMenuDeactivatable;
         private ICompletable _startMenuCompletable;
-        private UserData _userData;
 
         //private bool _isComplete;
         //private ConfirmableFocusableButton _currentFocusedButton;
@@ -37,16 +42,20 @@ namespace StartMenues
 
         //public override bool? IsActive { get; protected set; } = null;
         //public bool IsComplete => _isComplete;
+        [Inject]
+        public void Construct(DBRoot dBRoot)
+        {
+            _dBRoot = dBRoot;
+        }
 
         public void Init(Action onSettingsButtonClick, Action onRulesButtonClick, Action onPlayClick,
-            StartMenu startMenuDeactivatable, UserData userData)
+            StartMenu startMenuDeactivatable)
         {
             //_isComplete = true;
             //_fadablePanel.Init();
             _onPlayClick = onPlayClick;
             _startMenuDeactivatable = startMenuDeactivatable;
             _startMenuCompletable = startMenuDeactivatable;
-            _userData = userData;
 
             List<ConfirmableFocusableButton> focusableButtons = new List<ConfirmableFocusableButton>()
             {
@@ -86,9 +95,22 @@ namespace StartMenues
 
             base.Activate();
 
-            _labelLogin.SetText(_userData.UserName);
-            _labelLvl.SetText("Lvl: " + _userData.Level);
-            _labelEx.SetText("EX: " + _userData.Score + "/100");
+            CancellationToken token = this.destroyCancellationToken;
+
+            Activating(token).Forget();
+        }
+
+        private async UniTask Activating(CancellationToken token)
+        {
+            _labelLogin.SetText("Загрузка");
+            _labelLvl.SetText("Загрузка");
+            _labelEx.SetText("Загрузка");
+
+            GetUserDTO getUserDTO = await _dBRoot.GetUserData(token);
+
+            _labelLogin.SetText(getUserDTO.username);
+            _labelLvl.SetText("Lvl: " + getUserDTO.level);
+            _labelEx.SetText("EX: " + getUserDTO.score + "/100");
         }
 
         private void StartPlaying()

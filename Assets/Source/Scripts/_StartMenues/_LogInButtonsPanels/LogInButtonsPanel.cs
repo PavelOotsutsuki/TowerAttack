@@ -27,7 +27,6 @@ namespace StartMenues.LogInButtonsPanels
 
         private LoadRoot _loadRoot;
         private DBRoot _dBRoot;
-        private UserData _userData;
         private CancellationTokenSource _tokenSource;
 
         //private List<ConfirmableFocusableButton> _focusableButtons;
@@ -42,12 +41,11 @@ namespace StartMenues.LogInButtonsPanels
             _dBRoot = dBRoot;
         }
 
-        public void Init(Action switchOnMainPanel, Action onRegistraitionButtonClick, UserData userData)
+        public void Init(Action switchOnMainPanel, Action onRegistraitionButtonClick)
         {
             //_isComplete = true;
             //_fadablePanel.Init();
             _switchOnMainPanel = switchOnMainPanel;
-            _userData = userData;
             ISelectHandler selectHandler = new LogInButtonsPanelSelectHandler(_loginIF, _passwordIF, _logInButton, _registraitionButton, _exitButton);
 
             List<ConfirmableFocusableButton> focusableButtons = new List<ConfirmableFocusableButton>()
@@ -91,15 +89,15 @@ namespace StartMenues.LogInButtonsPanels
             LogInProcessing(token).Forget();
         }
 
-        private async UniTaskVoid LogInProcessing(CancellationToken token)
+        private async UniTask LogInProcessing(CancellationToken token)
         {
             try
             {
                 _loadRoot.Activate();
 
-                GetUserDTO user = await _dBRoot.GetUser(_loginIF.text.Trim(), _passwordIF.text, token);
-                Debug.Log(user);
-                _userData.SetUserData(user);
+                await _dBRoot.LogInUser(_loginIF.text.Trim(), _passwordIF.text, token);
+                //Debug.Log(user);
+                //_userData.SetUserData(user);
                 await UniTask.Delay(1000, cancellationToken: token);
                 //yield return new WaitForSeconds(3f);
 

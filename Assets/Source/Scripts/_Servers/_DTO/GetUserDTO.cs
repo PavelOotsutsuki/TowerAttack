@@ -27,7 +27,7 @@ namespace Servers.DTO
     {
         //public int id;
         public string username;
-        public string password;
+        //public string password;
         public int score;
         public int level;
         //public string lastLogin;  // DateTime заменил на string, об этом ниже
