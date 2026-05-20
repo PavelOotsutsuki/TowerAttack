@@ -16,7 +16,7 @@ using ISelectHandler = Menues.ISelectHandler;
 
 namespace StartMenues
 {
-    public class StartMenuMainButtonsPanel : CustomFocusMenuButtonsPanel//, IAutomaticFillComponents
+    public class StartMenuMainButtonsPanel : CustomFocusMenuButtonsPanel, IPreactivatable//, IAutomaticFillComponents
     {
         //[SerializeField] private FadablePanel _fadablePanel;
         [SerializeField] private ConfirmableFocusableButton _playButton;
@@ -30,11 +30,13 @@ namespace StartMenues
         [SerializeField] private Label _labelLvl;
         [SerializeField] private Label _labelEx;
 
-        private DBRoot _dBRoot;
+        [Inject] private DBRoot _dBRoot;
 
         private Action _onPlayClick;
         private IHidable _startMenuDeactivatable;
         private ICompletable _startMenuCompletable;
+
+        public bool IsPreactive { get; private set; } = false;
 
         //private bool _isComplete;
         //private ConfirmableFocusableButton _currentFocusedButton;
@@ -42,11 +44,6 @@ namespace StartMenues
 
         //public override bool? IsActive { get; protected set; } = null;
         //public bool IsComplete => _isComplete;
-        [Inject]
-        public void Construct(DBRoot dBRoot)
-        {
-            _dBRoot = dBRoot;
-        }
 
         public void Init(Action onSettingsButtonClick, Action onRulesButtonClick, Action onPlayClick,
             StartMenu startMenuDeactivatable)
@@ -93,14 +90,19 @@ namespace StartMenues
             if (IsActive == true)
                 return;
 
+            if (IsPreactive == false)
+                Debug.LogError("Ошибка последовательности активации. Сначала необходимо преактивировать объект");
+
+            IsPreactive = false;
+
             base.Activate();
 
-            CancellationToken token = this.destroyCancellationToken;
+            //CancellationToken token = this.destroyCancellationToken;
 
-            Activating(token).Forget();
+            //Activating(token).Forget();
         }
 
-        private async UniTask Activating(CancellationToken token)
+        public async UniTask Preactivate(CancellationToken token)
         {
             _labelLogin.SetText("Загрузка");
             _labelLvl.SetText("Загрузка");
@@ -111,7 +113,28 @@ namespace StartMenues
             _labelLogin.SetText(getUserDTO.username);
             _labelLvl.SetText("Lvl: " + getUserDTO.level);
             _labelEx.SetText("EX: " + getUserDTO.score + "/100");
+
+            IsPreactive = true;
         }
+
+        //private async UniTask Activating(CancellationToken token)
+        //{
+
+        //    await UniTask.Delay(2000);
+
+        //    base.Activate();
+
+
+        //    _labelLogin.SetText("Загрузка");
+        //    _labelLvl.SetText("Загрузка");
+        //    _labelEx.SetText("Загрузка");
+
+        //    GetUserDTO getUserDTO = await _dBRoot.GetUserData(token);
+
+        //    _labelLogin.SetText(getUserDTO.username);
+        //    _labelLvl.SetText("Lvl: " + getUserDTO.level);
+        //    _labelEx.SetText("EX: " + getUserDTO.score + "/100");
+        //}
 
         private void StartPlaying()
         {

@@ -1,14 +1,19 @@
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Tools.Loads
 {
-    public class LoadRoot : MonoBehaviour, IWorkable, IAutomaticFillComponents
+    public class LoadRoot : MonoBehaviour/*, IWorkable*/, IAutomaticFillComponents
     {
         [SerializeField] private LoadPanel _loadPanel;
         [SerializeField] private LoadText _loadText;
+
+        private readonly List<LoadSession> _currentSessions = new List<LoadSession>();
 
         public bool? IsActive { get; private set; } = null;
 
@@ -18,7 +23,14 @@ namespace Tools.Loads
             _loadText.Init();
         }
 
-        public void Activate()
+        public void AddSession(LoadSession loadSession)
+        {
+            _currentSessions.Add(loadSession);
+
+            Activate();
+        }
+
+        private void Activate()
         {
             if (IsActive == true)
                 return;
@@ -27,9 +39,20 @@ namespace Tools.Loads
 
             _loadPanel.Activate();
             _loadText.Activate();
+
+            WaitingAllSessions(this.destroyCancellationToken).Forget();
         }
 
-        public void Deactivate()
+        private async UniTask WaitingAllSessions(CancellationToken token)
+        {
+            await UniTask.WaitUntil(() => _currentSessions.Any(s => s.IsComplete == false) == false, cancellationToken: token);
+
+            _currentSessions.Clear();
+
+            Deactivate();
+        }
+
+        private void Deactivate()
         {
             if (IsActive == false)
                 return;

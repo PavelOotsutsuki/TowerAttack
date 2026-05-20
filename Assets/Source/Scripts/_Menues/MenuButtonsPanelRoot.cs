@@ -10,20 +10,21 @@ using UnityEngine;
 
 namespace Menues
 {
-    public abstract class MenuButtonsPanelRoot : MonoBehaviour, IWorkable, ICompletable, IReactivatable, IAutomaticFillComponents
+    public abstract class MenuButtonsPanelRoot : MonoBehaviour, IWorkable, ICompletable, IAutomaticFillComponents
     {
         [SerializeField] private FadablePanel _fadablePanel;
         [SerializeField] private MenuSettingsButtonsPanel _settingsButtonsPanel;
         [SerializeField] private MenuRulesButtonsPanel _rulesButtonsPanel;
 
-        private CustomFocusMenuButtonsPanel _startButtonsPanel;
-        private MenuButtonsPanel _currentMenuButtonsPanel;
+        protected MenuButtonsPanel CurrentMenuButtonsPanel;
+
         private MenuButtonsPanel _mainButtonsPanel;
+        private CustomFocusMenuButtonsPanel _startButtonsPanel;
         private bool _isComplete;
 
         public bool? IsActive { get; private set; } = null;
         public bool IsComplete => _isComplete;
-        public IFocusedButtonEnterHandler CurrentMenuButtonInputHandler => _currentMenuButtonsPanel;
+        public IFocusedButtonEnterHandler CurrentMenuButtonInputHandler => CurrentMenuButtonsPanel;
 
         //public void Init(LoseActions playerLoseActions, IDeactivatable fightMenuDeactivator, IVolume cardVolume, IVolume musicVolume,
         //    CardCapabilityDescription cardCapabilityDescription)
@@ -52,7 +53,7 @@ namespace Menues
 
             _isComplete = true;
 
-            _currentMenuButtonsPanel = _startButtonsPanel;
+            CurrentMenuButtonsPanel = _startButtonsPanel;
         }
 
         public void Activate()
@@ -63,8 +64,8 @@ namespace Menues
             IsActive = true;
             _isComplete = false;
 
-            _currentMenuButtonsPanel = _startButtonsPanel;
-            _currentMenuButtonsPanel.Activate();
+            CurrentMenuButtonsPanel = _startButtonsPanel;
+            CurrentMenuButtonsPanel.Activate();
 
             Activating().ToUniTask();
         }
@@ -77,17 +78,10 @@ namespace Menues
             IsActive = false;
             _isComplete = false;
 
-            _currentMenuButtonsPanel.Deactivate();
-            _currentMenuButtonsPanel = null;
+            CurrentMenuButtonsPanel.Deactivate();
+            CurrentMenuButtonsPanel = null;
 
             Deactivating().ToUniTask();
-        }
-
-        public void Reactivate()
-        {
-            _currentMenuButtonsPanel?.Deactivate();
-            _currentMenuButtonsPanel = _mainButtonsPanel;
-            _currentMenuButtonsPanel.Activate();
         }
 
         protected void SetSettingsPanel()
@@ -102,12 +96,12 @@ namespace Menues
 
         protected void SetPanel(MenuButtonsPanel settedPanel)
         {
-            if (_currentMenuButtonsPanel == settedPanel)
+            if (CurrentMenuButtonsPanel == settedPanel)
                 return;
 
-            _currentMenuButtonsPanel?.Deactivate();
-            _currentMenuButtonsPanel = settedPanel;
-            _currentMenuButtonsPanel.Activate();
+            CurrentMenuButtonsPanel?.Deactivate();
+            CurrentMenuButtonsPanel = settedPanel;
+            CurrentMenuButtonsPanel.Activate();
         }
 
         private void SetMainPanel()

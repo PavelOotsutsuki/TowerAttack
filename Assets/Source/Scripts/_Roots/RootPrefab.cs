@@ -5,7 +5,7 @@ using Zenject;
 
 namespace Roots
 {
-    public abstract class RootPrefab : MonoBehaviour, IWorkable
+    public abstract class RootPrefab : MonoBehaviour, IWorkable, ICompletable
     {
         [SerializeField] private GameObject _prefab;
 
@@ -17,6 +17,8 @@ namespace Roots
         private LocalRoot _localRoot;
 
         public bool? IsActive { get; private set; } = null;
+
+        public bool IsComplete { get; protected set; }
 
         protected void Init(DiContainer diContainer, Container container)
         {
@@ -35,6 +37,7 @@ namespace Roots
                 return;
 
             IsActive = true;
+            IsComplete = false;
 
             if (CurrentGameObject == null)
             {

@@ -95,9 +95,11 @@ namespace StartMenues.RegistrationButtonsPanels
 
         private async UniTask RegistrationProcessing(CancellationToken token)
         {
+            LoadSession loadSession = new LoadSession();
+
             try
             {
-                _loadRoot.Activate();
+                _loadRoot.AddSession(loadSession);
 
                 await _dBRoot.CreateUser(_loginIF.text.Trim(), _passwordIF.text, token);
                 //Debug.Log(user);
@@ -105,7 +107,7 @@ namespace StartMenues.RegistrationButtonsPanels
                 await UniTask.Delay(1000, cancellationToken: token);
                 //yield return new WaitForSeconds(3f);
 
-                _loadRoot.Deactivate();
+                loadSession.Complete();
 
                 _switchOnMainPanel.Invoke();
             }
@@ -114,7 +116,7 @@ namespace StartMenues.RegistrationButtonsPanels
                 Debug.Log($"Ошибка {nameof(RegistrationButtonsPanel)}-->{nameof(RegistrationProcessing)}: {ex.Message}");
                 _registraitionButton.Deactivate();
                 _registraitionButton.Activate();
-                _loadRoot.Deactivate();
+                loadSession.Complete();
                 _tokenSource.Cancel();
             }
         }

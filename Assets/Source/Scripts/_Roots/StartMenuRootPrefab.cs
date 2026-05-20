@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using StartMenues;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 using Zenject;
@@ -27,10 +28,12 @@ namespace Roots
                 _currentStartMenuRoot = CurrentGameObject.GetComponent<StartMenuRoot>();
                 _currentStartMenuRoot.Init(_onPlayClick);
                 _currentStartMenuRoot.Activate();
+                IsComplete = true;
             }
             else
             {
-                _currentStartMenuRoot.Reactivate();
+                StartMenuButtonsPanelRootReactivateData reactivateDataInvoker = new StartMenuButtonsPanelRootReactivateData(() => IsComplete = true);
+                _currentStartMenuRoot.Reactivate(reactivateDataInvoker);
             }
         }
 

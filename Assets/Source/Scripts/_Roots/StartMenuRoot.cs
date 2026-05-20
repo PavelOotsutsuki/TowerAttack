@@ -12,7 +12,7 @@ using Zenject;
 
 namespace Roots
 {
-    public class StartMenuRoot : LocalRoot, IActivatable, IReactivatable
+    public class StartMenuRoot : LocalRoot, IActivatable, IReactivatable<StartMenuButtonsPanelRootReactivateData>
     {
         //[SerializeField] private CanvasRoot _canvasRoot;
         //[SerializeField] private FontRoot _fontRoot;
@@ -65,9 +65,9 @@ namespace Roots
             _startMenuLoadActions.Activate();
         }
 
-        public void Reactivate()
+        public void Reactivate(StartMenuButtonsPanelRootReactivateData reactivateDataInvoker)
         {
-            _startMenuLoadActions.Reactivate();
+            _startMenuLoadActions.Reactivate(reactivateDataInvoker);
         }
 
         public override void ActivateInputSystem()

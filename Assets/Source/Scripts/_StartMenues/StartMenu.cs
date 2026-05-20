@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace StartMenues
 {
-    public class StartMenu : Menu, IHidable, IReactivatable
+    public class StartMenu : Menu, IHidable, IReactivatable<StartMenuButtonsPanelRootReactivateData>
     {
         [SerializeField] private StartMenuButtonsPanelRoot _startMenuButtonsPanelRoot;
 
@@ -29,10 +29,10 @@ namespace StartMenues
             _inputRoot.Activate();
         }
 
-        public void Reactivate()
+        public void Reactivate(StartMenuButtonsPanelRootReactivateData reactivateDataInvoker)
         {
             IsComplete = false;
-            MenuButtonsPanelRoot.Reactivate();
+            _startMenuButtonsPanelRoot.Reactivate(reactivateDataInvoker);
 
             OnActivatingInput();
             IsComplete = true;

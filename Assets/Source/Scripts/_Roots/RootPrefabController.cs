@@ -53,6 +53,7 @@ namespace Roots
 
             _currentRootPrefab.Activate();
 
+            yield return new WaitUntil(() => _currentRootPrefab.IsComplete);
             yield return new WaitForSeconds(0.5f);
 
             _switchRootPrefabPanel.Hide();

@@ -127,7 +127,7 @@ namespace Servers
                 request.downloadHandler = new DownloadHandlerBuffer();
                 request.uploadHandler = new UploadHandlerRaw(WWWForm.data);
 
-                foreach (var header in WWWForm.headers)
+                foreach (KeyValuePair<string, string> header in WWWForm.headers)
                     request.SetRequestHeader(header.Key, header.Value);
 
                 request.certificateHandler = new BypassCertificate();

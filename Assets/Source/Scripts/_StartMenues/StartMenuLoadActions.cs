@@ -11,7 +11,7 @@ using Tools.Loads;
 
 namespace StartMenues
 {
-    public class StartMenuLoadActions : MonoBehaviour, IActivatable, IReactivatable
+    public class StartMenuLoadActions : MonoBehaviour, IActivatable, IReactivatable<StartMenuButtonsPanelRootReactivateData>
     {
         private readonly float _colorChangeDuration = 2f;
 
@@ -57,24 +57,25 @@ namespace StartMenues
             // 1. Просветление экрана
             //if (_startMenuSavedData.StoneSpawnerParent == null)
             //{
-                _mainCamera.backgroundColor = _startColor;
+            _mainCamera.backgroundColor = _startColor;
 
-                yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.5f);
 
-                _mainCamera.DOColor(_endColor, _colorChangeDuration).SetEase(Ease.OutQuad);
+            _mainCamera.DOColor(_endColor, _colorChangeDuration).SetEase(Ease.OutQuad);
 
-                yield return new WaitForSeconds(_colorChangeDuration);
+            yield return new WaitForSeconds(_colorChangeDuration);
 
-                // 2. Камнепад
+            // 2. Камнепад
 
-                _loadRoot.Activate();
-                _stoneSpawner.Activate();
+            LoadSession loadSession = new LoadSession();
+            _loadRoot.AddSession(loadSession);
+            _stoneSpawner.Activate();
 
-                yield return new WaitUntil(() => _stoneSpawner.IsComplete);
+            yield return new WaitUntil(() => _stoneSpawner.IsComplete);
 
-                _loadRoot.Deactivate();
+            loadSession.Complete();
 
-                //_startMenuSavedData.SetStoneSpawner(_stoneSpawner.StoneSpawnerParent);
+            //_startMenuSavedData.SetStoneSpawner(_stoneSpawner.StoneSpawnerParent);
             //}
             //else
             //{
@@ -86,9 +87,9 @@ namespace StartMenues
             _startMenu.Activate();
         }
 
-        public void Reactivate()
+        public void Reactivate(StartMenuButtonsPanelRootReactivateData reactivateDataInvoker)
         {
-            _startMenu.Reactivate();
+            _startMenu.Reactivate(reactivateDataInvoker);
         }
 
     }

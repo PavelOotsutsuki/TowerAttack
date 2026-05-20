@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 using Zenject;
+using Cysharp.Threading.Tasks;
+using System.Threading;
 
 namespace Roots
 {
@@ -25,6 +27,8 @@ namespace Roots
             _currentGameFieldRoot = CurrentGameObject.GetComponent<GameFieldRoot>();
             _currentGameFieldRoot.Init(_onDestroyPrefab);
             _currentGameFieldRoot.Activate();
+
+            WaitingToComplete(this.destroyCancellationToken).Forget();
         }
 
         protected override void OnDeactivate()
@@ -32,6 +36,13 @@ namespace Roots
             Destroy(CurrentGameObject);
             CurrentGameObject = null;
             _currentGameFieldRoot = null;
+        }
+
+        private async UniTask WaitingToComplete(CancellationToken token)
+        {
+            await UniTask.Delay(500, cancellationToken: token);
+
+            IsComplete = true;
         }
 
         #region AutomaticFillComponents
