@@ -45,7 +45,7 @@ namespace Roots
             //_startMenuLoadActions.Activate();
         }
 
-        public void Init(Action onPlayClick)
+        public void Init(Action<int> onPlayClick)
         {
             //CanvasScaler[] objectCanvasScalers = gameObject.GetComponentsInChildren<CanvasScaler>(true);
             //_canvasRoot.SetReferenceResolution(objectCanvasScalers);

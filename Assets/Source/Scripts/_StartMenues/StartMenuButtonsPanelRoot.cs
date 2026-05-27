@@ -23,7 +23,7 @@ namespace StartMenues
         [Inject] private LoadRoot _loadRoot;
 
         public void Init(IVolume cardVolume, IVolume musicVolume, CardCapabilityDescription cardCapabilityDescription,
-            Action onPlayClick, StartMenu startMenu)
+            Action<int> onPlayClick, StartMenu startMenu)
         {
             _logInButtonsPanel.Init(SetMainPanel, SetRegistrationPanel);
             _registrationButtonsPanel.Init(SetMainPanel, SetLogInPanel);

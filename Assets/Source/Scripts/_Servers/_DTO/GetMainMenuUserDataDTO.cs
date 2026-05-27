@@ -23,13 +23,14 @@ namespace Servers.DTO
     //}
 
     [Serializable]
-    public class GetUserDTO
+    public class GetMainMenuUserDataDTO
     {
         //public int id;
         public string username;
         //public string password;
         public int score;
         public int level;
+        public int max_experience;
         //public string lastLogin;  // DateTime заменил на string, об этом ниже
     }
 }

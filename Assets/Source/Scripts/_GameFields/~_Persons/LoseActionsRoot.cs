@@ -1,3 +1,5 @@
+using Tools;
+
 namespace GameFields.Persons
 {
     public class LoseActionsRoot
@@ -11,15 +13,15 @@ namespace GameFields.Persons
             _enemyLoseActions = enemyLoseActions;
         }
 
-        public void Capitulate(Person person)
+        public void Capitulate(Person person, CancellationTokenData cancellationTokenData)
         {
             switch (person)
             {
                 case EnemyAI:
-                    _enemyLoseActions.Activate();
+                    _enemyLoseActions.Activate(cancellationTokenData);
                     break;
                 case Player:
-                    _playerLoseActions.Activate();
+                    _playerLoseActions.Activate(cancellationTokenData);
                     break;
                 default:
                     throw new System.Exception("Неизвестный тип персонажа");

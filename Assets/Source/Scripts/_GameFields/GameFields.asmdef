@@ -10,7 +10,8 @@
         "Tools",
         "CanvasSortOrders",
         "Unity.InputSystem",
-        "Menues"
+        "Menues",
+        "Servers"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

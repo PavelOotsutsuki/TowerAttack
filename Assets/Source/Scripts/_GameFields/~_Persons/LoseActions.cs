@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using GameFields.FightMenues;
 using GameFields.InputSettings;
@@ -8,11 +9,12 @@ using GameFields.Persons.Towers;
 using GameFields.Signals;
 using Tools;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Zenject;
 
 namespace GameFields.Persons
 {
-    public class LoseActions: IActivatable
+    public class LoseActions: IActivatable<CancellationTokenData>
     {
         private bool _isActive;
 
@@ -40,17 +42,17 @@ namespace GameFields.Persons
             _isActive = false;
         }
 
-        public void Activate()
+        public void Activate(CancellationTokenData data)
         {
             if (_isActive)
                 return;
 
             _isActive = true;
 
-            Activating().ToUniTask();
+            Activating(data.Token).Forget();
         }
 
-        private IEnumerator Activating()
+        private async UniTask Activating(CancellationToken token)
         {
             _inputRoot.Deactivate();
             _fightMenu.Deactivate();
@@ -59,7 +61,7 @@ namespace GameFields.Persons
             _boomedTower.Boom();
             _soundController.Stop();
 
-            yield return new WaitForSeconds(5f);
+            await UniTask.Delay(5000, cancellationToken: token);
 
             _bus.Fire(new PersonWinSignal(_loser));
         }

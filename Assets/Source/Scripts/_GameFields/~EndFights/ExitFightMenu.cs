@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using GameFields.Decks;
 using GameFields.Persons.Hands;
 using GameFields.Persons.Towers;
+using Servers;
 using Tools;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -13,10 +15,15 @@ using Zenject;
 
 namespace GameFields.EndFights
 {
-    public class ExitFightMenu : MonoBehaviour, IActivatable//, IPointerClickHandler
+    public class ExitFightMenu : MonoBehaviour, IActivatable<ExitFightMenuActivateData>//, IPointerClickHandler
     {
         //private SwitchRootPanel _startEndGamePanel;
+        [Inject] private DBRoot _dBRoot;
+
+        private bool IsActive { get; set; } = false;
+
         private Action _onDestroyPrefab;
+        private ExitFightMenuActivateData _data;
 
         //[Inject]
         //private void Construct(SwitchRootPanel startEndGamePanel)
@@ -35,8 +42,7 @@ namespace GameFields.EndFights
         {
             if (Input.anyKeyDown)
             {
-                Deactivate();
-                _onDestroyPrefab?.Invoke();
+                Deactivating(this.destroyCancellationToken).Forget();
             }
         }
 
@@ -45,8 +51,14 @@ namespace GameFields.EndFights
         //    StartCoroutine(Ending());
         //}
 
-        public void Activate()
+        public void Activate(ExitFightMenuActivateData data)
         {
+            if (IsActive == true)
+                return;
+
+            IsActive = true;
+            _data = data;
+
             gameObject.SetActive(true);
         }
 
@@ -54,6 +66,21 @@ namespace GameFields.EndFights
         {
             gameObject.SetActive(false);
         }
+
+        private async UniTask Deactivating(CancellationToken token)
+        {
+            if (IsActive == false)
+                return;
+
+            IsActive = false;
+
+            Deactivate();
+
+            await _dBRoot.FinishFightWithBot(_data.IsWin, token);
+
+            _onDestroyPrefab?.Invoke();
+        }
+
 
         //private IEnumerator Ending()
         //{

@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using Cysharp.Threading.Tasks;
+using Servers;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 using Zenject;
@@ -12,13 +15,14 @@ namespace Roots
         [SerializeField] private SwitchRootPrefabPanel _switchRootPrefabPanel;
         [SerializeField] private StartMenuRootPrefab _startMenuRootPrefab;
         [SerializeField] private GameFieldRootPrefab _gameFieldRootPrefab;
+        [Inject] private DBRoot _dBRoot;
 
         private RootPrefab _currentRootPrefab;
 
         public void Init(DiContainer diContainer)
         {
             _switchRootPrefabPanel.Init();
-            _startMenuRootPrefab.Init(diContainer, () => SwitchPrefab(_gameFieldRootPrefab));
+            _startMenuRootPrefab.Init(diContainer, StartFight);
             _gameFieldRootPrefab.Init(diContainer, () => SwitchPrefab(_startMenuRootPrefab));
         }
 
@@ -32,6 +36,18 @@ namespace Roots
             };
 
             SwitchPrefab(activatingRootPrefab);
+        }
+
+        private void StartFight(int id_mode)
+        {
+            StartingFight(id_mode, this.destroyCancellationToken).Forget();
+        }
+
+        private async UniTask StartingFight(int id_mode, CancellationToken token)
+        {
+            await _dBRoot.StartFightWithBot(id_mode, token);
+
+            SwitchPrefab(_gameFieldRootPrefab);
         }
 
         private void SwitchPrefab(RootPrefab activatingRootPrefab)

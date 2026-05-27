@@ -2,6 +2,6 @@ namespace Servers.DTO
 {
     public class UserDTOWrapper
     {
-        public GetUserDTO[] items;
+        public GetMainMenuUserDataDTO[] items;
     }
 }

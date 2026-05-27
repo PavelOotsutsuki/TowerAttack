@@ -35,7 +35,7 @@ namespace StartMenues
         }
 
         public void Init(IVolume backgroundSoundConfig, IVolume foregroundSoundConfig, CardCapabilityDescription cardCapabilityDescription,
-            Action onPlayClick)
+            Action<int> onPlayClick)
         {
             //_startMenuSavedData = startMenuSavedData;
             _mainCamera = Camera.main;

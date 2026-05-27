@@ -32,7 +32,7 @@ namespace StartMenues
 
         [Inject] private DBRoot _dBRoot;
 
-        private Action _onPlayClick;
+        private Action<int> _onPlayClick;
         private IHidable _startMenuDeactivatable;
         private ICompletable _startMenuCompletable;
 
@@ -45,7 +45,7 @@ namespace StartMenues
         //public override bool? IsActive { get; protected set; } = null;
         //public bool IsComplete => _isComplete;
 
-        public void Init(Action onSettingsButtonClick, Action onRulesButtonClick, Action onPlayClick,
+        public void Init(Action onSettingsButtonClick, Action onRulesButtonClick, Action<int> onPlayClick,
             StartMenu startMenuDeactivatable)
         {
             //_isComplete = true;
@@ -108,11 +108,11 @@ namespace StartMenues
             _labelLvl.SetText("Загрузка");
             _labelEx.SetText("Загрузка");
 
-            GetUserDTO getUserDTO = await _dBRoot.GetUserData(token);
+            GetMainMenuUserDataDTO getMainMenuUserDataDTO = await _dBRoot.GetMainMenuUserData(token);
 
-            _labelLogin.SetText(getUserDTO.username);
-            _labelLvl.SetText("Lvl: " + getUserDTO.level);
-            _labelEx.SetText("EX: " + getUserDTO.score + "/100");
+            _labelLogin.SetText(getMainMenuUserDataDTO.username);
+            _labelLvl.SetText($"Lvl: {getMainMenuUserDataDTO.level}");
+            _labelEx.SetText($"EX: {getMainMenuUserDataDTO.score}/{getMainMenuUserDataDTO.max_experience}");
 
             IsPreactive = true;
         }
@@ -148,7 +148,7 @@ namespace StartMenues
             yield return new WaitUntil(() => _startMenuCompletable.IsComplete);
             //yield return new WaitForSeconds(1f);
 
-            _onPlayClick?.Invoke();
+            _onPlayClick?.Invoke(1);
         }
     }
 }

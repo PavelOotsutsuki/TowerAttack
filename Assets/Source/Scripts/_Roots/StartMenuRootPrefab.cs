@@ -12,9 +12,9 @@ namespace Roots
         [SerializeField] private StartMenuRootContainer _startMenuRootContainer;
 
         private StartMenuRoot _currentStartMenuRoot;
-        private Action _onPlayClick;
+        private Action<int> _onPlayClick;
 
-        public void Init(DiContainer diContainer, Action onPlayClick)
+        public void Init(DiContainer diContainer, Action<int> onPlayClick)
         {
             _onPlayClick = onPlayClick;
 

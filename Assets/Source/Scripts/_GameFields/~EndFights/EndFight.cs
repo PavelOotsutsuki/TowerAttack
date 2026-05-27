@@ -67,7 +67,8 @@ namespace GameFields.EndFights
 
             yield return new WaitUntil(() => _exitFightLabel.IsComplete);
 
-            _exitFightMenu.Activate();
+            ExitFightMenuActivateData exitFightMenuActivateData = new ExitFightMenuActivateData(_fightResult.Result);
+            _exitFightMenu.Activate(exitFightMenuActivateData);
         }
 
         #region AutomaticFillComponents

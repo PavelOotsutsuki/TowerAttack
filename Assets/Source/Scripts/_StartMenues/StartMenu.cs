@@ -17,7 +17,7 @@ namespace StartMenues
         private StartMenuInputRoot _inputRoot;
 
         public void Init(StartMenuInputRoot inputRoot, IVolume cardVolume, IVolume musicVolume, CardCapabilityDescription cardCapabilityDescription,
-            Action onPlayClick)
+            Action<int> onPlayClick)
         {
             //_inputRoot = inputRoot;
 

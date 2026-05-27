@@ -15,21 +15,31 @@ namespace Servers
     public class DBRoot// : MonoBehaviour
     {
         private const string RootUri = "https://localhost:7206/api/Players";
+
         private const string CreateUserUriFeature = "CreateUser";
-        private const string GetUserDataUriFeature = "GetUserData";
+        private const string GetMainMenuUserDataUriFeature = "GetMainMenuUserData";
         private const string LogInUserUriFeature = "LogInUser";
+        private const string StartFightWithBotUriFeature = "StartFightWithBot";
+        private const string FinishFightWithBotUriFeature = "FinishFightWithBot";
 
         private const string CreateUserUri = RootUri + "/" + CreateUserUriFeature;
-        private const string GetUserDataUri = RootUri + "/" + GetUserDataUriFeature;
+        private const string GetMainMenuUserDataUri = RootUri + "/" + GetMainMenuUserDataUriFeature;
         private const string LogInUserUri = RootUri + "/" + LogInUserUriFeature;
+        private const string StartFightWithBotUri = RootUri + "/" + StartFightWithBotUriFeature;
+        private const string FinishFightWithBotUri = RootUri + "/" + FinishFightWithBotUriFeature;
 
         private Guid _currentIdUser;
         private DateTime? _lastLogInDate;
+
+        private Guid _currentIdFight;
+        private Guid _currentEnemyIdUser;
 
         public DBRoot()
         {
             _currentIdUser = Guid.Empty;
             _lastLogInDate = null;
+            _currentIdFight = Guid.Empty;
+            _currentEnemyIdUser = Guid.Empty;
         }
 
         public async UniTask CreateUser(string name, string password, CancellationToken token)
@@ -232,13 +242,13 @@ namespace Servers
         //    }
         //}
 
-        public async UniTask<GetUserDTO> GetUserData(CancellationToken token)
+        public async UniTask<GetMainMenuUserDataDTO> GetMainMenuUserData(CancellationToken token)
         {
             try
             {
                 Guid id = _currentIdUser;
 
-                string currentUri = $"{GetUserDataUri}?id={id}";
+                string currentUri = $"{GetMainMenuUserDataUri}?id={id}";
 
                 using (UnityWebRequest request = UnityWebRequest.Get(currentUri))
                 {
@@ -257,7 +267,7 @@ namespace Servers
                         //string arrayDTO = "{\"items\":" + request.downloadHandler.text + "}";
                         //Debug.Log(arrayDTO);
                         //UserDTOWrapper data = JsonUtility.FromJson<UserDTOWrapper>(arrayDTO);
-                        GetUserDTO userDTO = JsonUtility.FromJson<GetUserDTO>(request.downloadHandler.text);
+                        GetMainMenuUserDataDTO userDTO = JsonUtility.FromJson<GetMainMenuUserDataDTO>(request.downloadHandler.text);
                         //Guid userDTO = Guid.Parse(request.downloadHandler.text);
                         //UserDTO userDTO = new UserDTO()
                         //{
@@ -280,8 +290,89 @@ namespace Servers
             }
             catch (Exception ex)
             {
-                Debug.LogError($"Ошибка {nameof(DBRoot)}-->{nameof(GetUserData)}: {ex.Message}");
+                Debug.LogError($"Ошибка {nameof(DBRoot)}-->{nameof(GetMainMenuUserData)}: {ex.Message}");
                 return null;
+            }
+        }
+
+        public async UniTask StartFightWithBot(int id_mode, CancellationToken token)
+        {
+            string currentUri = $"{StartFightWithBotUri}";
+            Guid id_User = _currentIdUser;
+
+            if (id_User == Guid.Empty)
+            {
+                Debug.LogError("Невозможно начать матч резарегестрированному пользователю!");
+                return;
+            }
+
+            WWWForm WWWForm = new WWWForm();
+            WWWForm.AddField("id_User", id_User.ToString());
+            WWWForm.AddField("id_Mode", id_mode);
+
+            using (UnityWebRequest request = UnityWebRequest.Post(currentUri, WWWForm))
+            {
+                request.certificateHandler = new BypassCertificate();
+                await request.SendWebRequest().ToUniTask(cancellationToken: token);
+
+                if (request.result == UnityWebRequest.Result.Success)
+                {
+                    Debug.Log(request.downloadHandler.text);
+                    StartFightWithBotDTO startFightWithBotDTO = JsonUtility.FromJson<StartFightWithBotDTO>(request.downloadHandler.text);
+
+
+                    //_currentIdFight = Guid.Parse(request.downloadHandler.text.Trim('"'));
+                    _currentIdFight = Guid.Parse(startFightWithBotDTO.id_fight);
+                    _currentEnemyIdUser = Guid.Parse(startFightWithBotDTO.id_bot);
+
+                    Debug.Log($"_currentIdFight: {_currentIdFight}");
+                    Debug.Log($"_currentEnemyIdUser: {_currentEnemyIdUser}");
+                }
+                else
+                {
+                    Debug.LogError(request.error);
+                    throw new Exception();
+                }
+            }
+        }
+
+        public async UniTask FinishFightWithBot(bool isYouWinner, CancellationToken token)
+        {
+            string currentUri = $"{FinishFightWithBotUri}";
+            Guid id_Fight = _currentIdFight;
+            Guid id_winner = isYouWinner ? _currentIdUser : _currentEnemyIdUser;
+
+            if (id_Fight == Guid.Empty)
+            {
+                Debug.LogError("Невозможно закончить матч пустому бою!");
+                return;
+            }
+
+            if (_currentIdUser == Guid.Empty || _currentEnemyIdUser == Guid.Empty)
+            {
+                Debug.LogError("Невозможно закончить матч пустому игроку!");
+                return;
+            }
+
+            WWWForm WWWForm = new WWWForm();
+            WWWForm.AddField("id_Fight", id_Fight.ToString());
+            WWWForm.AddField("id_winner", id_winner.ToString());
+
+            using (UnityWebRequest request = UnityWebRequest.Post(currentUri, WWWForm))
+            {
+                request.certificateHandler = new BypassCertificate();
+                await request.SendWebRequest().ToUniTask(cancellationToken: token);
+
+                if (request.result == UnityWebRequest.Result.Success)
+                {
+                    _currentIdFight = Guid.Empty;
+                    _currentEnemyIdUser = Guid.Empty;
+                }
+                else
+                {
+                    Debug.LogError(request.error);
+                    throw new Exception();
+                }
             }
         }
     }
