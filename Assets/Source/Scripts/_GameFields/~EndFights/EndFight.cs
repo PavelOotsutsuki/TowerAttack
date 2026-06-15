@@ -1,7 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using Tools;
+using Tools.Utils;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
@@ -18,17 +22,24 @@ namespace GameFields.EndFights
 
         private IReadonlyFightResult _fightResult;
 
+        private CancellationToken _gameFieldToken;
+        private CancellationTokenSource _fightCTS;
+
         private bool _isComplete;
 
-        public void Init(IReadonlyFightResult fightResult, Action onDestroyPrefab)
+        public void Init(IReadonlyFightResult fightResult, Action onDestroyPrefab, CancellationToken gameFieldToken,
+            CancellationTokenSource fightCTS)
         {
             gameObject.SetActive(false);
             _isComplete = false;
 
             _fightResult = fightResult;
 
+            _gameFieldToken = gameFieldToken;
+            _fightCTS = fightCTS;
+
             _panel.Init();
-            _endFightLabel.Init();
+            _endFightLabel.Init(_gameFieldToken);
             _exitFightLabel.Init();
             _exitFightMenu.Init(onDestroyPrefab);
         }
@@ -47,28 +58,37 @@ namespace GameFields.EndFights
                 _ => throw new ArgumentNullException("Invalid EndTurnResult")
             };
 
-            StartCoroutine(StartingEndFight(endFightLabelActivateData));
+            Utils.DestroyCTS(ref _fightCTS);
+
+            StartingEndFight(endFightLabelActivateData).Forget();
             _isComplete = true;
         }
 
-        private IEnumerator StartingEndFight(EndFightLabelActivateData endFightLabelActivateData)
+        private async UniTask StartingEndFight(EndFightLabelActivateData endFightLabelActivateData)
         {
-            _panel.Show();
+            try
+            {
+                _panel.Show(new CancellationTokenData(_gameFieldToken));
 
-            yield return new WaitUntil(() => _panel.IsComplete);
-            yield return new WaitForSeconds(_config.DelayBeforeEndFightLabelShow);
+                await UniTask.WaitUntil(() => _panel.IsComplete, cancellationToken: _gameFieldToken);
+                await UniTask.WaitForSeconds(_config.DelayBeforeEndFightLabelShow, cancellationToken: _gameFieldToken);
 
-            _endFightLabel.Show(endFightLabelActivateData);
+                _endFightLabel.Show(endFightLabelActivateData);
 
-            yield return new WaitUntil(() => _endFightLabel.IsComplete);
-            yield return new WaitForSeconds(_config.DelayBeforeExitFightLabelShow);
+                await UniTask.WaitUntil(() => _endFightLabel.IsComplete, cancellationToken: _gameFieldToken);
+                await UniTask.WaitForSeconds(_config.DelayBeforeExitFightLabelShow, cancellationToken: _gameFieldToken);
 
-            _exitFightLabel.Show();
+                _exitFightLabel.Show(new CancellationTokenData(_gameFieldToken));
 
-            yield return new WaitUntil(() => _exitFightLabel.IsComplete);
+                await UniTask.WaitUntil(() => _exitFightLabel.IsComplete, cancellationToken: _gameFieldToken);
 
-            ExitFightMenuActivateData exitFightMenuActivateData = new ExitFightMenuActivateData(_fightResult.Result);
-            _exitFightMenu.Activate(exitFightMenuActivateData);
+                ExitFightMenuActivateData exitFightMenuActivateData = new ExitFightMenuActivateData(_fightResult.Result);
+                _exitFightMenu.Activate(exitFightMenuActivateData);
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.Log($"ОТМЕНА ТОКЕНА: {MethodBase.GetCurrentMethod().DeclaringType.Name}: {GetType().Name}");
+            }
         }
 
         #region AutomaticFillComponents

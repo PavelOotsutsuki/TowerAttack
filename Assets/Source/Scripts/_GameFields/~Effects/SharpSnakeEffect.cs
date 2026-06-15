@@ -1,13 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cards;
+using Cysharp.Threading.Tasks;
 using GameFields.CardTransits;
 using GameFields.InformationLabels;
 using GameFields.Persons;
 using GameFields.Persons.LookCardMenues;
 using Tools.UI;
-using UnityEngine;
 
 namespace GameFields.Effects
 {
@@ -42,7 +41,7 @@ namespace GameFields.Effects
         //    Debug.Log("Эффект Зоркой змеи закончен");
         //}
 
-        protected override IEnumerator OnPlaying()
+        protected override async UniTask OnPlaying()
         {
             //_deactivePerson.ActivateSharpSnakeEffect(CompleteEffect);
             //yield return new WaitUntil(() => _isEffectComplete);
@@ -53,7 +52,7 @@ namespace GameFields.Effects
             IEnumerable<Card> cards = _cardLocationViewRoot.GetAllCards(handView);
 
             if (cards.Count() == 0)
-                yield break;
+                return;
 
             bool isEffectComplete = false;
 
@@ -61,7 +60,7 @@ namespace GameFields.Effects
             {
                 LookCardMenuActivateData lookCardMenuActivateData = new LookCardMenuActivateData(cards, PlayerMessage);
                 _activePerson.LookCards(lookCardMenuActivateData, () => isEffectComplete = true);
-                yield return new WaitUntil(() => isEffectComplete);
+                await UniTask.WaitUntil(() => isEffectComplete, cancellationToken: Token);
             }
             else
             {
@@ -69,7 +68,7 @@ namespace GameFields.Effects
                 InformationLabelActivateData informationLabelActivateData = new InformationLabelActivateData(labelActivateData, 8f);
 
                 _informationLabel.Activate(informationLabelActivateData);
-                yield return new WaitUntil(() => _informationLabel.IsComplete);
+                await UniTask.WaitUntil(() => _informationLabel.IsComplete, cancellationToken: Token);
             }
         }
     }

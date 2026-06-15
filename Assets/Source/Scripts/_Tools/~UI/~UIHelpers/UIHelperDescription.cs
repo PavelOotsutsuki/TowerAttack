@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using TMPro;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Screens;
@@ -22,13 +23,16 @@ namespace Tools.UI.UIHelpers
         private float _thisHeight;
         private Vector3 _startScale;
         private float _rectProportion;
+        private CancellationToken _fightToken;
 
         public bool? IsActive { get; private set; } = null;
 
         public bool IsComplete => _fadableLabel.IsComplete;
 
-        public void Init()
+        public void Init(CancellationToken fightToken)
         {
+            _fightToken = fightToken;
+
             gameObject.SetActive(true);
 
             _fadableLabel.Init();
@@ -57,8 +61,8 @@ namespace Tools.UI.UIHelpers
 
             //_rectTransform.position = data.LogicChildTransform;
 
-            LabelActivateData labelActivateData = data.LabelActivateData;
-            _fadableLabel.Show(labelActivateData);
+            LabelActivateDataAsync labelActivateDataAsync = new LabelActivateDataAsync(data.LabelActivateData, _fightToken);
+            _fadableLabel.Show(labelActivateDataAsync);
 
             // После смены text-a надо поменять width, иначе preferredHeight нормально не расчитывается
             float startWidth = _rectTransform.rect.width;
@@ -95,7 +99,7 @@ namespace Tools.UI.UIHelpers
 
             IsActive = false;
 
-            _fadableLabel.Hide();
+            _fadableLabel.Hide(new CancellationTokenData(_fightToken));
         }
 
         private void SetPosition(ReadOnlyRectTransform RORectTransform)

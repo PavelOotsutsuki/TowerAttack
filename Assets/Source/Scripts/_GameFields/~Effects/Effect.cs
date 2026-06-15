@@ -9,6 +9,7 @@ using Cards;
 using GameFields.Persons.EffectHandlers;
 using GameFields.Histories;
 using GameFields.Persons;
+using System.Threading;
 
 namespace GameFields.Effects
 {
@@ -22,6 +23,8 @@ namespace GameFields.Effects
         private readonly int _duration;
         private readonly HistoryRoot _historyRoot;
         private readonly IPersonObject _activePerson;
+
+        protected CancellationToken Token;
 
         public Effect(EffectData data, float endEffectDelay = GameSettings.DefaultEffectDelayBeforeComplete)
         {
@@ -37,6 +40,7 @@ namespace GameFields.Effects
             _bus = data.Bus;
             _historyRoot = data.HistoryRoot;
             _activePerson = data.ActivePerson;
+            Token = data.FightToken;
         }
 
         //public int Duration => _duration;
@@ -44,7 +48,7 @@ namespace GameFields.Effects
 
         public void End()
         {
-            _bus.Fire(new DiscardCardsSignal(_card));
+            _bus.Fire(new DiscardCardsSignal(_card, Token));
             _personEffectsHandlerRoot.EndEffect(_card);
 
             OnEnd();
@@ -73,19 +77,19 @@ namespace GameFields.Effects
             HistoryData historyData = new HistoryData(_activePerson, GetStartHistoryMsg(), new HistoryCardData(_card));
             _historyRoot.AddMsg(historyData);
 
-            Playing().ToUniTask();
+            Playing().Forget();
         }
 
-        protected abstract IEnumerator OnPlaying();
+        protected abstract UniTask OnPlaying();
 
-        private IEnumerator Playing()
+        private async UniTask Playing()
         {
             _effectDuration.SetDuration(_duration);
 
-            yield return OnPlaying();
+            await OnPlaying();
 
             if (Mathf.Approximately(_endEffectDelay, 0f) == false)
-                yield return new WaitForSeconds(_endEffectDelay);
+                await UniTask.WaitForSeconds(_endEffectDelay, cancellationToken: Token);
 
             IsComplete = true;
         }

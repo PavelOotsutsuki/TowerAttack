@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Cards.Animations;
 using Cards.Animations.Curses;
+using Cards.Animations.Fires;
 using Cards.Effects;
 using Cards.Insides;
 using Cards.Sounds;
@@ -9,7 +11,6 @@ using Cards.Views;
 using Cards.Views.BigCardViews.Capabilities;
 using Cards.Views.BigCardViews.CardDescriptions;
 using Tools;
-using Tools.UI.UIHelpers;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Movements;
 using UnityEngine;
@@ -31,6 +32,7 @@ namespace Cards
         private CardEffectManager _cardEffectManager;
         private CardViewData _viewData;
         private CardSpriteModeManager _cardSpriteModeManager;
+        private CancellationTokenSource _cardCTS;
 
         private CardDescription _cardDescription;
 
@@ -52,12 +54,15 @@ namespace Cards
         public bool IsLuckyHorseshoe => _config.Effect.Type == EffectType.LuckyHorseshoe;
         public bool IsFired => _cardPaper.IsFired;
         public bool IsPyromancersManuscript => _config.Effect.Type == EffectType.PyromancersManuscript;
+        public CancellationToken CardToken => _cardCTS.Token;
 
         internal void Init(IEffectFactory effectFactory, CardViewService cardViewService,
             ICardDragAndDropHandler cardDragAndDropHandler, CurseAnimator curseAnimator,
             CardCapabilityDescription cardCapabilityDescription, CardSoundRoot cardSoundRoot,
-            CardDescription cardDescription)
+            CardDescription cardDescription, CancellationToken fightToken)
         {
+            _cardCTS = CancellationTokenSource.CreateLinkedTokenSource(fightToken);
+
             RORTransform = new ReadOnlyRectTransform(_rectTransform);
             _cardDescription = cardDescription;
             _cardSoundLogic.Init(_config.SoundConfig.Sounds);
@@ -69,7 +74,7 @@ namespace Cards
             CardMovement = new Movement(_rectTransform);
 
             _cardPaper.Init(this, cardViewService, ViewData, _rectTransform, cardDragAndDropHandler, _cardSpriteModeManager,
-                curseAnimator, cardCapabilityDescription, cardSoundRoot, _cardSoundLogic);
+                curseAnimator, cardCapabilityDescription, cardSoundRoot, _cardSoundLogic, CardToken);
 
             CreateCardCharacter();
             SetState(_cardPaper);
@@ -157,14 +162,15 @@ namespace Cards
             _cardPaper.SetActiveInteraction(isActive);
         }
 
-        public void Fire(WaitForSeconds delay, CallbackHandler callbackHandler)
+        public void Fire(float delay, CallbackHandler callbackHandler)
         {
             if (_currentState is not CardPaper)
             {
                 throw new Exception("Try fire not CardPaper. Card state: " + _currentState.ToString());
             }
 
-            _cardPaper.Fire(delay, callbackHandler);
+            OnFireLogicActivateData onFireLogicActivateData = new OnFireLogicActivateData(delay, callbackHandler, CardToken);
+            _cardPaper.Fire(onFireLogicActivateData);
         }
 
         public void Rise()
@@ -177,14 +183,14 @@ namespace Cards
 
             gameObject.SetActive(true);
             _rectTransform.localScale = _defaultScaleVector;
-            _cardPaper.RiseFromTheAshes();
+            _cardPaper.RiseFromTheAshes(new CancellationTokenData(CardToken));
         }
 
         private void CreateCardCharacter()
         {
             _character = Instantiate(_config.CardCharacter, _rectTransform);
             //_character.Init(_config.SoundConfig, _cardSoundVolume);
-            _character.Init(_config.CardViewConfig.Icon, _cardDescription, _cardPaper);
+            _character.Init(_config.CardViewConfig.Icon, _cardDescription, _cardPaper, CardToken);
         }
 
         private void CheckStateByNull()
@@ -198,6 +204,12 @@ namespace Cards
             _currentState?.Hide();
             _currentState = state;
             _currentState.Show();
+        }
+
+        private void OnDestroy()
+        {
+            _cardCTS?.Cancel();
+            _cardCTS?.Dispose();
         }
 
         #region AutomaticFillComponents

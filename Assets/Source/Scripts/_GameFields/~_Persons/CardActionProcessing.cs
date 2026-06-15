@@ -1,16 +1,17 @@
 using System.Collections;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using Tools;
 using UnityEngine;
 
 namespace GameFields.Persons
 {
-    public abstract class CardActionProcessing : PersonStep
+    internal abstract class CardActionProcessing : PersonStep
     {
         private readonly ICompletable _completable;
         private bool _isComplete;
 
-        public CardActionProcessing(InteractionActivator interactionActivator, ICompletable completable) : base(interactionActivator)
+        public CardActionProcessing(InteractionActivator interactionActivator, ICompletable completable, CancellationToken token) : base(interactionActivator, token)
         {
             _isComplete = false;
 
@@ -23,12 +24,12 @@ namespace GameFields.Persons
         {
             _isComplete = false;
 
-            WaitingEndAttack().ToUniTask();
+            WaitingEndAttack().Forget();
         }
 
-        private IEnumerator WaitingEndAttack()
+        private async UniTask WaitingEndAttack()
         {
-            yield return new WaitUntil(() => _completable.IsComplete);
+            await UniTask.WaitUntil(() => _completable.IsComplete, cancellationToken: Token);
 
             _isComplete = true;
         }

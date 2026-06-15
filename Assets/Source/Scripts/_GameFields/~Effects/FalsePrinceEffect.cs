@@ -1,7 +1,6 @@
-using System.Collections;
+using Cysharp.Threading.Tasks;
 using GameFields.Persons;
 using Tools;
-using UnityEngine;
 
 namespace GameFields.Effects
 {
@@ -23,12 +22,12 @@ namespace GameFields.Effects
         //    Debug.Log("Эффект Лжепринца закончен");
         //}
 
-        protected override IEnumerator OnPlaying()
+        protected override async UniTask OnPlaying()
         {
             CallbackHandler callbackHandler = new CallbackHandler();
 
             _activePerson.ActivateFalsePrinceEffect(callbackHandler);
-            yield return new WaitUntil(() => callbackHandler.IsComplete);
+            await UniTask.WaitUntil(() => callbackHandler.IsComplete, cancellationToken: Token);
         }
     }
 }

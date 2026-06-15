@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using TMPro;
 using Tools;
 using Tools.UI;
@@ -56,7 +57,7 @@ namespace GameFields.Persons.SelectMenues
 
         public void Activate(SelectNumberActivateData data)
         {
-            base.Activate();
+            base.BaseActivate();
 
             _clickHandler = data.SelectNumberClickHandler;
 
@@ -68,9 +69,9 @@ namespace GameFields.Persons.SelectMenues
             _animator.Activate(data.SelectNumberAnimatorActivateData);
         }
 
-        public override void Deactivate()
+        public void Deactivate()
         {
-            base.Deactivate();
+            base.BaseDeactivate();
 
             _clickHandler = null;
             _animator.Deactivate();
@@ -82,11 +83,11 @@ namespace GameFields.Persons.SelectMenues
             //_animator.Deactivate();
         }
 
-        public void SetChoice(NumberAnimationType numberAnimationType)
+        public void SetChoice(NumberAnimationType numberAnimationType, CancellationToken token)
         {
             SetDisableView(_blockColors[numberAnimationType]);
 
-            _animator.PlayAnimation(numberAnimationType);
+            _animator.PlayAnimation(numberAnimationType, token);
 
             //switch (numberAnimationType)
             //{

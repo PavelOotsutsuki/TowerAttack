@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Cards;
 using Cards.Effects;
 using Cards.Sounds;
@@ -38,13 +39,14 @@ namespace GameFields.Effects
         private readonly AwakeSoundReproducer _awakeSoundReproducer;
         private readonly ViewTransitTypesRoot _typesRoot;
         private readonly HistoryRoot _historyRoot;
+        private readonly CancellationToken _fightToken;
 
         //private Effect _lastEffect;
 
         public EffectFactory(IPersonsState personsState, CardLocationViewRoot viewRoot, InformationLabel informationLabel,
             CardTransitManager cardTransitManager, VariantCardCreator variantCardCreator, BrothersEffectHandlerRoot brothersEffectHandler,
             SignalBus bus, PersonEffectsHandlerRoot personEffectsHandlerRoot, DiscardManager discardManager, LoseActionsRoot loseActionsRoot,
-            CardSoundRoot cardSoundRoot, ViewTransitTypesRoot typesRoot, HistoryRoot historyRoot)
+            CardSoundRoot cardSoundRoot, ViewTransitTypesRoot typesRoot, HistoryRoot historyRoot, CancellationToken fightToken)
         {
             _personsState = personsState;
             _viewRoot = viewRoot;
@@ -59,6 +61,7 @@ namespace GameFields.Effects
             _cardSoundRoot = cardSoundRoot;
             _typesRoot = typesRoot;
             _historyRoot = historyRoot;
+            _fightToken = fightToken;
 
             _awakeSoundReproducer = new AwakeSoundReproducer(_cardSoundRoot, _viewRoot, typesRoot, _personsState);
 
@@ -108,7 +111,7 @@ namespace GameFields.Effects
             {
                 //effect = new DoubleEffect(CreateEffect, currentEffectConfig, callback);
                 effect = new DoubleEffect(CreateEffect, cardEffectConfigPairForCreateEffect, _bus, effectDuration, _personEffectsHandlerRoot,
-                    _historyRoot, _personsState.Active);
+                    _historyRoot, _personsState.Active, _fightToken);
             }
             else
             {
@@ -143,7 +146,7 @@ namespace GameFields.Effects
         //private Effect CreateEffect(EffectType effecType, Action<int> callback, int duration)
         private Effect CreateEffect(EffectType effecType, CardEffectData data, EffectDuration effectDuration)
         {
-            EffectData effectData = new EffectData(_bus, data, effectDuration, _personEffectsHandlerRoot, _historyRoot, _personsState.Active);
+            EffectData effectData = new EffectData(_bus, data, effectDuration, _personEffectsHandlerRoot, _historyRoot, _personsState.Active, _fightToken);
 
             Effect effect = effecType switch
             {

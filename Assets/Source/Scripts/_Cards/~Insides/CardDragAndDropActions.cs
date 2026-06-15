@@ -1,3 +1,4 @@
+using System.Threading;
 using Cards.DependencyInterlayers;
 using Cards.Views;
 using UnityEngine;
@@ -28,7 +29,7 @@ namespace Cards.Insides
             }
             else
             {
-                Debug.LogWarning("StartDrag when _cardFront.IsBlock");
+                Debug.Log("StartDrag when _cardFront.IsBlock");
             }
 
             _cardDragAndDropHandler.OnCardDrag(_card);

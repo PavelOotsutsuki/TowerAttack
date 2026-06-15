@@ -1,8 +1,10 @@
+using System.Threading;
+
 namespace GameFields.Persons
 {
-    public class PlayerSkipTurnView : SkipTurnView
+    internal class PlayerSkipTurnView : SkipTurnView
     {
-        public PlayerSkipTurnView(InteractionActivator interactionActivator, SkipTurnLabel label) : base(interactionActivator, label)
+        public PlayerSkipTurnView(InteractionActivator interactionActivator, SkipTurnLabel label, CancellationToken turnToken) : base(interactionActivator, label, turnToken)
         { }
     }
 }

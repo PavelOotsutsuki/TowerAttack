@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using GameFields.Seats;
@@ -10,7 +9,10 @@ using System.Collections.Generic;
 using GameFields.Decks;
 using GameFields.Persons.Hands;
 using GameFields.Persons.Towers;
+using System.Threading;
 using Tools;
+using System;
+using System.Reflection;
 
 namespace GameFields.StartFights
 {
@@ -36,6 +38,7 @@ namespace GameFields.StartFights
         private TowerPlayer _towerPlayer;
         private TowerAI _towerAI;
         //private SwitchRootPanel _switchRootPanel;
+        private CancellationToken _gameFieldToken;
 
         public bool IsComplete => _startTowerCardSelectionPlayer.IsComplete && _startTowerCardSelectionImitation.IsComplete;
 
@@ -50,12 +53,14 @@ namespace GameFields.StartFights
             //_switchRootPanel = switchRootPanel;
         }
 
-        public void Init(EnemyAI enemyAI)
+        public void Init(EnemyAI enemyAI, CancellationToken gameFieldToken)
         {
+            _gameFieldToken = gameFieldToken;
+
             _startTowerCardSelectionPanel.Init();
             _startTowerCardSelectionLabel.Init();
             _waitEnemySolutionLabel.Init();
-            _discover.Init();
+            _discover.Init(_gameFieldToken);
 
             _startTowerCardSelectionImitation = new StartTowerCardSelectionImitation(enemyAI, _handAI, _towerAI, _data.FirstTurnCardsCount, _imitationData);
             _startTowerCardSelectionPlayer = new StartTowerCardSelectionPlayer(_deck, _handPlayer, _towerPlayer, _seats, _discover, _playerData);
@@ -63,52 +68,52 @@ namespace GameFields.StartFights
 
         public void StartStep()
         {
-            WaitingViewStartLabel().ToUniTask();
+            WaitingViewStartLabel(_gameFieldToken).Forget();
         }
 
-        private IEnumerator WaitingViewStartLabel()
+        private async UniTask WaitingViewStartLabel(CancellationToken token)
         {
-            yield return new WaitForSeconds(_data.WaitUntilBeginAllProcess);
+            await UniTask.WaitForSeconds(_data.WaitUntilBeginAllProcess, cancellationToken: token);
 
             //_switchRootPanel.Hide();
 
             //yield return new WaitUntil(() => _switchRootPanel.IsComplete);
-            yield return new WaitForSeconds(_data.WaitAfterStartEndGamePanelComplete);
+            await UniTask.WaitForSeconds(_data.WaitAfterStartEndGamePanelComplete, cancellationToken: token);
 
             gameObject.SetActive(true);
 
-            _startTowerCardSelectionPanel.Show();
+            _startTowerCardSelectionPanel.Show(new CancellationTokenData(token));
             _startTowerCardSelectionLabel.Activate();
 
-            yield return new WaitForSeconds(_data.WaitToStartDuration);
+            await UniTask.WaitForSeconds(_data.WaitToStartDuration, cancellationToken: token);
 
-            _startTowerCardSelectionPlayer.StartProcess();
-            _startTowerCardSelectionImitation.StartProcess();
+            _startTowerCardSelectionPlayer.StartProcess(token);
+            _startTowerCardSelectionImitation.StartProcess(token);
 
-            yield return new WaitUntil(() => _startTowerCardSelectionPlayer.IsComplete);
+            await UniTask.WaitUntil(() => _startTowerCardSelectionPlayer.IsComplete, cancellationToken: token);
 
             if (_startTowerCardSelectionImitation.IsComplete == false)
             {
-                yield return new WaitForSeconds(_data.DelayToViewEnemySolutionLabel);
+                await UniTask.WaitForSeconds(_data.DelayToViewEnemySolutionLabel, cancellationToken: token);
 
                 if (_startTowerCardSelectionImitation.IsComplete == false)
                 {
-                    _waitEnemySolutionLabel.Show();
+                    _waitEnemySolutionLabel.Show(new CancellationTokenData(token));
                 }
             }
 
-            yield return new WaitUntil(() => _startTowerCardSelectionImitation.IsComplete);
+            await UniTask.WaitUntil(() => _startTowerCardSelectionImitation.IsComplete, cancellationToken: token);
 
-            _waitEnemySolutionLabel.Hide();
+            _waitEnemySolutionLabel.Hide(new CancellationTokenData(token));
 
-            Deactivate();
+            Deactivate(token);
         }
 
-        private void Deactivate()
+        private void Deactivate(CancellationToken token)
         {
-            _startTowerCardSelectionPanel.Hide();
+            _startTowerCardSelectionPanel.Hide(new CancellationTokenData(token));
 
-            WaitingToDestroy().ToUniTask();
+            WaitingToDestroy(token).Forget();
         }
 
         //private void WaitToDestroy()
@@ -116,13 +121,22 @@ namespace GameFields.StartFights
         //    WaitingToDestroy().ToUniTask();
         //}
 
-        private IEnumerator WaitingToDestroy()
+        private async UniTask WaitingToDestroy(CancellationToken token)
         {
-            yield return new WaitUntil(() => _startTowerCardSelectionPanel.IsComplete);
+            if (_gameFieldToken.IsCancellationRequested)
+                return;
 
-            yield return new WaitUntil(() => _waitEnemySolutionLabel.IsComplete);
+            try
+            {
+                await UniTask.WaitUntil(() => _startTowerCardSelectionPanel.IsComplete, cancellationToken: token);
+                await UniTask.WaitUntil(() => _waitEnemySolutionLabel.IsComplete, cancellationToken: token);
 
-            Destroy(gameObject);
+                Destroy(gameObject);
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.Log($"ОТМЕНА ТОКЕНА: {MethodBase.GetCurrentMethod().DeclaringType.Name}: {GetType().Name}");
+            }
         }
 
         #region AutomaticFillComponents

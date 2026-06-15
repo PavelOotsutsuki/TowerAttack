@@ -1,12 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using System.Threading;
 using Menues;
 using Servers;
-using Servers.DTO;
-using StartMenues.LogInButtonsPanels;
 using Tools.Loads;
 using Tools.UI;
 using Tools.UI.Extendeds;
@@ -29,7 +26,9 @@ namespace StartMenues.RegistrationButtonsPanels
         
         private LoadRoot _loadRoot;
         private DBRoot _dBRoot;
-        private CancellationTokenSource _tokenSource;
+
+        private CancellationToken _menuParentToken;
+        private CancellationTokenSource _currentCTS;
 
         //private List<ConfirmableFocusableButton> _focusableButtons;
         private Action _switchOnMainPanel;
@@ -42,11 +41,12 @@ namespace StartMenues.RegistrationButtonsPanels
             _dBRoot = dBRoot;
         }
 
-        public void Init(Action switchOnMainPanel, Action onBackButtonClick)
+        public void Init(Action switchOnMainPanel, Action onBackButtonClick, CancellationToken menuParentToken)
         {
             //_isComplete = true;
             //_fadablePanel.Init();
             _switchOnMainPanel = switchOnMainPanel;
+            _menuParentToken = menuParentToken;
 
             ISelectHandler selectHandler = new RegistrationButtonsPanelSelectHandler(_loginIF, _passwordIF, _passwordAgainIF, _registraitionButton,
                 _backButton, _exitButton);
@@ -86,9 +86,10 @@ namespace StartMenues.RegistrationButtonsPanels
 
         private void OnRegistration()
         {
-            _tokenSource?.Dispose();
-            _tokenSource = new CancellationTokenSource();
-            CancellationToken token = _tokenSource.Token;
+            _currentCTS?.Cancel();
+            _currentCTS?.Dispose();
+            _currentCTS = CancellationTokenSource.CreateLinkedTokenSource(_menuParentToken);
+            CancellationToken token = _currentCTS.Token;
 
             RegistrationProcessing(token).Forget();
         }
@@ -117,14 +118,15 @@ namespace StartMenues.RegistrationButtonsPanels
                 _registraitionButton.Deactivate();
                 _registraitionButton.Activate();
                 loadSession.Complete();
-                _tokenSource.Cancel();
+                _currentCTS?.Cancel();
+                _currentCTS?.Dispose();
             }
         }
 
         private void OnDestroy()
         {
-            _tokenSource?.Cancel();
-            _tokenSource?.Dispose();
+            _currentCTS?.Cancel();
+            _currentCTS?.Dispose();
         }
     }
 }

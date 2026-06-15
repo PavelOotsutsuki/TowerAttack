@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using Cards;
 using GameFields.CommonAnimations;
@@ -10,6 +9,8 @@ using GameFields.Signals;
 using Cards.DependencyInterlayers;
 using GameFields.CardTransits;
 using GameFields.Histories;
+using Cysharp.Threading.Tasks;
+using System.Threading;
 
 namespace GameFields.Persons.Hands
 {
@@ -22,6 +23,7 @@ namespace GameFields.Persons.Hands
         private SignalBus _bus;
         private InvertCardAnimation _invertCardAnimation;
         private HistoryRoot _historyRoot;
+        private CancellationToken _fightToken;
 
         public bool IsComplete { get; protected set; }
 
@@ -63,24 +65,24 @@ namespace GameFields.Persons.Hands
             HistoryData historyData = new HistoryData(this, GetHistoryMsg(), historyCardData);
             _historyRoot.AddMsg(historyData);
 
-            StartCoroutine(Processing(card));
+            Processing(card, _fightToken).Forget();
         }
 
-        private IEnumerator Processing(Card card)
+        private async UniTask Processing(Card card, CancellationToken token)
         {
             _bus.Fire(new PushStepSignalPlayer(this));
 
-            _invertCardAnimation.Play(card);
+            _invertCardAnimation.Play(card, token);
 
-            yield return new WaitUntil(() => _invertCardAnimation.IsComplete);
+            await UniTask.WaitUntil(() => _invertCardAnimation.IsComplete, cancellationToken: token);
 
             _seatable.SeatCard(card);
 
-            OnEndProcessing();
+            OnEndProcessing(token);
         }
 
         protected abstract string GetHistoryMsg();
-        protected abstract void OnEndProcessing();
+        protected abstract void OnEndProcessing(CancellationToken token);
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(ExtraEffectZone))]

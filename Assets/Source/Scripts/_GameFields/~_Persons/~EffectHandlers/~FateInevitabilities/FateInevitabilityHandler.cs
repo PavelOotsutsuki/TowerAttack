@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Cards;
 using Cysharp.Threading.Tasks;
 using GameFields.Persons;
@@ -26,9 +27,9 @@ namespace GameFields.Persons.EffectHandlers.FateInevitabilities
 
         public bool IsActive => _activeEffects.Count > 0;
 
-        public void BeforeEndTurn(CallbackHandler callbackHandler)
+        public void BeforeEndTurn(CallbackHandler callbackHandler, CancellationToken token)
         {
-            Attacking(callbackHandler).ToUniTask();
+            Attacking(callbackHandler, token).Forget();
         }
 
         public void Activate(Card card, int countTurns)
@@ -66,7 +67,7 @@ namespace GameFields.Persons.EffectHandlers.FateInevitabilities
             //}
         }
 
-        private IEnumerator Attacking(CallbackHandler callbackHandler)
+        private async UniTask Attacking(CallbackHandler callbackHandler, CancellationToken token)
         {
             if (_activeEffects.Count > 0)
             {
@@ -82,12 +83,13 @@ namespace GameFields.Persons.EffectHandlers.FateInevitabilities
                     SelectMenuActivateData data = new SelectMenuActivateData(countAttack);
                     _attackMenu.Activate(data);
 
-                    yield return new WaitUntil(() => _attackMenu.IsComplete);
+                    await UniTask.WaitUntil(() => _attackMenu.IsComplete, cancellationToken: token);
                 }
 
                 if (_activeEffects.Any(e => e.IsReadyToDestroy()))
                 {
-                    _loseActions.Activate();
+                    CancellationTokenData cancellationTokenData = new CancellationTokenData(token);
+                    _loseActions.Activate(cancellationTokenData);
                 }
                 else
                 {

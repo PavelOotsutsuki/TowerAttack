@@ -13,10 +13,11 @@ using GameFields.InputSettings;
 using Cards.Views;
 using Tools.InputSettings;
 using System.Linq;
+using System.Threading;
 
 namespace GameFields.Persons.EnemyProcessImitations
 {
-    public class EnemyDragAndDropImitation: PersonStep, IInputLogicObject
+    internal class EnemyDragAndDropImitation: PersonStep, IInputLogicObject
     {
         private const int CountLogics = 1;
         //private const float SelectYDirection = 1;
@@ -35,7 +36,7 @@ namespace GameFields.Persons.EnemyProcessImitations
 
         internal EnemyDragAndDropImitation(CardDragAndDropImitationActions cardImitationActions, EnemyDragAndDropImitationData data,
             InteractionActivator interactionActivator, SkipTurnChecker skipTurnChecker, IDrawnCardWatcher drawnCardWatcher, Hand hand,
-            IAIThinkLogic mainAIThinkLogic, GnomeEffectHandler gnomeEffectHandler) : base(interactionActivator)
+            IAIThinkLogic mainAIThinkLogic, GnomeEffectHandler gnomeEffectHandler, CancellationToken turnToken) : base(interactionActivator, turnToken)
         {
             _isComplete = false;
             _data = data;
@@ -52,9 +53,9 @@ namespace GameFields.Persons.EnemyProcessImitations
         public float DrawCardsDelay => _data.DrawCardsDelay;
         public override bool IsComplete => _isComplete;
 
-        private IEnumerator Skipping()
+        private async UniTask Skipping()
         {
-            yield return new WaitForSeconds(1f);
+            await UniTask.Delay(1000, cancellationToken: Token);
             _isComplete = true;
         }
 
@@ -69,7 +70,7 @@ namespace GameFields.Persons.EnemyProcessImitations
             if (_skipTurnChecker.CanSkip)
             {
                 //_isComplete = true;
-                Skipping().ToUniTask();
+                Skipping().Forget();
                 return;
             }
 
@@ -256,7 +257,7 @@ namespace GameFields.Persons.EnemyProcessImitations
 
         private void StartActionWithWorkCard(Card workCard, CardCapability type)
         {
-            Func<IEnumerator> endAction = type switch
+            Func<UniTask> endAction = type switch
             {
                 CardCapability.Attack => Attack,
                 CardCapability.Play => Play,
@@ -273,53 +274,51 @@ namespace GameFields.Persons.EnemyProcessImitations
                 _ => throw new NullReferenceException("Задан неверный индекс логики поведения Enemy: " + logicNumber)
             };
 
-            Processing(dragAndDropBehaviour, endAction).ToUniTask();
+            Processing(dragAndDropBehaviour, endAction).Forget();
         }
 
-        private IEnumerator Attack()
+        private UniTask Attack()
         {
             _cardImitationActions.Attack();
 
-            yield break;
+            return UniTask.CompletedTask;
         }
 
-        private IEnumerator Play()
+        private async UniTask Play()
         {
             _cardImitationActions.MoveOnPlace(_data.CardTranslateInDropPlaceTime);
 
             if (_cardImitationActions.CanPlay())
             {
-                yield return _cardImitationActions.Play();
+                await _cardImitationActions.Play(Token);
             }
             else
             {
-                yield return _cardImitationActions.ReturningInHand(_data.CardReturnInHandTime);
+                await _cardImitationActions.ReturningInHand(_data.CardReturnInHandTime, Token);
             }
         }
 
-        private IEnumerator Forging()
+        private async UniTask Forging()
         {
             _gnomeEffectHandler.Upgrade();
 
-            yield return _cardImitationActions.Forging();
+            await _cardImitationActions.Forging(Token);
         }
 
-        private IEnumerator HandTransfer()
+        private UniTask HandTransfer()
         {
             _cardImitationActions.HandTransfer();
 
-            yield break;
+            return UniTask.CompletedTask;
         }
 
-        private IEnumerator Processing(DragAndDropBehaviour dragAndDropBehaviour, Func<IEnumerator> endAction)
+        private async UniTask Processing(DragAndDropBehaviour dragAndDropBehaviour, Func<UniTask> endAction)
         {
             dragAndDropBehaviour.Activate();
 
-            yield return new WaitUntil(() => dragAndDropBehaviour.IsComplete);
-
-            yield return endAction.Invoke();
-
-            yield return new WaitForSeconds(_data.EndTurnDelay);
+            await UniTask.WaitUntil(() => dragAndDropBehaviour.IsComplete, cancellationToken: Token);
+            await endAction.Invoke();
+            await UniTask.WaitForSeconds(_data.EndTurnDelay, cancellationToken: Token);
             //yield return new WaitForSeconds(5f);
 
             _isComplete = true;

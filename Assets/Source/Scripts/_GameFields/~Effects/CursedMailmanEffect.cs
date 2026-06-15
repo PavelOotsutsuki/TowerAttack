@@ -1,9 +1,8 @@
-using UnityEngine;
 using Cards;
 using GameFields.Persons;
-using System.Collections;
 using GameFields.Persons.DrawCards;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 
 namespace GameFields.Effects
 {
@@ -20,18 +19,18 @@ namespace GameFields.Effects
             Play();
         }
 
-        protected override IEnumerator OnPlaying()
+        protected override async UniTask OnPlaying()
         {
             bool isContinue = false;
 
-            List<Card> cards = _drawCardManager?.DrawCards(_countDrawCards, () => isContinue = true);
+            List<Card> cards = _drawCardManager?.DrawCards(_countDrawCards, Token, () => isContinue = true);
 
             foreach (Card card in cards)
             {
                 card.SetCurseMode();
             }
 
-            yield return new WaitUntil(() => isContinue);
+            await UniTask.WaitUntil(() => isContinue, cancellationToken: Token);
         }
 
         //public override void End()

@@ -1,5 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
+using Tools.UI;
 using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -56,5 +62,99 @@ namespace Tools.Utils
             }
             #endif
         }
+
+        public static void DestroyCTS(ref CancellationTokenSource cts)
+        {
+            cts?.Cancel();
+            cts?.Dispose();
+            cts = null;
+        }
+
+        public static async UniTask DoAnimationAsync(CancellationToken ct, Tween tween)
+        {
+            AutoResetUniTaskCompletionSource tcs = AutoResetUniTaskCompletionSource.Create();
+
+            // Подписываемся на завершение твина
+            tween.OnComplete(() => tcs.TrySetResult());
+            tween.OnKill(() => tcs.TrySetResult());
+
+            // При отмене токена — убиваем твин
+            using (ct.Register(() => tween.Kill()))
+            {
+                await tcs.Task;
+            }
+        }
+
+        //public static async UniTask CancelledExecute(CancellationToken mainToken, string className, Func<CancellationToken, UniTask> asyncAction, string methodName, CancellationToken? localToken = null)
+        //{
+        //    if (mainToken.IsCancellationRequested)
+        //        return;
+
+        //    localToken ??= mainToken;
+
+        //    try
+        //    {
+        //        await asyncAction(localToken.Value);
+        //    }
+        //    catch (OperationCanceledException)
+        //    {
+        //        Debug.Log($"ОТМЕНА ТОКЕНА: {methodName}: {className}");
+        //    }
+        //}
+
+        //public static async UniTask<T> CancelledExecute<T>(CancellationToken mainToken, string className, Func<CancellationToken, UniTask<T>> asyncAction, string methodName, CancellationToken? localToken = null)
+        //{
+        //    if (mainToken.IsCancellationRequested)
+        //        return default;
+
+        //    localToken ??= mainToken;
+
+        //    try
+        //    {
+        //        return await asyncAction(localToken.Value);
+        //    }
+        //    catch (OperationCanceledException)
+        //    {
+        //        Debug.Log($"ОТМЕНА ТОКЕНА: {methodName}: {className}");
+        //        return default;
+        //    }
+        //}
+
+        //public static async Task WrapWithCancellation(CancellationToken token,
+        //Func<Task> asyncAction,
+        //string callerName = null)
+        //{
+        //    if (token.IsCancellationRequested)
+        //        return;
+
+        //    try
+        //    {
+        //        await asyncAction();
+        //    }
+        //    catch (OperationCanceledException)
+        //    {
+        //        Debug.Log($"ОТМЕНА ТОКЕНА: {callerName ?? "Unknown"}");
+        //    }
+        //}
+
+        //// Версия с возвращаемым значением
+        //public static async Task<T> WrapWithCancellation<T>(
+        //    CancellationToken token,
+        //    Func<Task<T>> asyncAction,
+        //    string callerName = null)
+        //{
+        //    if (token.IsCancellationRequested)
+        //        return default;
+
+        //    try
+        //    {
+        //        return await asyncAction();
+        //    }
+        //    catch (OperationCanceledException)
+        //    {
+        //        Debug.Log($"ОТМЕНА ТОКЕНА: {callerName ?? "Unknown"}");
+        //        return default;
+        //    }
+        //}
     }
 }

@@ -1,5 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using TMPro;
 using Tools;
 using Tools.UI;
@@ -20,6 +20,7 @@ namespace Cards.Views.BigCardViews.Capabilities
         [SerializeField] private FadableLabel _fadableLabel;
 
         private CardCapabilityDescription _cardCapabilityDescription;
+        private CancellationToken _currentToken;
 
         public bool? IsShown { get; private set; } = false;
 
@@ -45,8 +46,9 @@ namespace Cards.Views.BigCardViews.Capabilities
                 return;
             }
 
+            _currentToken = data.Token;
             //Debug.Log("CapabilityDescription message: " + message);
-            LabelActivateData fadableLabelActivateData = new LabelActivateData(message);
+            LabelActivateDataAsync fadableLabelActivateData = new LabelActivateDataAsync(new LabelActivateData(message), _currentToken);
 
             _fadableLabel.Show(fadableLabelActivateData);
             // После смены text-a надо поменять width, иначе preferredHeight нормально не расчитывается
@@ -67,7 +69,7 @@ namespace Cards.Views.BigCardViews.Capabilities
 
             IsShown = false;
 
-            _fadableLabel.Hide();
+            _fadableLabel.Hide(new CancellationTokenData(_currentToken));
         }
 
         #region AutomaticFillComponents

@@ -23,14 +23,14 @@ namespace StartMenues
         [Inject] private LoadRoot _loadRoot;
 
         public void Init(IVolume cardVolume, IVolume musicVolume, CardCapabilityDescription cardCapabilityDescription,
-            Action<int> onPlayClick, StartMenu startMenu)
+            Action<int> onPlayClick, StartMenu startMenu, CancellationToken startMenuToken)
         {
             _logInButtonsPanel.Init(SetMainPanel, SetRegistrationPanel);
-            _registrationButtonsPanel.Init(SetMainPanel, SetLogInPanel);
-            _startMenuMainButtonsPanel.Init(SetSettingsPanel, SetRulesPanel, onPlayClick, startMenu);
+            _registrationButtonsPanel.Init(SetMainPanel, SetLogInPanel, startMenuToken);
+            _startMenuMainButtonsPanel.Init(SetSettingsPanel, SetRulesPanel, onPlayClick, startMenu, startMenuToken);
 
             //base.Init(cardVolume, musicVolume, cardCapabilityDescription, _startMenuStartButtonsPanel);
-            base.Init(cardVolume, musicVolume, cardCapabilityDescription, _logInButtonsPanel, _startMenuMainButtonsPanel);
+            base.Init(cardVolume, musicVolume, cardCapabilityDescription, _logInButtonsPanel, _startMenuMainButtonsPanel, startMenuToken);
         }
 
         public void Reactivate(StartMenuButtonsPanelRootReactivateData reactivateDataInvoker)
@@ -38,7 +38,7 @@ namespace StartMenues
             CurrentMenuButtonsPanel?.Deactivate();
             CurrentMenuButtonsPanel = _startMenuMainButtonsPanel;
 
-            ReactivatingStartMenuMainButtonsPanel(reactivateDataInvoker, this.destroyCancellationToken).Forget();
+            ReactivatingStartMenuMainButtonsPanel(reactivateDataInvoker, MenuParentToken).Forget();
 
 
             //_startMenuMainButtonsPanel.Preactivate();
@@ -56,15 +56,26 @@ namespace StartMenues
 
         private void SetMainPanel()
         {
-            SettingMainPanel(this.destroyCancellationToken).Forget();
+            SettingMainPanel().Forget();
         }
 
-        private async UniTask SettingMainPanel(CancellationToken token)
+        private async UniTask SettingMainPanel()
         {
+            CancellationTokenSource loadActualPersonDataFromDBCTS = CancellationTokenSource.CreateLinkedTokenSource(MenuParentToken,
+                new CancellationTokenSource(TimeSpan.FromSeconds(30)).Token);
+
             LoadSession loadSession = new LoadSession();
             _loadRoot.AddSession(loadSession);
 
-            await _startMenuMainButtonsPanel.Preactivate(token);
+            try
+            {
+                await _startMenuMainButtonsPanel.Preactivate(loadActualPersonDataFromDBCTS.Token);
+            }
+            finally
+            {
+                loadActualPersonDataFromDBCTS?.Cancel();
+                loadActualPersonDataFromDBCTS?.Dispose();
+            }
 
             loadSession.Complete();
 

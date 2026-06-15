@@ -6,6 +6,8 @@ using Cards;
 using Cysharp.Threading.Tasks;
 using GameFields.Decks;
 using GameFields.CardTransits;
+using System.Threading;
+using DG.Tweening;
 
 namespace GameFields.Persons.DrawCards
 {
@@ -24,10 +26,10 @@ namespace GameFields.Persons.DrawCards
 
         public bool IsDrawing { get; private set; } = false;
 
-        public List<Card> DrawCards(int countCards, Action callback = null)
+        public List<Card> DrawCards(int countCards, CancellationToken token, Action callback = null)
         {
             _currentDrawCardAnimation = _drawCardAnimationWatcher.CurrentAnimation;
-            return TakeCards(countCards, callback);
+            return TakeCards(countCards, token, callback);
         }
 
         //public void DrawCards(IDrawCardAnimation drawCardAnimation, int countCards, Action callback = null)
@@ -36,7 +38,7 @@ namespace GameFields.Persons.DrawCards
         //    TakeCards(countCards, callback);
         //}
 
-        public int DrawCard(Card card, Action callback = null, int indexAdd = -1)
+        public int DrawCard(Card card, CancellationToken token, Action callback = null, int indexAdd = -1)
         {
             int indexDeck = _deck.IndexOf(card);
 
@@ -47,12 +49,12 @@ namespace GameFields.Persons.DrawCards
 
             _currentDrawCardAnimation = _drawCardAnimationWatcher.CurrentAnimation;
 
-            DrawingCards(new List<Card>() { card }, callback, indexAdd).ToUniTask();
+            DrawingCards(new List<Card>() { card }, callback, token, indexAdd).Forget();
 
             return indexDeck;
         }
 
-        private List<Card> TakeCards(int countCards, Action callback = null)
+        private List<Card> TakeCards(int countCards, CancellationToken token, Action callback = null)
         {
             List<Card> drawnCards = new List<Card>();
             List<Card> drawnEffectCards = new List<Card>();
@@ -70,12 +72,12 @@ namespace GameFields.Persons.DrawCards
                 }
             }
 
-            DrawingCards(drawnEffectCards, callback).ToUniTask();
+            DrawingCards(drawnEffectCards, callback, token).Forget();
 
             return drawnCards;
         }
 
-        private IEnumerator DrawingCards(IReadOnlyList<Card> cards, Action callback, int indexAdd = -1) 
+        private async UniTask DrawingCards(IReadOnlyList<Card> cards, Action callback, CancellationToken token, int indexAdd = -1) 
         {
             IsDrawing = true;
 
@@ -91,12 +93,11 @@ namespace GameFields.Persons.DrawCards
             //        yield return new WaitUntil(() => currentDrawCardAnimation.IsComplete);
             //    }
             //}
-            currentDrawCardAnimation.Play(cards, indexAdd);
-            yield return new WaitUntil(() => currentDrawCardAnimation.IsComplete);
+            currentDrawCardAnimation.Play(cards, indexAdd, token);
+            await UniTask.WaitUntil(() => currentDrawCardAnimation.IsComplete, cancellationToken: token);
 
             callback?.Invoke();
             IsDrawing = false;
-            yield break;
         }
     }
 }

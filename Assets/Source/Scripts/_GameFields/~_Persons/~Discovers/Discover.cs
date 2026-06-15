@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Cards;
 using Cards.Views;
 using GameFields.Seats;
@@ -20,13 +21,16 @@ namespace GameFields.Persons.Discovers
         [SerializeField] private float _viewDuration = 0.5f;
 
         protected IReadOnlyList<IDiscoverable> Cards;
+        protected CancellationToken Token;
 
         private DiscoverResult _currentResult;
 
         public int MaxSeats => Seats.Length;
 
-        public virtual void Init()
+        public virtual void Init(CancellationToken fightToken)
         {
+            Token = fightToken;
+
             InitSeats();
 
             gameObject.SetActive(false);
@@ -176,7 +180,7 @@ namespace GameFields.Persons.Discovers
         {
             foreach (DiscoverSeat seat in Seats)
             {
-                seat.Init(this, _cardScaleFactor, _viewDuration);
+                seat.Init(this, _cardScaleFactor, _viewDuration, Token);
             }
         }
 

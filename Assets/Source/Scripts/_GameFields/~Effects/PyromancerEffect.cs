@@ -1,7 +1,6 @@
-using System.Collections;
 using Cards;
+using Cysharp.Threading.Tasks;
 using GameFields.Persons;
-using UnityEngine;
 
 namespace GameFields.Effects
 {
@@ -25,10 +24,10 @@ namespace GameFields.Effects
         //    Debug.Log("Эффект Пироманта закончен");
         //}
 
-        protected override IEnumerator OnPlaying()
+        protected override UniTask OnPlaying()
         {
             _deactivePerson.ActivateFireDraw(_card);
-            yield break;
+            return UniTask.CompletedTask;
         }
     }
 }

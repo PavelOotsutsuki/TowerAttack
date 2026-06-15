@@ -1,6 +1,4 @@
 using GameFields.Persons;
-using System.Collections;
-using UnityEngine;
 using Cysharp.Threading.Tasks;
 using Zenject;
 using GameFields.Signals;
@@ -8,7 +6,9 @@ using GameFields.EndFights;
 using System;
 using GameFields.Seats;
 using Tools;
-using GameFields.FightMenues;
+using System.Threading;
+using System.Reflection;
+using UnityEngine;
 
 namespace GameFields
 {
@@ -24,11 +24,12 @@ namespace GameFields
         private readonly SeatPool _seatPool;
         private readonly IActivatable _soundRootActivatable;
         private readonly IActivatable _fightButtonsActivator;
+        private readonly CancellationToken _fightToken;
 
         private static int _turnNumber;
 
         public Fight(PersonsState personsState, FightResult fightResult, SignalBus bus, SeatPool seatPool
-            , IActivatable soundRootActivatable, IActivatable fightButtonsActivator)
+            , IActivatable soundRootActivatable, IActivatable fightButtonsActivator, CancellationToken fightToken)
         {
             _personsState = personsState;
             _fightResult = fightResult;
@@ -43,6 +44,7 @@ namespace GameFields
 
             _soundRootActivatable = soundRootActivatable;
             _fightButtonsActivator = fightButtonsActivator;
+            _fightToken = fightToken;
         }
 
         ~Fight()
@@ -62,7 +64,7 @@ namespace GameFields
             _soundRootActivatable.Activate();
             _fightButtonsActivator.Activate();
 
-            StartTurn().ToUniTask();
+            StartTurn(_fightToken).Forget();
         }
 
         private void SetWinner(PersonWinSignal signal)
@@ -79,25 +81,30 @@ namespace GameFields
             }
             else
             {
-                throw new System.Exception("Unknown winner");
+                throw new Exception("Unknown winner");
             }
 
             IsComplete = true;
         }
 
-        private IEnumerator StartTurn()
+        private async UniTask StartTurn(CancellationToken token)
         {
-            yield return new WaitForSeconds(DelayBeforeStartTurn);
-
-
-
-            while (IsComplete == false)
+            try
             {
-                ActivePerson.StartStep();
+                await UniTask.WaitForSeconds(DelayBeforeStartTurn, cancellationToken: token);
 
-                yield return new WaitUntil(() => ActivePerson.IsComplete);
+                while (IsComplete == false)
+                {
+                    ActivePerson.StartStep();
 
-                NextTurn();
+                    await UniTask.WaitUntil(() => ActivePerson.IsComplete, cancellationToken: token);
+
+                    NextTurn();
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.Log($"ОТМЕНА ТОКЕНА: {MethodBase.GetCurrentMethod().DeclaringType.Name}: {GetType().Name}");
             }
         }
 

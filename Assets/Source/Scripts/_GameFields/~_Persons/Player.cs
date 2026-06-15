@@ -11,6 +11,7 @@ using GameFields.InformationLabels;
 using GameFields.Persons.EffectHandlers;
 using GameFields.Persons.LookCardMenues;
 using GameFields.Persons.ConfirmableNumbersView;
+using System.Threading;
 
 namespace GameFields.Persons
 {
@@ -18,32 +19,37 @@ namespace GameFields.Persons
     {
         //private readonly IActivatable _gameFieldObjectsActivator;
         private readonly IHandBlockable _handBlockable;
-        private readonly PersonStep _startPlayerTurnView;
-        private readonly EndTurnProcessing _endTurnProcessing;
+        private readonly ISelectMenuActivator _attackMenu;
+
+        private readonly StartTurnDrawPlayerCreator _startTurnDrawPlayerCreator;
+        private readonly TurnProcessingCreator _turnProcessingCreator;
+        private readonly StartPlayerTurnViewCreator _startPlayerTurnViewCreator;
+        private readonly EndTurnProcessingCreator _endTurnProcessingCreator;
+        private readonly PlayerSkipTurnViewCreator _playerSkipTurnViewCreator;
 
         private readonly InformationLabel _informationLabel;
 
-        private readonly TurnProcessing _turnProcessing;
-
-        private ISelectMenuActivator _attackMenu;
+        private TurnProcessing _currentTurnProcessing;
 
         public Player(InteractionActivator interactionActivator, HandPlayer hand, CardPlayingZone cardPlayingZone, Tower tower,
-            DiscoverPlayer discover, DrawCardRoot drawCardRoot, StartTurnDraw startTurnDraw, TurnProcessing turnProcessing,
-            SignalBus bus, PersonStep startPlayerTurnView, ISelectMenuActivator attackMenu, EndTurnProcessing endTurnProcessing,
+            DiscoverPlayer discover, DrawCardRoot drawCardRoot, StartTurnDrawPlayerCreator startTurnDrawPlayerCreator, TurnProcessingCreator turnProcessingCreator,
+            SignalBus bus, StartPlayerTurnViewCreator startPlayerTurnViewCreator, ISelectMenuActivator attackMenu, EndTurnProcessingCreator endTurnProcessingCreator,
             ISelectMenuActivator choiceMenu, ISelectMenuActivator choiceMenuImitation, PersonEffectsHandler personEffectsHandler,
-            InformationLabel informationLabel, LookCardMenuPlayer lookCardMenuPlayer, SkipTurnView skipTurnView,
+            InformationLabel informationLabel, LookCardMenuPlayer lookCardMenuPlayer, PlayerSkipTurnViewCreator playerSkipTurnViewCreator,
             INumbersStateWatcher numbersStateWatcher, LastSelectedNumbersWatcher lastSelectedNumbersWatcher,
-            PersonEffectKeeper personEffectKeeper) :
-            base(cardPlayingZone, drawCardRoot, tower, startTurnDraw, discover, bus, hand,
-                attackMenu, interactionActivator, choiceMenu, choiceMenuImitation, personEffectsHandler,
-                lookCardMenuPlayer, skipTurnView, numbersStateWatcher, lastSelectedNumbersWatcher, personEffectKeeper)
+            PersonEffectKeeper personEffectKeeper, CancellationToken fightToken) :
+            base(cardPlayingZone, drawCardRoot, tower, discover, bus, hand, attackMenu, interactionActivator,
+                choiceMenu, choiceMenuImitation, personEffectsHandler, lookCardMenuPlayer, numbersStateWatcher,
+                lastSelectedNumbersWatcher, personEffectKeeper, fightToken)
         {
-            _startPlayerTurnView = startPlayerTurnView;
-            _endTurnProcessing = endTurnProcessing;
+            _startTurnDrawPlayerCreator = startTurnDrawPlayerCreator;
+            _startPlayerTurnViewCreator = startPlayerTurnViewCreator;
+            _endTurnProcessingCreator = endTurnProcessingCreator;
+            _playerSkipTurnViewCreator = playerSkipTurnViewCreator;
             //_gameFieldObjectsActivator = gameFieldObjectsActivator;
             _handBlockable = hand;
             _attackMenu = attackMenu;
-            _turnProcessing = turnProcessing;
+            _turnProcessingCreator = turnProcessingCreator;
 
             _informationLabel = informationLabel;
 
@@ -57,9 +63,9 @@ namespace GameFields.Persons
 
         public override void StartAction(ICompletable completable)
         {
-            PushStep(new CardActionProcessingPlayer(InteractionActivator, completable));
+            PushStep(new CardActionProcessingPlayer(InteractionActivator, completable, Token));
 
-            _turnProcessing.Completed();
+            _currentTurnProcessing.Completed();
         }
 
         //public override void StartEffect(Effect effect, CardEffectConfig effectConfig)
@@ -92,11 +98,21 @@ namespace GameFields.Persons
 
         protected override void InitCommonSteps()
         {
-            PushStep(_endTurnProcessing);
-            PushStep(_turnProcessing);
-            AddStartTurnDrawStep();
+            PushStep(_endTurnProcessingCreator.Create(Token));
+
+            _currentTurnProcessing = _turnProcessingCreator.Create(Token);
+
+            PushStep(_currentTurnProcessing);
+            PushStep(_startTurnDrawPlayerCreator.Create(Token));
+
+            //AddStartTurnDrawStep();
             //PushStep(StartTurnDraw);
-            PushStep(_startPlayerTurnView);
+            PushStep(_startPlayerTurnViewCreator.Create(Token));
+        }
+
+        protected override void InitSkipSteps()
+        {
+            PushStep(_playerSkipTurnViewCreator.Create(Token));
         }
 
         //protected override void OnStartStep()

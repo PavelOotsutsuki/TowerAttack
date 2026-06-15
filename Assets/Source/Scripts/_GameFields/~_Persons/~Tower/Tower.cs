@@ -1,8 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Cards;
 using Cards.Views;
+using Cysharp.Threading.Tasks;
 using GameFields.Persons.ConfirmableNumbersView;
 using Tools;
 using Tools.Utils.FillComponents;
@@ -27,15 +28,18 @@ namespace GameFields.Persons.Towers
         private ConfirmableNumbers _confirmableNumbers;
         private ICardCreator _cardCreator;
 
+        private CancellationToken _fightToken;
+
         public ReadOnlyRectTransform RORTransform { get; private set; }
         public bool HasFreeSeat => _towerSeat.IsFill() == false;
         public ICardNumber Card => _towerSeat.Card;
 
-        public virtual void Init(ConfirmableNumbers confirmableNumbers, ICardCreator cardCreator)
+        public virtual void Init(ConfirmableNumbers confirmableNumbers, ICardCreator cardCreator, CancellationToken fightToken)
         {
             _towerSeat.Init();
             _confirmableNumbers = confirmableNumbers;
             _cardCreator = cardCreator;
+            _fightToken = fightToken;
 
             RORTransform = new ReadOnlyRectTransform(_rectTransform);
 
@@ -95,7 +99,7 @@ namespace GameFields.Persons.Towers
 
         void ICopyCardCreator.CreateCopyCard(Action<Card> insertedCardCallback)
         {
-            StartCoroutine(CreatingCopyCard(insertedCardCallback));
+            CreatingCopyCard(insertedCardCallback, _fightToken).Forget();
         }
 
         protected CardViewData GetCardViewData()
@@ -108,7 +112,7 @@ namespace GameFields.Persons.Towers
             _boomAnimation.Play();
         }
 
-        private IEnumerator CreatingCopyCard(Action<Card> insertedCardCallback)
+        private async UniTask CreatingCopyCard(Action<Card> insertedCardCallback, CancellationToken token)
         {
             CardName cardName = _towerSeat.Card.CardName;
 
@@ -126,7 +130,7 @@ namespace GameFields.Persons.Towers
 
             cardMovement.MoveLocalSmoothly(localPosition, cardRORTransform.GetRotationVector(), 0.5f, createdCard.DefaultScaleVector);
 
-            yield return new WaitForSeconds(0.5f + 0.5f);
+            await UniTask.WaitForSeconds(0.5f + 0.5f, cancellationToken: token);
             insertedCardCallback?.Invoke(createdCard);
         }
 

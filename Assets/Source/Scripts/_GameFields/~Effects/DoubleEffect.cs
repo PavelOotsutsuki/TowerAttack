@@ -1,10 +1,10 @@
 using System;
-using System.Collections;
+using System.Threading;
 using Cards.Effects;
+using Cysharp.Threading.Tasks;
 using GameFields.Histories;
 using GameFields.Persons;
 using GameFields.Persons.EffectHandlers;
-using UnityEngine;
 using Zenject;
 
 namespace GameFields.Effects
@@ -20,8 +20,8 @@ namespace GameFields.Effects
         //    Action<int> callback) :
         public DoubleEffect(Func<CardEffectConfigPair, EffectDuration, Effect> effectCreator, CardEffectConfigPair effectConfig,
             SignalBus bus, EffectDuration effectDuration, PersonEffectsHandlerRoot personEffectsHandlerRoot, HistoryRoot historyRoot,
-            Person activePerson) : base(new EffectData(bus, effectConfig.CardEffectData, effectDuration, personEffectsHandlerRoot,
-                historyRoot, activePerson), 0f)
+            Person activePerson, CancellationToken token) : base(new EffectData(bus, effectConfig.CardEffectData, effectDuration, personEffectsHandlerRoot,
+                historyRoot, activePerson, token), 0f)
         {
             _effectCreator = effectCreator;
             _effectConfig = effectConfig;
@@ -31,17 +31,17 @@ namespace GameFields.Effects
             Play();
         }
 
-        protected override IEnumerator OnPlaying()
+        protected override async UniTask OnPlaying()
         {
             //Effect effect1 = _effectCreator.Invoke(_effectConfig, _callback);
             Effect effect1 = _effectCreator.Invoke(_effectConfig, _effectDuration);
 
-            yield return new WaitUntil(() => effect1.IsComplete);
+            await UniTask.WaitUntil(() => effect1.IsComplete, cancellationToken: Token);
 
             //Effect effect2 = _effectCreator.Invoke(_effectConfig, _callback);
             Effect effect2 = _effectCreator.Invoke(_effectConfig, _effectDuration);
 
-            yield return new WaitUntil(() => effect2.IsComplete);
+            await UniTask.WaitUntil(() => effect2.IsComplete,cancellationToken: Token);
         }
 
         //public override void End()

@@ -1,18 +1,15 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Cards;
+using System.Reflection;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using GameFields.InputSettings;
-using GameFields.Persons.Discovers;
-using GameFields.Seats;
 using Tools;
 using Tools.InputSettings;
-using Tools.Settings;
 using Tools.UI;
+using Tools.Utils;
 using Tools.Utils.FillComponents;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace GameFields.Persons.LookCardMenues
 {
@@ -30,6 +27,9 @@ namespace GameFields.Persons.LookCardMenues
 
         //private SeatPool _seatPool;
         private GameFieldInputRoot _inputRoot;
+        private CancellationToken _fightToken;
+
+        private CancellationTokenSource _currentCTS;
         //private Vector2 _defaultCardSize;
         private bool _isComplete;
 
@@ -42,28 +42,35 @@ namespace GameFields.Persons.LookCardMenues
 
         public bool? IsActive { get; private set; } = null;
 
-        public void Init(GameFieldInputRoot inputRoot)
+        public void Init(GameFieldInputRoot inputRoot, CancellationToken fightToken)
         {
             //_defaultCardSize = GameSettings.CardSize;
             _inputRoot = inputRoot;
+            _fightToken = fightToken;
 
             _canvasGroup.blocksRaycasts = true;
             _isComplete = false;
 
-            _seatPanelRoot.Init();
+            _seatPanelRoot.Init(_fightToken);
             _lookCardMenuPanel.Init();
             _lookCardMenuLabel.Init();
-            _lookCardMenuButton.Init(this, inputRoot);
+            _lookCardMenuButton.Init(this, inputRoot, _fightToken);
 
             gameObject.SetActive(false);
         }
 
         public void Activate(LookCardMenuActivateData data)
         {
+            if (_fightToken.IsCancellationRequested)
+                return;
+
             if (IsActive == true)
                 return;
 
             IsActive = true;
+
+            Utils.DestroyCTS(ref _currentCTS);
+            _currentCTS = CancellationTokenSource.CreateLinkedTokenSource(_fightToken);
 
             _canvasGroup.blocksRaycasts = true;
             _isComplete = false;
@@ -78,27 +85,33 @@ namespace GameFields.Persons.LookCardMenues
             //    _seats[i].SetCard(_cards[i]);
             //}
             
-            _lookCardMenuPanel.Show();
-            _lookCardMenuLabel.Show(data.LabelActivateData);
+            _lookCardMenuPanel.Show(new CancellationTokenData( _currentCTS.Token));
+            _lookCardMenuLabel.Show(new LabelActivateDataAsync(data.LabelActivateData, _currentCTS.Token));
 
-            StartCoroutine(ActivatingButton());
+            ActivatingButton(_currentCTS.Token).Forget();
         }
 
         public void Deactivate()
         {
+            if (_fightToken.IsCancellationRequested)
+                return;
+
             if (IsActive == false)
                 return;
 
             IsActive = false;
 
+            Utils.DestroyCTS(ref _currentCTS);
+            _currentCTS = CancellationTokenSource.CreateLinkedTokenSource(_fightToken);
+
             _canvasGroup.blocksRaycasts = false;
 
             _seatPanelRoot.Deactivate();
-            _lookCardMenuPanel.Hide();
-            _lookCardMenuLabel.Hide();
+            _lookCardMenuPanel.Hide(new CancellationTokenData(_currentCTS.Token));
+            _lookCardMenuLabel.Hide(new CancellationTokenData(_currentCTS.Token));
             _lookCardMenuButton.Deactivate();
 
-            Deactivating().ToUniTask();
+            Deactivating(_currentCTS.Token).Forget();
         }
 
         void IEnterPressHandler.OnEnter()
@@ -116,21 +129,46 @@ namespace GameFields.Persons.LookCardMenues
             _seatPanelRoot.LeftSwitch.OnPointerClick(null);
         }
 
-        private IEnumerator ActivatingButton()
+        private async UniTask ActivatingButton(CancellationToken token)
         {
-            yield return new WaitForSeconds(2f);
+            if (_fightToken.IsCancellationRequested)
+                return;
 
-            _lookCardMenuButton.Activate();
+            try
+            {
+                await UniTask.WaitForSeconds(2f, cancellationToken: token);
+
+                _lookCardMenuButton.Activate();
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.Log($"ОТМЕНА ТОКЕНА: {MethodBase.GetCurrentMethod().DeclaringType.Name}: {GetType().Name}");
+            }
         }
 
-        private IEnumerator Deactivating()
+        private async UniTask Deactivating(CancellationToken token)
         {
-            yield return new WaitUntil(() => _lookCardMenuPanel.IsComplete && _lookCardMenuButton.IsComplete &&
-            _seatPanelRoot.IsComplete && _lookCardMenuLabel.IsComplete);
+            if (_fightToken.IsCancellationRequested)
+                return;
 
-            //_handBlockable.Unblock();
-            _isComplete = true;
-            gameObject.SetActive(false);
+            try
+            {
+                await UniTask.WaitUntil(() => _lookCardMenuPanel.IsComplete && _lookCardMenuButton.IsComplete &&
+                _seatPanelRoot.IsComplete && _lookCardMenuLabel.IsComplete, cancellationToken: token);
+
+                //_handBlockable.Unblock();
+                _isComplete = true;
+                gameObject.SetActive(false);
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.Log($"ОТМЕНА ТОКЕНА: {MethodBase.GetCurrentMethod().DeclaringType.Name}: {GetType().Name}");
+            }
+        }
+
+        private void OnDisable()
+        {
+            Utils.DestroyCTS(ref _currentCTS);
         }
 
         //private void SortSeats()

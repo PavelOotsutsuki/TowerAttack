@@ -11,30 +11,35 @@ using GameFields.Persons.EffectHandlers;
 using GameFields.Persons.EnemyProcessImitations;
 using GameFields.Persons.LookCardMenues;
 using GameFields.Persons.ConfirmableNumbersView;
+using System.Threading;
 
 namespace GameFields.Persons
 {
     public class EnemyAI : Person, IEnemyAIObject
     {
         //private readonly IDeactivatable _gameFieldObjectsActivator;
-        private readonly EnemyDragAndDropImitation _enemyDragAndDropImitation;
-        private readonly OnBeforeEndTurnProcessing _onBeforeEndTurnProcessing;
+        private readonly EnemyDragAndDropImitationCreator _enemyDragAndDropImitationCreator;
+        private readonly OnBeforeEndTurnProcessingCreator _onBeforeEndTurnProcessingCreator;
+        private readonly StartTurnDrawEnemyAICreator _startTurnDrawEnemyAICreator;
+        private readonly EnemySkipTurnViewCreator _enemySkipTurnViewCreator;
         private readonly HandAI _handEnemy;
 
-        public EnemyAI(InteractionActivator interactionActivator, EnemyDragAndDropImitation enemyDragAndDropImitation, CardPlayingZone cardPlayingZone,
-            Tower tower, DrawCardRoot drawCardRoot, DiscoverAI discoverImitation, StartTurnDraw startTurnDraw, SignalBus bus,
+        public EnemyAI(InteractionActivator interactionActivator, EnemyDragAndDropImitationCreator enemyDragAndDropImitationCreator, CardPlayingZone cardPlayingZone,
+            Tower tower, DrawCardRoot drawCardRoot, DiscoverAI discoverImitation, StartTurnDrawEnemyAICreator startTurnDrawEnemyAICreator, SignalBus bus,
             HandAI hand, ISelectMenuActivator attackMenu, ISelectMenuActivator choiceMenu, ISelectMenuActivator choiceMenuImitation,
-            PersonEffectsHandler personEffectsHandler, LookCardMenuEnemyAI lookCardMenu,
-            OnBeforeEndTurnProcessing onBeforeEndTurnProcessing, SkipTurnView skipTurnView,
-            INumbersStateWatcher numbersStateWatcher, LastSelectedNumbersWatcher lastSelectedNumbersWatcher, PersonEffectKeeper personEffectKeeper) :
-            base(cardPlayingZone, drawCardRoot, tower, startTurnDraw,discoverImitation, bus,
+            PersonEffectsHandler personEffectsHandler, LookCardMenuEnemyAI lookCardMenu, OnBeforeEndTurnProcessingCreator onBeforeEndTurnProcessingCreator,
+            EnemySkipTurnViewCreator enemySkipTurnViewCreator, INumbersStateWatcher numbersStateWatcher, LastSelectedNumbersWatcher lastSelectedNumbersWatcher,
+            PersonEffectKeeper personEffectKeeper, CancellationToken fightToken) :
+            base(cardPlayingZone, drawCardRoot, tower, discoverImitation, bus,
                 hand, attackMenu, interactionActivator, choiceMenu, choiceMenuImitation, personEffectsHandler,
-                lookCardMenu, skipTurnView, numbersStateWatcher, lastSelectedNumbersWatcher, personEffectKeeper)
+                lookCardMenu, numbersStateWatcher, lastSelectedNumbersWatcher, personEffectKeeper, fightToken)
         {
             //_gameFieldObjectsActivator = gameFieldObjectsActivator;
             //Bus.Subscribe<StartEffectSignal>(SetCardEffectProcess);
-            _enemyDragAndDropImitation = enemyDragAndDropImitation;
-            _onBeforeEndTurnProcessing = onBeforeEndTurnProcessing;
+            _enemyDragAndDropImitationCreator = enemyDragAndDropImitationCreator;
+            _onBeforeEndTurnProcessingCreator = onBeforeEndTurnProcessingCreator;
+            _startTurnDrawEnemyAICreator = startTurnDrawEnemyAICreator;
+            _enemySkipTurnViewCreator = enemySkipTurnViewCreator;
             _handEnemy = hand;
 
             Bus.Subscribe<PushStepSignalEnemyAI>(StartAttack);
@@ -48,7 +53,7 @@ namespace GameFields.Persons
         public override void StartAction(ICompletable completable)
         {
             //Debug.Log(completable.ToString());
-            PushStep(new CardActionProcessingEnemyAI(InteractionActivator, completable));
+            PushStep(new CardActionProcessingEnemyAI(InteractionActivator, completable, Token));
         }
 
         //public override void StartEffect(Effect effect, CardEffectConfig effectConfig)
@@ -66,10 +71,16 @@ namespace GameFields.Persons
         protected override void InitCommonSteps()
         {
             //PushStep(CardEffectProcessing);
-            PushStep(_onBeforeEndTurnProcessing);
-            PushStep(_enemyDragAndDropImitation);
-            AddStartTurnDrawStep();
+            PushStep(_onBeforeEndTurnProcessingCreator.Create(Token));
+            PushStep(_enemyDragAndDropImitationCreator.Create(Token));
+            PushStep(_startTurnDrawEnemyAICreator.Create(Token));
+            //AddStartTurnDrawStep();
             //PushStep(StartTurnDraw);
+        }
+
+        protected override void InitSkipSteps()
+        {
+            PushStep(_enemySkipTurnViewCreator.Create(Token));
         }
 
         //~EnemyAI()

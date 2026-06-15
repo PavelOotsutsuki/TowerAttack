@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using GameFields.EndTurnButtons;
 using GameFields.InputSettings;
@@ -9,13 +10,13 @@ using UnityEngine;
 
 namespace GameFields.Persons
 {
-    public class TurnProcessing : PersonStep, IInputLogicObject
+    internal class TurnProcessing : PersonStep, IInputLogicObject
     {
         private readonly SkipTurnChecker _skipTurnChecker;
 
         private bool _isComplete;
 
-        public TurnProcessing(InteractionActivator interactionActivator, SkipTurnChecker skipTurnChecker) : base(interactionActivator)
+        public TurnProcessing(InteractionActivator interactionActivator, SkipTurnChecker skipTurnChecker, CancellationToken turnToken) : base(interactionActivator, turnToken)
         {
             _skipTurnChecker = skipTurnChecker;
 
@@ -30,7 +31,7 @@ namespace GameFields.Persons
 
             _isComplete = false;
 
-            WaitingEndTurnButtonClick().ToUniTask();
+            WaitingEndTurnButtonClick().Forget();
         }
 
         public void Completed()
@@ -38,10 +39,10 @@ namespace GameFields.Persons
             _isComplete = true;
         }
 
-        private IEnumerator WaitingEndTurnButtonClick()
+        private async UniTask WaitingEndTurnButtonClick()
         {
             //yield return new WaitUntil(() => _buttonActivator.EndTurnClicked == false);
-            yield return new WaitUntil(() => _skipTurnChecker.CanSkip || _isComplete == true);
+            await UniTask.WaitUntil(() => _skipTurnChecker.CanSkip || _isComplete == true, cancellationToken: Token);
 
             _isComplete = true;
         }

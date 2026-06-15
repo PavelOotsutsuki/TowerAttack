@@ -1,5 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace GameFields.Backgrounds
@@ -9,19 +10,22 @@ namespace GameFields.Backgrounds
         [SerializeField] private Sprite[] _backgrounds;
 
         private SmoothlyImageChanger _smoothlyImageChanger;
-        private Queue<Sprite> _backgroundsQueue = new Queue<Sprite>();
+        private CancellationToken _fightToken;
 
-        public void Init(SmoothlyImageChanger smoothlyImageChanger)
+        private readonly Queue<Sprite> _backgroundsQueue = new Queue<Sprite>();
+
+        public void Init(SmoothlyImageChanger smoothlyImageChanger, CancellationToken fightToken)
         {
             _smoothlyImageChanger = smoothlyImageChanger;
+            _fightToken = fightToken;
         }
 
         public void Activate()
         {
-            StartCoroutine(Activating());
+            Activating(_fightToken).Forget();
         }
 
-        private IEnumerator Activating()
+        private async UniTask Activating(CancellationToken token)
         {
             if (_backgroundsQueue.Count == 0)
                 FillQueue();
@@ -31,10 +35,9 @@ namespace GameFields.Backgrounds
 
             while (_backgroundsQueue.Count > 0)
             {
-                yield return new WaitForSeconds(360f);
+                await UniTask.WaitForSeconds(360f, cancellationToken: token);
                 currentBackground = _backgroundsQueue.Dequeue();
                 _smoothlyImageChanger.SetImageSmoothly(currentBackground);
-
             }
         }
 

@@ -1,17 +1,15 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using GameFields.Persons;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using GameFields.Persons.ConfirmableNumbersView;
-using GameFields.Persons.SelectMenues.Choices;
 using GameFields.Persons.Towers;
 using Tools;
 using Tools.UI;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using static UnityEngine.GraphicsBuffer;
 
 namespace GameFields.Persons.SelectMenues
 {
@@ -42,7 +40,7 @@ namespace GameFields.Persons.SelectMenues
 
         public void Init(IWorkable selectButton, ICardNumberKeeper cardNumberKeeper, int[] сardNumbers,
             SelectNumbersList selectedNumbers, ConfirmableNumbers confirmableNumbers,
-            LastSelectedNumbersWatcher lastSelectedNumbersWatcher)
+            LastSelectedNumbersWatcher lastSelectedNumbersWatcher, CancellationToken fightToken)
         {
             if (_selectNumbers.Length != сardNumbers.Length)
                 throw new Exception("Несовпадение заданного кол-ва номеров и кол-ва объектов AttackNumber");
@@ -50,7 +48,7 @@ namespace GameFields.Persons.SelectMenues
             _selectButton = selectButton;
 
             base.Init(cardNumberKeeper, сardNumbers, selectedNumbers, confirmableNumbers, _selectNumbers,
-                lastSelectedNumbersWatcher);
+                lastSelectedNumbersWatcher, fightToken);
         }
 
         public void ActivateNumbers(bool isConfirmableActivate)
@@ -90,7 +88,7 @@ namespace GameFields.Persons.SelectMenues
             //}
         }
 
-        protected override void OnActivate()
+        protected override void OnActivate(CancellationToken token)
         {
             _currentSelectNumberClickHandler = IsConsecutiveMode ?
                 new ConsecutiveSelectNumberClickHandler(NeedForActivate, _selectButton, _selectNumbers) :
@@ -109,7 +107,7 @@ namespace GameFields.Persons.SelectMenues
             base.OnDeactivate();
         }
 
-        protected override IEnumerator Deactivating()
+        protected override async UniTask Deactivating(CancellationToken token)
         {
             CurrentSelectedNumbers = new List<SelectNumber>(); // Можно заменить на LINQ
 
@@ -142,14 +140,14 @@ namespace GameFields.Persons.SelectMenues
                 if (CardNumberKeeper.Card.IsSuccessChoice(selectedNumber.Number))
                 {
                     //SetChoiceNumber(selectedNumber, ResultType.Success);
-                    selectedNumber.SetChoice(ConvertResultTypeToNumberAnimationType(ResultType.Success));
+                    selectedNumber.SetChoice(ConvertResultTypeToNumberAnimationType(ResultType.Success), token);
 
                     resultType = ResultType.Success;
                 }
                 else
                 {
                     //SetChoiceNumber(selectedNumber, ResultType.Falled);
-                    selectedNumber.SetChoice(ConvertResultTypeToNumberAnimationType(ResultType.Falled));
+                    selectedNumber.SetChoice(ConvertResultTypeToNumberAnimationType(ResultType.Falled), token);
                     //selectedNumber.SetChoice(this is ChoiceNumberPanelPlayer ? NumberAnimationType.Choice : NumberAnimationType.Error);
                 }
 
@@ -157,7 +155,7 @@ namespace GameFields.Persons.SelectMenues
 
                 float delayUntilPlayNextSelectedNumberAnimation = selectedNumber.AnimationDuration * _data.NextAnimationStartPercent;
 
-                yield return new WaitForSeconds(delayUntilPlayNextSelectedNumberAnimation);
+                await UniTask.WaitForSeconds(delayUntilPlayNextSelectedNumberAnimation, cancellationToken: token);
             }
 
             if (resultType == ResultType.Falled)
@@ -171,21 +169,21 @@ namespace GameFields.Persons.SelectMenues
             SelectResult.SetResult(setSelectResultData);
 
             float waitLastAnimationCompleted = CurrentSelectedNumbers[CurrentSelectedNumbers.Count - 1].AnimationDuration * (1f - _data.NextAnimationStartPercent);
-            yield return new WaitForSeconds(waitLastAnimationCompleted);
-            yield return new WaitForSeconds(_data.DelayAfterAllNumbersAnimationsPlayed / 3f);
+            await UniTask.WaitForSeconds(waitLastAnimationCompleted, cancellationToken: token);
+            await UniTask.WaitForSeconds(_data.DelayAfterAllNumbersAnimationsPlayed / 3f, cancellationToken: token);
             GameFieldGC.Collect();
-            yield return new WaitForSeconds(_data.DelayAfterAllNumbersAnimationsPlayed * 2f / 3f);
+            await UniTask.WaitForSeconds(_data.DelayAfterAllNumbersAnimationsPlayed * 2f / 3f, cancellationToken: token);
 
             _isCompleteNumbersHide = true;
 
-            FadablePanel.Hide();
+            FadablePanel.Hide(new CancellationTokenData(token));
 
             foreach (SelectNumber selectNumber in _selectNumbers)
             {
                 selectNumber.Deactivate();
             }
 
-            yield return new WaitUntil(() => FadablePanel.IsComplete);
+            await UniTask.WaitUntil(() => FadablePanel.IsComplete, cancellationToken: token);
 
             IsCompleteThis = true;
         }

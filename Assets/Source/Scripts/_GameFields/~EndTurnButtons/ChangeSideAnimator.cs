@@ -1,9 +1,8 @@
-using System.Collections;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using Tools.Utils.Movements;
-using Tools.Utils.Screens;
+using System.Threading;
 
 namespace GameFields.EndTurnButtons
 {
@@ -11,43 +10,43 @@ namespace GameFields.EndTurnButtons
     {
         private readonly ChangeSideAnimatorData _data;
         private readonly Button _button;
-        private readonly WaitForSeconds _activeViewInvertDelay;
-        private readonly WaitForSeconds _deactiveViewInvertDelay;
+        private readonly CancellationToken _fightToken;
         private readonly Movement _endTurnButtonMovement;
 
         private bool _isAnimationInWork;
 
-        public ChangeSideAnimator(ChangeSideAnimatorData data, Button button)
+        public ChangeSideAnimator(ChangeSideAnimatorData data, Button button, CancellationToken fightToken)
         {
             _data = data;
             _button = button;
+            _fightToken = fightToken;
 
             _endTurnButtonMovement = new Movement(_data.ButtonTransform);
 
             _isAnimationInWork = false;
             IsActiveSide = false;
-
-            _activeViewInvertDelay = new WaitForSeconds(_data.ActiveViewInvertDuration);
-            _deactiveViewInvertDelay = new WaitForSeconds(_data.DeactiveViewInvertDuration);
         }
 
         public bool IsActiveSide { get; private set; }
 
+        private float ActiveViewInvertDelay => _data.ActiveViewInvertDuration;
+        private float DeactiveViewInvertDelay => _data.DeactiveViewInvertDuration;
+
         public void PlayLockButtonAnimation()
         {
-            PlayingLockButtonAnimation().ToUniTask();
+            PlayingLockButtonAnimation(_fightToken).Forget();
         }
 
         public void PlayUnlockButtonAnimation()
         {
-            PlayingUnlockButtonAnimation().ToUniTask();
+            PlayingUnlockButtonAnimation(_fightToken).Forget();
         }
 
-        private IEnumerator PlayingLockButtonAnimation()
+        private async UniTask PlayingLockButtonAnimation(CancellationToken token)
         {            
             IsActiveSide = false;
 
-            yield return new WaitWhile(() => _isAnimationInWork);
+            await UniTask.WaitWhile(() => _isAnimationInWork, cancellationToken: token);
 
             if (_button.interactable)
             {
@@ -55,35 +54,35 @@ namespace GameFields.EndTurnButtons
 
                 _isAnimationInWork = true;
 
-                InvertActiveSide(_data.ActiveViewInvertDuration, _data.ActiveSideRotation);
-                yield return _activeViewInvertDelay;
+                InvertActiveSide(ActiveViewInvertDelay, _data.ActiveSideRotation);
+                await UniTask.WaitForSeconds(ActiveViewInvertDelay, cancellationToken: token);
 
                 SetLockSide();
 
-                InvertDeactiveSide(_data.DeactiveViewInvertDuration, _data.DeactiveSideRotation);
-                yield return _deactiveViewInvertDelay;
+                InvertDeactiveSide(DeactiveViewInvertDelay, _data.DeactiveSideRotation);
+                await UniTask.WaitForSeconds(DeactiveViewInvertDelay, cancellationToken: token);
 
                 _isAnimationInWork = false;
             }
         }
 
-        private IEnumerator PlayingUnlockButtonAnimation()
+        private async UniTask PlayingUnlockButtonAnimation(CancellationToken token)
         {
             IsActiveSide = true;
 
-            yield return new WaitWhile(() => _isAnimationInWork);
+            await UniTask.WaitWhile(() => _isAnimationInWork, cancellationToken: token);
 
             if (_button.interactable == false)
             {
                 _isAnimationInWork = true;
 
-                InvertActiveSide(_data.ActiveViewInvertDuration, _data.ActiveSideRotation);
-                yield return _activeViewInvertDelay;
+                InvertActiveSide(ActiveViewInvertDelay, _data.ActiveSideRotation);
+                await UniTask.WaitForSeconds(ActiveViewInvertDelay, cancellationToken: token);
 
                 SetUnlockSide();
 
-                InvertDeactiveSide(_data.DeactiveViewInvertDuration, _data.DeactiveSideRotation);
-                yield return _deactiveViewInvertDelay;
+                InvertDeactiveSide(DeactiveViewInvertDelay, _data.DeactiveSideRotation);
+                await UniTask.WaitForSeconds(DeactiveViewInvertDelay, cancellationToken: token);
 
                 _button.interactable = true;
 

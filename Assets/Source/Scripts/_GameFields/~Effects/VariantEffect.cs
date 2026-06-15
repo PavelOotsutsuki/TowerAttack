@@ -1,11 +1,10 @@
-using UnityEngine;
 using GameFields.Persons;
-using System.Collections;
 using GameFields.Persons.Discovers;
 using System.Collections.Generic;
 using System;
 using Cards.Effects;
 using Cards.Views;
+using Cysharp.Threading.Tasks;
 
 namespace GameFields.Effects
 {
@@ -41,14 +40,14 @@ namespace GameFields.Effects
         //    Debug.Log("Эффект ВАРИАНТ окончен");
         //}
 
-        protected override IEnumerator OnPlaying()
+        protected override async UniTask OnPlaying()
         {
             IReadOnlyList<VariantCard> variantCards = _variantCardCreator.CreateByEffect(_effectType);
 
             DiscoverResult discoverResult = new DiscoverResult();
             _activePerson.DiscoverCards(variantCards, "Выберите эффект", discoverResult);
 
-            yield return new WaitUntil(() => discoverResult.IsComplete);
+            await UniTask.WaitUntil(() => discoverResult.IsComplete, cancellationToken: Token);
 
             VariantCard variantCard = (VariantCard)discoverResult.Result;
             CardEffectConfig effectConfig = variantCard.EffectConfig;
@@ -62,7 +61,7 @@ namespace GameFields.Effects
                 variant.Destroy();
             }
 
-            yield return new WaitUntil(() => realEffect.IsComplete);
+            await UniTask.WaitUntil(() => realEffect.IsComplete, cancellationToken: Token);
         }
     }
 }

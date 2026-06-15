@@ -21,14 +21,14 @@ namespace Cards.Views
             return _currentCard == viewable;
         }
 
-        public void SetOverview(IViewable showableCard, BigCardRootActivateData BigCardRootActivateData, IViewable cardFrame)
+        public void SetOverview(IViewable showableCard, BigCardRootActivateData bigCardRootActivateData, IViewable cardFrame)
         {
             ShowCurrentCard();
 
             _currentCard = showableCard;
             _currentCardFrame = cardFrame;
 
-            _bigCardRoot.Activate(BigCardRootActivateData);
+            _bigCardRoot.Activate(bigCardRootActivateData);
             _currentCard.Hide();
             _currentCardFrame.Hide();
         }

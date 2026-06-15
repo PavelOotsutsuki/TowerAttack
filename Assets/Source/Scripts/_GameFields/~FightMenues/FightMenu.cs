@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using Cards.Views.BigCardViews.Capabilities;
 using GameFields.InputSettings;
 using GameFields.Persons;
@@ -16,13 +17,13 @@ namespace GameFields.FightMenues
         private GameFieldInputRoot _inputRoot;
 
         public void Init(GameFieldInputRoot inputRoot, LoseActions playerLoseActions, IVolume cardVolume, IVolume musicVolume,
-            CardCapabilityDescription cardCapabilityDescription)
+            CardCapabilityDescription cardCapabilityDescription, CancellationToken fightToken)
         {
             _inputRoot = inputRoot;
 
-            _fightMenuButtonsPanelRoot.Init(playerLoseActions, this, cardVolume, musicVolume, cardCapabilityDescription);
+            _fightMenuButtonsPanelRoot.Init(playerLoseActions, this, cardVolume, musicVolume, cardCapabilityDescription, fightToken);
 
-            base.Init(_fightMenuButtonsPanelRoot);
+            base.Init(_fightMenuButtonsPanelRoot, fightToken);
         }
 
         protected override void OnActivateInput()

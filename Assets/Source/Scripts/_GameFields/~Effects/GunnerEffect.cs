@@ -1,8 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cards;
 using Cards.Sounds;
+using Cysharp.Threading.Tasks;
 using GameFields.CardTransits;
 using GameFields.InformationLabels;
 using GameFields.Persons;
@@ -59,26 +59,26 @@ namespace GameFields.Effects
         //    Debug.Log("Эффект Артеллериста закончен");
         //}
 
-        protected override IEnumerator OnPlaying()
+        protected override async UniTask OnPlaying()
         {
             //_effectProcessSounds.Play();
 
-            yield return new WaitForSeconds(2f); // Ждем для большего ЭПИКА
+            await UniTask.WaitForSeconds(2f, cancellationToken: Token); // Ждем для большего ЭПИКА
             // Эффект 1. Взятие карты
             ActivateShotSound();
 
             bool effectOneComplete = false;
 
-            _drawCardManager.DrawCards(1, () => effectOneComplete = true);
-            yield return new WaitUntil(() => effectOneComplete);
-            yield return new WaitForSeconds(1f);
+            _drawCardManager.DrawCards(1, Token, () => effectOneComplete = true);
+            await UniTask.WaitUntil(() => effectOneComplete, cancellationToken: Token);
+            await UniTask.WaitForSeconds(1f, cancellationToken: Token);
             // Эффект 2. Атака
             ActivateShotSound();
 
             bool effectTwoComplete = false;
 
             _activePerson.AttackActivate(1, () => effectTwoComplete = true);
-            yield return new WaitUntil(() => effectTwoComplete);
+            await UniTask.WaitUntil(() => effectTwoComplete, cancellationToken: Token);
 
             // Эффект 3. Сжигаем карту
             //ViewType viewType = _activePerson is EnemyAI ? ViewType.HandPlayer : ViewType.HandAI;
@@ -112,7 +112,7 @@ namespace GameFields.Effects
                 int index = _viewRoot.IndexOf(handViewType, firedCard);
 
                 _transitManager.TransitCard(cards[randomCardIndex], handFrom, firePoolTo, () => effectThreeComplete = true, index);
-                yield return new WaitUntil(() => effectThreeComplete);
+                await UniTask.WaitUntil(() => effectThreeComplete, cancellationToken: Token);
             }
 
             // Эффект 4. Смотрим верхнюю и нижнюю карту
@@ -132,7 +132,7 @@ namespace GameFields.Effects
             }
 
             if (deckTopCard == null || deckEndCard == null)
-                yield break;
+                return;
 
             ActivateShotSound();
 
@@ -153,7 +153,7 @@ namespace GameFields.Effects
 
                 LookCardMenuActivateData lookCardMenuActivateData = new LookCardMenuActivateData(lookCards, MessagePlayer);
                 _activePerson.LookCards(lookCardMenuActivateData, () => effectFourComplete = true);
-                yield return new WaitUntil(() => effectFourComplete);
+                await UniTask.WaitUntil(() => effectFourComplete, cancellationToken: Token);
             }
             else
             {
@@ -161,7 +161,7 @@ namespace GameFields.Effects
                 InformationLabelActivateData informationLabelActivateData = new InformationLabelActivateData(labelActivateData, 6f);
 
                 _informationLabel.Activate(informationLabelActivateData);
-                yield return new WaitUntil(() => _informationLabel.IsComplete);
+                await UniTask.WaitUntil(() => _informationLabel.IsComplete, cancellationToken: Token);
             }
         }
 

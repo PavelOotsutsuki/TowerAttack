@@ -16,13 +16,5 @@ namespace Cards.Views
         [field: SerializeField] internal CardCapability CardCapability { get; private set; }
         [field: SerializeField] internal CardPersonType CardPersonType { get; private set; }
         [field: SerializeField] internal CardName CardName { get; private set; }
-
-        //internal void SetCurseMode()
-        //{
-        //    if ((CardCapability & CardCapability.Curse) == CardCapability.Curse)
-        //        return;
-
-        //    CardCapability |= CardCapability.Curse;
-        //}
     }
 }

@@ -1,15 +1,20 @@
 using System.Collections.Generic;
+using System.Threading;
 using DG.Tweening;
 using Tools.Utils.FillComponents;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
+using Tools.Extensions;
 
 namespace Tools.UI
 {
-    public class NascentPanel : MonoBehaviour, ICompletable, IWorkable, IAutomaticFillComponents
+    public class NascentPanel : MonoBehaviour, ICompletable, IWorkable<CancellationTokenData>, IAutomaticFillComponents
     {
         [SerializeField] private Transform _transform;
 
         [SerializeField] private NascentData _data;
+
+        private CancellationTokenSource _currentCTS;
 
         public bool IsComplete { get; private set; }
         public bool? IsActive { get; private set; } = null;
@@ -21,7 +26,7 @@ namespace Tools.UI
             Deactivate();
         }
 
-        public void Activate()
+        public void Activate(CancellationTokenData tokenData)
         {
             if (IsActive == true)
                 return;
@@ -29,7 +34,10 @@ namespace Tools.UI
             IsActive = true;
             IsComplete = false;
 
-            _transform.DOScale(_data.EndScale, _data.Duration).OnComplete(() => IsComplete = true);
+            Utils.Utils.DestroyCTS(ref _currentCTS);
+            _currentCTS = CancellationTokenSource.CreateLinkedTokenSource(tokenData.Token);
+
+            _transform.DOScale(_data.EndScale, _data.Duration).OnComplete(() => IsComplete = true).ToUniTask(ct: _currentCTS.Token).Forget();
         }
 
         public void Deactivate()
@@ -38,7 +46,14 @@ namespace Tools.UI
                 return;
 
             IsActive = false;
+            Utils.Utils.DestroyCTS(ref _currentCTS);
+
             _transform.localScale = _data.StartScale;
+        }
+
+        private void OnDisable()
+        {
+            Utils.Utils.DestroyCTS(ref _currentCTS);
         }
 
         #region AutomaticFillComponents

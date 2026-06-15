@@ -1,10 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cards;
+using Cysharp.Threading.Tasks;
 using GameFields.CardTransits;
 using GameFields.Persons;
-using UnityEngine;
 
 namespace GameFields.Effects
 {
@@ -33,7 +32,7 @@ namespace GameFields.Effects
         //    Debug.Log("Эффект Глупого Монаха закончен");
         //}
 
-        protected override IEnumerator OnPlaying()
+        protected override async UniTask OnPlaying()
         {
             //ViewType viewType = _activePerson is Player ? ViewType.HandPlayer : ViewType.HandAI;
             //ViewType viewType = ViewTransitTypeConverter.GetPersonHandViewType(_activePerson, true);
@@ -43,7 +42,7 @@ namespace GameFields.Effects
 
             if (cards.Count <= 0)
             {
-                yield break;
+                return;
             }
 
             TransitFromType handFrom = activePersonTypes.Hand.FromType;
@@ -65,7 +64,8 @@ namespace GameFields.Effects
             bool isTransit = false;
             _transitManager.TransitCard(firedCard, handFrom, firePoolTo, () => isTransit = true, index);
             //_activePerson.ActivateFateInevitability(_duration);
-            yield return new WaitUntil(() => isTransit);
+
+            await UniTask.WaitUntil(() => isTransit, cancellationToken: Token);
         }
     }
 }

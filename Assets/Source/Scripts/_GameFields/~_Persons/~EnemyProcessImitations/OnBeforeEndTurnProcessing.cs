@@ -1,18 +1,17 @@
-using GameFields.InputSettings;
-using GameFields.Persons;
+using System.Threading;
 using GameFields.Persons.EffectHandlers;
 using Tools.InputSettings;
 
 namespace GameFields.Persons.EnemyProcessImitations
 {
-    public class OnBeforeEndTurnProcessing : PersonStep, IInputLogicObject
+    internal class OnBeforeEndTurnProcessing : PersonStep, IInputLogicObject
     {
         private readonly PersonEffectsHandler _personEffectsHandler;
 
         private bool _isComplete;
 
-        public OnBeforeEndTurnProcessing(InteractionActivator interactionActivator, PersonEffectsHandler personEffectsHandler)
-            : base(interactionActivator)
+        public OnBeforeEndTurnProcessing(InteractionActivator interactionActivator, PersonEffectsHandler personEffectsHandler, CancellationToken turnToken)
+            : base(interactionActivator, turnToken)
         {
             _isComplete = false;
             _personEffectsHandler = personEffectsHandler;
@@ -24,7 +23,7 @@ namespace GameFields.Persons.EnemyProcessImitations
         {
             _isComplete = false;
 
-            _personEffectsHandler.BeforeEndTurn(() => _isComplete = true);
+            _personEffectsHandler.BeforeEndTurn(() => _isComplete = true, Token);
         }
     }
 }

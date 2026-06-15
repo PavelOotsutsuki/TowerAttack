@@ -1,39 +1,45 @@
-using System.Collections;
+using System;
+using System.Reflection;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using GameFields.InputSettings;
 using Tools;
 using Tools.UI;
+using Tools.Utils;
 using UnityEngine;
 
 namespace GameFields.Persons.SelectMenues
 {
-    public class SelectButton : FadableConfirmableButton
+    public class SelectButton : FadableConfirmableButton, IWorkable
     {
         private IDeactivatable _clickCallback;
-        private Coroutine _workableCoroutine;
+        //private Coroutine _workableCoroutine;
         private GameFieldInputRoot _inputRoot;
+        private CancellationTokenSource _deactivatingCTS;
+        private CancellationToken _fightToken;
 
-        public void Init(IDeactivatable clickCallback, GameFieldInputRoot inputRoot)
+        public void Init(IDeactivatable clickCallback, GameFieldInputRoot inputRoot, CancellationToken fightToken)
         {
             _clickCallback = clickCallback;
             IsActive = false;
             _inputRoot = inputRoot;
+            _fightToken = fightToken;
 
             base.Init();
 
             gameObject.SetActive(false);
         }
 
-        public override void Activate()
+        public void Activate()
         {
             if (IsActive == true)
                 return;
 
-            if (_workableCoroutine != null)
-                StopCoroutine(_workableCoroutine);
+            Utils.DestroyCTS(ref _deactivatingCTS);
 
             gameObject.SetActive(true);
 
-            base.Activate();
+            base.BaseActivate();
 
             IsActive = true;
         }
@@ -47,26 +53,38 @@ namespace GameFields.Persons.SelectMenues
             _clickCallback.Deactivate();
         }
 
-        public override void Deactivate()
+        public void Deactivate()
         {
             if (IsActive == false)
                 return;
 
-            base.Deactivate();
+            base.BaseDeactivate();
 
             IsActive = false;
 
-            if (_workableCoroutine != null)
-                StopCoroutine(_workableCoroutine);
+            Utils.DestroyCTS(ref _deactivatingCTS);
+            _deactivatingCTS = CancellationTokenSource.CreateLinkedTokenSource(_fightToken);
 
-            _workableCoroutine = StartCoroutine(Deactivating());
+            Deactivating(_deactivatingCTS.Token).Forget();
         }
 
-        private IEnumerator Deactivating()
+        private async UniTask Deactivating(CancellationToken token)
         {
-            yield return new WaitUntil(() => IsComplete);
+            try
+            {
+                await UniTask.WaitUntil(() => IsComplete, cancellationToken: token);
 
-            gameObject.SetActive(false);
+                gameObject.SetActive(false);
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.Log($"ОТМЕНА ТОКЕНА: {MethodBase.GetCurrentMethod().DeclaringType.Name}: {GetType().Name}");
+            }
+        }
+
+        private void OnDisable()
+        {
+            Utils.DestroyCTS(ref _deactivatingCTS);
         }
     }
 }

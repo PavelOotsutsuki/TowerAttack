@@ -35,6 +35,7 @@ namespace StartMenues
         private Action<int> _onPlayClick;
         private IHidable _startMenuDeactivatable;
         private ICompletable _startMenuCompletable;
+        private CancellationToken _startMenuToken;
 
         public bool IsPreactive { get; private set; } = false;
 
@@ -46,13 +47,14 @@ namespace StartMenues
         //public bool IsComplete => _isComplete;
 
         public void Init(Action onSettingsButtonClick, Action onRulesButtonClick, Action<int> onPlayClick,
-            StartMenu startMenuDeactivatable)
+            StartMenu startMenuDeactivatable, CancellationToken startMenuToken)
         {
             //_isComplete = true;
             //_fadablePanel.Init();
             _onPlayClick = onPlayClick;
             _startMenuDeactivatable = startMenuDeactivatable;
             _startMenuCompletable = startMenuDeactivatable;
+            _startMenuToken = startMenuToken;
 
             List<ConfirmableFocusableButton> focusableButtons = new List<ConfirmableFocusableButton>()
             {
@@ -138,14 +140,14 @@ namespace StartMenues
 
         private void StartPlaying()
         {
-            StartingPlaying().ToUniTask();
+            StartingPlaying(_startMenuToken).Forget();
         }
 
-        private IEnumerator StartingPlaying()
+        private async UniTask StartingPlaying(CancellationToken token)
         {
             _startMenuDeactivatable.Hide();
 
-            yield return new WaitUntil(() => _startMenuCompletable.IsComplete);
+            await UniTask.WaitUntil(() => _startMenuCompletable.IsComplete, cancellationToken: token);
             //yield return new WaitForSeconds(1f);
 
             _onPlayClick?.Invoke(1);

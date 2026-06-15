@@ -1,5 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Cards;
 using Cysharp.Threading.Tasks;
 using GameFields.CardTransits;
@@ -30,19 +30,19 @@ namespace GameFields.StartFights
             _firstTurnCardsCount = firstTurnCardsCount;
         }
 
-        public override void StartProcess()
+        public override void StartProcess(CancellationToken token)
         {
-            _enemyCards = _drawCardManager.DrawCards(_firstTurnCardsCount, StartEnemyProcess);
+            _enemyCards = _drawCardManager.DrawCards(_firstTurnCardsCount, token, () => StartEnemyProcess(token));
         }
 
-        private void StartEnemyProcess()
+        private void StartEnemyProcess(CancellationToken token)
         {
-            StartingEnemyProcess(_enemyCards).ToUniTask();
+            StartingEnemyProcess(_enemyCards, token).Forget();
         }
 
-        private IEnumerator StartingEnemyProcess(IReadOnlyList<Card> enemyCards)
+        private async UniTask StartingEnemyProcess(IReadOnlyList<Card> enemyCards, CancellationToken token)
         {
-            yield return new WaitForSeconds(_data.WaitDurationBeforeStartActions);
+            await UniTask.WaitForSeconds(_data.WaitDurationBeforeStartActions, cancellationToken: token);
 
             int selectedCardIndex = Random.Range(0, _firstTurnCardsCount);
 

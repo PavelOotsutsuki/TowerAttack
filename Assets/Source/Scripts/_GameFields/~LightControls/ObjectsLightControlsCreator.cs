@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
@@ -14,14 +15,14 @@ namespace GameFields.LightControls
         [SerializeField] private HandTransferLightableObject _handTransferLightableObject;
         [SerializeField] private float _dragAndDropDelayForActivate = 3f;
 
-        public void Init()
+        public void Init(CancellationToken fightToken)
         {
-            _lightPanel.Init();
+            _lightPanel.Init(fightToken);
 
-            _cardAttackZoneEnemyAI.Init();
-            _cardPlayingZonePlayer.Init();
-            _forgingLightableObject.Init();
-            _handTransferLightableObject.Init();
+            _cardAttackZoneEnemyAI.Init(fightToken);
+            _cardPlayingZonePlayer.Init(fightToken);
+            _forgingLightableObject.Init(fightToken);
+            _handTransferLightableObject.Init(fightToken);
         }
 
         public CardDragAndDropLightController CreateCardDragAndDropLightController()

@@ -1,5 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Tools;
 using Tools.Utils.FillComponents;
 using UnityEngine;
@@ -18,9 +18,9 @@ namespace GameFields.EndTurnButtons
         public bool EndTurnClicked => _changeSideAnimator.IsActiveSide;
         public bool? IsActive { get; private set; } = null;
 
-        public void Init()
+        public void Init(CancellationToken fightToken)
         {
-            _changeSideAnimator = new ChangeSideAnimator(_data, _button);
+            _changeSideAnimator = new ChangeSideAnimator(_data, _button , fightToken);
 
             //Deactivate();
         }

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Threading;
 using Cards;
 using Cysharp.Threading.Tasks;
 using GameFields.CommonAnimations;
@@ -46,42 +47,42 @@ namespace GameFields.Persons.SelectMenues.Attacks
             _isComplete = false;
             _isActive = true;
 
-            SettingResult(data).ToUniTask();
+            SettingResult(data).Forget();
         }
 
-        protected virtual IEnumerator OnSettingResult(SetSelectResultData data)
+        protected virtual UniTask OnSettingResult(SetSelectResultData data)
         {
             _currentCard = _attackCardKeeper.SeizeAttackingCard;
-            yield break;
+            return UniTask.CompletedTask;
         }
 
-        private IEnumerator SettingResult(SetSelectResultData data)
+        private async UniTask SettingResult(SetSelectResultData data)
         {
-            yield return OnSettingResult(data);
+            await OnSettingResult(data);
 
             switch (data.ResultType)
             {
                 case ResultType.Success:
-                    yield return SuccessAttackProcessing();
+                    await SuccessAttackProcessing(data);
                     break;
                 case ResultType.Falled:
-                    yield return FalledAttackProcessing();
+                    await FalledAttackProcessing(data);
                     break;
                 default:
                     throw new System.Exception("Неизвестный ResultType");
             }
 
-            yield return new WaitForSeconds(1f);
+            await UniTask.Delay(1000, cancellationToken: data.Token);
             _isActive = false;
         }
 
-        private IEnumerator FalledAttackProcessing()
+        private async UniTask FalledAttackProcessing(CancellationTokenData tokenData)
         {
             if (_currentCard is not null)
             {
-                _invertCardAnimation.Play(_currentCard);
+                _invertCardAnimation.Play(_currentCard, tokenData.Token);
 
-                yield return new WaitUntil(() => _invertCardAnimation.IsComplete);
+                await UniTask.WaitUntil(() => _invertCardAnimation.IsComplete, cancellationToken: tokenData.Token);
 
                 _discardPile.SeatCard(_currentCard);
             }
@@ -89,18 +90,18 @@ namespace GameFields.Persons.SelectMenues.Attacks
             _isComplete = true;
         }
 
-        private IEnumerator SuccessAttackProcessing()
+        private async UniTask SuccessAttackProcessing(CancellationTokenData tokenData)
         {
             if (_currentCard is not null)
             {
-                _invertCardAnimation.Play(_currentCard);
+                _invertCardAnimation.Play(_currentCard, tokenData.Token);
 
-                yield return new WaitUntil(() => _invertCardAnimation.IsComplete);
+                await UniTask.WaitUntil(() => _invertCardAnimation.IsComplete, cancellationToken: tokenData.Token);
 
                 _discardPile.SeatCard(_currentCard);
             }
 
-            _loseActions.Activate();
+            _loseActions.Activate(tokenData);
 
             // не было, и не надо. Кнопка при победе переворачивтаься не должна
             //_isComplete = true;

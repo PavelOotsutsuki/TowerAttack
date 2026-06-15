@@ -1,7 +1,6 @@
-using System.Collections;
 using Cards;
+using Cysharp.Threading.Tasks;
 using GameFields.Persons;
-using UnityEngine;
 
 namespace GameFields.Effects
 {
@@ -27,13 +26,13 @@ namespace GameFields.Effects
         //    Debug.Log("Эффект Шулера закончен");
         //}
 
-        protected override IEnumerator OnPlaying()
+        protected override UniTask OnPlaying()
         {
             //_deactivePerson.ActivateDoubleEffect(1);
             //_activePerson.ActivateDoubleEffect(2);
             _deactivePerson.ActivateDoubleEffect(_card);
             _activePerson.ActivateDoubleEffect(_card);
-            yield break;
+            return UniTask.CompletedTask;
             //yield return new WaitForSeconds(10f);
 
             //_deactivePerson.AttackDeactivate();

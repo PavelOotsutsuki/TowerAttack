@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using Tools;
 using UnityEngine;
 using Zenject;
@@ -10,6 +11,7 @@ namespace Roots
         [SerializeField] private GameObject _prefab;
 
         protected GameObject CurrentGameObject;
+        protected CancellationToken GameRootToken;
 
         private DiContainer _diContainer;
         private Container _container;
@@ -20,12 +22,13 @@ namespace Roots
 
         public bool IsComplete { get; protected set; }
 
-        protected void Init(DiContainer diContainer, Container container)
+        protected void Init(DiContainer diContainer, Container container, CancellationToken gameRootToken)
         {
             IsActive = false;
 
             _diContainer = diContainer;
             _container = container;
+            GameRootToken = gameRootToken;
         }
 
         protected abstract void OnActivate();

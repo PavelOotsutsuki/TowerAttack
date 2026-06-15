@@ -1,8 +1,11 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using GameFields.Persons.Discovers;
 using Tools.UI;
+using Tools.Utils;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
@@ -12,34 +15,63 @@ namespace GameFields.StartFights
     {
         [SerializeField] private DiscoverLabel _discoverLabel;
 
-        public override void Init()
+        private CancellationTokenSource _currentCTS;
+
+        public override void Init(CancellationToken gameFieldToken)
         {
             _discoverLabel.Init();
 
-            base.Init();
+            base.Init(gameFieldToken);
         }
 
         public override void Activate(DiscoverActivateData data)
         {
+            if (Token.IsCancellationRequested)
+                return;
+
             base.Activate(data);
 
-            LabelActivateData labelData = new LabelActivateData(data.ActivateMessage);
+            Utils.DestroyCTS(ref _currentCTS);
+            _currentCTS = CancellationTokenSource.CreateLinkedTokenSource(Token);
+
+            LabelActivateDataAsync labelData = new LabelActivateDataAsync(new LabelActivateData(data.ActivateMessage), _currentCTS.Token);
 
             _discoverLabel.Show(labelData);
         }
 
         protected override void Deactivate()
         {
+            if (Token.IsCancellationRequested)
+                return;
+
+            Utils.DestroyCTS(ref _currentCTS);
+            _currentCTS = CancellationTokenSource.CreateLinkedTokenSource(Token);
+
             _discoverLabel.Hide();
 
-            Deactivating().ToUniTask();
+            Deactivating(_currentCTS.Token).Forget();
         }
 
-        private IEnumerator Deactivating()
+        private async UniTask Deactivating(CancellationToken token)
         {
-            yield return new WaitUntil(() => _discoverLabel.IsComplete);
+            if (Token.IsCancellationRequested)
+                return;
 
-            base.Deactivate();
+            try
+            {
+                await UniTask.WaitUntil(() => _discoverLabel.IsComplete, cancellationToken: token);
+
+                base.Deactivate();
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.Log($"ОТМЕНА ТОКЕНА: {MethodBase.GetCurrentMethod().DeclaringType.Name}: {GetType().Name}");
+            }
+        }
+
+        private void OnDisable()
+        {
+            Utils.DestroyCTS(ref _currentCTS);
         }
 
         #region AutomaticFillComponents

@@ -1,6 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using Tools.Utils.FillComponents;
 using UnityEngine;
@@ -57,7 +58,7 @@ namespace Tools.CommonAnimations
             gameObject.SetActive(false);
         }
 
-        public void Play()
+        public void Play(CancellationToken token)
         {
             _isComplete = false;
 
@@ -65,113 +66,43 @@ namespace Tools.CommonAnimations
 
             Activate(data);
 
-            StartingAnimation().ToUniTask();
-            //PlayAnimation().ToUniTask();
+            StartingAnimation(token).Forget();
         }
 
-        //private IEnumerator StartingSuccessAnimation()
-        //{
-        //    WaitForSeconds wait = new WaitForSeconds(_duration / _animSprites.Count * Time.deltaTime);
-
-        //    foreach (Sprite sprite in _animSprites)
-        //    {
-        //        _image.sprite = sprite;
-        //        yield return wait;
-        //    }
-        //}
-
-        //private IEnumerator StartingAnimation()
-        //{
-        //    //WaitForSeconds wait = new WaitForSeconds(_duration / _animSprites.Count);
-        //    TimeSpan startTime = DateTime.Now.TimeOfDay;
-        //    //WaitForSeconds wait = new WaitForSeconds(_duration / _animSprites.Count * Time.deltaTime);
-        //    //int counter = 0;
-        //    //float fullTime = 0f;
-
-        //    //float duration = Convert.ToSingle((DateTime.Now.TimeOfDay - startTime).TotalSeconds);
-
-        //    while (Convert.ToSingle((DateTime.Now.TimeOfDay - startTime).TotalSeconds) < _duration)
-        //    {
-        //        int index = Convert.ToInt32(Convert.ToSingle((DateTime.Now.TimeOfDay - startTime).TotalSeconds) / (_duration / _animSprites.Count));
-
-        //        if (index > 109)
-        //        {
-        //            index = 109;
-        //        }
-
-        //        if (index < 0)
-        //        {
-        //            index = 0;
-        //        }
-
-        //        _image.sprite = _animSprites[index];
-        //        //Debug.Log((_image == null).ToString());
-        //        //Debug.Log((_image.sprite == null).ToString());
-        //        //Debug.Log(index.ToString());
-        //        //Debug.Log(_animSprites[index]);
-        //        Debug.Log(_duration + ": TimeSpan: " + Convert.ToSingle((DateTime.Now.TimeOfDay - startTime).TotalSeconds));
-        //        yield return null;
-        //    }
-
-        //    //foreach (Sprite sprite in _animSprites)
-        //    //{
-        //    //    counter++;
-        //    //    //float delay = _duration / _animSprites.Count * Time.deltaTime;
-        //    //    //WaitForSeconds wait = new WaitForSeconds(delay);
-        //    //    //fullTime += delay;
-        //    //    fullTime += _duration / _animSprites.Count;
-        //    //    Debug.Log(counter + ". FullTime: " + fullTime + " TimeSpan: " + (DateTime.Now.TimeOfDay - startTime).TotalSeconds);
-
-        //    //    _image.sprite = sprite;
-        //    //    //yield return wait;
-        //    //}
-
-        //    Debug.Log((DateTime.Now.TimeOfDay - startTime).TotalSeconds);
-        //    yield break;
-        //}
-
-
-        //private IEnumerator PlayAnimation()
-        //{
-        //    float timePerFrame = _duration / _animSprites.Count;
-        //    int currentSpriteIndex = 0;
-
-        //    while (currentSpriteIndex < _animSprites.Count)
-        //    {
-        //        _image.sprite = _animSprites[currentSpriteIndex];
-
-        //        currentSpriteIndex++;
-
-        //        yield return new WaitForSeconds(timePerFrame);
-        //    }
-        //}
-
-        private IEnumerator StartingAnimation()
+        private async UniTask StartingAnimation(CancellationToken token)
         {
-            TimeSpan startTime = DateTime.Now.TimeOfDay;
-            //WaitForSeconds wait = new WaitForSeconds(Time.deltaTime - _duration / _animSprites.Count);
-
-            //Debug.Log("Начало " + _animSprites.Count + "задержка " + _duration / _animSprites.Count);
-            float delay = _duration / _animSprites.Count;
-
-            int counter = 0;
-
-            foreach (Sprite sprite in _animSprites)
+            try
             {
-                counter++;
+                TimeSpan startTime = DateTime.Now.TimeOfDay;
+                //WaitForSeconds wait = new WaitForSeconds(Time.deltaTime - _duration / _animSprites.Count);
 
-                _image.sprite = sprite;
+                //Debug.Log("Начало " + _animSprites.Count + "задержка " + _duration / _animSprites.Count);
+                float delay = _duration / _animSprites.Count;
 
-                int addFullTime = Convert.ToInt32(delay * counter * 1000);
-                int addSeconds = addFullTime / 1000;
-                int addMilliseconds = addFullTime % 1000;
-                //Debug.Log("Процесс " + counter++ + "/" + _animSprites.Count);
-                yield return new WaitUntil(() => DateTime.Now.TimeOfDay >= startTime.Add(new TimeSpan(0,0,0, addSeconds, addMilliseconds)));
-                //yield return new WaitForSeconds((_duration / _animSprites.Count) - Time.deltaTime);
+                int counter = 0;
+
+                foreach (Sprite sprite in _animSprites)
+                {
+                    counter++;
+
+                    _image.sprite = sprite;
+
+                    int addFullTime = Convert.ToInt32(delay * counter * 1000);
+                    int addSeconds = addFullTime / 1000;
+                    int addMilliseconds = addFullTime % 1000;
+                    //Debug.Log("Процесс " + counter++ + "/" + _animSprites.Count);
+                    await UniTask.WaitUntil(() => DateTime.Now.TimeOfDay >= startTime.Add(new TimeSpan(0, 0, 0, addSeconds, addMilliseconds)), cancellationToken: token);
+                    //yield return new WaitUntil(() => DateTime.Now.TimeOfDay >= startTime.Add(new TimeSpan(0,0,0, addSeconds, addMilliseconds)));
+                    //yield return new WaitForSeconds((_duration / _animSprites.Count) - Time.deltaTime);
+                }
+
+                _isComplete = true;
+                //Debug.Log("Конец " + _animSprites.Count + " . Время: " + (DateTime.Now.TimeOfDay - startTime));
             }
-
-            _isComplete = true;
-            //Debug.Log("Конец " + _animSprites.Count + " . Время: " + (DateTime.Now.TimeOfDay - startTime));
+            catch (OperationCanceledException)
+            {
+                Debug.Log($"ОТМЕНА ТОКЕНА: {MethodBase.GetCurrentMethod().DeclaringType.Name}: {GetType().Name}");
+            }
         }
 
         #region AutomaticFillComponents

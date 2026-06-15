@@ -1,7 +1,6 @@
-using System.Collections;
+using Cysharp.Threading.Tasks;
 using GameFields.Persons;
 using GameFields.Persons.SelectMenues;
-using UnityEngine;
 
 namespace GameFields.Effects
 {
@@ -24,11 +23,11 @@ namespace GameFields.Effects
         //    Debug.Log("Эффект Четкого букмекера закончен");
         //}
 
-        protected override IEnumerator OnPlaying()
+        protected override async UniTask OnPlaying()
         {
             bool endChoice = false;
             _activePerson.ChoiceActivate(CountNumbers, () => endChoice = true, RestrictionType.Even);
-            yield return new WaitUntil(() => endChoice);
+            await UniTask.WaitUntil(() => endChoice, cancellationToken: Token);
         }
     }
 }

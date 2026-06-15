@@ -1,13 +1,12 @@
 using System;
-using System.Collections;
-using Cards;
+using System.Reflection;
+using System.Threading;
 using Cards.Insides;
 using Cards.Views;
 using Cards.Views.BigCardViews;
 using Cards.Views.BigCardViews.Capabilities;
 using Cards.Views.BigCardViews.CardDescriptions;
 using Cysharp.Threading.Tasks;
-using Tools.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
@@ -33,6 +32,9 @@ namespace GameFields.Persons.Discovers
 
         public override void Deactivate()
         {
+            if (Token.IsCancellationRequested)
+                return;
+
             if (IsActive == false)
                 return;
 
@@ -46,6 +48,9 @@ namespace GameFields.Persons.Discovers
 
         public override void Activate(DiscoverCardActivateData data)
         {
+            if (Token.IsCancellationRequested)
+                return;
+
             if (IsActive == true)
                 return;
 
@@ -55,14 +60,14 @@ namespace GameFields.Persons.Discovers
 
             _cardView.FillData(data.CardViewData);
             //BigCardShowData bigCardShowData = new BigCardShowData(new Vector2(data.CardWidth, data.CardHeight), data.ReadOnlyRectTransform, data.CardViewData);
-            CardDescriptionActivateData cardDescriptionActivateData = new CardDescriptionActivateData(data.CardViewData.Description);
+            CardDescriptionActivateData cardDescriptionActivateData = new CardDescriptionActivateData(data.CardViewData.Description, Token);
             _bigCardRootActivateData = new BigCardRootActivateData(null, cardDescriptionActivateData, null);
 
             DiscoverViewLogicData discoverViewLogicData = new DiscoverViewLogicData(data.CardHeight, data.CardWidth);
 
             ViewLogic.Show(discoverViewLogicData);
 
-            WaitingToUnblock().ToUniTask();
+            WaitingToUnblock(Token).Forget();
 
             gameObject.SetActive(true);
         }
@@ -89,12 +94,22 @@ namespace GameFields.Persons.Discovers
             _bigCardRoot.Deactivate();
         }
 
-        private IEnumerator WaitingToUnblock()
+        private async UniTask WaitingToUnblock(CancellationToken token)
         {
-            //yield return new WaitForSeconds(ViewDuration);
-            yield return new WaitUntil(() => ViewLogic.IsComplete);
+            if (Token.IsCancellationRequested)
+                return;
 
-            Unblock();
+            try
+            {
+                //yield return new WaitForSeconds(ViewDuration);
+                await UniTask.WaitUntil(() => ViewLogic.IsComplete, cancellationToken: token);
+
+                Unblock();
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.Log($"ОТМЕНА ТОКЕНА: {MethodBase.GetCurrentMethod().DeclaringType.Name}: {GetType().Name}");
+            }
         }
 
         private void Block()

@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Collections;
+using System.Reflection;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,15 +16,18 @@ namespace GameFields.Persons.Discovers
         private Color _defaultColor;
 
         public override void Init(Action clickCallback, IDiscoverClickHandler discoverClickHandler, float scaleFactor,
-            float viewDuration)
+            float viewDuration, CancellationToken fightToken)
         {
             _defaultColor = _frameImage.color;
 
-            base.Init(clickCallback, discoverClickHandler, scaleFactor, viewDuration);
+            base.Init(clickCallback, discoverClickHandler, scaleFactor, viewDuration, fightToken);
         }
 
         public override void Deactivate()
         {
+            if (Token.IsCancellationRequested)
+                return;
+
             if (IsActive == false)
                 return;
 
@@ -34,6 +38,9 @@ namespace GameFields.Persons.Discovers
 
         public override void Activate(DiscoverCardActivateData data)
         {
+            if (Token.IsCancellationRequested)
+                return;
+
             if (IsActive == true)
                 return;
 
@@ -50,16 +57,26 @@ namespace GameFields.Persons.Discovers
 
         public override void StartClickActions()
         {
-            ClickingImitation().ToUniTask();
+            ClickingImitation(Token).Forget();
         }
 
-        private IEnumerator ClickingImitation()
+        private async UniTask ClickingImitation(CancellationToken token)
         {
-            _frameImage.color = _selectedFrameColor;
+            if (Token.IsCancellationRequested)
+                return;
 
-            yield return new WaitForSeconds(_selectedWaitDuration);
+            try
+            {
+                _frameImage.color = _selectedFrameColor;
 
-            ClickCallback?.Invoke();
+                await UniTask.WaitForSeconds(_selectedWaitDuration, cancellationToken: token);
+
+                ClickCallback?.Invoke();
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.Log($"ОТМЕНА ТОКЕНА: {MethodBase.GetCurrentMethod().DeclaringType.Name}: {GetType().Name}");
+            }
         }
     }
 }

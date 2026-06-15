@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using GameFields.CardTransits;
 using GameFields.Persons;
 using UnityEngine;
@@ -29,7 +30,7 @@ namespace GameFields.Effects
         //    Debug.Log("Эффект Стадо коров закончен");
         //}
 
-        protected override IEnumerator OnPlaying()
+        protected override async UniTask OnPlaying()
         {
             bool endPlayingAttack = false;
 
@@ -40,7 +41,7 @@ namespace GameFields.Effects
                 countAttack += BonusByEffect;
 
             _activePerson.AttackActivate(countAttack, () => endPlayingAttack = true);
-            yield return new WaitUntil(() => endPlayingAttack);
+            await UniTask.WaitUntil(() => endPlayingAttack, cancellationToken: Token);
         }
     }
 }

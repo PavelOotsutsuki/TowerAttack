@@ -1,5 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Tools;
 using Tools.UI;
 using Tools.Utils.FillComponents;
@@ -14,6 +14,8 @@ namespace Cards.Views.BigCardViews.CardDescriptions
         [SerializeField] private FadableLabel _fadableLabel;
         [SerializeField] private Image _descriptionImage;
         [SerializeField] private Outline _outline;
+
+        private CancellationToken _currentToken;
 
         public bool? IsShown { get; private set; } = false;
 
@@ -32,8 +34,9 @@ namespace Cards.Views.BigCardViews.CardDescriptions
 
             IsShown = true;
 
+            _currentToken = data.Token;
             _descriptionImage.color = data.ActivateColor;
-            LabelActivateData fadableLabelActivateData = new LabelActivateData(data.Description);
+            LabelActivateDataAsync fadableLabelActivateData = new LabelActivateDataAsync(new LabelActivateData(data.Description), _currentToken);
             _outline.enabled = data.IsOutline;
 
             //Debug.Log("CardDescription message: " + data.Description);
@@ -47,7 +50,7 @@ namespace Cards.Views.BigCardViews.CardDescriptions
 
             IsShown = false;
 
-            _fadableLabel.Hide();
+            _fadableLabel.Hide(new CancellationTokenData(_currentToken));
         }
 
         #region AutomaticFillComponents

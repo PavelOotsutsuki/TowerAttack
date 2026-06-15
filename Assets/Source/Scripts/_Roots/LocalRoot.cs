@@ -1,6 +1,7 @@
-using System;
 using System.Collections.Generic;
+using System.Threading;
 using Tools;
+using Tools.Utils;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
@@ -13,14 +14,24 @@ namespace Roots
         [SerializeField] private FontRoot _fontRoot;
         [SerializeField] private CanvasRoot _canvasRoot;
 
+        private CancellationTokenSource _localRootCTS;
+
         protected IFontSetter FontSetter => _fontRoot;
+        protected CancellationToken Token => _localRootCTS.Token;
 
         public abstract void Activate();
 
-        protected void Init()
+        protected void Init(CancellationToken gameRootToken)
         {
+            _localRootCTS = CancellationTokenSource.CreateLinkedTokenSource(gameRootToken);
+
             _canvasRoot.Init();
             _fontRoot.Init();
+        }
+
+        private void OnDestroy()
+        {
+            Utils.DestroyCTS(ref _localRootCTS);
         }
 
         public abstract void ActivateInputSystem();

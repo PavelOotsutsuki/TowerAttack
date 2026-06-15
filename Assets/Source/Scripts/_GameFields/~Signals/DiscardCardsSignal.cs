@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using Cards;
 
 namespace GameFields.Signals
@@ -13,10 +14,12 @@ namespace GameFields.Signals
         //}
 
         public readonly Card Card;
+        public readonly CancellationToken Token;
 
-        public DiscardCardsSignal(Card card)
+        public DiscardCardsSignal(Card card, CancellationToken token)
         {
             Card = card;
+            Token = token;
         }
     }
 }

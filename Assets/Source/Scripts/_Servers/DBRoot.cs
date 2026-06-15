@@ -1,18 +1,14 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Servers.DTO;
 using UnityEngine;
 using UnityEngine.Networking;
-using static System.Net.WebRequestMethods;
 
 namespace Servers
 {
-    public class DBRoot// : MonoBehaviour
+    public class DBRoot
     {
         private const string RootUri = "https://localhost:7206/api/Players";
 

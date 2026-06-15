@@ -1,4 +1,3 @@
-using System.Collections;
 using Cards;
 using UnityEngine;
 using System;
@@ -7,6 +6,7 @@ using Tools;
 using Tools.Utils.Movements;
 using GameFields.CommonAnimations;
 using Cards.Views;
+using System.Threading;
 
 namespace GameFields.DiscardPiles
 {
@@ -35,12 +35,12 @@ namespace GameFields.DiscardPiles
             _cardMovement = _card.CardMovement;
         }
 
-        public void Play()
+        public void Play(CancellationToken token)
         {
-            DiscardingCard().ToUniTask();
+            DiscardingCard(token).Forget();
         }
 
-        private IEnumerator DiscardingCard()
+        private async UniTask DiscardingCard(CancellationToken token)
         {
             _readOnlyCardTransform.SetParent(_container);
             
@@ -50,9 +50,9 @@ namespace GameFields.DiscardPiles
             _card.SetSide(SideType.Front);
 
             IncreaseCard();
-            yield return new WaitForSeconds(_data.CardIncreaseDuration + _data.DelayAfterIncrease);
+            await UniTask.WaitForSeconds(_data.CardIncreaseDuration + _data.DelayAfterIncrease, cancellationToken: token);
 
-            _invertCardAnimation.Play(_card);
+            _invertCardAnimation.Play(_card, token);
 
             //InvertCardFront();
             //yield return new WaitForSeconds(_data.InvertCardFrontDuration);
@@ -62,7 +62,7 @@ namespace GameFields.DiscardPiles
             //InvertCardBack();
             //yield return new WaitForSeconds(_data.InvertCardBackDuration + _data.DelayAfterInvert);
 
-            yield return new WaitUntil(() => _invertCardAnimation.IsComplete);
+            await UniTask.WaitUntil(() => _invertCardAnimation.IsComplete, cancellationToken: token);
 
             _callback?.Invoke(_card);
         }

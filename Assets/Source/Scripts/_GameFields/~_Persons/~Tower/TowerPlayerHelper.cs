@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Cards;
 using Cards.Views;
 using Tools;
@@ -22,10 +23,10 @@ namespace GameFields.Persons.Towers
 
         public bool? IsActive { get; private set; } = null;
 
-        public void Init(Func<CardViewData> configGetter)
+        public void Init(Func<CardViewData> configGetter, CancellationToken fightToken)
         {
             _readOnlyRectTransform = new ReadOnlyRectTransform(_rectTransform);
-            _towerCardView.Init();
+            _towerCardView.Init(fightToken);
             _configGetter = configGetter;
             _canvasGroup.blocksRaycasts = false;
         }

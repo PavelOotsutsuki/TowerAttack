@@ -1,5 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using Tools;
 using Tools.Utils.FillComponents;
 using UnityEngine;
@@ -14,13 +15,17 @@ namespace GameFields.LightControls
 
         private Transform _defaultParent;
         private Transform _lightParent;
+        private CancellationToken _fightToken;
 
+        private CancellationTokenSource _currentCTS;
         private Coroutine _currentCoroutine;
 
         public bool? IsShown { get; private set; } = null;
 
-        public void Init()
+        public void Init(CancellationToken fightToken)
         {
+            _fightToken = fightToken;
+
             _defaultParent = _transform.parent;
             _lightParent = _lightObjectsParent.GetTransform();
 
@@ -36,10 +41,11 @@ namespace GameFields.LightControls
 
             IsShown = true;
 
-            if (_currentCoroutine != null)
-                StopCoroutine(_currentCoroutine);
+            _currentCTS?.Cancel();
+            _currentCTS?.Dispose();
+            _currentCTS = CancellationTokenSource.CreateLinkedTokenSource(_fightToken);
 
-            _lightFrame.Show();
+            _lightFrame.Show(new CancellationTokenData(_currentCTS.Token));
             _transform.SetParent(_lightParent);
         }
 
@@ -50,14 +56,18 @@ namespace GameFields.LightControls
 
             IsShown = false;
 
-            _lightFrame.Hide();
+            _currentCTS?.Cancel();
+            _currentCTS?.Dispose();
+            _currentCTS = CancellationTokenSource.CreateLinkedTokenSource(_fightToken);
 
-            _currentCoroutine = StartCoroutine(Hiding());
+            _lightFrame.Hide(new CancellationTokenData(_currentCTS.Token));
+
+            Hiding(_currentCTS.Token).Forget();
         }
 
-        private IEnumerator Hiding()
+        private async UniTask Hiding(CancellationToken token)
         {
-            yield return new WaitUntil(() => _lightFrame.IsComplete);
+            await UniTask.WaitUntil(() => _lightFrame.IsComplete, cancellationToken: token);
 
             //if (IsShown == false)
                 _transform.SetParent(_defaultParent);

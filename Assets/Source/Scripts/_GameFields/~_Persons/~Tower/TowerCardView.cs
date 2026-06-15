@@ -1,6 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using Tools;
+using Tools.Utils;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
@@ -11,21 +16,30 @@ namespace GameFields.Persons.Towers
         [SerializeField] private TowerCardViewPanel _viewPanel;
         [SerializeField] private TowerBigCard _bigCard;
 
-        private Coroutine _deactivateCoroutine = null; 
-        private Coroutine _activateCoroutine = null;
+        //private Coroutine _deactivateCoroutine = null; 
+        //private Coroutine _activateCoroutine = null;
+        private CancellationTokenSource _activateCTS;
+        private CancellationTokenSource _deactivateCTS;
+
+        private CancellationToken _fightToken;
 
         public bool? IsActive { get; private set; } = null;
 
-        public void Init()
+        public void Init(CancellationToken fightToken)
         {
+            _fightToken = fightToken;
+
             _viewPanel.Init();
-            _bigCard.Init();
+            _bigCard.Init(fightToken);
 
             gameObject.SetActive(false);
         }
 
         public void Activate(TowerBigCardShowData data)
         {
+            if (_fightToken.IsCancellationRequested)
+                return;
+
             if (IsActive == true)
                 return;
 
@@ -33,55 +47,78 @@ namespace GameFields.Persons.Towers
 
             gameObject.SetActive(true);
 
-            _activateCoroutine = StartCoroutine(Activating(data));
+            Utils.DestroyCTS(ref _activateCTS);
+            _activateCTS = CancellationTokenSource.CreateLinkedTokenSource(_fightToken);
+
+            Activating(data, _activateCTS.Token).Forget();
         }
 
         public void Deactivate()
         {
+            if (_fightToken.IsCancellationRequested)
+                return;
+
             if (IsActive == false)
                 return;
 
             IsActive = false;
 
-            if (_activateCoroutine != null)
-            {
-                StopCoroutine(_activateCoroutine);
-                _activateCoroutine = null;
-            }
+            Utils.DestroyCTS(ref _activateCTS);
+            Utils.DestroyCTS(ref _deactivateCTS);
+            _deactivateCTS = CancellationTokenSource.CreateLinkedTokenSource(_fightToken);
 
-            _viewPanel.Hide();
+            _viewPanel.Hide(new CancellationTokenData(_deactivateCTS.Token));
             _bigCard.Hide();
 
-            _deactivateCoroutine = StartCoroutine(WaitUntilSetDeactivate());
+            WaitUntilSetDeactivate(_deactivateCTS.Token).Forget();
         }
 
         private void OnDisable()
         {
-            _deactivateCoroutine = null;
-            _activateCoroutine = null;
+            Utils.DestroyCTS(ref _activateCTS);
+            Utils.DestroyCTS(ref _deactivateCTS);
         }
 
-        private IEnumerator Activating(TowerBigCardShowData data)
+        private async UniTask Activating(TowerBigCardShowData data, CancellationToken activateToken)
         {
-            if (_deactivateCoroutine != null)
-            {
-                StopCoroutine(_deactivateCoroutine);
-                _deactivateCoroutine = null;
-            }
-            else
-            {
-                yield return new WaitForSeconds(0.8f);
-            }
+            if (_fightToken.IsCancellationRequested)
+                return;
 
-            _viewPanel.Show();
-            _bigCard.Show(data);
+            try
+            {
+                if (_deactivateCTS != null)
+                {
+                    Utils.DestroyCTS(ref _deactivateCTS);
+                }
+                else
+                {
+                    await UniTask.WaitForSeconds(0.8f, cancellationToken: activateToken);
+                }
+
+                _viewPanel.Show(new CancellationTokenData(activateToken));
+                _bigCard.Show(data);
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.Log($"ОТМЕНА ТОКЕНА: {MethodBase.GetCurrentMethod().DeclaringType.Name}: {GetType().Name}");
+            }
         }
 
-        private IEnumerator WaitUntilSetDeactivate()
+        private async UniTask WaitUntilSetDeactivate(CancellationToken token)
         {
-            yield return new WaitUntil(() => _viewPanel.IsComplete && _bigCard.IsComplete);
+            if (_fightToken.IsCancellationRequested)
+                return;
 
-            gameObject.SetActive(false);
+            try
+            {
+                await UniTask.WaitUntil(() => _viewPanel.IsComplete && _bigCard.IsComplete, cancellationToken: token);
+
+                gameObject.SetActive(false);
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.Log($"ОТМЕНА ТОКЕНА: {MethodBase.GetCurrentMethod().DeclaringType.Name}: {GetType().Name}");
+            }
         }
 
         #region AutomaticFillComponents

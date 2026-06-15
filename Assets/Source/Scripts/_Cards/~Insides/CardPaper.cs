@@ -9,6 +9,7 @@ using Cards.Animations.Fires;
 using Cards.Views;
 using Cards.Views.BigCardViews.Capabilities;
 using Cards.Sounds;
+using System.Threading;
 
 namespace Cards.Insides
 {
@@ -38,7 +39,7 @@ namespace Cards.Insides
             RectTransform cardTransform, ICardDragAndDropHandler cardDragAndDropHandler,
             CardSpriteModeManager cardSpriteModeManager, CurseAnimator curseAnimator,
             CardCapabilityDescription cardCapabilityDescription, CardSoundRoot cardSoundRoot,
-            CardSoundLogic cardSoundLogic)
+            CardSoundLogic cardSoundLogic, CancellationToken cardToken)
         {
             ReadOnlyRectTransform readOnlyRectTransform = new ReadOnlyRectTransform(cardTransform);
 
@@ -47,13 +48,13 @@ namespace Cards.Insides
 
             _cardSpriteManager.Init(cardSpriteModeManager, curseAnimator);
             _cardFront.Init(cardViewData, readOnlyRectTransform, cardViewService, cardSizeFront, _cardFrame,
-                cardCapabilityDescription);
+                cardCapabilityDescription, cardToken);
             _cardBack.Init(cardSizeBack);
             _cardFireAnimator.Init();
             _onFireLogic = new OnFireLogic(_cardFireAnimator, cardSoundRoot, cardSoundLogic);
 
             _cardDragAndDropActions = new CardDragAndDropActions(_cardFront, me, cardDragAndDropHandler);
-            _cardDragAndDrop.Init(cardTransform, _cardDragAndDropActions);
+            _cardDragAndDrop.Init(cardTransform, _cardDragAndDropActions, cardToken);
 
             _cardFrame.Init();
             _cardSideFlipper = new CardSideFlipper(_cardFront, _cardBack, _cardDragAndDrop, _cardFrame, _cardSpriteManager);
@@ -72,15 +73,14 @@ namespace Cards.Insides
             _cardDragAndDrop.BlockDrag();
         }
 
-        public void Fire(WaitForSeconds delay, CallbackHandler callbackHandler)
+        public void Fire(OnFireLogicActivateData onFireLogicActivateData)
         {
-            OnFireLogicActivateData onFireLogicActivateData = new OnFireLogicActivateData(delay, callbackHandler);
             _onFireLogic.Activate(onFireLogicActivateData);
         }
 
-        public void RiseFromTheAshes()
+        public void RiseFromTheAshes(CancellationTokenData tokenData)
         {
-            _onFireLogic.Deactivate();
+            _onFireLogic.Deactivate(tokenData);
         }
 
         public void SetView(CardViewData cardViewData)

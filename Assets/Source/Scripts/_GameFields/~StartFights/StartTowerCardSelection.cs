@@ -1,6 +1,7 @@
 using Tools;
 using GameFields.Persons.Towers;
 using Cards;
+using System.Threading;
 
 namespace GameFields.StartFights
 {
@@ -15,6 +16,6 @@ namespace GameFields.StartFights
             Tower = tower;
         }
 
-        public abstract void StartProcess();
+        public abstract void StartProcess(CancellationToken token);
     }
 }

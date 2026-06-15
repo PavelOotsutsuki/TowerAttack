@@ -13,7 +13,17 @@ namespace GameFields.Persons.LookCardMenues
 
             _onEnterClick = onEnterClick;
 
-            Deactivate();
+            BaseDeactivate();
+        }
+
+        public void Activate()
+        {
+            BaseActivate();
+        }
+
+        public void Deactivate()
+        {
+            BaseDeactivate();
         }
 
         protected override void OnEnterClick()

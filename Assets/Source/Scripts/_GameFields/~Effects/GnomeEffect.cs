@@ -1,6 +1,5 @@
-using System.Collections;
+using Cysharp.Threading.Tasks;
 using GameFields.Persons;
-using UnityEngine;
 
 namespace GameFields.Effects
 {
@@ -22,14 +21,14 @@ namespace GameFields.Effects
         //    Debug.Log("Эффект Гнома закончен");
         //}
 
-        protected override IEnumerator OnPlaying()
+        protected override async UniTask OnPlaying()
         {
             bool endGmoneSearch = false;
             //_activePerson.ChoiceActivate("Выбрано:", 3);
             if (_activePerson.TryActivateGnomeEffect(out int countNumbers))
             {
                 _activePerson.ChoiceActivate(countNumbers, () => endGmoneSearch = true);
-                yield return new WaitUntil(() => endGmoneSearch);
+                await UniTask.WaitUntil(() => endGmoneSearch, cancellationToken: Token);
             }
 
             //_activePerson.ChoiceActivate(4, EndPlayingCallback, RestrictionType.Consecutive);

@@ -8,6 +8,7 @@ using Tools.Utils;
 using GameFields.Seats;
 using Cards.Views;
 using GameFields.CardTransits;
+using System.Threading;
 
 namespace GameFields.Decks
 {
@@ -30,11 +31,11 @@ namespace GameFields.Decks
 
         public IEnumerable<Card> AllCards => _seats.Select(s => s.Card);
 
-        public void Init(SeatPool seatPool, IEnumerable<Card> cards)
+        public void Init(SeatPool seatPool, IEnumerable<Card> cards, CancellationToken fightToken)
         {
             _deckSeatPool = seatPool;
             _cardBackViewer.Init(_startCardAddPositionX, _startCardAddPositionY);
-            _deckHelper.Init();
+            _deckHelper.Init(fightToken);
 
             foreach (Card card in cards)
             {

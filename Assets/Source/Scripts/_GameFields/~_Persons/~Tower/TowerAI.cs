@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using Cards;
 using GameFields.Persons.ConfirmableNumbersView;
 using Tools.Utils.FillComponents;
@@ -10,9 +11,9 @@ namespace GameFields.Persons.Towers
     {
         [SerializeField] private TowerEnemyHelper _towerEnemyHelper;
 
-        public void Init(ConfirmableNumbersViewRoot confirmableNumbersViewRoot, ConfirmableNumbers confirmableNumbers, ICardCreator cardCreator)
+        public void Init(ConfirmableNumbersViewRoot confirmableNumbersViewRoot, ConfirmableNumbers confirmableNumbers, ICardCreator cardCreator, CancellationToken fightToken)
         {
-            base.Init(confirmableNumbers, cardCreator);
+            base.Init(confirmableNumbers, cardCreator, fightToken);
 
             _towerEnemyHelper.Init(confirmableNumbersViewRoot);
         }

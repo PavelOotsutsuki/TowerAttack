@@ -1,12 +1,10 @@
-using System.Collections;
 using Cards.Sounds;
 using Cysharp.Threading.Tasks;
 using Tools;
-using UnityEngine;
 
 namespace Cards.Animations.Fires
 {
-    internal class OnFireLogic : IWorkable<OnFireLogicActivateData>
+    internal class OnFireLogic : IWorkable<OnFireLogicActivateData, CancellationTokenData>
     {
         private readonly CardFireAnimator _cardFireAnimator;
         private readonly CardSoundRoot _cardSoundRoot;
@@ -39,28 +37,27 @@ namespace Cards.Animations.Fires
             if (_fireSoundKeeper != null)
                 _cardSoundRoot.Play(_fireSoundKeeper.FireSound);
 
-            Activating(data).ToUniTask();
+            Activating(data).Forget();
         }
 
-        public void Deactivate()
+        public void Deactivate(CancellationTokenData tokenData)
         {
             if (IsActive == false)
                 return;
 
             IsActive = false;
 
-            _cardFireAnimator.Deactivate();
+            _cardFireAnimator.Deactivate(tokenData);
         }
 
-        private IEnumerator Activating(OnFireLogicActivateData data)
+        private async UniTask Activating(OnFireLogicActivateData data)
         {
-            yield return data.Delay;
+            await UniTask.WaitForSeconds(data.Delay, cancellationToken: data.Token); 
 
-            _cardFireAnimator.Activate();
+            _cardFireAnimator.Activate(data);
 
-            yield return new WaitUntil(() => _cardFireAnimator.IsComplete);
-
-            yield return new WaitForSeconds(1f);
+            await UniTask.WaitUntil(() => _cardFireAnimator.IsComplete, cancellationToken: data.Token);
+            await UniTask.WaitForSeconds(1f, cancellationToken: data.Token);
 
             data.CallbackHandler.Complete();
         }

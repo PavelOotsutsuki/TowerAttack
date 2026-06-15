@@ -23,7 +23,7 @@ namespace GameFields.Persons.SelectMenues.Attacks
 
         protected override SetSelectResultData CreateSetSelectResultData(ResultType resultType)
         {
-            SetSelectResultData setSelectResultData = new SetSelectResultData(resultType);
+            SetSelectResultData setSelectResultData = new SetSelectResultData(resultType, this.destroyCancellationToken);
 
             return setSelectResultData;
         }

@@ -29,15 +29,15 @@ namespace GameFields.Persons.SelectMenues.Attacks
             _informationLabelData = informationLabelData;
         }
 
-        protected override IEnumerator OnSettingResult(SetSelectResultData data)
+        protected override async UniTask OnSettingResult(SetSelectResultData data)
         {
-            yield return base.OnSettingResult(data);
+            await base.OnSettingResult(data);
 
             LabelActivateData labelActivateData = new LabelActivateData(_informationLabelData.DefaultInformationLabelText + data.Message);
             InformationLabelActivateData informationLabelActivateData = new InformationLabelActivateData(labelActivateData);
             _informationLabel.Activate(informationLabelActivateData);
 
-            yield return new WaitUntil(() => _informationLabel.IsComplete);
+            await UniTask.WaitUntil(() => _informationLabel.IsComplete, cancellationToken: data.Token);
         }
     }
 }

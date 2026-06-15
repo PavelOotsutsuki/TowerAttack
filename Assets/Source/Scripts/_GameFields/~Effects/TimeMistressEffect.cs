@@ -1,9 +1,8 @@
 using Cards;
-using System.Collections;
 using System.Collections.Generic;
 using GameFields.Persons;
-using UnityEngine;
 using GameFields.CardTransits;
+using Cysharp.Threading.Tasks;
 
 namespace GameFields.Effects
 {
@@ -33,7 +32,7 @@ namespace GameFields.Effects
         //    Debug.Log("Эффект Повелительницы времени закончен");
         //}
 
-        protected override IEnumerator OnPlaying()
+        protected override async UniTask OnPlaying()
         {
             //TransitToType transitTo = _activePerson is Player ? TransitToType.HandPlayer : TransitToType.HandEnemy;
             //TransitToType transitTo = ViewTransitTypeConverter.GetPersonHandTransitToType(_activePerson, true);
@@ -52,10 +51,8 @@ namespace GameFields.Effects
                 bool isTransit = false;
 
                 _transitManager.TransitCard(card, discardPileFrom, handTo, () => isTransit = true);
-                yield return new WaitUntil(() => isTransit);
+                await UniTask.WaitUntil(() => isTransit, cancellationToken: Token);
             }
-
-            yield break;
         }
     }
 }

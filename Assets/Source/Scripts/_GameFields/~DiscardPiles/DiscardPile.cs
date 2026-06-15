@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Cards;
 using Cards.Views;
 using Cysharp.Threading.Tasks;
@@ -50,7 +51,7 @@ namespace GameFields.DiscardPiles
 
         private void OnDiscardCardsSignal(DiscardCardsSignal signal)
         {
-            DiscardingCards(signal.Card).ToUniTask();
+            DiscardingCards(signal.Card, signal.Token).Forget();
         }
 
         public void SeatCard(Card card, int index = -1)
@@ -178,11 +179,11 @@ namespace GameFields.DiscardPiles
         //    }
         //}
 
-        private IEnumerator DiscardingCards(Card discardingCard)
+        private async UniTask DiscardingCards(Card discardingCard, CancellationToken token)
         {
             DiscardCardAnimation discardCardAnimation = new DiscardCardAnimation(_discardPileConfig.DiscardCardAnimationData, _discardPileConfig.RectTransform, discardingCard, (card) => SeatCard(card, -1));
-            discardCardAnimation.Play();
-            yield return new WaitForSeconds(_discardPileConfig.DiscardDelay);
+            discardCardAnimation.Play(token);
+            await UniTask.WaitForSeconds(_discardPileConfig.DiscardDelay, cancellationToken: token);
         }
 
         private Vector3 FindCardSeatPosition()

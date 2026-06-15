@@ -1,31 +1,34 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using System.Collections;
 using Tools.Extensions;
 using Cards.DependencyInterlayers;
+using Cysharp.Threading.Tasks;
+using System.Threading;
 
 namespace Cards.Insides
 {
     internal class CardDragAndDrop : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
     {
-        private Coroutine _viewCardAfterDropInWork;
+        private CancellationTokenSource _viewCardAfterDropCTS;
         private bool _isForciblyDrag;
         private bool _isNotDraggable;
         private Transform _cardTransform;
 
         private CardDragAndDropActions _cardDragAndDropActions;
+        private CancellationToken _cardToken;
 
         private PointerEventData _currentEventData;
 
         public bool IsDragable { get; private set; }
 
-        internal void Init(Transform cardTransform, CardDragAndDropActions cardDragAndDropActions)
+        internal void Init(Transform cardTransform, CardDragAndDropActions cardDragAndDropActions, CancellationToken cardToken)
         {
             _cardTransform = cardTransform;
             _cardDragAndDropActions = cardDragAndDropActions;
             _isForciblyDrag = false;
             IsDragable = false;
             _isNotDraggable = false;
+            _cardToken = cardToken;
         }
 
         public void ResetDrag()
@@ -156,19 +159,22 @@ namespace Cards.Insides
         private void StartEndDragActions()
         {
             //Debug.Log(_cardTransform.gameObject.name + ": StartEndDragActions");
+            _viewCardAfterDropCTS?.Cancel();
+            _viewCardAfterDropCTS?.Dispose();
+            _viewCardAfterDropCTS = CancellationTokenSource.CreateLinkedTokenSource(_cardToken);
 
-            if (_viewCardAfterDropInWork != null)
-            {
-                StopCoroutine(_viewCardAfterDropInWork);
-            }
+            //if (_viewCardAfterDropCTS != null)
+            //{
+            //    StopCoroutine(_viewCardAfterDropCTS);
+            //}
 
-            _viewCardAfterDropInWork = StartCoroutine(ViewCardAfterDrop(_cardDragAndDropActions.ReturnInHandDuration, _currentEventData));
+            ViewCardAfterDrop(_cardDragAndDropActions.ReturnInHandDuration, _currentEventData, _viewCardAfterDropCTS.Token).Forget();
             _cardDragAndDropActions.ReturnInHand(_cardDragAndDropActions.ReturnInHandDuration);
         }
 
-        private IEnumerator ViewCardAfterDrop(float endDuration, PointerEventData eventData)
+        private async UniTask ViewCardAfterDrop(float endDuration, PointerEventData eventData, CancellationToken token)
         {
-            yield return new WaitForSeconds(endDuration);
+            await UniTask.WaitForSeconds(endDuration, cancellationToken: token);
 
             IsDragable = false;
 

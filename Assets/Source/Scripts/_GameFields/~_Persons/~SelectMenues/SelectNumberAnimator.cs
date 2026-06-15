@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Tools;
 using Tools.CommonAnimations;
 using Tools.Utils.FillComponents;
@@ -83,11 +84,11 @@ namespace GameFields.Persons.SelectMenues
             //_successAnimation.Deactivate();
         }
 
-        public void PlayAnimation(NumberAnimationType numberAnimationType)
+        public void PlayAnimation(NumberAnimationType numberAnimationType, CancellationToken token)
         {
             SetCurrentAnimation(numberAnimationType);
 
-            _currentAnimation.Play();
+            _currentAnimation.Play(token);
         }
 
         private void SetCurrentAnimation(NumberAnimationType numberAnimationType)

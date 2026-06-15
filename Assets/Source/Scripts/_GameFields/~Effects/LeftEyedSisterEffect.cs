@@ -1,10 +1,9 @@
 using Cards;
-using System.Collections;
 using System.Collections.Generic;
 using GameFields.Persons;
-using UnityEngine;
 using GameFields.Persons.Discovers;
 using GameFields.CardTransits;
+using Cysharp.Threading.Tasks;
 
 namespace GameFields.Effects
 {
@@ -36,7 +35,7 @@ namespace GameFields.Effects
         //    Debug.Log("Эффект Левоглазой сестры закончен");
         //}
 
-        protected override IEnumerator OnPlaying()
+        protected override async UniTask OnPlaying()
         {
             //ViewType viewType = _activePerson is Player ? ViewType.HandPlayer : ViewType.HandAI;
             //ViewType viewType = ViewTransitTypeConverter.GetPersonHandViewType(_activePerson, true);
@@ -51,14 +50,11 @@ namespace GameFields.Effects
                 DiscoverResult discoverResult = new DiscoverResult();
                 _activePerson.DiscoverCards(cards, "Выберите новую карту в замок", discoverResult);
 
-                yield return new WaitUntil(() => discoverResult.IsComplete);
+                await UniTask.WaitUntil(() => discoverResult.IsComplete, cancellationToken: Token);
 
                 _transitManager.TryExchangeTower((Card)discoverResult.Result, _activePerson, TowerTransitType.Hand);
-                yield break;
             }
             //}
-
-            yield break;
         }
     }
 }

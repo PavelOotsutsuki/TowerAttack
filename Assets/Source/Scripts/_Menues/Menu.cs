@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using Tools;
 using Tools.InputSettings;
@@ -16,14 +17,16 @@ namespace Menues
 
         //private InputRoot _inputRoot;
         protected MenuButtonsPanelRoot MenuButtonsPanelRoot;
+        protected CancellationToken MenuParentToken;
 
+        private CancellationTokenSource _currentCTS;
 
         public bool? IsActive { get; private set; } = null;
         public bool IsComplete { get; protected set; }
 
         public IFocusedButtonEnterHandler CurrentMenuButtonInputHandler => MenuButtonsPanelRoot.CurrentMenuButtonInputHandler;
 
-        protected void Init(MenuButtonsPanelRoot menuButtonsPanelRoot)
+        protected void Init(MenuButtonsPanelRoot menuButtonsPanelRoot, CancellationToken menuParentToken)
         {
             gameObject.SetActive(false);
             IsComplete = true;
@@ -31,6 +34,7 @@ namespace Menues
             _canvasGroup.blocksRaycasts = true;
 
             MenuButtonsPanelRoot = menuButtonsPanelRoot;
+            MenuParentToken = menuParentToken;
 
             //_inputRoot = inputRoot;
 
@@ -50,9 +54,13 @@ namespace Menues
             IsComplete = false;
             IsActive = true;
 
+            _currentCTS?.Cancel();
+            _currentCTS?.Dispose();
+            _currentCTS = CancellationTokenSource.CreateLinkedTokenSource(MenuParentToken);
+
             gameObject.SetActive(true);
 
-            Activating().ToUniTask();
+            Activating(_currentCTS.Token).Forget();
         }
 
         protected abstract void OnActivateInput();
@@ -66,21 +74,24 @@ namespace Menues
             IsComplete = false;
             //_inputRoot.Pause();
             //_inputRoot.DeactivateFightMenu();
+            _currentCTS?.Cancel();
+            _currentCTS?.Dispose();
+            _currentCTS = CancellationTokenSource.CreateLinkedTokenSource(MenuParentToken);
 
             OnDeactivateInput();
 
-            Deactivating().ToUniTask();
+            Deactivating(_currentCTS.Token).Forget();
         }
 
         protected abstract void OnDeactivateInput();
 
-        private IEnumerator Activating()
+        private async UniTask Activating(CancellationToken token)
         {
-            _fightMenuLabel.Show();
-            _fightMenuPanel.Show();
+            _fightMenuLabel.Show(new CancellationTokenData(token));
+            _fightMenuPanel.Show(new CancellationTokenData(token));
             MenuButtonsPanelRoot.Activate();
 
-            yield return new WaitUntil(() => _fightMenuLabel.IsComplete && _fightMenuPanel.IsComplete && MenuButtonsPanelRoot.IsComplete);
+            await UniTask.WaitUntil(() => _fightMenuLabel.IsComplete && _fightMenuPanel.IsComplete && MenuButtonsPanelRoot.IsComplete, cancellationToken: token);
 
             //_inputRoot.ActivateFightMenu();
             OnActivatingInput();
@@ -90,11 +101,11 @@ namespace Menues
 
         protected abstract void OnActivatingInput();
 
-        private IEnumerator Deactivating()
+        private async UniTask Deactivating(CancellationToken token)
         {
-            DeactivateChilds();
+            DeactivateChilds(token);
 
-            yield return new WaitUntil(() => _fightMenuLabel.IsComplete && _fightMenuPanel.IsComplete && MenuButtonsPanelRoot.IsComplete);
+            await UniTask.WaitUntil(() => _fightMenuLabel.IsComplete && _fightMenuPanel.IsComplete && MenuButtonsPanelRoot.IsComplete, cancellationToken: token);
 
             gameObject.SetActive(false);
             //_inputRoot.DeactivateFightMenu();
@@ -103,10 +114,10 @@ namespace Menues
             IsComplete = true;
         }
 
-        private void DeactivateChilds()
+        private void DeactivateChilds(CancellationToken token)
         {
-            _fightMenuLabel.Hide();
-            _fightMenuPanel.Hide();
+            _fightMenuLabel.Hide(new CancellationTokenData(token));
+            _fightMenuPanel.Hide(new CancellationTokenData(token));
             MenuButtonsPanelRoot.Deactivate();
         }
 

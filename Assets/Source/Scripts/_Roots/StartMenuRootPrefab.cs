@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using StartMenues;
 using Tools.Utils.FillComponents;
 using UnityEngine;
@@ -14,11 +15,11 @@ namespace Roots
         private StartMenuRoot _currentStartMenuRoot;
         private Action<int> _onPlayClick;
 
-        public void Init(DiContainer diContainer, Action<int> onPlayClick)
+        public void Init(DiContainer diContainer, Action<int> onPlayClick, CancellationToken gameRootToken)
         {
             _onPlayClick = onPlayClick;
 
-            base.Init(diContainer, _startMenuRootContainer);
+            base.Init(diContainer, _startMenuRootContainer, gameRootToken);
         }
 
         protected override void OnActivate()
@@ -26,7 +27,7 @@ namespace Roots
             if (_currentStartMenuRoot == null)
             {
                 _currentStartMenuRoot = CurrentGameObject.GetComponent<StartMenuRoot>();
-                _currentStartMenuRoot.Init(_onPlayClick);
+                _currentStartMenuRoot.Init(_onPlayClick, GameRootToken);
                 _currentStartMenuRoot.Activate();
                 IsComplete = true;
             }

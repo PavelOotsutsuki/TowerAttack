@@ -1,8 +1,7 @@
-using System.Collections;
+using Cysharp.Threading.Tasks;
 using GameFields.Persons;
 using GameFields.Persons.DrawCards;
 using GameFields.Persons.EffectHandlers.Brothers;
-using UnityEngine;
 
 namespace GameFields.Effects
 {
@@ -32,17 +31,16 @@ namespace GameFields.Effects
         //    Debug.Log("Эффект Малого брата закончен");
         //}
 
-        protected override IEnumerator OnPlaying()
+        protected override async UniTask OnPlaying()
         {
             //_activePerson.ChoiceActivate("Выбрано:", 3);
             bool isDraw = false;
             int countCards = _activePerson.BrothersCounter;
-            _drawCardManager.DrawCards(StartValue + countCards, () => isDraw = true);
+            _drawCardManager.DrawCards(StartValue + countCards, Token, () => isDraw = true);
             //_activePerson.ChoiceActivate(4, EndPlayingCallback, RestrictionType.Consecutive);
-            yield return new WaitUntil(() => isDraw);
+            await UniTask.WaitUntil(() => isDraw, cancellationToken: Token);
 
             _brothersEffectHandlerRoot.Upgrade(UpgradeCount);
-            yield break;
             //_deactivePerson.AttackDeactivate();
         }
     }

@@ -9,4 +9,9 @@ namespace Tools
     {
         public bool? IsShown { get; }
     }
+
+    public interface IViewable<T, D> : IShowable<T>, IHidable<D> where T : IData where D : IData
+    {
+        public bool? IsShown { get; }
+    }
 }

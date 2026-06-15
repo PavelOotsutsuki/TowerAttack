@@ -1,6 +1,5 @@
-using System.Collections;
+using Cysharp.Threading.Tasks;
 using GameFields.Persons;
-using UnityEngine;
 
 namespace GameFields.Effects
 {
@@ -23,13 +22,13 @@ namespace GameFields.Effects
         //    Debug.Log("Эффект Трех Бугаев закончен");
         //}
 
-        protected override IEnumerator OnPlaying()
+        protected override async UniTask OnPlaying()
         {
             bool endChoice = false;
 
             _activePerson.ChoiceImitationActivate(CountNumbers, () => endChoice = true);
 
-            yield return new WaitUntil(() => endChoice);
+            await UniTask.WaitUntil(() => endChoice, cancellationToken: Token);
         }
     }
 }

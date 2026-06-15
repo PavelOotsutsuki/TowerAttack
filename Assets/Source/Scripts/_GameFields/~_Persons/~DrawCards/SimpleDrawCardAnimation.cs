@@ -1,9 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Cards;
 using Cysharp.Threading.Tasks;
 using GameFields.CardTransits;
-using UnityEngine;
 
 namespace GameFields.Persons.DrawCards
 {
@@ -26,26 +25,26 @@ namespace GameFields.Persons.DrawCards
 
         public bool IsComplete => _isComplete;
 
-        public void Play(IReadOnlyList<Card> cards, int indexAdd)
+        public void Play(IReadOnlyList<Card> cards, int indexAdd, CancellationToken token)
         {
-            Playing(cards, indexAdd).ToUniTask();
+            Playing(cards, indexAdd, token).Forget();
         }
 
-        private IEnumerator Playing(IReadOnlyList<Card> cards, int indexAdd)
+        private async UniTask Playing(IReadOnlyList<Card> cards, int indexAdd, CancellationToken token)
         {
             _isComplete = false;
 
-            yield return new WaitForSeconds(_delay);
+            await UniTask.WaitForSeconds(_delay, cancellationToken: token);
 
             foreach (Card drawnCard in cards)
             {
                 _hand.SeatCard(drawnCard, indexAdd);
                 _drawCardAdder.Add(drawnCard);
 
-                yield return new WaitForSeconds(_delay);
+                await UniTask.WaitForSeconds(_delay, cancellationToken: token);
             }
 
-            yield return new WaitForSeconds(_delay);
+            await UniTask.WaitForSeconds(_delay, cancellationToken: token);
             _isComplete = true;
         }
     }

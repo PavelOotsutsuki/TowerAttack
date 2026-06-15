@@ -8,6 +8,8 @@ using System;
 using StartMenues.InputSettings;
 using Zenject;
 using Tools.Loads;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 
 namespace StartMenues
 {
@@ -25,6 +27,7 @@ namespace StartMenues
 
         private Camera _mainCamera;
         private StartMenuInputRoot _inputRoot;
+        private CancellationToken _startMenuRootToken;
         //private StartMenuSavedData _startMenuSavedData;
         public IActivatable InputRoot => _inputRoot;
 
@@ -35,35 +38,36 @@ namespace StartMenues
         }
 
         public void Init(IVolume backgroundSoundConfig, IVolume foregroundSoundConfig, CardCapabilityDescription cardCapabilityDescription,
-            Action<int> onPlayClick)
+            Action<int> onPlayClick, CancellationToken startMenuRootToken)
         {
             //_startMenuSavedData = startMenuSavedData;
             _mainCamera = Camera.main;
+            _startMenuRootToken = startMenuRootToken;
 
             _inputRoot = new StartMenuInputRoot(_startMenu);
             _loadRoot.Init();
             //_startMenu.Init(backgroundSoundConfig, foregroundSoundConfig);
-            _startMenu.Init(_inputRoot, foregroundSoundConfig, backgroundSoundConfig, cardCapabilityDescription, onPlayClick);
+            _startMenu.Init(_inputRoot, foregroundSoundConfig, backgroundSoundConfig, cardCapabilityDescription, onPlayClick, startMenuRootToken);
             _stoneSpawner.Init();
         }
 
         public void Activate()
         {
-            StartCoroutine(Activating());
+            Activating(_startMenuRootToken).Forget();
         }
 
-        private IEnumerator Activating()
+        private async UniTask Activating(CancellationToken token)
         {
             // 1. Просветление экрана
             //if (_startMenuSavedData.StoneSpawnerParent == null)
             //{
             _mainCamera.backgroundColor = _startColor;
 
-            yield return new WaitForSeconds(0.5f);
+            await UniTask.WaitForSeconds(0.5f, cancellationToken: token);
 
             _mainCamera.DOColor(_endColor, _colorChangeDuration).SetEase(Ease.OutQuad);
 
-            yield return new WaitForSeconds(_colorChangeDuration);
+            await UniTask.WaitForSeconds(_colorChangeDuration, cancellationToken: token);
 
             // 2. Камнепад
 
@@ -71,7 +75,7 @@ namespace StartMenues
             _loadRoot.AddSession(loadSession);
             _stoneSpawner.Activate();
 
-            yield return new WaitUntil(() => _stoneSpawner.IsComplete);
+            await UniTask.WaitUntil(() => _stoneSpawner.IsComplete, cancellationToken: token);
 
             loadSession.Complete();
 

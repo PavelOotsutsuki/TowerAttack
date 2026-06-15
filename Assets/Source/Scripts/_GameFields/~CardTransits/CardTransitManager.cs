@@ -1,6 +1,7 @@
 using System;
-using System.Collections;
+using System.Threading;
 using Cards;
+using Cards.Animations.Fires;
 using Cards.Views;
 using Cysharp.Threading.Tasks;
 using GameFields.CommonAnimations;
@@ -11,7 +12,6 @@ using GameFields.Persons.Fires;
 using GameFields.Persons.Hands;
 using GameFields.Persons.Towers;
 using Tools;
-using UnityEngine;
 
 namespace GameFields.CardTransits
 {
@@ -64,11 +64,13 @@ namespace GameFields.CardTransits
 
         public void TransitCard(Card card, TransitFromType from, TransitToType to, Action callback = null, int index = -1)
         {
-            TransitingCard(card, from, to, index, callback).ToUniTask();
+            TransitingCard(card, from, to, index, callback).Forget();
         }
 
-        private IEnumerator TransitingCard(Card card, TransitFromType from, TransitToType to, int index, Action callback)
+        private async UniTask TransitingCard(Card card, TransitFromType from, TransitToType to, int index, Action callback)
         {
+            CancellationToken token = card.CardToken; // Все действия происходят с картой, поэтому берем токен карты
+
             ICardTakable takable = from switch
             {
                 TransitFromType.DiscardPile => _discardPile,
@@ -99,9 +101,10 @@ namespace GameFields.CardTransits
                     throw new Exception("Не задан индекс сжигания. Задай индекс!");
 
                 CallbackHandler callbackHandler = new CallbackHandler();
-                card.Fire(new WaitForSeconds(0.1f), callbackHandler);
+                //OnFireLogicActivateData onFireLogicActivateData = new OnFireLogicActivateData(0.1f, callbackHandler, token);
+                card.Fire(0.1f, callbackHandler);
 
-                yield return new WaitUntil(() => callbackHandler.IsComplete);
+                await UniTask.WaitUntil(() => callbackHandler.IsComplete, cancellationToken: token);
 
                 IFirePoolSeatable fireSeatable = to switch
                 {
@@ -124,9 +127,10 @@ namespace GameFields.CardTransits
                 CallbackHandler callbackHandlerSeatInFirePool = new CallbackHandler();
                 fireSeatable.SeatCard(card, fireNewCardsSeatable, index, callbackHandlerSeatInFirePool);
 
-                yield return new WaitUntil(() => callbackHandlerSeatInFirePool.IsComplete);
+                await UniTask.WaitUntil(() => callbackHandlerSeatInFirePool.IsComplete, cancellationToken: token);
+
                 callback?.Invoke();
-                yield break;
+                return;
             }
 
             if (takable.TryTakeAwayCard(card) == false)
@@ -134,7 +138,7 @@ namespace GameFields.CardTransits
 
             if (from == TransitFromType.FireRoot)
             {
-                WaitUntilSeat(seatable, card, 1.3f, callback).ToUniTask();
+                WaitUntilSeat(seatable, card, 1.3f, token, callback).Forget();
             }
             else
             {
@@ -142,7 +146,6 @@ namespace GameFields.CardTransits
                 callback?.Invoke();
             }
         }
-
 
         public bool TryExchangeTower(Card cardToTower, IPersonObject exchangeObject, TowerTransitType transitType)
         {
@@ -167,15 +170,15 @@ namespace GameFields.CardTransits
             return true;
         }
 
-        private IEnumerator WaitUntilSeat(ICardSeatable seatable, Card card, float duration, Action callback)
+        private async UniTask WaitUntilSeat(ICardSeatable seatable, Card card, float duration, CancellationToken token, Action callback)
         {
-            yield return new WaitForSeconds(duration);
+            await UniTask.WaitForSeconds(duration, cancellationToken: token);
 
             InvertCardAnimationData invertCardAnimationData = new InvertCardAnimationData(0.5f, 0.5f, 0.5f, false, SideType.Front);
             InvertCardAnimation invertCardAnimation = new InvertCardAnimation(invertCardAnimationData);
-            invertCardAnimation.Play(card);
+            invertCardAnimation.Play(card, token);
 
-            yield return new WaitUntil(() => invertCardAnimation.IsComplete);
+            await UniTask.WaitUntil(() => invertCardAnimation.IsComplete, cancellationToken: token);
 
             seatable.SeatCard(card);
             callback?.Invoke();

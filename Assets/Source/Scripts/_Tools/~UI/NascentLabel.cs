@@ -6,12 +6,13 @@ namespace Tools.UI
 {
     [RequireComponent(typeof(Label))]
     [RequireComponent(typeof(NascentPanel))]
-    public class NascentLabel : MonoBehaviour, IAutomaticFillComponents
+    public class NascentLabel : MonoBehaviour, IViewable<CancellationTokenData>, IShowable<LabelActivateDataAsync>, IAutomaticFillComponents
     {
         [SerializeField] private Label _label;
         [SerializeField] private NascentPanel _nascentPanel;
 
         public bool IsComplete => _nascentPanel.IsComplete;
+        public bool? IsShown => _nascentPanel.IsActive;
 
         public void Init()
         {
@@ -19,15 +20,15 @@ namespace Tools.UI
             _nascentPanel.Init();
         }
 
-        public void Show(LabelActivateData data)
+        public void Show(LabelActivateDataAsync data)
         {
             _label.SetText(data.Message);
-            _nascentPanel.Activate();
+            _nascentPanel.Activate(data);
         }
 
-        public void Show()
+        public void Show(CancellationTokenData tokenData)
         {
-            _nascentPanel.Activate();
+            _nascentPanel.Activate(tokenData);
         }
 
         public void Hide()

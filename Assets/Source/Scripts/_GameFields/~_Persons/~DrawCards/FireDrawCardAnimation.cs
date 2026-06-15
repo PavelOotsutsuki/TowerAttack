@@ -1,7 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Cards;
+using Cards.Animations.Fires;
 using Cysharp.Threading.Tasks;
 using GameFields.CardTransits;
 using GameFields.CommonAnimations;
@@ -35,19 +36,19 @@ namespace GameFields.Persons.DrawCards
 
         public bool IsComplete => _isComplete;
 
-        public void Play(IReadOnlyList<Card> cards, int indexAdd)
+        public void Play(IReadOnlyList<Card> cards, int indexAdd, CancellationToken token)
         {
-            Playing(cards, indexAdd).ToUniTask();
+            Playing(cards, indexAdd, token).Forget();
         }
 
-        private IEnumerator Playing(IReadOnlyList<Card> cards, int indexAdd)
+        private async UniTask Playing(IReadOnlyList<Card> cards, int indexAdd, CancellationToken token)
         {
             _isComplete = false;
 
             if (cards.Count <= 0)
             {
                 _isComplete = true;
-                yield break;
+                return;
             }
             ////
             //float endScale = 1.5f;
@@ -85,16 +86,18 @@ namespace GameFields.Persons.DrawCards
                     lastPyromancersManuscriptCallbackHandlerFire = callbackHandlerFire;
                 }
 
-                Firing(cards[i], i, callbackHandlerFire, indexAdd).ToUniTask();
-                yield return new WaitForSeconds(0.2f);
+                Firing(cards[i], i, callbackHandlerFire, indexAdd).Forget();
+                await UniTask.WaitForSeconds(0.2f, cancellationToken: token);
             }
 
-            yield return new WaitUntil(() => lastCallbackHandlerFire.IsComplete && (lastPyromancersManuscriptCallbackHandlerFire == null || lastPyromancersManuscriptCallbackHandlerFire.IsComplete));
+            await UniTask.WaitUntil(() => lastCallbackHandlerFire.IsComplete && (lastPyromancersManuscriptCallbackHandlerFire == null || lastPyromancersManuscriptCallbackHandlerFire.IsComplete), cancellationToken: token);
             _isComplete = true;
         }
 
-        private IEnumerator Firing(Card drawnCard, int level, CallbackHandler callbackHandlerSeatInFirePool, int indexAdd)
+        private async UniTask Firing(Card drawnCard, int level, CallbackHandler callbackHandlerSeatInFirePool, int indexAdd)
         {
+            CancellationToken token = drawnCard.CardToken; // Все действия происходят с карты, поэтому берем токен карты
+
             if (level > 0)
             {
                 _data.SetNewOffsets(level);
@@ -109,28 +112,27 @@ namespace GameFields.Persons.DrawCards
             InvertCardAnimationPlayData playData = _data.InvertCardAnimationPlayData;
 
             //CallbackHandler callbackHandlerFire = new CallbackHandler();
-            drawnCard.Fire(new WaitForSeconds(
+            drawnCard.Fire(
                 _data.StartMoveDuration +
                 _data.InvertCardAnimationData.InvertCardFrontDuration +
                 _data.InvertCardAnimationData.InvertCardBackDuration +
                 _data.InvertCardAnimationData.DelayAfterInvert +
-                _data.FireDrawCardDelay), callbackHandlerFire); // Так, а не потом, потому что надо чтобы sound пироманта пошел сразу
+                _data.FireDrawCardDelay, callbackHandlerFire); // Так, а не потом, потому что надо чтобы sound пироманта пошел сразу
 
             drawnCard.RORTransform.SetParent(_data.FireDrawTemporarilyParent);
 
             drawnCard.CardMovement.MoveLocalLinear(endStartMovePosition, drawnCard.RORTransform.GetRotationVector(),
                 _data.StartMoveDuration);
 
-            yield return new WaitForSeconds(_data.StartMoveDuration);
+            await UniTask.WaitForSeconds(_data.StartMoveDuration, cancellationToken: token);
 
             InvertCardAnimation invertCardAnimation = new InvertCardAnimation(_data.InvertCardAnimationData);
-            invertCardAnimation.Play(drawnCard, playData);
+            invertCardAnimation.Play(drawnCard, token, playData);
 
             //cardMovement.MoveLocalSmoothly(firstPosition, readOnlyRectTransform.GetRotationVector(), 0.5f, scale);
-            yield return new WaitUntil(() => invertCardAnimation.IsComplete);
+            await UniTask.WaitUntil(() => invertCardAnimation.IsComplete, cancellationToken: token);
             //yield return new WaitForSeconds(_data.FireDrawCardDelay);
-            yield return new WaitUntil(() => callbackHandlerFire.IsComplete);
-
+            await UniTask.WaitUntil(() => callbackHandlerFire.IsComplete, cancellationToken: token);
 
             //yield return new WaitForSeconds(2.5f);
             drawnCard.gameObject.SetActive(false);
@@ -140,7 +142,7 @@ namespace GameFields.Persons.DrawCards
 
             _firePool.SeatCard(drawnCard, _seatableHand, indexAdd, callbackHandlerSeatInFirePool);
 
-            yield return new WaitUntil(() => callbackHandlerSeatInFirePool.IsComplete);
+            await UniTask.WaitUntil(() => callbackHandlerSeatInFirePool.IsComplete, cancellationToken: token); // Для чего ты ждешь??????
         }
     }
 }

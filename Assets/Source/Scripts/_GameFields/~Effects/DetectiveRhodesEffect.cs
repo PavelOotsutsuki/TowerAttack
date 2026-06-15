@@ -1,7 +1,5 @@
-using UnityEngine;
 using Cards;
 using GameFields.Persons;
-using System.Collections;
 using System.Collections.Generic;
 using GameFields.InformationLabels;
 using Tools.UI;
@@ -11,6 +9,7 @@ using GameFields.Persons.Discovers;
 using GameFields.Persons.DrawCards;
 using System;
 using GameFields.CardTransits;
+using Cysharp.Threading.Tasks;
 
 namespace GameFields.Effects
 {
@@ -51,7 +50,7 @@ namespace GameFields.Effects
             Play();
         }
 
-        protected override IEnumerator OnPlaying()
+        protected override async UniTask OnPlaying()
         {
             //ViewType enemyhandType = _activePerson is Player ? ViewType.HandAI : ViewType.HandPlayer;
             //ViewType enemyHandType = ViewTransitTypeConverter.GetPersonHandViewType(_activePerson, false);
@@ -97,19 +96,19 @@ namespace GameFields.Effects
                 InformationLabelActivateData informationLabelActivateData = new InformationLabelActivateData(labelActivateData);
                 _informationLabel.Activate(informationLabelActivateData);
 
-                yield return new WaitUntil(() => _informationLabel.IsComplete);
-                yield break;
+                await UniTask.WaitUntil(() => _informationLabel.IsComplete, cancellationToken: Token);
+                return;
             }
 
             DiscoverResult deckResult = new DiscoverResult();
             List<ViewType> noContainsForDeck = new List<ViewType>() { ViewType.Deck, ViewType.TablePlayer, ViewType.TableAI };
             Discover(deckCard, _countDeckDiscoverCards, _activateDeckDiscoverMessage, deckResult, noContainsForDeck);
-            yield return new WaitUntil(() => deckResult.IsComplete);
+            await UniTask.WaitUntil(() => deckResult.IsComplete, cancellationToken: Token);
 
             DiscoverResult handResult = new DiscoverResult();
             List<ViewType> noContainsForHand = new List<ViewType>() { deactiveHandView, ViewType.TablePlayer, ViewType.TableAI };
             Discover(handCard, _countHandDiscoverCards, _activateHandDiscoverMessage, handResult, noContainsForHand);
-            yield return new WaitUntil(() => handResult.Result != null);
+            await UniTask.WaitUntil(() => handResult.Result != null, cancellationToken: Token);
 
             //bool isTest = true;
 
@@ -125,9 +124,9 @@ namespace GameFields.Effects
                 bool isDraw = false;
 
                 _transitManager.TransitCard(handCard, handFrom, handTo, callback: () => isTransit = true);
-                _drawCardManager.DrawCard(deckCard, callback: () => isDraw = true);
+                _drawCardManager.DrawCard(deckCard, Token, callback: () => isDraw = true);
 
-                yield return new WaitUntil(() => isTransit && isDraw);
+                await UniTask.WaitUntil(() => isTransit && isDraw, cancellationToken: Token);
             }
             else
             {
@@ -143,10 +142,10 @@ namespace GameFields.Effects
                 LabelActivateData labelActivateData = new LabelActivateData(activateMessage);
                 InformationLabelActivateData informationLabelActivateData = new InformationLabelActivateData(labelActivateData);
 
-                yield return new WaitUntil(() => handResult.IsComplete);
+                await UniTask.WaitUntil(() => handResult.IsComplete, cancellationToken: Token);
                 _informationLabel.Activate(informationLabelActivateData);
 
-                yield return new WaitUntil(() => _informationLabel.IsComplete);
+                await UniTask.WaitUntil(() => _informationLabel.IsComplete, cancellationToken: Token);
             }
         }
 

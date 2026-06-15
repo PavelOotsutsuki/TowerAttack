@@ -1,8 +1,11 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Threading;
 using Cysharp.Threading.Tasks;
-using GameFields.Persons.Hands;
+using Tools;
 using Tools.UI;
+using Tools.Utils;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
@@ -16,9 +19,10 @@ namespace GameFields.Persons.Discovers
 
         [SerializeField] private CanvasGroup _canvasGroup;
 
+        private CancellationTokenSource _currentCTS;
         //private IHandBlockable _handBlockable;
 
-        public override void Init(/*IHandBlockable handBlockable*/)
+        public override void Init(/*IHandBlockable handBlockable*/CancellationToken fightToken)
         {
             //_handBlockable = handBlockable;
 
@@ -27,38 +31,65 @@ namespace GameFields.Persons.Discovers
             _discoverPanel.Init();
             _discoverLabel.Init();
 
-            base.Init();
+            base.Init(fightToken);
         }
 
         public override void Activate(DiscoverActivateData data)
         {
+            if (Token.IsCancellationRequested)
+                return;
+
             //_handBlockable.ForciblyBlock();
             _canvasGroup.blocksRaycasts = true;
 
             base.Activate(data);
 
-            LabelActivateData labelData = new LabelActivateData(data.ActivateMessage);
+            Utils.DestroyCTS(ref _currentCTS);
+            _currentCTS = CancellationTokenSource.CreateLinkedTokenSource(Token);
 
-            _discoverPanel.Show();
+            LabelActivateDataAsync labelData = new LabelActivateDataAsync(new LabelActivateData(data.ActivateMessage), _currentCTS.Token);
+
+            _discoverPanel.Show(new CancellationTokenData(_currentCTS.Token));
             _discoverLabel.Show(labelData);
         }
 
         protected override void Deactivate()
         {
+            if (Token.IsCancellationRequested)
+                return;
+
             _canvasGroup.blocksRaycasts = false;
 
-            _discoverPanel.Hide();
+            Utils.DestroyCTS(ref _currentCTS);
+            _currentCTS = CancellationTokenSource.CreateLinkedTokenSource(Token);
+
+            _discoverPanel.Hide(new CancellationTokenData(_currentCTS.Token));
             _discoverLabel.Hide();
 
-            Deactivating().ToUniTask();
+            Deactivating(_currentCTS.Token).Forget();
         }
 
-        private IEnumerator Deactivating()
+        private async UniTask Deactivating(CancellationToken token)
         {
-            yield return new WaitUntil(() => _discoverLabel.IsComplete && _discoverPanel.IsComplete);
+            if (Token.IsCancellationRequested)
+                return;
 
-            //_handBlockable.Unblock();
-            base.Deactivate();
+            try
+            {
+                await UniTask.WaitUntil(() => _discoverLabel.IsComplete && _discoverPanel.IsComplete, cancellationToken: token);
+
+                //_handBlockable.Unblock();
+                base.Deactivate();
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.Log($"ОТМЕНА ТОКЕНА: {MethodBase.GetCurrentMethod().DeclaringType.Name}: {GetType().Name}");
+            }
+        }
+
+        private void OnDisable()
+        {
+            Utils.DestroyCTS(ref _currentCTS);
         }
 
         #region AutomaticFillComponents

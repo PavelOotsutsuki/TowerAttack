@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Cards.Views.BigCardViews.Capabilities;
 using Menues;
 using StartMenues.InputSettings;
@@ -15,17 +16,18 @@ namespace StartMenues
         [SerializeField] private StartMenuButtonsPanelRoot _startMenuButtonsPanelRoot;
 
         private StartMenuInputRoot _inputRoot;
+        //private CancellationTokenSource _startMenuCTS;
 
         public void Init(StartMenuInputRoot inputRoot, IVolume cardVolume, IVolume musicVolume, CardCapabilityDescription cardCapabilityDescription,
-            Action<int> onPlayClick)
+            Action<int> onPlayClick, CancellationToken startMenuRootToken)
         {
             //_inputRoot = inputRoot;
 
             _inputRoot = inputRoot;
 
-            _startMenuButtonsPanelRoot.Init(cardVolume, musicVolume, cardCapabilityDescription, onPlayClick, this);
+            _startMenuButtonsPanelRoot.Init(cardVolume, musicVolume, cardCapabilityDescription, onPlayClick, this, startMenuRootToken);
 
-            base.Init(_startMenuButtonsPanelRoot);
+            base.Init(_startMenuButtonsPanelRoot, startMenuRootToken);
             _inputRoot.Activate();
         }
 

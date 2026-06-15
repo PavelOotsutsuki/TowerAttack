@@ -9,4 +9,9 @@ namespace Tools
     {
         public bool? IsActive { get; }
     }
+
+    public interface IWorkable<T, D> : IActivatable<T>, IDeactivatable<D> where T : IData where D : IData
+    {
+        public bool? IsActive { get; }
+    }
 }

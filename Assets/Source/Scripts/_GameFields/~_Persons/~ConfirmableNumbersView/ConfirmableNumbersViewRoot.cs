@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Tools;
@@ -6,6 +5,11 @@ using Tools.UI;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 using System.Linq;
+using System.Threading;
+using Cysharp.Threading.Tasks;
+using System;
+using System.Reflection;
+using Tools.Utils;
 
 namespace GameFields.Persons.ConfirmableNumbersView
 {
@@ -18,17 +22,22 @@ namespace GameFields.Persons.ConfirmableNumbersView
         private ConfirmableNumbers _enemyConfirmableNumbers;
         private ConfirmableNumbers _playerConfirmableNumbers;
 
-        private Coroutine _deactivateCoroutine = null;
-        private Coroutine _activateCoroutine = null;
+        private CancellationTokenSource _activateCTS;
+        private CancellationTokenSource _deactivateCTS;
+
+        private CancellationToken _fightToken;
+        //private Coroutine _deactivateCoroutine = null;
+        //private Coroutine _activateCoroutine = null;
 
         public bool? IsActive { get; private set; } = null;
 
-        public void Init(ConfirmableNumbers enemyConfirmableNumbers, ConfirmableNumbers playerConfirmableNumbers)
+        public void Init(ConfirmableNumbers enemyConfirmableNumbers, ConfirmableNumbers playerConfirmableNumbers, CancellationToken fightToken)
         {
             _panel.Init();
 
             _enemyConfirmableNumbers = enemyConfirmableNumbers;
             _playerConfirmableNumbers = playerConfirmableNumbers;
+            _fightToken = fightToken;
 
             SetTextByEnemy();
             SetTextByPlayer();
@@ -41,6 +50,9 @@ namespace GameFields.Persons.ConfirmableNumbersView
 
         public void Activate()
         {
+            if (_fightToken.IsCancellationRequested)
+                return;
+
             if (IsActive == true)
                 return;
 
@@ -48,25 +60,29 @@ namespace GameFields.Persons.ConfirmableNumbersView
 
             gameObject.SetActive(true);
 
-            _activateCoroutine = StartCoroutine(Activating());
+            Utils.DestroyCTS(ref _activateCTS);
+            _activateCTS = CancellationTokenSource.CreateLinkedTokenSource(_fightToken);
+
+            Activating(_activateCTS.Token).Forget();
         }
 
         public void Deactivate()
         {
+            if (_fightToken.IsCancellationRequested)
+                return;
+
             if (IsActive == false)
                 return;
 
             IsActive = false;
 
-            if (_activateCoroutine != null)
-            {
-                StopCoroutine(_activateCoroutine);
-                _activateCoroutine = null;
-            }
+            Utils.DestroyCTS(ref _activateCTS);
+            Utils.DestroyCTS(ref _deactivateCTS);
+            _deactivateCTS = CancellationTokenSource.CreateLinkedTokenSource(_fightToken);
 
-            _panel.Hide();
+            _panel.Hide(new CancellationTokenData(_deactivateCTS.Token));
 
-            _deactivateCoroutine = StartCoroutine(WaitUntilSetDeactivate());
+            WaitUntilSetDeactivate(_deactivateCTS.Token).Forget();
         }
 
         private void SetTextByEnemy()
@@ -115,30 +131,49 @@ namespace GameFields.Persons.ConfirmableNumbersView
 
         private void OnDisable()
         {
-            _deactivateCoroutine = null;
-            _activateCoroutine = null;
+            Utils.DestroyCTS(ref _activateCTS);
+            Utils.DestroyCTS(ref _deactivateCTS);
         }
 
-        private IEnumerator Activating()
+        private async UniTask Activating(CancellationToken activateToken)
         {
-            if (_deactivateCoroutine != null)
-            {
-                StopCoroutine(_deactivateCoroutine);
-                _deactivateCoroutine = null;
-            }
-            else
-            {
-                yield return new WaitForSeconds(0.8f);
-            }
+            if (_fightToken.IsCancellationRequested)
+                return;
 
-            _panel.Show();
+            try
+            {
+                if (_deactivateCTS != null)
+                {
+                    Utils.DestroyCTS(ref _deactivateCTS);
+                }
+                else
+                {
+                    await UniTask.WaitForSeconds(0.8f, cancellationToken: activateToken);
+                }
+
+                _panel.Show(new CancellationTokenData(activateToken));
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.Log($"ОТМЕНА ТОКЕНА: {MethodBase.GetCurrentMethod().DeclaringType.Name}: {GetType().Name}");
+            }
         }
 
-        private IEnumerator WaitUntilSetDeactivate()
+        private async UniTask WaitUntilSetDeactivate(CancellationToken token)
         {
-            yield return new WaitUntil(() => _panel.IsComplete);
+            if (_fightToken.IsCancellationRequested)
+                return;
 
-            gameObject.SetActive(false);
+            try
+            {
+                await UniTask.WaitUntil(() => _panel.IsComplete, cancellationToken: token);
+
+                gameObject.SetActive(false);
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.Log($"ОТМЕНА ТОКЕНА: {MethodBase.GetCurrentMethod().DeclaringType.Name}: {GetType().Name}");
+            }
         }
 
         #region AutomaticFillComponents

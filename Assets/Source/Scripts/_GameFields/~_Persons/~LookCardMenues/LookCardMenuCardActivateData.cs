@@ -1,3 +1,4 @@
+using System.Threading;
 using Cards;
 using Cards.Views;
 using Tools;
@@ -5,12 +6,12 @@ using UnityEngine;
 
 namespace GameFields.Persons.LookCardMenues
 {
-    public class LookCardMenuCardActivateData : IData
+    public class LookCardMenuCardActivateData : CancellationTokenData
     {
         private readonly Vector2 _sizeDelta;
         private readonly CardViewData _cardViewData;
 
-        public LookCardMenuCardActivateData(Vector2 sizeDelta, CardViewData cardViewData)
+        public LookCardMenuCardActivateData(Vector2 sizeDelta, CardViewData cardViewData, CancellationToken cardToken) : base(cardToken)
         {
             _sizeDelta = sizeDelta;
             _cardViewData = cardViewData;

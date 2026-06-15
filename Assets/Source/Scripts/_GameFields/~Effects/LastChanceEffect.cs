@@ -1,9 +1,8 @@
 using Cards;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using GameFields.CardTransits;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 
 namespace GameFields.Effects
 {
@@ -32,13 +31,13 @@ namespace GameFields.Effects
         //    Debug.Log("Эффект Последнего шанса закончен");
         //}
 
-        protected override IEnumerator OnPlaying()
+        protected override async UniTask OnPlaying()
         {
             DiscardPileTypes discardPileTypes = _typesRoot.DiscardPile;
             IReadOnlyList<Card> discardPileCards = _viewRoot.GetAllCards(discardPileTypes.ViewType).ToList();
 
             if (discardPileCards.Count <= 0)
-                yield break;
+                return;
 
             TransitFromType discardPileFrom = discardPileTypes.FromType;
             TransitToType deckTo = _typesRoot.Deck.ToType;
@@ -56,12 +55,9 @@ namespace GameFields.Effects
                 {
                     _transitManager.TransitCard(returnableCard, discardPileFrom, deckTo); //Без индекса чтобы триггернуть Shuffle
                 }
-
-                yield return new WaitForSeconds(duration);
+                await UniTask.WaitForSeconds(duration, cancellationToken: Token);
                 duration = NextDuration(duration);
             }
-
-            yield break;
         }
 
         private float NextDuration(float currentDuration)

@@ -1,7 +1,6 @@
-using System.Collections;
+using Cysharp.Threading.Tasks;
 using GameFields.Persons;
 using GameFields.Persons.SelectMenues;
-using UnityEngine;
 
 namespace GameFields.Effects
 {
@@ -24,12 +23,12 @@ namespace GameFields.Effects
         //    Debug.Log("Эффект слепого старца закончен");
         //}
 
-        protected override IEnumerator OnPlaying()
+        protected override async UniTask OnPlaying()
         {
             bool endPlaying = false;
 
             _activePerson.ChoiceActivate(CountNumbers, () => endPlaying = true, RestrictionType.Odd);
-            yield return new WaitUntil(() => endPlaying);
+            await UniTask.WaitUntil(() => endPlaying, cancellationToken: Token);
         }
     }
 }

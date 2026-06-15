@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using Tools;
 using Tools.UI;
 using Tools.Utils.FillComponents;
@@ -12,10 +13,14 @@ namespace GameFields.LightControls
         [SerializeField] private FadablePanel _fadablePanel;
         [SerializeField] private Transform _transform;
 
+        private CancellationToken _fightToken;
+
         public bool? IsShown { get; private set; } = null;
 
-        public void Init()
+        public void Init(CancellationToken fightToken)
         {
+            _fightToken = fightToken;
+
             gameObject.SetActive(true);
             _fadablePanel.Init();
         }
@@ -27,7 +32,7 @@ namespace GameFields.LightControls
 
             IsShown = true;
 
-            _fadablePanel.Show();
+            _fadablePanel.Show(new CancellationTokenData(_fightToken));
             _transform.SetAsFirstSibling();
         }
 
@@ -37,7 +42,7 @@ namespace GameFields.LightControls
                 return;
 
             IsShown = false;
-            _fadablePanel.Hide();
+            _fadablePanel.Hide(new CancellationTokenData(_fightToken));
         }
 
         #region AutomaticFillComponents

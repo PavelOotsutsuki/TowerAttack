@@ -31,7 +31,7 @@ namespace GameFields.Persons.SelectMenues.Choices
                 message += selectNumber.Number.ToString();
             }
 
-            SetSelectResultData data = new SetSelectResultData(resultType, message);
+            SetSelectResultData data = new SetSelectResultData(resultType, message, this.destroyCancellationToken);
 
             return data;
         }

@@ -1,3 +1,4 @@
+using System.Threading;
 using Cards.Effects;
 using GameFields.Histories;
 using GameFields.Persons;
@@ -15,9 +16,11 @@ namespace GameFields.Effects
         private readonly PersonEffectsHandlerRoot _personEffectsHandlerRoot;
         private readonly HistoryRoot _historyRoot;
         private readonly Person _activePerson;
+        private readonly CancellationToken _fightToken;
 
         public EffectData(SignalBus bus, CardEffectData cardEffectData, EffectDuration effectDuration,
-            PersonEffectsHandlerRoot personEffectsHandlerRoot, HistoryRoot historyRoot, Person activePerson)
+            PersonEffectsHandlerRoot personEffectsHandlerRoot, HistoryRoot historyRoot, Person activePerson,
+            CancellationToken fightToken)
         {
             _bus = bus;
             _cardEffectData = cardEffectData;
@@ -25,6 +28,7 @@ namespace GameFields.Effects
             _personEffectsHandlerRoot = personEffectsHandlerRoot;
             _historyRoot = historyRoot;
             _activePerson = activePerson;
+            _fightToken = fightToken;
         }
 
         public SignalBus Bus => _bus;
@@ -33,5 +37,6 @@ namespace GameFields.Effects
         public PersonEffectsHandlerRoot PersonEffectsHandlerRoot => _personEffectsHandlerRoot;
         public HistoryRoot HistoryRoot => _historyRoot;
         public Person ActivePerson => _activePerson;
+        public CancellationToken FightToken => _fightToken;
     }
 }

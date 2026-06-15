@@ -1,11 +1,13 @@
+using System.Threading;
+
 namespace GameFields.Persons
 {
-    public abstract class SkipTurnView : PersonStep
+    internal abstract class SkipTurnView : PersonStep
     {
         private readonly SkipTurnLabel _label;
 
-        public SkipTurnView(InteractionActivator interactionActivator, SkipTurnLabel label)
-            : base(interactionActivator)
+        public SkipTurnView(InteractionActivator interactionActivator, SkipTurnLabel label, CancellationToken turnToken)
+            : base(interactionActivator, turnToken)
         {
             _label = label;
         }

@@ -1,10 +1,13 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using Cards;
+using System.Reflection;
+using System.Threading;
 using Cards.Views;
 using Cards.Views.BigCardViews.Capabilities;
+using Cysharp.Threading.Tasks;
 using Tools;
 using Tools.UI;
+using Tools.Utils;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Screens;
 using UnityEngine;
@@ -24,7 +27,10 @@ namespace GameFields.Persons.Towers
         private CardCapabilityDescription _cardCapabilityDescription;
 
         private bool _isComplete;
-        private Coroutine _hiddingCoroutine = null;
+        //private Coroutine _hiddingCoroutine = null;
+        private CancellationTokenSource _hiddingCTS;
+        private CancellationTokenSource _showingCTS;
+        private CancellationToken _fightToken;
 
         private float _bigHeight;
         private float _bigWidth;
@@ -41,9 +47,11 @@ namespace GameFields.Persons.Towers
             _cardCapabilityDescription = cardCapabilityDescription;
         }
 
-        public void Init()
+        public void Init(CancellationToken fightToken)
         {
             _isComplete = true;
+
+            _fightToken = fightToken;
 
             _rectTransform.rotation = Quaternion.identity;
             _canvasHeight = ScreenView.Y();
@@ -57,16 +65,17 @@ namespace GameFields.Persons.Towers
 
         public void Show(TowerBigCardShowData data)
         {
+            if (_fightToken.IsCancellationRequested)
+                return;
+
             if (IsShown == true)
                 return;
 
             IsShown = true;
 
-            if (_hiddingCoroutine != null)
-            {
-                StopCoroutine(_hiddingCoroutine);
-                _hiddingCoroutine = null;
-            }
+            Utils.DestroyCTS(ref _hiddingCTS);
+            Utils.DestroyCTS(ref _showingCTS);
+            _showingCTS = CancellationTokenSource.CreateLinkedTokenSource(_fightToken);
 
             _isComplete = false;
 
@@ -79,33 +88,51 @@ namespace GameFields.Persons.Towers
             _rectTransform.sizeDelta = new Vector2(_bigWidth, _bigHeight);
             gameObject.SetActive(true);
 
-            _fadablePanel.Show();
+            _fadablePanel.Show(new CancellationTokenData(_showingCTS.Token));
         }
 
         public void Hide()
         {
+            if (_fightToken.IsCancellationRequested)
+                return;
+
             if (IsShown == false)
                 return;
 
             IsShown = false;
 
-            _hiddingCoroutine = StartCoroutine(Hidding());
+            Utils.DestroyCTS(ref _hiddingCTS);
+            Utils.DestroyCTS(ref _showingCTS);
+            _hiddingCTS = CancellationTokenSource.CreateLinkedTokenSource(_fightToken);
+
+            Hidding(_hiddingCTS.Token).Forget();
         }
 
         private void OnDisable()
         {
-            _hiddingCoroutine = null;
+            Utils.DestroyCTS(ref _hiddingCTS);
+            Utils.DestroyCTS(ref _showingCTS);
         }
 
-        private IEnumerator Hidding()
+        private async UniTask Hidding(CancellationToken token)
         {
-            _fadablePanel.Hide();
+            if (_fightToken.IsCancellationRequested)
+                return;
 
-            yield return new WaitUntil(() => _fadablePanel.IsComplete);
+            try
+            {
+                _fadablePanel.Hide(new CancellationTokenData(token));
 
-            gameObject.SetActive(false);
+                await UniTask.WaitUntil(() => _fadablePanel.IsComplete, cancellationToken: token);
 
-            _isComplete = true;
+                gameObject.SetActive(false);
+
+                _isComplete = true;
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.Log($"ОТМЕНА ТОКЕНА: {MethodBase.GetCurrentMethod().DeclaringType.Name}: {GetType().Name}");
+            }
         }
 
         #region AutomaticFillComponents

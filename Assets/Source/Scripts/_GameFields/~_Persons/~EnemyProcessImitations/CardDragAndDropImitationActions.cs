@@ -8,6 +8,8 @@ using GameFields.Persons.DrawCards;
 using Cards.DependencyInterlayers;
 using GameFields.CardTransits;
 using GameFields.Histories;
+using Cysharp.Threading.Tasks;
+using System.Threading;
 
 namespace GameFields.Persons.EnemyProcessImitations
 {
@@ -73,9 +75,9 @@ namespace GameFields.Persons.EnemyProcessImitations
 
         public bool CanPlay() => _cardDropPlaceImitation.HasFreeSeat;
 
-        public IEnumerator Play()
+        public async UniTask Play(CancellationToken token)
         {
-            yield return new WaitUntil(() => _isMoving == false);
+            await UniTask.WaitUntil(() => _isMoving == false, cancellationToken: token);
 
             _hand.OnCardPlay();
             _activeCard.Play();
@@ -94,7 +96,7 @@ namespace GameFields.Persons.EnemyProcessImitations
             _historyRoot.AddMsg(historyData);
         }
 
-        public IEnumerator Forging()
+        public async UniTask Forging(CancellationToken token)
         {
             _isForging = false;
 
@@ -102,13 +104,13 @@ namespace GameFields.Persons.EnemyProcessImitations
             _hand.OnCardPlay();
 
             _discardPile.SeatCard(_activeCard);
-            _drawCardManager.DrawCards(1, ForgingContinue);
+            _drawCardManager.DrawCards(1, token, ForgingContinue);
 
             HistoryCardData historyCardData = new HistoryCardData(_activeCard);
             HistoryData historyData = new HistoryData(this, "Гномичья ковка: ", historyCardData);
             _historyRoot.AddMsg(historyData);
 
-            yield return new WaitUntil(() => _isForging);
+            await UniTask.WaitUntil(() => _isForging, cancellationToken: token);
         }
 
         private void ForgingContinue()
@@ -129,9 +131,9 @@ namespace GameFields.Persons.EnemyProcessImitations
         //    ReturningInHand(returnToHandDuration).ToUniTask();
         //}
 
-        public IEnumerator ReturningInHand(float returnToHandDuration)
+        public async UniTask ReturningInHand(float returnToHandDuration, CancellationToken token)
         {
-            yield return new WaitUntil(() => _isMoving == false);
+            await UniTask.WaitUntil(() => _isMoving == false, cancellationToken: token);
 
             _hand.OnCardDrop();
             _cardMovement.MoveLocalSmoothly(Vector2.zero, Vector3.zero, returnToHandDuration, _activeCard.DefaultScaleVector);

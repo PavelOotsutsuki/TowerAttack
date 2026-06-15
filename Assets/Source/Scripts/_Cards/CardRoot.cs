@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using Cards.Animations.Curses;
 using Cards.Effects;
 using Cards.Insides;
@@ -16,12 +17,10 @@ namespace Cards
 {
     public class CardRoot : MonoBehaviour, ICardWatcher, ICardCreator, IAutomaticFillComponents
     {
-        //[SerializeField] private Card[] _startCards;
         [SerializeField] private CurseAnimator _curseAnimator;
         [SerializeField] private CardCreator _cardCreator;
         [SerializeField] private StartCardsType _startCardsType;
         [SerializeField] private CardDescription _cardDescription;
-        //[SerializeField] private UIHelper[] _uIHelpers;
 
         private readonly List<Card> _allCards = new List<Card>();
 
@@ -33,13 +32,17 @@ namespace Cards
         private CardCapabilityDescription _cardCapabilityDescription;
         private CardSoundRoot _cardSoundRoot;
         private IFontSetter _fontSetter;
+        private CancellationToken _fightToken;
 
         public IReadOnlyList<Card> Cards => _allCards;
 
         public void Init(IEffectFactory effectFactory, BigCardRoot bigCardRoot, ICardDragAndDropHandler cardDragAndDropHandler,
-            CardCapabilityDescription cardCapabilityDescription, CardSoundRoot cardSoundRoot, IFontSetter fontSetter)
+            CardCapabilityDescription cardCapabilityDescription, CardSoundRoot cardSoundRoot, IFontSetter fontSetter,
+            CancellationToken fightToken)
         {
-            _curseAnimator.Init();
+            _fightToken = fightToken;
+
+            _curseAnimator.Init(_fightToken);
             _cardCreator.Init();
 
             _bigCardRoot = bigCardRoot;
@@ -66,7 +69,7 @@ namespace Cards
             Card createdCard = _cardCreator.CreateInstantly(cardName, parent);
 
             createdCard.Init(_effectFactory, _cardViewService, _cardDragAndDropHandler, _curseAnimator,
-                _cardCapabilityDescription, _cardSoundRoot, _cardDescription);
+                _cardCapabilityDescription, _cardSoundRoot, _cardDescription, _fightToken);
 
             TMP_Text[] cardTexts = createdCard.gameObject.GetComponentsInChildren<TMP_Text>(true);
             _fontSetter.SetFont(cardTexts);
@@ -82,7 +85,6 @@ namespace Cards
         {
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
-                //DefineAllCards(),
                 DefineBigCardRoot(),
                 DefineCardCreator(),
                 DefineCardDescription()
@@ -90,12 +92,6 @@ namespace Cards
 
             return list;
         }
-
-        //[ContextMenu(nameof(DefineAllCards))]
-        //private ComponentAttachInfo DefineAllCards()
-        //{
-        //   return AutomaticFillComponents.DefineComponent(this, ref _startCards);
-        //}
 
         [ContextMenu(nameof(DefineBigCardRoot))]
         private ComponentAttachInfo DefineBigCardRoot()
@@ -114,13 +110,6 @@ namespace Cards
         {
             return AutomaticFillComponents.DefineComponent(this, ref _cardDescription, ComponentLocationTypes.InScene);
         }
-
-
-        //[ContextMenu(nameof(DefineUIHelpers))]
-        //private ComponentAttachInfo DefineUIHelpers()
-        //{
-        //    return AutomaticFillComponents.DefineComponent(this, ref _uIHelpers, true);
-        //}
         #endregion 
     }
 }

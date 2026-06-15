@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Cards;
 using Cards.Insides;
 using Cards.Views;
@@ -79,7 +80,7 @@ namespace GameFields.Persons.LookCardMenues
             _cardView.FillData(data.CardViewData);
             //_descriptionMessage = data.CardViewData.Description;
             //BigCardShowData showData = new BigCardShowData(_bigCardSize, _ROTransform, data.CardViewData);
-            CardDescriptionActivateData cardDescriptionActivateData = new CardDescriptionActivateData(data.CardViewData.Description);
+            CardDescriptionActivateData cardDescriptionActivateData = new CardDescriptionActivateData(data.CardViewData.Description, data.Token);
 
             _bigCardRootActivateData = new BigCardRootActivateData(null, cardDescriptionActivateData, null);
 
@@ -87,7 +88,7 @@ namespace GameFields.Persons.LookCardMenues
 
             _viewLogic.Show(lookCardMenuCardViewLogicData);
 
-            WaitingToUnblock().ToUniTask();
+            WaitingToUnblock(data.Token).Forget();
 
             gameObject.SetActive(true);
         }
@@ -113,10 +114,10 @@ namespace GameFields.Persons.LookCardMenues
             _bigCardRoot.Deactivate();
         }
 
-        private IEnumerator WaitingToUnblock()
+        private async UniTask WaitingToUnblock(CancellationToken token)
         {
             //yield return new WaitForSeconds(ViewDuration);
-            yield return new WaitUntil(() => _viewLogic.IsComplete);
+            await UniTask.WaitUntil(() => _viewLogic.IsComplete, cancellationToken: token);
 
             Unblock();
         }

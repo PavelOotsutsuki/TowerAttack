@@ -1,8 +1,7 @@
-using System.Collections;
+using Cysharp.Threading.Tasks;
 using GameFields.Persons;
 using GameFields.Persons.DrawCards;
 using GameFields.Persons.EffectHandlers.Brothers;
-using UnityEngine;
 
 namespace GameFields.Effects
 {
@@ -32,17 +31,17 @@ namespace GameFields.Effects
         //    Debug.Log("Эффект Большого брата закончен");
         //}
 
-        protected override IEnumerator OnPlaying()
+        protected override async UniTask OnPlaying()
         {
             int countAttack = _activePerson.BrothersCounter;
             bool isAttackComplete = false;
             _activePerson.AttackActivate(StartValue + countAttack, () => isAttackComplete = true);
-            yield return new WaitUntil(() => isAttackComplete);
+            await UniTask.WaitUntil(() => isAttackComplete, cancellationToken: Token);
 
             bool isDrawComplete = false;
-            _drawCardManager.DrawCards(StartValue + countAttack, () => isDrawComplete = true);
+            _drawCardManager.DrawCards(StartValue + countAttack, Token, () => isDrawComplete = true);
 
-            yield return new WaitUntil(() => isDrawComplete);
+            await UniTask.WaitUntil(() => isDrawComplete, cancellationToken: Token);
 
             _brothersEffectHandlerRoot.Upgrade(UpgradeCount);
         }

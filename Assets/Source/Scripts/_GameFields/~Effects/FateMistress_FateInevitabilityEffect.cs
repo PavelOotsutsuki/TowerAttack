@@ -1,7 +1,6 @@
-using System.Collections;
 using Cards;
+using Cysharp.Threading.Tasks;
 using GameFields.Persons;
-using UnityEngine;
 
 namespace GameFields.Effects
 {
@@ -27,10 +26,10 @@ namespace GameFields.Effects
         //    Debug.Log("Эффект Неизбежность судьбы закончен");
         //}
 
-        protected override IEnumerator OnPlaying()
+        protected override UniTask OnPlaying()
         {
             _activePerson.ActivateFateInevitability(_card, _duration);
-            yield break;
+            return UniTask.CompletedTask;
         }
     }
 }

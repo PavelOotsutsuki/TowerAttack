@@ -32,7 +32,7 @@ namespace GameFields.Persons.LookCardMenues
             sizeDelta ??= _card.RORTransform.GetSizeDelta();
 
             _card = card;
-            LookCardMenuCardActivateData data = new LookCardMenuCardActivateData(sizeDelta.Value, _card.ViewData);
+            LookCardMenuCardActivateData data = new LookCardMenuCardActivateData(sizeDelta.Value, _card.ViewData, _card.CardToken);
             _lookCardMenuCard.Activate(data);
         }
 

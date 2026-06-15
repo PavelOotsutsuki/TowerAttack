@@ -12,7 +12,7 @@ namespace GameFields
         public void OnEnable()
         {
             base.Init();
-            base.Activate();
+            base.BaseActivate();
 
             SetNormalSettings();
 

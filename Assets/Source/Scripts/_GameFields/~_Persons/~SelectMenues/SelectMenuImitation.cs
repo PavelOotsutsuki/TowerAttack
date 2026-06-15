@@ -1,5 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using GameFields.Persons;
 using GameFields.Persons.ConfirmableNumbersView;
 using GameFields.Persons.Towers;
@@ -15,35 +19,49 @@ namespace GameFields.Persons.SelectMenues
 
         public void Init(ICardNumberKeeper cardNumberKeeper, ISelectResultHandler selectResultHandler, int[] cardNumbers,
             SelectNumbersList selectedNumbers, ConfirmableNumbers confirmableNumbers,
-            LastSelectedNumbersWatcher lastSelectedNumbersWatcher)
+            LastSelectedNumbersWatcher lastSelectedNumbersWatcher, CancellationToken fightToken)
         {
             _selectNumberPanelImitation.Init(cardNumberKeeper, cardNumbers, selectedNumbers, confirmableNumbers,
-                lastSelectedNumbersWatcher);
+                lastSelectedNumbersWatcher, fightToken);
 
             SelectMenuLabelTextLogic selectMenuLabelTextLogic = new EnemySelectMenuLabelTextLogic(_data.SelectMenuLabelText);
 
-            base.Init(selectResultHandler, _selectNumberPanelImitation, selectMenuLabelTextLogic);
+            base.Init(selectResultHandler, _selectNumberPanelImitation, selectMenuLabelTextLogic, fightToken);
         }
 
         public override void Activate(SelectMenuActivateData activateData)
         {
             base.Activate(activateData);
 
-            StartCoroutine(WaitingUntilDeactivate());
+            WaitingUntilDeactivate(CurrentCTS.Token).Forget();
         }
 
-        protected override IEnumerator OnDeactivating()
+        protected override async UniTask OnDeactivating(CancellationToken token)
         {
-            yield return new WaitForSeconds(_data.DelayAfterChoiceNumberDone);
+            try
+            {
+                await UniTask.WaitForSeconds(_data.DelayAfterChoiceNumberDone, cancellationToken: token);
 
-            _selectNumberPanelImitation.Deactivate();
+                _selectNumberPanelImitation.Deactivate();
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.Log($"ОТМЕНА ТОКЕНА: {MethodBase.GetCurrentMethod().DeclaringType.Name}: {GetType().Name}");
+            }
         }
 
-        private IEnumerator WaitingUntilDeactivate()
+        private async UniTask WaitingUntilDeactivate(CancellationToken token)
         {
-            yield return new WaitUntil(() => _selectNumberPanelImitation.IsComplete);
+            try
+            {
+                await UniTask.WaitUntil(() => _selectNumberPanelImitation.IsComplete, cancellationToken: token);
 
-            Deactivate();
+                Deactivate();
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.Log($"ОТМЕНА ТОКЕНА: {MethodBase.GetCurrentMethod().DeclaringType.Name}: {GetType().Name}");
+            }
         }
 
         #region AutomaticFillComponents

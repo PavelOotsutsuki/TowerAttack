@@ -1,10 +1,12 @@
+using System.Threading;
 using Tools;
 
 namespace GameFields.Persons
 {
-    public class CardActionProcessingPlayer : CardActionProcessing
+    internal class CardActionProcessingPlayer : CardActionProcessing
     {
-        public CardActionProcessingPlayer(InteractionActivator interactionActivator, ICompletable completable) : base(interactionActivator, completable)
+        public CardActionProcessingPlayer(InteractionActivator interactionActivator, ICompletable completable, CancellationToken token) :
+            base(interactionActivator, completable, token)
         { }
     }
 }

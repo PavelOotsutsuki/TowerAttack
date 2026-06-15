@@ -1,11 +1,12 @@
-using System.Collections;
+using System;
+using System.Reflection;
+using System.Threading;
 using Cysharp.Threading.Tasks;
-using GameFields.Persons;
 using UnityEngine;
 
 namespace GameFields.Persons.DrawCards
 {
-    public abstract class StartTurnDraw : PersonStep, IPersonObject
+    internal abstract class StartTurnDraw : PersonStep, IPersonObject
     {
         private readonly int _countDrawCards;
         private readonly DrawCardRoot _drawCardRoot;
@@ -21,7 +22,7 @@ namespace GameFields.Persons.DrawCards
         //    SimpleDrawCardAnimation simpleDrawCardAnimation, FireDrawCardAnimation fireDrawCardAnimation,
         //    int countDrawCards) :base(interactionActivator)
         public StartTurnDraw(InteractionActivator interactionActivator, DrawCardRoot drawCardRoot,
-            int countDrawCards) : base(interactionActivator)
+            int countDrawCards, CancellationToken fightToken) : base(interactionActivator, fightToken)
         {
             _drawCardRoot = drawCardRoot;
             //_simpleDrawCardAnimation = simpleDrawCardAnimation;
@@ -38,7 +39,7 @@ namespace GameFields.Persons.DrawCards
         {
             _isComplete = false;
 
-            DrawingCards().ToUniTask();
+            DrawingCards().Forget();
 
             //if (_countExtraAnimationTurns > 0)
             //{
@@ -58,13 +59,23 @@ namespace GameFields.Persons.DrawCards
         //    _countExtraAnimationTurns = countTurns;
         //}
 
-        private IEnumerator DrawingCards()
+        private async UniTask DrawingCards()
         {
-            _drawCardRoot.DrawCards(_countDrawCards);
+            if (Token.IsCancellationRequested)
+                return;
 
-            yield return new WaitUntil(() => _drawCardRoot.IsDrawing == false);
+            try
+            {
+                _drawCardRoot.DrawCards(_countDrawCards, Token);
 
-            _isComplete = true;
+                await UniTask.WaitUntil(() => _drawCardRoot.IsDrawing == false, cancellationToken: Token);
+
+                _isComplete = true;
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.Log($"ОТМЕНА ТОКЕНА: {MethodBase.GetCurrentMethod().DeclaringType.Name}: {GetType().Name}");
+            }
         }
 
         //private void SetSimpleMode()

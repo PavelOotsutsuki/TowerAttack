@@ -12,6 +12,7 @@ using GameFields.Persons.EffectHandlers.Brothers;
 using GameFields.Persons.EffectHandlers.Scarecrows;
 using Cards;
 using GameFields.Persons.EffectHandlers.FateInevitabilities;
+using System.Threading;
 
 namespace GameFields.Persons.EffectHandlers
 {
@@ -101,24 +102,24 @@ namespace GameFields.Persons.EffectHandlers
             }
         }
 
-        public void BeforeEndTurn(Action callback)
+        public void BeforeEndTurn(Action callback, CancellationToken token)
         {
             //callback.Invoke();
             //return;
 
             CallbackHandler fateInevitabilityHandlerCallbackHandler = new CallbackHandler();
-            _fateInevitabilityHandler.BeforeEndTurn(fateInevitabilityHandlerCallbackHandler);
+            _fateInevitabilityHandler.BeforeEndTurn(fateInevitabilityHandlerCallbackHandler, token);
 
             List<ICompletable> completables = new List<ICompletable>();
 
             completables.Add(fateInevitabilityHandlerCallbackHandler);
 
-            WaitingAllBeforeEndTurnActions(completables, callback).ToUniTask();
+            WaitingAllBeforeEndTurnActions(completables, callback, token).Forget();
         }
 
-        private IEnumerator WaitingAllBeforeEndTurnActions(IEnumerable<ICompletable> completables, Action callback)
+        private async UniTask WaitingAllBeforeEndTurnActions(IEnumerable<ICompletable> completables, Action callback, CancellationToken token)
         {
-            yield return new WaitUntil(() => completables.Any(c => c.IsComplete == false) == false);
+            await UniTask.WaitUntil(() => completables.Any(c => c.IsComplete == false) == false, cancellationToken: token);
 
             callback?.Invoke();
         }

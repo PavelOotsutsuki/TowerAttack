@@ -17,18 +17,16 @@ using GameFields.Persons.LookCardMenues;
 using GameFields.Persons.EffectHandlers.Brothers;
 using GameFields.Persons.EffectHandlers;
 using GameFields.InputSettings;
-using GameFields.FightMenues;
 using Cards.Views.BigCardViews.Capabilities;
 using Cards.Views.BigCardViews;
 using Cards.Sounds;
 using GameFields.CardTransits;
 using GameFields.Histories;
 using Sounds;
-using Tools;
 using System;
-using TMPro;
-using UnityEngine.UI;
 using GameFields.Backgrounds;
+using System.Threading;
+using Tools.UI.UIHelpers;
 
 namespace Roots
 {
@@ -66,18 +64,20 @@ namespace Roots
         private HistoryRoot _historyRoot;
         private BackgroundSoundConfig _backgroundSoundConfig;
         private BackgroundRoot _backgroundRoot;
+        private UIHelperDescription _UIHelperDescription;
 
         private GameFieldInputRoot _inputRoot;
 
         //private FontRoot _fontRoot;
         //private CanvasController _canvasController;
+        private CancellationToken GameFieldToken => Token;
 
         [Inject]
         private void Construct(SignalBus bus, Deck deck, SeatPool seatPool, BigCardRoot bigCardRoot, HandPlayer handPlayer,
             InformationLabel informationLabel, LookCardMenuPlayer lookCardMenu, VariantCardCreator variantCardCreator,
             SoundRoot soundRoot, CardSoundRoot cardSoundRoot, FightButtonsActivator fightButtonsActivator,
             CardCapabilityDescription cardCapabilityDescription, HistoryRoot historyRoot, BackgroundSoundConfig backgroundSoundConfig,
-            BackgroundRoot backgroundRoot)
+            BackgroundRoot backgroundRoot, UIHelperDescription UIHelperDescription)
         {
             //StartCoroutine(Initing(bus, deck, seatPool, cardDescription, handPlayer, informationLabel, lookCardMenu, variantCardCreator, soundRoot,
             //    cardSoundVolume, fightMenuActivateButton, screenRoot));
@@ -97,31 +97,36 @@ namespace Roots
             _historyRoot = historyRoot;
             _backgroundSoundConfig = backgroundSoundConfig;
             _backgroundRoot = backgroundRoot;
+            _UIHelperDescription = UIHelperDescription;
         }
 
         //public void Init(bool isPVE)
-        public void Init(Action onDestroyPrefab)
+        public void Init(Action onDestroyPrefab, CancellationToken gameRootToken)
         {
             GameFieldGC.GCOFF();
 
-            base.Init();
+            base.Init(gameRootToken);
 
-            _backgroundRoot.Init();
+            _UIHelperDescription.Init(GameFieldToken);
+
+            CancellationTokenSource fightSource = CancellationTokenSource.CreateLinkedTokenSource(GameFieldToken);
+
+            _backgroundRoot.Init(fightSource.Token);
             _backgroundRoot.Activate();
 
-            _informationLabel.Init();
+            _informationLabel.Init(fightSource.Token);
 
             //TMP_Text[] objectTexts = gameObject.GetComponentsInChildren<TMP_Text>(true);
             //_fontRoot.SetFont(objectTexts);
 
             _seatPool.Init();
-            _endTurnButton.Init();
+            _endTurnButton.Init(fightSource.Token);
 
-            _lightControlsCreator.Init();
+            _lightControlsCreator.Init(fightSource.Token);
             _speedUpButtonSortOrder.Init();
 
             _variantCardCreator.Init();
-            _soundRoot.Init(_backgroundSoundConfig);
+            _soundRoot.Init(_backgroundSoundConfig, GameFieldToken);
 
             CardDragAndDropLightController cardDragAndDropLightController = _lightControlsCreator.CreateCardDragAndDropLightController();
 
@@ -131,7 +136,8 @@ namespace Roots
                 cardDragAndDropLightController, _speedUpButtonSortOrder);
 
             _personCreator.Init(_bus, _deck, _endTurnButton, _seatPool, cardDragAndDropHandler, cardDragAndDropLightController,
-                _informationLabel, _cardRoot, _cardSoundRoot, _soundRoot, _cardCapabilityDescription, _historyRoot, _soundRoot);
+                _informationLabel, _cardRoot, _cardSoundRoot, _soundRoot, _cardCapabilityDescription, _historyRoot, _soundRoot,
+                GameFieldToken, fightSource.Token);
 
             Player player = _personCreator.CreatePlayer();
             EnemyAI enemyAI = _personCreator.CreateEnemyAI();
@@ -143,7 +149,7 @@ namespace Roots
             _inputRoot = _personCreator.GetInputRoot();
             LoseActionsRoot loseActionsRoot = _personCreator.CreateLoseActionsRoot();
 
-            _lookCardMenu.Init(_inputRoot);
+            _lookCardMenu.Init(_inputRoot, fightSource.Token);
 
             Destroy(_personCreator.gameObject);
 
@@ -152,10 +158,11 @@ namespace Roots
             ViewTransitTypesRoot typesRoot = new ViewTransitTypesRoot();
             EffectFactory effectFactory = new EffectFactory(_personsState, viewRoot, _informationLabel, cardTransitManager,
                 _variantCardCreator, brothersEffectHandlerRoot, _bus, personEffectsHandlerRoot, discardManager, loseActionsRoot,
-                _cardSoundRoot, typesRoot, _historyRoot);
+                _cardSoundRoot, typesRoot, _historyRoot, fightSource.Token);
 
-            _cardRoot.Init(effectFactory, _bigCardRoot, cardDragAndDropHandler, _cardCapabilityDescription, _cardSoundRoot, base.FontSetter);
-            _deck.Init(_seatPool, _cardRoot.Cards);
+            _cardRoot.Init(effectFactory, _bigCardRoot, cardDragAndDropHandler, _cardCapabilityDescription, _cardSoundRoot, base.FontSetter,
+                fightSource.Token);
+            _deck.Init(_seatPool, _cardRoot.Cards, fightSource.Token);
 
 
 
@@ -163,7 +170,7 @@ namespace Roots
             //IDeactivatable onMainMenuSwitcher = new TestFightRootDestroyer(() => Destroy(gameObject));
 
             _fightPVE.Init(_personsState, enemyAI, _bus, _seatPool, _soundRoot, _fightButtonsActivator,
-    onDestroyPrefab);
+    onDestroyPrefab, GameFieldToken, fightSource.Token, fightSource);
             //_gameFieldRoot.Init(_personsState, enemyAI, _bus, _seatPool, _soundRoot, _fightButtonsActivator, onMainMenuSwitcher);
         }
 

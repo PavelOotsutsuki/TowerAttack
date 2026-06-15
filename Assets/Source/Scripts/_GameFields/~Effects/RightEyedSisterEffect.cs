@@ -1,9 +1,8 @@
 using Cards;
-using System.Collections;
 using System.Collections.Generic;
 using GameFields.Persons;
-using UnityEngine;
 using GameFields.CardTransits;
+using Cysharp.Threading.Tasks;
 
 namespace GameFields.Effects
 {
@@ -33,7 +32,7 @@ namespace GameFields.Effects
         //    Debug.Log("Эффект Правоглазой сестры закончен");
         //}
 
-        protected override IEnumerator OnPlaying()
+        protected override UniTask OnPlaying()
         {
             ViewType viewType = ViewType.Deck;
 
@@ -46,11 +45,9 @@ namespace GameFields.Effects
                 Card cardFromDeck = cards[0];
 
                 _transitManager.TryExchangeTower(cardFromDeck, _activePerson, TowerTransitType.Deck);
-                yield break;
             }
             //}
-
-            yield break;
+            return UniTask.CompletedTask;
         }
     }
 }

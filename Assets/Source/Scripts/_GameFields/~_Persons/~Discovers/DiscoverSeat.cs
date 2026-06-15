@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using Cards;
 using Cards.Views;
 using Tools.Settings;
@@ -19,11 +20,11 @@ namespace GameFields.Persons.Discovers
         private IDiscoverChoiceHandler _discoverChoiceHandler;
 
         public void Init(IDiscoverChoiceHandler discoverChoiceHandler, float scaleFactor,
-            float viewDuration)
+            float viewDuration, CancellationToken fightToken)
         {
             //_seatMovement = new Movement(_rectTransform);
             _discoverChoiceHandler = discoverChoiceHandler;
-            _discoverCard.Init(OnDiscoverCardClick, this, scaleFactor, viewDuration);
+            _discoverCard.Init(OnDiscoverCardClick, this, scaleFactor, viewDuration, fightToken);
             Reset();
         }
 

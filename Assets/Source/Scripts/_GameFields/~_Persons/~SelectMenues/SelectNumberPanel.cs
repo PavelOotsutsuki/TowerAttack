@@ -1,13 +1,12 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading;
 using Cysharp.Threading.Tasks;
-using GameFields.Persons;
 using GameFields.Persons.ConfirmableNumbersView;
 using GameFields.Persons.Towers;
 using Tools;
 using Tools.UI;
+using Tools.Utils;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
@@ -31,6 +30,9 @@ namespace GameFields.Persons.SelectMenues
         protected List<ISelectNumber> CurrentAvailableNumbers;
         protected LastSelectedNumbersWatcher LastSelectedNumbersWatcher;
 
+        protected CancellationToken FightToken;
+        protected CancellationTokenSource CurrentCTS;
+
         protected bool IsConsecutiveMode;
 
         protected bool IsCompleteThis;
@@ -43,12 +45,13 @@ namespace GameFields.Persons.SelectMenues
 
         protected void Init(ICardNumberKeeper cardNumberKeeper, int[] сardNumbers, SelectNumbersList selectedNumbers,
             ConfirmableNumbers confirmableNumbers, ISelectNumber[] selectNumbers,
-            LastSelectedNumbersWatcher lastSelectedNumbersWatcher)
+            LastSelectedNumbersWatcher lastSelectedNumbersWatcher, CancellationToken fightToken)
         {
             CardNumberKeeper = cardNumberKeeper;
             CardNumbers = сardNumbers;
             ConfirmableNumbers = confirmableNumbers;
             LastSelectedNumbersWatcher = lastSelectedNumbersWatcher;
+            FightToken = fightToken;
 
             ClearCurrentVariables();
             //SelectResult = null;
@@ -64,12 +67,19 @@ namespace GameFields.Persons.SelectMenues
 
         public void Activate(SelectNumberPanelActivateData data)
         {
+            if (FightToken.IsCancellationRequested)
+                return;
+
             if (IsActive == true)
                 return;
 
             IsActive = true;
 
             IsCompleteThis = false;
+
+            Utils.DestroyCTS(ref CurrentCTS);
+            CurrentCTS = CancellationTokenSource.CreateLinkedTokenSource(FightToken);
+
             _canvasGroup.blocksRaycasts = true;
 
             SelectResult = data.SelectResult;
@@ -79,22 +89,29 @@ namespace GameFields.Persons.SelectMenues
 
             gameObject.SetActive(true);
 
-            FadablePanel.Show();
+            FadablePanel.Show(new CancellationTokenData(CurrentCTS.Token));
 
-            OnActivate();
+            OnActivate(CurrentCTS.Token);
         }
 
         public void Deactivate()
         {
+            if (FightToken.IsCancellationRequested)
+                return;
+
             if (IsActive == false)
                 return;
 
             IsActive = false;
+
+            Utils.DestroyCTS(ref CurrentCTS);
+            CurrentCTS = CancellationTokenSource.CreateLinkedTokenSource(FightToken);
+
             _canvasGroup.blocksRaycasts = false;
 
             OnDeactivate();
 
-            Deactivating().ToUniTask();
+            Deactivating(CurrentCTS.Token).Forget();
         }
 
         public void OnDisable()
@@ -107,8 +124,8 @@ namespace GameFields.Persons.SelectMenues
             IsCompleteThis = false;
         }
 
-        protected abstract IEnumerator Deactivating();
-        protected abstract void OnActivate();
+        protected abstract UniTask Deactivating(CancellationToken token);
+        protected abstract void OnActivate(CancellationToken token);
         protected abstract void InitNumbers();
 
         private void ClearCurrentVariables()
@@ -118,6 +135,8 @@ namespace GameFields.Persons.SelectMenues
             IsConsecutiveMode = false;
             NeedForActivate = -1;
             SelectResult = null;
+
+            Utils.DestroyCTS(ref CurrentCTS);
         }
 
         private void SetRestriction(RestrictionType? restrictionType)

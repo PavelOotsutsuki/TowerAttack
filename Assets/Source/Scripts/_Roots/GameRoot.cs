@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Threading;
+using Tools.Utils;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 using Zenject;
@@ -12,6 +14,7 @@ namespace Roots
         [SerializeField] private FontRoot _fontRoot;
 
         private DiContainer _diContainer;
+        private CancellationTokenSource _gameRootCTS;
 
         [Inject]
         private void Construct(DiContainer diContainer)
@@ -24,13 +27,20 @@ namespace Roots
             _canvasRoot.Init();
             _fontRoot.Init();
 
+            _gameRootCTS = CancellationTokenSource.CreateLinkedTokenSource(this.destroyCancellationToken);
+
             StartGame();
         }
 
         private void StartGame()
         {
-            _rootPrefabController.Init(_diContainer);
+            _rootPrefabController.Init(_diContainer, _gameRootCTS.Token);
             _rootPrefabController.SwitchPrefab(RootPrefabType.StartMenu);
+        }
+
+        private void OnDestroy()
+        {
+            Utils.DestroyCTS(ref _gameRootCTS);
         }
 
         #region AutomaticFillComponents

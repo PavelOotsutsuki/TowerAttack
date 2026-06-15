@@ -1,11 +1,10 @@
-using UnityEngine;
 using Cards;
 using GameFields.Persons;
-using System.Collections;
 using System.Collections.Generic;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.DrawCards;
 using GameFields.CardTransits;
+using Cysharp.Threading.Tasks;
 
 namespace GameFields.Effects
 {
@@ -34,24 +33,24 @@ namespace GameFields.Effects
             Play();
         }
 
-        protected override IEnumerator OnPlaying()
+        protected override async UniTask OnPlaying()
         {
-            List<Card> cards = _drawCardManager?.DrawCards(_countDrawCards);
+            List<Card> cards = _drawCardManager?.DrawCards(_countDrawCards, Token);
 
             if (cards is null)
             {
-                yield break;
+                return;
             }
 
             if (cards.Count <= 0)
             {
-                yield break;
+                return;
             }
 
             DiscoverResult discoverResult = new DiscoverResult();
             _activePerson.DiscoverCards(cards, _activateDiscoverMessage, discoverResult);
 
-            yield return new WaitUntil(() => discoverResult.Result != null);
+            await UniTask.WaitUntil(() => discoverResult.Result != null, cancellationToken: Token);
 
             //TransitFromType transitFrom = _activePerson is Player ? TransitFromType.HandPlayer : TransitFromType.HandEnemy;
             //TransitToType transitTo = _activePerson is Player ? TransitToType.HandEnemy : TransitToType.HandPlayer;

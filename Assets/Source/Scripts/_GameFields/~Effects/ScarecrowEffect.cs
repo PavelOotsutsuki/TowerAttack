@@ -1,7 +1,6 @@
-using System.Collections;
 using Cards;
+using Cysharp.Threading.Tasks;
 using GameFields.Persons;
-using UnityEngine;
 
 namespace GameFields.Effects
 {
@@ -27,10 +26,10 @@ namespace GameFields.Effects
         //    Debug.Log("Эффект Чучела закончен");
         //}
 
-        protected override IEnumerator OnPlaying()
+        protected override UniTask OnPlaying()
         {
             _deactivePerson.ActivateScarecrowEffect(CountUsed, _card);
-            yield break;
+            return UniTask.CompletedTask;
         }
     }
 }

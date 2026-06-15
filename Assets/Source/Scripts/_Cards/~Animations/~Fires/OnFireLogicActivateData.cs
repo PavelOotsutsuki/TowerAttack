@@ -1,20 +1,20 @@
+using System.Threading;
 using Tools;
-using UnityEngine;
 
 namespace Cards.Animations.Fires
 {
-    internal class OnFireLogicActivateData : IData
+    internal class OnFireLogicActivateData : CancellationTokenData
     {
         private readonly CallbackHandler _callbackHandler;
-        private readonly WaitForSeconds _delay;
+        private readonly float _delay;
 
-        public OnFireLogicActivateData(WaitForSeconds delay, CallbackHandler callbackHandler)
+        public OnFireLogicActivateData(float delay, CallbackHandler callbackHandler, CancellationToken token) : base(token)
         {
             _callbackHandler = callbackHandler;
             _delay = delay;
         }
 
         public CallbackHandler CallbackHandler => _callbackHandler;
-        public WaitForSeconds Delay => _delay;
+        public float Delay => _delay;
     }
 }

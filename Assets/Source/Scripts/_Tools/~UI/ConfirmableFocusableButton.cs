@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Tools.UI;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Movements;
@@ -8,7 +9,7 @@ using UnityEngine.EventSystems;
 
 namespace Tools.UI
 {
-    public class ConfirmableFocusableButton : ConfirmableButton
+    public class ConfirmableFocusableButton : ConfirmableButton, IWorkable
     {
         [SerializeField] private Transform _transform;
         [SerializeField] private float _scaleFactor = 1.2f;
@@ -20,17 +21,35 @@ namespace Tools.UI
         private Movement _movement;
         private ReadOnlyTransform _ROTransform;
         private Action _onEnterClick;
+        //private CancellationToken _menuParentToken;
 
         public virtual void Init(IFocusCustomButtonWatcher focusWatcher, Action onEnterClick) 
         {
             _focusWatcher = focusWatcher;
             _onEnterClick = onEnterClick;
+            //_menuParentToken = menuParentToken;
 
             _movement = new Movement(_transform);
             _ROTransform = new ReadOnlyTransform(_transform);
             _defaultScale = _ROTransform.GetLocalScale();
 
             base.Init();
+        }
+
+        public void Activate()
+        {
+            if (IsActive == true)
+                return;
+
+            base.BaseActivate();
+        }
+
+        public void Deactivate()
+        {
+            if (IsActive == false)
+                return;
+
+            base.BaseDeactivate();
         }
 
         protected override void OnEnterClick()

@@ -39,6 +39,7 @@ using Tools.UI;
 using Tools.UI.UIHelpers;
 using GameFields.Histories;
 using GameFields.Persons.ConfirmableNumbersView;
+using System.Threading;
 
 namespace GameFields.Persons
 {
@@ -182,6 +183,9 @@ namespace GameFields.Persons
         private UIHelperDescription _UIHelperDescription;
         private HistoryRoot _historyRoot;
 
+        private CancellationToken _gameFieldToken;
+        private CancellationToken _fightToken;
+
         private ConfirmableNumbersViewRoot _confirmableNumbersViewRoot;
 
         public DiscardManager DiscardManager => _discardManager;
@@ -244,7 +248,8 @@ namespace GameFields.Persons
         public void Init(SignalBus bus, Deck deck, EndTurnButton endTurnButton, SeatPool seatPool,
             CardDragAndDropHandler cardDragAndDropHandler, CardDragAndDropLightController cardDragAndDropLightController,
             InformationLabel informationLabel, CardRoot cardRoot, CardSoundRoot cardSoundRoot, IVolume musicVolume,
-            CardCapabilityDescription cardCapabilityDescription, HistoryRoot historyRoot, ISoundController soundController)
+            CardCapabilityDescription cardCapabilityDescription, HistoryRoot historyRoot, ISoundController soundController,
+            CancellationToken gameFieldToken, CancellationToken fightToken)
         {
             _bus = bus;
             _deck = deck;
@@ -253,6 +258,9 @@ namespace GameFields.Persons
             _informationLabel = informationLabel;
             _cardRoot = cardRoot;
             _historyRoot = historyRoot;
+
+            _gameFieldToken = gameFieldToken;
+            _fightToken = fightToken;
 
             _skipTurnLabelPlayer.Init();
             _skipTurnLabelEnemyAI.Init();
@@ -263,7 +271,7 @@ namespace GameFields.Persons
             _playerLoseActions = new LoseActions(_playerTower, _playerTower, _playerHand, _bus, _inputRoot, _fightMenu,
                 _fightButtonsActivator, soundController);
 
-            _fightMenu.Init(_inputRoot, _playerLoseActions, cardSoundRoot, musicVolume, cardCapabilityDescription);
+            _fightMenu.Init(_inputRoot, _playerLoseActions, cardSoundRoot, musicVolume, cardCapabilityDescription, fightToken);
             _fightMenuActivateButton.Init(_fightMenu, _UIHelperDescription);
 
             _historyMenu.Init(historyRoot);
@@ -281,7 +289,7 @@ namespace GameFields.Persons
             _confirmableNumbersPlayer = new ConfirmableNumbers(_attackedNumbersPlayer, _choicedNumbersPlayer, _cursedNumbersPlayer);
             _confirmableNumbersEnemyAI = new ConfirmableNumbers(_attackedNumbersEnemy, _choicedNumbersEnemy, _cursedNumbersEnemyAI);
 
-            _confirmableNumbersViewRoot.Init(_confirmableNumbersEnemyAI, _confirmableNumbersPlayer);
+            _confirmableNumbersViewRoot.Init(_confirmableNumbersEnemyAI, _confirmableNumbersPlayer, _fightToken);
 
             _discardManager = new DiscardManager(_enemyTable, _playerTable);
 
@@ -318,12 +326,12 @@ namespace GameFields.Persons
                 fallenGuardianEffectHandler);
 
             SkipTurnChecker skipTurnChecker = new SkipTurnChecker(slimeEffectHandler, _playerHand);
-            TurnProcessing turnProcessing = new TurnProcessing(_interactionActivator, skipTurnChecker);
-            StartTurnDrawPlayer startTurnDraw = new StartTurnDrawPlayer(_interactionActivator, _drawCardRootPlayer, _playerCountStartDrawCards);
+            TurnProcessingCreator turnProcessingCreator = new TurnProcessingCreator(_interactionActivator, skipTurnChecker);
+            StartTurnDrawPlayerCreator startTurnDraw = new StartTurnDrawPlayerCreator(_interactionActivator, _drawCardRootPlayer, _playerCountStartDrawCards);
 
-            StartPlayerTurnView startPlayerTurnView = new StartPlayerTurnView(_interactionActivator, _startPlayerTurnLabel);
-            PlayerSkipTurnView skipTurnView = new PlayerSkipTurnView(_interactionActivator, _skipTurnLabelPlayer);
-            EndTurnProcessing endTurnProcessing = new EndTurnProcessing(_endTurnButton, _interactionActivator, _playerPersonEffectsHandler);
+            StartPlayerTurnViewCreator startPlayerTurnViewCreator = new StartPlayerTurnViewCreator(_interactionActivator, _startPlayerTurnLabel);
+            PlayerSkipTurnViewCreator skipTurnView = new PlayerSkipTurnViewCreator(_interactionActivator, _skipTurnLabelPlayer);
+            EndTurnProcessingCreator endTurnProcessingCreator = new EndTurnProcessingCreator(_endTurnButton, _interactionActivator, _playerPersonEffectsHandler);
 
             _forgingZone.Init(_discardPile, _bus, _drawCardRootPlayer, gnomeEffectHandler, _historyRoot);
             _handTransferZone.Init(_enemyHand, _bus, _historyRoot);
@@ -331,9 +339,9 @@ namespace GameFields.Persons
             _playerHand.Init(_seatPool, _playerRechangeFeatureRuleController, _playerTurnDrawnCards, curseEffectHandler);
 
             return new Player(_interactionActivator, _playerHand, _playerPlayingZone, _playerTower, _playerDiscover,
-                _drawCardRootPlayer, startTurnDraw, turnProcessing, _bus, startPlayerTurnView, _playerAttackMenu, endTurnProcessing,
+                _drawCardRootPlayer, startTurnDraw, turnProcessingCreator, _bus, startPlayerTurnViewCreator, _playerAttackMenu, endTurnProcessingCreator,
                 _playerChoiceMenu, _playerChoiceMenuImitation, _playerPersonEffectsHandler, _informationLabel, _playerLookCardMenu,
-                skipTurnView, _confirmableNumbersPlayer, _lastSelectedNumbersWatcherPlayer, _playerEffectKeeper);
+                skipTurnView, _confirmableNumbersPlayer, _lastSelectedNumbersWatcherPlayer, _playerEffectKeeper, _gameFieldToken);
         }
 
         public EnemyAI CreateEnemyAI()
@@ -364,10 +372,10 @@ namespace GameFields.Persons
             SkipTurnChecker skipTurnChecker = new SkipTurnChecker(slimeEffectHandler, _enemyHand);
             CardDragAndDropImitationActions cardDragAndDropImitationActions = new CardDragAndDropImitationActions(_enemyHand, _enemyPlayingZone, _enemyCardAttackZone,
                 _discardPile, _drawCardRootEnemy, _playerHand, _historyRoot);
-            StartTurnDrawEnemyAI startTurnDraw = new StartTurnDrawEnemyAI(_interactionActivator, _drawCardRootEnemy, _enemyCountStartDrawCards);
+            StartTurnDrawEnemyAICreator startTurnDrawCreator = new StartTurnDrawEnemyAICreator(_interactionActivator, _drawCardRootEnemy, _enemyCountStartDrawCards);
             //StartTurnDrawEnemyAI startTurnDraw = new StartTurnDrawEnemyAI(_interactionActivator, drawCardRoot, 0);
-            EnemySkipTurnView skipTurnView = new EnemySkipTurnView(_interactionActivator, _skipTurnLabelEnemyAI);
-            OnBeforeEndTurnProcessing onBeforeEndTurnProcessing = new OnBeforeEndTurnProcessing(_interactionActivator, _enemyPersonEffectsHandler);
+            EnemySkipTurnViewCreator skipTurnViewCreator = new EnemySkipTurnViewCreator(_interactionActivator, _skipTurnLabelEnemyAI);
+            OnBeforeEndTurnProcessingCreator onBeforeEndTurnProcessingCreator = new OnBeforeEndTurnProcessingCreator(_interactionActivator, _enemyPersonEffectsHandler);
 
             //HardAIThinkLogic hardAIThinkLogic = new HardAIThinkLogic(_cardRoot,_deck, _confirmableNumbersEnemyAI, gnomeEffectHandler,
             //    _enemyPlayingZone, _enemyHand, fireEffectHandler, _discardPile, _fireRoot);
@@ -376,7 +384,7 @@ namespace GameFields.Persons
                 _enemyBrothersEffectHandler, _enemyTable, _playerTable, _skipTurnEffectHandlerPlayer, _fateInevitabilityHandlerPlayer, _fireEffectHandlerPlayer,
                 wiseMonkEffectHandler, scarecrowEffectHandler);
 
-            EnemyDragAndDropImitation enemyDragAndDropImitation = new EnemyDragAndDropImitation(cardDragAndDropImitationActions,
+            EnemyDragAndDropImitationCreator enemyDragAndDropImitationCreator = new EnemyDragAndDropImitationCreator(cardDragAndDropImitationActions,
                 _enemyDragAndDropImitationData, _interactionActivator, skipTurnChecker, _enemyTurnDrawnCards, _enemyHand,
                 hardAIThinkLogic, gnomeEffectHandler);
 
@@ -385,10 +393,10 @@ namespace GameFields.Persons
             //LookCardMenuEnemyAI lookCardMenuEnemyAI = new LookCardMenuEnemyAI(_informationLabel);
             LookCardMenuEnemyAI lookCardMenuEnemyAI = new LookCardMenuEnemyAI();
 
-            return new EnemyAI(_interactionActivator, enemyDragAndDropImitation, _enemyPlayingZone,
-                _enemyTower, _drawCardRootEnemy, _enemyDiscoverImitation, startTurnDraw, _bus, _enemyHand, _enemyAttackMenu,
+            return new EnemyAI(_interactionActivator, enemyDragAndDropImitationCreator, _enemyPlayingZone,
+                _enemyTower, _drawCardRootEnemy, _enemyDiscoverImitation, startTurnDrawCreator, _bus, _enemyHand, _enemyAttackMenu,
                 _enemyChoiceMenu, _enemyChoiceMenuImitation, _enemyPersonEffectsHandler, lookCardMenuEnemyAI,
-                onBeforeEndTurnProcessing, skipTurnView, _confirmableNumbersEnemyAI, _lastSelectedNumbersWatcherEnemyAI, _enemyEffectKeeper);
+                onBeforeEndTurnProcessingCreator, skipTurnViewCreator, _confirmableNumbersEnemyAI, _lastSelectedNumbersWatcherEnemyAI, _enemyEffectKeeper, _gameFieldToken);
         }
 
         public CardLocationViewRoot CreateCardLocationViewRoot()
@@ -428,8 +436,8 @@ namespace GameFields.Persons
             //_playerHand.Init(seatPool, _playerRechangeFeatureRuleController, _playerTurnDrawnCards);
             _playerTable.Init();
             _playerPlayingZone.Init(_playerTable);
-            _playerTower.Init(_confirmableNumbersEnemyAI , _cardRoot);
-            _playerDiscover.Init();
+            _playerTower.Init(_confirmableNumbersEnemyAI, _cardRoot, _fightToken);
+            _playerDiscover.Init(_fightToken);
             _startPlayerTurnLabel.Init();
 
             //SelectNumbersList attackedNumbers = new SelectNumbersList();
@@ -442,11 +450,13 @@ namespace GameFields.Persons
             ChoiceResultHandlerPlayer choiceResultHandlerPlayer = new ChoiceResultHandlerPlayer(_informationLabel, _informationLabelDataPlayerChoice);
 
             _playerAttackMenu.Init(_enemyTower, attackResultHandlerPlayer, _cardNumbers, _attackedNumbersPlayer,
-                _confirmableNumbersPlayer, _inputRoot, _lastSelectedNumbersWatcherPlayer, _UIHelperDescription);
+                _confirmableNumbersPlayer, _inputRoot, _lastSelectedNumbersWatcherPlayer, _UIHelperDescription,
+                _fightToken);
             _playerChoiceMenu.Init(_enemyTower, choiceResultHandlerPlayer, _cardNumbers, _choicedNumbersPlayer,
-                _confirmableNumbersPlayer, _inputRoot, _lastSelectedNumbersWatcherPlayer, _UIHelperDescription);
+                _confirmableNumbersPlayer, _inputRoot, _lastSelectedNumbersWatcherPlayer, _UIHelperDescription,
+                _fightToken);
             _playerChoiceMenuImitation.Init(_enemyTower, choiceResultHandlerPlayer, _cardNumbers, _choicedNumbersPlayer,
-                _confirmableNumbersPlayer, _lastSelectedNumbersWatcherPlayer);
+                _confirmableNumbersPlayer, _lastSelectedNumbersWatcherPlayer, _fightToken);
 
             _playerCardAttackZone.Init(_playerAttackMenu, _enemyTower, _bus, _historyRoot);
             //_playerCardAttackZone.Init(_playerChoiceMenu, _enemyTower);
@@ -476,9 +486,9 @@ namespace GameFields.Persons
             //_enemyHand.Init(seatPool, _enemyRechangeFeatureRuleController, _enemyTurnDrawnCards);
             _enemyTable.Init();
             _enemyPlayingZone.Init(_enemyTable);
-            _enemyTower.Init(_confirmableNumbersViewRoot, _confirmableNumbersPlayer, _cardRoot);
+            _enemyTower.Init(_confirmableNumbersViewRoot, _confirmableNumbersPlayer, _cardRoot, _fightToken);
 
-            _enemyDiscoverImitation.Init();
+            _enemyDiscoverImitation.Init(_fightToken);
 
             //SelectNumbersList attackedNumbers = new SelectNumbersList();
             //SelectNumbersList choicedNumbers = new SelectNumbersList();
@@ -491,11 +501,11 @@ namespace GameFields.Persons
             ChoiceResultHandlerEnemyAI choiceResultHandlerEnemyAI = new ChoiceResultHandlerEnemyAI(_informationLabel, _informationLabelDataEnemyAIChoice);
 
             _enemyAttackMenu.Init(_playerTower, attackResultHandlerEnemyAI, _cardNumbers, _attackedNumbersEnemy,
-                _confirmableNumbersEnemyAI, _lastSelectedNumbersWatcherEnemyAI);
+                _confirmableNumbersEnemyAI, _lastSelectedNumbersWatcherEnemyAI, _fightToken);
             _enemyChoiceMenu.Init(_playerTower, choiceResultHandlerEnemyAI, _cardNumbers, _choicedNumbersEnemy,
-                _confirmableNumbersEnemyAI, _lastSelectedNumbersWatcherEnemyAI);
+                _confirmableNumbersEnemyAI, _lastSelectedNumbersWatcherEnemyAI, _fightToken);
             _enemyChoiceMenuImitation.Init(_playerTower, choiceResultHandlerEnemyAI, _cardNumbers, _choicedNumbersEnemy,
-                _confirmableNumbersEnemyAI, _lastSelectedNumbersWatcherEnemyAI);
+                _confirmableNumbersEnemyAI, _lastSelectedNumbersWatcherEnemyAI, _fightToken);
 
             _enemyCardAttackZone.Init(_enemyAttackMenu, _playerTower, _bus, _historyRoot);
 

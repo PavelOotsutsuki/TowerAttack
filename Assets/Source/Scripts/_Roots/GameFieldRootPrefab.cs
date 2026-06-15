@@ -15,20 +15,20 @@ namespace Roots
         private GameFieldRoot _currentGameFieldRoot;
         private Action _onDestroyPrefab;
 
-        public void Init(DiContainer diContainer, Action onDestroyPrefab)
+        public void Init(DiContainer diContainer, Action onDestroyPrefab, CancellationToken gameRootToken)
         {
             _onDestroyPrefab = onDestroyPrefab;
 
-            base.Init(diContainer, _gameFieldRootContainer);
+            base.Init(diContainer, _gameFieldRootContainer, gameRootToken);
         }
 
         protected override void OnActivate()
         {
             _currentGameFieldRoot = CurrentGameObject.GetComponent<GameFieldRoot>();
-            _currentGameFieldRoot.Init(_onDestroyPrefab);
+            _currentGameFieldRoot.Init(_onDestroyPrefab, GameRootToken);
             _currentGameFieldRoot.Activate();
 
-            WaitingToComplete(this.destroyCancellationToken).Forget();
+            WaitingToComplete(GameRootToken).Forget();
         }
 
         protected override void OnDeactivate()

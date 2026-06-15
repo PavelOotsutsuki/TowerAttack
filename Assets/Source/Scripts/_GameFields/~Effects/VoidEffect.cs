@@ -1,6 +1,4 @@
-
-using System.Collections;
-using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 namespace GameFields.Effects
 {
@@ -22,9 +20,9 @@ namespace GameFields.Effects
         //    Debug.Log("Пустой эффект закончен");
         //}
 
-        protected override IEnumerator OnPlaying()
+        protected override async UniTask OnPlaying()
         {
-            yield return new WaitForSeconds(_delay);
+            await UniTask.WaitForSeconds(_delay, cancellationToken: Token);
         }
     }
 }

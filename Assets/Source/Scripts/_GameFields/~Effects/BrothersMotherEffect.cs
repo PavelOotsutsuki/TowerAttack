@@ -1,6 +1,5 @@
-using System.Collections;
+using Cysharp.Threading.Tasks;
 using GameFields.Persons;
-using UnityEngine;
 
 namespace GameFields.Effects
 {
@@ -24,10 +23,10 @@ namespace GameFields.Effects
         //    Debug.Log("Эффект Матери братьев закончен");
         //}
 
-        protected override IEnumerator OnPlaying()
+        protected override UniTask OnPlaying()
         {
             _activePerson.UpgradeBrothers(UpgradeCount);
-            yield break;
+            return UniTask.CompletedTask;
         }
     }
 }

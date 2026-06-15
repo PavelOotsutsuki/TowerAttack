@@ -283,7 +283,6 @@ namespace Roots
             //Container.Bind<ForegroundSoundConfig>().FromScriptableObject(_foregroundSoundConfig).AsSingle();
 
             Container.Bind<UIHelperDescription>().FromInstance(_UIHelperDescription).AsSingle();
-            _UIHelperDescription.Init();
 
             Container.Bind<BigCardRoot>().FromInstance(_bigCardRoot).AsSingle();
 

@@ -1,8 +1,8 @@
 using System;
+using System.Threading;
 using Cards.Views.BigCardViews.CardDescriptions;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Random = UnityEngine.Random;
 
 namespace Cards.Views
 {
@@ -16,18 +16,20 @@ namespace Cards.Views
 
         private CardDescription _cardDescription;
         private Func<string> _textDescriptionGetter;
+        private CancellationToken _cardToken;
 
-        public void Init(CardDescription cardDescription, Func<string> textDescriptionGetter)
+        public void Init(CardDescription cardDescription, Func<string> textDescriptionGetter, CancellationToken cardToken)
         {
             _cardDescription = cardDescription;
             _textDescriptionGetter = textDescriptionGetter;
+            _cardToken = cardToken;
             _isActive = false;
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
             CardDescriptionActivateData activateData = new CardDescriptionActivateData(_textDescriptionGetter.Invoke(),
-                _descriptionActivateColor, true);
+                _cardToken, _descriptionActivateColor, true);
             _cardDescription.Show(activateData);
 
             _isActive = true;

@@ -1,12 +1,13 @@
-using GameFields.InputSettings;
+using System.Threading;
 using Tools;
 using Tools.InputSettings;
 
 namespace GameFields.Persons
 {
-    public class CardActionProcessingEnemyAI : CardActionProcessing, IInputLogicObject
+    internal class CardActionProcessingEnemyAI : CardActionProcessing, IInputLogicObject
     {
-        public CardActionProcessingEnemyAI(InteractionActivator interactionActivator, ICompletable completable) : base(interactionActivator, completable)
+        public CardActionProcessingEnemyAI(InteractionActivator interactionActivator, ICompletable completable, CancellationToken token) :
+            base(interactionActivator, completable, token)
         { }
     }
 }

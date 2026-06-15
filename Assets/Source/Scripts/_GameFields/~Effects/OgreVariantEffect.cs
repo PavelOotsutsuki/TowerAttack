@@ -1,8 +1,7 @@
-using UnityEngine;
 using GameFields.Persons;
-using System.Collections;
 using GameFields.Persons.DrawCards;
 using System;
+using Cysharp.Threading.Tasks;
 
 namespace GameFields.Effects
 {
@@ -14,8 +13,8 @@ namespace GameFields.Effects
         private readonly IDrawCardManager _drawCardManager;
         private readonly Person _attackPerson;
 
-        private readonly Func<IEnumerator> _firstCoroutine;
-        private readonly Func<IEnumerator> _secondCoroutine;
+        private readonly Func<UniTask> _firstCoroutine;
+        private readonly Func<UniTask> _secondCoroutine;
 
         public OgreVariantEffect(Person drawPerson, Person attackPerson, int countDrawCards,
             int countAttack, bool isFirstDraw, EffectData data) : base(data)
@@ -40,28 +39,28 @@ namespace GameFields.Effects
             Play();
         }
 
-        protected override IEnumerator OnPlaying()
+        protected override async UniTask OnPlaying()
         {
-            yield return _firstCoroutine.Invoke();
-            yield return _secondCoroutine.Invoke();
+            await _firstCoroutine.Invoke();
+            await _secondCoroutine.Invoke();
         }
 
-        private IEnumerator Drawing()
+        private async UniTask Drawing()
         {
             bool isEndDraw = false;
 
-            _drawCardManager.DrawCards(_countDrawCards, () => isEndDraw = true);
+            _drawCardManager.DrawCards(_countDrawCards, Token, () => isEndDraw = true);
 
-            yield return new WaitUntil(() => isEndDraw);
+            await UniTask.WaitUntil(() => isEndDraw, cancellationToken: Token);
         }
 
-        private IEnumerator Attacking()
+        private async UniTask Attacking()
         {
             bool isEndAttack = false;
 
             _attackPerson.AttackActivate(_countAttack, () => isEndAttack = true);
 
-            yield return new WaitUntil(() => isEndAttack);
+            await UniTask.WaitUntil(() => isEndAttack, cancellationToken: Token);
         }
     }
 }

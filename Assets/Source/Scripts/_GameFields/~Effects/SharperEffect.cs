@@ -1,11 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
 using Cards;
+using Cysharp.Threading.Tasks;
 using GameFields.CardTransits;
 using GameFields.Persons;
 using GameFields.Persons.Discovers;
 using GameFields.Persons.DrawCards;
-using UnityEngine;
 
 namespace GameFields.Effects
 {
@@ -43,7 +42,7 @@ namespace GameFields.Effects
         //    Debug.Log("Эффект Шулера закончен");
         //}
 
-        protected override IEnumerator OnPlaying()
+        protected override async UniTask OnPlaying()
         {
             //ViewType hand = _activePerson is Player ? ViewType.HandPlayer : ViewType.HandAI;
             //ViewType hand = ViewTransitTypeConverter.GetPersonHandViewType(_activePerson, true);
@@ -52,25 +51,25 @@ namespace GameFields.Effects
 
             if (_viewRoot.TryViewDeckLastCards(out IReadOnlyList<Card> deckCards, CountDeckCards) == false)
             {
-                yield break;
+                return;
             }
 
             if (_viewRoot.TryView(out IReadOnlyList<Card> handCards, CountHandCards, handView) == false)
             {
-                yield break;
+                return;
             }
 
             DiscoverResult deckResult = new DiscoverResult();
             _activePerson.DiscoverCards(deckCards, DiscoverDeckMessage, deckResult);
 
-            yield return new WaitUntil(() => deckResult.IsComplete);
+            await UniTask.WaitUntil(() => deckResult.IsComplete, cancellationToken: Token);
 
             Card cardFromDeck = (Card)deckResult.Result;
 
             DiscoverResult handResult = new DiscoverResult();
             _activePerson.DiscoverCards(handCards, DiscoverHandMessage, handResult);
 
-            yield return new WaitUntil(() => handResult.Result != null);
+            await UniTask.WaitUntil(() => handResult.Result != null, cancellationToken: Token);
 
             Card cardFromHand = (Card)handResult.Result;
 
@@ -78,14 +77,13 @@ namespace GameFields.Effects
             bool isTransit = false;
 
             int indexHand = _viewRoot.IndexOf(handView, cardFromHand);
-            int indexDeck = _drawCardManager.DrawCard(cardFromDeck, () => isDraw = true, index: indexHand);
+            int indexDeck = _drawCardManager.DrawCard(cardFromDeck, Token, () => isDraw = true, index: indexHand);
 
             TransitFromType handFrom = activePersonHandTypes.FromType;
 
             _transitManager.TransitCard(cardFromHand, handFrom, TransitToType.Deck, () => isTransit = true, index: indexDeck);
 
-            yield return new WaitUntil(() => isDraw && isTransit);
-            yield break;
+            await UniTask.WaitUntil(() => isDraw && isTransit, cancellationToken: Token);
         }
     }
 }

@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using GameFields.CardTransits;
 using GameFields.Persons;
+using Tools;
 using UnityEngine;
 
 namespace GameFields.Effects
@@ -35,7 +37,7 @@ namespace GameFields.Effects
         //    Debug.Log("Эффект Судьбоносный удар закончен");
         //}
 
-        protected override IEnumerator OnPlaying()
+        protected override async UniTask OnPlaying()
         {
             bool isEffectComplete = false;
 
@@ -47,16 +49,17 @@ namespace GameFields.Effects
             if (countCards == 0)
             {
                 CompleteEffect();
-                yield break;
+                return;
             }
 
             _activePerson.AttackActivate(countCards, CompleteEffect);
-            yield return new WaitUntil(() => isEffectComplete); // Спойлер - никогда
+            await UniTask.WaitUntil(() => isEffectComplete, cancellationToken: Token);
+            //yield return new WaitUntil(() => isEffectComplete); // Спойлер - никогда
         }
 
         private void CompleteEffect()
         {
-            _loseActionsRoot.Capitulate(_activePerson);
+            _loseActionsRoot.Capitulate(_activePerson, new CancellationTokenData(Token));
             //_isEffectComplete = true;
         }
     }

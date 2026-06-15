@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Servers;
+using Tools;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 using Zenject;
@@ -17,13 +18,16 @@ namespace Roots
         [SerializeField] private GameFieldRootPrefab _gameFieldRootPrefab;
         [Inject] private DBRoot _dBRoot;
 
+        private CancellationToken _gameRootToken;
         private RootPrefab _currentRootPrefab;
 
-        public void Init(DiContainer diContainer)
+        public void Init(DiContainer diContainer, CancellationToken gameRootToken)
         {
+            _gameRootToken = gameRootToken;
+
             _switchRootPrefabPanel.Init();
-            _startMenuRootPrefab.Init(diContainer, StartFight);
-            _gameFieldRootPrefab.Init(diContainer, () => SwitchPrefab(_startMenuRootPrefab));
+            _startMenuRootPrefab.Init(diContainer, StartFight, gameRootToken);
+            _gameFieldRootPrefab.Init(diContainer, () => SwitchPrefab(_startMenuRootPrefab, gameRootToken), gameRootToken);
         }
 
         public void SwitchPrefab(RootPrefabType rootPrefabType)
@@ -35,32 +39,32 @@ namespace Roots
                 _ => throw new Exception($"Неизвестный {nameof(RootPrefabType)}: {rootPrefabType}")
             };
 
-            SwitchPrefab(activatingRootPrefab);
+            SwitchPrefab(activatingRootPrefab, _gameRootToken);
         }
 
         private void StartFight(int id_mode)
         {
-            StartingFight(id_mode, this.destroyCancellationToken).Forget();
+            StartingFight(id_mode, _gameRootToken).Forget();
         }
 
         private async UniTask StartingFight(int id_mode, CancellationToken token)
         {
             await _dBRoot.StartFightWithBot(id_mode, token);
 
-            SwitchPrefab(_gameFieldRootPrefab);
+            SwitchPrefab(_gameFieldRootPrefab, token);
         }
 
-        private void SwitchPrefab(RootPrefab activatingRootPrefab)
+        private void SwitchPrefab(RootPrefab activatingRootPrefab, CancellationToken token)
         {
-            StartCoroutine(SwitchingPrefab(activatingRootPrefab));
+            SwitchingPrefab(activatingRootPrefab, token).Forget();
         }
 
-        private IEnumerator SwitchingPrefab(RootPrefab activatingRootPrefab)
+        private async UniTask SwitchingPrefab(RootPrefab activatingRootPrefab, CancellationToken token)
         {
             if (_currentRootPrefab != null)
             {
-                _switchRootPrefabPanel.Show();
-                yield return new WaitUntil(() => _switchRootPrefabPanel.IsComplete);
+                _switchRootPrefabPanel.Show(new CancellationTokenData(token));
+                await UniTask.WaitUntil(() => _switchRootPrefabPanel.IsComplete, cancellationToken: token);
 
                 _currentRootPrefab.Deactivate();
             }
@@ -69,12 +73,12 @@ namespace Roots
 
             _currentRootPrefab.Activate();
 
-            yield return new WaitUntil(() => _currentRootPrefab.IsComplete);
-            yield return new WaitForSeconds(0.5f);
+            await UniTask.WaitUntil(() => _currentRootPrefab.IsComplete, cancellationToken: token);
+            await UniTask.WaitForSeconds(0.5f, cancellationToken: token);
 
-            _switchRootPrefabPanel.Hide();
+            _switchRootPrefabPanel.Hide(new CancellationTokenData(token));
 
-            yield return new WaitUntil(() => _switchRootPrefabPanel.IsComplete);
+            await UniTask.WaitUntil(() => _switchRootPrefabPanel.IsComplete, cancellationToken: token);
 
             _currentRootPrefab.ActivateInputSystem();
         }

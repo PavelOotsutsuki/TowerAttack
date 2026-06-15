@@ -1,7 +1,5 @@
-using UnityEngine;
 using Cards;
 using GameFields.Persons;
-using System.Collections;
 using System.Collections.Generic;
 using GameFields.InformationLabels;
 using Tools.UI;
@@ -9,6 +7,7 @@ using Tools.Utils;
 using System;
 using GameFields.Persons.Discovers;
 using GameFields.CardTransits;
+using Cysharp.Threading.Tasks;
 
 namespace GameFields.Effects
 {
@@ -45,7 +44,7 @@ namespace GameFields.Effects
             Play();
         }
 
-        protected override IEnumerator OnPlaying()
+        protected override async UniTask OnPlaying()
         {
             string activateMessage;
             LabelActivateData labelActivateData;
@@ -116,8 +115,8 @@ namespace GameFields.Effects
                 informationLabelActivateData = new InformationLabelActivateData(labelActivateData);
                 _informationLabel.Activate(informationLabelActivateData);
 
-                yield return new WaitUntil(() => _informationLabel.IsComplete);
-                yield break;
+                await UniTask.WaitUntil(() => _informationLabel.IsComplete, cancellationToken: Token);
+                return;
             }
 
             DiscoverResult discoverResult = new DiscoverResult();
@@ -133,7 +132,7 @@ namespace GameFields.Effects
 
             _activePerson.DiscoverCards(discoverCards, _activateDeckDiscoverMessage, discoverResult);
 
-            yield return new WaitUntil(() => discoverResult.IsComplete);
+            await UniTask.WaitUntil(() => discoverResult.IsComplete, cancellationToken: Token);
 
             if (ReferenceEquals(discoverResult.Result, deckTopCard))
             {
@@ -149,10 +148,10 @@ namespace GameFields.Effects
             labelActivateData = new LabelActivateData(activateMessage);
             informationLabelActivateData = new InformationLabelActivateData(labelActivateData);
 
-            yield return new WaitUntil(() => discoverResult.IsComplete);
+            await UniTask.WaitUntil(() => discoverResult.IsComplete, cancellationToken: Token);
             _informationLabel.Activate(informationLabelActivateData);
 
-            yield return new WaitUntil(() => _informationLabel.IsComplete);
+            await UniTask.WaitUntil(() => _informationLabel.IsComplete, cancellationToken: Token);
         }
 
         //public override void End()

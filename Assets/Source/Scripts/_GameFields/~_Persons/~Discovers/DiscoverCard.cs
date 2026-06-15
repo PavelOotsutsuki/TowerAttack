@@ -3,6 +3,7 @@ using UnityEngine;
 using Tools;
 using Tools.Utils.FillComponents;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace GameFields.Persons.Discovers
 {
@@ -13,15 +14,17 @@ namespace GameFields.Persons.Discovers
 
         protected Action ClickCallback;
         protected IDiscoverClickHandler _discoverClickHandler;
+        protected CancellationToken Token;
 
         public bool? IsActive { get; protected set; } = null;
 
         public virtual void Init(Action clickCallback, IDiscoverClickHandler discoverClickHandler, float scaleFactor,
-            float viewDuration)
+            float viewDuration, CancellationToken fightToken)
         {
             ViewLogic.Init(viewDuration, scaleFactor);
             _discoverClickHandler = discoverClickHandler;
             ClickCallback = clickCallback;
+            Token = fightToken;
 
             Deactivate();
         }

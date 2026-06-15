@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using GameFields.Persons;
 using Menues;
 using Tools;
@@ -18,7 +19,7 @@ namespace GameFields.FightMenues
         [SerializeField] private ConfirmableFocusableButton _exitButton;
 
         public void Init(LoseActions playerLoseActions, IDeactivatable fightMenuDeactivator, Action onSettingsButtonClick,
-            Action onRulesButtonClick)
+            Action onRulesButtonClick, CancellationToken fightToken)
         {
             List<ConfirmableFocusableButton> focusableButtons = new List<ConfirmableFocusableButton>()
             {
@@ -38,7 +39,7 @@ namespace GameFields.FightMenues
             _capitulateButton.Init(this, () =>
             {
                 fightMenuDeactivator.Deactivate();
-                playerLoseActions.Activate();
+                playerLoseActions.Activate(new CancellationTokenData(fightToken));
             });
             _exitButton.Init(this, Utils.Quit);
         }

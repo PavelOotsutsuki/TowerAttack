@@ -1,6 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using Tools;
+using Tools.UI;
+using Tools.Utils;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
@@ -11,15 +14,19 @@ namespace GameFields.InformationLabels
         [SerializeField] private InformationLabelLabel _informationLabel;
         [SerializeField] private InformationLabelPanel _panel;
 
+        private CancellationToken _fightToken;
         private bool _isComplete;
         private bool _isActive;
         private InformationLabelActivateData _currentData;
-        private Coroutine _currentCoroutine;
+
+        private CancellationTokenSource _currentCTS;
 
         public bool IsComplete => _isComplete && _informationLabel.IsComplete && _panel.IsComplete;
 
-        public void Init()
+        public void Init(CancellationToken fightToken)
         {
+            _fightToken = fightToken;
+
             _informationLabel.Init();
             _panel.Init();
 
@@ -42,39 +49,39 @@ namespace GameFields.InformationLabels
 
             gameObject.SetActive(true);
 
-            _informationLabel.Show(_currentData.LabelActivateData);
-            _panel.Show();
+            Utils.DestroyCTS(ref _currentCTS);
+            _currentCTS = CancellationTokenSource.CreateLinkedTokenSource(_fightToken);
 
-            if (_currentCoroutine != null)
-                StopCoroutine(_currentCoroutine);
+            _informationLabel.Show(new LabelActivateDataAsync(_currentData.LabelActivateData, _currentCTS.Token));
+            _panel.Show(new CancellationTokenData(_currentCTS.Token));
 
-            _currentCoroutine = StartCoroutine(WaitUntilDeactivating(data.TimeView));
+            WaitUntilDeactivating(data.TimeView, _currentCTS.Token).Forget();
         }
 
-        private void Deactivate()
+        private void Deactivate(CancellationToken token)
         {
-            _informationLabel.Hide();
-            _panel.Hide();
+            _informationLabel.Hide(new CancellationTokenData(token));
+            _panel.Hide(new CancellationTokenData(token));
 
-            StartCoroutine(Deactivating());
+            Deactivating(token).Forget();
         }
 
-        private IEnumerator WaitUntilDeactivating(float timeView)
+        private async UniTask WaitUntilDeactivating(float timeView, CancellationToken token)
         {
-            yield return new WaitUntil(() => _informationLabel.IsComplete && _panel.IsComplete);
-            yield return new WaitForSeconds(timeView / 2f);
+            await UniTask.WaitUntil(() => _informationLabel.IsComplete && _panel.IsComplete, cancellationToken: token);
+            await UniTask.WaitForSeconds(timeView / 2f, cancellationToken: token);
             GameFieldGC.Collect();
-            yield return new WaitForSeconds(timeView / 2f);
+            await UniTask.WaitForSeconds(timeView / 2f, cancellationToken: token);
 
-            Deactivate();
+            Deactivate(token);
         }
 
-        private IEnumerator Deactivating()
+        private async UniTask Deactivating(CancellationToken token)
         {
-            yield return new WaitUntil(() => _informationLabel.IsComplete && _panel.IsComplete);
+            await UniTask.WaitUntil(() => _informationLabel.IsComplete && _panel.IsComplete, cancellationToken: token);
 
             _currentData = null;
-            _currentCoroutine = null;
+            Utils.DestroyCTS(ref _currentCTS);
             _isComplete = true;
         }
 

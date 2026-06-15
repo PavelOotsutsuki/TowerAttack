@@ -1,10 +1,12 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Threading;
 using Cysharp.Threading.Tasks;
-using GameFields.Persons.Towers;
 using Tools;
 using Tools.UI;
+using Tools.Utils;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
@@ -25,6 +27,9 @@ namespace GameFields.Persons.SelectMenues
         private SelectNumberPanel _selectNumberPanel;
         private SelectMenuLabelTextLogic _selectMenuLabelTextLogic;
 
+        protected CancellationToken FightToken;
+        protected CancellationTokenSource CurrentCTS;
+
         private IEnumerable<ICompletable> _completableElements;
 
         public bool? IsActive { get; private set; } = null;
@@ -33,7 +38,7 @@ namespace GameFields.Persons.SelectMenues
         private bool IsElementsComplete => _completableElements.Any(e => e.IsComplete == false) == false;
 
         public void Init(ISelectResultHandler selectResultHandler, SelectNumberPanel selectNumberPanel,
-            SelectMenuLabelTextLogic selectMenuLabelTextLogic)
+            SelectMenuLabelTextLogic selectMenuLabelTextLogic, CancellationToken fightToken)
         {
             gameObject.SetActive(false);
             IsComplete = false;
@@ -41,6 +46,7 @@ namespace GameFields.Persons.SelectMenues
             _canvasGroup.blocksRaycasts = true;
 
             _selectNumberPanel = selectNumberPanel;
+            FightToken = fightToken;
 
             //SelectResultHandler = selectResultHandler;
             _selectResultHandler = selectResultHandler;
@@ -55,6 +61,9 @@ namespace GameFields.Persons.SelectMenues
 
         public virtual void Activate(SelectMenuActivateData activateData)
         {
+            if (FightToken.IsCancellationRequested)
+                return;
+
             if (IsActive == true)
                 return;
 
@@ -63,9 +72,12 @@ namespace GameFields.Persons.SelectMenues
 
             gameObject.SetActive(true);
 
-            LabelActivateData labelData = new LabelActivateData(_selectMenuLabelTextLogic.CreateLabelText());
+            Utils.DestroyCTS(ref CurrentCTS);
+            CurrentCTS = CancellationTokenSource.CreateLinkedTokenSource(FightToken);
+
+            LabelActivateDataAsync labelData = new LabelActivateDataAsync(new LabelActivateData(_selectMenuLabelTextLogic.CreateLabelText()), CurrentCTS.Token);
             _selectMenuLabel.Show(labelData);
-            _selectMenuPanel.Show();
+            _selectMenuPanel.Show(new CancellationTokenData(CurrentCTS.Token));
 
             _selectResult = new SelectResult();
 
@@ -75,12 +87,18 @@ namespace GameFields.Persons.SelectMenues
 
         public void Deactivate()
         {
+            if (FightToken.IsCancellationRequested)
+                return;
+
             if (IsActive == false)
                 return;
 
             IsActive = false;
 
-            Deactivating().ToUniTask();
+            Utils.DestroyCTS(ref CurrentCTS);
+            CurrentCTS = CancellationTokenSource.CreateLinkedTokenSource(FightToken);
+
+            Deactivating(CurrentCTS.Token).Forget();
         }
 
         protected virtual List<ICompletable> FillCompletableElements()
@@ -95,39 +113,54 @@ namespace GameFields.Persons.SelectMenues
             return completables;
         }
 
-        private IEnumerator Deactivating()
+        private async UniTask Deactivating(CancellationToken token)
         {
-            yield return OnDeactivating();
+            if (FightToken.IsCancellationRequested)
+                return;
 
-            _selectMenuLabel.Hide();
-            _selectMenuPanel.Hide();
+            try
+            {
+                await OnDeactivating(token);
 
-            yield return new WaitUntil(() => IsElementsComplete);
+                _selectMenuLabel.Hide(new CancellationTokenData(token));
+                _selectMenuPanel.Hide(new CancellationTokenData(token));
 
-            gameObject.SetActive(false);
+                await UniTask.WaitUntil(() => IsElementsComplete, cancellationToken: token);
 
-            //SetSelectResultData setSelectResultData;
+                gameObject.SetActive(false);
 
-            //if (_selectResult.IsSelectSuccess)
-            //{
-            //    setSelectResultData = new SetSelectResultData(ResultType.Success);
-            //    //_selectResultHandler.SuccessChoice();
-            //}
-            //else
-            //{
-            //    setSelectResultData = new SetSelectResultData(ResultType.Falled);
-            //    //_selectResultHandler.FalledChoice();
-            //}
+                //SetSelectResultData setSelectResultData;
 
-            //SelectResultHandler.SetResult(_selectResult.Data);
-            _selectResultHandler.SetResult(_selectResult.Data);
+                //if (_selectResult.IsSelectSuccess)
+                //{
+                //    setSelectResultData = new SetSelectResultData(ResultType.Success);
+                //    //_selectResultHandler.SuccessChoice();
+                //}
+                //else
+                //{
+                //    setSelectResultData = new SetSelectResultData(ResultType.Falled);
+                //    //_selectResultHandler.FalledChoice();
+                //}
 
-            yield return new WaitUntil(() => _selectResultHandler.IsComplete);
+                //SelectResultHandler.SetResult(_selectResult.Data);
+                _selectResultHandler.SetResult(_selectResult.Data);
 
-            IsComplete = true;
+                await UniTask.WaitUntil(() => _selectResultHandler.IsComplete, cancellationToken: token);
+
+                IsComplete = true;
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.Log($"ОТМЕНА ТОКЕНА: {MethodBase.GetCurrentMethod().DeclaringType.Name}: {GetType().Name}");
+            }
         }
 
-        protected abstract IEnumerator OnDeactivating();
+        private void OnDisable()
+        {
+            Utils.DestroyCTS(ref CurrentCTS);
+        }
+
+        protected abstract UniTask OnDeactivating(CancellationToken token);
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(SelectMenu))]

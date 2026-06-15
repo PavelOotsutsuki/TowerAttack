@@ -1,7 +1,6 @@
-using System.Collections;
+using Cysharp.Threading.Tasks;
 using GameFields.Persons;
 using GameFields.Persons.EffectHandlers.Brothers;
-using UnityEngine;
 
 namespace GameFields.Effects
 {
@@ -29,7 +28,7 @@ namespace GameFields.Effects
         //    Debug.Log("Эффект Среднего брата закончен");
         //}
 
-        protected override IEnumerator OnPlaying()
+        protected override async UniTask OnPlaying()
         {
             bool endAttack = false;
             //_activePerson.ChoiceActivate("Выбрано:", 3);
@@ -37,7 +36,7 @@ namespace GameFields.Effects
             _activePerson.AttackActivate(StartValue + countAttack, () => endAttack = true);
             //_activePerson.ChoiceActivate(4, EndPlayingCallback, RestrictionType.Consecutive);
             //yield return new WaitUntil(() => _activePerson.IsChoiceComplete);
-            yield return new WaitUntil(() => endAttack);
+            await UniTask.WaitUntil(() => endAttack, cancellationToken: Token);
 
             _brothersEffectHandlerRoot.Upgrade(UpgradeCount);
 

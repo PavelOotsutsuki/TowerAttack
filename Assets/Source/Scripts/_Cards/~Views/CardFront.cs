@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using Cards.Views.BigCardViews;
 using Cards.Views.BigCardViews.BigCards;
 using Cards.Views.BigCardViews.Capabilities;
@@ -22,6 +23,7 @@ namespace Cards.Views
         private Vector2 _cardSize;
         private BigCardRootActivateData _bigCardRootActivateData;
         private CardFrame _cardFrame;
+        private CancellationToken _cardToken;
 
         public bool IsBlock { get; private set; }
         public bool? IsShown { get; private set; } = null;
@@ -30,13 +32,14 @@ namespace Cards.Views
 
         internal void Init(CardViewData cardViewData, ReadOnlyRectTransform RORCartTransform,
             CardViewService cardViewService, Vector2 cardSize, CardFrame cardFrame,
-            CardCapabilityDescription cardCapabilityDescription)
+            CardCapabilityDescription cardCapabilityDescription, CancellationToken cardToken)
         {
             _RORCardTransform = RORCartTransform;
             _cardViewService = cardViewService;
             _cardSize = cardSize;
             _cardView.Init(cardCapabilityDescription);
             _cardFrame = cardFrame;
+            _cardToken = cardToken;
 
             IsBlock = false;
 
@@ -49,8 +52,8 @@ namespace Cards.Views
             _cardView.FillData(cardViewData);
 
             BigCardShowData bigCardShowData = new BigCardShowData(_cardSize, _RORCardTransform, cardViewData);
-            CardDescriptionActivateData cardDescriptionActivateData = new CardDescriptionActivateData(cardViewData.Description);
-            CapabilityDescriptionActivateData capabilityDescriptionActivateData = new CapabilityDescriptionActivateData(cardViewData.CardCapability);
+            CardDescriptionActivateData cardDescriptionActivateData = new CardDescriptionActivateData(cardViewData.Description, _cardToken);
+            CapabilityDescriptionActivateData capabilityDescriptionActivateData = new CapabilityDescriptionActivateData(cardViewData.CardCapability, _cardToken);
 
             _bigCardRootActivateData = new BigCardRootActivateData(bigCardShowData, cardDescriptionActivateData,
                 capabilityDescriptionActivateData);

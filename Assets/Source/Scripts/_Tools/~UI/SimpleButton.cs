@@ -8,7 +8,7 @@ namespace Tools.UI
 {
     //[RequireComponent(typeof(OnEnterColorChanger))]
     [RequireComponent(typeof(CanvasGroup))]
-    public abstract class SimpleButton : MonoBehaviour, IPointerClickHandler, IPointerExitHandler, IPointerUpHandler, IPointerEnterHandler, IPointerDownHandler, IWorkable, IAutomaticFillComponents
+    public abstract class SimpleButton : MonoBehaviour, IPointerClickHandler, IPointerExitHandler, IPointerUpHandler, IPointerEnterHandler, IPointerDownHandler, IAutomaticFillComponents
     {
         [SerializeField] protected CanvasGroup CanvasGroup;
 
@@ -29,7 +29,7 @@ namespace Tools.UI
             _imageChanger = imageChanger;
         }
 
-        public virtual void Activate()
+        protected void BaseActivate()
         {
             if (IsActive == true)
                 return;
@@ -47,7 +47,7 @@ namespace Tools.UI
             CanvasGroup.blocksRaycasts = true;
         }
 
-        public virtual void Deactivate()
+        protected void BaseDeactivate()
         {
             if (IsActive == false)
                 return;

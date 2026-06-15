@@ -17,6 +17,7 @@ using GameFields.Persons.LookCardMenues;
 using Cards.Effects;
 using Cards.Views;
 using GameFields.Persons.ConfirmableNumbersView;
+using System.Threading;
 
 namespace GameFields.Persons
 {
@@ -34,28 +35,29 @@ namespace GameFields.Persons
         private readonly ILookCardMenu _lookCardMenu;
         private readonly IBoomTower _boomTower;
         private readonly ICardNumberKeeper _cardNumberKeeper;
-        private readonly SkipTurnView _skipTurnView;
+        //private readonly SkipTurnView _skipTurnView;
         private readonly INumbersStateWatcher _numbersStateWatcher;
         private readonly LastSelectedNumbersWatcher _lastSelectedNumbersWatcher;
         private readonly PersonEffectKeeper _personEffectKeeper;
+        private readonly PersonEffectsHandler _personEffectsHandler;
+        private readonly CancellationToken _fightToken;
         //private readonly PersonStep _lastStep;
 
         //protected readonly PersonStep TurnProcess;
-        protected readonly StartTurnDraw StartTurnDraw;
+        //protected readonly StartTurnDraw StartTurnDraw;
 
         protected readonly SignalBus Bus;
         protected readonly InteractionActivator InteractionActivator;
 
-        private readonly PersonEffectsHandler _personEffectsHandler;
-
+        private CancellationTokenSource CurrentTurnTokenSource;
         private PersonStep _currentStep;
 
         protected Person(CardPlayingZone playingZone, DrawCardRoot drawCardRoot, Tower tower,
-            StartTurnDraw startTurnDraw, Discover discover, SignalBus bus, /*PersonStep lastStep,*/
+            /*StartTurnDraw startTurnDraw,*/ Discover discover, SignalBus bus, /*PersonStep lastStep,*/
             Hand hand, ISelectMenuActivator attackMenu, InteractionActivator gameFieldObjectsActivator,
             ISelectMenuActivator choiceMenu, ISelectMenuActivator choiceMenuImitation, PersonEffectsHandler personEffectsHandler,
-            ILookCardMenu lookCardMenu, SkipTurnView skipTurnView, INumbersStateWatcher numbersStateWatcher,
-            LastSelectedNumbersWatcher lastSelectedNumbersWatcher, PersonEffectKeeper personEffectKeeper)
+            ILookCardMenu lookCardMenu, /*SkipTurnView skipTurnView,*/ INumbersStateWatcher numbersStateWatcher,
+            LastSelectedNumbersWatcher lastSelectedNumbersWatcher, PersonEffectKeeper personEffectKeeper, CancellationToken fightToken)
         {
             _hand = hand;
             Bus = bus;
@@ -64,7 +66,7 @@ namespace GameFields.Persons
             _boomTower = tower;
             _cardNumberKeeper = tower;
             _drawCardRoot = drawCardRoot;
-            StartTurnDraw = startTurnDraw;
+            //StartTurnDraw = startTurnDraw;
             //TurnProcess = turnProcess;
             _discover = discover;
             _attackMenu = attackMenu;
@@ -72,7 +74,7 @@ namespace GameFields.Persons
             _choiceMenuImitation = choiceMenuImitation;
             _lookCardMenu = lookCardMenu;
             //_loseActions = loseActions;
-            _skipTurnView = skipTurnView;
+            //_skipTurnView = skipTurnView;
             _numbersStateWatcher = numbersStateWatcher;
             _lastSelectedNumbersWatcher = lastSelectedNumbersWatcher;
             _personEffectKeeper = personEffectKeeper;
@@ -80,6 +82,8 @@ namespace GameFields.Persons
             InteractionActivator = gameFieldObjectsActivator;
 
             _personEffectsHandler = personEffectsHandler;
+            _fightToken = fightToken;
+            CurrentTurnTokenSource = null;
 
             _personSteps = new Stack<PersonStep>();
 
@@ -103,9 +107,16 @@ namespace GameFields.Persons
         public IEnumerable<int> CheckedNumbers => _numbersStateWatcher.CheckedNumbers;
         public IEnumerable<int> LastSelectedNumbers => _lastSelectedNumbersWatcher.LastSelectedNumbers;
 
+        protected CancellationToken Token => CurrentTurnTokenSource.Token;
+
         public void StartStep()
         {
+            if (CurrentTurnTokenSource != null)
+                throw new Exception("StartStep должен начинаться с пустого CancellationToken-а!!!");
+
             IsComplete = false;
+
+            CurrentTurnTokenSource = CancellationTokenSource.CreateLinkedTokenSource(_fightToken);
 
             _personSteps.Clear();
 
@@ -124,14 +135,14 @@ namespace GameFields.Persons
             _personEffectsHandler.OnStartTurn();
             _currentStep = _personSteps.Pop();
 
-            ProcessingTurn().ToUniTask();
+            ProcessingTurn().Forget();
         }
 
-        protected void AddStartTurnDrawStep()
-        {
-            PushStep(StartTurnDraw);
-            //_personEffectsHandler.OnStartTurn();
-        }
+        //protected void AddStartTurnDrawStep()
+        //{
+        //    PushStep(StartTurnDraw);
+        //    //_personEffectsHandler.OnStartTurn();
+        //}
 
         public void FinishTurn()
         {
@@ -167,7 +178,7 @@ namespace GameFields.Persons
         {
             _lookCardMenu.Activate(activateData);
 
-            WaitingToInvoke(_lookCardMenu, callback).ToUniTask();
+            WaitingToInvoke(_lookCardMenu, callback).Forget();
         }
 
         public void AttackActivate(int countNumbers = 1, Action callback = null, RestrictionType? restrictionType = null)
@@ -210,12 +221,12 @@ namespace GameFields.Persons
             selectMenu.Activate(data);
 
             if (callback != null)
-                WaitingToInvoke(selectMenu, callback).ToUniTask();
+                WaitingToInvoke(selectMenu, callback).Forget();
         }
 
-        private IEnumerator WaitingToInvoke(ICompletable completable, Action callback)
+        private async UniTask WaitingToInvoke(ICompletable completable, Action callback)
         {
-            yield return new WaitUntil(() => completable.IsComplete);
+            await UniTask.WaitUntil(() => completable.IsComplete, cancellationToken: Token);
 
             callback?.Invoke();
         }
@@ -227,30 +238,33 @@ namespace GameFields.Persons
 
         //protected abstract void OnStartStep();
 
-        protected void PushStep(PersonStep turnStep) => _personSteps.Push(turnStep);
+        private protected void PushStep(PersonStep turnStep) => _personSteps.Push(turnStep);
 
         protected abstract void InitCommonSteps();
-
-        private void InitSkipSteps()
-        {
-            PushStep(_skipTurnView);
-        }
+        protected abstract void InitSkipSteps();
+        //{
+        //    PushStep(_skipTurnView);
+        //}
         //{
         //    EnqueueStep(_startTurnDraw);
         //    EnqueueStep(_turnProcess);
         //    EnqueueStep(_cardEffectProcessing);
         //}
 
-        private IEnumerator ProcessingTurn()
+        private async UniTask ProcessingTurn()
         {
             while (IsComplete == false)
             {
                 _currentStep.StartStep();
                 //Debug.Log(_currentStep.ToString() + ": " + this.ToString());
-                yield return new WaitUntil(() => _currentStep.IsComplete);
+                await UniTask.WaitUntil(() => _currentStep.IsComplete, cancellationToken: Token);
 
                 NextStep();
             }
+
+            CurrentTurnTokenSource.Cancel();
+            CurrentTurnTokenSource.Dispose();
+            CurrentTurnTokenSource = null;
         }
 
         private void NextStep()
@@ -268,6 +282,7 @@ namespace GameFields.Persons
             }
             else
             {
+
                 IsComplete = true;
             }
         }
@@ -306,14 +321,14 @@ namespace GameFields.Persons
         //    }
         //}
 
-        List<Card> IDrawCardManager.DrawCards(int countCards, Action callback)
+        List<Card> IDrawCardManager.DrawCards(int countCards, CancellationToken token, Action callback)
         { 
-            return _drawCardRoot.DrawCards(countCards, callback);
+            return _drawCardRoot.DrawCards(countCards, token, callback);
         }
 
-        int IDrawCardManager.DrawCard(Card card, Action callback, int indexAdd)
+        int IDrawCardManager.DrawCard(Card card, CancellationToken token, Action callback, int indexAdd)
         {
-            return _drawCardRoot.DrawCard(card, callback, indexAdd);
+            return _drawCardRoot.DrawCard(card, token, callback, indexAdd);
         }
 
         //bool ITowerTransitCheck.IsFill => _tower.HasFreeSeat == false;

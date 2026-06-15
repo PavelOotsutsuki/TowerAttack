@@ -1,9 +1,8 @@
 using Cards;
+using Cysharp.Threading.Tasks;
 using GameFields.CardTransits;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace GameFields.Effects
 {
@@ -28,7 +27,7 @@ namespace GameFields.Effects
         //    Debug.Log("Эффект Жадины закончен");
         //}
 
-        protected override IEnumerator OnPlaying()
+        protected override UniTask OnPlaying()
         {
             IEnumerable<Card> enemyCards = _viewRoot.GetAllCards(ViewType.HandAI);
             IEnumerable<Card> playerCards = _viewRoot.GetAllCards(ViewType.HandPlayer);
@@ -36,7 +35,7 @@ namespace GameFields.Effects
             GetCards(playerCards, TransitFromType.HandPlayer, TransitToType.HandEnemy);
             GetCards(enemyCards, TransitFromType.HandEnemy, TransitToType.HandPlayer);
 
-            yield break;
+            return UniTask.CompletedTask;
         }
 
         private void GetCards(IEnumerable<Card> givenCards, TransitFromType fromType, TransitToType toType)

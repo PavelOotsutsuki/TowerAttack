@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Cards;
 using Cards.Views.BigCardViews;
 using Cards.Views.BigCardViews.Capabilities;
+using Cysharp.Threading.Tasks;
 using Tools;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Screens;
@@ -32,6 +34,7 @@ namespace GameFields.Persons.LookCardMenues
         private ScreenRoot _screenRoot;
         private bool _screenChangeMode = false;
         private LookCardMenuSeatPanelRootActivateData _currentData;
+        private CancellationToken _fightToken;
 
         private CardCapabilityDescription _cardCapabilityDescription;
 
@@ -53,12 +56,13 @@ namespace GameFields.Persons.LookCardMenues
             _cardCapabilityDescription = cardCapabilityDescription;
         }
 
-        public void Init()
+        public void Init(CancellationToken fightToken)
         {
             //for (int i = 0; i < _startCountPanels; i++)
             //{
             //    CreatePanel();
             //}
+            _fightToken = fightToken;
 
             _rightSwitch.Init(NextSwitch);
             _leftSwitch.Init(PreviousSwitch);
@@ -72,6 +76,9 @@ namespace GameFields.Persons.LookCardMenues
 
         public void Activate(LookCardMenuSeatPanelRootActivateData data)
         {
+            if (_fightToken.IsCancellationRequested)
+                return;
+
             if (IsActive == true)
                 return;
 
@@ -135,6 +142,9 @@ namespace GameFields.Persons.LookCardMenues
 
         public void Deactivate()
         {
+            if (_fightToken.IsCancellationRequested)
+                return;
+
             if (IsActive == false)
                 return;
 
@@ -159,7 +169,7 @@ namespace GameFields.Persons.LookCardMenues
             SetSwitchState(_rightSwitch, false);
             SetSwitchState(_leftSwitch, false);
 
-            StartCoroutine(Deactivating());
+            Deactivating(_fightToken).Forget();
         }
 
         private void SetSwitchState(LookCardMenuSeatPanelSwitch mySwitch, bool isActive)
@@ -176,9 +186,9 @@ namespace GameFields.Persons.LookCardMenues
             }
         }
 
-        private IEnumerator Deactivating()
+        private async UniTask Deactivating(CancellationToken token)
         {
-            yield return new WaitUntil(() => _seatPanels.Any(p => p.IsComplete == false) == false);
+            await UniTask.WaitUntil(() => _seatPanels.Any(p => p.IsComplete == false) == false, cancellationToken: token);
 
             _isComplete = true;
         }
@@ -267,7 +277,6 @@ namespace GameFields.Persons.LookCardMenues
             Deactivate();
             Activate(_currentData);
         }
-
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(LookCardMenuSeatPanelRoot))]

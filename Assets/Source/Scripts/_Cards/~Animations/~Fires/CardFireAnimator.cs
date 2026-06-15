@@ -1,12 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using Tools;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
 namespace Cards.Animations.Fires
 {
-    internal class CardFireAnimator : MonoBehaviour, IWorkable, ICompletable
+    internal class CardFireAnimator : MonoBehaviour, IWorkable<CancellationTokenData, CancellationTokenData>, ICompletable
     {
         [SerializeField] private CardFrameFireAnimation _cardFrameFireAnimation;
         [SerializeField] private CardFireAnimation _cardFireAnimation;
@@ -25,33 +25,33 @@ namespace Cards.Animations.Fires
             _cardFireAnimation.Init();
         }
 
-        public void Activate()
+        public void Activate(CancellationTokenData tokenData)
         {
             if (IsActive == true)
                 return;
 
             IsActive = true;
 
-            _cardFrameFireAnimation.Play();
-            _cardFireAnimation.Play();
+            _cardFrameFireAnimation.Play(tokenData.Token);
+            _cardFireAnimation.Play(tokenData.Token);
         }
 
-        public void Deactivate()
+        public void Deactivate(CancellationTokenData tokenData)
         {
             if (IsActive == false)
                 return;
 
             IsActive = false;
 
-            _cardFrameRiseAnimation.Play();
-            _cardRiseAnimation.Play();
+            _cardFrameRiseAnimation.Play(tokenData.Token);
+            _cardRiseAnimation.Play(tokenData.Token);
 
-            StartCoroutine(WaitingUntilDeactivate());
+            WaitingUntilDeactivate(tokenData).Forget();
         }
 
-        private IEnumerator WaitingUntilDeactivate()
+        private async UniTask WaitingUntilDeactivate(CancellationTokenData tokenData)
         {
-            yield return new WaitUntil(() => _cardFrameRiseAnimation.IsComplete && _cardRiseAnimation.IsComplete);
+            await UniTask.WaitUntil(() => _cardFrameRiseAnimation.IsComplete && _cardRiseAnimation.IsComplete, cancellationToken: tokenData.Token);
 
             _cardFireAnimation.Deactivate();
         }

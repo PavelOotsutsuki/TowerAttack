@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using Cards.Views;
 using Cards.Views.BigCardViews.CardDescriptions;
 using Tools.Utils.FillComponents;
@@ -10,22 +11,16 @@ namespace Cards.Insides
 {
     internal class CardCharacter : MonoBehaviour, ICardState
     {
-        //private AudioClip _awakeSound;
-        //private CardSoundVolume _cardSoundVolume;
         [SerializeField] private Image _iconImage;
         [SerializeField] private CardFeatureHelper _cardFeatureHelper;
 
         public bool? IsShown { get; private set; } = null;
 
-        //public void Init(CardSoundConfig awakeSound, CardSoundVolume cardSoundVolume)
-        public void Init(Sprite icon, CardDescription cardDescription, IFeatureWatcher featureWatcher)
+        public void Init(Sprite icon, CardDescription cardDescription, IFeatureWatcher featureWatcher, CancellationToken cardToken)
         {
-            //_awakeSound = awakeSound;
-            //_cardSoundVolume = cardSoundVolume;
             _iconImage.sprite = icon;
             transform.localPosition = Vector2.zero;
-            _cardFeatureHelper.Init(cardDescription, () => featureWatcher.Feature);
-            //_UIHelper.Init(UIHelperDescription, () => featureWatcher.Feature);
+            _cardFeatureHelper.Init(cardDescription, () => featureWatcher.Feature, cardToken);
 
             IsShown = true;
             Hide();
@@ -38,7 +33,6 @@ namespace Cards.Insides
 
             IsShown = true;
 
-            //AudioSource.PlayClipAtPoint(_awakeSound, Vector3.zero, _cardSoundVolume.Volume);
             gameObject.SetActive(true);
         }
 

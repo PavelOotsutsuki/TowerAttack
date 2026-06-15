@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using TMPro;
 using Tools;
 using Tools.UI;
@@ -13,10 +14,14 @@ namespace GameFields.EndFights
         [SerializeField] private NascentLabel _label;
         [SerializeField] private TMP_Text _TMPtext;
 
+        private CancellationToken _gameFieldToken;
+
         public bool IsComplete => _label.IsComplete;
 
-        public void Init()
+        public void Init(CancellationToken gameFieldToken)
         {
+            _gameFieldToken = gameFieldToken;
+
             _label.Init();
         }
 
@@ -24,7 +29,7 @@ namespace GameFields.EndFights
         {
             _TMPtext.color = data.TextColor;
 
-            _label.Show(data.NascentLabelActivateData);
+            _label.Show(new LabelActivateDataAsync(data.NascentLabelActivateData, _gameFieldToken));
         }
 
         #region AutomaticFillComponents

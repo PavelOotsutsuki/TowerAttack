@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace GameFields
 {
-    public abstract class MenuActivateButton : ConfirmableButton
+    public abstract class MenuActivateButton : ConfirmableButton, IWorkable
     {
         [SerializeField] private UIHelper _UIHelper;
 
@@ -20,7 +20,23 @@ namespace GameFields
             _menu = menu;
             _UIHelper.Init(UIHelperDescription, () => GetHelperText());
 
-            Deactivate();
+            BaseDeactivate();
+        }
+
+        public void Activate()
+        {
+            if (IsActive == true)
+                return;
+
+            base.BaseActivate();
+        }
+
+        public void Deactivate()
+        {
+            if (IsActive == false)
+                return;
+
+            base.BaseDeactivate();
         }
 
         protected abstract string GetHelperText();

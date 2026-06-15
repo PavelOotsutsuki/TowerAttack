@@ -36,7 +36,7 @@ namespace GameFields
             _inputRoot = inputRoot;
         }
 
-        public void SetObjectsStates(PersonStep personStep)
+        internal void SetObjectsStates(PersonStep personStep)
         {
             //Debug.Log(personStep.ToString());
 

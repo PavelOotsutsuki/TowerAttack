@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using GameFields.EndTurnButtons;
 using Sounds;
 using Tools;
@@ -19,19 +21,19 @@ namespace Roots
         [SerializeField] private float _pausingDuration = 0.5f;
 
         private IVolume _soundConfig;
+        private CancellationToken _gameFieldToken;
 
-        private Coroutine _processing;
+        private CancellationTokenSource _processingCTS;
         private IReadOnlyList<AudioClip> _shuffleClips;
-
-        private Coroutine _activeCoroutine = null;
 
         private bool _isPaused;
 
         public float Percent => _soundConfig.Percent; 
 
-        public void Init(IVolume soundConfig)
+        public void Init(IVolume soundConfig, CancellationToken gameFieldToken)
         {
             _soundConfig = soundConfig;
+            _gameFieldToken = gameFieldToken;
 
             if (_backgroundSounds.Length > 0)
             {
@@ -50,7 +52,11 @@ namespace Roots
 
         public void Activate()
         {
-            _processing = StartCoroutine(Processing());
+            //_processing = StartCoroutine(Processing());
+            _processingCTS?.Cancel();
+            _processingCTS?.Dispose();
+            _processingCTS = CancellationTokenSource.CreateLinkedTokenSource(_gameFieldToken);
+            Processing(_processingCTS.Token).Forget();
             //StartCoroutine(Pausing());
         }
 
@@ -70,15 +76,15 @@ namespace Roots
             Unpause();
         }
 
-        private IEnumerator Processing()
+        private async UniTask Processing(CancellationToken token)
         {
             for (int i = 0; i < _shuffleClips.Count; i++)
             {
                 _audioSource.clip = _shuffleClips[i];
                 Play();
 
-                yield return new WaitUntil(() => _audioSource.isPlaying == false && _isPaused == false);
-                yield return new WaitForSeconds(_delay);
+                await UniTask.WaitUntil(() => _audioSource.isPlaying == false && _isPaused == false, cancellationToken: token);
+                await UniTask.WaitForSeconds(_delay, cancellationToken: token);
             }
         }
 
@@ -95,58 +101,70 @@ namespace Roots
 
         private void Pause()
         {
-            if (_activeCoroutine != null)
-                StopCoroutine(_activeCoroutine);
+            _processingCTS?.Cancel();
+            _processingCTS?.Dispose();
+            _processingCTS = CancellationTokenSource.CreateLinkedTokenSource(_gameFieldToken);
 
-            _activeCoroutine = StartCoroutine(Pausing());
+            Pausing(_processingCTS.Token).Forget();
         }
 
-        private IEnumerator Pausing()
+        private async UniTask Pausing(CancellationToken token)
         {
-            float startVolume = _audioSource.volume;
-            _isPaused = true;
-
-            for (float i = 0; i < _pausingDuration; i+= Time.deltaTime)
+            try
             {
-                float step = i / _pausingDuration;
-                _audioSource.volume = startVolume * (1 - step);
+                float startVolume = _audioSource.volume;
+                _isPaused = true;
 
-                yield return null;
+                for (float i = 0; i < _pausingDuration; i += Time.deltaTime)
+                {
+                    float step = i / _pausingDuration;
+                    _audioSource.volume = startVolume * (1 - step);
+
+                    await UniTask.Yield(cancellationToken: token);
+                }
+
+                _audioSource.volume = 0;
             }
-
-            _audioSource.volume = 0;
-
-            _audioSource.Pause();
-            Debug.Log("Pause");
-            _activeCoroutine = null;
+            finally
+            {
+                _audioSource.Pause();
+                Debug.Log("Pause");
+                _processingCTS = null;
+            }
         }
 
         private void Unpause()
         {
-            if (_activeCoroutine != null)
-                StopCoroutine(_activeCoroutine);
+            _processingCTS?.Cancel();
+            _processingCTS?.Dispose();
+            _processingCTS = CancellationTokenSource.CreateLinkedTokenSource(_gameFieldToken);
 
-            _activeCoroutine = StartCoroutine(Unpausing());
+            Unpausing(_processingCTS.Token).Forget();
         }
 
-        private IEnumerator Unpausing()
+        private async UniTask Unpausing(CancellationToken token)
         {
-            float endVolume = _maxVolume * Percent;
-            _isPaused = false;
-
-            for (float i = 0; i < _pausingDuration; i += Time.deltaTime)
+            try
             {
-                float step = i / _pausingDuration;
-                _audioSource.volume = endVolume * step;
+                float endVolume = _maxVolume * Percent;
+                _isPaused = false;
 
-                yield return null;
+                for (float i = 0; i < _pausingDuration; i += Time.deltaTime)
+                {
+                    float step = i / _pausingDuration;
+                    _audioSource.volume = endVolume * step;
+
+                    await UniTask.Yield(cancellationToken: token);
+                }
+
+                _audioSource.volume = endVolume;
             }
-
-            _audioSource.volume = endVolume;
-
-            _audioSource.UnPause();
-            Debug.Log("Unpause");
-            _activeCoroutine = null;
+            finally
+            {
+                _audioSource.UnPause();
+                Debug.Log("Unpause");
+                _processingCTS = null;
+            }
         }
 
         private void Play()

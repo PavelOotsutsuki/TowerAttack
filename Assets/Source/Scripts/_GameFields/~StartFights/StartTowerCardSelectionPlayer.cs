@@ -11,6 +11,7 @@ using GameFields.Persons.Hands;
 using GameFields.Persons.Towers;
 using Cards.Views;
 using GameFields.CardTransits;
+using System.Threading;
 
 namespace GameFields.StartFights
 {
@@ -39,16 +40,16 @@ namespace GameFields.StartFights
             InitSeats();
         }
 
-        public override void StartProcess()
+        public override void StartProcess(CancellationToken token)
         {
-            StartPlayerProcess().ToUniTask();
+            StartPlayerProcess(token).Forget();
         }
 
-        private IEnumerator StartPlayerProcess()
+        private async UniTask StartPlayerProcess(CancellationToken token)
         {
             List<Card> cards = new List<Card>();
 
-            yield return new WaitForSeconds(_data.WaitDurationForEnemyFirstCardsDraw);
+            await UniTask.WaitForSeconds(_data.WaitDurationForEnemyFirstCardsDraw, cancellationToken: token);
 
             for (int i = 0; i < _seats.Length; i++)
             {
@@ -56,12 +57,12 @@ namespace GameFields.StartFights
                 cards.Add(card);
                 _seats[i].SetCard(card, SideType.Front, _data.DrawCardsDuration, _data.DrawCardsScaleFactor);
 
-                yield return new WaitForSeconds(_data.WaitDurationBetweenDrawCards);
+                await UniTask.WaitForSeconds(_data.WaitDurationBetweenDrawCards, cancellationToken: token);
             }
 
             if (_data.DrawCardsDuration - _data.WaitDurationBetweenDrawCards > 0)
             {
-                yield return new WaitForSeconds(_data.DrawCardsDuration - _data.WaitDurationBetweenDrawCards);
+                await UniTask.WaitForSeconds(_data.DrawCardsDuration - _data.WaitDurationBetweenDrawCards, cancellationToken: token);
             }
 
             foreach (Card card in cards)
@@ -73,7 +74,7 @@ namespace GameFields.StartFights
             DiscoverActivateData discoverActivateData = new DiscoverActivateData(cards, _data.LabelMessage, discoverResult);
             _discover.Activate(discoverActivateData);
 
-            yield return new WaitUntil(() => discoverResult.Result != null);
+            await UniTask.WaitUntil(() => discoverResult.Result != null, cancellationToken: token);
 
             //foreach (Seat seat in _seats)
             //{
@@ -81,7 +82,7 @@ namespace GameFields.StartFights
             //}
 
             //EndProcessing(discoverResult.Result).ToUniTask();
-            yield return new WaitForSeconds(_data.DelayAfterCardChoiceDone);
+            await UniTask.WaitForSeconds(_data.DelayAfterCardChoiceDone, cancellationToken: token);
 
             if (Tower.HasFreeSeat)
             {
@@ -95,7 +96,7 @@ namespace GameFields.StartFights
                     }
                     else
                     {
-                        SeatCardInTower(seat).ToUniTask();
+                        SeatCardInTower(seat, token).Forget();
                     }
                 }
 
@@ -159,15 +160,15 @@ namespace GameFields.StartFights
         //    }
         //}
 
-        private IEnumerator SeatCardInTower(Seat mySeat)
+        private async UniTask SeatCardInTower(Seat mySeat, CancellationToken token)
         {
             Card card = mySeat.Card;
 
-            yield return new WaitForSeconds(_data.DelayBeforeStartProcessSeatCardInTower);
+            await UniTask.WaitForSeconds(_data.DelayBeforeStartProcessSeatCardInTower, cancellationToken: token);
 
-            _invertCardAnimation.Play(card);
+            _invertCardAnimation.Play(card, token);
 
-            yield return new WaitUntil(() => _invertCardAnimation.IsComplete);
+            await UniTask.WaitUntil(() => _invertCardAnimation.IsComplete, cancellationToken: token);
 
             //InvertCardFront(card);
             //yield return new WaitForSeconds(_data.InvertCardFrontDuration);

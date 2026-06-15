@@ -1,8 +1,7 @@
-using System.Collections;
-using Cards;
+using System.Threading;
 using Cards.DependencyInterlayers;
+using Cysharp.Threading.Tasks;
 using Tools.Settings;
-using UnityEngine;
 
 namespace GameFields.Persons.Hands
 {
@@ -13,14 +12,14 @@ namespace GameFields.Persons.Hands
             return "Передача: ";
         }
 
-        protected override void OnEndProcessing()
+        protected override void OnEndProcessing(CancellationToken token)
         {
-            StartCoroutine(WaitingUntilComplete());
+            WaitingUntilComplete(token).Forget();
         }
 
-        private IEnumerator WaitingUntilComplete()
+        private async UniTask WaitingUntilComplete(CancellationToken token)
         {
-            yield return new WaitForSeconds(GameSettings.DefaultEffectDelayBeforeComplete);
+            await UniTask.WaitForSeconds(GameSettings.DefaultEffectDelayBeforeComplete, cancellationToken: token);
 
             IsComplete = true;
         }

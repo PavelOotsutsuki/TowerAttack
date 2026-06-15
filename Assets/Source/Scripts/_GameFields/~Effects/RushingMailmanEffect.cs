@@ -1,7 +1,5 @@
-using UnityEngine;
-using GameFields.Persons;
-using System.Collections;
 using GameFields.Persons.DrawCards;
+using Cysharp.Threading.Tasks;
 
 namespace GameFields.Effects
 {
@@ -18,13 +16,13 @@ namespace GameFields.Effects
             Play();
         }
 
-        protected override IEnumerator OnPlaying()
+        protected override async UniTask OnPlaying()
         {
             bool isContinue = false;
 
-            _drawCardManager?.DrawCards(_countDrawCards, () => isContinue = true);
+            _drawCardManager?.DrawCards(_countDrawCards, Token, () => isContinue = true);
 
-            yield return new WaitUntil(() => isContinue);
+            await UniTask.WaitUntil(() => isContinue, cancellationToken: Token);
         }
 
         //public override void End()

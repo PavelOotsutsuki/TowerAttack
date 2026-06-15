@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Threading;
 using Cards;
 using Cysharp.Threading.Tasks;
 using Tools;
@@ -26,7 +25,7 @@ namespace GameFields.CommonAnimations
 
         public bool IsComplete { get; private set; }
 
-        public void Play(Card card, InvertCardAnimationPlayData data = null)
+        public void Play(Card card, CancellationToken token, InvertCardAnimationPlayData data = null)
         {
             IsComplete = false;
 
@@ -36,21 +35,21 @@ namespace GameFields.CommonAnimations
 
             _playData = data ?? new InvertCardAnimationPlayData(_readOnlyCardTransform.GetLocalPosition(), _readOnlyCardTransform.GetLocalScale(), _readOnlyCardTransform.GetLocalPosition(), _readOnlyCardTransform.GetLocalScale());
 
-            Playing().ToUniTask();
+            Playing(token).Forget();
         }
 
-        private IEnumerator Playing()
+        private async UniTask Playing(CancellationToken token)
         {
             if (_data.IsIgnoreStartSide == true || _card.CurrentSide == _data.StartSide)
             {
                 InvertCardStartSide();
-                yield return new WaitForSeconds(_data.InvertCardFrontDuration);
+                await UniTask.WaitForSeconds(_data.InvertCardFrontDuration, cancellationToken: token);
             }
 
             _card.SetSide(_data.FinishSide);
 
             InvertCardFinishSide();
-            yield return new WaitForSeconds(_data.InvertCardBackDuration + _data.DelayAfterInvert);
+            await UniTask.WaitForSeconds(_data.InvertCardBackDuration + _data.DelayAfterInvert, cancellationToken: token);
 
             IsComplete = true;
         }

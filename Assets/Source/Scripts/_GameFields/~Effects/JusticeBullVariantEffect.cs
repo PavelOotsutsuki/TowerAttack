@@ -1,10 +1,9 @@
 using System;
-using System.Collections;
 using Cards.Effects;
+using Cysharp.Threading.Tasks;
 using GameFields.InformationLabels;
 using GameFields.Persons;
 using Tools.UI;
-using UnityEngine;
 
 namespace GameFields.Effects
 {
@@ -42,7 +41,7 @@ namespace GameFields.Effects
 
         protected abstract bool IsTrueChoice();
 
-        protected override IEnumerator OnPlaying()
+        protected override async UniTask OnPlaying()
         {
             Effect choiceEffect;
 
@@ -52,8 +51,7 @@ namespace GameFields.Effects
                 InformationLabelActivateData informationLabelActivateData = new InformationLabelActivateData(labelActivateData);
 
                 _informationLabel.Activate(informationLabelActivateData);
-
-                yield return new WaitUntil(() => _informationLabel.IsComplete);
+                await UniTask.WaitUntil(() => _informationLabel.IsComplete, cancellationToken: Token);
 
                 choiceEffect = _effectCreator.Invoke(EffectType.JusticeBull_TrueChoiceEffect, new CardEffectData(_cardEffectData.Card, 0, null), _effectDuration);
             }
@@ -64,14 +62,14 @@ namespace GameFields.Effects
 
                 _informationLabel.Activate(informationLabelActivateData);
 
-                yield return new WaitUntil(() => _informationLabel.IsComplete);
+                await UniTask.WaitUntil(() => _informationLabel.IsComplete, cancellationToken: Token);
 
                 choiceEffect = _effectCreator.Invoke(EffectType.JusticeBull_FalseChoiceEffect, new CardEffectData(_cardEffectData.Card, 2, null), _effectDuration);
             }
 
             _activePerson.ActivateJusticeBullEffect();
 
-            yield return new WaitUntil(() => choiceEffect.IsComplete);
+            await UniTask.WaitUntil(() => choiceEffect.IsComplete, cancellationToken: Token);
         }
     }
 }

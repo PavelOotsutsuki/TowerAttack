@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using Cards.Views.BigCardViews.Capabilities;
 using GameFields.Persons;
 using Menues;
@@ -13,11 +14,11 @@ namespace GameFields.FightMenues
         [SerializeField] private FightMenuMainButtonsPanel _fightMenuMainButtonsPanel;
 
         public void Init(LoseActions playerLoseActions, IDeactivatable fightMenuDeactivator, IVolume cardVolume, IVolume musicVolume,
-            CardCapabilityDescription cardCapabilityDescription)
+            CardCapabilityDescription cardCapabilityDescription, CancellationToken gameFieldToken)
         {
-            _fightMenuMainButtonsPanel.Init(playerLoseActions, fightMenuDeactivator, SetSettingsPanel, SetRulesPanel);
+            _fightMenuMainButtonsPanel.Init(playerLoseActions, fightMenuDeactivator, SetSettingsPanel, SetRulesPanel, gameFieldToken);
 
-            base.Init(cardVolume, musicVolume, cardCapabilityDescription, _fightMenuMainButtonsPanel, _fightMenuMainButtonsPanel);
+            base.Init(cardVolume, musicVolume, cardCapabilityDescription, _fightMenuMainButtonsPanel, _fightMenuMainButtonsPanel, gameFieldToken);
         }
 
         #region AutomaticFillComponents

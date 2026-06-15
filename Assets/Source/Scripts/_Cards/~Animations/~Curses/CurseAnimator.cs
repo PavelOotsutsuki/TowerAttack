@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,13 +17,16 @@ namespace Cards.Animations.Curses
         [SerializeField] private float _delayOut = 1f;
 
         private Sequence _sequence = null;
+        private CancellationToken _token;
 
         private readonly List<Graphic> _allGraphics = new List<Graphic>();
         private readonly List<Graphic> _addedGraphics = new List<Graphic>();
         private readonly List<Graphic> _removedGraphics = new List<Graphic>();
 
-        public void Init()
-        { }
+        public void Init(CancellationToken token)
+        {
+            _token = token;
+        }
 
         public void AddCard(Graphic[] changedGraphics)
         {
@@ -46,40 +50,54 @@ namespace Cards.Animations.Curses
 
         private void CreateSequece()
         {
-            _sequence = DOTween.Sequence();
-
-            if (_addedGraphics.Count > 0)
+            try
             {
-                _allGraphics.AddRange(_addedGraphics);
-                _addedGraphics.Clear();
-            }
+                _sequence = DOTween.Sequence();
 
-            if (_removedGraphics.Count > 0)
-            {
-                foreach (Graphic element in _removedGraphics)
+                if (_addedGraphics.Count > 0)
                 {
-                    if (_allGraphics.Contains(element))
-                        _allGraphics.Remove(element);
+                    _allGraphics.AddRange(_addedGraphics);
+                    _addedGraphics.Clear();
                 }
 
-                _removedGraphics.Clear();
-            }
+                if (_removedGraphics.Count > 0)
+                {
+                    foreach (Graphic element in _removedGraphics)
+                    {
+                        if (_allGraphics.Contains(element))
+                            _allGraphics.Remove(element);
+                    }
 
-            foreach (Graphic graphic in _allGraphics)
+                    _removedGraphics.Clear();
+                }
+
+                foreach (Graphic graphic in _allGraphics)
+                {
+                    _sequence.Join(graphic.DOColor(_peakColor, _durationIn).SetEase(Ease.InOutSine));
+                }
+
+                _sequence.AppendInterval(_delayIn);
+
+                foreach (Graphic graphic in _allGraphics)
+                {
+                    _sequence.Join(graphic.DOColor(graphic.color, _durationOut).SetEase(Ease.InOutSine));
+                }
+
+                _sequence.AppendInterval(_delayOut);
+
+                _sequence.SetLoops(-1).OnStepComplete(() => OnStepComplete());
+            }
+            catch (Exception ex)
             {
-                _sequence.Join(graphic.DOColor(_peakColor, _durationIn).SetEase(Ease.InOutSine));
+                Debug.Log($"ERROR {nameof(CurseAnimator)}: {ex.Message}");
+
+                _allGraphics.RemoveAll(g => g == null);
+
+                _sequence.Kill();
+
+                CreateSequece();
             }
 
-            _sequence.AppendInterval(_delayIn);
-
-            foreach (Graphic graphic in _allGraphics)
-            {
-                _sequence.Join(graphic.DOColor(graphic.color, _durationOut).SetEase(Ease.InOutSine));
-            }
-
-            _sequence.AppendInterval(_delayOut);
-
-            _sequence.SetLoops(-1).OnStepComplete(() => OnStepComplete());
         }
 
         private void OnStepComplete()

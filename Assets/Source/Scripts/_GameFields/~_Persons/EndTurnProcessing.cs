@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using GameFields.EndTurnButtons;
 using GameFields.InputSettings;
@@ -9,7 +10,7 @@ using UnityEngine;
 
 namespace GameFields.Persons
 {
-    public class EndTurnProcessing : PersonStep, IInputLogicObject
+    internal class EndTurnProcessing : PersonStep, IInputLogicObject
     {
         private readonly IEndTurnButtonStateWatcher _endTurnButtonStateWatcher;
         private readonly PersonEffectsHandler _personEffectsHandler;
@@ -19,7 +20,7 @@ namespace GameFields.Persons
         private bool _isComplete;
 
         public EndTurnProcessing(IEndTurnButtonStateWatcher endTurnButtonStateWatcher,// IHandBlockable handBlockable,
-            InteractionActivator interactionActivator, PersonEffectsHandler personEffectsHandler): base(interactionActivator)
+            InteractionActivator interactionActivator, PersonEffectsHandler personEffectsHandler, CancellationToken token): base(interactionActivator, token)
         {
             _isComplete = false;
             _endTurnButtonStateWatcher = endTurnButtonStateWatcher;
@@ -36,14 +37,14 @@ namespace GameFields.Persons
             //_gameFieldObjectsActivator.Activate();
             //_handBlockable.Unblock();
 
-            WaitingEndTurnButtonClick().ToUniTask();
+            WaitingEndTurnButtonClick().Forget();
         }
 
-        private IEnumerator WaitingEndTurnButtonClick()
+        private async UniTask WaitingEndTurnButtonClick()
         {
-            yield return new WaitUntil(() => _endTurnButtonStateWatcher.EndTurnClicked == false);
+            await UniTask.WaitUntil(() => _endTurnButtonStateWatcher.EndTurnClicked == false, cancellationToken: Token);
 
-            _personEffectsHandler.BeforeEndTurn(BeforeEndCallback);
+            _personEffectsHandler.BeforeEndTurn(BeforeEndCallback, Token);
         }
 
         private void BeforeEndCallback()

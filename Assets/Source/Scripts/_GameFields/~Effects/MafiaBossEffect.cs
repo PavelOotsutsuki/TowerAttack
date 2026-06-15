@@ -1,10 +1,9 @@
-using UnityEngine;
 using Cards;
 using GameFields.Persons;
-using System.Collections;
 using System.Collections.Generic;
 using GameFields.Persons.Discovers;
 using GameFields.CardTransits;
+using Cysharp.Threading.Tasks;
 
 namespace GameFields.Effects
 {
@@ -32,7 +31,7 @@ namespace GameFields.Effects
             Play();
         }
 
-        protected override IEnumerator OnPlaying()
+        protected override async UniTask OnPlaying()
         {
             //ViewType enemyhandType = _activePerson is Player ? ViewType.HandAI : ViewType.HandPlayer;
             //ViewType enemyhandType = ViewTransitTypeConverter.GetPersonHandViewType(_activePerson, false);
@@ -43,7 +42,7 @@ namespace GameFields.Effects
 
             if (_viewRoot.TryView(out IReadOnlyList<Card> cardsHand, CountViewCards, handView) == false)
             {
-                yield break;
+                return;
             }
 
             TransitFromType handFrom = deactivePersonHandTypes.FromType;
@@ -53,14 +52,15 @@ namespace GameFields.Effects
             {
                 bool isTransit = false;
                 _transitManager.TransitCard(cardsHand[0], handFrom, handTo, callback: () => isTransit = true);
-                yield return new WaitUntil(() => isTransit);
-                yield break;
+
+                await UniTask.WaitUntil(() => isTransit, cancellationToken: Token);
+                return;
             }
 
             DiscoverResult discoverResult = new DiscoverResult();
             _activePerson.DiscoverCards(cardsHand, _activateDiscoverMessage, discoverResult);
 
-            yield return new WaitUntil(() => discoverResult.Result != null);
+            await UniTask.WaitUntil(() => discoverResult.Result != null, cancellationToken: Token);
 
             Card cardToTake = null;
             Card cardToFire = null;
@@ -88,7 +88,7 @@ namespace GameFields.Effects
 
             _transitManager.TransitCard(cardToFire, fireHandFrom, firePoolTo, () => isFireComplete = true, index);
 
-            yield return new WaitUntil(() => isFireComplete);
+            await UniTask.WaitUntil(() => isFireComplete, cancellationToken: Token);
         }
 
         //public override void End()

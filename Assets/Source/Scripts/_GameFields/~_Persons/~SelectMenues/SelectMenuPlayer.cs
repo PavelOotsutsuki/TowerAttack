@@ -1,18 +1,14 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using GameFields.InputSettings;
-using GameFields.Persons;
 using GameFields.Persons.ConfirmableNumbersView;
-using GameFields.Persons.SelectMenues.Attacks;
-using GameFields.Persons.SelectMenues.Choices;
 using GameFields.Persons.Towers;
 using Tools;
 using Tools.InputSettings;
-using Tools.UI;
 using Tools.UI.UIHelpers;
 using Tools.Utils.FillComponents;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace GameFields.Persons.SelectMenues
 {
@@ -27,18 +23,18 @@ namespace GameFields.Persons.SelectMenues
 
         public void Init(ICardNumberKeeper cardNumberKeeper, ISelectResultHandler attackResultHandler, int[] cardNumbers,
             SelectNumbersList selectedNumbers, ConfirmableNumbers confirmableNumbers, GameFieldInputRoot inputRoot,
-            LastSelectedNumbersWatcher lastSelectedNumbersWatcher, UIHelperDescription UIHelperDescription)
+            LastSelectedNumbersWatcher lastSelectedNumbersWatcher, UIHelperDescription UIHelperDescription, CancellationToken fightToken)
         {
-            _selectButton.Init(this, inputRoot);
+            _selectButton.Init(this, inputRoot, fightToken);
             _selectNumberPanelPlayer.Init(_selectButton, cardNumberKeeper, cardNumbers, selectedNumbers, confirmableNumbers,
-                lastSelectedNumbersWatcher);
+                lastSelectedNumbersWatcher, fightToken);
             _selectModeButton.Init(_selectNumberPanelPlayer, UIHelperDescription);
 
             _inputRoot = inputRoot;
 
             SelectMenuLabelTextLogic selectMenuLabelTextLogic = new DefaultSelectMenuLabelTextLogic(GetNeedForActivate);
 
-            base.Init(attackResultHandler, _selectNumberPanelPlayer, selectMenuLabelTextLogic);
+            base.Init(attackResultHandler, _selectNumberPanelPlayer, selectMenuLabelTextLogic, fightToken);
         }
 
         //public IPointerClickHandler SelectModeButton => _selectModeButton;
@@ -46,6 +42,9 @@ namespace GameFields.Persons.SelectMenues
 
         public override void Activate(SelectMenuActivateData activateData)
         {
+            if (FightToken.IsCancellationRequested)
+                return;
+
             if (IsActive == true)
                 return;
 
@@ -55,7 +54,7 @@ namespace GameFields.Persons.SelectMenues
 
             base.Activate(activateData);
 
-            _selectModeButton.Activate();
+            _selectModeButton.Activate(new CancellationTokenData(CurrentCTS.Token));
         }
 
         void IEnterPressHandler.OnEnter()
@@ -78,13 +77,13 @@ namespace GameFields.Persons.SelectMenues
             return completableElements;
         }
 
-        protected override IEnumerator OnDeactivating()
+        protected override async UniTask OnDeactivating(CancellationToken token)
         {
             _selectButton.Deactivate();
-            _selectModeButton.Deactivate();
+            _selectModeButton.Deactivate(new CancellationTokenData(token));
             _selectNumberPanelPlayer.Deactivate();
 
-            yield return new WaitUntil(() => _selectNumberPanelPlayer.IsCompleteNumbersHide);
+           await UniTask.WaitUntil(() => _selectNumberPanelPlayer.IsCompleteNumbersHide, cancellationToken: token);
         }
 
         private int GetNeedForActivate() => _currentNeedForActivate;

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Tools.UI
 {
     [RequireComponent(typeof(FadablePanel))]
-    public class FadableSelectableButton : SelectableButton, ICompletable, IWorkable
+    public class FadableSelectableButton : SelectableButton, ICompletable, IWorkable<CancellationTokenData, CancellationTokenData>
     {
         [SerializeField] private FadablePanel _fadablePanel;
 
@@ -18,18 +18,18 @@ namespace Tools.UI
             _fadablePanel.Init();
         }
 
-        public override void Activate()
+        public void Activate(CancellationTokenData tokenData)
         {
-            base.Activate();
+            base.BaseActivate();
 
-            _fadablePanel.Show();
+            _fadablePanel.Show(tokenData);
         }
 
-        public override void Deactivate()
+        public void Deactivate(CancellationTokenData tokenData)
         {
-            base.Deactivate();
+            base.BaseDeactivate();
 
-            _fadablePanel.Hide();
+            _fadablePanel.Hide(tokenData);
         }
 
         #region AutomaticFillComponents

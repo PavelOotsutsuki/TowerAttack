@@ -6,12 +6,14 @@ namespace Tools.UI
 {
     [RequireComponent(typeof(FadableLabel))]
     [RequireComponent(typeof(NascentPanel))]
-    public class FadableNascentLabel : MonoBehaviour, IAutomaticFillComponents
+    public class FadableNascentLabel : MonoBehaviour, IAutomaticFillComponents, IShowable<LabelActivateDataAsync>, IViewable<CancellationTokenData, CancellationTokenData>
     {
         [SerializeField] private FadableLabel _fadableLabel;
         [SerializeField] private NascentPanel _nascentPanel;
 
         public bool IsComplete => _fadableLabel.IsComplete && _nascentPanel.IsComplete;
+
+        public bool? IsShown { get; private set; } = null;
 
         public void Init()
         {
@@ -19,21 +21,36 @@ namespace Tools.UI
             _nascentPanel.Init();
         }
 
-        public void Show(LabelActivateData data)
+        public void Show(LabelActivateDataAsync data)
         {
+            if (IsShown == true)
+                return;
+
+            IsShown = true;
+
             _fadableLabel.Show(data);
-            _nascentPanel.Activate();
+            _nascentPanel.Activate(data);
         }
 
-        public void Show()
+        public void Show(CancellationTokenData tokenData)
         {
-            _fadableLabel.Show();
-            _nascentPanel.Activate();
+            if (IsShown == true)
+                return;
+
+            IsShown = true;
+
+            _fadableLabel.Show(tokenData);
+            _nascentPanel.Activate(tokenData);
         }
 
-        public void Hide()
+        public void Hide(CancellationTokenData tokenData)
         {
-            _fadableLabel.Hide();
+            if (IsShown == false)
+                return;
+
+            IsShown = false;
+
+            _fadableLabel.Hide(tokenData);
             _nascentPanel.Deactivate();
         }
 

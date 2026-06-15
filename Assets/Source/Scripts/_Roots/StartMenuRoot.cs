@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Cards.Views.BigCardViews.Capabilities;
 using Sounds;
 using StartMenues;
@@ -45,19 +46,19 @@ namespace Roots
             //_startMenuLoadActions.Activate();
         }
 
-        public void Init(Action<int> onPlayClick)
+        public void Init(Action<int> onPlayClick, CancellationToken gameRootToken)
         {
             //CanvasScaler[] objectCanvasScalers = gameObject.GetComponentsInChildren<CanvasScaler>(true);
             //_canvasRoot.SetReferenceResolution(objectCanvasScalers);
 
             //TMP_Text[] objectTexts = gameObject.GetComponentsInChildren<TMP_Text>(true);
             //_fontRoot.SetFont(objectTexts);
-            base.Init();
+            base.Init(gameRootToken);
             //_fontRoot.Init();
             //_canvasRoot.Init();
 
             _startMenuLoadActions.Init(_backgroundSoundConfig, _foregroundSoundConfig, _cardCapabilityDescription,
-                onPlayClick);
+                onPlayClick, this.Token);
         }
 
         public override void Activate()

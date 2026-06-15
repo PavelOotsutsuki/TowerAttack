@@ -1,11 +1,11 @@
-using GameFields.Persons;
+using System.Threading;
 
 namespace GameFields.Persons.DrawCards
 {
-    public class StartTurnDrawEnemyAI : StartTurnDraw, IEnemyAIObject
+    internal class StartTurnDrawEnemyAI : StartTurnDraw, IEnemyAIObject
     {
         public StartTurnDrawEnemyAI(InteractionActivator gameFieldObjectsActivator, DrawCardRoot drawCardRoot,
-            int countDrawCards) : base(gameFieldObjectsActivator, drawCardRoot, countDrawCards)
+            int countDrawCards, CancellationToken turnToken) : base(gameFieldObjectsActivator, drawCardRoot, countDrawCards, turnToken)
         { }
     }
 }

@@ -1,13 +1,12 @@
-using System.Collections;
-using Cards;
+using System.Threading;
 using Cards.DependencyInterlayers;
+using Cysharp.Threading.Tasks;
 using GameFields.CardTransits;
 using GameFields.Histories;
 using GameFields.Persons.DrawCards;
 using GameFields.Persons.EffectHandlers;
 using GameFields.Persons.Hands;
 using Tools.Settings;
-using UnityEngine;
 using Zenject;
 
 namespace GameFields.DiscardPiles
@@ -26,22 +25,22 @@ namespace GameFields.DiscardPiles
             _gnomeEffectHandler = gnomeEffectHandler;
         }
 
-        protected override void OnEndProcessing()
+        protected override void OnEndProcessing(CancellationToken token)
         {
-            _drawCardManager.DrawCards(1, Continue);
+            _drawCardManager.DrawCards(1, token, () => Continue(token));
             _gnomeEffectHandler.Upgrade();
         }
 
-        private IEnumerator WaitingUntilComplete()
+        private async UniTask WaitingUntilComplete(CancellationToken token)
         {
-            yield return new WaitForSeconds(GameSettings.DefaultEffectDelayBeforeComplete);
+            await UniTask.WaitForSeconds(GameSettings.DefaultEffectDelayBeforeComplete, cancellationToken: token);
 
             IsComplete = true;
         }
 
-        private void Continue()
+        private void Continue(CancellationToken token)
         {
-            StartCoroutine(WaitingUntilComplete());
+            WaitingUntilComplete(token).Forget();
         }
 
         protected override string GetHistoryMsg()

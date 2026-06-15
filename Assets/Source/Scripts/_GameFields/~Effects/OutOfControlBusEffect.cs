@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cards;
@@ -6,7 +5,6 @@ using Cysharp.Threading.Tasks;
 using GameFields.CardTransits;
 using GameFields.Persons;
 using Tools;
-using UnityEngine;
 
 namespace GameFields.Effects
 {
@@ -39,12 +37,12 @@ namespace GameFields.Effects
         //    Debug.Log("Эффект неуправляемого автобуса закончен");
         //}
 
-        protected override IEnumerator OnPlaying()
+        protected override async UniTask OnPlaying()
         {
             bool endChoice = false;
 
             _activePerson.ChoiceActivate(CountNumbers, () => endChoice = true);
-            yield return new WaitUntil(() => endChoice);
+            await UniTask.WaitUntil(() => endChoice, cancellationToken: Token);
 
             IEnumerable<int> newCheckedNumbers = _activePerson.LastSelectedNumbers;
 
@@ -79,7 +77,7 @@ namespace GameFields.Effects
             FirePersonsCards(_activePerson, newCheckedNumbers, fireActivePersonCallbackHandler);
             FirePersonsCards(_deactivePerson, newCheckedNumbers, fireDeactivePersonCallbackHandler);
 
-            yield return new WaitUntil(() => fireActivePersonCallbackHandler.IsComplete && fireDeactivePersonCallbackHandler.IsComplete);
+            await UniTask.WaitUntil(() => fireActivePersonCallbackHandler.IsComplete && fireDeactivePersonCallbackHandler.IsComplete);
         }
 
         private void FirePersonsCards(IPersonObject person, IEnumerable<int> newCheckedNumbers, CallbackHandler fireCallbackHandler)
@@ -91,7 +89,7 @@ namespace GameFields.Effects
 
             if (firedCards.Count() > 0)
             {
-                FiringCards(firedCards, personHandTypes.FromType, personHandTypes.ViewType, fireCallbackHandler).ToUniTask();
+                FiringCards(firedCards, personHandTypes.FromType, personHandTypes.ViewType, fireCallbackHandler).Forget();
             }
             else
             {
@@ -99,7 +97,7 @@ namespace GameFields.Effects
             }
         }
 
-        private IEnumerator FiringCards(IEnumerable<Card> firedCards, TransitFromType handFrom, ViewType handView,
+        private async UniTask FiringCards(IEnumerable<Card> firedCards, TransitFromType handFrom, ViewType handView,
             CallbackHandler callbackHandler)
         {
             TransitToType firePoolTo = _typesRoot.GetPersonTypes(_activePerson).FirePool; // Кто сжег - того и пул
@@ -155,14 +153,14 @@ namespace GameFields.Effects
                     indexOffset -= 1; // -1 за счет минус карты
                 }
 
-                yield return new WaitForSeconds(0.2f);
+                await UniTask.WaitForSeconds(0.2f, cancellationToken: Token);
             }
 
             if (lastCardFireCallback != null)
-                yield return new WaitUntil(() => lastCardFireCallback.IsComplete);
+                await UniTask.WaitUntil(() => lastCardFireCallback.IsComplete, cancellationToken: Token);
 
             if (lastPyromancersManuscriptFireCallback != null)
-                yield return new WaitUntil(()=> lastPyromancersManuscriptFireCallback.IsComplete);
+                await UniTask.WaitUntil(()=> lastPyromancersManuscriptFireCallback.IsComplete, cancellationToken: Token);
 
             callbackHandler.Complete();
         }

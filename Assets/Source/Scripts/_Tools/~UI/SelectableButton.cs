@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 namespace Tools.UI
 {
-    public class SelectableButton : SimpleButton
+    public abstract class SelectableButton : SimpleButton
     {
         [SerializeField] private MonoBehaviour _ISelectableButtonImageChanger;
 

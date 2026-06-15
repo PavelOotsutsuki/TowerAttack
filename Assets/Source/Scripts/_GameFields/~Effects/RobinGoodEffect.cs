@@ -1,9 +1,8 @@
-using System.Collections;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using GameFields.CardTransits;
 using GameFields.Persons;
 using GameFields.Persons.DrawCards;
-using UnityEngine;
 
 namespace GameFields.Effects
 {
@@ -32,7 +31,7 @@ namespace GameFields.Effects
         //    Debug.Log("Эффект Робин Гуда закончен");
         //}
 
-        protected override IEnumerator OnPlaying()
+        protected override async UniTask OnPlaying()
         {
             Person player;
             Person enemyAI;
@@ -54,7 +53,7 @@ namespace GameFields.Effects
 
             if (countCards == 0)
             {
-                yield break;
+                return;
             }
 
             IDrawCardManager gettedPerson;
@@ -70,9 +69,9 @@ namespace GameFields.Effects
             }
 
             bool isDraw = false;
-            gettedPerson.DrawCards(countCards, () => isDraw = true);
+            gettedPerson.DrawCards(countCards, Token, () => isDraw = true);
 
-            yield return new WaitUntil(() => isDraw);
+            await UniTask.WaitUntil(() => isDraw, cancellationToken: Token);
         }
     }
 }

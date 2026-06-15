@@ -9,6 +9,7 @@ using GameFields.EndFights;
 using GameFields.Seats;
 using Tools;
 using System;
+using System.Threading;
 
 namespace GameFields
 {
@@ -22,14 +23,15 @@ namespace GameFields
         private FightStepsController _fightStepsController;
 
         public void Init(PersonsState personsState, EnemyAI enemyAI, SignalBus bus, SeatPool seatPool,
-            IActivatable soundRootActivatable, IActivatable fightButtonsActivator, Action onDestroyPrefab)
+            IActivatable soundRootActivatable, IActivatable fightButtonsActivator, Action onDestroyPrefab,
+            CancellationToken gameFieldToken, CancellationToken fightToken, CancellationTokenSource fightCTS)
         {
-            _startFight.Init(enemyAI);
+            _startFight.Init(enemyAI, gameFieldToken);
 
             FightResult fightResult = new FightResult();
             Fight fight = new Fight(personsState, fightResult, bus, seatPool
-                , soundRootActivatable, fightButtonsActivator);
-            _endFight.Init(fightResult, onDestroyPrefab);
+                , soundRootActivatable, fightButtonsActivator, fightToken);
+            _endFight.Init(fightResult, onDestroyPrefab, gameFieldToken, fightCTS);
             _fightStepsController = new FightStepsController(_startFight, fight, _endFight);
 
             //_fightStepsController.NextStep();

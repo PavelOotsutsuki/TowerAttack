@@ -1,8 +1,7 @@
 using Cards;
+using Cysharp.Threading.Tasks;
 using GameFields.CardTransits;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace GameFields.Effects
 {
@@ -29,7 +28,7 @@ namespace GameFields.Effects
         //    Debug.Log("Эффект Дитя времени закончен");
         //}
 
-        protected override IEnumerator OnPlaying()
+        protected override async UniTask OnPlaying()
         {
             FireRootTypes fireRootTypes = _typesRoot.FireRoot;
             ViewType fireRootView = fireRootTypes.ViewType;
@@ -44,11 +43,10 @@ namespace GameFields.Effects
                 TransitFromType fireRootFrom = fireRootTypes.FromType;
                 _transitManager.TransitCard(card, fireRootFrom, TransitToType.Deck, () => isSeats.Remove(card));
 
-                yield return new WaitForSeconds(0.2f);
+                await UniTask.WaitForSeconds(0.2f, cancellationToken: Token);
             }
 
-            yield return new WaitUntil(() => isSeats.Count == 0);
-            yield break;
+            await UniTask.WaitUntil(() => isSeats.Count == 0, cancellationToken: Token);
         }
     }
 }

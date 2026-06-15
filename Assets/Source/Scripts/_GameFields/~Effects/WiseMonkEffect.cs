@@ -1,10 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using Cards;
+using Cysharp.Threading.Tasks;
 using GameFields.CardTransits;
 using GameFields.Persons;
 using GameFields.Persons.EffectHandlers;
-using UnityEngine;
 
 namespace GameFields.Effects
 {
@@ -38,7 +37,7 @@ namespace GameFields.Effects
         //    Debug.Log("Эффект Мудрого монаха закончен");
         //}
 
-        protected override IEnumerator OnPlaying()
+        protected override UniTask OnPlaying()
         {
             //IEnumerable<Card> playerTableCards = _viewRoot.GetAllCards(ViewType.TablePlayer);
             //ViewType table = _deactivePerson is EnemyAI ? ViewType.TableAI : ViewType.TablePlayer;
@@ -58,7 +57,7 @@ namespace GameFields.Effects
 
             _deactivePerson.ActivateWiseMonkEffect(_card);
 
-            yield break;
+            return UniTask.CompletedTask;
         }
     }
 }

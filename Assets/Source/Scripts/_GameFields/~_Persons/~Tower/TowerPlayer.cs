@@ -1,12 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Cards;
-using GameFields.Persons;
 using GameFields.Persons.ConfirmableNumbersView;
-using Tools.Settings;
 using Tools.Utils.FillComponents;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace GameFields.Persons.Towers
 {
@@ -57,11 +54,11 @@ namespace GameFields.Persons.Towers
 
         [SerializeField] private TowerPlayerHelper _towerPlayerHelper;
 
-        public override void Init(ConfirmableNumbers confirmableNumbers, ICardCreator cardCreator)
+        public override void Init(ConfirmableNumbers confirmableNumbers, ICardCreator cardCreator, CancellationToken fightToken)
         {
-            base.Init(confirmableNumbers, cardCreator);
+            base.Init(confirmableNumbers, cardCreator, fightToken);
 
-            _towerPlayerHelper.Init(GetCardViewData);
+            _towerPlayerHelper.Init(GetCardViewData, fightToken);
         }
 
         public override void SeatCard(Card card)

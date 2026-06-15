@@ -1,11 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cards;
+using Cysharp.Threading.Tasks;
 using GameFields.CardTransits;
 using GameFields.Persons;
 using Tools;
-using UnityEngine;
 
 namespace GameFields.Effects
 {
@@ -34,7 +33,7 @@ namespace GameFields.Effects
         //    Debug.Log("Эффект Падшего Хранителя(2.0) закончен");
         //}
 
-        protected override IEnumerator OnPlaying()
+        protected override async UniTask OnPlaying()
         {
             PersonTypes activePersonTypes = _typesRoot.GetPersonTypes(_activePerson);
             ViewType handView = activePersonTypes.Hand.ViewType;
@@ -42,7 +41,7 @@ namespace GameFields.Effects
             IEnumerable<Card> cardsInHand = _viewRoot.GetAllCards(handView);
 
             if (cardsInHand.Count() <= 0)
-                yield break;
+                return;
 
             TransitFromType handFrom = activePersonTypes.Hand.FromType;
             TransitToType firePoolTo = activePersonTypes.FirePool;
@@ -99,16 +98,14 @@ namespace GameFields.Effects
                     indexOffset -= 1; // -1 за счет минус карты
                 }
 
-                yield return new WaitForSeconds(0.2f);
+                await UniTask.WaitForSeconds(0.2f, cancellationToken: Token);
             }
 
             if (lastCardFireCallback != null)
-                yield return new WaitUntil(() => lastCardFireCallback.IsComplete);
+                await UniTask.WaitUntil(() => lastCardFireCallback.IsComplete, cancellationToken: Token);
 
             if (lastPyromancersManuscriptFireCallback != null)
-                yield return new WaitUntil(() => lastPyromancersManuscriptFireCallback.IsComplete);
-
-            yield break;
+                await UniTask.WaitUntil(() => lastPyromancersManuscriptFireCallback.IsComplete, cancellationToken: Token);
         }
     }
 }

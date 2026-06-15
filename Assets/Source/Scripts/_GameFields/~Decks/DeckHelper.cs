@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Threading;
 using GameFields.Persons.Hands;
+using Tools;
 using Tools.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -17,6 +19,8 @@ namespace GameFields.Decks
         private ICardsCounter _handEnemyCounter;
         private ICardsCounter _deckCounter;
 
+        private CancellationToken _fightToken;
+
         private Dictionary<FadableLabel, ICardsCounter> _hookups;
 
         [Inject]
@@ -27,8 +31,10 @@ namespace GameFields.Decks
             _deckCounter = deck;
         }
 
-        public void Init()
+        public void Init(CancellationToken fightToken)
         {
+            _fightToken = fightToken;
+
             _hookups = new Dictionary<FadableLabel, ICardsCounter>()
             {
                 { _handPlayerHelpView, _handPlayerCounter},
@@ -93,7 +99,7 @@ namespace GameFields.Decks
         {
             foreach (KeyValuePair<FadableLabel, ICardsCounter> keyValuePair in _hookups)
             {
-                LabelActivateData labelActivateData = new LabelActivateData("Карт: " + keyValuePair.Value.CountCards.ToString());
+                LabelActivateDataAsync labelActivateData = new LabelActivateDataAsync(new LabelActivateData("Карт: " + keyValuePair.Value.CountCards.ToString()), _fightToken);
                 keyValuePair.Key.Show(labelActivateData);
             }
         }
@@ -102,7 +108,7 @@ namespace GameFields.Decks
         {
             foreach (FadableLabel helpView in _hookups.Keys)
             {
-                helpView.Hide();
+                helpView.Hide(new CancellationTokenData(_fightToken));
             }
         }
     }

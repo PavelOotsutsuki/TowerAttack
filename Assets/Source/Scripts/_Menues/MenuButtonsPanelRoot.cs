@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Cards.Views.BigCardViews.Capabilities;
 using Cysharp.Threading.Tasks;
 using Tools;
@@ -17,9 +18,13 @@ namespace Menues
         [SerializeField] private MenuRulesButtonsPanel _rulesButtonsPanel;
 
         protected MenuButtonsPanel CurrentMenuButtonsPanel;
+        protected CancellationToken MenuParentToken;
 
         private MenuButtonsPanel _mainButtonsPanel;
         private CustomFocusMenuButtonsPanel _startButtonsPanel;
+
+        private CancellationTokenSource _currentCTS;
+
         private bool _isComplete;
 
         public bool? IsActive { get; private set; } = null;
@@ -40,7 +45,7 @@ namespace Menues
         //}
 
         protected void Init(IVolume foregroundVolume, IVolume backgroundVolume, CardCapabilityDescription cardCapabilityDescription,
-            CustomFocusMenuButtonsPanel startButtonsPanel, CustomFocusMenuButtonsPanel mainButtonsPanel)
+            CustomFocusMenuButtonsPanel startButtonsPanel, CustomFocusMenuButtonsPanel mainButtonsPanel, CancellationToken menuParentToken)
         {
             _startButtonsPanel = startButtonsPanel;
             _mainButtonsPanel = mainButtonsPanel;
@@ -54,6 +59,7 @@ namespace Menues
             _isComplete = true;
 
             CurrentMenuButtonsPanel = _startButtonsPanel;
+            MenuParentToken = menuParentToken;
         }
 
         public void Activate()
@@ -64,10 +70,14 @@ namespace Menues
             IsActive = true;
             _isComplete = false;
 
+            _currentCTS?.Cancel();
+            _currentCTS?.Dispose();
+            _currentCTS = CancellationTokenSource.CreateLinkedTokenSource(MenuParentToken);
+
             CurrentMenuButtonsPanel = _startButtonsPanel;
             CurrentMenuButtonsPanel.Activate();
 
-            Activating().ToUniTask();
+            Activating(_currentCTS.Token).Forget();
         }
 
         public void Deactivate()
@@ -78,10 +88,14 @@ namespace Menues
             IsActive = false;
             _isComplete = false;
 
+            _currentCTS?.Cancel();
+            _currentCTS?.Dispose();
+            _currentCTS = CancellationTokenSource.CreateLinkedTokenSource(MenuParentToken);
+
             CurrentMenuButtonsPanel.Deactivate();
             CurrentMenuButtonsPanel = null;
 
-            Deactivating().ToUniTask();
+            Deactivating(_currentCTS.Token).Forget();
         }
 
         protected void SetSettingsPanel()
@@ -109,20 +123,20 @@ namespace Menues
             SetPanel(_mainButtonsPanel);
         }
 
-        private IEnumerator Activating()
+        private async UniTask Activating(CancellationToken token)
         {
-            _fadablePanel.Show();
+            _fadablePanel.Show(new CancellationTokenData(token));
 
-            yield return new WaitUntil(() => _fadablePanel.IsComplete);
+            await UniTask.WaitUntil(() => _fadablePanel.IsComplete, cancellationToken: token);
 
             _isComplete = true;
         }
 
-        private IEnumerator Deactivating()
+        private async UniTask Deactivating(CancellationToken token)
         {
-            _fadablePanel.Hide();
+            _fadablePanel.Hide(new CancellationTokenData(token));
 
-            yield return new WaitUntil(() => _fadablePanel.IsComplete);
+            await UniTask.WaitUntil(() => _fadablePanel.IsComplete, cancellationToken: token);
 
             _isComplete = true;
         }
