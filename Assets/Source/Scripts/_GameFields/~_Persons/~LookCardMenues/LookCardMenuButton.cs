@@ -1,0 +1,74 @@
+using System.Collections;
+using GameFields.InputSettings;
+using Tools;
+using Tools.UI;
+using UnityEngine;
+
+namespace GameFields.Persons.LookCardMenues
+{
+    public class LookCardMenuButton : FadableConfirmableButton
+    {
+        private IDeactivatable _clickCallback;
+        private Coroutine _workableCoroutine;
+
+        private GameFieldInputRoot _inputRoot;
+
+        public void Init(IDeactivatable clickCallback, GameFieldInputRoot inputRoot)
+        {
+            _clickCallback = clickCallback;
+            _inputRoot = inputRoot;
+            IsActive = false;
+
+            base.Init();
+
+            gameObject.SetActive(false);
+        }
+
+        public override void Activate()
+        {
+            if (IsActive == true)
+                return;
+
+            if (_workableCoroutine != null)
+                StopCoroutine(_workableCoroutine);
+
+            gameObject.SetActive(true);
+
+            base.Activate();
+
+            //_inputRoot.SetInputType(InputType.LookCardMenu);
+            IsActive = true;
+        }
+
+        protected override void OnEnterClick()
+        {
+            if (IsActive != true)
+                return;
+
+            _inputRoot.Pause();
+            _clickCallback.Deactivate();
+        }
+
+        public override void Deactivate()
+        {
+            if (IsActive == false)
+                return;
+
+            base.Deactivate();
+
+            IsActive = false;
+
+            if (_workableCoroutine != null)
+                StopCoroutine(_workableCoroutine);
+
+            _workableCoroutine = StartCoroutine(Deactivating());
+        }
+
+        private IEnumerator Deactivating()
+        {
+            yield return new WaitUntil(() => IsComplete);
+
+            gameObject.SetActive(false);
+        }
+    }
+}

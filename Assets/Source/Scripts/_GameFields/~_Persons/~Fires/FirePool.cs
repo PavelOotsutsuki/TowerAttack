@@ -1,0 +1,102 @@
+using System.Collections.Generic;
+using Cards;
+using Cards.Views;
+using GameFields.CardTransits;
+using GameFields.Histories;
+using Tools;
+using UnityEngine;
+
+namespace GameFields.Persons.Fires
+{
+    public abstract class FirePool : IFirePoolSeatable, IPersonObject
+    {
+        private const float CenterRotation = 90f;
+
+        private readonly float _maxCoordinateX;
+        private readonly float _maxCoordinateY;
+        private readonly float _minCoordinateX;
+        private readonly float _minCoordinateY;
+        private readonly float _cardRotationOffset = 30f;
+
+        private readonly List<Card> _fireList;
+        private readonly Transform _parent;
+        private readonly ExtraFireSeatActionRoot _extraFireSeatActionRoot;
+        private readonly HistoryRoot _historyRoot;
+
+        public FirePool(Transform parent, ExtraFireSeatActionRoot extraFireSeatActionRoot, HistoryRoot historyRoot)
+        {
+            _fireList = new List<Card>();
+            _parent = parent;
+            _extraFireSeatActionRoot = extraFireSeatActionRoot;
+            _historyRoot = historyRoot;
+
+            _maxCoordinateX = ((RectTransform)parent).rect.width / 2f;
+            _maxCoordinateY = ((RectTransform)parent).rect.height / 2f;
+            _minCoordinateX = _maxCoordinateX * -1;
+            _minCoordinateY = _maxCoordinateY * -1;
+        }
+
+        public IReadOnlyList<Card> FireList => _fireList;
+        public int Count => _fireList.Count;
+
+        public void SeatCard(Card card, ICardSeatable cardSeatable, int index, CallbackHandler callbackHandler)
+        {
+            card.gameObject.SetActive(false);
+            card.ResetDrag();
+
+            _extraFireSeatActionRoot.Play(card, cardSeatable, index, callbackHandler);
+
+            Seat(card);
+
+            _fireList.Add(card);
+
+            //string cardName = card.CurrentSide == SideType.Front ? card.Name.ToUpper() : "?";
+
+            HistoryData historyData = new HistoryData(this, "Сожжена карта: ", new HistoryCardData(card));
+            _historyRoot.AddMsg(historyData);
+        }
+
+        public int IndexOf(Card card)
+        {
+           return _fireList.IndexOf(card);
+        }
+
+        public void Remove(Card card)
+        {
+            card.Rise();
+
+            _fireList.Remove(card);
+
+            //string cardName = card.CurrentSide == SideType.Front ? card.Name.ToUpper() : "?";
+            HistoryData historyData = new HistoryData(this, "Восстановлена карта: ", new HistoryCardData(card));
+            _historyRoot.AddMsg(historyData);
+        }
+
+        public void Clear()
+        {
+            _fireList.Clear();
+        }
+
+        private void Seat(Card card)
+        {
+            card.SetActiveInteraction(false);
+            card.RORTransform.SetParent(_parent);
+            card.CardMovement.MoveLocalInstantly(FindCardSeatPosition(), FindCardSeatRotation());
+        }
+
+        private Vector3 FindCardSeatPosition()
+        {
+            float xCoordinate = Random.Range(_minCoordinateX, _maxCoordinateX);
+            float yCoordinate = Random.Range(_minCoordinateY, _maxCoordinateY);
+
+            return new Vector3(xCoordinate, yCoordinate, 0f);
+        }
+
+        private Vector3 FindCardSeatRotation()
+        {
+            float zRotation = Random.Range(CenterRotation - _cardRotationOffset, CenterRotation + _cardRotationOffset);
+
+            return new Vector3(0f, 0f, zRotation);
+        }
+    }
+}
