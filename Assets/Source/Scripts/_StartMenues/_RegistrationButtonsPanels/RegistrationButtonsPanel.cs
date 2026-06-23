@@ -86,8 +86,8 @@ namespace StartMenues.RegistrationButtonsPanels
 
         private void OnRegistration()
         {
-            _currentCTS?.Cancel();
-            _currentCTS?.Dispose();
+            Utils.DestroyCTS(ref _currentCTS);
+
             _currentCTS = CancellationTokenSource.CreateLinkedTokenSource(_menuParentToken);
             CancellationToken token = _currentCTS.Token;
 
@@ -118,15 +118,13 @@ namespace StartMenues.RegistrationButtonsPanels
                 _registraitionButton.Deactivate();
                 _registraitionButton.Activate();
                 loadSession.Complete();
-                _currentCTS?.Cancel();
-                _currentCTS?.Dispose();
+                Utils.DestroyCTS(ref _currentCTS);
             }
         }
 
         private void OnDestroy()
         {
-            _currentCTS?.Cancel();
-            _currentCTS?.Dispose();
+            Utils.DestroyCTS(ref _currentCTS);
         }
     }
 }

@@ -76,6 +76,7 @@ namespace GameFields.Persons.Discovers
 
             try
             {
+                //TestCompletable(token).Forget();
                 await UniTask.WaitUntil(() => _discoverLabel.IsComplete && _discoverPanel.IsComplete, cancellationToken: token);
 
                 //_handBlockable.Unblock();
@@ -87,10 +88,29 @@ namespace GameFields.Persons.Discovers
             }
         }
 
-        private void OnDisable()
-        {
-            Utils.DestroyCTS(ref _currentCTS);
-        }
+        //private async UniTask TestCompletable(CancellationToken token)
+        //{
+        //    try
+        //    {
+        //        while (true)
+        //        {
+        //            Debug.Log($"_discoverLabel.IsComplete: {_discoverLabel.IsComplete}");
+        //            Debug.Log($"_discoverLabel.IsComplete: {_discoverPanel.IsComplete}");
+
+        //            await UniTask.WaitForSeconds(1f, cancellationToken: token);
+        //        }
+        //    }
+        //    catch (OperationCanceledException)
+        //    {
+        //        Debug.Log($"ОТМЕНА ТОКЕНА: {MethodBase.GetCurrentMethod().DeclaringType.Name}: {GetType().Name}");
+        //    }
+
+        //}
+
+        //private void OnDisable()
+        //{
+        //    Utils.DestroyCTS(ref _currentCTS);
+        //}
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(DiscoverPlayer))]

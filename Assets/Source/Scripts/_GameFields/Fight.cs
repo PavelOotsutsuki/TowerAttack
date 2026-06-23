@@ -25,11 +25,13 @@ namespace GameFields
         private readonly IActivatable _soundRootActivatable;
         private readonly IActivatable _fightButtonsActivator;
         private readonly CancellationToken _fightToken;
+        private readonly TurnToken _turnToken;
 
         private static int _turnNumber;
 
-        public Fight(PersonsState personsState, FightResult fightResult, SignalBus bus, SeatPool seatPool
-            , IActivatable soundRootActivatable, IActivatable fightButtonsActivator, CancellationToken fightToken)
+        public Fight(PersonsState personsState, FightResult fightResult, SignalBus bus, SeatPool seatPool,
+            IActivatable soundRootActivatable, IActivatable fightButtonsActivator, CancellationToken fightToken,
+            TurnToken turnToken)
         {
             _personsState = personsState;
             _fightResult = fightResult;
@@ -45,6 +47,7 @@ namespace GameFields
             _soundRootActivatable = soundRootActivatable;
             _fightButtonsActivator = fightButtonsActivator;
             _fightToken = fightToken;
+            _turnToken = turnToken;
         }
 
         ~Fight()
@@ -92,6 +95,8 @@ namespace GameFields
             try
             {
                 await UniTask.WaitForSeconds(DelayBeforeStartTurn, cancellationToken: token);
+                CancellationTokenSource turnCTS = CancellationTokenSource.CreateLinkedTokenSource(_fightToken);
+                _turnToken.SetTokenSource(turnCTS);
 
                 while (IsComplete == false)
                 {

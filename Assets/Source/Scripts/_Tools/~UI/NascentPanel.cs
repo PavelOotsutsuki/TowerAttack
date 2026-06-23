@@ -37,7 +37,7 @@ namespace Tools.UI
             Utils.Utils.DestroyCTS(ref _currentCTS);
             _currentCTS = CancellationTokenSource.CreateLinkedTokenSource(tokenData.Token);
 
-            _transform.DOScale(_data.EndScale, _data.Duration).OnComplete(() => IsComplete = true).ToUniTask(ct: _currentCTS.Token).Forget();
+            _transform.DOScale(_data.EndScale, _data.Duration).ToUniTask(ct: _currentCTS.Token, onComplete: Complete).Forget();
         }
 
         public void Deactivate()
@@ -49,6 +49,12 @@ namespace Tools.UI
             Utils.Utils.DestroyCTS(ref _currentCTS);
 
             _transform.localScale = _data.StartScale;
+        }
+
+        private void Complete()
+        {
+            Debug.Log("Complete");
+            IsComplete = true;
         }
 
         private void OnDisable()

@@ -53,8 +53,7 @@ namespace Roots
         public void Activate()
         {
             //_processing = StartCoroutine(Processing());
-            _processingCTS?.Cancel();
-            _processingCTS?.Dispose();
+            Utils.DestroyCTS(ref _processingCTS);
             _processingCTS = CancellationTokenSource.CreateLinkedTokenSource(_gameFieldToken);
             Processing(_processingCTS.Token).Forget();
             //StartCoroutine(Pausing());
@@ -101,8 +100,7 @@ namespace Roots
 
         private void Pause()
         {
-            _processingCTS?.Cancel();
-            _processingCTS?.Dispose();
+            Utils.DestroyCTS(ref _processingCTS);
             _processingCTS = CancellationTokenSource.CreateLinkedTokenSource(_gameFieldToken);
 
             Pausing(_processingCTS.Token).Forget();
@@ -135,8 +133,7 @@ namespace Roots
 
         private void Unpause()
         {
-            _processingCTS?.Cancel();
-            _processingCTS?.Dispose();
+            Utils.DestroyCTS(ref _processingCTS);
             _processingCTS = CancellationTokenSource.CreateLinkedTokenSource(_gameFieldToken);
 
             Unpausing(_processingCTS.Token).Forget();

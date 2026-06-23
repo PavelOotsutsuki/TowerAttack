@@ -85,7 +85,7 @@ namespace Cards
         {
             List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
             {
-                DefineBigCardRoot(),
+                //DefineBigCardRoot(),
                 DefineCardCreator(),
                 DefineCardDescription()
             };
@@ -93,11 +93,11 @@ namespace Cards
             return list;
         }
 
-        [ContextMenu(nameof(DefineBigCardRoot))]
-        private ComponentAttachInfo DefineBigCardRoot()
-        {
-           return AutomaticFillComponents.DefineComponent(this, ref _bigCardRoot, ComponentLocationTypes.InChildren);
-        }
+        //[ContextMenu(nameof(DefineBigCardRoot))]
+        //private ComponentAttachInfo DefineBigCardRoot()
+        //{
+        //   return AutomaticFillComponents.DefineComponent(this, ref _bigCardRoot, ComponentLocationTypes.InChildren);
+        //}
 
         [ContextMenu(nameof(DefineCardCreator))]
         private ComponentAttachInfo DefineCardCreator()

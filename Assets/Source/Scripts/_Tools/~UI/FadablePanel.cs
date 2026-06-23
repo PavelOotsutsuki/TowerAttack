@@ -22,6 +22,7 @@ namespace Tools.UI
         public void Init()
         {
             _canvasGroup.alpha = _data.StartAlpha;
+
             gameObject.SetActive(true);
             _isComplete = true;
         }
@@ -39,7 +40,7 @@ namespace Tools.UI
             if (_data.IsDeactivatable)
                 gameObject.SetActive(true);
 
-            StartFading(_data.FadeUpDuration, _data.MaxAlpha);
+            StartFading(_data.FadeUpDuration, _data.MinAlpha, _data.MaxAlpha);
         }
 
         public void Hide(CancellationTokenData tokenData)
@@ -52,7 +53,7 @@ namespace Tools.UI
             Utils.Utils.DestroyCTS(ref _currentCTS);
             _currentCTS = CancellationTokenSource.CreateLinkedTokenSource(tokenData.Token);
 
-            StartFading(_data.FadeOutDuration, _data.MinAlpha);
+            StartFading(_data.FadeOutDuration, _data.MaxAlpha, _data.MinAlpha);
         }
 
         //private void StartFading(float duration, float targetAlpha)
@@ -67,18 +68,29 @@ namespace Tools.UI
         //    _fadeInWork = StartCoroutine(FadeIn(duration, targetAlpha));
         //}
 
-        private void StartFading(float duration, float targetAlpha)
+        private void StartFading(float duration, float startAlpha, float endAlpha)
         {
             _isComplete = false;
 
-            FadeIn(duration, targetAlpha, _currentCTS.Token).Forget();
+            FadeIn(duration, startAlpha, endAlpha, _currentCTS.Token).Forget();
         }
 
-        private async UniTask FadeIn(float duration, float targetAlpha, CancellationToken token)
+        private async UniTask FadeIn(float duration, float startAlpha, float endAlpha, CancellationToken token)
         {
-            float startAlpha = _canvasGroup.alpha;
+            float startDuration = duration;
+            float currentAlpha = _canvasGroup.alpha;
+            float diffAlpha = currentAlpha - startAlpha;
+            float wayAlpha = endAlpha - startAlpha;
+            float diff = diffAlpha / wayAlpha;
+            float diffWay = diff * duration;
+
+            duration -= diffWay;
+
             float timeInWork = 0f;
+
             float newAlpha;
+
+            Debug.Log($"startDuration: {startDuration};startAlpha: {startAlpha};currentAlpha: {currentAlpha};endAlpha: {endAlpha};duration: {duration}; ");
 
             while (timeInWork < duration)
             {
@@ -92,11 +104,14 @@ namespace Tools.UI
                     timeInWork = duration;
                 }
 
-                newAlpha = Mathf.Lerp(startAlpha, targetAlpha, timeInWork / duration);
+                newAlpha = Mathf.Lerp(currentAlpha, endAlpha, timeInWork / duration);
                 _canvasGroup.alpha = newAlpha;
+                Debug.Log($"newAlpha: {newAlpha}");
 
                 await UniTask.Yield(cancellationToken: token);
             }
+
+            Debug.Log($"END. Alpha: {_canvasGroup.alpha}");
 
             if (_data.IsDeactivatable)
                 if (_canvasGroup.alpha == 0)

@@ -129,11 +129,11 @@ namespace GameFields.Persons.ConfirmableNumbersView
             _playerConfirmableNumbers.OnChanged -= SetTextByPlayer;
         }
 
-        private void OnDisable()
-        {
-            Utils.DestroyCTS(ref _activateCTS);
-            Utils.DestroyCTS(ref _deactivateCTS);
-        }
+        //private void OnDisable()
+        //{
+        //    Utils.DestroyCTS(ref _activateCTS);
+        //    Utils.DestroyCTS(ref _deactivateCTS);
+        //}
 
         private async UniTask Activating(CancellationToken activateToken)
         {

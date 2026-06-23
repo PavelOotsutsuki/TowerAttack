@@ -11,6 +11,7 @@ using Cards.Views;
 using Cards.Views.BigCardViews.Capabilities;
 using Cards.Views.BigCardViews.CardDescriptions;
 using Tools;
+using Tools.Utils;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Movements;
 using UnityEngine;
@@ -208,8 +209,7 @@ namespace Cards
 
         private void OnDestroy()
         {
-            _cardCTS?.Cancel();
-            _cardCTS?.Dispose();
+            Utils.DestroyCTS(ref _cardCTS);
         }
 
         #region AutomaticFillComponents

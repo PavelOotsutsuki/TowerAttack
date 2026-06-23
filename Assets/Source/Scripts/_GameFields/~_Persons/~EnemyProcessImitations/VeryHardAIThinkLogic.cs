@@ -292,7 +292,7 @@ namespace GameFields.Persons.EnemyProcessImitations
                 summ += pair.Value;
                 debugMsg += $"{pair.Key}: value: {pair.Value} summ: {summ} randomValue: {randomValue}\n";
             }
-            Debug.Log(debugMsg);
+            //Debug.Log(debugMsg);
             summ = 0;
             #endregion
 
@@ -385,7 +385,7 @@ namespace GameFields.Persons.EnemyProcessImitations
 
                 debugMsg += cardCapability.ToString();
             }
-            Debug.Log(debugMsg);
+            //Debug.Log(debugMsg);
             #endregion
 
             Dictionary<CardCapability, int> probability = new Dictionary<CardCapability, int>();

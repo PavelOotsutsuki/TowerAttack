@@ -69,35 +69,83 @@ namespace Tools.CommonAnimations
             StartingAnimation(token).Forget();
         }
 
+        //private async UniTask StartingAnimation(CancellationToken token, string test)
+        //{
+        //    try
+        //    {
+        //        float startTime = Time.time;
+        //        //WaitForSeconds wait = new WaitForSeconds(Time.deltaTime - _duration / _animSprites.Count);
+
+        //        Debug.Log("Начало " + _animSprites.Count + "задержка " + _duration / _animSprites.Count + ". " + test);
+        //        int delay = Convert.ToInt32((_duration / _animSprites.Count) * 1000);
+
+        //        //int counter = 0;
+
+        //        //foreach (Sprite sprite in _animSprites)
+        //        //{
+        //        //    counter++;
+
+        //        //    _image.sprite = sprite;
+
+        //        //    int addFullTime = Convert.ToInt32(delay * counter * 1000);
+        //        //    int addSeconds = addFullTime / 1000;
+        //        //    int addMilliseconds = addFullTime % 1000;
+        //        //    TimeSpan addedTimeSpan = new TimeSpan(0, 0, 0, addSeconds, addMilliseconds);
+        //        //    Debug.Log("Процесс " + counter + "/" + _animSprites.Count + ". " + test + $". addFullTime = {addFullTime}; addSeconds = {addSeconds}; addMilliseconds = {addMilliseconds}; endTime: {addedTimeSpan}; now: {DateTime.Now.TimeOfDay}");
+
+        //        //    if (addedTimeSpan < DateTime.Now.TimeOfDay)
+        //        //        await UniTask.WaitUntil(() => DateTime.Now.TimeOfDay >= startTime.Add(addedTimeSpan), cancellationToken: token);
+        //        //    //yield return new WaitUntil(() => DateTime.Now.TimeOfDay >= startTime.Add(new TimeSpan(0,0,0, addSeconds, addMilliseconds)));
+        //        //    //yield return new WaitForSeconds((_duration / _animSprites.Count) - Time.deltaTime);
+        //        //}
+
+
+        //        foreach (Sprite sprite in _animSprites)
+        //        {
+        //            _image.sprite = sprite;
+        //            await UniTask.Delay(delay, cancellationToken: token);
+        //        }
+
+        //        _isComplete = true;
+        //        Debug.Log("Конец " + _animSprites.Count + " . Время: " + (Time.time - startTime) + ". " + test);
+        //    }
+        //    catch (OperationCanceledException)
+        //    {
+        //        Debug.Log($"ОТМЕНА ТОКЕНА: {MethodBase.GetCurrentMethod().DeclaringType.Name}: {GetType().Name}");
+        //    }
+        //}
+
         private async UniTask StartingAnimation(CancellationToken token)
         {
             try
             {
-                TimeSpan startTime = DateTime.Now.TimeOfDay;
-                //WaitForSeconds wait = new WaitForSeconds(Time.deltaTime - _duration / _animSprites.Count);
-
-                //Debug.Log("Начало " + _animSprites.Count + "задержка " + _duration / _animSprites.Count);
+                //Debug.Log("Начало " + _animSprites.Count + " задержка " + _duration / _animSprites.Count);
                 float delay = _duration / _animSprites.Count;
 
                 int counter = 0;
+                float startTime = Time.time; // Используем Time.time вместо DateTime
 
                 foreach (Sprite sprite in _animSprites)
                 {
                     counter++;
-
                     _image.sprite = sprite;
 
-                    int addFullTime = Convert.ToInt32(delay * counter * 1000);
-                    int addSeconds = addFullTime / 1000;
-                    int addMilliseconds = addFullTime % 1000;
-                    //Debug.Log("Процесс " + counter++ + "/" + _animSprites.Count);
-                    await UniTask.WaitUntil(() => DateTime.Now.TimeOfDay >= startTime.Add(new TimeSpan(0, 0, 0, addSeconds, addMilliseconds)), cancellationToken: token);
-                    //yield return new WaitUntil(() => DateTime.Now.TimeOfDay >= startTime.Add(new TimeSpan(0,0,0, addSeconds, addMilliseconds)));
-                    //yield return new WaitForSeconds((_duration / _animSprites.Count) - Time.deltaTime);
+                    // Вычисляем, когда должен произойти следующий кадр
+                    float nextFrameTime = startTime + (delay * counter);
+                    float waitTime = nextFrameTime - Time.time;
+
+                    //Debug.Log($"Процесс {counter}/{_animSprites.Count}. waitTime: {waitTime:F3}s, nextFrameTime: {nextFrameTime:F3}, currentTime: {Time.time:F3}");
+
+                    // Ждем только если еще есть время до следующего кадра
+                    if (waitTime > 0)
+                    {
+                        await UniTask.Delay(TimeSpan.FromSeconds(waitTime), cancellationToken: token);
+                    }
                 }
 
                 _isComplete = true;
-                //Debug.Log("Конец " + _animSprites.Count + " . Время: " + (DateTime.Now.TimeOfDay - startTime));
+                //float elapsedTime = Time.time - startTime;
+                //Debug.Log($"Конец {_animSprites.Count}. Время: {elapsedTime:F3}s");
             }
             catch (OperationCanceledException)
             {

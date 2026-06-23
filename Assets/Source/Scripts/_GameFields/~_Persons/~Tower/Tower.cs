@@ -109,7 +109,7 @@ namespace GameFields.Persons.Towers
 
         void IBoomTower.Boom()
         {
-            _boomAnimation.Play();
+            _boomAnimation.Play(_fightToken);
         }
 
         private async UniTask CreatingCopyCard(Action<Card> insertedCardCallback, CancellationToken token)

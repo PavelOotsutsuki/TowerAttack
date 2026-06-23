@@ -67,6 +67,7 @@ namespace Roots
                 await UniTask.WaitUntil(() => _switchRootPrefabPanel.IsComplete, cancellationToken: token);
 
                 _currentRootPrefab.Deactivate();
+                GC.Collect();
             }
 
             _currentRootPrefab = activatingRootPrefab;

@@ -95,8 +95,8 @@ namespace GameFields.Persons.SelectMenues
 
             IsActive = false;
 
-            Utils.DestroyCTS(ref CurrentCTS);
-            CurrentCTS = CancellationTokenSource.CreateLinkedTokenSource(FightToken);
+            //Utils.DestroyCTS(ref CurrentCTS);
+            //CurrentCTS = CancellationTokenSource.CreateLinkedTokenSource(FightToken);
 
             Deactivating(CurrentCTS.Token).Forget();
         }
@@ -155,10 +155,10 @@ namespace GameFields.Persons.SelectMenues
             }
         }
 
-        private void OnDisable()
-        {
-            Utils.DestroyCTS(ref CurrentCTS);
-        }
+        //private void OnDisable()
+        //{
+        //    Utils.DestroyCTS(ref CurrentCTS);
+        //}
 
         protected abstract UniTask OnDeactivating(CancellationToken token);
 

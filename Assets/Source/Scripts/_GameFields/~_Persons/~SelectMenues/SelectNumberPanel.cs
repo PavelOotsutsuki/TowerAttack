@@ -104,8 +104,8 @@ namespace GameFields.Persons.SelectMenues
 
             IsActive = false;
 
-            Utils.DestroyCTS(ref CurrentCTS);
-            CurrentCTS = CancellationTokenSource.CreateLinkedTokenSource(FightToken);
+            //Utils.DestroyCTS(ref CurrentCTS);
+            //CurrentCTS = CancellationTokenSource.CreateLinkedTokenSource(FightToken);
 
             _canvasGroup.blocksRaycasts = false;
 
@@ -136,7 +136,7 @@ namespace GameFields.Persons.SelectMenues
             NeedForActivate = -1;
             SelectResult = null;
 
-            Utils.DestroyCTS(ref CurrentCTS);
+            //Utils.DestroyCTS(ref CurrentCTS);
         }
 
         private void SetRestriction(RestrictionType? restrictionType)

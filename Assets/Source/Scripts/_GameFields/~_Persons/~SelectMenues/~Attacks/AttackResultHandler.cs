@@ -59,7 +59,7 @@ namespace GameFields.Persons.SelectMenues.Attacks
         private async UniTask SettingResult(SetSelectResultData data)
         {
             await OnSettingResult(data);
-
+            Debug.Log($"AttackResultHandler {data.ResultType}");
             switch (data.ResultType)
             {
                 case ResultType.Success:

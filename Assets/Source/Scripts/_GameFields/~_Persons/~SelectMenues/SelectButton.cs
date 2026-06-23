@@ -15,7 +15,7 @@ namespace GameFields.Persons.SelectMenues
         private IDeactivatable _clickCallback;
         //private Coroutine _workableCoroutine;
         private GameFieldInputRoot _inputRoot;
-        private CancellationTokenSource _deactivatingCTS;
+        private CancellationTokenSource _currentCTS;
         private CancellationToken _fightToken;
 
         public void Init(IDeactivatable clickCallback, GameFieldInputRoot inputRoot, CancellationToken fightToken)
@@ -35,11 +35,12 @@ namespace GameFields.Persons.SelectMenues
             if (IsActive == true)
                 return;
 
-            Utils.DestroyCTS(ref _deactivatingCTS);
+            Utils.DestroyCTS(ref _currentCTS);
+            _currentCTS = CancellationTokenSource.CreateLinkedTokenSource(_fightToken);
 
             gameObject.SetActive(true);
 
-            base.BaseActivate();
+            base.BaseActivate2(new CancellationTokenData(_currentCTS.Token));
 
             IsActive = true;
         }
@@ -58,14 +59,13 @@ namespace GameFields.Persons.SelectMenues
             if (IsActive == false)
                 return;
 
-            base.BaseDeactivate();
+            Utils.DestroyCTS(ref _currentCTS);
+            _currentCTS = CancellationTokenSource.CreateLinkedTokenSource(_fightToken);
 
+            base.BaseDeactivate2(new CancellationTokenData(_currentCTS.Token));
             IsActive = false;
 
-            Utils.DestroyCTS(ref _deactivatingCTS);
-            _deactivatingCTS = CancellationTokenSource.CreateLinkedTokenSource(_fightToken);
-
-            Deactivating(_deactivatingCTS.Token).Forget();
+            Deactivating(_currentCTS.Token).Forget();
         }
 
         private async UniTask Deactivating(CancellationToken token)
@@ -74,6 +74,7 @@ namespace GameFields.Persons.SelectMenues
             {
                 await UniTask.WaitUntil(() => IsComplete, cancellationToken: token);
 
+                Debug.Log("SelectButton: gameObject.SetActive(false)");
                 gameObject.SetActive(false);
             }
             catch (OperationCanceledException)
@@ -82,9 +83,9 @@ namespace GameFields.Persons.SelectMenues
             }
         }
 
-        private void OnDisable()
-        {
-            Utils.DestroyCTS(ref _deactivatingCTS);
-        }
+        //private void OnDisable()
+        //{
+        //    Utils.DestroyCTS(ref _deactivatingCTS);
+        //}
     }
 }

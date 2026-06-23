@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
@@ -63,27 +64,34 @@ namespace Tools.Utils
             #endif
         }
 
-        public static void DestroyCTS(ref CancellationTokenSource cts)
+        public static void DestroyCTS(ref CancellationTokenSource cts, [CallerMemberName] string callerMethod = "",
+                     [CallerFilePath] string callerFile = "",
+                     [CallerLineNumber] int callerLine = 0)
         {
+            if (cts == null)
+                return;
+
+            Debug.Log($"DestroyCTS: {callerFile.Substring(callerFile.LastIndexOf('/') + 1).Replace(".cs", "")}.{callerMethod}, {callerLine}");
+
             cts?.Cancel();
             cts?.Dispose();
             cts = null;
         }
 
-        public static async UniTask DoAnimationAsync(CancellationToken ct, Tween tween)
-        {
-            AutoResetUniTaskCompletionSource tcs = AutoResetUniTaskCompletionSource.Create();
+        //public static async UniTask DoAnimationAsync(CancellationToken ct, Tween tween)
+        //{
+        //    AutoResetUniTaskCompletionSource tcs = AutoResetUniTaskCompletionSource.Create();
 
-            // Подписываемся на завершение твина
-            tween.OnComplete(() => tcs.TrySetResult());
-            tween.OnKill(() => tcs.TrySetResult());
+        //    // Подписываемся на завершение твина
+        //    tween.OnComplete(() => tcs.TrySetResult());
+        //    tween.OnKill(() => tcs.TrySetResult());
 
-            // При отмене токена — убиваем твин
-            using (ct.Register(() => tween.Kill()))
-            {
-                await tcs.Task;
-            }
-        }
+        //    // При отмене токена — убиваем твин
+        //    using (ct.Register(() => tween.Kill()))
+        //    {
+        //        await tcs.Task;
+        //    }
+        //}
 
         //public static async UniTask CancelledExecute(CancellationToken mainToken, string className, Func<CancellationToken, UniTask> asyncAction, string methodName, CancellationToken? localToken = null)
         //{

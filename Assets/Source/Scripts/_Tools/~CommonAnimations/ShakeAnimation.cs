@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -27,19 +28,19 @@ namespace Tools.CommonAnimations
             _targetTransform = Camera.main.transform;
         }
 
-        public void Play()
+        public void Play(CancellationToken token)
         {
-            _cameraShakeAnimation?.Play();
+            _cameraShakeAnimation?.Play(token);
 
-            Shaking().ToUniTask();
+            Shaking(token).Forget();
         }
 
-        private IEnumerator Shaking()
+        private async UniTask Shaking(CancellationToken token)
         {
             float duration = _data.Duration;
             Vector3 originalPosition = _targetTransform.position;
 
-            WaitForSeconds delay = new WaitForSeconds(_data.Delay);
+            //WaitForSeconds delay = new WaitForSeconds(_data.Delay);
 
             float x;
             float y;
@@ -52,7 +53,7 @@ namespace Tools.CommonAnimations
 
                 _targetTransform.position = new Vector3(originalPosition.x + x, originalPosition.y + y, originalPosition.z);
 
-                yield return delay;
+                await UniTask.WaitForSeconds(_data.Delay, cancellationToken: token);
             }
 
             _targetTransform.position = originalPosition;

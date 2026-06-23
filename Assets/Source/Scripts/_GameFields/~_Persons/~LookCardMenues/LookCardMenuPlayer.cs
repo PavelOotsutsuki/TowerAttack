@@ -166,10 +166,10 @@ namespace GameFields.Persons.LookCardMenues
             }
         }
 
-        private void OnDisable()
-        {
-            Utils.DestroyCTS(ref _currentCTS);
-        }
+        //private void OnDisable()
+        //{
+        //    Utils.DestroyCTS(ref _currentCTS);
+        //}
 
         //private void SortSeats()
         //{

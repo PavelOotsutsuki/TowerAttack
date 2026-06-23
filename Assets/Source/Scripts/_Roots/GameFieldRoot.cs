@@ -105,11 +105,13 @@ namespace Roots
         {
             GameFieldGC.GCOFF();
 
+            Debug.Log("GameFieldRoot: " + gameRootToken.GetHashCode());
             base.Init(gameRootToken);
 
             _UIHelperDescription.Init(GameFieldToken);
 
             CancellationTokenSource fightSource = CancellationTokenSource.CreateLinkedTokenSource(GameFieldToken);
+            TurnToken turnToken = new TurnToken();
 
             _backgroundRoot.Init(fightSource.Token);
             _backgroundRoot.Activate();
@@ -137,7 +139,7 @@ namespace Roots
 
             _personCreator.Init(_bus, _deck, _endTurnButton, _seatPool, cardDragAndDropHandler, cardDragAndDropLightController,
                 _informationLabel, _cardRoot, _cardSoundRoot, _soundRoot, _cardCapabilityDescription, _historyRoot, _soundRoot,
-                GameFieldToken, fightSource.Token);
+                GameFieldToken, fightSource.Token, turnToken);
 
             Player player = _personCreator.CreatePlayer();
             EnemyAI enemyAI = _personCreator.CreateEnemyAI();
@@ -170,7 +172,7 @@ namespace Roots
             //IDeactivatable onMainMenuSwitcher = new TestFightRootDestroyer(() => Destroy(gameObject));
 
             _fightPVE.Init(_personsState, enemyAI, _bus, _seatPool, _soundRoot, _fightButtonsActivator,
-    onDestroyPrefab, GameFieldToken, fightSource.Token, fightSource);
+    onDestroyPrefab, GameFieldToken, fightSource.Token, fightSource, turnToken);
             //_gameFieldRoot.Init(_personsState, enemyAI, _bus, _seatPool, _soundRoot, _fightButtonsActivator, onMainMenuSwitcher);
         }
 

@@ -37,10 +37,10 @@ namespace GameFields.Persons
             ISelectMenuActivator choiceMenu, ISelectMenuActivator choiceMenuImitation, PersonEffectsHandler personEffectsHandler,
             InformationLabel informationLabel, LookCardMenuPlayer lookCardMenuPlayer, PlayerSkipTurnViewCreator playerSkipTurnViewCreator,
             INumbersStateWatcher numbersStateWatcher, LastSelectedNumbersWatcher lastSelectedNumbersWatcher,
-            PersonEffectKeeper personEffectKeeper, CancellationToken fightToken) :
+            PersonEffectKeeper personEffectKeeper, /*CancellationToken fightToken,*/ TurnToken turnToken) :
             base(cardPlayingZone, drawCardRoot, tower, discover, bus, hand, attackMenu, interactionActivator,
                 choiceMenu, choiceMenuImitation, personEffectsHandler, lookCardMenuPlayer, numbersStateWatcher,
-                lastSelectedNumbersWatcher, personEffectKeeper, fightToken)
+                lastSelectedNumbersWatcher, personEffectKeeper, turnToken)
         {
             _startTurnDrawPlayerCreator = startTurnDrawPlayerCreator;
             _startPlayerTurnViewCreator = startPlayerTurnViewCreator;

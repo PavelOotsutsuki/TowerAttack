@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Tools;
@@ -29,12 +30,12 @@ namespace GameFields.Persons.Towers
             _shakeAnimation = new ShakeAnimation(config.Data.ShakeAnimationConfig);
         }
 
-        public void Play()
+        public void Play(CancellationToken token)
         {
-            BoomProcessing().ToUniTask();
+            BoomProcessing(token).Forget();
         }
 
-        private IEnumerator BoomProcessing()
+        private async UniTask BoomProcessing(CancellationToken token)
         {
             Image targetImage = _towerSeat.Card.Background;
 
@@ -55,10 +56,10 @@ namespace GameFields.Persons.Towers
 
                 targetImage.color = Color.Lerp(startColor, newCardColor, timeInWork / duration);
 
-                yield return null;
+                await UniTask.Yield(cancellationToken: token);
             }
 
-            _shakeAnimation.Play();
+            _shakeAnimation.Play(token);
 
             _towerSeat.Card.Kill();
 
@@ -66,7 +67,7 @@ namespace GameFields.Persons.Towers
             towerImage.color = _data.TowerImageColor;
             Color endAshesDisappearColor = new Color(towerImage.color.r, towerImage.color.g, towerImage.color.b, 0f);
 
-            yield return new WaitForSeconds(_data.DelayAfterBoomCard);
+            await UniTask.WaitForSeconds(_data.DelayAfterBoomCard, cancellationToken: token);
 
             towerImage.DOColor(endAshesDisappearColor, _data.DurationAshesDisappear);
 
@@ -74,7 +75,7 @@ namespace GameFields.Persons.Towers
             {
                 stone.Boom(_rectTransform.GetHeight());
 
-                yield return new WaitForSeconds(_data.DelayBetweenStonesBoom);
+                await UniTask.WaitForSeconds(_data.DelayBetweenStonesBoom, cancellationToken: token);
             }
         }
     }

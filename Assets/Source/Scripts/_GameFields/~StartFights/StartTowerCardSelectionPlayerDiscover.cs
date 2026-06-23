@@ -69,10 +69,10 @@ namespace GameFields.StartFights
             }
         }
 
-        private void OnDisable()
-        {
-            Utils.DestroyCTS(ref _currentCTS);
-        }
+        //private void OnDisable()
+        //{
+        //    Utils.DestroyCTS(ref _currentCTS);
+        //}
 
         #region AutomaticFillComponents
 

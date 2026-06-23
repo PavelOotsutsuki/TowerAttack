@@ -25,6 +25,8 @@ namespace Roots
         protected override void OnActivate()
         {
             _currentGameFieldRoot = CurrentGameObject.GetComponent<GameFieldRoot>();
+            Debug.Log("GameFieldRootPrefab: " + GameRootToken.GetHashCode());
+
             _currentGameFieldRoot.Init(_onDestroyPrefab, GameRootToken);
             _currentGameFieldRoot.Activate();
 

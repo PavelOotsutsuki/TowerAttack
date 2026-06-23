@@ -481,6 +481,7 @@ MonoBehaviour:
   _allTextMechProTexts:
   - {fileID: 2016032948}
   _defaultFont: {fileID: 11400000, guid: 906ea7892246f417eaff63e0646446e4, type: 2}
+  _exceptions: []
 --- !u!114 &770232838
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -93,7 +93,7 @@ namespace StartMenues
                 return;
 
             if (IsPreactive == false)
-                Debug.LogError("Ошибка последовательности активации. Сначала необходимо преактивировать объект");
+                Debug.LogWarning("Предупреждение последовательности активации. Возможно, сначала необходимо преактивировать объект");
 
             IsPreactive = false;
 

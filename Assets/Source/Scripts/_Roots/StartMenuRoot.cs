@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using Cards.Views.BigCardViews.Capabilities;
+using Cysharp.Threading.Tasks;
 using Sounds;
 using StartMenues;
 using TMPro;
@@ -64,6 +65,8 @@ namespace Roots
         public override void Activate()
         {
             _startMenuLoadActions.Activate();
+
+            //Test().Forget();
         }
 
         public void Reactivate(StartMenuButtonsPanelRootReactivateData reactivateDataInvoker)
@@ -75,6 +78,21 @@ namespace Roots
         {
             _startMenuLoadActions.InputRoot.Activate();
         }
+
+        //private async UniTask Test()
+        //{
+        //    int s = 0;
+
+        //    while (s < 60)
+        //    {
+        //        Debug.Log("seconds: " + s);
+        //        await UniTask.WaitForSeconds(1f);
+
+        //        s++;
+        //    }
+
+        //    Destroy(gameObject);
+        //}
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(StartMenuRoot))]

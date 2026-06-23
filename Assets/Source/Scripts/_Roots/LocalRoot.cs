@@ -31,7 +31,9 @@ namespace Roots
 
         private void OnDestroy()
         {
-            Utils.DestroyCTS(ref _localRootCTS);
+            //Utils.DestroyCTS(ref _localRootCTS);
+            _localRootCTS?.Cancel();
+            _localRootCTS?.Dispose();
         }
 
         public abstract void ActivateInputSystem();

@@ -58,7 +58,9 @@ namespace GameFields.EndFights
                 _ => throw new ArgumentNullException("Invalid EndTurnResult")
             };
 
-            Utils.DestroyCTS(ref _fightCTS);
+            //Utils.DestroyCTS(ref _fightCTS);
+            _fightCTS?.Cancel();
+            _fightCTS?.Dispose();
 
             StartingEndFight(endFightLabelActivateData).Forget();
             _isComplete = true;

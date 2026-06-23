@@ -14,7 +14,7 @@ namespace GameFields.Persons.EnemyProcessImitations
             _cardCapability = cardCapability;
             _probability = probability;
 
-            Debug.Log($"{_cardCapability}, {_probability}");
+            //Debug.Log($"{_cardCapability}, {_probability}");
         }
 
         public CardCapability CardCapability => _cardCapability;

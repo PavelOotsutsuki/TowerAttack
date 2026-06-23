@@ -40,7 +40,7 @@ namespace GameFields.Persons
         private readonly LastSelectedNumbersWatcher _lastSelectedNumbersWatcher;
         private readonly PersonEffectKeeper _personEffectKeeper;
         private readonly PersonEffectsHandler _personEffectsHandler;
-        private readonly CancellationToken _fightToken;
+        private readonly TurnToken _turnToken;
         //private readonly PersonStep _lastStep;
 
         //protected readonly PersonStep TurnProcess;
@@ -49,7 +49,7 @@ namespace GameFields.Persons
         protected readonly SignalBus Bus;
         protected readonly InteractionActivator InteractionActivator;
 
-        private CancellationTokenSource CurrentTurnTokenSource;
+        //private CancellationTokenSource CurrentTurnTokenSource;
         private PersonStep _currentStep;
 
         protected Person(CardPlayingZone playingZone, DrawCardRoot drawCardRoot, Tower tower,
@@ -57,7 +57,7 @@ namespace GameFields.Persons
             Hand hand, ISelectMenuActivator attackMenu, InteractionActivator gameFieldObjectsActivator,
             ISelectMenuActivator choiceMenu, ISelectMenuActivator choiceMenuImitation, PersonEffectsHandler personEffectsHandler,
             ILookCardMenu lookCardMenu, /*SkipTurnView skipTurnView,*/ INumbersStateWatcher numbersStateWatcher,
-            LastSelectedNumbersWatcher lastSelectedNumbersWatcher, PersonEffectKeeper personEffectKeeper, CancellationToken fightToken)
+            LastSelectedNumbersWatcher lastSelectedNumbersWatcher, PersonEffectKeeper personEffectKeeper, TurnToken turnToken)
         {
             _hand = hand;
             Bus = bus;
@@ -82,8 +82,8 @@ namespace GameFields.Persons
             InteractionActivator = gameFieldObjectsActivator;
 
             _personEffectsHandler = personEffectsHandler;
-            _fightToken = fightToken;
-            CurrentTurnTokenSource = null;
+            _turnToken = turnToken;
+            //CurrentTurnTokenSource = null;
 
             _personSteps = new Stack<PersonStep>();
 
@@ -107,16 +107,14 @@ namespace GameFields.Persons
         public IEnumerable<int> CheckedNumbers => _numbersStateWatcher.CheckedNumbers;
         public IEnumerable<int> LastSelectedNumbers => _lastSelectedNumbersWatcher.LastSelectedNumbers;
 
-        protected CancellationToken Token => CurrentTurnTokenSource.Token;
+        protected CancellationToken Token => _turnToken.Token;
 
         public void StartStep()
         {
-            if (CurrentTurnTokenSource != null)
-                throw new Exception("StartStep должен начинаться с пустого CancellationToken-а!!!");
+            //if (_turnToken.HasSource != false)
+            //    throw new Exception("StartStep должен начинаться с пустого CancellationToken-а!!!");
 
             IsComplete = false;
-
-            CurrentTurnTokenSource = CancellationTokenSource.CreateLinkedTokenSource(_fightToken);
 
             _personSteps.Clear();
 
@@ -261,10 +259,6 @@ namespace GameFields.Persons
 
                 NextStep();
             }
-
-            CurrentTurnTokenSource.Cancel();
-            CurrentTurnTokenSource.Dispose();
-            CurrentTurnTokenSource = null;
         }
 
         private void NextStep()

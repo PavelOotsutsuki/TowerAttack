@@ -9,6 +9,7 @@ using StartMenues.LogInButtonsPanels;
 using StartMenues.RegistrationButtonsPanels;
 using Tools;
 using Tools.Loads;
+using Tools.Utils;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 using Zenject;
@@ -73,8 +74,7 @@ namespace StartMenues
             }
             finally
             {
-                loadActualPersonDataFromDBCTS?.Cancel();
-                loadActualPersonDataFromDBCTS?.Dispose();
+                Utils.DestroyCTS(ref loadActualPersonDataFromDBCTS);
             }
 
             loadSession.Complete();

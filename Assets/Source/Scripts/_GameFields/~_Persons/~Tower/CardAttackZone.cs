@@ -12,6 +12,8 @@ using Tools.CommonAnimations;
 using UnityEngine;
 using Zenject;
 using GameFields.Histories;
+using Cysharp.Threading.Tasks;
+using System.Threading;
 
 namespace GameFields.Persons.Towers
 {
@@ -76,12 +78,12 @@ namespace GameFields.Persons.Towers
 
             AttackProcessingActivate();
 
-            StartCoroutine(ActivatingAttack(card));
+            ActivatingAttack(card, card.CardToken).Forget();
         }
 
         protected abstract void AttackProcessingActivate();
 
-        private IEnumerator ActivatingAttack(Card card)
+        private async UniTask ActivatingAttack(Card card, CancellationToken token)
         {
             //_currentCard = card;
 
@@ -90,11 +92,11 @@ namespace GameFields.Persons.Towers
             AttackAnimation attackAnimation = new AttackAnimation(card.CardMovement, card.RORTransform,
                 towerTransform.GetLocalPosition(), towerTransform.GetRect(), _data.AttackAnimationData);
 
-            attackAnimation.Play();
+            attackAnimation.Play(token);
 
-            yield return new WaitUntil(() => attackAnimation.IsComplete);
+            await UniTask.WaitUntil(() => attackAnimation.IsComplete, cancellationToken: token);
 
-            _shakeAnimation.Play();
+            _shakeAnimation.Play(token);
 
             SelectMenuActivateData attackMenuActivateData = new SelectMenuActivateData(_data.NeedSelectForAttack);
             //AttackMenuActivateData attackMenuActivateData = new AttackMenuActivateData(49);
@@ -105,7 +107,7 @@ namespace GameFields.Persons.Towers
             HistoryData historyData = new HistoryData(this, "Атака: ", historyCardData);
             _historyRoot.AddMsg(historyData);
 
-            yield return new WaitUntil(() => _attackMenu.IsComplete);
+            await UniTask.WaitUntil(() => _attackMenu.IsComplete, cancellationToken: token);
 
             _isComplete = true;
         }

@@ -73,11 +73,11 @@ namespace GameFields.Persons.Towers
             WaitUntilSetDeactivate(_deactivateCTS.Token).Forget();
         }
 
-        private void OnDisable()
-        {
-            Utils.DestroyCTS(ref _activateCTS);
-            Utils.DestroyCTS(ref _deactivateCTS);
-        }
+        //private void OnDisable()
+        //{
+        //    Utils.DestroyCTS(ref _activateCTS);
+        //    Utils.DestroyCTS(ref _deactivateCTS);
+        //}
 
         private async UniTask Activating(TowerBigCardShowData data, CancellationToken activateToken)
         {

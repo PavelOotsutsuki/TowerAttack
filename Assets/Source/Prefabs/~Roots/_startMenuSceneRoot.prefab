@@ -868,7 +868,7 @@ MonoBehaviour:
   _canvasGroup: {fileID: 3057845319147610897}
   _data:
     <MaxAlpha>k__BackingField: 0.972549
-    <MinAlpha>k__BackingField: 0.972549
+    <MinAlpha>k__BackingField: 0
     <FadeUpDuration>k__BackingField: 0.3
     <FadeOutDuration>k__BackingField: 0.1
     <StartAlpha>k__BackingField: 0
@@ -1684,7 +1684,7 @@ MonoBehaviour:
   _canvasGroup: {fileID: 7659783410351990819}
   _data:
     <MaxAlpha>k__BackingField: 1
-    <MinAlpha>k__BackingField: 1
+    <MinAlpha>k__BackingField: 0
     <FadeUpDuration>k__BackingField: 0.3
     <FadeOutDuration>k__BackingField: 0.1
     <StartAlpha>k__BackingField: 0
@@ -2374,7 +2374,7 @@ MonoBehaviour:
   _canvasGroup: {fileID: 2778726757720440124}
   _data:
     <MaxAlpha>k__BackingField: 1
-    <MinAlpha>k__BackingField: 1
+    <MinAlpha>k__BackingField: 0
     <FadeUpDuration>k__BackingField: 0.3
     <FadeOutDuration>k__BackingField: 0.1
     <StartAlpha>k__BackingField: 0

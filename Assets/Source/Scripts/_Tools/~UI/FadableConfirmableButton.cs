@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Tools.UI
 {
     [RequireComponent(typeof(FadablePanel))]
-    public abstract class FadableConfirmableButton : ConfirmableButton, ICompletable, IWorkable<CancellationTokenData, CancellationTokenData>
+    public abstract class FadableConfirmableButton : ConfirmableButton, ICompletable//, IWorkable<CancellationTokenData, CancellationTokenData>
     {
         [SerializeField] private FadablePanel _fadablePanel;
 
@@ -18,14 +18,14 @@ namespace Tools.UI
             _fadablePanel.Init();
         }
 
-        public void Activate(CancellationTokenData tokenData)
+        protected void BaseActivate2(CancellationTokenData tokenData)
         {
             base.BaseActivate();
 
             _fadablePanel.Show(tokenData);
         }
 
-        public void Deactivate(CancellationTokenData tokenData)
+        protected void BaseDeactivate2(CancellationTokenData tokenData)
         {
             base.BaseDeactivate();
 

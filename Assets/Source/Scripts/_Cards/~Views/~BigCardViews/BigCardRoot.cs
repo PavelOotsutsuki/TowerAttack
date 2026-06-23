@@ -46,16 +46,17 @@ namespace Cards.Views.BigCardViews
             if (IsActive == false)
                 return;
 
+
             IsActive = false;
 
             if (_bigCard.IsShown == true)
                 _bigCard.Hide();
 
-            if (_capabilityDescription.IsShown == true)
-                _capabilityDescription.Hide();
-
             if (_cardDescription.IsShown == true)
                 _cardDescription.Hide();
+
+            if (_capabilityDescription.IsShown == true)
+                _capabilityDescription.Hide();
         }
 
         #region AutomaticFillComponents

@@ -24,15 +24,16 @@ namespace GameFields
 
         public void Init(PersonsState personsState, EnemyAI enemyAI, SignalBus bus, SeatPool seatPool,
             IActivatable soundRootActivatable, IActivatable fightButtonsActivator, Action onDestroyPrefab,
-            CancellationToken gameFieldToken, CancellationToken fightToken, CancellationTokenSource fightCTS)
+            CancellationToken gameFieldToken, CancellationToken fightToken, CancellationTokenSource fightCTS,
+            TurnToken turnToken)
         {
             _startFight.Init(enemyAI, gameFieldToken);
 
             FightResult fightResult = new FightResult();
             Fight fight = new Fight(personsState, fightResult, bus, seatPool
-                , soundRootActivatable, fightButtonsActivator, fightToken);
+                , soundRootActivatable, fightButtonsActivator, fightToken, turnToken);
             _endFight.Init(fightResult, onDestroyPrefab, gameFieldToken, fightCTS);
-            _fightStepsController = new FightStepsController(_startFight, fight, _endFight);
+            _fightStepsController = new FightStepsController(_startFight, fight, _endFight, gameFieldToken);
 
             //_fightStepsController.NextStep();
             //_fightStepsController.StartStep();

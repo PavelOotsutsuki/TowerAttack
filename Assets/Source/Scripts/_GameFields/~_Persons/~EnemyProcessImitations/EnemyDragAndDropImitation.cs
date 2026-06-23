@@ -63,7 +63,7 @@ namespace GameFields.Persons.EnemyProcessImitations
         {
             _isComplete = false;
 
-            Debug.Log("EnemyDragAndDropImitation.OnStartStep()");
+            //Debug.Log("EnemyDragAndDropImitation.OnStartStep()");
 
             _skipTurnChecker.Activate();
 
@@ -83,12 +83,12 @@ namespace GameFields.Persons.EnemyProcessImitations
             if (_hand.IsSlimeEffect)
             {
                 workCardList = Utils.Shuffle(_drawnCardWatcher.DrawnCards);
-                Debug.Log("_drawnCardWatcher.DrawnCards: " + _drawnCardWatcher.DrawnCards.Count());
+                //Debug.Log("_drawnCardWatcher.DrawnCards: " + _drawnCardWatcher.DrawnCards.Count());
             }
             else
             {
                 workCardList = Utils.Shuffle(_hand.AllCards);
-                Debug.Log("_hand.AllCards: " + _hand.AllCards.Count());
+                //Debug.Log("_hand.AllCards: " + _hand.AllCards.Count());
             }
 
             //List<Func<IEnumerator>> enableAIEndLogic = new List<Func<IEnumerator>>();
@@ -106,7 +106,7 @@ namespace GameFields.Persons.EnemyProcessImitations
 
                 //if (_cardImitationActions.CanPlay() == false)
                 //    currentCapability &= ~CardCapability.Play;
-                Debug.Log(workCard.CardName);
+                //Debug.Log(workCard.CardName);
                 CapabilityProbability type = _mainAIThinkLogic.FindActionType(workCard);
 
                 if (type == null)
@@ -125,7 +125,7 @@ namespace GameFields.Persons.EnemyProcessImitations
             {
                 if (values.Contains(CardCapability.Attack) && values.Distinct().Except(new List<CardCapability> { CardCapability.Attack, CardCapability.HandTransfer }).Count() > 0)
                 {
-                    Debug.Log("Удаляем атаки");
+                    //Debug.Log("Удаляем атаки");
                     foreach (KeyValuePair<Card, CapabilityProbability> keyValuePair in cardActions)
                     {
                         // Проклятые карты не убираем из выборки

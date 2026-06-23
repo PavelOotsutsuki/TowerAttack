@@ -4,6 +4,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using Tools;
 using Tools.InputSettings;
+using Tools.Utils;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
@@ -54,8 +55,9 @@ namespace Menues
             IsComplete = false;
             IsActive = true;
 
-            _currentCTS?.Cancel();
-            _currentCTS?.Dispose();
+            Utils.DestroyCTS(ref _currentCTS);
+            //_currentCTS?.Cancel();
+            //_currentCTS?.Dispose();
             _currentCTS = CancellationTokenSource.CreateLinkedTokenSource(MenuParentToken);
 
             gameObject.SetActive(true);
@@ -74,8 +76,9 @@ namespace Menues
             IsComplete = false;
             //_inputRoot.Pause();
             //_inputRoot.DeactivateFightMenu();
-            _currentCTS?.Cancel();
-            _currentCTS?.Dispose();
+            Utils.DestroyCTS(ref _currentCTS);
+            //_currentCTS?.Cancel();
+            //_currentCTS?.Dispose();
             _currentCTS = CancellationTokenSource.CreateLinkedTokenSource(MenuParentToken);
 
             OnDeactivateInput();

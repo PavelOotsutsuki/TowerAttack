@@ -6,6 +6,7 @@ using Cysharp.Threading.Tasks;
 using Tools;
 using Tools.InputSettings;
 using Tools.UI;
+using Tools.Utils;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
@@ -70,8 +71,7 @@ namespace Menues
             IsActive = true;
             _isComplete = false;
 
-            _currentCTS?.Cancel();
-            _currentCTS?.Dispose();
+            Utils.DestroyCTS(ref _currentCTS);
             _currentCTS = CancellationTokenSource.CreateLinkedTokenSource(MenuParentToken);
 
             CurrentMenuButtonsPanel = _startButtonsPanel;
@@ -88,8 +88,7 @@ namespace Menues
             IsActive = false;
             _isComplete = false;
 
-            _currentCTS?.Cancel();
-            _currentCTS?.Dispose();
+            Utils.DestroyCTS(ref _currentCTS);
             _currentCTS = CancellationTokenSource.CreateLinkedTokenSource(MenuParentToken);
 
             CurrentMenuButtonsPanel.Deactivate();

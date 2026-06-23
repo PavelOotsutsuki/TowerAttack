@@ -12,6 +12,7 @@ using GameFields.Persons.Towers;
 using Cards.Views;
 using GameFields.CardTransits;
 using System.Threading;
+using System;
 
 namespace GameFields.StartFights
 {
@@ -47,72 +48,79 @@ namespace GameFields.StartFights
 
         private async UniTask StartPlayerProcess(CancellationToken token)
         {
-            List<Card> cards = new List<Card>();
-
-            await UniTask.WaitForSeconds(_data.WaitDurationForEnemyFirstCardsDraw, cancellationToken: token);
-
-            for (int i = 0; i < _seats.Length; i++)
+            try
             {
-                Card card = _deck.TakeTopCard();
-                cards.Add(card);
-                _seats[i].SetCard(card, SideType.Front, _data.DrawCardsDuration, _data.DrawCardsScaleFactor);
+                List<Card> cards = new List<Card>();
 
-                await UniTask.WaitForSeconds(_data.WaitDurationBetweenDrawCards, cancellationToken: token);
-            }
+                await UniTask.WaitForSeconds(_data.WaitDurationForEnemyFirstCardsDraw, cancellationToken: token);
 
-            if (_data.DrawCardsDuration - _data.WaitDurationBetweenDrawCards > 0)
-            {
-                await UniTask.WaitForSeconds(_data.DrawCardsDuration - _data.WaitDurationBetweenDrawCards, cancellationToken: token);
-            }
-
-            foreach (Card card in cards)
-            {
-                card.gameObject.SetActive(false);
-            }
-
-            DiscoverResult discoverResult = new DiscoverResult(callbackAfterSetResult: ActivateSeats);
-            DiscoverActivateData discoverActivateData = new DiscoverActivateData(cards, _data.LabelMessage, discoverResult);
-            _discover.Activate(discoverActivateData);
-
-            await UniTask.WaitUntil(() => discoverResult.Result != null, cancellationToken: token);
-
-            //foreach (Seat seat in _seats)
-            //{
-            //    seat.Card.gameObject.SetActive(true);
-            //}
-
-            //EndProcessing(discoverResult.Result).ToUniTask();
-            await UniTask.WaitForSeconds(_data.DelayAfterCardChoiceDone, cancellationToken: token);
-
-            if (Tower.HasFreeSeat)
-            {
-                foreach (Seat seat in _seats)
+                for (int i = 0; i < _seats.Length; i++)
                 {
-                    if (ReferenceEquals(seat.Card, discoverResult.Result) == false)
-                    {
-                        _hand.SeatCard(seat.Card);
-                        //seat.Card.SetActiveInteraction(true);
-                        //seat.Reset();
-                    }
-                    else
-                    {
-                        SeatCardInTower(seat, token).Forget();
-                    }
+                    Card card = _deck.TakeTopCard();
+                    cards.Add(card);
+                    _seats[i].SetCard(card, SideType.Front, _data.DrawCardsDuration, _data.DrawCardsScaleFactor);
+
+                    await UniTask.WaitForSeconds(_data.WaitDurationBetweenDrawCards, cancellationToken: token);
                 }
 
-                // Ещё раз потому что при SeatCard идет перерасчет и interactable сбрасывается
-                foreach (Seat seat in _seats)
+                if (_data.DrawCardsDuration - _data.WaitDurationBetweenDrawCards > 0)
                 {
-                    if (ReferenceEquals(seat.Card, discoverResult.Result) == false)
+                    await UniTask.WaitForSeconds(_data.DrawCardsDuration - _data.WaitDurationBetweenDrawCards, cancellationToken: token);
+                }
+
+                foreach (Card card in cards)
+                {
+                    card.gameObject.SetActive(false);
+                }
+
+                DiscoverResult discoverResult = new DiscoverResult(callbackAfterSetResult: ActivateSeats);
+                DiscoverActivateData discoverActivateData = new DiscoverActivateData(cards, _data.LabelMessage, discoverResult);
+                _discover.Activate(discoverActivateData);
+
+                await UniTask.WaitUntil(() => discoverResult.Result != null, cancellationToken: token);
+
+                //foreach (Seat seat in _seats)
+                //{
+                //    seat.Card.gameObject.SetActive(true);
+                //}
+
+                //EndProcessing(discoverResult.Result).ToUniTask();
+                await UniTask.WaitForSeconds(_data.DelayAfterCardChoiceDone, cancellationToken: token);
+
+                if (Tower.HasFreeSeat)
+                {
+                    foreach (Seat seat in _seats)
                     {
-                        seat.Card.SetActiveInteraction(false);
-                        seat.Reset();
+                        if (ReferenceEquals(seat.Card, discoverResult.Result) == false)
+                        {
+                            _hand.SeatCard(seat.Card);
+                            //seat.Card.SetActiveInteraction(true);
+                            //seat.Reset();
+                        }
+                        else
+                        {
+                            SeatCardInTower(seat, token).Forget();
+                        }
+                    }
+
+                    // Ещё раз потому что при SeatCard идет перерасчет и interactable сбрасывается
+                    foreach (Seat seat in _seats)
+                    {
+                        if (ReferenceEquals(seat.Card, discoverResult.Result) == false)
+                        {
+                            seat.Card.SetActiveInteraction(false);
+                            seat.Reset();
+                        }
                     }
                 }
+                else
+                {
+                    throw new System.Exception("Что-то не так, работяги");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                throw new System.Exception("Что-то не так, работяги");
+                Debug.Log(ex.Message);
             }
         }
 

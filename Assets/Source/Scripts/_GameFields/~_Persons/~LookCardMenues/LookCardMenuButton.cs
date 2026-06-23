@@ -6,6 +6,7 @@ using Cysharp.Threading.Tasks;
 using GameFields.InputSettings;
 using Tools;
 using Tools.UI;
+using Tools.Utils;
 using UnityEngine;
 
 namespace GameFields.Persons.LookCardMenues
@@ -36,9 +37,7 @@ namespace GameFields.Persons.LookCardMenues
             if (IsActive == true)
                 return;
 
-            _deactivatingCTS?.Cancel();
-            _deactivatingCTS?.Dispose();
-
+            Utils.DestroyCTS(ref _deactivatingCTS);
             gameObject.SetActive(true);
 
             base.BaseActivate();
@@ -65,8 +64,7 @@ namespace GameFields.Persons.LookCardMenues
 
             IsActive = false;
 
-            _deactivatingCTS?.Cancel();
-            _deactivatingCTS?.Dispose();
+            Utils.DestroyCTS(ref _deactivatingCTS);
             _deactivatingCTS = CancellationTokenSource.CreateLinkedTokenSource(_fightToken);
 
             Deactivating(_deactivatingCTS.Token).Forget();

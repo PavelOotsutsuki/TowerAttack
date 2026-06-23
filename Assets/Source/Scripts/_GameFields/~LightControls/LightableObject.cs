@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Tools;
+using Tools.Utils;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 
@@ -41,8 +42,7 @@ namespace GameFields.LightControls
 
             IsShown = true;
 
-            _currentCTS?.Cancel();
-            _currentCTS?.Dispose();
+            Utils.DestroyCTS(ref _currentCTS);
             _currentCTS = CancellationTokenSource.CreateLinkedTokenSource(_fightToken);
 
             _lightFrame.Show(new CancellationTokenData(_currentCTS.Token));
@@ -56,8 +56,7 @@ namespace GameFields.LightControls
 
             IsShown = false;
 
-            _currentCTS?.Cancel();
-            _currentCTS?.Dispose();
+            Utils.DestroyCTS(ref _currentCTS);
             _currentCTS = CancellationTokenSource.CreateLinkedTokenSource(_fightToken);
 
             _lightFrame.Hide(new CancellationTokenData(_currentCTS.Token));

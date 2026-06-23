@@ -185,6 +185,7 @@ namespace GameFields.Persons
 
         private CancellationToken _gameFieldToken;
         private CancellationToken _fightToken;
+        private TurnToken _turnToken;
 
         private ConfirmableNumbersViewRoot _confirmableNumbersViewRoot;
 
@@ -249,7 +250,7 @@ namespace GameFields.Persons
             CardDragAndDropHandler cardDragAndDropHandler, CardDragAndDropLightController cardDragAndDropLightController,
             InformationLabel informationLabel, CardRoot cardRoot, CardSoundRoot cardSoundRoot, IVolume musicVolume,
             CardCapabilityDescription cardCapabilityDescription, HistoryRoot historyRoot, ISoundController soundController,
-            CancellationToken gameFieldToken, CancellationToken fightToken)
+            CancellationToken gameFieldToken, CancellationToken fightToken, TurnToken turnToken)
         {
             _bus = bus;
             _deck = deck;
@@ -261,6 +262,7 @@ namespace GameFields.Persons
 
             _gameFieldToken = gameFieldToken;
             _fightToken = fightToken;
+            _turnToken = turnToken;
 
             _skipTurnLabelPlayer.Init();
             _skipTurnLabelEnemyAI.Init();
@@ -341,7 +343,7 @@ namespace GameFields.Persons
             return new Player(_interactionActivator, _playerHand, _playerPlayingZone, _playerTower, _playerDiscover,
                 _drawCardRootPlayer, startTurnDraw, turnProcessingCreator, _bus, startPlayerTurnViewCreator, _playerAttackMenu, endTurnProcessingCreator,
                 _playerChoiceMenu, _playerChoiceMenuImitation, _playerPersonEffectsHandler, _informationLabel, _playerLookCardMenu,
-                skipTurnView, _confirmableNumbersPlayer, _lastSelectedNumbersWatcherPlayer, _playerEffectKeeper, _gameFieldToken);
+                skipTurnView, _confirmableNumbersPlayer, _lastSelectedNumbersWatcherPlayer, _playerEffectKeeper, _turnToken);
         }
 
         public EnemyAI CreateEnemyAI()
@@ -396,7 +398,8 @@ namespace GameFields.Persons
             return new EnemyAI(_interactionActivator, enemyDragAndDropImitationCreator, _enemyPlayingZone,
                 _enemyTower, _drawCardRootEnemy, _enemyDiscoverImitation, startTurnDrawCreator, _bus, _enemyHand, _enemyAttackMenu,
                 _enemyChoiceMenu, _enemyChoiceMenuImitation, _enemyPersonEffectsHandler, lookCardMenuEnemyAI,
-                onBeforeEndTurnProcessingCreator, skipTurnViewCreator, _confirmableNumbersEnemyAI, _lastSelectedNumbersWatcherEnemyAI, _enemyEffectKeeper, _gameFieldToken);
+                onBeforeEndTurnProcessingCreator, skipTurnViewCreator, _confirmableNumbersEnemyAI, _lastSelectedNumbersWatcherEnemyAI, _enemyEffectKeeper,
+                _turnToken);
         }
 
         public CardLocationViewRoot CreateCardLocationViewRoot()

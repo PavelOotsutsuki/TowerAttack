@@ -82,7 +82,8 @@ namespace StartMenues.LogInButtonsPanels
 
         private void OnLogIn()
         {
-            _tokenSource?.Dispose();
+            //_tokenSource?.Dispose();
+            Utils.DestroyCTS(ref _tokenSource);
             _tokenSource = new CancellationTokenSource();
             CancellationToken token = _tokenSource.Token;
 
@@ -119,8 +120,7 @@ namespace StartMenues.LogInButtonsPanels
 
         private void OnDestroy()
         {
-            _tokenSource?.Cancel();
-            _tokenSource?.Dispose();
+            Utils.DestroyCTS(ref _tokenSource);
         }
     }
 }

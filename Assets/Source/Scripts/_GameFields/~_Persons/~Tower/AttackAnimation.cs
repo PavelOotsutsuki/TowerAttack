@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using Tools;
 using Tools.Utils.Movements;
@@ -44,25 +45,25 @@ namespace GameFields.Persons.Towers
         private float DownOrUpVector => Convert.ToInt32(_data.IsDown) * 2 - 1;
         private float DownOrUpRotation => _data.IsDown ? 0f : 180f;
 
-        public void Play()
+        public void Play(CancellationToken token)
         {
             IsComplete = false;
 
-            Playing().ToUniTask();
+            Playing(token).Forget();
         }
 
-        private IEnumerator Playing()
+        private async UniTask Playing(CancellationToken token)
         {
             Vector2 atTheReadyLocalPosition = FindAtTheReadyPosition();
             Vector3 rotation = FindAtTheReadyRotation();
 
             _cardMovement.MoveLocalSmoothly(atTheReadyLocalPosition, rotation, _data.AtTheReadyMoveDuration, CardScale);
-            yield return new WaitForSeconds(_data.AtTheReadyMoveDuration + _data.AfterAtTheReadyMoveDelay);
+            await UniTask.WaitForSeconds(_data.AtTheReadyMoveDuration + _data.AfterAtTheReadyMoveDelay, cancellationToken: token);
 
             Vector2 endLocalPosition = FindEndPosition();
 
             _cardMovement.MoveLocalInOutBack(endLocalPosition, rotation, _data.EndMoveDuration, CardScale);
-            yield return new WaitForSeconds(_data.EndMoveDuration * _data.InOutBackFactor);
+            await UniTask.WaitForSeconds(_data.EndMoveDuration * _data.InOutBackFactor, cancellationToken: token);
 
             IsComplete = true;
         }

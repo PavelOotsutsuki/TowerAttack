@@ -31,7 +31,7 @@ namespace Tools.UI
         {
             _label.SetText(data.Message);
 
-            Show(data);
+            Show((CancellationTokenData)data);
         }
 
         public void Show(CancellationTokenData tokenData)

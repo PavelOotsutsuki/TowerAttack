@@ -4,6 +4,7 @@ using Tools.Extensions;
 using Cards.DependencyInterlayers;
 using Cysharp.Threading.Tasks;
 using System.Threading;
+using Tools.Utils;
 
 namespace Cards.Insides
 {
@@ -159,8 +160,7 @@ namespace Cards.Insides
         private void StartEndDragActions()
         {
             //Debug.Log(_cardTransform.gameObject.name + ": StartEndDragActions");
-            _viewCardAfterDropCTS?.Cancel();
-            _viewCardAfterDropCTS?.Dispose();
+            Utils.DestroyCTS(ref _viewCardAfterDropCTS);
             _viewCardAfterDropCTS = CancellationTokenSource.CreateLinkedTokenSource(_cardToken);
 
             //if (_viewCardAfterDropCTS != null)

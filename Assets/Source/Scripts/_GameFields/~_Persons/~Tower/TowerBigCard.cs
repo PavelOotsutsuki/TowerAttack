@@ -108,11 +108,11 @@ namespace GameFields.Persons.Towers
             Hidding(_hiddingCTS.Token).Forget();
         }
 
-        private void OnDisable()
-        {
-            Utils.DestroyCTS(ref _hiddingCTS);
-            Utils.DestroyCTS(ref _showingCTS);
-        }
+        //private void OnDisable()
+        //{
+        //    Utils.DestroyCTS(ref _hiddingCTS);
+        //    Utils.DestroyCTS(ref _showingCTS);
+        //}
 
         private async UniTask Hidding(CancellationToken token)
         {
