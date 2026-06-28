@@ -74,7 +74,7 @@ namespace GameFields.Persons.SelectMenues
             {
                 await UniTask.WaitUntil(() => IsComplete, cancellationToken: token);
 
-                Debug.Log("SelectButton: gameObject.SetActive(false)");
+                //Debug.Log("SelectButton: gameObject.SetActive(false)");
                 gameObject.SetActive(false);
             }
             catch (OperationCanceledException)

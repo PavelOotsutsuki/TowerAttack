@@ -29,11 +29,12 @@ namespace Roots
             _fontRoot.Init();
         }
 
-        private void OnDestroy()
+        public void OnDestroy()
         {
-            //Utils.DestroyCTS(ref _localRootCTS);
-            _localRootCTS?.Cancel();
-            _localRootCTS?.Dispose();
+            //Debug.Log("LocalRoot.OnDestroy()");
+            Utils.DestroyCTS(ref _localRootCTS);
+            //_localRootCTS?.Cancel();
+            //_localRootCTS?.Dispose();
         }
 
         public abstract void ActivateInputSystem();

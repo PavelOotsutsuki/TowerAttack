@@ -285,16 +285,16 @@ namespace GameFields.Persons.EnemyProcessImitations
             int randomValue = Random.Range(1, maxValue);
             int summ = 0;
 
-            #region Debug
-            string debugMsg = "";
-            foreach (KeyValuePair<CardCapability, int> pair in probability)
-            {
-                summ += pair.Value;
-                debugMsg += $"{pair.Key}: value: {pair.Value} summ: {summ} randomValue: {randomValue}\n";
-            }
+            //#region Debug
+            //string debugMsg = "";
+            //foreach (KeyValuePair<CardCapability, int> pair in probability)
+            //{
+            //    summ += pair.Value;
+            //    debugMsg += $"{pair.Key}: value: {pair.Value} summ: {summ} randomValue: {randomValue}\n";
+            //}
             //Debug.Log(debugMsg);
-            summ = 0;
-            #endregion
+            //summ = 0;
+            //#endregion
 
             foreach (KeyValuePair<CardCapability, int> pair in probability)
             {
@@ -314,6 +314,16 @@ namespace GameFields.Persons.EnemyProcessImitations
             }
 
             Debug.Log("Сюда никогда не дойдет");
+            #region Debug
+            string debugMsg = "";
+            foreach (KeyValuePair<CardCapability, int> pair in probability)
+            {
+                summ += pair.Value;
+                debugMsg += $"{pair.Key}: value: {pair.Value} summ: {summ} randomValue: {randomValue}\n";
+            }
+            Debug.Log(debugMsg);
+            summ = 0;
+            #endregion
             return new CapabilityProbability(probability.Last().Key, 20);
         }
 

@@ -177,7 +177,7 @@ namespace Servers
                     _currentIdUser = Guid.Parse(logInDTO.id_User);
                     _lastLogInDate = Convert.ToDateTime(logInDTO.dte_last_login);
 
-                    Debug.Log(_currentIdUser);
+                    Debug.Log($"Id_User: {_currentIdUser}");
                 }
                 else
                 {

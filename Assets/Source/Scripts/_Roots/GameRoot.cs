@@ -28,7 +28,7 @@ namespace Roots
             _fontRoot.Init();
 
             _gameRootCTS = CancellationTokenSource.CreateLinkedTokenSource(this.destroyCancellationToken);
-            Debug.Log("GameRoot: " + _gameRootCTS.GetHashCode());
+            //Debug.Log("GameRoot: " + _gameRootCTS.GetHashCode());
 
             StartGame();
         }

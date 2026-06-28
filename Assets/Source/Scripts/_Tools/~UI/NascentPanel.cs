@@ -53,7 +53,7 @@ namespace Tools.UI
 
         private void Complete()
         {
-            Debug.Log("Complete");
+            //Debug.Log("Complete");
             IsComplete = true;
         }
 

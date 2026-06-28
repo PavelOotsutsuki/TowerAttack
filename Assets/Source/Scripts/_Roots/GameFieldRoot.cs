@@ -103,10 +103,10 @@ namespace Roots
         //public void Init(bool isPVE)
         public void Init(Action onDestroyPrefab, CancellationToken gameRootToken)
         {
-            GameFieldGC.GCOFF();
-
-            Debug.Log("GameFieldRoot: " + gameRootToken.GetHashCode());
+            //Debug.Log("GameFieldRoot: " + gameRootToken.GetHashCode());
             base.Init(gameRootToken);
+
+            GameFieldGC.GCOFF(GameFieldToken);
 
             _UIHelperDescription.Init(GameFieldToken);
 
@@ -243,8 +243,10 @@ namespace Roots
 
         //    _gameFieldRoot.Init(_personsState, enemyAI, bus, seatPool, soundRoot, fightMenuActivateButton);
         //}
-        public void OnDestroy()
+        public new void OnDestroy()
         {
+            base.OnDestroy();
+            //Debug.Log("GameFieldRoot.OnDestroy()");
             GameFieldGC.GCON();
         }
 

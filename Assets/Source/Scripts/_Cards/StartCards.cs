@@ -26,17 +26,41 @@ namespace Cards
         private void CreateDefaultFiftyCards()
         {
 
+            for (int i = 1; i <= 50; i++)
+            {
+                CardName cardName = (CardName)i;
+                _startCardNames.Add(cardName);
+            }
+
             //for (int i = 1; i <= 50; i++)
             //{
-            //    CardName cardName = (CardName)i;
+            //    CardName cardName = (CardName)(i % 7 + 39);
             //    _startCardNames.Add(cardName);
             //}
 
-            for (int i = 1; i <= 50; i++)
-            {
-                CardName cardName = (CardName)(i % 5 + 8);
-                _startCardNames.Add(cardName);
-            }
+            //for (int i = 1; i <= 10; i++)
+            //{
+            //    CardName cardName = (CardName)(49);
+            //    _startCardNames.Add(cardName);
+            //}
+
+            //for (int i = 1; i <= 10; i++)
+            //{
+            //    CardName cardName = (CardName)(50);
+            //    _startCardNames.Add(cardName);
+            //}
+
+            //for (int i = 1; i <= 10; i++)
+            //{
+            //    CardName cardName = (CardName)(18);
+            //    _startCardNames.Add(cardName);
+            //}
+
+            //for (int i = 1; i <= 10; i++)
+            //{
+            //    CardName cardName = (CardName)(28);
+            //    _startCardNames.Add(cardName);
+            //}
 
             /*
             for (int i = 1; i <= 25; i++)

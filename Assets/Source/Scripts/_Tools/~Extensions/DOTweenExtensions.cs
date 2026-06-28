@@ -21,7 +21,7 @@ namespace Tools.Extensions
             tween.OnComplete(OnComplete);
             tween.OnKill(() =>
             {
-                Debug.Log("OnKill DOTWeen from UniTask");
+                //Debug.Log("OnKill DOTWeen from UniTask");
                 if (ct.IsCancellationRequested && isCancelInvokeException)
                 {
                     tcs.TrySetCanceled();

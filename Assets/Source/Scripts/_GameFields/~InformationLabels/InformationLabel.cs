@@ -70,7 +70,7 @@ namespace GameFields.InformationLabels
         {
             await UniTask.WaitUntil(() => _informationLabel.IsComplete && _panel.IsComplete, cancellationToken: token);
             await UniTask.WaitForSeconds(timeView / 2f, cancellationToken: token);
-            GameFieldGC.Collect();
+            //GameFieldGC.CollectIfNeeded();
             await UniTask.WaitForSeconds(timeView / 2f, cancellationToken: token);
 
             Deactivate(token);

@@ -77,7 +77,7 @@ namespace Tools.UI
 
         private async UniTask FadeIn(float duration, float startAlpha, float endAlpha, CancellationToken token)
         {
-            float startDuration = duration;
+            //float startDuration = duration;
             float currentAlpha = _canvasGroup.alpha;
             float diffAlpha = currentAlpha - startAlpha;
             float wayAlpha = endAlpha - startAlpha;
@@ -90,7 +90,7 @@ namespace Tools.UI
 
             float newAlpha;
 
-            Debug.Log($"startDuration: {startDuration};startAlpha: {startAlpha};currentAlpha: {currentAlpha};endAlpha: {endAlpha};duration: {duration}; ");
+            //Debug.Log($"startDuration: {startDuration};startAlpha: {startAlpha};currentAlpha: {currentAlpha};endAlpha: {endAlpha};duration: {duration}; ");
 
             while (timeInWork < duration)
             {
@@ -106,12 +106,12 @@ namespace Tools.UI
 
                 newAlpha = Mathf.Lerp(currentAlpha, endAlpha, timeInWork / duration);
                 _canvasGroup.alpha = newAlpha;
-                Debug.Log($"newAlpha: {newAlpha}");
+                //Debug.Log($"newAlpha: {newAlpha}");
 
                 await UniTask.Yield(cancellationToken: token);
             }
 
-            Debug.Log($"END. Alpha: {_canvasGroup.alpha}");
+            //Debug.Log($"END. Alpha: {_canvasGroup.alpha}");
 
             if (_data.IsDeactivatable)
                 if (_canvasGroup.alpha == 0)

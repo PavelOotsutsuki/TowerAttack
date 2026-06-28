@@ -71,7 +71,7 @@ namespace Tools.Utils
             if (cts == null)
                 return;
 
-            Debug.Log($"DestroyCTS: {callerFile.Substring(callerFile.LastIndexOf('/') + 1).Replace(".cs", "")}.{callerMethod}, {callerLine}");
+            //Debug.Log($"DestroyCTS: {callerFile.Substring(callerFile.LastIndexOf('/') + 1).Replace(".cs", "")}.{callerMethod}, {callerLine}");
 
             cts?.Cancel();
             cts?.Dispose();
