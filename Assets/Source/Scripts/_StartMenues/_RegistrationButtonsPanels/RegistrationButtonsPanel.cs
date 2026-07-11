@@ -23,7 +23,8 @@ namespace StartMenues.RegistrationButtonsPanels
         [SerializeField] private ConfirmableFocusableButton _registraitionButton;
         [SerializeField] private ConfirmableFocusableButton _backButton;
         [SerializeField] private ConfirmableFocusableButton _exitButton;
-        
+        [SerializeField] private Label _errorLabel;
+
         private LoadRoot _loadRoot;
         private DBRoot _dBRoot;
 
@@ -66,6 +67,8 @@ namespace StartMenues.RegistrationButtonsPanels
 
             _passwordIF.inputType = InputType.Password;
             _passwordAgainIF.inputType = InputType.Password;
+
+            _errorLabel.gameObject.SetActive(false);
         }
 
         //private void OnRegistration()
@@ -86,6 +89,7 @@ namespace StartMenues.RegistrationButtonsPanels
 
         private void OnRegistration()
         {
+            _errorLabel.gameObject.SetActive(false);
             Utils.DestroyCTS(ref _currentCTS);
 
             _currentCTS = CancellationTokenSource.CreateLinkedTokenSource(_menuParentToken);
@@ -117,6 +121,8 @@ namespace StartMenues.RegistrationButtonsPanels
                 Debug.Log($"Ошибка {nameof(RegistrationButtonsPanel)}-->{nameof(RegistrationProcessing)}: {ex.Message}");
                 _registraitionButton.Deactivate();
                 _registraitionButton.Activate();
+                _errorLabel.gameObject.SetActive(true);
+                _errorLabel.SetText(ex.Message);
                 loadSession.Complete();
                 Utils.DestroyCTS(ref _currentCTS);
             }

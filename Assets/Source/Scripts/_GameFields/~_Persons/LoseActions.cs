@@ -1,15 +1,13 @@
 using System;
-using System.Collections;
 using System.Threading;
+using Cards.Effects;
 using Cysharp.Threading.Tasks;
-using GameFields.FightMenues;
-using GameFields.InputSettings;
+using GameFields.EndFights;
 using GameFields.Persons.Hands;
 using GameFields.Persons.Towers;
 using GameFields.Signals;
+using Servers;
 using Tools;
-using UnityEngine;
-using UnityEngine.EventSystems;
 using Zenject;
 
 namespace GameFields.Persons
@@ -26,9 +24,11 @@ namespace GameFields.Persons
         private readonly IDeactivatable _fightMenu;
         private readonly IDeactivatable _fightButtonsActivator;
         private readonly ISoundController _soundController;
+        private readonly DBRoot _dBRoot;
 
         public LoseActions(IBoomTower boomedTower, IPersonObject loser, IHandBlockable handBlockable, SignalBus bus,
-            IDeactivatable inputRoot, IDeactivatable fightMenu, IDeactivatable fightButtonsActivator, ISoundController soundController)
+            IDeactivatable inputRoot, IDeactivatable fightMenu, IDeactivatable fightButtonsActivator, ISoundController soundController,
+            DBRoot dBRoot)
         {
             _boomedTower = boomedTower;
             _loser = loser;
@@ -38,6 +38,7 @@ namespace GameFields.Persons
             _fightMenu = fightMenu;
             _fightButtonsActivator = fightButtonsActivator;
             _soundController = soundController;
+            _dBRoot = dBRoot;
 
             _isActive = false;
         }
@@ -61,7 +62,19 @@ namespace GameFields.Persons
             _boomedTower.Boom();
             _soundController.Stop();
 
-            await UniTask.Delay(5000, cancellationToken: token);
+            DateTime before = DateTime.UtcNow;
+            bool? result = _loser switch
+            {
+                IEnemyAIObject => true,
+                IPlayerObject => false,
+                _ => null
+            };
+            await _dBRoot.FinishFightWithBot(result, token);
+
+            int timeAfterMilliseconds = Convert.ToInt32((DateTime.UtcNow - before).TotalMilliseconds);
+
+            if (5000 - timeAfterMilliseconds > 0)
+                await UniTask.Delay(5000 - timeAfterMilliseconds, cancellationToken: token);
 
             _bus.Fire(new PersonWinSignal(_loser));
         }

@@ -26,7 +26,7 @@ namespace StartMenues
         public void Init(IVolume cardVolume, IVolume musicVolume, CardCapabilityDescription cardCapabilityDescription,
             Action<int> onPlayClick, StartMenu startMenu, CancellationToken startMenuToken)
         {
-            _logInButtonsPanel.Init(SetMainPanel, SetRegistrationPanel);
+            _logInButtonsPanel.Init(SetMainPanel, SetRegistrationPanel, startMenuToken);
             _registrationButtonsPanel.Init(SetMainPanel, SetLogInPanel, startMenuToken);
             _startMenuMainButtonsPanel.Init(SetSettingsPanel, SetRulesPanel, onPlayClick, startMenu, startMenuToken);
 

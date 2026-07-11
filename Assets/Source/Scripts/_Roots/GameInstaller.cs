@@ -33,7 +33,7 @@ namespace Roots
 
             Container.Bind<LoadRoot>().FromInstance(_loadRoot).AsSingle();
 
-            _dBRoot = new DBRoot();
+            _dBRoot = new DBRoot(_loadRoot);
             Container.Bind<DBRoot>().FromInstance(_dBRoot).AsSingle();
 
             _screenRoot = new ScreenRoot();

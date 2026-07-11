@@ -7,6 +7,7 @@ using Cysharp.Threading.Tasks;
 using Menues;
 using Servers;
 using Servers.DTO;
+using TMPro;
 using Tools.Loads;
 using Tools.UI;
 using Tools.UI.Extendeds;
@@ -24,9 +25,12 @@ namespace StartMenues.LogInButtonsPanels
         [SerializeField] private ConfirmableFocusableButton _logInButton;
         [SerializeField] private ConfirmableFocusableButton _registraitionButton;
         [SerializeField] private ConfirmableFocusableButton _exitButton;
+        [SerializeField] private Label _errorLabel;
 
         private LoadRoot _loadRoot;
         private DBRoot _dBRoot;
+
+        private CancellationToken _menuParentToken;
         private CancellationTokenSource _tokenSource;
 
         //private List<ConfirmableFocusableButton> _focusableButtons;
@@ -41,11 +45,12 @@ namespace StartMenues.LogInButtonsPanels
             _dBRoot = dBRoot;
         }
 
-        public void Init(Action switchOnMainPanel, Action onRegistraitionButtonClick)
+        public void Init(Action switchOnMainPanel, Action onRegistraitionButtonClick, CancellationToken menuParentToken)
         {
             //_isComplete = true;
             //_fadablePanel.Init();
             _switchOnMainPanel = switchOnMainPanel;
+            _menuParentToken = menuParentToken;
             ISelectHandler selectHandler = new LogInButtonsPanelSelectHandler(_loginIF, _passwordIF, _logInButton, _registraitionButton, _exitButton);
 
             List<ConfirmableFocusableButton> focusableButtons = new List<ConfirmableFocusableButton>()
@@ -62,6 +67,7 @@ namespace StartMenues.LogInButtonsPanels
             _exitButton.Init(this, Utils.Quit);
 
             _passwordIF.inputType = InputType.Password;
+            _errorLabel.gameObject.SetActive(false);
 
             //_passwordIF.onValueChanged.AddListener(OnPasswordValueChanged);
 
@@ -82,9 +88,10 @@ namespace StartMenues.LogInButtonsPanels
 
         private void OnLogIn()
         {
+            _errorLabel.gameObject.SetActive(false);
             //_tokenSource?.Dispose();
             Utils.DestroyCTS(ref _tokenSource);
-            _tokenSource = new CancellationTokenSource();
+            _tokenSource = CancellationTokenSource.CreateLinkedTokenSource(_menuParentToken);
             CancellationToken token = _tokenSource.Token;
 
             LogInProcessing(token).Forget();
@@ -113,6 +120,8 @@ namespace StartMenues.LogInButtonsPanels
                 Debug.Log($"Ошибка {nameof(LogInButtonsPanel)}-->{nameof(LogInProcessing)}: {ex.Message}");
                 _logInButton.Deactivate();
                 _logInButton.Activate();
+                _errorLabel.gameObject.SetActive(true);
+                _errorLabel.SetText(ex.Message);
                 loadSession.Complete();
                 _tokenSource.Cancel();
             }

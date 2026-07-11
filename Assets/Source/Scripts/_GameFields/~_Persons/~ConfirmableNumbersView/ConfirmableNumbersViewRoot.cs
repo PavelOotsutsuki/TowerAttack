@@ -87,23 +87,23 @@ namespace GameFields.Persons.ConfirmableNumbersView
 
         private void SetTextByEnemy()
         {
-            SetText(_enemyConfirmableNumbers, _enemyLabel);
+            SetText(_enemyConfirmableNumbers, _enemyLabel, "ПРОТИВНИКУ", "ПРОТИВНИКОМ");
         }
 
         private void SetTextByPlayer()
         {
-            SetText(_playerConfirmableNumbers, _playerLabel);
+            SetText(_playerConfirmableNumbers, _playerLabel, "ВАМ", "ВАМИ");
         }
 
-        private void SetText(ConfirmableNumbers confirmableNumbers, Label label)
+        private void SetText(ConfirmableNumbers confirmableNumbers, Label label, string leftPersonFeature, string selectedPersonFeature)
         {
             StringBuilder stringBuilder = new StringBuilder();
 
-            AppendList(stringBuilder, "<color=#00A107>ОСТАЛОСЬ</color>", confirmableNumbers.FreeNumbers);
+            AppendList(stringBuilder, $"<color=#00A107>ОСТАЛОСЬ {leftPersonFeature}</color>", confirmableNumbers.FreeNumbers);
 
             stringBuilder.Append("\n--------------------\n");
 
-            AppendList(stringBuilder, "<color=#FF0000>ВЫБРАНО</color>", confirmableNumbers.CheckedNumbers.OrderBy(n => n));
+            AppendList(stringBuilder, $"<color=#FF0000>ВЫБРАНО {selectedPersonFeature}</color>", confirmableNumbers.CheckedNumbers.OrderBy(n => n));
 
             label.SetText(stringBuilder.ToString());
         }
@@ -169,6 +169,7 @@ namespace GameFields.Persons.ConfirmableNumbersView
                 await UniTask.WaitUntil(() => _panel.IsComplete, cancellationToken: token);
 
                 gameObject.SetActive(false);
+                Utils.DestroyCTS(ref _deactivateCTS);
             }
             catch (OperationCanceledException)
             {

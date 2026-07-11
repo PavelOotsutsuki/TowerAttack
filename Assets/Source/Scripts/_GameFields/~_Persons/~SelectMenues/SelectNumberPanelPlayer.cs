@@ -159,10 +159,26 @@ namespace GameFields.Persons.SelectMenues
             }
 
             if (resultType == ResultType.Falled)
+            {
                 foreach (SelectNumber selectedNumber in CurrentSelectedNumbers)
                 {
                     SelectedNumbers.Add(selectedNumber.Number, ConvertResultTypeToNumberAnimationType(resultType));
                 }
+            }
+            else
+            {
+                foreach (SelectNumber selectedNumber in _selectNumbers)
+                {
+                    if (CurrentSelectedNumbers.Contains(selectedNumber) == false)// && SelectedNumbers.Contains(selectedNumber.Number) == false)
+                    {
+                        SelectedNumbers.Add(selectedNumber.Number, ConvertResultTypeToNumberAnimationType(resultType));
+
+                        //SelectedNumbers.Add(selectNumber.Number, NumberAnimationType.Choice);
+                    }
+
+                    //SelectedNumbers.Add(selectedNumber.Number, ConvertResultTypeToNumberAnimationType(resultType));
+                }
+            }
 
             SetSelectResultData setSelectResultData = CreateSetSelectResultData(resultType);
 

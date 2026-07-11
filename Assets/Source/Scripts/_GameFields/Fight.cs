@@ -9,12 +9,13 @@ using Tools;
 using System.Threading;
 using System.Reflection;
 using UnityEngine;
+using Servers;
 
 namespace GameFields
 {
     internal class Fight : IFightStep//, IWinnerSetter
     {
-        private const int MaxTurns = 5000;
+        private const int MaxTurns = 100;
         private const float DelayBeforeStartTurn = 3f;
 
         private readonly FightResult _fightResult;
@@ -26,12 +27,13 @@ namespace GameFields
         private readonly IActivatable _fightButtonsActivator;
         private readonly CancellationToken _fightToken;
         private readonly TurnToken _turnToken;
+        private readonly DBRoot _dBRoot;
 
         private static int _turnNumber;
 
         public Fight(PersonsState personsState, FightResult fightResult, SignalBus bus, SeatPool seatPool,
             IActivatable soundRootActivatable, IActivatable fightButtonsActivator, CancellationToken fightToken,
-            TurnToken turnToken)
+            TurnToken turnToken, DBRoot dBRoot)
         {
             _personsState = personsState;
             _fightResult = fightResult;
@@ -48,6 +50,7 @@ namespace GameFields
             _fightButtonsActivator = fightButtonsActivator;
             _fightToken = fightToken;
             _turnToken = turnToken;
+            _dBRoot = dBRoot;
         }
 
         ~Fight()
@@ -122,22 +125,31 @@ namespace GameFields
 
             if (TurnsIsOut)
             {
-                _fightResult.SetDraw();
-                IsComplete = true;
+                SettingDraw(_fightToken).Forget();
             }
+            else
+            {
+                //if (_personsState.Deactive is Player)
+                //{
+                //    Debug.Log("Player: " + _personsState.Deactive.LastEffect.ToString());
+                //    Debug.Log("Enemy: " + _personsState.Active.LastEffect.ToString());
+                //}
+                //else
+                //{
+                //    Debug.Log("Player: " + _personsState.Active.LastEffect.ToString());
+                //    Debug.Log("Enemy: " + _personsState.Deactive.LastEffect.ToString());
+                //}
 
-            //if (_personsState.Deactive is Player)
-            //{
-            //    Debug.Log("Player: " + _personsState.Deactive.LastEffect.ToString());
-            //    Debug.Log("Enemy: " + _personsState.Active.LastEffect.ToString());
-            //}
-            //else
-            //{
-            //    Debug.Log("Player: " + _personsState.Active.LastEffect.ToString());
-            //    Debug.Log("Enemy: " + _personsState.Deactive.LastEffect.ToString());
-            //}
+                _personsState.Switch();
+            }
+        }
 
-            _personsState.Switch();
+        private async UniTask SettingDraw(CancellationToken token)
+        {
+            await _dBRoot.FinishFightWithBot(null, token);
+
+            _fightResult.SetDraw();
+            IsComplete = true;
         }
     }
 }

@@ -44,22 +44,36 @@ namespace Roots
 
         private void StartFight(int id_mode)
         {
-            StartingFight(id_mode, _gameRootToken).Forget();
+            //StartingFight(id_mode, _gameRootToken).Forget();
+            CallbackHandler callbackHandler = new CallbackHandler();
+
+            StartFightWithBot(id_mode, _gameRootToken, callbackHandler).Forget();
+
+            SwitchPrefab(_gameFieldRootPrefab, _gameRootToken, callbackHandler);
         }
 
-        private async UniTask StartingFight(int id_mode, CancellationToken token)
+        //private async UniTask StartingFight(int id_mode, CancellationToken token)
+        //{
+        //    CallbackHandler callbackHandler = new CallbackHandler();
+
+        //    StartFightWithBot(id_mode, token, callbackHandler).Forget();
+
+        //    SwitchPrefab(_gameFieldRootPrefab, token, callbackHandler);
+        //}
+
+        private async UniTask StartFightWithBot(int id_mode, CancellationToken token, CallbackHandler callbackHandler)
         {
             await _dBRoot.StartFightWithBot(id_mode, token);
 
-            SwitchPrefab(_gameFieldRootPrefab, token);
+            callbackHandler.Complete();
         }
 
-        private void SwitchPrefab(RootPrefab activatingRootPrefab, CancellationToken token)
+        private void SwitchPrefab(RootPrefab activatingRootPrefab, CancellationToken token, CallbackHandler callbackHandler = null)
         {
-            SwitchingPrefab(activatingRootPrefab, token).Forget();
+            SwitchingPrefab(activatingRootPrefab, token, callbackHandler).Forget();
         }
 
-        private async UniTask SwitchingPrefab(RootPrefab activatingRootPrefab, CancellationToken token)
+        private async UniTask SwitchingPrefab(RootPrefab activatingRootPrefab, CancellationToken token, CallbackHandler dbRootCallbackHandler)
         {
             if (_currentRootPrefab != null)
             {
@@ -71,6 +85,10 @@ namespace Roots
             }
 
             _currentRootPrefab = activatingRootPrefab;
+
+            if (dbRootCallbackHandler != null)
+                if (dbRootCallbackHandler.IsComplete == false)
+                    await UniTask.WaitUntil(() => dbRootCallbackHandler.IsComplete, cancellationToken: token);
 
             _currentRootPrefab.Activate();
 

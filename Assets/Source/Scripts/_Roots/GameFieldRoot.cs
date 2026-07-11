@@ -27,6 +27,8 @@ using System;
 using GameFields.Backgrounds;
 using System.Threading;
 using Tools.UI.UIHelpers;
+using Cysharp.Threading.Tasks;
+using Tools.Utils;
 
 namespace Roots
 {
@@ -171,6 +173,8 @@ namespace Roots
             //IDeactivatable onMainMenuSwitcher = FindObjectOfType(typeof(Creator), true) as IDeactivatable;
             //IDeactivatable onMainMenuSwitcher = new TestFightRootDestroyer(() => Destroy(gameObject));
 
+            //TestGCCount(GameFieldToken).Forget();
+
             _fightPVE.Init(_personsState, enemyAI, _bus, _seatPool, _soundRoot, _fightButtonsActivator,
     onDestroyPrefab, GameFieldToken, fightSource.Token, fightSource, turnToken);
             //_gameFieldRoot.Init(_personsState, enemyAI, _bus, _seatPool, _soundRoot, _fightButtonsActivator, onMainMenuSwitcher);
@@ -185,6 +189,24 @@ namespace Roots
         {
             _inputRoot.Activate();
         }
+
+        private async UniTask TestGCCount(CancellationToken token)
+        {
+            try
+            {
+                while (true)
+                {
+                    Utils.PrintGCInfo();
+
+                    await UniTask.WaitForSeconds(60f, cancellationToken: token);
+                }
+            }
+            catch
+            {
+                Debug.Log("Конец теста");
+            }
+        }
+
 
         //private IEnumerator Initing(SignalBus bus, Deck deck, SeatPool seatPool, CardDescription cardDescription, HandPlayer handPlayer,
         //    InformationLabel informationLabel, LookCardMenuPlayer lookCardMenu, VariantC ardCreator variantCardCreator,

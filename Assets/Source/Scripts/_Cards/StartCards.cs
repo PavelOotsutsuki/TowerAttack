@@ -32,15 +32,15 @@ namespace Cards
                 _startCardNames.Add(cardName);
             }
 
-            //for (int i = 1; i <= 50; i++)
+            //for (int i = 1; i <= 25; i++)
             //{
-            //    CardName cardName = (CardName)(i % 7 + 39);
+            //    CardName cardName = (CardName)(12);
             //    _startCardNames.Add(cardName);
             //}
 
-            //for (int i = 1; i <= 10; i++)
+            //for (int i = 1; i <= 25; i++)
             //{
-            //    CardName cardName = (CardName)(49);
+            //    CardName cardName = (CardName)(9);
             //    _startCardNames.Add(cardName);
             //}
 

@@ -29,7 +29,7 @@ namespace Roots
 
             _gameRootCTS = CancellationTokenSource.CreateLinkedTokenSource(this.destroyCancellationToken);
             //Debug.Log("GameRoot: " + _gameRootCTS.GetHashCode());
-
+            Utils.PrintGCInfo();
             StartGame();
         }
 

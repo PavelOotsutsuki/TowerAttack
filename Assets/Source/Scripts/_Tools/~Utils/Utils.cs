@@ -78,6 +78,16 @@ namespace Tools.Utils
             cts = null;
         }
 
+        public static void PrintGCInfo()
+        {
+            int gen0Collections = GC.CollectionCount(0);
+            int gen1Collections = GC.CollectionCount(1);
+            int gen2Collections = GC.CollectionCount(2);
+
+            Debug.Log($"<b>Количество сборок:</b> Gen0={gen0Collections}, Gen1={gen1Collections}, Gen2={gen2Collections}");
+        }
+
+
         //public static async UniTask DoAnimationAsync(CancellationToken ct, Tween tween)
         //{
         //    AutoResetUniTaskCompletionSource tcs = AutoResetUniTaskCompletionSource.Create();

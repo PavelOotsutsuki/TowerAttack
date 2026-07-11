@@ -8,7 +8,7 @@ namespace GameFields
 {
     public static class GameFieldGC
     {
-        private const int MODE = 3;
+        private const int MODE = 1;
 
         private static DateTime _lastCollect = DateTime.Now;
         // 1 - коллектор работает как обычно

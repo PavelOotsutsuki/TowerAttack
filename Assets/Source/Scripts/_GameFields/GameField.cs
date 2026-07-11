@@ -10,6 +10,7 @@ using GameFields.Seats;
 using Tools;
 using System;
 using System.Threading;
+using Servers;
 
 namespace GameFields
 {
@@ -18,6 +19,7 @@ namespace GameFields
         [SerializeField] private StartFight _startFight;
         [SerializeField] private EndFight _endFight;
         //[SerializeField] private AudioClip _backgroundMusic;
+        [Inject] private DBRoot _dBRoot;
 
         private EffectFactory _effectFactory;
         private FightStepsController _fightStepsController;
@@ -31,7 +33,7 @@ namespace GameFields
 
             FightResult fightResult = new FightResult();
             Fight fight = new Fight(personsState, fightResult, bus, seatPool
-                , soundRootActivatable, fightButtonsActivator, fightToken, turnToken);
+                , soundRootActivatable, fightButtonsActivator, fightToken, turnToken, _dBRoot);
             _endFight.Init(fightResult, onDestroyPrefab, gameFieldToken, fightCTS);
             _fightStepsController = new FightStepsController(_startFight, fight, _endFight, gameFieldToken);
 

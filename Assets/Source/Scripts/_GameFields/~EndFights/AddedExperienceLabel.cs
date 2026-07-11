@@ -9,7 +9,7 @@ using UnityEngine;
 namespace GameFields.EndFights
 {
     [RequireComponent(typeof(NascentLabel))]
-    public class EndFightLabel : MonoBehaviour, ICompletable, IShowable<EndFightLabelActivateData>, IAutomaticFillComponents
+    public class AddedExperienceLabel : MonoBehaviour, ICompletable, IShowable<AddedExperienceLabelActivateData>, IAutomaticFillComponents
     {
         [SerializeField] private NascentLabel _label;
         [SerializeField] private TMP_Text _TMPtext;
@@ -25,7 +25,7 @@ namespace GameFields.EndFights
             _label.Init();
         }
 
-        public void Show(EndFightLabelActivateData data)
+        public void Show(AddedExperienceLabelActivateData data)
         {
             _TMPtext.color = data.TextColor;
 

@@ -48,8 +48,8 @@ namespace GameFields.Persons.ConfirmableNumbersView
                 SelectNumbersList fullList = new SelectNumbersList();
 
                 AddRange(fullList, _attackedNumbers.SelectedNumbersStates);
-                AddRange(fullList, _choicedNumbers.SelectedNumbersStates);
                 AddRange(fullList, _cursedNumbers.SelectedNumbersStates);
+                AddRange(fullList, _choicedNumbers.SelectedNumbersStates);
 
                 return fullList;
             }

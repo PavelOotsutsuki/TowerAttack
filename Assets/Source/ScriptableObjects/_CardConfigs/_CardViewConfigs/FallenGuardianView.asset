@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: FallenGuardianView
   m_EditorClassIdentifier: 
   <Number>k__BackingField: 50
-  <Icon>k__BackingField: {fileID: 21300000, guid: 0c3899f19f32141409bb5f855192a0ee, type: 3}
+  <Icon>k__BackingField: {fileID: 21300000, guid: 2d3f4087cd8e548f7822e6da01c2fd0a, type: 3}
   <Description>k__BackingField: "\u042F \u0432\u044B\u0431\u0440\u0430\u043B \u0441\u0442\u043E\u0440\u043E\u043D\u0443.
     \u0418 \u043E\u043D\u0430 \u0442\u0435\u0431\u0435 \u043D\u0435 \u043F\u043E\u043D\u0440\u0430\u0432\u0438\u0442\u0441\u044F."
   <Feature>k__BackingField: "<CAP_7>\u0412\u0430\u0440\u0438\u0430\u043D\u0442:</CAP_7>

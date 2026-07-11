@@ -22,7 +22,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3798483997968276124, guid: 9175d757db24f4d2589c229c8b64d17f, type: 3}
       propertyPath: _data.<IsRememberSuccessChoice>k__BackingField
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3954041444867268130, guid: 9175d757db24f4d2589c229c8b64d17f, type: 3}
       propertyPath: m_IsActive

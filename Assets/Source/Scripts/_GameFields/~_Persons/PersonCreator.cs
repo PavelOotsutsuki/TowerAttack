@@ -40,6 +40,7 @@ using Tools.UI.UIHelpers;
 using GameFields.Histories;
 using GameFields.Persons.ConfirmableNumbersView;
 using System.Threading;
+using Servers;
 
 namespace GameFields.Persons
 {
@@ -165,6 +166,7 @@ namespace GameFields.Persons
         [SerializeField] private FireCardContainer _fireContainer;
         //[SerializeField] private float _fireDrawCardDelay = 2f;
         //[SerializeField] private InvertCardAnimationData _fireAnimationInvertData;
+        [Inject] private DBRoot _dbRoot;
 
         private SignalBus _bus;
         private Deck _deck;
@@ -269,9 +271,9 @@ namespace GameFields.Persons
             _inputRoot = new GameFieldInputRoot(_endTurnButton, _fightMenu, _fightMenu, _historyMenu);
 
             _enemyLoseActions = new LoseActions(_enemyTower, _enemyTower, _playerHand, _bus, _inputRoot, _fightMenu,
-                _fightButtonsActivator, soundController);
+                _fightButtonsActivator, soundController, _dbRoot);
             _playerLoseActions = new LoseActions(_playerTower, _playerTower, _playerHand, _bus, _inputRoot, _fightMenu,
-                _fightButtonsActivator, soundController);
+                _fightButtonsActivator, soundController, _dbRoot);
 
             _fightMenu.Init(_inputRoot, _playerLoseActions, cardSoundRoot, musicVolume, cardCapabilityDescription, fightToken);
             _fightMenuActivateButton.Init(_fightMenu, _UIHelperDescription);

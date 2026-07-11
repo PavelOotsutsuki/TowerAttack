@@ -1,13 +1,14 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Servers;
 using Tools;
 using Tools.Utils;
 using Tools.Utils.FillComponents;
 using UnityEngine;
+using Zenject;
 
 namespace GameFields.EndFights
 {
@@ -17,13 +18,18 @@ namespace GameFields.EndFights
         [SerializeField] private EndFightLabel _endFightLabel;
         [SerializeField] private ExitFightLabel _exitFightLabel;
         [SerializeField] private ExitFightMenu _exitFightMenu;
+        [SerializeField] private AddedExperienceLabel _addedExperienceLabel;
 
         [SerializeField] private EndFightConfig _config;
+
+        [Inject] private DBRoot _dBRoot;
 
         private IReadonlyFightResult _fightResult;
 
         private CancellationToken _gameFieldToken;
         private CancellationTokenSource _fightCTS;
+
+        private int? _addedXp = null;
 
         private bool _isComplete;
 
@@ -42,6 +48,7 @@ namespace GameFields.EndFights
             _endFightLabel.Init(_gameFieldToken);
             _exitFightLabel.Init();
             _exitFightMenu.Init(onDestroyPrefab);
+            _addedExperienceLabel.Init(_gameFieldToken);
         }
 
         public bool IsComplete => _isComplete;
@@ -50,47 +57,60 @@ namespace GameFields.EndFights
         {
             gameObject.SetActive(true);
 
-            EndFightLabelActivateData endFightLabelActivateData = _fightResult.Result switch
-            {
-                EndFightResults.PlayerWin => _config.PlayerWinData,
-                EndFightResults.EnemyWin => _config.EnemyWinData,
-                EndFightResults.Draw => _config.DrawData,
-                _ => throw new ArgumentNullException("Invalid EndTurnResult")
-            };
+            Utils.DestroyCTS(ref _fightCTS);
+            //_fightCTS?.Cancel();
+            //_fightCTS?.Dispose();
 
-            //Utils.DestroyCTS(ref _fightCTS);
-            _fightCTS?.Cancel();
-            _fightCTS?.Dispose();
-
-            StartingEndFight(endFightLabelActivateData).Forget();
+            StartingEndFight(_fightResult.Result, _gameFieldToken).Forget();
             _isComplete = true;
         }
 
-        private async UniTask StartingEndFight(EndFightLabelActivateData endFightLabelActivateData)
+        private async UniTask StartingEndFight(EndFightResults result, CancellationToken token)
         {
             try
             {
-                _panel.Show(new CancellationTokenData(_gameFieldToken));
+                GetLastAddedExp(token).Forget();
+                EndFightLabelActivateData endFightLabelActivateData = result switch
+                {
+                    EndFightResults.PlayerWin => _config.PlayerWinData,
+                    EndFightResults.EnemyWin => _config.EnemyWinData,
+                    EndFightResults.Draw => _config.DrawData,
+                    _ => throw new ArgumentNullException("Invalid EndTurnResult: " + result)
+                };
 
-                await UniTask.WaitUntil(() => _panel.IsComplete, cancellationToken: _gameFieldToken);
-                await UniTask.WaitForSeconds(_config.DelayBeforeEndFightLabelShow, cancellationToken: _gameFieldToken);
+                _panel.Show(new CancellationTokenData(token));
+
+                await UniTask.WaitUntil(() => _panel.IsComplete, cancellationToken: token);
+                await UniTask.WaitForSeconds(_config.DelayBeforeEndFightLabelShow, cancellationToken: token);
 
                 _endFightLabel.Show(endFightLabelActivateData);
 
-                await UniTask.WaitUntil(() => _endFightLabel.IsComplete, cancellationToken: _gameFieldToken);
-                await UniTask.WaitForSeconds(_config.DelayBeforeExitFightLabelShow, cancellationToken: _gameFieldToken);
+                await UniTask.WaitUntil(() => _endFightLabel.IsComplete, cancellationToken: token);
+                await UniTask.WaitForSeconds(_config.DelayBeforeAddedExperienceLabelShow, cancellationToken: token);
+                await UniTask.WaitUntil(() => _addedXp.HasValue, cancellationToken: token);
 
-                _exitFightLabel.Show(new CancellationTokenData(_gameFieldToken));
+                AddedExperienceLabelActivateData addedExperienceLabelActivateData = new AddedExperienceLabelActivateData(_addedXp.Value, result);
+                _addedExperienceLabel.Show(addedExperienceLabelActivateData);
 
-                await UniTask.WaitUntil(() => _exitFightLabel.IsComplete, cancellationToken: _gameFieldToken);
+                await UniTask.WaitUntil(() => _addedExperienceLabel.IsComplete, cancellationToken: token);
+                await UniTask.WaitForSeconds(_config.DelayBeforeExitFightLabelShow, cancellationToken: token);
 
-                ExitFightMenuActivateData exitFightMenuActivateData = new ExitFightMenuActivateData(_fightResult.Result);
+                _exitFightLabel.Show(new CancellationTokenData(token));
+
+                await UniTask.WaitUntil(() => _exitFightLabel.IsComplete, cancellationToken: token);
+
+                ExitFightMenuActivateData exitFightMenuActivateData = new ExitFightMenuActivateData(result);
                 _exitFightMenu.Activate(exitFightMenuActivateData);
             }
             catch (OperationCanceledException)
             {
                 Debug.Log($"ОТМЕНА ТОКЕНА: {MethodBase.GetCurrentMethod().DeclaringType.Name}: {GetType().Name}");
             }
+        }
+
+        private async UniTask GetLastAddedExp(CancellationToken token)
+        {
+            _addedXp = await _dBRoot.GetLastAddedExp(token);
         }
 
         #region AutomaticFillComponents
@@ -102,7 +122,8 @@ namespace GameFields.EndFights
                 DefineEndFightPanel(),
                 DefineEndFightLabel(),
                 DefineExitFightLabel(),
-                DefineExitFightMenu()
+                DefineExitFightMenu(),
+                DefineAddedExperienceLabel()
             };
 
             return list;
@@ -130,6 +151,12 @@ namespace GameFields.EndFights
         private ComponentAttachInfo DefineExitFightMenu()
         {
             return AutomaticFillComponents.DefineComponent(this, ref _exitFightMenu, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineAddedExperienceLabel))]
+        private ComponentAttachInfo DefineAddedExperienceLabel()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _addedExperienceLabel, ComponentLocationTypes.InChildren);
         }
         #endregion 
     }

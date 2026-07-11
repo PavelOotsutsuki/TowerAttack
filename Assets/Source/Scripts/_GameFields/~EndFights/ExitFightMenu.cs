@@ -42,7 +42,8 @@ namespace GameFields.EndFights
         {
             if (Input.anyKeyDown)
             {
-                Deactivating(this.destroyCancellationToken).Forget();
+                //Deactivating(this.destroyCancellationToken).Forget();
+                Deactivating();
             }
         }
 
@@ -67,7 +68,21 @@ namespace GameFields.EndFights
             gameObject.SetActive(false);
         }
 
-        private async UniTask Deactivating(CancellationToken token)
+        //private async UniTask Deactivating(CancellationToken token)
+        //{
+        //    if (IsActive == false)
+        //        return;
+
+        //    IsActive = false;
+
+        //    Deactivate();
+
+        //    //await _dBRoot.FinishFightWithBot(_data.IsWin, token);
+
+        //    _onDestroyPrefab?.Invoke();
+        //}
+
+        private void Deactivating()
         {
             if (IsActive == false)
                 return;
@@ -76,7 +91,7 @@ namespace GameFields.EndFights
 
             Deactivate();
 
-            await _dBRoot.FinishFightWithBot(_data.IsWin, token);
+            //await _dBRoot.FinishFightWithBot(_data.IsWin, token);
 
             _onDestroyPrefab?.Invoke();
         }

@@ -114,6 +114,7 @@ namespace GameFields.Persons.Towers
                 await UniTask.WaitUntil(() => _viewPanel.IsComplete && _bigCard.IsComplete, cancellationToken: token);
 
                 gameObject.SetActive(false);
+                Utils.DestroyCTS(ref _deactivateCTS);
             }
             catch (OperationCanceledException)
             {
