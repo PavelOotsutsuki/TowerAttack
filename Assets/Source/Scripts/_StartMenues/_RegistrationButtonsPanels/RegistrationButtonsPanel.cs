@@ -12,6 +12,8 @@ using UnityEngine;
 //using UnityEngine.EventSystems;
 using Zenject;
 using static TMPro.TMP_InputField;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace StartMenues.RegistrationButtonsPanels
 {
@@ -104,6 +106,8 @@ namespace StartMenues.RegistrationButtonsPanels
 
             try
             {
+                CheckInputData();
+
                 _loadRoot.AddSession(loadSession);
 
                 await _dBRoot.CreateUser(_loginIF.text.Trim(), _passwordIF.text, token);
@@ -126,6 +130,47 @@ namespace StartMenues.RegistrationButtonsPanels
                 loadSession.Complete();
                 Utils.DestroyCTS(ref _currentCTS);
             }
+        }
+
+        private void CheckInputData()
+        {
+            //StringBuilder errMsg = new StringBuilder();
+
+            CheckLogin();
+            CheckPassword();
+
+            //if (errMsg.ToString() != "")
+            //    throw new Exception(errMsg.ToString());
+        }
+
+        private void CheckLogin()
+        {
+            string login = _loginIF.text;
+
+            if (login == "")
+                throw new Exception("Логин не может быть пустым!");
+
+            if (Regex.IsMatch(login, @"^[a-zA-Z][a-zA-Z0-9_]{3,20}$") == false)
+                throw new Exception("Логин должен начинаться с буквы, иметь в себе только латинские буквы, цифры и _, не менее 3 символов и не более 20");
+        }
+
+        private void CheckPassword()
+        {
+            if (_passwordIF.text != _passwordAgainIF.text)
+                throw new Exception("Пароли не совпадают!");
+
+            string password = _passwordIF.text;
+
+            if (password.Length < 3)
+                throw new Exception("Пароль не может быть меньше 3 символов!");
+
+
+
+            //if (login == "")
+            //    errMsg.Append("Логин не может быть пустым!");
+
+            //if (Regex.IsMatch(login, @"^[a-zA-Z][a-zA-Z0-9_]{3,20}$") == false)
+            //    errMsg.Append("Логин должен начинаться с буквы, иметь в себе только латинские буквы, цифры и _, не менее 3 символов и не более 20");
         }
 
         private void OnDestroy()

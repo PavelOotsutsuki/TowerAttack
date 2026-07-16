@@ -65,52 +65,60 @@ namespace Servers
 
             using (UnityWebRequest request = UnityWebRequest.Post(currentUri, WWWForm))
             {
-                request.certificateHandler = new BypassCertificate();
-                await request.SendWebRequest().ToUniTask(cancellationToken: token);
-
-                //string userJson = JsonUtility.ToJson(user);
-            //Debug.Log(userJson);
-            //UnityWebRequest.Post()
-            //using (UnityWebRequest request = new UnityWebRequest(CreateUserUri, "POST"))
-            //{
-            //    byte[] bodyRaw = Encoding.UTF8.GetBytes(userJson);
-
-            //    request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-            //    request.downloadHandler = new DownloadHandlerBuffer();
-            //    request.SetRequestHeader("Content-Type", "application/json");
-            //    request.certificateHandler = new BypassCertificate();
-
-            //    await request.SendWebRequest().ToUniTask(cancellationToken: token);
-
-                if (request.result == UnityWebRequest.Result.Success)
+                try
                 {
-                    Debug.Log(request.downloadHandler.text);
-                    //TestDTO data = JsonUtility.FromJson<TestDTO>(request.downloadHandler.text);
-                    //Debug.Log(data.id);
-                    //Debug.Log(data.name);
-                    //Debug.Log(data.score);
-                    //string arrayDTO = "{\"items\":" + request.downloadHandler.text + "}";
-                    //Debug.Log(arrayDTO);
-                    //UserDTOWrapper data = JsonUtility.FromJson<UserDTOWrapper>(arrayDTO);
-                    //UserDTO userDTO = new UserDTO()
+                    request.certificateHandler = new BypassCertificate();
+                    await request.SendWebRequest().ToUniTask(cancellationToken: token);
+
+                    //string userJson = JsonUtility.ToJson(user);
+                    //Debug.Log(userJson);
+                    //UnityWebRequest.Post()
+                    //using (UnityWebRequest request = new UnityWebRequest(CreateUserUri, "POST"))
                     //{
-                    //    Id = data.items[0].Id,
-                    //    Username = data.items[0].Username,
-                    //    Score = data.items[0].Score,
-                    //    Level = data.items[0].Level,
-                    //    LastLogin = data.items[0].LastLogin
-                    //};
-                    _currentIdUser = Guid.Parse(request.downloadHandler.text.Trim('"'));
-                    _lastLogInDate = DateTime.Now;
-                    //GetUserDTO userDTO = await GetUserData(token);
+                    //    byte[] bodyRaw = Encoding.UTF8.GetBytes(userJson);
 
-                    Debug.Log(_currentIdUser);
-                    //return userDTO;
+                    //    request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+                    //    request.downloadHandler = new DownloadHandlerBuffer();
+                    //    request.SetRequestHeader("Content-Type", "application/json");
+                    //    request.certificateHandler = new BypassCertificate();
+
+                    //    await request.SendWebRequest().ToUniTask(cancellationToken: token);
+
+                    if (request.result == UnityWebRequest.Result.Success)
+                    {
+                        Debug.Log(request.downloadHandler.text);
+                        //TestDTO data = JsonUtility.FromJson<TestDTO>(request.downloadHandler.text);
+                        //Debug.Log(data.id);
+                        //Debug.Log(data.name);
+                        //Debug.Log(data.score);
+                        //string arrayDTO = "{\"items\":" + request.downloadHandler.text + "}";
+                        //Debug.Log(arrayDTO);
+                        //UserDTOWrapper data = JsonUtility.FromJson<UserDTOWrapper>(arrayDTO);
+                        //UserDTO userDTO = new UserDTO()
+                        //{
+                        //    Id = data.items[0].Id,
+                        //    Username = data.items[0].Username,
+                        //    Score = data.items[0].Score,
+                        //    Level = data.items[0].Level,
+                        //    LastLogin = data.items[0].LastLogin
+                        //};
+                        _currentIdUser = Guid.Parse(request.downloadHandler.text.Trim('"'));
+                        _lastLogInDate = DateTime.Now;
+                        //GetUserDTO userDTO = await GetUserData(token);
+
+                        Debug.Log(_currentIdUser);
+                        //return userDTO;
+                    }
+                    else
+                    {
+                        Debug.LogError(request.error);
+                        throw new Exception(request.downloadHandler.text);
+                    }
                 }
-                else
+                catch
                 {
-                    Debug.LogError(request.error);
-                    throw new Exception();
+                    Debug.LogError("CreateUser: " + request.error + " " + request.downloadHandler.text);
+                    throw new Exception(request.downloadHandler.text);
                 }
             }
         }
@@ -195,6 +203,7 @@ namespace Servers
                 }
                 catch (Exception ex)
                 {
+                    Debug.Log("LogInUser -> выполнение CATCH");
                     throw new Exception(request.downloadHandler.text);
                 }
 
@@ -445,7 +454,7 @@ namespace Servers
             catch (Exception ex)
             {
                 Debug.LogError($"Ошибка {nameof(DBRoot)}-->{nameof(GetMainMenuUserData)}: {ex.Message}");
-                return 0;
+                return -1;
             }
         }
     }

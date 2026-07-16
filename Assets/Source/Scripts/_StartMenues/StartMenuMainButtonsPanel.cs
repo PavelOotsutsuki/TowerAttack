@@ -113,8 +113,18 @@ namespace StartMenues
             GetMainMenuUserDataDTO getMainMenuUserDataDTO = await _dBRoot.GetMainMenuUserData(token);
 
             _labelLogin.SetText(getMainMenuUserDataDTO.username);
-            _labelLvl.SetText($"Lvl: {getMainMenuUserDataDTO.level}");
+            _labelLvl.SetText($"LVL: {getMainMenuUserDataDTO.level}");
             _labelEx.SetText($"EX: {getMainMenuUserDataDTO.score}/{getMainMenuUserDataDTO.max_experience}");
+
+            string number = "один";
+
+            if (getMainMenuUserDataDTO.level == 11)
+                number = "одиннадцать";
+
+            if (getMainMenuUserDataDTO.level == 12)
+                number = "двенадцать";
+
+            _labelLvl.SetColor(Utils.GetColorByString(getMainMenuUserDataDTO.username + number));
 
             IsPreactive = true;
         }

@@ -87,6 +87,67 @@ namespace Tools.Utils
             Debug.Log($"<b>Количество сборок:</b> Gen0={gen0Collections}, Gen1={gen1Collections}, Gen2={gen2Collections}");
         }
 
+        public static Color GetColorByString(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+                return Color.black;
+
+            // 1. Делим строку на 6 частей
+            List<string> chunks = SplitIntoSixParts(input);
+
+            string hexResult = "#FF";
+
+            foreach (string chunk in chunks)
+            {
+                // 2. Переводим часть строки в int (суммируем коды символов) 
+                int charCodeSum = 0;
+                foreach (char c in chunk)
+                {
+                    charCodeSum += (int)c;
+                }
+
+                // 3. Делим на 16 и получаем остаток (число от 0 до 15)
+                int remainder = charCodeSum % 16;
+
+                // 4. Преобразуем остаток в шестнадцатеричную цифру (0-9, A-F)
+                // Формат "X" дает заглавные латинские буквы
+                hexResult += remainder.ToString("X");
+            }
+
+            // Убираем символ '#', если он есть, и добавляем в начало FF отвечающуб за альфа
+            // UPD: не убираем решетку
+            //string cleanHex = "FF" + hexResult.Replace("#", "");
+
+            // Парсим строку в целое число в шестнадцатеричной системе
+            //int argb = int.Parse(cleanHex, System.Globalization.NumberStyles.HexNumber);
+
+
+            if (ColorUtility.TryParseHtmlString(hexResult, out Color color))
+                return color;
+            else
+                return Color.black;
+        }
+
+        private static List<string> SplitIntoSixParts(string input)
+        {
+            List<string> parts = new List<string>();
+            int length = input.Length;
+
+            int baseSize = length / 6;   // Базовый размер каждый строки
+            int extraChars = length % 6; // Остаток, который нужно распределить
+
+            int currentIndex = 0;
+            for (int i = 0; i < 6; i++)
+            {
+                // Если индекс части меньше остатка, добавляем ей 1 лишний символ
+                int currentSize = baseSize + (i < extraChars ? 1 : 0);
+
+                parts.Add(input.Substring(currentIndex, currentSize));
+                currentIndex += currentSize;
+            }
+
+            return parts;
+        }
 
         //public static async UniTask DoAnimationAsync(CancellationToken ct, Tween tween)
         //{

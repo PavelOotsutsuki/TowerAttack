@@ -23,6 +23,11 @@ namespace Tools.UI
             _text.text = text;
         }
 
+        public void SetColor(Color color)
+        {
+            _text.color = color;
+        }
+
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(Label))]
         public List<ComponentAttachInfo> DefineAllComponents()
