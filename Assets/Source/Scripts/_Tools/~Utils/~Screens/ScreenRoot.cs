@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Collections;
 using Cysharp.Threading.Tasks;
 using System.Threading;
 
@@ -12,14 +11,16 @@ namespace Tools.Utils.Screens
     {
         private readonly Resolution[] _resolutions;
         private readonly List<ResolutionData> _resolutionsData;
+        private readonly CancellationToken _gameRootToken;
 
-        private CancellationTokenSource _token;
-        private UniTask _waitingToUpdateScreen;
-        private UniTask _waitingToCancelWaitingToUpdateScreen;
+        private CancellationTokenSource _currentCTS;
+        //private UniTask _waitingToUpdateScreen;
+        //private UniTask _waitingToCancelWaitingToUpdateScreen;
 
-        public ScreenRoot()
+        public ScreenRoot(CancellationToken gameRootToken)
         {
             _resolutions = Screen.resolutions;
+            _gameRootToken = gameRootToken;
 
             _resolutionsData = new List<ResolutionData>();
 
@@ -42,39 +43,50 @@ namespace Tools.Utils.Screens
 
             Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
 
-            CancelWaitingToUpdateScreen();
+            //CancelWaitingToUpdateScreen();
 
-            _token = new CancellationTokenSource();
-            _waitingToUpdateScreen = WaitingToUpdateScreen(resolution).ToUniTask(cancellationToken: _token.Token);
+            Utils.DestroyCTS(ref _currentCTS);
+            Debug.Log("SetResolution.CreateToken: " + resolution);
+            _currentCTS = CancellationTokenSource.CreateLinkedTokenSource(_gameRootToken);
+            WaitingToUpdateScreen(resolution, _currentCTS.Token).Forget();
+            Debug.Log("SetResolution.WaitingToUpdateScreen: " + resolution);
 
-            _waitingToCancelWaitingToUpdateScreen = WaitingToCancelWaitingToUpdateScreen().ToUniTask(cancellationToken: _token.Token);
+            WaitingToCancelWaitingToUpdateScreen(_gameRootToken).Forget();
+            Debug.Log("SetResolution.WaitingToCancelWaitingToUpdateScreen: " + resolution);
         }
 
-        private IEnumerator WaitingToUpdateScreen(Resolution resolution)
+        private async UniTask WaitingToUpdateScreen(Resolution resolution, CancellationToken token)
         {
-            yield return new WaitUntil(() => CurrentResolution.Equals(resolution));
-            yield return new WaitForSeconds(0.1f);
-
-            Debug.Log("Update Screen!");
-            OnChangeResolution?.Invoke();
-        }
-
-        private IEnumerator WaitingToCancelWaitingToUpdateScreen()
-        {
-            yield return new WaitForSeconds(5f); // За 5 секунд не обновил - никогда не обновит
-
-            Debug.Log("Закрываем вручную :(");
-            CancelWaitingToUpdateScreen();
-        }
-
-        private void CancelWaitingToUpdateScreen()
-        {
-            if (_waitingToUpdateScreen.Status == UniTaskStatus.Pending ||
-                _waitingToCancelWaitingToUpdateScreen.Status == UniTaskStatus.Pending)
+            try
             {
-                _token.Cancel();
+                await UniTask.WaitUntil(() => CurrentResolution.Equals(resolution), cancellationToken: token);
+                await UniTask.WaitForSeconds(0.1f, cancellationToken: token);
+
+                Debug.Log("Update Screen!");
+                OnChangeResolution?.Invoke();
+            }
+            catch (OperationCanceledException ex)
+            {
+                Debug.Log("Недождались смены Resolution, отмена токена");
             }
         }
+
+        private async UniTask WaitingToCancelWaitingToUpdateScreen(CancellationToken token)
+        {
+            await UniTask.WaitForSeconds(5f, cancellationToken: token); // За 5 секунд не обновил - никогда не обновит
+
+            Debug.Log("Закрываем вручную :(");
+            Utils.DestroyCTS(ref _currentCTS);
+        }
+
+        //private void CancelWaitingToUpdateScreen()
+        //{
+        //    if (_waitingToUpdateScreen.Status == UniTaskStatus.Pending ||
+        //        _waitingToCancelWaitingToUpdateScreen.Status == UniTaskStatus.Pending)
+        //    {
+        //        _currentToken.Cancel();
+        //    }
+        //}
 
         public string GetResolutionData(Resolution resolution)
         {

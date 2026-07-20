@@ -1,5 +1,6 @@
-using System.Collections;
+using System.Threading;
 using Cards;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace GameFields.Persons.EnemyProcessImitations
@@ -14,33 +15,33 @@ namespace GameFields.Persons.EnemyProcessImitations
         private readonly Card _targetCard;
 
         public DragAndDropBehaviour1(EnemyDragAndDropImitationData data, CardDragAndDropImitationActions cardImitationActions,
-            Card targetCard) : base()
+            Card targetCard, CancellationToken fightToken) : base(fightToken)
         {
             _data = data;
             _cardImitationActions = cardImitationActions;
             _targetCard = targetCard;
         }
 
-        protected override IEnumerator OnActivating()
+        protected override async UniTask OnActivating(CancellationToken token)
         {
             _cardImitationActions.SetCard(_targetCard);
 
             float startDelay = Random.Range(_data.StartDelayMin, _data.StartDelayMax);
             float countRepeat = Random.Range(0, _data.MaxCountRepeat + 1);
 
-            yield return new WaitForSeconds(startDelay);
+            await UniTask.WaitForSeconds(startDelay, cancellationToken: token);
 
             for (int i = 0; i < countRepeat + 1; i++)
             {
                 float cardViewDelay = Random.Range(_data.CardViewDelayMin, _data.CardViewDelayMax);
 
                 _cardImitationActions.ViewCard(_data.CardViewTime, SelectYDirection);
-                yield return new WaitForSeconds(_data.CardViewTime + cardViewDelay);
+                await UniTask.WaitForSeconds(_data.CardViewTime + cardViewDelay, cancellationToken: token);
 
                 if (i != countRepeat)
                 {
                     _cardImitationActions.ViewCard(_data.CardViewTime, UnselectYDirection);
-                    yield return new WaitForSeconds(_data.CardViewTime);
+                    await UniTask.WaitForSeconds(_data.CardViewTime, cancellationToken: token);
                 }
             }
         }

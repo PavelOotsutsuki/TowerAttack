@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Tools;
@@ -11,6 +10,7 @@ using Zenject;
 using static TMPro.TMP_Dropdown;
 using Tools.Utils.Screens;
 using Tools.UI.Extendeds;
+using System.Collections;
 
 namespace Menues
 {
@@ -64,7 +64,8 @@ namespace Menues
 
             SetCurrentValues();
 
-            ActivatingGoBackOnMainPanelButton().ToUniTask();
+            ActivatingGoBackOnMainPanelButton().Forget();
+            //StartCoroutine(ActivatingGoBackOnMainPanelButton());
         }
 
         private void OnCardSliderValueChanged(float value)
@@ -107,15 +108,25 @@ namespace Menues
             _screenRoot.SetResolution(_screenRoot.GetResolutionData(variant));
         }
 
-        private IEnumerator ActivatingGoBackOnMainPanelButton()
+        private async UniTask ActivatingGoBackOnMainPanelButton()
         {
             // Ждем 1 кадр тк при нажатии Enter, потом по графику работы методов Unity в кадре срабатывает
             // выделенный Select. Чтоб такого не было надо либо отменить срабатывает Enter-a, либо подождать кадр перед активации Select-a
             // этой кнопки, т.к ничего не сработает, т.к. ничего еще не выделено 
-            yield return null;
+            await UniTask.NextFrame();
 
             _goBackOnMainPanelButton.Select();
         }
+
+        //private IEnumerator ActivatingGoBackOnMainPanelButton()
+        //{
+        //    // Ждем 1 кадр тк при нажатии Enter, потом по графику работы методов Unity в кадре срабатывает
+        //    // выделенный Select. Чтоб такого не было надо либо отменить срабатывает Enter-a, либо подождать кадр перед активации Select-a
+        //    // этой кнопки, т.к ничего не сработает, т.к. ничего еще не выделено 
+        //    yield return null;
+
+        //    _goBackOnMainPanelButton.Select();
+        //}
 
 
         public override void Deactivate()

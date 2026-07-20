@@ -1,15 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
-using Cards;
-using Cards.Views;
-using Cards.Views.BigCardViews.Capabilities;
 using Cysharp.Threading.Tasks;
-using GameFields.InputSettings;
-using GameFields.Persons;
-using GameFields.Persons.SelectMenues;
 using TMPro;
 using Tools;
-using Tools.UI;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,6 +19,7 @@ namespace GameFields.Histories
         [SerializeField] private bool _isCardAsNumber = false;
 
         private HistoryRoot _historyRoot;
+        //private CancellationToken _fightToken;
 
         //private InputRoot _inputRoot;
         //private float _currentTimeScale;
@@ -41,6 +34,7 @@ namespace GameFields.Histories
 
         //public void Init(InputRoot inputRoot, LoseActions playerLoseActions, IVolume cardVolume, IVolume musicVolume,
         //    CardCapabilityDescription cardCapabilityDescription)
+        //public void Init(HistoryRoot historyRoot, CancellationToken fightToken)
         public void Init(HistoryRoot historyRoot)
         {
             gameObject.SetActive(false);
@@ -48,6 +42,7 @@ namespace GameFields.Histories
             IsActive = false;
             _canvasGroup.blocksRaycasts = true;
 
+            //_fightToken = fightToken;
             _historyRoot = historyRoot;
 
             //_inputRoot = inputRoot;
@@ -90,7 +85,8 @@ namespace GameFields.Histories
             //_fightMenuLabel.Show();
             //_fightMenuPanel.Show();
 
-            Activating().ToUniTask();
+            //Activating().ToUniTask();
+            Activating().Forget();
             //_selectResult = new SelectResult();
 
             //SelectNumberPanelActivateData numberPanelActivateData = new SelectNumberPanelActivateData(activateData.NeedSelect, activateData.RestrictionType, _selectResult);
@@ -108,10 +104,11 @@ namespace GameFields.Histories
             //_inputRoot.DeactivateFightMenu();
             //Time.timeScale = _currentTimeScale;
 
-            Deactivating().ToUniTask();
+            //Deactivating().ToUniTask();
+            Deactivating();
         }
 
-        private IEnumerator Activating()
+        private async UniTask Activating()//CancellationToken token)
         {
             //_fightMenuLabel.Show();
             //_fightMenuPanel.Show();
@@ -123,7 +120,7 @@ namespace GameFields.Histories
 
             //_currentTimeScale = Time.timeScale;
             //Time.timeScale = 0;
-            yield return null;
+            await UniTask.NextFrame();
 
             float height = _label.preferredHeight;
             //Debug.Log($"height = {height}");
@@ -143,7 +140,7 @@ namespace GameFields.Histories
 
             _isComplete = true;
 
-            yield break;
+            //yield break;
         }
 
         private void ChangeScrollSize()
@@ -166,7 +163,7 @@ namespace GameFields.Histories
             }
         }
 
-        private IEnumerator Deactivating()
+        private /*IEnumerator*/ void Deactivating()
         {
             //_fightMenuLabel.Hide();
             //_fightMenuPanel.Hide();
@@ -197,7 +194,7 @@ namespace GameFields.Histories
 
             _isComplete = true;
 
-            yield break;
+            //yield break;
         }
 
         #region AutomaticFillComponents

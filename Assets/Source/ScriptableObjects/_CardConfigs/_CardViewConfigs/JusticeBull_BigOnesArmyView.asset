@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: JusticeBull_BigOnesArmyView
   m_EditorClassIdentifier: 
   <Number>k__BackingField: 0
-  <Icon>k__BackingField: {fileID: 21300000, guid: d522362a174804dbc855a95afd2af332, type: 3}
+  <Icon>k__BackingField: {fileID: 21300000, guid: f1362014b8a58422e8a1e5f0d050260c, type: 3}
   <Description>k__BackingField: "\u041E\u043D\u0438 \u0431\u043E\u043B\u044C\u0448\u0435,
     \u043D\u043E \u0438\u0445 \u043C\u0435\u043D\u044C\u0448\u0435"
   <Feature>k__BackingField: "\u041A\u0430\u0440\u0442\u0430 \u0432 \u0417\u0430\u043C\u043A\u0435

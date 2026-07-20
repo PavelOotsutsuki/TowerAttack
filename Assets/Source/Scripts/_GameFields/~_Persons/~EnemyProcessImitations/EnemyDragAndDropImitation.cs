@@ -270,7 +270,7 @@ namespace GameFields.Persons.EnemyProcessImitations
 
             DragAndDropBehaviour dragAndDropBehaviour = logicNumber switch
             {
-                1 => new DragAndDropBehaviour1(_data, _cardImitationActions, workCard),
+                1 => new DragAndDropBehaviour1(_data, _cardImitationActions, workCard, Token),
                 _ => throw new NullReferenceException("Задан неверный индекс логики поведения Enemy: " + logicNumber)
             };
 

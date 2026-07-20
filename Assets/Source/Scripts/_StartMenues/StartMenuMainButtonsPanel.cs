@@ -10,6 +10,7 @@ using Tools;
 using Tools.Loads;
 using Tools.UI;
 using Tools.Utils;
+using Tools.Utils.Orthographyes;
 using UnityEngine;
 using Zenject;
 using ISelectHandler = Menues.ISelectHandler;
@@ -116,15 +117,7 @@ namespace StartMenues
             _labelLvl.SetText($"LVL: {getMainMenuUserDataDTO.level}");
             _labelEx.SetText($"EX: {getMainMenuUserDataDTO.score}/{getMainMenuUserDataDTO.max_experience}");
 
-            string number = "один";
-
-            if (getMainMenuUserDataDTO.level == 11)
-                number = "одиннадцать";
-
-            if (getMainMenuUserDataDTO.level == 12)
-                number = "двенадцать";
-
-            _labelLvl.SetColor(Utils.GetColorByString(getMainMenuUserDataDTO.username + number));
+            _labelLvl.SetColor(Utils.GetColorByString(getMainMenuUserDataDTO.username + Orthography.GetStringByNumber(getMainMenuUserDataDTO.level)));
 
             IsPreactive = true;
         }

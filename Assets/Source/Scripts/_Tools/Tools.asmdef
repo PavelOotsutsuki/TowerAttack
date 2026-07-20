@@ -15,7 +15,8 @@
     "precompiledReferences": [
         "DOTween.dll",
         "Npgsql.dll",
-        "Zenject-usage.dll"
+        "Zenject-usage.dll",
+        "Humanizer.dll"
     ],
     "autoReferenced": true,
     "defineConstraints": [],

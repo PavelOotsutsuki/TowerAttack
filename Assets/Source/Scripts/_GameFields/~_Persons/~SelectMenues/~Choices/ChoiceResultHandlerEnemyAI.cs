@@ -1,10 +1,7 @@
-using System.Collections;
 using Cysharp.Threading.Tasks;
 using GameFields.InformationLabels;
-using GameFields.Persons.SelectMenues;
 using Tools;
 using Tools.UI;
-using UnityEngine;
 
 namespace GameFields.Persons.SelectMenues.Choices
 {
@@ -29,16 +26,16 @@ namespace GameFields.Persons.SelectMenues.Choices
         {
             _isComplete = false;
 
-            SettingResult(data).ToUniTask();
+            SettingResult(data).Forget();
         }
 
-        private IEnumerator SettingResult(SetSelectResultData data)
+        private async UniTask SettingResult(SetSelectResultData data)
         {
             LabelActivateData labelActivateData = new LabelActivateData(_informationLabelData.DefaultInformationLabelText + data.Message);
             InformationLabelActivateData informationLabelActivateData = new InformationLabelActivateData(labelActivateData);
             _informationLabel.Activate(informationLabelActivateData);
 
-            yield return new WaitUntil(() => _informationLabel.IsComplete);
+            await UniTask.WaitUntil(() => _informationLabel.IsComplete, cancellationToken: data.Token);
 
             _isComplete = true;
         }

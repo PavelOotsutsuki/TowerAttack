@@ -23,12 +23,13 @@ namespace GameFields.Persons.SelectMenues
 
         public void Init(ICardNumberKeeper cardNumberKeeper, ISelectResultHandler attackResultHandler, int[] cardNumbers,
             SelectNumbersList selectedNumbers, ConfirmableNumbers confirmableNumbers, GameFieldInputRoot inputRoot,
-            LastSelectedNumbersWatcher lastSelectedNumbersWatcher, UIHelperDescription UIHelperDescription, CancellationToken fightToken)
+            LastSelectedNumbersWatcher lastSelectedNumbersWatcher, UIHelperDescription UIHelperDescription, CancellationToken fightToken,
+            CancellationToken gameFieldToken)
         {
             _selectButton.Init(this, inputRoot, fightToken);
             _selectNumberPanelPlayer.Init(_selectButton, cardNumberKeeper, cardNumbers, selectedNumbers, confirmableNumbers,
                 lastSelectedNumbersWatcher, fightToken);
-            _selectModeButton.Init(_selectNumberPanelPlayer, UIHelperDescription);
+            _selectModeButton.Init(_selectNumberPanelPlayer, UIHelperDescription, gameFieldToken);
 
             _inputRoot = inputRoot;
 

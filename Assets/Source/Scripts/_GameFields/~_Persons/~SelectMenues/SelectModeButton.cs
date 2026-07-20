@@ -1,6 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
-using GameFields.FightMenues;
+using System.Threading;
 using Tools.UI;
 using Tools.UI.UIHelpers;
 using Tools.Utils.FillComponents;
@@ -16,13 +15,13 @@ namespace GameFields.Persons.SelectMenues
 
         private UIHelperDescription _UIHelperDescription;
 
-        public void Init(ISelectNumberActivator selectNumberActivator, UIHelperDescription UIHelperDescription)
+        public void Init(ISelectNumberActivator selectNumberActivator, UIHelperDescription UIHelperDescription, CancellationToken gameFieldToken)
         {
             base.Init();
 
             _selectNumberActivator = selectNumberActivator;
             _UIHelperDescription = UIHelperDescription;
-            _UIHelper.Init(UIHelperDescription, GetHelperText);
+            _UIHelper.Init(UIHelperDescription, GetHelperText, gameFieldToken);
         }
 
         protected override void OnEnterClick()

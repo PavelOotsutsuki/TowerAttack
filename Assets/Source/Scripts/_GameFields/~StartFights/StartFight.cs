@@ -58,7 +58,7 @@ namespace GameFields.StartFights
             _gameFieldToken = gameFieldToken;
 
             _startTowerCardSelectionPanel.Init();
-            _startTowerCardSelectionLabel.Init();
+            _startTowerCardSelectionLabel.Init(gameFieldToken);
             _waitEnemySolutionLabel.Init();
             _discover.Init(_gameFieldToken);
 

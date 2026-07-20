@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Threading;
 using Cards;
 using Cards.Views;
 using Cysharp.Threading.Tasks;
@@ -13,20 +13,22 @@ namespace GameFields.Persons.Fires
         private readonly ICardCreator _cardCreator;
         private readonly SideType _actionCardSideType;
         private readonly Transform _parent;
+        private readonly CancellationToken _fightToken;
 
-        public PyromancersManuscriptFireAction(ICardCreator cardCreator, SideType actionCardSideType, Transform parent)
+        public PyromancersManuscriptFireAction(ICardCreator cardCreator, SideType actionCardSideType, Transform parent, CancellationToken fightToken)
         {
             _cardCreator = cardCreator;
             _actionCardSideType = actionCardSideType;
             _parent = parent;
+            _fightToken = fightToken;
         }
 
         public void Play(Card card, ICardSeatable cardSeatable, int index, CallbackHandler callbackHandler)
         {
-            CreatePyromants(card, cardSeatable, index, callbackHandler).ToUniTask();
+            CreatePyromants(card, cardSeatable, index, callbackHandler, _fightToken).Forget();
         }
 
-        private IEnumerator CreatePyromants(Card card, ICardSeatable cardSeatable, int index, CallbackHandler callbackHandler)
+        private async UniTask CreatePyromants(Card card, ICardSeatable cardSeatable, int index, CallbackHandler callbackHandler, CancellationToken token)
         {
             Vector3 worldPosition = card.RORTransform.GetPosition();
             Vector3 localScale = card.RORTransform.GetLocalScale();
@@ -38,9 +40,8 @@ namespace GameFields.Persons.Fires
             cardSeatable.SeatCard(card1, index);
             cardSeatable.SeatCard(card2, index + 1);
 
-            yield return new WaitForSeconds(1f);
+            await UniTask.WaitForSeconds(1f, cancellationToken: token);
             callbackHandler.Complete();
-            yield break;
         }
 
         private Card CreateCard(Vector3 worldPosition, Vector3 localScale, Quaternion rotation, Transform parent)

@@ -108,7 +108,7 @@ namespace Tools.UI
                 _canvasGroup.alpha = newAlpha;
                 //Debug.Log($"newAlpha: {newAlpha}");
 
-                await UniTask.Yield(cancellationToken: token);
+                await UniTask.NextFrame(cancellationToken: token);
             }
 
             //Debug.Log($"END. Alpha: {_canvasGroup.alpha}");

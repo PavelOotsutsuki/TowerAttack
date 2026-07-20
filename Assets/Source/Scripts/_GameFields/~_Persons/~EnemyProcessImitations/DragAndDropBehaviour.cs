@@ -1,6 +1,5 @@
-using System.Collections;
+using System.Threading;
 using Cysharp.Threading.Tasks;
-using GameFields.Persons.Hands;
 using Tools;
 
 namespace GameFields.Persons.EnemyProcessImitations
@@ -13,12 +12,14 @@ namespace GameFields.Persons.EnemyProcessImitations
         //protected readonly EnemyDragAndDropImitationData Data;
         //protected readonly CardDragAndDropImitationActions CardImitationActions;
         //protected readonly Hand Hand;
+        protected readonly CancellationToken Token;
 
         private bool _isComplete;
 
-        public DragAndDropBehaviour()
+        public DragAndDropBehaviour(CancellationToken fightToken)
         {
             _isComplete = false;
+            Token = fightToken;
         }
 
         public bool IsComplete => _isComplete;
@@ -27,16 +28,16 @@ namespace GameFields.Persons.EnemyProcessImitations
         {
             _isComplete = false;
 
-            Activating().ToUniTask();
+            Activating(Token).Forget();
         }
 
-        private IEnumerator Activating()
+        private async UniTask Activating(CancellationToken token)
         {
-            yield return OnActivating();
+            await OnActivating(token);
 
             _isComplete = true;
         }
 
-        protected abstract IEnumerator OnActivating();
+        protected abstract UniTask OnActivating(CancellationToken token);
     }
 }

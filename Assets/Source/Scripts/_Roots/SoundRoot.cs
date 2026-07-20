@@ -118,7 +118,7 @@ namespace Roots
                     float step = i / _pausingDuration;
                     _audioSource.volume = startVolume * (1 - step);
 
-                    await UniTask.Yield(cancellationToken: token);
+                    await UniTask.NextFrame(cancellationToken: token);
                 }
 
                 _audioSource.volume = 0;
@@ -151,7 +151,7 @@ namespace Roots
                     float step = i / _pausingDuration;
                     _audioSource.volume = endVolume * step;
 
-                    await UniTask.Yield(cancellationToken: token);
+                    await UniTask.NextFrame(cancellationToken: token);
                 }
 
                 _audioSource.volume = endVolume;

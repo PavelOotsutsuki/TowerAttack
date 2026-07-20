@@ -266,8 +266,8 @@ namespace GameFields.Persons
             _fightToken = fightToken;
             _turnToken = turnToken;
 
-            _skipTurnLabelPlayer.Init();
-            _skipTurnLabelEnemyAI.Init();
+            _skipTurnLabelPlayer.Init(_fightToken);
+            _skipTurnLabelEnemyAI.Init(_fightToken);
             _inputRoot = new GameFieldInputRoot(_endTurnButton, _fightMenu, _fightMenu, _historyMenu);
 
             _enemyLoseActions = new LoseActions(_enemyTower, _enemyTower, _playerHand, _bus, _inputRoot, _fightMenu,
@@ -276,10 +276,10 @@ namespace GameFields.Persons
                 _fightButtonsActivator, soundController, _dbRoot);
 
             _fightMenu.Init(_inputRoot, _playerLoseActions, cardSoundRoot, musicVolume, cardCapabilityDescription, fightToken);
-            _fightMenuActivateButton.Init(_fightMenu, _UIHelperDescription);
+            _fightMenuActivateButton.Init(_fightMenu, _UIHelperDescription, _gameFieldToken);
 
             _historyMenu.Init(historyRoot);
-            _historyMenuActivateButton.Init(_historyMenu, _UIHelperDescription);
+            _historyMenuActivateButton.Init(_historyMenu, _UIHelperDescription, _gameFieldToken);
 
             DefineFire();
 
@@ -321,7 +321,7 @@ namespace GameFields.Persons
             JusticeBullEffectHandler justiceBullEffectHandler = new JusticeBullEffectHandler(_choicedNumbersPlayer, _enemyTower);
             ScarecrowEffectHandler scarecrowEffectHandler = new ScarecrowEffectHandler(_discardManager);
             WiseMonkEffectHandler wiseMonkEffectHandler = new WiseMonkEffectHandler();
-            FalsePrinceEffectHandler falsePrinceEffectHandler = new FalsePrinceEffectHandler(_playerTower, _deck);
+            FalsePrinceEffectHandler falsePrinceEffectHandler = new FalsePrinceEffectHandler(_playerTower, _deck, _fightToken);
             FallenGuardianEffectHandler fallenGuardianEffectHandler = new FallenGuardianEffectHandler(_choicedNumbersPlayer, _enemyTower);
             _playerBrothersEffectHandler = new BrothersEffectHandler(_playerRechangeFeatureRuleController, cardFeatureRechangables);
             _playerPersonEffectsHandler = new PersonEffectsHandler(gnomeEffectHandler, slimeEffectHandler, curseEffectHandler,
@@ -366,7 +366,7 @@ namespace GameFields.Persons
             _enemyBrothersEffectHandler = new BrothersEffectHandler(_enemyRechangeFeatureRuleController, cardFeatureRechangables);
             ScarecrowEffectHandler scarecrowEffectHandler = new ScarecrowEffectHandler(_discardManager);
             WiseMonkEffectHandler wiseMonkEffectHandler = new WiseMonkEffectHandler();
-            FalsePrinceEffectHandler falsePrinceEffectHandler = new FalsePrinceEffectHandler(_enemyTower, _deck);
+            FalsePrinceEffectHandler falsePrinceEffectHandler = new FalsePrinceEffectHandler(_enemyTower, _deck, _fightToken);
             FallenGuardianEffectHandler fallenGuardianEffectHandler = new FallenGuardianEffectHandler(_choicedNumbersEnemy, _playerTower);
             _enemyPersonEffectsHandler = new PersonEffectsHandler(gnomeEffectHandler, slimeEffectHandler, curseEffectHandler,
                 _fireEffectHandlerEnemy, doubleEffectHandler, skipTurnEffectHandler, fateInevitabilityHandler, justiceBullEffectHandler,
@@ -395,7 +395,7 @@ namespace GameFields.Persons
             _enemyHand.Init(_seatPool, _enemyRechangeFeatureRuleController, _enemyTurnDrawnCards, curseEffectHandler);
 
             //LookCardMenuEnemyAI lookCardMenuEnemyAI = new LookCardMenuEnemyAI(_informationLabel);
-            LookCardMenuEnemyAI lookCardMenuEnemyAI = new LookCardMenuEnemyAI();
+            LookCardMenuEnemyAI lookCardMenuEnemyAI = new LookCardMenuEnemyAI(_fightToken);
 
             return new EnemyAI(_interactionActivator, enemyDragAndDropImitationCreator, _enemyPlayingZone,
                 _enemyTower, _drawCardRootEnemy, _enemyDiscoverImitation, startTurnDrawCreator, _bus, _enemyHand, _enemyAttackMenu,
@@ -443,7 +443,7 @@ namespace GameFields.Persons
             _playerPlayingZone.Init(_playerTable);
             _playerTower.Init(_confirmableNumbersEnemyAI, _cardRoot, _fightToken);
             _playerDiscover.Init(_fightToken);
-            _startPlayerTurnLabel.Init();
+            _startPlayerTurnLabel.Init(_fightToken);
 
             //SelectNumbersList attackedNumbers = new SelectNumbersList();
             //SelectNumbersList choicedNumbers = new SelectNumbersList();
@@ -456,10 +456,10 @@ namespace GameFields.Persons
 
             _playerAttackMenu.Init(_enemyTower, attackResultHandlerPlayer, _cardNumbers, _attackedNumbersPlayer,
                 _confirmableNumbersPlayer, _inputRoot, _lastSelectedNumbersWatcherPlayer, _UIHelperDescription,
-                _fightToken);
+                _fightToken, _gameFieldToken);
             _playerChoiceMenu.Init(_enemyTower, choiceResultHandlerPlayer, _cardNumbers, _choicedNumbersPlayer,
                 _confirmableNumbersPlayer, _inputRoot, _lastSelectedNumbersWatcherPlayer, _UIHelperDescription,
-                _fightToken);
+                _fightToken, _gameFieldToken);
             _playerChoiceMenuImitation.Init(_enemyTower, choiceResultHandlerPlayer, _cardNumbers, _choicedNumbersPlayer,
                 _confirmableNumbersPlayer, _lastSelectedNumbersWatcherPlayer, _fightToken);
 
@@ -530,11 +530,11 @@ namespace GameFields.Persons
         private void DefineFire()
         {
             PyromancersManuscriptFireAction playerPyromancersManuscriptFireAction = new PyromancersManuscriptFireAction(_cardRoot,
-                SideType.Front, _fireContainer.GetTransform());
+                SideType.Front, _fireContainer.GetTransform(), _fightToken);
             ExtraFireSeatActionRoot playerExtraFireSeatActionRoot = new ExtraFireSeatActionRoot(playerPyromancersManuscriptFireAction);
 
             PyromancersManuscriptFireAction enemyPyromancersManuscriptFireAction = new PyromancersManuscriptFireAction(_cardRoot,
-                SideType.Back, _fireContainer.GetTransform());
+                SideType.Back, _fireContainer.GetTransform(), _fightToken);
             ExtraFireSeatActionRoot enemyExtraFireSeatActionRoot = new ExtraFireSeatActionRoot(enemyPyromancersManuscriptFireAction);
 
             _playerFirePool = new FirePoolPlayer(_fireContainer.GetTransform(), playerExtraFireSeatActionRoot,

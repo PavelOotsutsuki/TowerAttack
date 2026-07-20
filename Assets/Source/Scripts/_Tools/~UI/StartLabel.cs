@@ -1,5 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using Tools.Utils.FillComponents;
@@ -24,16 +24,20 @@ namespace Tools.UI
         private float _scaleWay;
         private Transform _targetTransform;
 
+        private CancellationToken _fightToken;
+        private CancellationTokenSource _currentCTS;
+
         private Color _startColor;
 
         public bool IsComplete { get; private set; }
 
-        public void Init()
+        public void Init(CancellationToken fightToken)
         {
             IsComplete = false;
             gameObject.SetActive(false);
 
             _targetTransform = _label.transform;
+            _fightToken = fightToken;
 
             _startColor = new Color(_label.color.r, _label.color.g, _label.color.b, LifeAlpha);
             _startScale = _startFontSize / _middleFontSize;
@@ -50,10 +54,14 @@ namespace Tools.UI
             _label.color = _startColor;
             //_label.fontSize = _startFontSize;
             _label.fontSize = _endFontSize;
-            Activating().ToUniTask();
+
+            Utils.Utils.DestroyCTS(ref _currentCTS);
+            _currentCTS = CancellationTokenSource.CreateLinkedTokenSource(_fightToken);
+
+            Activating(_currentCTS.Token).Forget();
         }
 
-        private IEnumerator Activating()
+        private async UniTask Activating(CancellationToken token)
         {
             gameObject.SetActive(true);
 
@@ -66,10 +74,12 @@ namespace Tools.UI
 
             for (float time = 0f; time < _middleDuration; time += Time.deltaTime)
             {
+                if (token.IsCancellationRequested)
+                    return;
                 //_label.fontSize = startFontSize + fontSizeWay * time;
                 float scale = startScale + scaleWay * time;
                 _targetTransform.localScale = new Vector3(scale, scale, scale);
-                yield return null;
+                await UniTask.NextFrame(cancellationToken: token);
             }
 
             startScale = _targetTransform.localScale.x;
@@ -82,6 +92,9 @@ namespace Tools.UI
 
             for (float time = 0f; time < _endDuration; time += Time.deltaTime)
             {
+                if (token.IsCancellationRequested)
+                    return;
+
                 if (time > _endDuration / 2f)
                 {
                     IsComplete = true;
@@ -92,7 +105,7 @@ namespace Tools.UI
                 //_label.fontSize = startFontSize + fontSizeWay * time;
                 float scale = startScale + scaleWay * time;
                 _targetTransform.localScale = new Vector3(scale, scale, scale);
-                yield return null;
+                await UniTask.NextFrame(cancellationToken: token);
             }
 
             gameObject.SetActive(false);

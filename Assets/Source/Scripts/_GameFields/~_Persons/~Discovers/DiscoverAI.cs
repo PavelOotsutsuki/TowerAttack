@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -26,15 +26,15 @@ namespace GameFields.Persons.Discovers
 
         private void StartLogic1()
         {
-            WaitingToSelect().ToUniTask();
+            WaitingToSelect(Token).Forget();
         }
 
-        private IEnumerator WaitingToSelect()
+        private async UniTask WaitingToSelect(CancellationToken token)
         {
             int selectedCardNumber = Random.Range(0, Cards.Count);
             float waitDuration = Random.Range(_minWaitDuration, _maxWaitDuration);
 
-            yield return new WaitForSeconds(waitDuration);
+            await UniTask.WaitForSeconds(waitDuration, cancellationToken: token);
 
             Seats[selectedCardNumber].StartClick();
         }

@@ -1,34 +1,36 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Tools;
-using UnityEngine;
+using Tools.Utils;
 
 namespace GameFields.LightControls
 {
     public class LightController : IWorkable<LightControllerActivateData>, IBlockable
     {
         private readonly LightPanel _lightPanel;
-        private readonly WaitForSeconds _WFS_DelayForActivate;
+        private readonly float _delayForActivate;
+        private readonly CancellationToken _fightToken;
 
         private IEnumerable<LightableObject> _currentLightableObjects;
-        private CancellationTokenSource _token;
-        private UniTask _activating;
+        private CancellationTokenSource _currentCTS;
+        //private UniTask _activating;
         private bool _isActivatable;
 
-        public LightController(LightPanel lightPanel, float delayForActivate)
+        public LightController(LightPanel lightPanel, float delayForActivate, CancellationToken fightToken)
         {
             _lightPanel = lightPanel;
-            _WFS_DelayForActivate = new WaitForSeconds(delayForActivate);
+            _delayForActivate = delayForActivate;
+            _fightToken = fightToken;
 
+            _currentCTS = null;
             _isActivatable = true;
         }
 
-        ~LightController()
-        {
-            _token.Dispose();
-        }
+        //~LightController()
+        //{
+        //    _currentCTS.Dispose();
+        //}
 
         public bool? IsActive { get; private set; } = false;
 
@@ -43,10 +45,10 @@ namespace GameFields.LightControls
             IsActive = true;
             _currentLightableObjects = data.LightableObjects;
 
-            CancelActivating();
+            Utils.DestroyCTS(ref _currentCTS);
+            _currentCTS = CancellationTokenSource.CreateLinkedTokenSource(_fightToken);
 
-            _token = new CancellationTokenSource();
-            _activating = Activating().ToUniTask(cancellationToken: _token.Token);
+            Activating(_currentCTS.Token).Forget();
         }
 
         public void Deactivate()
@@ -56,7 +58,7 @@ namespace GameFields.LightControls
 
             IsActive = false;
 
-            CancelActivating();
+            Utils.DestroyCTS(ref _currentCTS);
 
             foreach (LightableObject lightableObject in _currentLightableObjects)
             {
@@ -78,9 +80,9 @@ namespace GameFields.LightControls
             Deactivate();
         }
 
-        private IEnumerator Activating()
+        private async UniTask Activating(CancellationToken token)
         {
-            yield return _WFS_DelayForActivate;
+            await UniTask.WaitForSeconds(_delayForActivate, cancellationToken: token);
 
             foreach (LightableObject lightableObject in _currentLightableObjects)
             {
@@ -90,12 +92,12 @@ namespace GameFields.LightControls
             _lightPanel.Show();
         }
 
-        private void CancelActivating()
-        {
-            if (_activating.Status == UniTaskStatus.Pending)
-            {
-                _token.Cancel();
-            }
-        }
+        //private void CancelActivating()
+        //{
+        //    if (_activating.Status == UniTaskStatus.Pending)
+        //    {
+        //        _currentCTS.Cancel();
+        //    }
+        //}
     }
 }

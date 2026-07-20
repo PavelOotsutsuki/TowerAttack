@@ -17,9 +17,10 @@ namespace Roots
         private CancellationTokenSource _gameRootCTS;
 
         [Inject]
-        private void Construct(DiContainer diContainer)
+        private void Construct(DiContainer diContainer, GameRootCTSHolder gameRootCTSHolder)
         {
             _diContainer = diContainer;
+            _gameRootCTS = gameRootCTSHolder.ExtractCTS();
         }
 
         public void Start()
@@ -27,7 +28,7 @@ namespace Roots
             _canvasRoot.Init();
             _fontRoot.Init();
 
-            _gameRootCTS = CancellationTokenSource.CreateLinkedTokenSource(this.destroyCancellationToken);
+            //_gameRootCTS = CancellationTokenSource.CreateLinkedTokenSource(this.destroyCancellationToken);
             //Debug.Log("GameRoot: " + _gameRootCTS.GetHashCode());
             Utils.PrintGCInfo();
             StartGame();

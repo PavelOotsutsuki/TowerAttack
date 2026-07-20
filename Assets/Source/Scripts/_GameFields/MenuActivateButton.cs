@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using Tools;
 using Tools.UI;
 using Tools.UI.UIHelpers;
@@ -13,12 +14,12 @@ namespace GameFields
 
         private IWorkable _menu;
 
-        protected void Init(IWorkable menu, UIHelperDescription UIHelperDescription)
+        protected void Init(IWorkable menu, UIHelperDescription UIHelperDescription, CancellationToken gameFieldToken)
         {
             base.Init();
 
             _menu = menu;
-            _UIHelper.Init(UIHelperDescription, () => GetHelperText());
+            _UIHelper.Init(UIHelperDescription, () => GetHelperText(), gameFieldToken);
 
             BaseDeactivate();
         }

@@ -1,3 +1,4 @@
+using System.Threading;
 using Cards.Views.BigCardViews.Capabilities;
 using GameFields.Signals;
 using Servers;
@@ -20,12 +21,17 @@ namespace Roots
 
         [SerializeField] private LoadRoot _loadRoot;
 
+        private CancellationTokenSource _gameRootCTS;
+
         private DBRoot _dBRoot;
         private ScreenRoot _screenRoot;
         private CardCapabilityDescription _cardCapabilityDescription;
+        private GameRootCTSHolder _gameRootCTSHolder;
 
         public override void InstallBindings()
         {
+            _gameRootCTS = new CancellationTokenSource();
+
             DeclareSignals();
 
             Container.Bind<BackgroundSoundConfig>().FromScriptableObject(_backgroundSoundConfig).AsSingle();
@@ -36,11 +42,14 @@ namespace Roots
             _dBRoot = new DBRoot(_loadRoot);
             Container.Bind<DBRoot>().FromInstance(_dBRoot).AsSingle();
 
-            _screenRoot = new ScreenRoot();
+            _screenRoot = new ScreenRoot(_gameRootCTS.Token);
             Container.Bind<ScreenRoot>().FromInstance(_screenRoot).AsSingle();
 
             _cardCapabilityDescription = new CardCapabilityDescription();
             Container.Bind<CardCapabilityDescription>().FromInstance(_cardCapabilityDescription).AsSingle();
+
+            _gameRootCTSHolder = new GameRootCTSHolder(_gameRootCTS);
+            Container.Bind<GameRootCTSHolder>().FromInstance(_gameRootCTSHolder).AsSingle();
         }
 
         private void DeclareSignals()

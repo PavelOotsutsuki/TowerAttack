@@ -15,8 +15,12 @@ namespace GameFields.LightControls
         [SerializeField] private HandTransferLightableObject _handTransferLightableObject;
         [SerializeField] private float _dragAndDropDelayForActivate = 3f;
 
+        private CancellationToken _fightToken;
+
         public void Init(CancellationToken fightToken)
         {
+            _fightToken = fightToken;
+
             _lightPanel.Init(fightToken);
 
             _cardAttackZoneEnemyAI.Init(fightToken);
@@ -27,7 +31,7 @@ namespace GameFields.LightControls
 
         public CardDragAndDropLightController CreateCardDragAndDropLightController()
         {
-            LightController lightController = new LightController(_lightPanel, _dragAndDropDelayForActivate);
+            LightController lightController = new LightController(_lightPanel, _dragAndDropDelayForActivate, _fightToken);
 
             return new CardDragAndDropLightController(lightController, _cardAttackZoneEnemyAI, _cardPlayingZonePlayer,
                 _forgingLightableObject, _handTransferLightableObject);

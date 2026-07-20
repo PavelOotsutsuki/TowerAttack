@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
@@ -87,15 +88,16 @@ namespace Tools.Utils
             Debug.Log($"<b>Количество сборок:</b> Gen0={gen0Collections}, Gen1={gen1Collections}, Gen2={gen2Collections}");
         }
 
-        public static Color GetColorByString(string input)
+        public static Color GetColorByString(string input, int divisor = 16)
         {
             if (string.IsNullOrWhiteSpace(input))
                 return Color.black;
 
+            input = Regex.Replace(input, @"[\p{Cf}\p{Cc}]", "");
             // 1. Делим строку на 6 частей
             List<string> chunks = SplitIntoSixParts(input);
 
-            string hexResult = "#FF";
+            string hexResult = "#";
 
             foreach (string chunk in chunks)
             {
@@ -107,23 +109,44 @@ namespace Tools.Utils
                 }
 
                 // 3. Делим на 16 и получаем остаток (число от 0 до 15)
-                int remainder = charCodeSum % 16;
+                //if (hexResult.Length % 2 == 0)
+                //{
+                    int remainder = charCodeSum % divisor;
 
-                // 4. Преобразуем остаток в шестнадцатеричную цифру (0-9, A-F)
-                // Формат "X" дает заглавные латинские буквы
-                hexResult += remainder.ToString("X");
+                    // 4. Преобразуем остаток в шестнадцатеричную цифру (0-9, A-F)
+                    // Формат "X" дает заглавные латинские буквы
+                    hexResult += remainder.ToString("X");
+                //}
+                //else
+                //{
+                //    int remainder = charCodeSum % 8;
+
+                //    // 4. Преобразуем остаток в шестнадцатеричную цифру (0-9, A-F)
+                //    // Формат "X" дает заглавные латинские буквы
+                //    hexResult += remainder.ToString("X");
+                //}
+
             }
 
             // Убираем символ '#', если он есть, и добавляем в начало FF отвечающуб за альфа
             // UPD: не убираем решетку
             //string cleanHex = "FF" + hexResult.Replace("#", "");
+            string cleanHex = hexResult + "FF";
 
             // Парсим строку в целое число в шестнадцатеричной системе
             //int argb = int.Parse(cleanHex, System.Globalization.NumberStyles.HexNumber);
+            //Debug.Log($"{input}: {cleanHex}");
 
+            if (ColorUtility.TryParseHtmlString(cleanHex, out Color color))
+            {
+                // Чем больше их сумма, тем более светлый получается цвет на нужном фоне. Поэтому, ставлю ограничения и переделываю с меньшим делителем
+                if (color.r + color.g + color.b > 1.2f)
+                {
+                    return GetColorByString(input, divisor - 1);
+                }
 
-            if (ColorUtility.TryParseHtmlString(hexResult, out Color color))
                 return color;
+            }
             else
                 return Color.black;
         }

@@ -24,6 +24,18 @@ namespace Tools.Utils.Orthographyes
             return _rules[language].GetWordByNumber(wordType, number);
         }
 
+        public static string GetStringByNumber(int number, LanguageType? settedLanguage = null)
+        {
+            LanguageType language = settedLanguage == null ? GameSettings.Language : settedLanguage.Value;
+
+            if (_rules.ContainsKey(language) == false)
+            {
+                CreateLanguageRules(language);
+            }
+
+            return _rules[language].GetStringByNumber(number);
+        }
+
         private static void CreateLanguageRules(LanguageType language)
         {
             switch (language)

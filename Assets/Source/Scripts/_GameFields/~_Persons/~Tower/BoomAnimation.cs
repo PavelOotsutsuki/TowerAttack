@@ -56,7 +56,7 @@ namespace GameFields.Persons.Towers
 
                 targetImage.color = Color.Lerp(startColor, newCardColor, timeInWork / duration);
 
-                await UniTask.Yield(cancellationToken: token);
+                await UniTask.NextFrame(cancellationToken: token);
             }
 
             _shakeAnimation.Play(token);

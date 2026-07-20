@@ -1,12 +1,9 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using GameFields.InformationLabels;
-using GameFields.Persons.SelectMenues;
 using Tools;
 using Tools.UI;
-using UnityEngine;
 
 namespace GameFields.Persons.SelectMenues.Choices
 {
@@ -85,12 +82,12 @@ namespace GameFields.Persons.SelectMenues.Choices
             InformationLabelActivateData informationLabelActivateData = new InformationLabelActivateData(labelActivateData);
             _informationLabel.Activate(informationLabelActivateData);
 
-            WaitingView().ToUniTask();
+            WaitingView(data.Token).Forget();
         }
 
-        private IEnumerator WaitingView()
+        private async UniTask WaitingView(CancellationToken token)
         {
-            yield return new WaitUntil(() => _informationLabel.IsComplete);
+            await UniTask.WaitUntil(() => _informationLabel.IsComplete, cancellationToken: token);
 
             _isComplete = true;
         }

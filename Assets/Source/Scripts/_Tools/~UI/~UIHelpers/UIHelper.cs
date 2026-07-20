@@ -1,10 +1,11 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Zenject;
 
 namespace Tools.UI.UIHelpers
 {
@@ -15,8 +16,11 @@ namespace Tools.UI.UIHelpers
         private UIHelperDescription _UIHelperDescription;
         private Func<string> _textDescriptionGetter;
 
-        private Coroutine _activatingCoroutine;
-        private Coroutine _deactivatingCoroutine;
+        private CancellationToken _gameFieldToken;
+        private CancellationTokenSource _hiddingCTS;
+        private CancellationTokenSource _showingCTS;
+        //private Coroutine _activatingCoroutine;
+        //private Coroutine _deactivatingCoroutine;
 
         //[Inject]
         //private void Construct(UIHelperDescription UIHelperDescription)
@@ -30,72 +34,108 @@ namespace Tools.UI.UIHelpers
         //    _UIHelperDescription = (UIHelperDescription)targets[0];
         //}
 
-        public void Init(UIHelperDescription UIHelperDescription, Func<string> textDescriptionGetter)
+        public void Init(UIHelperDescription UIHelperDescription, Func<string> textDescriptionGetter, CancellationToken gameFieldToken)
         {
             _UIHelperDescription = UIHelperDescription;
             _textDescriptionGetter = textDescriptionGetter;
+            _gameFieldToken = gameFieldToken;
+
+            //gameObject.SetActive(false); // не надо, иначе скрывает сами иконки
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (_activatingCoroutine != null)
-            {
-                StopCoroutine(_activatingCoroutine);
-                _activatingCoroutine = null;
-            }
+            if (_gameFieldToken.IsCancellationRequested)
+                return;
 
-            _activatingCoroutine = StartCoroutine(Activating());
+            Utils.Utils.DestroyCTS(ref _showingCTS);
+            _showingCTS = CancellationTokenSource.CreateLinkedTokenSource(_gameFieldToken);
+
+            Activating(_showingCTS.Token).Forget();
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (_activatingCoroutine != null)
-            {
-                StopCoroutine(_activatingCoroutine);
-                _activatingCoroutine = null;
-            }
+            if (_gameFieldToken.IsCancellationRequested)
+                return;
 
-            _deactivatingCoroutine = StartCoroutine(Deactivating());
+            Utils.Utils.DestroyCTS(ref _showingCTS);
+            Utils.Utils.DestroyCTS(ref _hiddingCTS);
+            _hiddingCTS = CancellationTokenSource.CreateLinkedTokenSource(_gameFieldToken);
+
+            Deactivating(_hiddingCTS.Token).Forget();
         }
 
-        private IEnumerator Activating()
+        private async UniTask Activating(CancellationToken token)
         {
-            if (_activatingCoroutine != null)
+            if (_gameFieldToken.IsCancellationRequested)
+                return;
+
+            try
             {
-                StopCoroutine(_activatingCoroutine);
-                _activatingCoroutine = null;
-                Debug.Log("Никогда не произойдет!");
+                //gameObject.SetActive(true);
+
+                if (_hiddingCTS != null)
+                {
+                    Utils.Utils.DestroyCTS(ref _hiddingCTS);
+                }
+                else
+                {
+                    await UniTask.WaitForSeconds(0.8f, cancellationToken: token);
+                }
+
+                UIHelperDescriptionActivateData activateData = new UIHelperDescriptionActivateData(_textDescriptionGetter.Invoke(), new ReadOnlyRectTransform(_rectTransform));
+                _UIHelperDescription.Activate(activateData);
+
+                await UniTask.WaitUntil(() => _UIHelperDescription.IsComplete, cancellationToken: token);
             }
+            catch (OperationCanceledException)
+            {
+                Debug.Log($"ОТМЕНА ТОКЕНА: {MethodBase.GetCurrentMethod().DeclaringType.Name}: {GetType().Name}");
+            }
+
+            //if (_deactivatingCoroutine != null)
+            //{
+            //    StopCoroutine(_deactivatingCoroutine);
+            //    _deactivatingCoroutine = null;
+            //}
             //else
             //{
             //    yield return new WaitForSeconds(0.8f);
             //}
 
-            if (_deactivatingCoroutine != null)
-            {
-                StopCoroutine(_deactivatingCoroutine);
-                _deactivatingCoroutine = null;
-            }
-            else
-            {
-                yield return new WaitForSeconds(0.8f);
-            }
+            //UIHelperDescriptionActivateData activateData = new UIHelperDescriptionActivateData(_textDescriptionGetter.Invoke(), new ReadOnlyRectTransform(_rectTransform));
+            //_UIHelperDescription.Activate(activateData);
 
-            UIHelperDescriptionActivateData activateData = new UIHelperDescriptionActivateData(_textDescriptionGetter.Invoke(), new ReadOnlyRectTransform(_rectTransform));
-            _UIHelperDescription.Activate(activateData);
+            //yield return new WaitUntil(() => _UIHelperDescription.IsComplete);
 
-            yield return new WaitUntil(() => _UIHelperDescription.IsComplete);
-
-            _activatingCoroutine = null;
+            //_activatingCoroutine = null;
         }
 
-        private IEnumerator Deactivating()
+        private async UniTask Deactivating(CancellationToken token)
         {
-            _UIHelperDescription.Deactivate();
+            //_UIHelperDescription.Deactivate();
 
-            yield return new WaitUntil(() => _UIHelperDescription.IsComplete);
+            //await UniTask.WaitUntil(() => _UIHelperDescription.IsComplete, cancellationToken: token);
 
-            _deactivatingCoroutine = null;
+            //_deactivatingCoroutine = null;
+
+            if (_gameFieldToken.IsCancellationRequested)
+                return;
+
+            try
+            {
+                _UIHelperDescription.Deactivate();
+
+                await UniTask.WaitUntil(() => _UIHelperDescription.IsComplete, cancellationToken: token);
+
+                //gameObject.SetActive(false);
+                Utils.Utils.DestroyCTS(ref _hiddingCTS);
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.Log($"ОТМЕНА ТОКЕНА: {MethodBase.GetCurrentMethod().DeclaringType.Name}: {GetType().Name}");
+            }
         }
 
         #region AutomaticFillComponents

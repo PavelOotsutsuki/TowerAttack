@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Humanizer;
 
 namespace Tools.Utils.Orthographyes
 {
@@ -23,6 +24,11 @@ namespace Tools.Utils.Orthographyes
                 result += "s";
 
             return result;
+        }
+
+        public string GetStringByNumber(int number)
+        {
+            return number.ToWords();
         }
     }
 }

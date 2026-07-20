@@ -1,5 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using Tools;
 using UnityEngine;
 
@@ -44,10 +45,10 @@ namespace StartMenues
         {
             _isComplete = false;
 
-            StartCoroutine(Activating());
+            Activating(this.destroyCancellationToken).Forget();
         }
 
-        private IEnumerator Activating()
+        private async UniTask Activating(CancellationToken token)
         {
             float y = _transform.position.y;
             float z = _transform.position.z;
@@ -63,20 +64,20 @@ namespace StartMenues
                 stone.transform.position = _transform.position;
                 stone.SetActive(true);
 
-                StartCoroutine(SetStatic(stone));
+                SetStatic(stone, token).Forget();
 
                 duration = Random.Range(0.025f, 0.1f);
-                yield return new WaitForSeconds(duration);
+                await UniTask.WaitForSeconds(duration, cancellationToken: token);
             }
 
-            yield return new WaitForSeconds(1f);
+            await UniTask.WaitForSeconds(1f, cancellationToken: token);
 
             _isComplete = true;
         }
 
-        private IEnumerator SetStatic(GameObject stone)
+        private async UniTask SetStatic(GameObject stone, CancellationToken token)
         {
-            yield return new WaitForSeconds(3f);
+            await UniTask.WaitForSeconds(3f, cancellationToken: token);
 
             Rigidbody2D rigidbody2D = stone.GetComponent<Rigidbody2D>();
             rigidbody2D.bodyType = RigidbodyType2D.Static;
