@@ -1,6 +1,4 @@
-using Cards;
 using Cards.DependencyInterlayers;
-using GameFields.Persons;
 using GameFields.Signals;
 
 namespace GameFields.Persons.Towers
@@ -11,5 +9,7 @@ namespace GameFields.Persons.Towers
         {
             Bus.Fire(new PushStepSignalPlayer(this));
         }
+
+        protected override string GetName() => nameof(CardAttackZonePlayer);
     }
 }

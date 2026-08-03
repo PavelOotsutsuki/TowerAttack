@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using GameFields.Histories;
 using GameFields.Persons;
 using GameFields.Persons.EffectHandlers;
+using Servers;
 using Zenject;
 
 namespace GameFields.Effects
@@ -20,8 +21,8 @@ namespace GameFields.Effects
         //    Action<int> callback) :
         public DoubleEffect(Func<CardEffectConfigPair, EffectDuration, Effect> effectCreator, CardEffectConfigPair effectConfig,
             SignalBus bus, EffectDuration effectDuration, PersonEffectsHandlerRoot personEffectsHandlerRoot, HistoryRoot historyRoot,
-            Person activePerson, CancellationToken token) : base(new EffectData(bus, effectConfig.CardEffectData, effectDuration, personEffectsHandlerRoot,
-                historyRoot, activePerson, token), 0f)
+            Person activePerson, CancellationToken token, FightProcessDBManager fightProcessDBManager) : base(new EffectData(bus, effectConfig.CardEffectData,
+                effectDuration, personEffectsHandlerRoot,historyRoot, activePerson, token, fightProcessDBManager, effectConfig.CardEffectConfig.Type), 0f)
         {
             _effectCreator = effectCreator;
             _effectConfig = effectConfig;
@@ -30,6 +31,8 @@ namespace GameFields.Effects
 
             Play();
         }
+
+        protected override string GetName() => nameof(DoubleEffect);
 
         protected override async UniTask OnPlaying()
         {

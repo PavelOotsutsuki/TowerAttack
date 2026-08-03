@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using Cards;
-using Cards.Views;
 using GameFields.CardTransits;
 using GameFields.Histories;
+using Servers;
 using Tools;
 using UnityEngine;
 
@@ -22,13 +22,15 @@ namespace GameFields.Persons.Fires
         private readonly Transform _parent;
         private readonly ExtraFireSeatActionRoot _extraFireSeatActionRoot;
         private readonly HistoryRoot _historyRoot;
+        private readonly FightProcessDBManager _fightProcessDBManager;
 
-        public FirePool(Transform parent, ExtraFireSeatActionRoot extraFireSeatActionRoot, HistoryRoot historyRoot)
+        public FirePool(Transform parent, ExtraFireSeatActionRoot extraFireSeatActionRoot, HistoryRoot historyRoot, FightProcessDBManager fightProcessDBManager)
         {
             _fireList = new List<Card>();
             _parent = parent;
             _extraFireSeatActionRoot = extraFireSeatActionRoot;
             _historyRoot = historyRoot;
+            _fightProcessDBManager = fightProcessDBManager;
 
             _maxCoordinateX = ((RectTransform)parent).rect.width / 2f;
             _maxCoordinateY = ((RectTransform)parent).rect.height / 2f;
@@ -38,6 +40,8 @@ namespace GameFields.Persons.Fires
 
         public IReadOnlyList<Card> FireList => _fireList;
         public int Count => _fireList.Count;
+
+        private bool? IsPlayersAction => this is IPlayerObject ? true : this is IEnemyAIObject ? false : null;
 
         public void SeatCard(Card card, ICardSeatable cardSeatable, int index, CallbackHandler callbackHandler)
         {
@@ -52,6 +56,7 @@ namespace GameFields.Persons.Fires
 
             //string cardName = card.CurrentSide == SideType.Front ? card.Name.ToUpper() : "?";
 
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, card.ViewData.Number.ToString(), "FIRE", GetName());
             HistoryData historyData = new HistoryData(this, "Сожжена карта: ", new HistoryCardData(card));
             _historyRoot.AddMsg(historyData);
         }
@@ -68,6 +73,7 @@ namespace GameFields.Persons.Fires
             _fireList.Remove(card);
 
             //string cardName = card.CurrentSide == SideType.Front ? card.Name.ToUpper() : "?";
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, card.ViewData.Number.ToString(), "RISE", GetName());
             HistoryData historyData = new HistoryData(this, "Восстановлена карта: ", new HistoryCardData(card));
             _historyRoot.AddMsg(historyData);
         }
@@ -98,5 +104,7 @@ namespace GameFields.Persons.Fires
 
             return new Vector3(0f, 0f, zRotation);
         }
+
+        protected abstract string GetName();
     }
 }

@@ -19,6 +19,8 @@ namespace GameFields.Effects
             Play();
         }
 
+        protected override string GetName() => nameof(CursedMailmanEffect);
+
         protected override async UniTask OnPlaying()
         {
             bool isContinue = false;

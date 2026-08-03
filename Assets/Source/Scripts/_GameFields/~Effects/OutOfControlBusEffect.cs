@@ -30,6 +30,8 @@ namespace GameFields.Effects
             Play();
         }
 
+        protected override string GetName() => nameof(OutOfControlBusEffect);
+
         //public override void End()
         //{
         //    base.End();

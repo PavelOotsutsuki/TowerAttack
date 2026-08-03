@@ -20,6 +20,8 @@ namespace GameFields.Effects
             Play();
         }
 
+        protected override string GetName() => nameof(GreedyEffect);
+
         //public override void End()
         //{
         //    base.End();

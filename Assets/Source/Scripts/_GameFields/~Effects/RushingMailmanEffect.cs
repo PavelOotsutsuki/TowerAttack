@@ -16,6 +16,8 @@ namespace GameFields.Effects
             Play();
         }
 
+        protected override string GetName() => nameof(RushingMailmanEffect);
+
         protected override async UniTask OnPlaying()
         {
             bool isContinue = false;

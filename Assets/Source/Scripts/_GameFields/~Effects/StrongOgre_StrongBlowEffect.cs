@@ -1,4 +1,3 @@
-using UnityEngine;
 using GameFields.Persons;
 
 namespace GameFields.Effects
@@ -12,6 +11,7 @@ namespace GameFields.Effects
             base(deactivePerson, CountDrawCards, CountAttack, data)
         { }
 
+        protected override string GetName() => nameof(StrongOgre_StrongBlowEffect);
         //public override void End()
         //{
         //    base.End();

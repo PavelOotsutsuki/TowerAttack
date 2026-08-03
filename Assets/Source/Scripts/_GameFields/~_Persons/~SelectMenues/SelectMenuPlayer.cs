@@ -21,7 +21,7 @@ namespace GameFields.Persons.SelectMenues
         private int _currentNeedForActivate;
         private GameFieldInputRoot _inputRoot;
 
-        public void Init(ICardNumberKeeper cardNumberKeeper, ISelectResultHandler attackResultHandler, int[] cardNumbers,
+        public void Init(ICardNumberKeeper cardNumberKeeper, ISelectResultHandler selectResultHandler, int[] cardNumbers,
             SelectNumbersList selectedNumbers, ConfirmableNumbers confirmableNumbers, GameFieldInputRoot inputRoot,
             LastSelectedNumbersWatcher lastSelectedNumbersWatcher, UIHelperDescription UIHelperDescription, CancellationToken fightToken,
             CancellationToken gameFieldToken)
@@ -35,7 +35,7 @@ namespace GameFields.Persons.SelectMenues
 
             SelectMenuLabelTextLogic selectMenuLabelTextLogic = new DefaultSelectMenuLabelTextLogic(GetNeedForActivate);
 
-            base.Init(attackResultHandler, _selectNumberPanelPlayer, selectMenuLabelTextLogic, fightToken);
+            base.Init(selectResultHandler, _selectNumberPanelPlayer, selectMenuLabelTextLogic, fightToken);
         }
 
         //public IPointerClickHandler SelectModeButton => _selectModeButton;

@@ -1,15 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using Cards.Views.BigCardViews.Capabilities;
-using Cysharp.Threading.Tasks;
 using Sounds;
 using StartMenues;
-using TMPro;
 using Tools;
 using Tools.Utils.FillComponents;
 using UnityEngine;
-using UnityEngine.UI;
 using Zenject;
 
 namespace Roots
@@ -29,11 +25,13 @@ namespace Roots
 
         [Inject]
         private void Construct(BackgroundSoundConfig backgroundSoundConfig, ForegroundSoundConfig foregroundSoundConfig,
-            CardCapabilityDescription cardCapabilityDescription)
+            CardCapabilityDescription cardCapabilityDescription, StartMenuCTSHolder startMenuCTSHolder)
         {
             _backgroundSoundConfig = backgroundSoundConfig;
             _foregroundSoundConfig = foregroundSoundConfig;
             _cardCapabilityDescription = cardCapabilityDescription;
+
+            SetToken(startMenuCTSHolder);
 
             //StartCoroutine(Initing(bus, deck, seatPool, cardDescription, handPlayer, informationLabel, lookCardMenu, variantCardCreator, soundRoot,
             //    cardSoundVolume, fightMenuActivateButton, screenRoot));
@@ -47,14 +45,14 @@ namespace Roots
             //_startMenuLoadActions.Activate();
         }
 
-        public void Init(Action<int> onPlayClick, CancellationToken gameRootToken)
+        public void Init(Action<int> onPlayClick)
         {
             //CanvasScaler[] objectCanvasScalers = gameObject.GetComponentsInChildren<CanvasScaler>(true);
             //_canvasRoot.SetReferenceResolution(objectCanvasScalers);
 
             //TMP_Text[] objectTexts = gameObject.GetComponentsInChildren<TMP_Text>(true);
             //_fontRoot.SetFont(objectTexts);
-            base.Init(gameRootToken);
+            base.Init();
             //_fontRoot.Init();
             //_canvasRoot.Init();
 

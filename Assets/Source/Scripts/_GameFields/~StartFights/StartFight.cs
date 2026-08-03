@@ -13,6 +13,7 @@ using System.Threading;
 using Tools;
 using System;
 using System.Reflection;
+using Servers;
 
 namespace GameFields.StartFights
 {
@@ -37,19 +38,22 @@ namespace GameFields.StartFights
         private HandAI _handAI;
         private TowerPlayer _towerPlayer;
         private TowerAI _towerAI;
+        private FightProcessDBManager _fightProcessDBManager;
         //private SwitchRootPanel _switchRootPanel;
         private CancellationToken _gameFieldToken;
 
         public bool IsComplete => _startTowerCardSelectionPlayer.IsComplete && _startTowerCardSelectionImitation.IsComplete;
 
         [Inject]
-        private void Construct(Deck deck, HandPlayer handPlayer, HandAI handAI, TowerPlayer towerPlayer, TowerAI towerAI)
+        private void Construct(Deck deck, HandPlayer handPlayer, HandAI handAI, TowerPlayer towerPlayer, TowerAI towerAI,
+            FightProcessDBManager fightProcessDBManager)
         {
             _deck = deck;
             _handPlayer = handPlayer;
             _handAI = handAI;
             _towerPlayer = towerPlayer;
             _towerAI = towerAI;
+            _fightProcessDBManager = fightProcessDBManager;
             //_switchRootPanel = switchRootPanel;
         }
 
@@ -63,7 +67,7 @@ namespace GameFields.StartFights
             _discover.Init(_gameFieldToken);
 
             _startTowerCardSelectionImitation = new StartTowerCardSelectionImitation(enemyAI, _handAI, _towerAI, _data.FirstTurnCardsCount, _imitationData);
-            _startTowerCardSelectionPlayer = new StartTowerCardSelectionPlayer(_deck, _handPlayer, _towerPlayer, _seats, _discover, _playerData);
+            _startTowerCardSelectionPlayer = new StartTowerCardSelectionPlayer(_deck, _handPlayer, _towerPlayer, _seats, _discover, _playerData, _fightProcessDBManager);
         }
 
         public void StartStep()

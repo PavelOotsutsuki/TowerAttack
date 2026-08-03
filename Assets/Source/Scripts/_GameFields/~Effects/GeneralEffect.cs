@@ -16,6 +16,8 @@ namespace GameFields.Effects
             Play();
         }
 
+        protected override string GetName() => nameof(GeneralEffect);
+
         //public override void End()
         //{
         //    base.End();

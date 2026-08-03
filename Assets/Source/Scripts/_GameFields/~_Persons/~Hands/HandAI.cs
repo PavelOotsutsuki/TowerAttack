@@ -33,5 +33,6 @@ namespace GameFields.Persons.Hands
         //    callback?.Invoke();
         //}
         #endregion
+        protected override string GetName() => nameof(HandAI);
     }
 }

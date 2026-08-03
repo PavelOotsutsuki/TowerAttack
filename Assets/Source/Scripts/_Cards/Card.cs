@@ -10,6 +10,7 @@ using Cards.Sounds;
 using Cards.Views;
 using Cards.Views.BigCardViews.Capabilities;
 using Cards.Views.BigCardViews.CardDescriptions;
+using Servers;
 using Tools;
 using Tools.Utils;
 using Tools.Utils.FillComponents;
@@ -80,6 +81,46 @@ namespace Cards
             CreateCardCharacter();
             SetState(_cardPaper);
         }
+
+        //private Transform _parent;
+        //private static int counter = 1;
+
+        //public void Update()
+        //{
+        //    if (_parent == transform.parent)
+        //        return;
+
+        //    if (_fightProcessDBManager == null)
+        //        return;
+
+        //    if (_cardCTS == null)
+        //        return;
+
+        //    if (_cardCTS.IsCancellationRequested)
+        //        return;
+
+        //    //if (_parent == null)
+        //    //{
+        //    string oldParent = _parent?.ToString()?.Replace("(UnityEngine.RectTransform)", "")?.Trim() ?? "<ПУСТО>";
+        //    if (oldParent != "<ПУСТО>")
+        //    {
+        //        oldParent = _parent.gameObject.name;
+        //    }
+
+        //    _parent = transform.parent;
+
+        //    //string newParent = _parent?.ToString() ?? "<ПУСТО>";
+        //    string newParent = _parent?.ToString()?.Replace("(UnityEngine.RectTransform)", "")?.Trim() ?? "<ПУСТО>";
+        //    if (newParent != "<ПУСТО>")
+        //    {
+        //        newParent = _parent.gameObject.name;
+        //    }
+
+
+        //    _fightProcessDBManager.WriteFightProcessAction(1, true, _viewData.Number.ToString(), "OLD: " + oldParent, " NEW: " + newParent);
+        //    //    return;
+        //    //}
+        //}
 
         public void SetCurseMode()
         {

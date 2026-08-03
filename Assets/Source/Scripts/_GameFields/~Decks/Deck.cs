@@ -9,6 +9,8 @@ using GameFields.Seats;
 using Cards.Views;
 using GameFields.CardTransits;
 using System.Threading;
+using Servers;
+using Zenject;
 
 namespace GameFields.Decks
 {
@@ -21,7 +23,8 @@ namespace GameFields.Decks
 
         private readonly float _startCardAddPositionX = 0f;
         private readonly float _startCardAddPositionY = 0f;
-        private List<Seat> _seats = new List<Seat>();
+        private List<Seat> _seats = new List<Seat>(); // Да, не ридонли. Из-за Shuffle. Не хорошо, но и не хуево
+        //[Inject] private FightProcessDBManager _fightProcessDBManager;
 
         private SeatPool _deckSeatPool;
 
@@ -82,25 +85,12 @@ namespace GameFields.Decks
             CheckBackViewer();
 
             _seats.Insert(index, deckSeat);
+            //_fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, null, card.ViewData.Number.ToString(), "Seat", "Deck");
+
             OnSeatsCountChange?.Invoke();
 
             if (isShuffle)
                 ShuffleCards();
-        }
-
-        private void CheckBackViewer()
-        {
-            int countNeed = (AllCards.Count() + (_countCardsInGroup - 1)) / _countCardsInGroup;
-
-            while (countNeed > _cardBackViewer.Count)
-            {
-                _cardBackViewer.Add();
-            }
-
-            while (countNeed < _cardBackViewer.Count)
-            {
-                _cardBackViewer.Remove();
-            }
         }
 
         //public void SeatCardWithoutShuffle(Card card)
@@ -233,6 +223,8 @@ namespace GameFields.Decks
                 throw new Exception("Пытаетесь удалить карту которой нет в Seat-а");
 
             _seats.Remove(seat);
+            seat.Reset();
+            //_fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, null, card.ViewData.Number.ToString(), "Remove", "Deck");
 
             OnSeatsCountChange?.Invoke();
 
@@ -257,13 +249,27 @@ namespace GameFields.Decks
         //        _cardBackViewer.Add();
         //    }
         //}
+        private void CheckBackViewer()
+        {
+            int countNeed = (AllCards.Count() + (_countCardsInGroup - 1)) / _countCardsInGroup;
+
+            while (countNeed > _cardBackViewer.Count)
+            {
+                _cardBackViewer.Add();
+            }
+
+            while (countNeed < _cardBackViewer.Count)
+            {
+                _cardBackViewer.Remove();
+            }
+        }
 
         private Seat GetSeat()
         {
-            Seat discardPileSeat = _deckSeatPool.GetSeat();
-            discardPileSeat.ReadOnlyTransform.SetParent(_cardContainer.GetTransform());
-            discardPileSeat.SetLocalPositionValues(new Vector2(_startCardAddPositionX, _startCardAddPositionY), Quaternion.identity.eulerAngles);
-            return discardPileSeat;
+            Seat deckSeat = _deckSeatPool.GetSeat(nameof(Deck), null);
+            deckSeat.ReadOnlyTransform.SetParent(_cardContainer.GetTransform());
+            deckSeat.SetLocalPositionValues(new Vector2(_startCardAddPositionX, _startCardAddPositionY), Quaternion.identity.eulerAngles);
+            return deckSeat;
         }
 
         #region AutomaticFillComponents

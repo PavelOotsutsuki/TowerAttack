@@ -38,7 +38,7 @@ namespace GameFields
             _personsState = personsState;
             _fightResult = fightResult;
 
-            _turnNumber = 1;
+            _turnNumber = 0;
 
             IsComplete = false;
 
@@ -67,6 +67,8 @@ namespace GameFields
         public void StartStep()
         {
             //GC.Collect();
+            _turnNumber++;
+
             _soundRootActivatable.Activate();
             _fightButtonsActivator.Activate();
 

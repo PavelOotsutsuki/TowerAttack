@@ -27,7 +27,7 @@ namespace Roots
             _currentGameFieldRoot = CurrentGameObject.GetComponent<GameFieldRoot>();
             //Debug.Log("GameFieldRootPrefab: " + GameRootToken.GetHashCode());
 
-            _currentGameFieldRoot.Init(_onDestroyPrefab, GameRootToken);
+            _currentGameFieldRoot.Init(_onDestroyPrefab);
             _currentGameFieldRoot.Activate();
 
             WaitingToComplete(GameRootToken).Forget();

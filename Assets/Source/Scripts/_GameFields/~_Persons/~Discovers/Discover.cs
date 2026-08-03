@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Discovers
 {
-    public abstract class Discover : MonoBehaviour, IDiscoverChoiceHandler, IActivatable<DiscoverActivateData>, IAutomaticFillComponents
+    public abstract class Discover : MonoBehaviour, IDiscoverChoiceHandler, IActivatable<DiscoverActivateData>, IPersonObject, IAutomaticFillComponents
     {
         [SerializeField] protected DiscoverSeat[] Seats;
         //[SerializeField] private float _offset = 400f;
@@ -180,7 +180,7 @@ namespace GameFields.Persons.Discovers
         {
             foreach (DiscoverSeat seat in Seats)
             {
-                seat.Init(this, _cardScaleFactor, _viewDuration, Token);
+                seat.Init(this, _cardScaleFactor, _viewDuration, this,  Token);
             }
         }
 

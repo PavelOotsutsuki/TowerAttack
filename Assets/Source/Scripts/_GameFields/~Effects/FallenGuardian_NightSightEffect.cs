@@ -4,7 +4,6 @@ using Cards.Effects;
 using GameFields.InformationLabels;
 using GameFields.Persons;
 using Tools.Settings;
-using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace GameFields.Effects
@@ -21,6 +20,8 @@ namespace GameFields.Effects
 
             Play();
         }
+
+        protected override string GetName() => nameof(FallenGuardian_NightSightEffect);
 
         //public override void End()
         //{

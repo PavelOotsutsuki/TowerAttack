@@ -43,9 +43,7 @@ namespace GameFields.DiscardPiles
             WaitingUntilComplete(token).Forget();
         }
 
-        protected override string GetHistoryMsg()
-        {
-            return "Гномичья ковка: ";
-        }
+        protected override string GetHistoryMsg() => "Гномичья ковка: ";
+        protected override string GetDBManagerMsg() => "FORGING";
     }
 }

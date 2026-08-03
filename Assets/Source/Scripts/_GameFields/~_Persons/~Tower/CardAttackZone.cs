@@ -1,12 +1,7 @@
-using System.Collections;
 using Cards;
 using Cards.DependencyInterlayers;
-using GameFields.CommonAnimations;
-using GameFields.DiscardPiles;
-using GameFields.Persons;
 using GameFields.Persons.SelectMenues.Attacks;
 using GameFields.Persons.SelectMenues;
-using GameFields.Signals;
 using Tools;
 using Tools.CommonAnimations;
 using UnityEngine;
@@ -14,12 +9,15 @@ using Zenject;
 using GameFields.Histories;
 using Cysharp.Threading.Tasks;
 using System.Threading;
+using Servers;
 
 namespace GameFields.Persons.Towers
 {
     public abstract class CardAttackZone : MonoBehaviour, IAttackable, IPersonObject, IAttackCardKeeper, ICompletable
     {
         [SerializeField] private CardAttackZoneData _data;
+
+        [Inject] private FightProcessDBManager _fightProcessDBManager;
 
         //private InvertCardAnimation _invertCardAnimation;
         private ShakeAnimation _shakeAnimation;
@@ -58,6 +56,8 @@ namespace GameFields.Persons.Towers
             }
         }
 
+        private bool? IsPlayersAction => this is IPlayerObject ? true : this is IEnemyAIObject ? false : null;
+
         public void Init(ISelectMenuActivator attackMenu, IReadOnlyRectTransformable tower, SignalBus bus,
             HistoryRoot historyRoot)//, ICompletable attackHandler)
         {
@@ -82,6 +82,7 @@ namespace GameFields.Persons.Towers
         }
 
         protected abstract void AttackProcessingActivate();
+        protected abstract string GetName();
 
         private async UniTask ActivatingAttack(Card card, CancellationToken token)
         {
@@ -103,6 +104,7 @@ namespace GameFields.Persons.Towers
 
             _attackMenu.Activate(attackMenuActivateData);
 
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, card.ViewData.Number.ToString(), "ATTACKING TOWER", GetName());
             HistoryCardData historyCardData = new HistoryCardData(card);
             HistoryData historyData = new HistoryData(this, "Атака: ", historyCardData);
             _historyRoot.AddMsg(historyData);

@@ -5,6 +5,7 @@ using Tools.Utils.Movements;
 using Tools;
 using System.Collections.Generic;
 using Cards.Views;
+using Servers;
 
 namespace GameFields.Seats
 {
@@ -12,23 +13,39 @@ namespace GameFields.Seats
     {
         [SerializeField] private Transform _transform;
 
+        private FightProcessDBManager _fightProcessDBManager;
+
         private Movement _seatMovement;
+        private string _owner;
+        private bool? _isPlayersAction;
 
         public Card Card { get; private set; }
         public ReadOnlyTransform ReadOnlyTransform { get; private set; }
 
-        public void Init()
+        public void Init(FightProcessDBManager fightProcessDBManager)
         {
+            _fightProcessDBManager = fightProcessDBManager;
             _seatMovement = new Movement(_transform);
             ReadOnlyTransform = new ReadOnlyTransform(_transform);
-            Reset();
+            Card = null;
         }
 
-        public void Reset() => Card = null;
+        public void SetOwner(string owner, bool? isPlayersAction)
+        {
+            _owner = owner;
+            _isPlayersAction = isPlayersAction;
+        }
+
+        public void Reset()
+        {
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, _isPlayersAction, Card.ViewData.Number.ToString(), "REMOVE", _owner);
+            Card = null;
+        }
 
         public void SetCard(Card card, SideType sideType, float duration, float scaleFactor = 1f)
         {
             Card = card;
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, _isPlayersAction, Card.ViewData.Number.ToString(), "SEAT", _owner);
 
             Card.SetSide(sideType);
             Card.RORTransform.SetParent(_transform);

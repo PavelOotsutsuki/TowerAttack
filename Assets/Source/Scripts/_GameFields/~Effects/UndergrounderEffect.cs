@@ -29,6 +29,8 @@ namespace GameFields.Effects
             Play();
         }
 
+        protected override string GetName() => nameof(UndergrounderEffect);
+
         //public override void End()
         //{
         //    base.End();

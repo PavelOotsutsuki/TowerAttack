@@ -13,6 +13,8 @@ namespace GameFields.Effects
             Play();
         }
 
+        protected override string GetName() => nameof(VoidEffect);
+
         //public override void End()
         //{
         //    base.End();

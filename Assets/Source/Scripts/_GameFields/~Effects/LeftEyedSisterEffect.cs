@@ -28,6 +28,8 @@ namespace GameFields.Effects
             Play();
         }
 
+        protected override string GetName() => nameof(LeftEyedSisterEffect);
+
         //public override void End()
         //{
         //    base.End();

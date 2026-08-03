@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace GameFields.StartFights
 {
-    public class StartTowerCardSelectionImitation: StartTowerCardSelection
+    public class StartTowerCardSelectionImitation: StartTowerCardSelection, IEnemyAIObject
     {
         private readonly ICardTakable _hand;
         private readonly IDrawCardManager _drawCardManager;

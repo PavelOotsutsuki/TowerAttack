@@ -1,4 +1,3 @@
-using GameFields.Persons;
 using GameFields.Signals;
 
 namespace GameFields.Persons.Towers
@@ -9,5 +8,7 @@ namespace GameFields.Persons.Towers
         {
             Bus.Fire(new PushStepSignalEnemyAI(this));
         }
+
+        protected override string GetName() => nameof(CardAttackZoneEnemyAI);
     }
 }

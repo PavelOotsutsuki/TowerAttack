@@ -16,6 +16,8 @@ namespace GameFields.Effects
             Play();
         }
 
+        protected override string GetName() => nameof(DeadOgreEffect);
+
         //public override void End()
         //{
         //    base.End();

@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Collections;
+using Zenject;
+using Servers;
 
 namespace GameFields.Seats
 {
@@ -11,6 +12,7 @@ namespace GameFields.Seats
         [SerializeField] private Transform _container;
         [SerializeField] private int _countObjects;
         [SerializeField] private Seat _template;
+        [Inject] private FightProcessDBManager _fightProcessDBManager;
 
         private readonly Queue<Seat> _remainingPool = new Queue<Seat>();
         private readonly List<Seat> _usedPool = new List<Seat>();
@@ -25,7 +27,7 @@ namespace GameFields.Seats
             }
         }
 
-        public Seat GetSeat()
+        public Seat GetSeat(string owner, bool? isPlayersAction)
         {
             if (_remainingPool.Count <= 0)
             {
@@ -34,6 +36,7 @@ namespace GameFields.Seats
 
             Seat result = _remainingPool.Dequeue();
             result.gameObject.SetActive(true);
+            result.SetOwner(owner, isPlayersAction);
             _usedPool.Add(result);
 
             //if (_returnablePool.Contains(result))
@@ -94,7 +97,7 @@ namespace GameFields.Seats
         private void CreateObject()
         {
             Seat spawned = Instantiate(_template, _container);
-            spawned.Init();
+            spawned.Init(_fightProcessDBManager);
             spawned.gameObject.SetActive(false);
 
             _remainingPool.Enqueue(spawned);

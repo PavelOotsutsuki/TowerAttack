@@ -1,4 +1,3 @@
-using UnityEngine;
 using GameFields.Persons;
 
 namespace GameFields.Effects
@@ -11,6 +10,9 @@ namespace GameFields.Effects
         public HungryOgre_HighProfileCrimeEffect(Person deactivePerson, EffectData data) :
             base(deactivePerson, CountDrawCards, CountAttack, data)
         { }
+
+        protected override string GetName() => nameof(HungryOgre_HighProfileCrimeEffect);
+
 
         //public override void End()
         //{

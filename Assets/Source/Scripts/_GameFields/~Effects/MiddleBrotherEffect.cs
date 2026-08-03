@@ -21,6 +21,8 @@ namespace GameFields.Effects
             Play();
         }
 
+        protected override string GetName() => nameof(MiddleBrotherEffect);
+
         //public override void End()
         //{
         //    base.End();

@@ -84,6 +84,8 @@ namespace GameFields.Persons.Hands
         public bool CanSkip => CountCards == 0;
         public bool IsSlimeEffect => _isSlimeEffect;
 
+        private bool? IsPlayersAction => this is IPlayerObject ? true : this is IEnemyAIObject ? false : null;
+
         [Inject]
         public void Construct(ScreenRoot screenRoot)
         {
@@ -179,7 +181,7 @@ namespace GameFields.Persons.Hands
                 _handLuckyHorseshoeCards.Add(card);
             }
 
-            Seat handSeat = _handSeatPool.GetSeat();
+            Seat handSeat = _handSeatPool.GetSeat(GetName(), IsPlayersAction);
             handSeat.transform.SetParent(_containerForSeats);
             handSeat.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
 
@@ -458,6 +460,7 @@ namespace GameFields.Persons.Hands
         {
             //_handSeatPool.ReturnInPool(_dragCardHandSeat);
             //Debug.Log("UnbindDragableCard");
+            RemoveSeat(_dragCardHandSeat);
             ResetDragOptions();
             SortHandSeats();
         }
@@ -656,6 +659,8 @@ namespace GameFields.Persons.Hands
                 _handSeats[i].transform.SetAsLastSibling(); //Непонятно сколько ресурсов жрет, пока отдельно реализую
             }
         }
+
+        protected abstract string GetName(); 
 
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(Hand))]

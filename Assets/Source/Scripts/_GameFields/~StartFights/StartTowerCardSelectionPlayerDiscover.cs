@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using GameFields.Persons;
 using GameFields.Persons.Discovers;
 using Tools.UI;
 using Tools.Utils;
@@ -11,7 +12,7 @@ using UnityEngine;
 
 namespace GameFields.StartFights
 {
-    public class StartTowerCardSelectionPlayerDiscover : Discover
+    public class StartTowerCardSelectionPlayerDiscover : Discover, IPlayerObject
     {
         [SerializeField] private DiscoverLabel _discoverLabel;
 

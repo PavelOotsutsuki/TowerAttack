@@ -12,6 +12,7 @@ using GameFields.Persons.EffectHandlers;
 using GameFields.Persons.LookCardMenues;
 using GameFields.Persons.ConfirmableNumbersView;
 using System.Threading;
+using Servers;
 
 namespace GameFields.Persons
 {
@@ -37,10 +38,11 @@ namespace GameFields.Persons
             ISelectMenuActivator choiceMenu, ISelectMenuActivator choiceMenuImitation, PersonEffectsHandler personEffectsHandler,
             InformationLabel informationLabel, LookCardMenuPlayer lookCardMenuPlayer, PlayerSkipTurnViewCreator playerSkipTurnViewCreator,
             INumbersStateWatcher numbersStateWatcher, LastSelectedNumbersWatcher lastSelectedNumbersWatcher,
-            PersonEffectKeeper personEffectKeeper, /*CancellationToken fightToken,*/ TurnToken turnToken) :
+            PersonEffectKeeper personEffectKeeper, /*CancellationToken fightToken,*/ TurnToken turnToken,
+            FightProcessDBManager fightProcessDBManager) :
             base(cardPlayingZone, drawCardRoot, tower, discover, bus, hand, attackMenu, interactionActivator,
                 choiceMenu, choiceMenuImitation, personEffectsHandler, lookCardMenuPlayer, numbersStateWatcher,
-                lastSelectedNumbersWatcher, personEffectKeeper, turnToken)
+                lastSelectedNumbersWatcher, personEffectKeeper, turnToken, fightProcessDBManager)
         {
             _startTurnDrawPlayerCreator = startTurnDrawPlayerCreator;
             _startPlayerTurnViewCreator = startPlayerTurnViewCreator;

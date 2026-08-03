@@ -33,6 +33,8 @@ namespace GameFields.Effects
             Play();
         }
 
+        protected override string GetName() => nameof(PatriarchCorallEffect);
+
         protected override async UniTask OnPlaying()
         {
             List<Card> cards = _drawCardManager?.DrawCards(_countDrawCards, Token);

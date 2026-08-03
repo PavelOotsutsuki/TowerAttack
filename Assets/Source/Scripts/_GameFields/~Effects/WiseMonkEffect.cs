@@ -30,6 +30,9 @@ namespace GameFields.Effects
             Play();
         }
 
+        protected override string GetName() => nameof(WiseMonkEffect);
+
+
         //public override void End()
         //{
         //    base.End();

@@ -13,27 +13,29 @@ namespace Servers
     {
         private const string RootUri = "https://localhost:7206/api/Players";
 
-        private const string CreateUserUriFeature = "CreateUser";
-        private const string GetMainMenuUserDataUriFeature = "GetMainMenuUserData";
-        private const string LogInUserUriFeature = "LogInUser";
-        private const string StartFightWithBotUriFeature = "StartFightWithBot";
-        private const string FinishFightWithBotUriFeature = "FinishFightWithBot";
-        private const string GetLastAddedExpUriFeature = "GetLastAddedExp";
+        private const string CreateUser_UriFeature = "CreateUser";
+        private const string GetMainMenuUserData_UriFeature = "GetMainMenuUserData";
+        private const string LogInUser_UriFeature = "LogInUser";
+        private const string StartFightWithBot_UriFeature = "StartFightWithBot";
+        private const string FinishFightWithBot_UriFeature = "FinishFightWithBot";
+        private const string GetLastAddedExp_UriFeature = "GetLastAddedExp";
+        private const string WriteFightProcessAction_UriFeature = "WriteFightProcessAction";
 
-        private const string CreateUserUri = RootUri + "/" + CreateUserUriFeature;
-        private const string GetMainMenuUserDataUri = RootUri + "/" + GetMainMenuUserDataUriFeature;
-        private const string LogInUserUri = RootUri + "/" + LogInUserUriFeature;
-        private const string StartFightWithBotUri = RootUri + "/" + StartFightWithBotUriFeature;
-        private const string FinishFightWithBotUri = RootUri + "/" + FinishFightWithBotUriFeature;
-        private const string GetLastAddedExpUri = RootUri + "/" + GetLastAddedExpUriFeature;
+        private const string CreateUser_Uri = RootUri + "/" + CreateUser_UriFeature;
+        private const string GetMainMenuUserData_Uri = RootUri + "/" + GetMainMenuUserData_UriFeature;
+        private const string LogInUser_Uri = RootUri + "/" + LogInUser_UriFeature;
+        private const string StartFightWithBot_Uri = RootUri + "/" + StartFightWithBot_UriFeature;
+        private const string FinishFightWithBot_Uri = RootUri + "/" + FinishFightWithBot_UriFeature;
+        private const string GetLastAddedExp_Uri = RootUri + "/" + GetLastAddedExp_UriFeature;
+        private const string WriteFightProcessAction_Uri = RootUri + "/" + WriteFightProcessAction_UriFeature;
 
         private readonly LoadRoot _loadRoot;
 
         private Guid _currentIdUser;
         private DateTime? _lastLogInDate;
+        private Guid _currentEnemyIdUser;
 
         private Guid _currentIdFight;
-        private Guid _currentEnemyIdUser;
 
         public DBRoot(LoadRoot loadRoot)
         {
@@ -57,7 +59,7 @@ namespace Servers
             //};
 
             //string currentUri = $"{CreateUserUri}?name={name}&password={password}";
-            string currentUri = $"{CreateUserUri}";
+            string currentUri = $"{CreateUser_Uri}";
             //UnityWebRequest.Post()
             WWWForm WWWForm = new WWWForm();
             WWWForm.AddField("name", name);
@@ -136,7 +138,7 @@ namespace Servers
             //};
 
             //string currentUri = $"{CreateUserUri}?name={name}&password={password}";
-            string currentUri = $"{LogInUserUri}";
+            string currentUri = $"{LogInUser_Uri}";
             //UnityWebRequest.Post()
             WWWForm WWWForm = new WWWForm();
             WWWForm.AddField("name", name);
@@ -268,7 +270,7 @@ namespace Servers
             {
                 Guid id = _currentIdUser;
 
-                string currentUri = $"{GetMainMenuUserDataUri}?id={id}";
+                string currentUri = $"{GetMainMenuUserData_Uri}?id={id}";
 
                 using (UnityWebRequest request = UnityWebRequest.Get(currentUri))
                 {
@@ -322,7 +324,7 @@ namespace Servers
             try
             {
                 //_loadRoot.AddSession(loadSession);
-                string currentUri = $"{StartFightWithBotUri}";
+                string currentUri = $"{StartFightWithBot_Uri}";
                 Guid id_User = _currentIdUser;
 
                 if (id_User == Guid.Empty)
@@ -372,7 +374,7 @@ namespace Servers
 
         public async UniTask FinishFightWithBot(bool? isYouWinner, CancellationToken token)
         {
-            string currentUri = $"{FinishFightWithBotUri}";
+            string currentUri = $"{FinishFightWithBot_Uri}";
             Guid id_Fight = _currentIdFight;
             Guid id_winner;
 
@@ -419,6 +421,52 @@ namespace Servers
             }
         }
 
+        public async UniTask WriteFightProcessAction(int turnNumber, bool? isPlayersAction, string action_target, string action_type, string action_subtype,
+            CancellationToken token)
+        {
+            try
+            {
+                Debug.Log("Логируем событие!");
+                string currentUri = WriteFightProcessAction_Uri;
+
+                Guid? person_id = null;
+
+                if (isPlayersAction.HasValue)
+                    person_id = isPlayersAction.Value == true ? _currentIdUser : _currentEnemyIdUser;
+
+                WWWForm WWWForm = new WWWForm();
+                WWWForm.AddField("id_Fight", _currentIdFight.ToString());
+                WWWForm.AddField("turn", turnNumber.ToString());
+                WWWForm.AddField("person_id", person_id?.ToString() ?? "");
+                WWWForm.AddField("action_target", action_target?.ToString() ?? "");
+                WWWForm.AddField("action_type", action_type?.ToString() ?? "");
+                WWWForm.AddField("action_subtype", action_subtype?.ToString() ?? "");
+
+                using (UnityWebRequest request = UnityWebRequest.Post(currentUri, WWWForm))
+                {
+                    request.certificateHandler = new BypassCertificate();
+                    await request.SendWebRequest().ToUniTask(cancellationToken: token);
+
+                    //if (request.result == UnityWebRequest.Result.Success)
+                    //{
+                    //    _currentIdFight = Guid.Empty;
+                    //    _currentEnemyIdUser = Guid.Empty;
+                    //}
+                    //else
+                    //{
+                    //    Debug.LogError(request.error);
+                    //    throw new Exception();
+                    //}
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Ошибка {nameof(DBRoot)}-->{nameof(WriteFightProcessAction)}: {ex.Message}");
+                return;
+            }
+        }
+
         public async UniTask<int> GetLastAddedExp(CancellationToken token)
         {
             try
@@ -429,7 +477,7 @@ namespace Servers
                 //_currentEnemyIdUser = Guid.Empty;
                 //_currentIdFight = Guid.Empty;
 
-                string currentUri = $"{GetLastAddedExpUri}?id_user={id_user}&id_fight={id_fight}";
+                string currentUri = $"{GetLastAddedExp_Uri}?id_user={id_user}&id_fight={id_fight}";
 
                 using (UnityWebRequest request = UnityWebRequest.Get(currentUri))
                 {

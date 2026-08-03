@@ -32,6 +32,8 @@ namespace GameFields.Persons.Towers
             base.SeatCard(card);
         }
 
+        protected override string GetName() => nameof(TowerAI);
+
         #region AutomaticFillComponents
         [ContextMenu(nameof(DefineAllComponents) + nameof(TowerAI))]
         public override List<ComponentAttachInfo> DefineAllComponents()

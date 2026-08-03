@@ -1,7 +1,5 @@
 using Cards.Effects;
-using GameFields.Persons;
 using System;
-using UnityEngine;
 
 namespace GameFields.Effects
 {
@@ -11,6 +9,8 @@ namespace GameFields.Effects
             Func<EffectType, CardEffectData, EffectDuration, Effect> effectCreator, EffectType effectType, EffectData data) :
             base(variantCardCreator, effectCreator, effectType, data)
         { }
+
+        protected override string GetName() => nameof(JusticeBullEffect);
 
         //public override void End()
         //{

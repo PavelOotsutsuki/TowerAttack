@@ -5,7 +5,7 @@ using Random = UnityEngine.Random;
 
 namespace GameFields.Persons.Discovers
 {
-    public class DiscoverAI : Discover
+    public class DiscoverAI : Discover, IEnemyAIObject
     {
         private const int CountLogics = 1;
 

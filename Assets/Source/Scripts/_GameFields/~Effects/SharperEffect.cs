@@ -35,6 +35,8 @@ namespace GameFields.Effects
             Play();
         }
 
+        protected override string GetName() => nameof(SharperEffect);
+
         //public override void End()
         //{
         //    base.End();

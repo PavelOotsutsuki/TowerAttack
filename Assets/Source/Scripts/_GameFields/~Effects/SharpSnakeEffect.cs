@@ -34,6 +34,9 @@ namespace GameFields.Effects
             Play();
         }
 
+        protected override string GetName() => nameof(SharpSnakeEffect);
+
+
         //public override void End()
         //{
         //    base.End();

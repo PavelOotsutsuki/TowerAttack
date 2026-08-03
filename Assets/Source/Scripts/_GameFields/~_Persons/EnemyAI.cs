@@ -12,6 +12,7 @@ using GameFields.Persons.EnemyProcessImitations;
 using GameFields.Persons.LookCardMenues;
 using GameFields.Persons.ConfirmableNumbersView;
 using System.Threading;
+using Servers;
 
 namespace GameFields.Persons
 {
@@ -29,10 +30,10 @@ namespace GameFields.Persons
             HandAI hand, ISelectMenuActivator attackMenu, ISelectMenuActivator choiceMenu, ISelectMenuActivator choiceMenuImitation,
             PersonEffectsHandler personEffectsHandler, LookCardMenuEnemyAI lookCardMenu, OnBeforeEndTurnProcessingCreator onBeforeEndTurnProcessingCreator,
             EnemySkipTurnViewCreator enemySkipTurnViewCreator, INumbersStateWatcher numbersStateWatcher, LastSelectedNumbersWatcher lastSelectedNumbersWatcher,
-            PersonEffectKeeper personEffectKeeper, TurnToken turnToken) :
+            PersonEffectKeeper personEffectKeeper, TurnToken turnToken, FightProcessDBManager fightProcessDBManager) :
             base(cardPlayingZone, drawCardRoot, tower, discoverImitation, bus,
                 hand, attackMenu, interactionActivator, choiceMenu, choiceMenuImitation, personEffectsHandler,
-                lookCardMenu, numbersStateWatcher, lastSelectedNumbersWatcher, personEffectKeeper, turnToken)
+                lookCardMenu, numbersStateWatcher, lastSelectedNumbersWatcher, personEffectKeeper, turnToken, fightProcessDBManager)
         {
             //_gameFieldObjectsActivator = gameFieldObjectsActivator;
             //Bus.Subscribe<StartEffectSignal>(SetCardEffectProcess);

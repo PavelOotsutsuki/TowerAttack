@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.Tables
 {
-    public abstract class Table : MonoBehaviour, IDiscardManager, ICardView, IAutomaticFillComponents
+    public abstract class Table : MonoBehaviour, IDiscardManager, ICardView, IAutomaticFillComponents, IPersonObject
     {
         [SerializeField] private TableSeat[] _tableSeats;
 
@@ -168,7 +168,9 @@ namespace GameFields.Persons.Tables
 
             for (int i = 0; i < countSeats; i++)
             {
-                _sortedSeats[i] = _tableSeats[GetSortIndex(i, countSeats)];
+                TableSeat currentSeat = _tableSeats[GetSortIndex(i, countSeats)];
+                currentSeat.Init(this);
+                _sortedSeats[i] = currentSeat;
             }
         }
 

@@ -184,12 +184,13 @@ namespace GameFields.Persons
         private CardRoot _cardRoot;
         private UIHelperDescription _UIHelperDescription;
         private HistoryRoot _historyRoot;
+        private ConfirmableNumbersViewRoot _confirmableNumbersViewRoot;
+        private FightProcessDBManager _fightProcessDBManager;
 
         private CancellationToken _gameFieldToken;
         private CancellationToken _fightToken;
         private TurnToken _turnToken;
 
-        private ConfirmableNumbersViewRoot _confirmableNumbersViewRoot;
 
         public DiscardManager DiscardManager => _discardManager;
 
@@ -203,7 +204,7 @@ namespace GameFields.Persons
             LookCardMenuPlayer lookCardMenuPlayer, StartPlayerTurnLabel startPlayerTurnLabel, SkipTurnLabelPlayer skipTurnLabelPlayer,
             SkipTurnLabelEnemyAI skipTurnLabelEnemyAI, FightMenu fightMenu, FightMenuActivateButton fightMenuActivateButton,
             UIHelperDescription UIHelperDescription, HistoryMenu historyMenu, HistoryMenuActivateButton historyMenuActivateButton,
-            FightButtonsActivator fightButtonsActivator, ConfirmableNumbersViewRoot confirmableNumbersViewRoot)
+            FightButtonsActivator fightButtonsActivator, ConfirmableNumbersViewRoot confirmableNumbersViewRoot, FightProcessDBManager fightProcessDBManager)
         {
             _playerPlayingZone = playerPlayingZone;
             _playerHand = playerHand;
@@ -245,6 +246,7 @@ namespace GameFields.Persons
 
             _UIHelperDescription = UIHelperDescription;
             _confirmableNumbersViewRoot = confirmableNumbersViewRoot;
+            _fightProcessDBManager = fightProcessDBManager;
             //_inputRoot = inputRoot;
         }
 
@@ -345,7 +347,7 @@ namespace GameFields.Persons
             return new Player(_interactionActivator, _playerHand, _playerPlayingZone, _playerTower, _playerDiscover,
                 _drawCardRootPlayer, startTurnDraw, turnProcessingCreator, _bus, startPlayerTurnViewCreator, _playerAttackMenu, endTurnProcessingCreator,
                 _playerChoiceMenu, _playerChoiceMenuImitation, _playerPersonEffectsHandler, _informationLabel, _playerLookCardMenu,
-                skipTurnView, _confirmableNumbersPlayer, _lastSelectedNumbersWatcherPlayer, _playerEffectKeeper, _turnToken);
+                skipTurnView, _confirmableNumbersPlayer, _lastSelectedNumbersWatcherPlayer, _playerEffectKeeper, _turnToken, _fightProcessDBManager);
         }
 
         public EnemyAI CreateEnemyAI()
@@ -375,7 +377,7 @@ namespace GameFields.Persons
 
             SkipTurnChecker skipTurnChecker = new SkipTurnChecker(slimeEffectHandler, _enemyHand);
             CardDragAndDropImitationActions cardDragAndDropImitationActions = new CardDragAndDropImitationActions(_enemyHand, _enemyPlayingZone, _enemyCardAttackZone,
-                _discardPile, _drawCardRootEnemy, _playerHand, _historyRoot);
+                _discardPile, _drawCardRootEnemy, _playerHand, _historyRoot, _fightProcessDBManager);
             StartTurnDrawEnemyAICreator startTurnDrawCreator = new StartTurnDrawEnemyAICreator(_interactionActivator, _drawCardRootEnemy, _enemyCountStartDrawCards);
             //StartTurnDrawEnemyAI startTurnDraw = new StartTurnDrawEnemyAI(_interactionActivator, drawCardRoot, 0);
             EnemySkipTurnViewCreator skipTurnViewCreator = new EnemySkipTurnViewCreator(_interactionActivator, _skipTurnLabelEnemyAI);
@@ -401,7 +403,7 @@ namespace GameFields.Persons
                 _enemyTower, _drawCardRootEnemy, _enemyDiscoverImitation, startTurnDrawCreator, _bus, _enemyHand, _enemyAttackMenu,
                 _enemyChoiceMenu, _enemyChoiceMenuImitation, _enemyPersonEffectsHandler, lookCardMenuEnemyAI,
                 onBeforeEndTurnProcessingCreator, skipTurnViewCreator, _confirmableNumbersEnemyAI, _lastSelectedNumbersWatcherEnemyAI, _enemyEffectKeeper,
-                _turnToken);
+                _turnToken, _fightProcessDBManager);
         }
 
         public CardLocationViewRoot CreateCardLocationViewRoot()
@@ -538,9 +540,9 @@ namespace GameFields.Persons
             ExtraFireSeatActionRoot enemyExtraFireSeatActionRoot = new ExtraFireSeatActionRoot(enemyPyromancersManuscriptFireAction);
 
             _playerFirePool = new FirePoolPlayer(_fireContainer.GetTransform(), playerExtraFireSeatActionRoot,
-                _historyRoot);
+                _historyRoot, _fightProcessDBManager);
             _enemyFirePool = new FirePoolEnemy(_fireContainer.GetTransform(), enemyExtraFireSeatActionRoot,
-                _historyRoot);
+                _historyRoot, _fightProcessDBManager);
             _fireRoot = new FireRoot(_playerFirePool, _enemyFirePool);
         }
 

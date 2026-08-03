@@ -1,10 +1,8 @@
-using System.Collections;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using GameFields.CardTransits;
 using GameFields.Persons;
 using Tools;
-using UnityEngine;
 
 namespace GameFields.Effects
 {
@@ -29,6 +27,8 @@ namespace GameFields.Effects
 
             Play();
         }
+
+        protected override string GetName() => nameof(FateMistress_FatefulAttackEffect);
 
         //public override void End()
         //{

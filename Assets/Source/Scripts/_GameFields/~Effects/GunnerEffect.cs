@@ -52,6 +52,8 @@ namespace GameFields.Effects
             Play();
         }
 
+        protected override string GetName() => nameof(GunnerEffect);
+
         //public override void End()
         //{
         //    base.End();

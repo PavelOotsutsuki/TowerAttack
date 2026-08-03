@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
-using UnityEngine;
+using Servers;
 
 namespace GameFields.Histories
 {
@@ -10,14 +10,17 @@ namespace GameFields.Histories
     {
         private readonly List<HistoryData> _historyMsg = new List<HistoryData>();
         private readonly int _maxCountHistoryPositions = 500;
+
         private readonly IHistoryInputType _historyInputType;
+        private readonly FightProcessDBManager _fightProcessDBManager;
 
         public event Action<string> OnChangedByText;
         public event Action OnChangedWithoutText;
 
-        public HistoryRoot(IHistoryInputType historyInputType)
+        public HistoryRoot(IHistoryInputType historyInputType, FightProcessDBManager fightProcessDBManager)
         {
             _historyInputType = historyInputType;
+            _fightProcessDBManager = fightProcessDBManager;
         }
 
         public string GetHistoryList(bool cardAsNumber)
@@ -47,6 +50,7 @@ namespace GameFields.Histories
             if (IsDuplicate(historyData))
                 return;
 
+            _fightProcessDBManager.WriteFightProcessAction(historyData.TurnForDB, historyData.IsPlayersAction, historyData.FirstData.Number, historyData.Msg, null);
             // Проверяем должна ли входить в существующую
             if (IsExtra(historyData) == false)
             {

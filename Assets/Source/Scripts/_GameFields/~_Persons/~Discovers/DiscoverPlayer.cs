@@ -12,7 +12,7 @@ using UnityEngine;
 namespace GameFields.Persons.Discovers
 {
     [RequireComponent(typeof(CanvasGroup))]
-    public class DiscoverPlayer : Discover
+    public class DiscoverPlayer : Discover, IPlayerObject
     {
         [SerializeField] private DiscoverPanel _discoverPanel;
         [SerializeField] private DiscoverLabel _discoverLabel;

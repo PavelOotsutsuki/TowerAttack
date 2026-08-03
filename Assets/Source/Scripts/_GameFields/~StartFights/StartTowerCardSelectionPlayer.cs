@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using Cards;
 using Cysharp.Threading.Tasks;
@@ -13,24 +12,29 @@ using Cards.Views;
 using GameFields.CardTransits;
 using System.Threading;
 using System;
+using Servers;
+using GameFields.Persons;
 
 namespace GameFields.StartFights
 {
-    public class StartTowerCardSelectionPlayer : StartTowerCardSelection
+    public class StartTowerCardSelectionPlayer : StartTowerCardSelection, IPlayerObject
     {
         private readonly Deck _deck;
         private readonly ICardSeatable _hand;
         private readonly Discover _discover;
+        private readonly FightProcessDBManager _fightProcessDBManager;
 
         private readonly StartTowerCardSelectionPlayerData _data;
         private readonly InvertCardAnimation _invertCardAnimation;
 
         private readonly Seat[] _seats;
 
-        public StartTowerCardSelectionPlayer(Deck deck, HandPlayer hand, TowerPlayer tower, Seat[] seats, Discover discover, StartTowerCardSelectionPlayerData data) : base(tower)
+        public StartTowerCardSelectionPlayer(Deck deck, HandPlayer hand, TowerPlayer tower, Seat[] seats, Discover discover, StartTowerCardSelectionPlayerData data,
+            FightProcessDBManager fightProcessDBManager) : base(tower)
         {
             _hand = hand;
             _data = data;
+            _fightProcessDBManager = fightProcessDBManager;
 
             _seats = seats;
             _deck = deck;
@@ -213,7 +217,8 @@ namespace GameFields.StartFights
         {
             foreach (Seat seat in _seats)
             {
-                seat.Init();
+                seat.Init(_fightProcessDBManager);
+                seat.SetOwner(nameof(StartTowerCardSelectionPlayer), true);
             }
         }
     }

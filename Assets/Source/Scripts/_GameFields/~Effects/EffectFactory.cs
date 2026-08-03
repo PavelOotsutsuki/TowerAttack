@@ -17,6 +17,7 @@ using GameFields.Persons.EffectHandlers.Brothers;
 using GameFields.Persons.Fires;
 using GameFields.Persons.LookCardMenues;
 using GameFields.Signals;
+using Servers;
 using UnityEngine;
 using Zenject;
 
@@ -40,13 +41,15 @@ namespace GameFields.Effects
         private readonly ViewTransitTypesRoot _typesRoot;
         private readonly HistoryRoot _historyRoot;
         private readonly CancellationToken _fightToken;
+        private readonly FightProcessDBManager _fightProcessDBManager;
 
         //private Effect _lastEffect;
 
         public EffectFactory(IPersonsState personsState, CardLocationViewRoot viewRoot, InformationLabel informationLabel,
             CardTransitManager cardTransitManager, VariantCardCreator variantCardCreator, BrothersEffectHandlerRoot brothersEffectHandler,
             SignalBus bus, PersonEffectsHandlerRoot personEffectsHandlerRoot, DiscardManager discardManager, LoseActionsRoot loseActionsRoot,
-            CardSoundRoot cardSoundRoot, ViewTransitTypesRoot typesRoot, HistoryRoot historyRoot, CancellationToken fightToken)
+            CardSoundRoot cardSoundRoot, ViewTransitTypesRoot typesRoot, HistoryRoot historyRoot, CancellationToken fightToken,
+            FightProcessDBManager fightProcessDBManager)
         {
             _personsState = personsState;
             _viewRoot = viewRoot;
@@ -62,6 +65,7 @@ namespace GameFields.Effects
             _typesRoot = typesRoot;
             _historyRoot = historyRoot;
             _fightToken = fightToken;
+            _fightProcessDBManager = fightProcessDBManager;
 
             _awakeSoundReproducer = new AwakeSoundReproducer(_cardSoundRoot, _viewRoot, typesRoot, _personsState);
 
@@ -111,7 +115,7 @@ namespace GameFields.Effects
             {
                 //effect = new DoubleEffect(CreateEffect, currentEffectConfig, callback);
                 effect = new DoubleEffect(CreateEffect, cardEffectConfigPairForCreateEffect, _bus, effectDuration, _personEffectsHandlerRoot,
-                    _historyRoot, _personsState.Active, _fightToken);
+                    _historyRoot, _personsState.Active, _fightToken, _fightProcessDBManager);
             }
             else
             {
@@ -144,11 +148,12 @@ namespace GameFields.Effects
         //}
 
         //private Effect CreateEffect(EffectType effecType, Action<int> callback, int duration)
-        private Effect CreateEffect(EffectType effecType, CardEffectData data, EffectDuration effectDuration)
+        private Effect CreateEffect(EffectType effectType, CardEffectData data, EffectDuration effectDuration)
         {
-            EffectData effectData = new EffectData(_bus, data, effectDuration, _personEffectsHandlerRoot, _historyRoot, _personsState.Active, _fightToken);
+            EffectData effectData = new EffectData(_bus, data, effectDuration, _personEffectsHandlerRoot, _historyRoot, _personsState.Active,
+                _fightToken, _fightProcessDBManager, effectType);
 
-            Effect effect = effecType switch
+            Effect effect = effectType switch
             {
                 EffectType.Void => new VoidEffect(effectData),
                 EffectType.Zhyzha => new ZhyzhaEffect(_personsState.Deactive, effectData),
@@ -176,14 +181,14 @@ namespace GameFields.Effects
                 EffectType.Undergrounder => new UndergrounderEffect(_viewRoot, _informationLabel, effectData),
                 EffectType.RobinGood => new RobinGoodEffect(_personsState.Deactive, _viewRoot, effectData),
                 EffectType.General => new GeneralEffect(effectData),
-                EffectType.FateMistress => new FateMistressEffect(_variantCardCreator, CreateEffect, effecType, effectData),
+                EffectType.FateMistress => new FateMistressEffect(_variantCardCreator, CreateEffect, effectType, effectData),
                 EffectType.FateMistress_FatefulAttack => new FateMistress_FatefulAttackEffect(_loseActionsRoot, _viewRoot,
                 _typesRoot, effectData),
                 EffectType.FateMistress_FateInevitability => new FateMistress_FateInevitabilityEffect(effectData),
                 EffectType.DumbMonk => new DumbMonkEffect(_viewRoot, _cardTransitManager, _typesRoot, effectData),
                 EffectType.LeftEyedSister => new LeftEyedSisterEffect(_viewRoot, _cardTransitManager,
                 _typesRoot, effectData),
-                EffectType.JusticeBull => new JusticeBullEffect(_variantCardCreator, CreateEffect, effecType,
+                EffectType.JusticeBull => new JusticeBullEffect(_variantCardCreator, CreateEffect, effectType,
                 effectData),
                 EffectType.JusticeBull_SmallerOnesArmy => new JusticeBull_SmallerOnesArmyEffect(_personsState.Deactive, _informationLabel,
                 CreateEffect, effectData),
@@ -201,7 +206,7 @@ namespace GameFields.Effects
                 EffectType.WiseMonk => new WiseMonkEffect(_personsState.Deactive, _viewRoot, _discardManager, _personEffectsHandlerRoot,
                 _typesRoot, effectData),
                 EffectType.CowsHerd => new CowsHerdEffect(_viewRoot, effectData),
-                EffectType.HungryOgre => new HungryOgreEffect(_variantCardCreator, CreateEffect, effecType, effectData),
+                EffectType.HungryOgre => new HungryOgreEffect(_variantCardCreator, CreateEffect, effectType, effectData),
                 EffectType.HungryOgre_SilentSearch => new HungryOgre_SilentSearchEffect(_personsState.Deactive, effectData),
                 EffectType.HungryOgre_HighProfileCrime => new HungryOgre_HighProfileCrimeEffect(_personsState.Deactive, effectData),
                 EffectType.Sharper => new SharperEffect(_viewRoot, _cardTransitManager, _typesRoot, effectData),
@@ -214,7 +219,7 @@ namespace GameFields.Effects
                 _cardTransitManager, _typesRoot, effectData),
                 EffectType.CursedMailman => new CursedMailmanEffect(_personsState.Deactive, effectData),
                 EffectType.RightEyedSister => new RightEyedSisterEffect(_viewRoot, _cardTransitManager, effectData),
-                EffectType.StrongOgre => new StrongOgreEffect(_variantCardCreator, CreateEffect, effecType, effectData),
+                EffectType.StrongOgre => new StrongOgreEffect(_variantCardCreator, CreateEffect, effectType, effectData),
                 EffectType.StrongOgre_WeakBlow => new StrongOgre_WeakBlowEffect(_personsState.Deactive, effectData),
                 EffectType.StrongOgre_StrongBlow => new StrongOgre_StrongBlowEffect(_personsState.Deactive, effectData),
                 EffectType.MafiaBoss => new MafiaBossEffect(_personsState.Deactive, _viewRoot, _cardTransitManager,
@@ -224,7 +229,7 @@ namespace GameFields.Effects
                 EffectType.BlackGnome => new BlackGnomeEffect(effectData),
                 EffectType.BigBrother => new BigBrotherEffect(_brothersEffectHandlerRoot, effectData),
                 EffectType.LastChance => new LastChanceEffect(_viewRoot, _cardTransitManager, _typesRoot, effectData),
-                EffectType.FallenGuardian => new FallenGuardianEffect(_variantCardCreator, CreateEffect, effecType, effectData),
+                EffectType.FallenGuardian => new FallenGuardianEffect(_variantCardCreator, CreateEffect, effectType, effectData),
                 EffectType.FallenGuardian_NightSight => new FallenGuardian_NightSightEffect(_personsState.Deactive, _informationLabel,
                 CreateEffect, effectData),
                 EffectType.FallenGuardian_HeightenedSenses => new FallenGuardian_HeightenedSensesEffect(_personsState.Deactive, _informationLabel,

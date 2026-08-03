@@ -31,6 +31,8 @@ namespace GameFields.Effects
             Play();
         }
 
+        protected override string GetName() => nameof(MafiaBossEffect);
+
         protected override async UniTask OnPlaying()
         {
             //ViewType enemyhandType = _activePerson is Player ? ViewType.HandAI : ViewType.HandPlayer;

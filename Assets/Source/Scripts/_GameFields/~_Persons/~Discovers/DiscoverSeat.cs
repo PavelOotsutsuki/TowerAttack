@@ -2,10 +2,12 @@ using System.Collections.Generic;
 using System.Threading;
 using Cards;
 using Cards.Views;
+using Servers;
 using Tools.Settings;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Movements;
 using UnityEngine;
+using Zenject;
 
 namespace GameFields.Persons.Discovers
 {
@@ -13,15 +15,23 @@ namespace GameFields.Persons.Discovers
     {
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private DiscoverCard _discoverCard;
+        [Inject] private FightProcessDBManager _fightProcessDBManager;
 
         private IDiscoverable _card;
+        private bool? _isPlayersAction;
 
         //private Movement _seatMovement;
         private IDiscoverChoiceHandler _discoverChoiceHandler;
 
         public void Init(IDiscoverChoiceHandler discoverChoiceHandler, float scaleFactor,
-            float viewDuration, CancellationToken fightToken)
+            float viewDuration, IPersonObject owner, CancellationToken fightToken)
         {
+            _isPlayersAction = owner switch
+            {
+                IPlayerObject => true,
+                IEnemyAIObject => false,
+                _ => null
+            };
             //_seatMovement = new Movement(_rectTransform);
             _discoverChoiceHandler = discoverChoiceHandler;
             _discoverCard.Init(OnDiscoverCardClick, this, scaleFactor, viewDuration, fightToken);
@@ -31,6 +41,7 @@ namespace GameFields.Persons.Discovers
         public void SetCard(IDiscoverable card)
         {
             _card = card;
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, _isPlayersAction, _card.ViewData.Number.ToString(), "VIEW", "DISCOVER");
             //DiscoverCardActivateData data = new DiscoverCardActivateData(_card.ReadOnlyRectTransform.GetSizeDelta(), _card.ViewData);
             DiscoverCardActivateData data = new DiscoverCardActivateData(GameSettings.CardSize, _card);
             _discoverCard.Activate(data);
@@ -38,6 +49,7 @@ namespace GameFields.Persons.Discovers
 
         public void StartClick()
         {
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, _isPlayersAction, _card.ViewData.Number.ToString(), "CHOICE", "DISCOVER");
             _discoverCard.StartClickActions();
         }
 

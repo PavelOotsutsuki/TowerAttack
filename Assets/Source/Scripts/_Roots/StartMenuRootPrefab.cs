@@ -27,7 +27,7 @@ namespace Roots
             if (_currentStartMenuRoot == null)
             {
                 _currentStartMenuRoot = CurrentGameObject.GetComponent<StartMenuRoot>();
-                _currentStartMenuRoot.Init(_onPlayClick, GameRootToken);
+                _currentStartMenuRoot.Init(_onPlayClick);
                 _currentStartMenuRoot.Activate();
                 IsComplete = true;
             }

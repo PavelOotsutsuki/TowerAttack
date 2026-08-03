@@ -25,6 +25,8 @@ namespace GameFields.Effects
             Play();
         }
 
+        protected override string GetName() => nameof(TimeMistressEffect);
+
         //public override void End()
         //{
         //    base.End();

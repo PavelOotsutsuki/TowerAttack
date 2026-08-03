@@ -44,6 +44,8 @@ namespace GameFields.Effects
             Play();
         }
 
+        protected override string GetName() => nameof(MimeEffect);
+
         protected override async UniTask OnPlaying()
         {
             string activateMessage;

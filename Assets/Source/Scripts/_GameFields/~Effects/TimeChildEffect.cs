@@ -21,6 +21,8 @@ namespace GameFields.Effects
             Play();
         }
 
+        protected override string GetName() => nameof(TimeChildEffect);
+
         //public override void End()
         //{
         //    base.End();

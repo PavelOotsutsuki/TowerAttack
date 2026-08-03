@@ -1,9 +1,7 @@
-using System.Collections;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using GameFields.CardTransits;
 using GameFields.Persons;
-using UnityEngine;
 
 namespace GameFields.Effects
 {
@@ -22,6 +20,8 @@ namespace GameFields.Effects
 
             Play();
         }
+
+        protected override string GetName() => nameof(CowsHerdEffect);
 
         //public override void End()
         //{

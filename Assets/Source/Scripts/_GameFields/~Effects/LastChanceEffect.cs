@@ -24,6 +24,8 @@ namespace GameFields.Effects
             Play();
         }
 
+        protected override string GetName() => nameof(LastChanceEffect);
+
         //public override void End()
         //{
         //    base.End();

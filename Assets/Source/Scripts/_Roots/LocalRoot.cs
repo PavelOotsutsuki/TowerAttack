@@ -21,12 +21,15 @@ namespace Roots
 
         public abstract void Activate();
 
-        protected void Init(CancellationToken gameRootToken)
+        protected void Init()
         {
-            _localRootCTS = CancellationTokenSource.CreateLinkedTokenSource(gameRootToken);
-
             _canvasRoot.Init();
             _fontRoot.Init();
+        }
+
+        protected void SetToken(CTSHolder holder)
+        {
+            _localRootCTS = holder.ExtractCTS();
         }
 
         public void OnDestroy()

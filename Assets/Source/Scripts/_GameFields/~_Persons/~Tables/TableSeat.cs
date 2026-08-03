@@ -1,15 +1,19 @@
 using UnityEngine;
-using Cards;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Movements;
 using System.Collections.Generic;
-using GameFields.Persons;
+using Zenject;
+using Servers;
 
 namespace GameFields.Persons.Tables
 {
     internal class TableSeat : MonoBehaviour, IAutomaticFillComponents
     {
         [SerializeField] private RectTransform _rectTransform;
+        [Inject] private FightProcessDBManager _fightProcessDBManager;
+
+        private bool? _isPlayerObject;
+        private string _name;
 
         private PersonEffect _personEffect;
 
@@ -25,10 +29,29 @@ namespace GameFields.Persons.Tables
 
         //    cardMovement.MoveLocalInstantly(Vector2.zero, Quaternion.identity.eulerAngles);
         //}
+        internal void Init(IPersonObject owner)
+        {
+            switch (owner)
+            {
+                case IPlayerObject:
+                    _isPlayerObject = true;
+                    _name = nameof(TablePlayer);
+                    break;
+                case IEnemyAIObject:
+                    _isPlayerObject = false;
+                    _name = nameof(TableAI);
+                    break;
+                default:
+                    _isPlayerObject = null;
+                    _name = nameof(Table);
+                    break;
+            }
+        }
 
         internal void SetCard(PersonEffect personEffect)
         {
             _personEffect = personEffect;
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, _isPlayerObject, _personEffect.Card.ViewData.Number.ToString(), "PLAY", _name);
             _personEffect.Card.RORTransform.SetParent(_rectTransform);
 
             Movement cardMovement = _personEffect.Card.CardMovement;
@@ -36,7 +59,11 @@ namespace GameFields.Persons.Tables
             cardMovement.MoveLocalInstantly(Vector2.zero, Quaternion.identity.eulerAngles);
         }
 
-        internal void Reset() => _personEffect = null;
+        internal void Reset()
+        {
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, _isPlayerObject, _personEffect.Card.ViewData.Number.ToString(), "DISCARD", _name);
+            _personEffect = null;
+        }
 
         //internal bool IsCardEqual(Card card) => card == _card;
 

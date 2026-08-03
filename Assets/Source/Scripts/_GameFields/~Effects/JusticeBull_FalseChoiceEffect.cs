@@ -18,6 +18,8 @@ namespace GameFields.Effects
             Play();
         }
 
+        protected override string GetName() => nameof(JusticeBull_FalseChoiceEffect);
+
         //public override void End()
         //{
         //    base.End();

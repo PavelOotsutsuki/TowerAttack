@@ -11,6 +11,7 @@ using GameFields.CardTransits;
 using GameFields.Histories;
 using Cysharp.Threading.Tasks;
 using System.Threading;
+using Servers;
 
 namespace GameFields.Persons.Hands
 {
@@ -18,6 +19,7 @@ namespace GameFields.Persons.Hands
     {
         [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private InvertCardAnimationData _invertCardAnimationData;
+        [Inject] private FightProcessDBManager _fightProcessDBManager;
 
         private ICardSeatable _seatable;
         private SignalBus _bus;
@@ -61,6 +63,7 @@ namespace GameFields.Persons.Hands
         {
             IsComplete = false;
 
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, true, card.ViewData.Number.ToString(), GetDBManagerMsg(), null);
             HistoryCardData historyCardData = new HistoryCardData(card);
             HistoryData historyData = new HistoryData(this, GetHistoryMsg(), historyCardData);
             _historyRoot.AddMsg(historyData);
@@ -82,6 +85,7 @@ namespace GameFields.Persons.Hands
         }
 
         protected abstract string GetHistoryMsg();
+        protected abstract string GetDBManagerMsg();
         protected abstract void OnEndProcessing(CancellationToken token);
 
         #region AutomaticFillComponents

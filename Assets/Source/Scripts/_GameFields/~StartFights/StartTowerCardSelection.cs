@@ -2,10 +2,11 @@ using Tools;
 using GameFields.Persons.Towers;
 using Cards;
 using System.Threading;
+using GameFields.Persons;
 
 namespace GameFields.StartFights
 {
-    public abstract class StartTowerCardSelection : ICompletable
+    public abstract class StartTowerCardSelection : ICompletable, IPersonObject
     {
         protected readonly ITowerCardSeatable Tower;
 

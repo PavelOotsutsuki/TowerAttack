@@ -1,12 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cards;
 using GameFields.CardTransits;
-using GameFields.Histories;
 using Tools.Utils;
-using UnityEngine;
 
 namespace GameFields.Persons.Fires
 {

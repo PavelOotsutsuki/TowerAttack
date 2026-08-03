@@ -1,4 +1,3 @@
-using System.Collections;
 using Cysharp.Threading.Tasks;
 using Tools;
 using Tools.Settings;
@@ -10,6 +9,8 @@ using GameFields.Persons.EffectHandlers;
 using GameFields.Histories;
 using GameFields.Persons;
 using System.Threading;
+using Servers;
+using Cards.Effects;
 
 namespace GameFields.Effects
 {
@@ -23,6 +24,8 @@ namespace GameFields.Effects
         private readonly int _duration;
         private readonly HistoryRoot _historyRoot;
         private readonly IPersonObject _activePerson;
+        private readonly FightProcessDBManager _fightProcessDBManager;
+        private readonly EffectType _playedEffectType;
 
         protected CancellationToken Token;
 
@@ -40,11 +43,15 @@ namespace GameFields.Effects
             _bus = data.Bus;
             _historyRoot = data.HistoryRoot;
             _activePerson = data.ActivePerson;
+            _fightProcessDBManager = data.FightProcessDBManager;
+            _playedEffectType = data.PlayedEffectType;
             Token = data.FightToken;
         }
 
         //public int Duration => _duration;
         public bool IsComplete { get; private set; }
+
+        private bool? IsPlayersAction => _activePerson is IPlayerObject ? true : _activePerson is IEnemyAIObject ? false : null;
 
         public void End()
         {
@@ -56,6 +63,9 @@ namespace GameFields.Effects
 
         protected virtual void OnEnd()
         {
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, GetName(), "END", "EFFECT");
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, _card.EffectConfig.Type.ToString(), "END", "ORIGINAL_EFFECTTYPE");
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, _playedEffectType.ToString(), "END", "PLAYED_EFFECTTYPE");
             HistoryData historyData = new HistoryData(_activePerson, GetEndHistoryMsg(), new HistoryCardData(_card));
             _historyRoot.AddMsg(historyData);
         }
@@ -74,6 +84,9 @@ namespace GameFields.Effects
 
         protected void Play()
         {
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, GetName(), "START", "EFFECT");
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, _card.EffectConfig.Type.ToString(), "START", "ORIGINAL_EFFECTTYPE");
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, _playedEffectType.ToString(), "START", "PLAYED_EFFECTTYPE");
             HistoryData historyData = new HistoryData(_activePerson, GetStartHistoryMsg(), new HistoryCardData(_card));
             _historyRoot.AddMsg(historyData);
 
@@ -81,6 +94,7 @@ namespace GameFields.Effects
         }
 
         protected abstract UniTask OnPlaying();
+        protected abstract string GetName();
 
         private async UniTask Playing()
         {

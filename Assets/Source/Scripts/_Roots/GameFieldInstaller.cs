@@ -28,6 +28,8 @@ using System.Collections.Generic;
 using Tools;
 using System.Linq;
 using GameFields.Backgrounds;
+using Servers;
+using System.Threading;
 
 namespace Roots
 {
@@ -102,6 +104,8 @@ namespace Roots
         private FightButtonsActivator _fightButtonsActivator;
         private HistoryRoot _historyRoot;
         private DiscardPile _discardPile;
+        private GameFieldCTSHolder _gameFieldCTSHolder;
+        private FightProcessDBManager _fightProcessDBManager;
 
         //private DiContainer _sceneContainer;
 
@@ -274,6 +278,8 @@ namespace Roots
         //    Debug.Log("GameInstaller УСПЕШНО ВСЕ ЗАБИНДИЛ");
         //}
         [Inject] private ForegroundSoundConfig _foregroundSoundConfig;
+        [Inject] private DBRoot _dBRoot;
+        [Inject] private GameRootCTSHolder _gameRootCTSHolder;
 
         public override void InstallBindings()
         {
@@ -281,6 +287,9 @@ namespace Roots
 
             //Container.Bind<BackgroundSoundConfig>().FromScriptableObject(_backgroundSoundConfig).AsSingle();
             //Container.Bind<ForegroundSoundConfig>().FromScriptableObject(_foregroundSoundConfig).AsSingle();
+            CancellationTokenSource gameFieldCTS = CancellationTokenSource.CreateLinkedTokenSource(_gameRootCTSHolder.Token);
+            _gameFieldCTSHolder = new GameFieldCTSHolder(gameFieldCTS);
+            Container.Bind<GameFieldCTSHolder>().FromInstance(_gameFieldCTSHolder).AsSingle();
 
             Container.Bind<UIHelperDescription>().FromInstance(_UIHelperDescription).AsSingle();
 
@@ -292,7 +301,10 @@ namespace Roots
             //_screenRoot = new ScreenRoot();
             //Container.Bind<ScreenRoot>().FromInstance(_screenRoot).AsSingle();
 
-            _historyRoot = new HistoryRoot(_historyMenu);
+            _fightProcessDBManager = new FightProcessDBManager(_dBRoot, gameFieldCTS.Token);
+            Container.Bind<FightProcessDBManager>().FromInstance(_fightProcessDBManager).AsSingle();
+
+            _historyRoot = new HistoryRoot(_historyMenu, _fightProcessDBManager);
             Container.Bind<HistoryRoot>().FromInstance(_historyRoot).AsSingle();
 
             Container.Bind<InformationLabel>().FromInstance(_informationLabel).AsSingle();

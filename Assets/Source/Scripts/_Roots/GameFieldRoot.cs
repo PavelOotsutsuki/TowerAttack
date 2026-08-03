@@ -29,6 +29,7 @@ using System.Threading;
 using Tools.UI.UIHelpers;
 using Cysharp.Threading.Tasks;
 using Tools.Utils;
+using Servers;
 
 namespace Roots
 {
@@ -67,6 +68,7 @@ namespace Roots
         private BackgroundSoundConfig _backgroundSoundConfig;
         private BackgroundRoot _backgroundRoot;
         private UIHelperDescription _UIHelperDescription;
+        private FightProcessDBManager _fightProcessDBManager;
 
         private GameFieldInputRoot _inputRoot;
 
@@ -79,7 +81,8 @@ namespace Roots
             InformationLabel informationLabel, LookCardMenuPlayer lookCardMenu, VariantCardCreator variantCardCreator,
             SoundRoot soundRoot, CardSoundRoot cardSoundRoot, FightButtonsActivator fightButtonsActivator,
             CardCapabilityDescription cardCapabilityDescription, HistoryRoot historyRoot, BackgroundSoundConfig backgroundSoundConfig,
-            BackgroundRoot backgroundRoot, UIHelperDescription UIHelperDescription)
+            BackgroundRoot backgroundRoot, UIHelperDescription UIHelperDescription, GameFieldCTSHolder gameFieldCTSHolder,
+            FightProcessDBManager fightProcessDBManager)
         {
             //StartCoroutine(Initing(bus, deck, seatPool, cardDescription, handPlayer, informationLabel, lookCardMenu, variantCardCreator, soundRoot,
             //    cardSoundVolume, fightMenuActivateButton, screenRoot));
@@ -100,13 +103,16 @@ namespace Roots
             _backgroundSoundConfig = backgroundSoundConfig;
             _backgroundRoot = backgroundRoot;
             _UIHelperDescription = UIHelperDescription;
+            _fightProcessDBManager = fightProcessDBManager;
+
+            SetToken(gameFieldCTSHolder);
         }
 
         //public void Init(bool isPVE)
-        public void Init(Action onDestroyPrefab, CancellationToken gameRootToken)
+        public void Init(Action onDestroyPrefab)
         {
             //Debug.Log("GameFieldRoot: " + gameRootToken.GetHashCode());
-            base.Init(gameRootToken);
+            base.Init();
 
             GameFieldGC.GCOFF(GameFieldToken);
 
@@ -162,7 +168,7 @@ namespace Roots
             ViewTransitTypesRoot typesRoot = new ViewTransitTypesRoot();
             EffectFactory effectFactory = new EffectFactory(_personsState, viewRoot, _informationLabel, cardTransitManager,
                 _variantCardCreator, brothersEffectHandlerRoot, _bus, personEffectsHandlerRoot, discardManager, loseActionsRoot,
-                _cardSoundRoot, typesRoot, _historyRoot, fightSource.Token);
+                _cardSoundRoot, typesRoot, _historyRoot, fightSource.Token, _fightProcessDBManager);
 
             _cardRoot.Init(effectFactory, _bigCardRoot, cardDragAndDropHandler, _cardCapabilityDescription, _cardSoundRoot, base.FontSetter,
                 fightSource.Token);

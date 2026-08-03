@@ -1,5 +1,5 @@
 namespace GameFields.Persons.Tables
 {
-    public class TableAI : Table
+    public class TableAI : Table, IEnemyAIObject
     { }
 }

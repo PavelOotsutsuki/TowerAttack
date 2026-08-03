@@ -163,7 +163,7 @@ namespace GameFields.DiscardPiles
 
         private Seat GetSeat()
         {
-            Seat discardPileSeat = _discardPileSeatPool.GetSeat();
+            Seat discardPileSeat = _discardPileSeatPool.GetSeat(nameof(DiscardPile), null);
             discardPileSeat.ReadOnlyTransform.SetParent(_discardPileConfig.RectTransform);
             discardPileSeat.SetLocalPositionValues(FindCardSeatPosition(), FindCardSeatRotation());
             return discardPileSeat;

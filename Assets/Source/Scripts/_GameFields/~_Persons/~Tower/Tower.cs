@@ -5,10 +5,12 @@ using Cards;
 using Cards.Views;
 using Cysharp.Threading.Tasks;
 using GameFields.Persons.ConfirmableNumbersView;
+using Servers;
 using Tools;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Movements;
 using UnityEngine;
+using Zenject;
 
 namespace GameFields.Persons.Towers
 {
@@ -23,6 +25,7 @@ namespace GameFields.Persons.Towers
         [SerializeField, Min(0f)] private float _seatDuration = 0.5f;
         [SerializeField] private Stone[] _stones;
         [SerializeField] private BoomAnimationData _boomAnimationData;
+        [Inject] private FightProcessDBManager _fightProcessDBManager;
 
         private BoomAnimation _boomAnimation;
         private ConfirmableNumbers _confirmableNumbers;
@@ -34,9 +37,12 @@ namespace GameFields.Persons.Towers
         public bool HasFreeSeat => _towerSeat.IsFill() == false;
         public ICardNumber Card => _towerSeat.Card;
 
+        private bool? IsPlayersAction => this is IPlayerObject ? true : this is IEnemyAIObject ? false : null;
+
         public virtual void Init(ConfirmableNumbers confirmableNumbers, ICardCreator cardCreator, CancellationToken fightToken)
         {
-            _towerSeat.Init();
+            _towerSeat.Init(_fightProcessDBManager);
+            _towerSeat.SetOwner(GetName(), IsPlayersAction);
             _confirmableNumbers = confirmableNumbers;
             _cardCreator = cardCreator;
             _fightToken = fightToken;
@@ -82,6 +88,8 @@ namespace GameFields.Persons.Towers
                 Debug.Log("Если все хорошо этого сообщения не должно быть, вроде как");
             }
         }
+
+        protected abstract string GetName();
 
         bool ITowerTransitable.TryTakeAwayCard(out Card card)
         {

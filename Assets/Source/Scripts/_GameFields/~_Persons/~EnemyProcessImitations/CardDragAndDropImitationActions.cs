@@ -10,6 +10,7 @@ using GameFields.CardTransits;
 using GameFields.Histories;
 using Cysharp.Threading.Tasks;
 using System.Threading;
+using Servers;
 
 namespace GameFields.Persons.EnemyProcessImitations
 {
@@ -24,6 +25,7 @@ namespace GameFields.Persons.EnemyProcessImitations
         private readonly ICardSeatable _handPlayer;
 
         private readonly HistoryRoot _historyRoot;
+        private readonly FightProcessDBManager _fightProcessDBManager;
 
         private Card _activeCard;
         private ReadOnlyRectTransform _readOnlyCardTransform;
@@ -34,7 +36,8 @@ namespace GameFields.Persons.EnemyProcessImitations
         private bool _isForging;
 
         public CardDragAndDropImitationActions(ICardDragAndDropHandHandler hand, ICardDropPlace cardDropPlaceImitation, IAttackable attackZone,
-            ICardSeatable discardPile, IDrawCardManager drawCardManager, ICardSeatable handPlayer, HistoryRoot historyRoot)
+            ICardSeatable discardPile, IDrawCardManager drawCardManager, ICardSeatable handPlayer, HistoryRoot historyRoot,
+            FightProcessDBManager fightProcessDBManager)
         {
             _hand = hand;
             _cardDropPlaceImitation = cardDropPlaceImitation;
@@ -45,6 +48,7 @@ namespace GameFields.Persons.EnemyProcessImitations
             _handPlayer = handPlayer;
 
             _historyRoot = historyRoot;
+            _fightProcessDBManager = fightProcessDBManager;
 
             _isMoving = false;
         }
@@ -91,6 +95,7 @@ namespace GameFields.Persons.EnemyProcessImitations
 
             _handPlayer.SeatCard(_activeCard);
 
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, false, _activeCard.ViewData.Number.ToString(), "TRANSFER", null);
             HistoryCardData historyCardData = new HistoryCardData(_activeCard);
             HistoryData historyData = new HistoryData(this, "Передача: ", historyCardData);
             _historyRoot.AddMsg(historyData);
@@ -106,6 +111,7 @@ namespace GameFields.Persons.EnemyProcessImitations
             _discardPile.SeatCard(_activeCard);
             _drawCardManager.DrawCards(1, token, ForgingContinue);
 
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, false, _activeCard.ViewData.Number.ToString(), "FORGING", null);
             HistoryCardData historyCardData = new HistoryCardData(_activeCard);
             HistoryData historyData = new HistoryData(this, "Гномичья ковка: ", historyCardData);
             _historyRoot.AddMsg(historyData);

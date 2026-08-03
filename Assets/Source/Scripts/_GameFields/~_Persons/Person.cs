@@ -18,6 +18,7 @@ using Cards.Effects;
 using Cards.Views;
 using GameFields.Persons.ConfirmableNumbersView;
 using System.Threading;
+using Servers;
 
 namespace GameFields.Persons
 {
@@ -41,6 +42,7 @@ namespace GameFields.Persons
         private readonly PersonEffectKeeper _personEffectKeeper;
         private readonly PersonEffectsHandler _personEffectsHandler;
         private readonly TurnToken _turnToken;
+        private readonly FightProcessDBManager _fightProcessDBManager;
         //private readonly PersonStep _lastStep;
 
         //protected readonly PersonStep TurnProcess;
@@ -57,7 +59,8 @@ namespace GameFields.Persons
             Hand hand, ISelectMenuActivator attackMenu, InteractionActivator gameFieldObjectsActivator,
             ISelectMenuActivator choiceMenu, ISelectMenuActivator choiceMenuImitation, PersonEffectsHandler personEffectsHandler,
             ILookCardMenu lookCardMenu, /*SkipTurnView skipTurnView,*/ INumbersStateWatcher numbersStateWatcher,
-            LastSelectedNumbersWatcher lastSelectedNumbersWatcher, PersonEffectKeeper personEffectKeeper, TurnToken turnToken)
+            LastSelectedNumbersWatcher lastSelectedNumbersWatcher, PersonEffectKeeper personEffectKeeper, TurnToken turnToken,
+            FightProcessDBManager fightProcessDBManager)
         {
             _hand = hand;
             Bus = bus;
@@ -83,6 +86,7 @@ namespace GameFields.Persons
 
             _personEffectsHandler = personEffectsHandler;
             _turnToken = turnToken;
+            _fightProcessDBManager = fightProcessDBManager;
             //CurrentTurnTokenSource = null;
 
             _personSteps = new Stack<PersonStep>();
@@ -109,12 +113,15 @@ namespace GameFields.Persons
 
         protected CancellationToken Token => _turnToken.Token;
 
+        private bool? IsPlayersAction => this is IPlayerObject ? true : this is IEnemyAIObject ? false : null;
+
         public void StartStep()
         {
             //if (_turnToken.HasSource != false)
             //    throw new Exception("StartStep должен начинаться с пустого CancellationToken-а!!!");
 
             IsComplete = false;
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, null, "START", "TURN");
 
             _personSteps.Clear();
 
@@ -123,6 +130,7 @@ namespace GameFields.Persons
 
             if (_personEffectsHandler.SkipTurnEffectHandler.IsActive)
             {
+                _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, null, "SKIP", "TURN");
                 InitSkipSteps();
             }
             else
@@ -148,6 +156,8 @@ namespace GameFields.Persons
             //_personEffectsHandler.OnEndTurn();
 
             //IReadOnlyList<Card> discardedCards = _playingZone.DiscardCards();
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, null, "END", "TURN");
+
             _playingZone.DiscardCards();
 
             //if (discardedCards.Count > 0)

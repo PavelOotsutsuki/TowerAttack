@@ -36,6 +36,10 @@ namespace GameFields.Histories
             _historyCardDatas = new List<HistoryCardData>() { historyCardData };
         }
 
+        public int TurnForDB => _turn;
+        public bool? IsPlayersAction => _color == PlayerColor ? true : _color == EnemyColor ? false : null;
+        public string Msg => _msg;
+
         public HistoryCardData FirstData => _historyCardDatas[0];
 
         public bool EqualsCardViewData(HistoryData historyData)
