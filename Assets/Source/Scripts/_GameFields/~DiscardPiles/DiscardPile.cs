@@ -98,8 +98,8 @@ namespace GameFields.DiscardPiles
                 return false;
 
             _seats.Remove(seat);
-            WriteFullListIntoDB();
             seat.Reset();
+            WriteFullListIntoDB();
 
             return true;
         }

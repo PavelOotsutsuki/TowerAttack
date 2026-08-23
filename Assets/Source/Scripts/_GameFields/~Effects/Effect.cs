@@ -51,7 +51,7 @@ namespace GameFields.Effects
         //public int Duration => _duration;
         public bool IsComplete { get; private set; }
 
-        private bool? IsPlayersAction => _activePerson is IPlayerObject ? true : _activePerson is IEnemyAIObject ? false : null;
+        protected bool? IsPlayersAction => _activePerson is IPlayerObject ? true : _activePerson is IEnemyAIObject ? false : null;
 
         public void End()
         {
