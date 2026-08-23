@@ -51,7 +51,7 @@ namespace GameFields.Persons.Tables
         internal void SetCard(PersonEffect personEffect)
         {
             _personEffect = personEffect;
-            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, _isPlayerObject, _personEffect.Card.ViewData.Number.ToString(), "PLAY", _name);
+            //_fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, _isPlayerObject, _personEffect.Card.ViewData.Number.ToString(), "PLAY", _name);
             _personEffect.Card.RORTransform.SetParent(_rectTransform);
 
             Movement cardMovement = _personEffect.Card.CardMovement;

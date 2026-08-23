@@ -1,23 +1,22 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Cards;
 using Cysharp.Threading.Tasks;
-using GameFields.Persons;
 using GameFields.Persons.SelectMenues;
+using Servers;
 using Tools;
-using UnityEngine;
 
 namespace GameFields.Persons.EffectHandlers.FateInevitabilities
 {
-    public class FateInevitabilityHandler: IEffectHandlerActiveWatcher, ILengthyEffectHandler
+    public class FateInevitabilityHandler : EffectHandler, IEffectHandlerActiveWatcher, ILengthyEffectHandler
     {
         private readonly LoseActions _loseActions;
         private readonly ISelectMenuActivator _attackMenu;
         private readonly List<FateInevitabilityHandlerEffect> _activeEffects;
 
-        public FateInevitabilityHandler(LoseActions loseActions, ISelectMenuActivator attackMenu)
+        public FateInevitabilityHandler(LoseActions loseActions, ISelectMenuActivator attackMenu,
+            FightProcessDBManager fightProcessDBManager, bool isPlayersObject) : base(fightProcessDBManager, isPlayersObject)
         {
             _loseActions = loseActions;
             _attackMenu = attackMenu;
@@ -39,6 +38,8 @@ namespace GameFields.Persons.EffectHandlers.FateInevitabilities
 
             FateInevitabilityHandlerEffect fateInevitabilityHandlerEffect = new FateInevitabilityHandlerEffect(card, countTurns);
             _activeEffects.Add(fateInevitabilityHandlerEffect);
+            FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, card.ViewData.Number.ToString(), "ADD", GetType().Name);
+            FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, _activeEffects.Count.ToString(), "COUNT EFFECTS", GetType().Name);
         }
 
         public void EndEffect(Card card)
@@ -54,6 +55,8 @@ namespace GameFields.Persons.EffectHandlers.FateInevitabilities
             foreach (FateInevitabilityHandlerEffect removedEffect in removedEffects)
             {
                 _activeEffects.Remove(removedEffect);
+                FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, card.ViewData.Number.ToString(), "REMOVE", GetType().Name);
+                FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, _activeEffects.Count.ToString(), "COUNT EFFECTS", GetType().Name);
             }
 
             //if (_activeEffects.Any(e => e.Card == card))

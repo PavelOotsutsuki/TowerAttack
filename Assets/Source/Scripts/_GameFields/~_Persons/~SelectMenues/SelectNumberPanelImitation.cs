@@ -129,7 +129,8 @@ namespace GameFields.Persons.SelectMenues
                 {
                     foreach (ISelectNumber selectedNumber in selectedNumbers)
                     {
-                        SelectedNumbers.Add(selectedNumber.Number, NumberAnimationType.Choice);
+                        //SelectedNumbers.Add(selectedNumber.Number, NumberAnimationType.Choice);
+                        SelectedNumbers.Add(selectedNumber.Number);
                     }
                 }
                 else if (_data.IsRememberSuccessChoice)
@@ -138,7 +139,8 @@ namespace GameFields.Persons.SelectMenues
                     {
                         if (selectedNumbers.Contains(selectNumber) == false)
                         {
-                            SelectedNumbers.Add(selectNumber.Number, NumberAnimationType.Choice);
+                            //SelectedNumbers.Add(selectNumber.Number, NumberAnimationType.Choice);
+                            SelectedNumbers.Add(selectNumber.Number);
                         }
                     }
                 }
@@ -149,7 +151,7 @@ namespace GameFields.Persons.SelectMenues
                 #region DEBUG_ENEMY_NUMBERS
                 string debugMsg = "";
 
-                foreach (KeyValuePair<int, NumberAnimationType> selectNumber in ConfirmableNumbers.FullList.SelectedNumbersStates.OrderByDescending(n => n.Key))
+                foreach (KeyValuePair<int, NumberAnimationType> selectNumber in ConfirmableNumbers.FullList.OrderByDescending(n => n.Key))
                 {
                     if (debugMsg != "")
                         debugMsg += ",";

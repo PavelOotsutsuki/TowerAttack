@@ -7,11 +7,13 @@ using GameFields.CardTransits;
 using GameFields.Persons.EffectHandlers.Curses;
 using GameFields.Persons.EffectHandlers.Slimes;
 using GameFields.Seats;
+using Servers;
 using Tools.Utils;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Screens;
 using UnityEngine;
 using Zenject;
+using System.Text.Json;
 
 namespace GameFields.Persons.Hands
 {
@@ -33,7 +35,9 @@ namespace GameFields.Persons.Hands
         [SerializeField] private SideType _sideType;
         [SerializeField] private bool _isActiveInteraction;
         [SerializeField] private Transform _containerForDrag; //IPS
-        [SerializeField] private Transform _containerForSeats; 
+        [SerializeField] private Transform _containerForSeats;
+        [Inject] private ScreenRoot _screenRoot;
+        [Inject] private FightProcessDBManager _fightProcessDBManager;
 
         private readonly List<Card> _handCursedCards = new List<Card>();
         private readonly List<Card> _handLuckyHorseshoeCards = new List<Card>();
@@ -45,8 +49,6 @@ namespace GameFields.Persons.Hands
         private RechangeFeatureRuleController _ruleController;
         private IDrawnCardWatcher _turnDrawnCards;
         private CurseEffectHandler _curseEffectHandler;
-
-        private ScreenRoot _screenRoot;
 
         //private List<Card> _turnCardsFromDeck;
         private bool _isSlimeEffect = false;
@@ -86,11 +88,11 @@ namespace GameFields.Persons.Hands
 
         private bool? IsPlayersAction => this is IPlayerObject ? true : this is IEnemyAIObject ? false : null;
 
-        [Inject]
-        public void Construct(ScreenRoot screenRoot)
-        {
-            _screenRoot = screenRoot;
-        }
+        //[Inject]
+        //public void Construct(ScreenRoot screenRoot)
+        //{
+        //    _screenRoot = screenRoot;
+        //}
 
         public void Init(SeatPool seatPool, RechangeFeatureRuleController ruleController, IDrawnCardWatcher turnDrawnCards,
             CurseEffectHandler curseEffectHandler)
@@ -216,6 +218,7 @@ namespace GameFields.Persons.Hands
             }
 
             handSeat.SetCard(card, _sideType, _returnInSeatDuration);
+            WriteFullListIntoDB();
             //card.SetActiveInteraction(_isActiveInteraction);
 
             SetCardsInteraction();
@@ -268,7 +271,7 @@ namespace GameFields.Persons.Hands
             UnbindLuckyHorseshoe(card);
 
             RemoveSeat(findedHandSeat);
-
+            WriteFullListIntoDB();
             //_handSeatPool.ReturnInPool(findedHandSeat);
 
             SortHandSeats();
@@ -462,6 +465,7 @@ namespace GameFields.Persons.Hands
             //Debug.Log("UnbindDragableCard");
             RemoveSeat(_dragCardHandSeat);
             ResetDragOptions();
+            WriteFullListIntoDB();
             SortHandSeats();
         }
 
@@ -658,6 +662,16 @@ namespace GameFields.Persons.Hands
                 _handSeats[i].SetLocalPositionValues(position, rotation, _returnInSeatDuration);
                 _handSeats[i].transform.SetAsLastSibling(); //Непонятно сколько ресурсов жрет, пока отдельно реализую
             }
+        }
+
+        private void WriteFullListIntoDB()
+        {
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, GetSerializedCards(), "FULLLIST", GetName());
+        }
+
+        private string GetSerializedCards()
+        {
+            return JsonSerializer.Serialize(AllCards.Select(c => c.ViewData.Number));
         }
 
         protected abstract string GetName(); 

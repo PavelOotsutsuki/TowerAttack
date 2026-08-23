@@ -421,7 +421,7 @@ namespace Servers
             }
         }
 
-        public async UniTask WriteFightProcessAction(int turnNumber, bool? isPlayersAction, string action_target, string action_type, string action_subtype,
+        public async UniTask WriteFightProcessAction(int logCounter, int turnNumber, bool? isPlayersAction, string action_target, string action_type, string action_subtype,
             CancellationToken token)
         {
             try
@@ -435,6 +435,7 @@ namespace Servers
                     person_id = isPlayersAction.Value == true ? _currentIdUser : _currentEnemyIdUser;
 
                 WWWForm WWWForm = new WWWForm();
+                WWWForm.AddField("counter", logCounter.ToString());
                 WWWForm.AddField("id_Fight", _currentIdFight.ToString());
                 WWWForm.AddField("turn", turnNumber.ToString());
                 WWWForm.AddField("person_id", person_id?.ToString() ?? "");

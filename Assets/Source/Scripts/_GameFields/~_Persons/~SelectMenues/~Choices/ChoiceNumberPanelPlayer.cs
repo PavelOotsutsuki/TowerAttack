@@ -1,5 +1,3 @@
-using GameFields.Persons.SelectMenues;
-
 namespace GameFields.Persons.SelectMenues.Choices
 {
     public class ChoiceNumberPanelPlayer : SelectNumberPanelPlayer
@@ -40,6 +38,9 @@ namespace GameFields.Persons.SelectMenues.Choices
         {
             return NumberAnimationType.Choice;
         }
+
+        protected override string GetName() => nameof(ChoiceNumberPanelPlayer);
+
 
         //protected override void SetChoiceNumber(SelectNumber target, ResultType resultType)
         //{

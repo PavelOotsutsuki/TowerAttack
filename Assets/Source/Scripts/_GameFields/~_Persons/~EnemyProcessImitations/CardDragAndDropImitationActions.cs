@@ -90,12 +90,12 @@ namespace GameFields.Persons.EnemyProcessImitations
 
         public void HandTransfer()
         {
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, false, _activeCard.ViewData.Number.ToString(), "TRANSFER", null);
             _hand.OnCardDrag(_activeCard);
             _hand.OnCardPlay();
 
             _handPlayer.SeatCard(_activeCard);
 
-            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, false, _activeCard.ViewData.Number.ToString(), "TRANSFER", null);
             HistoryCardData historyCardData = new HistoryCardData(_activeCard);
             HistoryData historyData = new HistoryData(this, "Передача: ", historyCardData);
             _historyRoot.AddMsg(historyData);
@@ -104,6 +104,7 @@ namespace GameFields.Persons.EnemyProcessImitations
         public async UniTask Forging(CancellationToken token)
         {
             _isForging = false;
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, false, _activeCard.ViewData.Number.ToString(), "FORGING", null);
 
             _hand.OnCardDrag(_activeCard);
             _hand.OnCardPlay();
@@ -111,7 +112,6 @@ namespace GameFields.Persons.EnemyProcessImitations
             _discardPile.SeatCard(_activeCard);
             _drawCardManager.DrawCards(1, token, ForgingContinue);
 
-            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, false, _activeCard.ViewData.Number.ToString(), "FORGING", null);
             HistoryCardData historyCardData = new HistoryCardData(_activeCard);
             HistoryData historyData = new HistoryData(this, "Гномичья ковка: ", historyCardData);
             _historyRoot.AddMsg(historyData);

@@ -1,11 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using GameFields.Persons.SelectMenues;
-using GameFields.Persons.Towers;
-using Tools;
-using Tools.Utils.FillComponents;
-using UnityEngine;
-
 namespace GameFields.Persons.SelectMenues.Choices
 {
     public class ChoiceMenuPlayer : SelectMenuPlayer//ChoiceMenu
@@ -66,6 +58,7 @@ namespace GameFields.Persons.SelectMenues.Choices
         //{
         //    return AutomaticFillComponents.DefineComponent(this, ref _selectNumberPanelPlayer, ComponentLocationTypes.InChildren);
         //}
-        //#endregion 
+        //#endregion
+        protected override string GetSelectType() => "CHOICE";
     }
 }

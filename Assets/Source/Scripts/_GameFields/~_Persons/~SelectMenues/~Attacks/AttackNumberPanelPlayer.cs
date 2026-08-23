@@ -1,5 +1,4 @@
 using System;
-using GameFields.Persons.SelectMenues;
 
 namespace GameFields.Persons.SelectMenues.Attacks
 {
@@ -39,6 +38,8 @@ namespace GameFields.Persons.SelectMenues.Attacks
 
             return numberAnimationType;
         }
+
+        protected override string GetName() => nameof(AttackNumberPanelPlayer);
 
         //protected override void SetChoiceNumber(SelectNumber target, ResultType resultType)
         //{

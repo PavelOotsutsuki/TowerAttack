@@ -117,6 +117,7 @@ namespace GameFields.Persons.Towers
 
         void IBoomTower.Boom()
         {
+            //_fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, _towerSeat.Card.ViewData.Number.ToString(), )
             _boomAnimation.Play(_fightToken);
         }
 

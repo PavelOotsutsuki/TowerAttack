@@ -59,20 +59,20 @@ namespace GameFields.Effects
 
             bool isEffectComplete = false;
 
-            if (_activePerson is Player)
-            {
-                LookCardMenuActivateData lookCardMenuActivateData = new LookCardMenuActivateData(cards, PlayerMessage);
-                _activePerson.LookCards(lookCardMenuActivateData, () => isEffectComplete = true);
-                await UniTask.WaitUntil(() => isEffectComplete, cancellationToken: Token);
-            }
-            else
-            {
-                LabelActivateData labelActivateData = new LabelActivateData(EnemyMessage);
-                InformationLabelActivateData informationLabelActivateData = new InformationLabelActivateData(labelActivateData, 8f);
+            string personMessage = _activePerson is Player ? PlayerMessage : EnemyMessage;
 
-                _informationLabel.Activate(informationLabelActivateData);
-                await UniTask.WaitUntil(() => _informationLabel.IsComplete, cancellationToken: Token);
-            }
+            LookCardMenuActivateData lookCardMenuActivateData = new LookCardMenuActivateData(cards, PlayerMessage);
+            _activePerson.LookCards(lookCardMenuActivateData, () => isEffectComplete = true);
+            await UniTask.WaitUntil(() => isEffectComplete, cancellationToken: Token);
+            //}
+            //else
+            //{
+            //    LabelActivateData labelActivateData = new LabelActivateData(EnemyMessage);
+            //    InformationLabelActivateData informationLabelActivateData = new InformationLabelActivateData(labelActivateData, 8f);
+
+            //    _informationLabel.Activate(informationLabelActivateData);
+            //    await UniTask.WaitUntil(() => _informationLabel.IsComplete, cancellationToken: Token);
+            //}
         }
     }
 }

@@ -125,7 +125,8 @@ namespace GameFields.Effects
 
             // Тут эффект создает реально используемый, а конфиг должен быть разыгранной карты
 
-            PersonEffect personEffect = new PersonEffect(effect, effectDuration, cardEffectConfigPairForSaveInPerson);
+            PersonEffect personEffect = new PersonEffect(effect, effectDuration, cardEffectConfigPairForSaveInPerson, _fightProcessDBManager,
+                _personsState.Active is IPlayerObject ? true : false);
             //_personsState.Active.StartEffect(effect, effectConfig);
             _personsState.Active.StartEffect(personEffect, isRememberEffect);
             //_lastEffect = effect;

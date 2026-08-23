@@ -14,7 +14,7 @@ namespace GameFields.Persons.SelectMenues
 {
     [RequireComponent(typeof(FadablePanel))]
     [RequireComponent(typeof(CanvasGroup))]
-    public abstract class SelectNumberPanel : MonoBehaviour, ICompletable, IWorkable<SelectNumberPanelActivateData>, IAutomaticFillComponents
+    public abstract class SelectNumberPanel : MonoBehaviour, ICompletable, IWorkable<SelectNumberPanelActivateData>, IPersonObject, IAutomaticFillComponents
     {
         [SerializeField] protected FadablePanel FadablePanel;
         [SerializeField] private CanvasGroup _canvasGroup;

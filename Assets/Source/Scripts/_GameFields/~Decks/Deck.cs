@@ -11,6 +11,7 @@ using GameFields.CardTransits;
 using System.Threading;
 using Servers;
 using Zenject;
+using System.Text.Json;
 
 namespace GameFields.Decks
 {
@@ -20,6 +21,7 @@ namespace GameFields.Decks
         [SerializeField] private DeckCardBackViewer _cardBackViewer;
         [SerializeField] private DeckHelper _deckHelper;
         [SerializeField] private int _countCardsInGroup = 10;
+        [Inject] private FightProcessDBManager _fightProcessDBManager;
 
         private readonly float _startCardAddPositionX = 0f;
         private readonly float _startCardAddPositionY = 0f;
@@ -88,6 +90,7 @@ namespace GameFields.Decks
             //_fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, null, card.ViewData.Number.ToString(), "Seat", "Deck");
 
             OnSeatsCountChange?.Invoke();
+            WriteFullListIntoDB();
 
             if (isShuffle)
                 ShuffleCards();
@@ -203,6 +206,7 @@ namespace GameFields.Decks
         private void ShuffleCards()
         {
             _seats = Utils.Shuffle(_seats);
+            WriteFullListIntoDB();
             //List<Card> shuffleCards = new List<Card>();
 
             //while (_cards.Count > 0)
@@ -227,6 +231,7 @@ namespace GameFields.Decks
             //_fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, null, card.ViewData.Number.ToString(), "Remove", "Deck");
 
             OnSeatsCountChange?.Invoke();
+            WriteFullListIntoDB();
 
             //if (AllCards.Count() % _countCardsInGroup == 0)
             //{
@@ -270,6 +275,16 @@ namespace GameFields.Decks
             deckSeat.ReadOnlyTransform.SetParent(_cardContainer.GetTransform());
             deckSeat.SetLocalPositionValues(new Vector2(_startCardAddPositionX, _startCardAddPositionY), Quaternion.identity.eulerAngles);
             return deckSeat;
+        }
+
+        private void WriteFullListIntoDB()
+        {
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, null, GetSerializedCards(), "FULLLIST", GetType().Name);
+        }
+
+        private string GetSerializedCards()
+        {
+            return JsonSerializer.Serialize(AllCards.Select(c => c.ViewData.Number));
         }
 
         #region AutomaticFillComponents

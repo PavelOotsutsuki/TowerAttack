@@ -48,12 +48,13 @@ namespace GameFields.Persons.EffectHandlers
 
             // TODO
             // Хз нужно ли делать Contain на принадлежность i к существующему номеру
-            // (если, к примеру, в игре есть номер 26, а потом 28, если передать 27, которого нет будет ошибка?)
+            // (если, к примеру, в игре есть номер 26, а потом 28, если передать 27, которого нет, будет ошибка?)
             if (isLessBordelineNumber == false)
             {
                 for (int i = minNumber; i < BorderlineNumber; i++)
                 {
-                    _choicedNumbersPerson.Add(i, NumberAnimationType.Choice);
+                    //_choicedNumbersPerson.Add(i, NumberAnimationType.Choice);
+                    _choicedNumbersPerson.Add(i);
                 }
             }
 
@@ -61,7 +62,8 @@ namespace GameFields.Persons.EffectHandlers
             {
                 for (int i = BorderlineNumber + 1; i <= maxNumber; i++)
                 {
-                    _choicedNumbersPerson.Add(i, NumberAnimationType.Choice);
+                    //_choicedNumbersPerson.Add(i, NumberAnimationType.Choice);
+                    _choicedNumbersPerson.Add(i);
                 }
             }
         }

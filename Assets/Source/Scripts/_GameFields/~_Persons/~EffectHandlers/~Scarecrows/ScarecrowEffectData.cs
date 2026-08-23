@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using Cards;
-using UnityEngine;
 
 namespace GameFields.Persons.EffectHandlers.Scarecrows
 {
@@ -18,6 +15,7 @@ namespace GameFields.Persons.EffectHandlers.Scarecrows
         }
 
         public bool NeedDelete => _duration <= 0;
+        public int Duration => _duration;
         public Card Card => _card;
 
         public void Use()

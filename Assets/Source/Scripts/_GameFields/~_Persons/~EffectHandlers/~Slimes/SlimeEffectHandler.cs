@@ -1,13 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
 using Cards;
-using GameFields.Persons;
-using GameFields.Persons.Hands;
-using UnityEngine;
+using Servers;
 
 namespace GameFields.Persons.EffectHandlers.Slimes
 {
-    public class SlimeEffectHandler : ITurnSkipper, ILengthyEffectHandler
+    public class SlimeEffectHandler : EffectHandler, ITurnSkipper, ILengthyEffectHandler
     {
         private readonly ISlimeEffectWorker _slimeEffectWorker;
         //private readonly List<Card> _turnCardsFromDeck;
@@ -15,7 +12,8 @@ namespace GameFields.Persons.EffectHandlers.Slimes
 
         private readonly List<Card> _effectedCards;
 
-        public SlimeEffectHandler(ISlimeEffectWorker slimeEffectWorker, IDrawnCardClearable turnDrawnCards)
+        public SlimeEffectHandler(ISlimeEffectWorker slimeEffectWorker, IDrawnCardClearable turnDrawnCards,
+            FightProcessDBManager fightProcessDBManager, bool isPlayersObject) : base(fightProcessDBManager, isPlayersObject)
         {
             _slimeEffectWorker = slimeEffectWorker;
             //_turnCardsFromDeck = new List<Card>();
@@ -33,6 +31,11 @@ namespace GameFields.Persons.EffectHandlers.Slimes
 
             _effectedCards.Add(card);
             _slimeEffectWorker.Activate();
+
+            if (_effectedCards.Count == 1)
+                FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, null, "ACTIVATE", GetType().Name);
+
+            FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, card.ViewData.Number.ToString(), "ADD", GetType().Name);
         }
 
         public void EndEffect(Card card)
@@ -41,9 +44,13 @@ namespace GameFields.Persons.EffectHandlers.Slimes
                 return;
 
             _effectedCards.Remove(card);
+            FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, card.ViewData.Number.ToString(), "REMOVE", GetType().Name);
 
             if (_effectedCards.Count == 0)
+            {
                 _slimeEffectWorker.Deactivate();
+                FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, null, "DEACTIVATE", GetType().Name);
+            }
         }
 
         //void ITurnDrawCardWatcher.SetCard(Card card)

@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
 using Cards;
 using GameFields.CardTransits;
 using GameFields.Histories;
@@ -52,11 +54,9 @@ namespace GameFields.Persons.Fires
 
             Seat(card);
 
-            _fireList.Add(card);
 
             //string cardName = card.CurrentSide == SideType.Front ? card.Name.ToUpper() : "?";
 
-            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, card.ViewData.Number.ToString(), "FIRE", GetName());
             HistoryData historyData = new HistoryData(this, "Сожжена карта: ", new HistoryCardData(card));
             _historyRoot.AddMsg(historyData);
         }
@@ -74,6 +74,7 @@ namespace GameFields.Persons.Fires
 
             //string cardName = card.CurrentSide == SideType.Front ? card.Name.ToUpper() : "?";
             _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, card.ViewData.Number.ToString(), "RISE", GetName());
+            WriteFullListIntoDB();
             HistoryData historyData = new HistoryData(this, "Восстановлена карта: ", new HistoryCardData(card));
             _historyRoot.AddMsg(historyData);
         }
@@ -81,6 +82,7 @@ namespace GameFields.Persons.Fires
         public void Clear()
         {
             _fireList.Clear();
+            WriteFullListIntoDB();
         }
 
         private void Seat(Card card)
@@ -88,6 +90,9 @@ namespace GameFields.Persons.Fires
             card.SetActiveInteraction(false);
             card.RORTransform.SetParent(_parent);
             card.CardMovement.MoveLocalInstantly(FindCardSeatPosition(), FindCardSeatRotation());
+            _fireList.Add(card);
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, card.ViewData.Number.ToString(), "FIRE", GetName());
+            WriteFullListIntoDB();
         }
 
         private Vector3 FindCardSeatPosition()
@@ -103,6 +108,16 @@ namespace GameFields.Persons.Fires
             float zRotation = Random.Range(CenterRotation - _cardRotationOffset, CenterRotation + _cardRotationOffset);
 
             return new Vector3(0f, 0f, zRotation);
+        }
+
+        private void WriteFullListIntoDB()
+        {
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, GetSerializedCards(), "FULLLIST", GetName());
+        }
+
+        private string GetSerializedCards()
+        {
+            return JsonSerializer.Serialize(_fireList.Select(c => c.ViewData.Number));
         }
 
         protected abstract string GetName();

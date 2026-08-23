@@ -1,16 +1,18 @@
 using Cards;
 using System.Collections.Generic;
 using GameFields.Persons.DrawCards;
+using Servers;
 
 namespace GameFields.Persons.EffectHandlers.Fires
 {
-    public class FireEffectHandler : IEffectHandlerActiveWatcher, ILengthyEffectHandler
+    public class FireEffectHandler : EffectHandler, IEffectHandlerActiveWatcher, ILengthyEffectHandler
     {
         private readonly IFireDrawCardAnimationSetter _cardAnimationManager;
 
         private readonly List<Card> _effectedCards;
 
-        public FireEffectHandler(IFireDrawCardAnimationSetter cardAnimationManager)
+        public FireEffectHandler(IFireDrawCardAnimationSetter cardAnimationManager,
+            FightProcessDBManager fightProcessDBManager, bool isPlayersObject) : base(fightProcessDBManager, isPlayersObject)
         {
             _cardAnimationManager = cardAnimationManager;
             _effectedCards = new List<Card>();
@@ -25,6 +27,11 @@ namespace GameFields.Persons.EffectHandlers.Fires
 
             _effectedCards.Add(card);
 
+            FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, card.ViewData.Number.ToString(), "ADD", GetType().Name);
+
+            if (_effectedCards.Count == 1)
+                FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, null, "ACTIVATE", GetType().Name);
+
             _cardAnimationManager.SetFireMode();
         }
 
@@ -34,9 +41,13 @@ namespace GameFields.Persons.EffectHandlers.Fires
                 return;
 
             _effectedCards.Remove(card);
+            FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, card.ViewData.Number.ToString(), "REMOVE", GetType().Name);
 
             if (_effectedCards.Count == 0)
+            {
                 _cardAnimationManager.SetSimpleMode();
+                FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, null, "DEACTIVATE", GetType().Name);
+            }
         }
 
         //public void OnStartTurn()

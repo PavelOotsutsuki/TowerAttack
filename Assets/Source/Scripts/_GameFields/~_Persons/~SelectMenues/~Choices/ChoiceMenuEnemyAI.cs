@@ -1,13 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using GameFields.Persons.SelectMenues;
-using GameFields.Persons.Towers;
-using Tools.Utils.FillComponents;
-using UnityEngine;
-
 namespace GameFields.Persons.SelectMenues.Choices
 {
-    public class ChoiceMenuEnemyAI : SelectMenuImitation//ChoiceMenu
+    public class ChoiceMenuEnemyAI : SelectMenuImitation, IEnemyAIObject//ChoiceMenu
     {
         //[SerializeField] private SelectNumberPanelEnemyAI _selectNumberPanelEnemyAI;
         //[SerializeField] private SelectMenuImitationData _data;
@@ -61,6 +54,7 @@ namespace GameFields.Persons.SelectMenues.Choices
         //{
         //    return AutomaticFillComponents.DefineComponent(this, ref _selectNumberPanelEnemyAI, ComponentLocationTypes.InChildren);
         //}
-        //#endregion 
+        //#endregion
+        protected override string GetSelectType() => "CHOICE";
     }
 }

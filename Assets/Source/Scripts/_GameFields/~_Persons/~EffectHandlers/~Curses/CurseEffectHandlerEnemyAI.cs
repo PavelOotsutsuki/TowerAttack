@@ -1,9 +1,9 @@
 using GameFields.InformationLabels;
-using GameFields.Persons;
 using GameFields.Persons.ConfirmableNumbersView;
 using GameFields.Persons.SelectMenues;
 using GameFields.Persons.Towers;
 using GameFields.Signals;
+using Servers;
 using Zenject;
 
 namespace GameFields.Persons.EffectHandlers.Curses
@@ -16,8 +16,9 @@ namespace GameFields.Persons.EffectHandlers.Curses
         private readonly SignalBus _bus;
 
         public CurseEffectHandlerEnemyAI(ICardNumberKeeper enemyTower, InformationLabel informationLabel,
-            ConfirmableNumbers confirmableNumbersPlayer, SelectNumbersList cursedNumbersPlayer, SignalBus bus) :
-            base(enemyTower, informationLabel, confirmableNumbersPlayer, cursedNumbersPlayer)
+            ConfirmableNumbers confirmableNumbersPlayer, SelectNumbersList cursedNumbersPlayer, SignalBus bus,
+            FightProcessDBManager fightProcessDBManager) : base(enemyTower, informationLabel,
+                confirmableNumbersPlayer, cursedNumbersPlayer, fightProcessDBManager, false)
         {
             _informationLabel = informationLabel;
             _bus = bus;

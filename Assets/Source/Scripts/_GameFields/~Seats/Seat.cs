@@ -6,6 +6,10 @@ using Tools;
 using System.Collections.Generic;
 using Cards.Views;
 using Servers;
+using System.Threading;
+using Cysharp.Threading.Tasks;
+using System;
+using System.Reflection;
 
 namespace GameFields.Seats
 {
@@ -42,15 +46,20 @@ namespace GameFields.Seats
             Card = null;
         }
 
+        public void SetCard(Card card, SideType sideType, float duration, CallbackHandler waitToMovement, CancellationToken token,  float scaleFactor = 1f)
+        {
+            Card = card;
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, _isPlayersAction, Card.ViewData.Number.ToString(), "SEAT", _owner);
+
+            MoveAfterCallbackComplete(sideType, duration, scaleFactor, waitToMovement, token).Forget();
+        }
+
         public void SetCard(Card card, SideType sideType, float duration, float scaleFactor = 1f)
         {
             Card = card;
             _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, _isPlayersAction, Card.ViewData.Number.ToString(), "SEAT", _owner);
 
-            Card.SetSide(sideType);
-            Card.RORTransform.SetParent(_transform);
-            Movement cardMovement = Card.CardMovement;
-            cardMovement.MoveLocalSmoothly(Vector2.zero, Quaternion.identity.eulerAngles, duration, Card.DefaultScaleVector * scaleFactor);
+            Move(sideType, duration, scaleFactor);
         }
 
         public bool IsFill() => Card != null;
@@ -58,6 +67,28 @@ namespace GameFields.Seats
         public void SetLocalPositionValues(Vector3 position, Vector3 rotation, float duration = 0f)
         {
             _seatMovement.MoveLocalSmoothly(position, rotation, duration);
+        }
+
+        private async UniTask MoveAfterCallbackComplete(SideType sideType, float duration, float scaleFactor, CallbackHandler waitToMovement, CancellationToken token)
+        {
+            try
+            {
+                await UniTask.WaitUntil(() => waitToMovement.IsComplete, cancellationToken: token);
+
+                Move(sideType, duration, scaleFactor);
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.Log($"ОТМЕНА ТОКЕНА: {MethodBase.GetCurrentMethod().DeclaringType.Name}: {GetType().Name}");
+            }
+        }
+
+        private void Move(SideType sideType, float duration, float scaleFactor)
+        {
+            Card.SetSide(sideType);
+            Card.RORTransform.SetParent(_transform);
+            Movement cardMovement = Card.CardMovement;
+            cardMovement.MoveLocalSmoothly(Vector2.zero, Quaternion.identity.eulerAngles, duration, Card.DefaultScaleVector * scaleFactor);
         }
 
         #region AutomaticFillComponents

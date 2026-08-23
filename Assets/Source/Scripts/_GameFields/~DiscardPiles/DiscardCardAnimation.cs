@@ -20,13 +20,13 @@ namespace GameFields.DiscardPiles
 
         private readonly DiscardCardAnimationData _data;
         private readonly Transform _container;
-        private readonly Action<Card> _callback;
+        private readonly CallbackHandler _callbackHandler;
 
-        public DiscardCardAnimation(DiscardCardAnimationData data, Transform container, Card card, Action<Card> callback)
+        public DiscardCardAnimation(DiscardCardAnimationData data, Transform container, Card card, CallbackHandler callbackHandler)
         {
             _data = data;
             _container = container;
-            _callback = callback;
+            _callbackHandler = callbackHandler;
 
             _invertCardAnimation = new InvertCardAnimation(_data.InvertCardAnimationData);
 
@@ -64,7 +64,8 @@ namespace GameFields.DiscardPiles
 
             await UniTask.WaitUntil(() => _invertCardAnimation.IsComplete, cancellationToken: token);
 
-            _callback?.Invoke(_card);
+            //_callbackHandler?.Invoke(_card);
+            _callbackHandler.Complete();
         }
 
         //private void InvertCardFront()

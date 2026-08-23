@@ -1,13 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
-using Cards;
 using Cards.Views;
-using GameFields.Persons;
-using UnityEngine;
+using Servers;
 
 namespace GameFields.Persons.EffectHandlers
 {
-    public class GnomeEffectHandler
+    public class GnomeEffectHandler : EffectHandler
     {
         private readonly RechangeFeatureRuleController _ruleController;
         private readonly IEnumerable<ICardFeatureRechangablePlace> _rechangables;
@@ -18,7 +15,8 @@ namespace GameFields.Persons.EffectHandlers
         private int _gnomeCounterNumbers;
         private int _gnomeCounterUse;
 
-        public GnomeEffectHandler(RechangeFeatureRuleController ruleController, IEnumerable<ICardFeatureRechangablePlace> rechangables)
+        public GnomeEffectHandler(RechangeFeatureRuleController ruleController, IEnumerable<ICardFeatureRechangablePlace> rechangables,
+            FightProcessDBManager fightProcessDBManager, bool isPlayersObject) : base(fightProcessDBManager, isPlayersObject)
         {
             _ruleController = ruleController;
             _rechangables = rechangables;
@@ -57,6 +55,9 @@ namespace GameFields.Persons.EffectHandlers
                     }
                 }
             }
+
+            FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, _upgradeStepCount.ToString(), "UPGRADE", GetType().Name);
+            FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, _gnomeCounterNumbers.ToString(), "ALL _gnomeCounterNumbers", GetType().Name);
         }
 
         public bool CanActivate()
@@ -76,6 +77,9 @@ namespace GameFields.Persons.EffectHandlers
 
             _gnomeCounterUse--;
             countNumbers = GnomeCounterNumbers;
+
+            FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, null, "ACTIVATE", GetType().Name);
+            FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, _gnomeCounterUse.ToString(), "ALL _gnomeCounterUse", GetType().Name);
 
             return true;
         }

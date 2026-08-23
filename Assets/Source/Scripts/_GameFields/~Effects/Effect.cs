@@ -63,7 +63,7 @@ namespace GameFields.Effects
 
         protected virtual void OnEnd()
         {
-            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, GetName(), "END", "EFFECT");
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, GetType().Name, "END", "EFFECT");
             _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, _card.EffectConfig.Type.ToString(), "END", "ORIGINAL_EFFECTTYPE");
             _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, _playedEffectType.ToString(), "END", "PLAYED_EFFECTTYPE");
             HistoryData historyData = new HistoryData(_activePerson, GetEndHistoryMsg(), new HistoryCardData(_card));

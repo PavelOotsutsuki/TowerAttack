@@ -1,10 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using GameFields.Persons;
 using GameFields.Persons.ConfirmableNumbersView;
 using GameFields.Persons.Towers;
 using Tools.Utils.FillComponents;
@@ -12,7 +10,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.SelectMenues
 {
-    public class SelectMenuImitation : SelectMenu
+    public abstract class SelectMenuImitation : SelectMenu
     {
         [SerializeField] private SelectNumberPanelImitation _selectNumberPanelImitation;
         [SerializeField] private SelectMenuImitationData _data;

@@ -52,7 +52,8 @@ namespace GameFields.Persons.EffectHandlers
                 for (int i = minNumber; i <= maxNumber; i++)
                 {
                     if (i % 2 == 1)
-                        _choicedNumbersPerson.Add(i, NumberAnimationType.Choice);
+                        //_choicedNumbersPerson.Add(i, NumberAnimationType.Choice);
+                        _choicedNumbersPerson.Add(i);
                 }
             }
 
@@ -61,7 +62,8 @@ namespace GameFields.Persons.EffectHandlers
                 for (int i = minNumber; i <= maxNumber; i++)
                 {
                     if (i % 2 == 0)
-                        _choicedNumbersPerson.Add(i, NumberAnimationType.Choice);
+                        //_choicedNumbersPerson.Add(i, NumberAnimationType.Choice);
+                        _choicedNumbersPerson.Add(i);
                 }
             }
         }

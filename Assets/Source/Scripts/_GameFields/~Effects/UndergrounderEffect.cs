@@ -47,22 +47,24 @@ namespace GameFields.Effects
                 return;
             }
 
-            if (_activePerson is Player)
-            {
-                bool isEffectComplete = false;
-                LookCardMenuActivateData lookCardMenuActivateData = new LookCardMenuActivateData(cards, MessagePlayer);
-                _activePerson.LookCards(lookCardMenuActivateData, () => isEffectComplete = true);
+            string personMessage = _activePerson is Player ? MessagePlayer : MessageEnemy;
 
-                await UniTask.WaitUntil(() => isEffectComplete, cancellationToken: Token);
-            }
-            else
-            {
-                LabelActivateData labelActivateData = new LabelActivateData(MessageEnemy);
-                InformationLabelActivateData informationLabelActivateData = new InformationLabelActivateData(labelActivateData, 6f);
+            //if (_activePerson is Player)
+            //{
+            bool isEffectComplete = false;
+            LookCardMenuActivateData lookCardMenuActivateData = new LookCardMenuActivateData(cards, personMessage);
+            _activePerson.LookCards(lookCardMenuActivateData, () => isEffectComplete = true);
 
-                _informationLabel.Activate(informationLabelActivateData);
-                await UniTask.WaitUntil(() => _informationLabel.IsComplete, cancellationToken: Token);
-            }
+            await UniTask.WaitUntil(() => isEffectComplete, cancellationToken: Token);
+            //}
+            //else
+            //{
+            //    LabelActivateData labelActivateData = new LabelActivateData(MessageEnemy);
+            //    InformationLabelActivateData informationLabelActivateData = new InformationLabelActivateData(labelActivateData, 6f);
+
+            //    _informationLabel.Activate(informationLabelActivateData);
+            //    await UniTask.WaitUntil(() => _informationLabel.IsComplete, cancellationToken: Token);
+            //}
         }
     }
 }

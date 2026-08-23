@@ -23,6 +23,7 @@ namespace Cards
         [SerializeField] private CardCreator _cardCreator;
         [SerializeField] private StartCardsType _startCardsType;
         [SerializeField] private CardDescription _cardDescription;
+        [Inject] private FightProcessDBManager _fightProcessDBManager;
 
         private readonly List<Card> _allCards = new List<Card>();
 
@@ -69,9 +70,10 @@ namespace Cards
         public Card CreateCard(CardName cardName, Transform parent)
         {
             Card createdCard = _cardCreator.CreateInstantly(cardName, parent);
-
             createdCard.Init(_effectFactory, _cardViewService, _cardDragAndDropHandler, _curseAnimator,
                 _cardCapabilityDescription, _cardSoundRoot, _cardDescription, _fightToken);
+
+            _fightProcessDBManager.WriteFightProcessAction(-1, null, createdCard.ViewData.Number.ToString(), "CREATE", "CARD");
 
             TMP_Text[] cardTexts = createdCard.gameObject.GetComponentsInChildren<TMP_Text>(true);
             _fontSetter.SetFont(cardTexts);

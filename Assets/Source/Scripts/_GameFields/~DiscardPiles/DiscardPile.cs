@@ -1,7 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading;
 using Cards;
 using Cards.Views;
@@ -9,6 +9,8 @@ using Cysharp.Threading.Tasks;
 using GameFields.CardTransits;
 using GameFields.Seats;
 using GameFields.Signals;
+using Servers;
+using Tools;
 using Tools.Utils;
 using UnityEngine;
 using Zenject;
@@ -27,12 +29,14 @@ namespace GameFields.DiscardPiles
         private readonly float _minCoordinateX;
         private readonly float _minCoordinateY;
         private readonly SeatPool _discardPileSeatPool;
+        private readonly FightProcessDBManager _fightProcessDBManager;
 
         private readonly SignalBus _bus;
 
         public IEnumerable<Card> AllCards => _seats.Select(s => s.Card).ToList(); // ToList - чтобы далее работать с копией
 
-        public DiscardPile(SeatPool seatPool, SignalBus bus, DiscardPileConfig discardPileConfig)
+        public DiscardPile(SeatPool seatPool, SignalBus bus, DiscardPileConfig discardPileConfig,
+            FightProcessDBManager fightProcessDBManager)
         {
             _discardPileConfig = discardPileConfig;
             _maxCoordinateX = _discardPileConfig.RectTransform.rect.width / 2f;
@@ -41,6 +45,7 @@ namespace GameFields.DiscardPiles
             _minCoordinateY = _maxCoordinateY * -1;
             _discardPileSeatPool = seatPool;
             _bus = bus;
+            _fightProcessDBManager = fightProcessDBManager;
             _bus.Subscribe<DiscardCardsSignal>(OnDiscardCardsSignal);
         }
 
@@ -51,7 +56,24 @@ namespace GameFields.DiscardPiles
 
         private void OnDiscardCardsSignal(DiscardCardsSignal signal)
         {
-            DiscardingCards(signal.Card, signal.Token).Forget();
+            Card card = signal.Card;
+            CancellationToken token = signal.Token;
+
+            int index = _seats.Count;
+
+            card.SetActiveInteraction(false);
+
+            CallbackHandler cardAnimationCallbackHandler = new CallbackHandler();
+
+            Seat discardPileSeat = GetSeat();
+            discardPileSeat.SetCard(card, SideType.Back, _discardPileConfig.StartCardTranslateSpeed, cardAnimationCallbackHandler, token);
+            //TODO: add seat removing
+            _seats.Insert(index, discardPileSeat);
+            WriteFullListIntoDB();
+
+            DiscardCardAnimation discardCardAnimation = new DiscardCardAnimation(_discardPileConfig.DiscardCardAnimationData, _discardPileConfig.RectTransform, card, cardAnimationCallbackHandler);
+            discardCardAnimation.Play(token);
+            //DiscardingCards(card, token, cardAnimationCallbackHandler).Forget();
         }
 
         public void SeatCard(Card card, int index = -1)
@@ -65,6 +87,7 @@ namespace GameFields.DiscardPiles
             discardPileSeat.SetCard(card, SideType.Back, _discardPileConfig.StartCardTranslateSpeed);
             //TODO: add seat removing
             _seats.Insert(index, discardPileSeat);
+            WriteFullListIntoDB();
         }
 
         public bool TryTakeAwayCard(Card card)
@@ -75,6 +98,7 @@ namespace GameFields.DiscardPiles
                 return false;
 
             _seats.Remove(seat);
+            WriteFullListIntoDB();
             seat.Reset();
 
             return true;
@@ -179,12 +203,12 @@ namespace GameFields.DiscardPiles
         //    }
         //}
 
-        private async UniTask DiscardingCards(Card discardingCard, CancellationToken token)
-        {
-            DiscardCardAnimation discardCardAnimation = new DiscardCardAnimation(_discardPileConfig.DiscardCardAnimationData, _discardPileConfig.RectTransform, discardingCard, (card) => SeatCard(card, -1));
-            discardCardAnimation.Play(token);
-            await UniTask.WaitForSeconds(_discardPileConfig.DiscardDelay, cancellationToken: token);
-        }
+        //private async UniTask DiscardingCards(Card discardingCard, CancellationToken token, CallbackHandler cardAnimationCallbackHandler)
+        //{
+        //    DiscardCardAnimation discardCardAnimation = new DiscardCardAnimation(_discardPileConfig.DiscardCardAnimationData, _discardPileConfig.RectTransform, discardingCard, cardAnimationCallbackHandler);
+        //    discardCardAnimation.Play(token);
+        //    //await UniTask.WaitForSeconds(_discardPileConfig.DiscardDelay, cancellationToken: token);
+        //}
 
         private Vector3 FindCardSeatPosition()
         {
@@ -199,6 +223,16 @@ namespace GameFields.DiscardPiles
             float zRotation = Random.Range(CenterRotation - _discardPileConfig.CardRotationOffset, CenterRotation + _discardPileConfig.CardRotationOffset);
 
             return new Vector3(0f, 0f, zRotation);
+        }
+
+        private void WriteFullListIntoDB()
+        {
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, null, GetSerializedCards(), "FULLLIST", GetType().Name);
+        }
+
+        private string GetSerializedCards()
+        {
+            return JsonSerializer.Serialize(AllCards.Select(c => c.ViewData.Number));
         }
     }
 }

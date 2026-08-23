@@ -120,10 +120,10 @@ namespace GameFields
 
         private void NextTurn()
         {
-            _turnNumber++;
             //_seatPool.Collect();
 
             ActivePerson.FinishTurn();
+            _turnNumber++;
 
             if (TurnsIsOut)
             {

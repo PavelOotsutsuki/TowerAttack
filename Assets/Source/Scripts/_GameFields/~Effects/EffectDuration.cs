@@ -28,5 +28,6 @@ namespace GameFields.Effects
         }
 
         public bool CanDiscard => _duration <= 0;
+        public int Duration => _duration;
     }
 }

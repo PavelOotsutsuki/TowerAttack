@@ -138,33 +138,52 @@ namespace GameFields.Effects
 
             ActivateShotSound();
 
-            if (_activePerson is Player)
+            string personMessage = _activePerson is Player ? MessagePlayer : MessageEnemy;
+
+            bool effectFourComplete = false;
+            List<Card> lookCards = new List<Card>();
+
+            if (deckTopCard == deckEndCard)
             {
-                bool effectFourComplete = false;
-                List<Card> lookCards = new List<Card>();
-
-                if (deckTopCard == deckEndCard)
-                {
-                    lookCards.Add(deckTopCard);
-                }
-                else
-                {
-                    lookCards.Add(deckTopCard);
-                    lookCards.Add(deckEndCard);
-                }
-
-                LookCardMenuActivateData lookCardMenuActivateData = new LookCardMenuActivateData(lookCards, MessagePlayer);
-                _activePerson.LookCards(lookCardMenuActivateData, () => effectFourComplete = true);
-                await UniTask.WaitUntil(() => effectFourComplete, cancellationToken: Token);
+                lookCards.Add(deckTopCard);
             }
             else
             {
-                LabelActivateData labelActivateData = new LabelActivateData(MessageEnemy);
-                InformationLabelActivateData informationLabelActivateData = new InformationLabelActivateData(labelActivateData, 6f);
-
-                _informationLabel.Activate(informationLabelActivateData);
-                await UniTask.WaitUntil(() => _informationLabel.IsComplete, cancellationToken: Token);
+                lookCards.Add(deckTopCard);
+                lookCards.Add(deckEndCard);
             }
+
+            LookCardMenuActivateData lookCardMenuActivateData = new LookCardMenuActivateData(lookCards, personMessage);
+            _activePerson.LookCards(lookCardMenuActivateData, () => effectFourComplete = true);
+            await UniTask.WaitUntil(() => effectFourComplete, cancellationToken: Token);
+
+            //if (_activePerson is Player)
+            //{
+            //    bool effectFourComplete = false;
+            //    List<Card> lookCards = new List<Card>();
+
+            //    if (deckTopCard == deckEndCard)
+            //    {
+            //        lookCards.Add(deckTopCard);
+            //    }
+            //    else
+            //    {
+            //        lookCards.Add(deckTopCard);
+            //        lookCards.Add(deckEndCard);
+            //    }
+
+            //    LookCardMenuActivateData lookCardMenuActivateData = new LookCardMenuActivateData(lookCards, MessagePlayer);
+            //    _activePerson.LookCards(lookCardMenuActivateData, () => effectFourComplete = true);
+            //    await UniTask.WaitUntil(() => effectFourComplete, cancellationToken: Token);
+            //}
+            //else
+            //{
+            //    LabelActivateData labelActivateData = new LabelActivateData(MessageEnemy);
+            //    InformationLabelActivateData informationLabelActivateData = new InformationLabelActivateData(labelActivateData, 6f);
+
+            //    _informationLabel.Activate(informationLabelActivateData);
+            //    await UniTask.WaitUntil(() => _informationLabel.IsComplete, cancellationToken: Token);
+            //}
         }
 
         private void ActivateShotSound()

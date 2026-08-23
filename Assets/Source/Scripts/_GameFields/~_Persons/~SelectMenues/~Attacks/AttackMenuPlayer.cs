@@ -1,11 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using GameFields.Persons.SelectMenues;
-using GameFields.Persons.Towers;
-using Tools;
-using Tools.Utils.FillComponents;
-using UnityEngine;
-
 namespace GameFields.Persons.SelectMenues.Attacks
 {
     public class AttackMenuPlayer : SelectMenuPlayer//AttackMenu
@@ -67,5 +59,6 @@ namespace GameFields.Persons.SelectMenues.Attacks
         //    return AutomaticFillComponents.DefineComponent(this, ref _selectNumberPanelPlayer, ComponentLocationTypes.InChildren);
         //}
         //#endregion 
+        protected override string GetSelectType() => "ATTACK";
     }
 }

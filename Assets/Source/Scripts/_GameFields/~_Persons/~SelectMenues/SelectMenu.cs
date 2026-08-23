@@ -4,21 +4,24 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Servers;
 using Tools;
 using Tools.UI;
 using Tools.Utils;
 using Tools.Utils.FillComponents;
 using UnityEngine;
+using Zenject;
 
 namespace GameFields.Persons.SelectMenues
 {
     [RequireComponent(typeof(CanvasGroup))]
-    public abstract class SelectMenu : MonoBehaviour, ISelectMenuActivator, IWorkable<SelectMenuActivateData>, ICompletable, IAutomaticFillComponents
+    public abstract class SelectMenu : MonoBehaviour, ISelectMenuActivator, IWorkable<SelectMenuActivateData>, ICompletable, IPersonObject, IAutomaticFillComponents
     {
         [SerializeField] private SelectMenuLabel _selectMenuLabel;
         [SerializeField] private SelectMenuPanel _selectMenuPanel;
 
         [SerializeField] private CanvasGroup _canvasGroup;
+        [Inject] private FightProcessDBManager _fightProcessDBManager;
 
         //protected ISelectResultHandler SelectResultHandler;
         private ISelectResultHandler _selectResultHandler;
@@ -36,6 +39,7 @@ namespace GameFields.Persons.SelectMenues
         public bool IsComplete { get; private set; }
 
         private bool IsElementsComplete => _completableElements.Any(e => e.IsComplete == false) == false;
+        private bool? IsPlayersAction => this is IPlayerObject ? true : this is IEnemyAIObject ? false : null;
 
         public void Init(ISelectResultHandler selectResultHandler, SelectNumberPanel selectNumberPanel,
             SelectMenuLabelTextLogic selectMenuLabelTextLogic, CancellationToken fightToken)
@@ -83,6 +87,8 @@ namespace GameFields.Persons.SelectMenues
 
             SelectNumberPanelActivateData numberPanelActivateData = new SelectNumberPanelActivateData(activateData.NeedSelect, activateData.RestrictionType, _selectResult);
             _selectNumberPanel.Activate(numberPanelActivateData);
+
+            LogActivate();
         }
 
         public void Deactivate()
@@ -112,6 +118,8 @@ namespace GameFields.Persons.SelectMenues
 
             return completables;
         }
+
+        protected abstract string GetSelectType();
 
         private async UniTask Deactivating(CancellationToken token)
         {
@@ -147,12 +155,24 @@ namespace GameFields.Persons.SelectMenues
 
                 await UniTask.WaitUntil(() => _selectResultHandler.IsComplete, cancellationToken: token);
 
+                LogDeactivate();
+
                 IsComplete = true;
             }
             catch (OperationCanceledException)
             {
                 Debug.Log($"ОТМЕНА ТОКЕНА: {MethodBase.GetCurrentMethod().DeclaringType.Name}: {GetType().Name}");
             }
+        }
+
+        private void LogActivate()
+        {
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, null, "START", GetSelectType());
+        }
+
+        private void LogDeactivate()
+        {
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, null, "END", GetSelectType());
         }
 
         //private void OnDisable()

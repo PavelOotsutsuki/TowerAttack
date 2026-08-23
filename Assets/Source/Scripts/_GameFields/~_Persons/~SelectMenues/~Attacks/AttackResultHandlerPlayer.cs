@@ -1,15 +1,16 @@
 using GameFields.DiscardPiles;
-using GameFields.Persons;
-using GameFields.Persons.Towers;
-using Zenject;
+using Servers;
 
 namespace GameFields.Persons.SelectMenues.Attacks
 {
-    public class AttackResultHandlerPlayer : AttackResultHandler, IEnemyAIObject
+    public class AttackResultHandlerPlayer : AttackResultHandler//, IEnemyAIObject
     {
         public AttackResultHandlerPlayer(DiscardPile discardPile, LoseActions loseActions,
-            IAttackCardKeeper attackCardKeeper, AttackResultHandlerData data) :
-            base(discardPile, loseActions, attackCardKeeper, data)
+            IAttackCardKeeper attackCardKeeper, AttackResultHandlerData data, FightProcessDBManager fightProcessDBManager) :
+            base(discardPile, loseActions, attackCardKeeper, data, fightProcessDBManager)
         { }
+
+        protected override bool? IsPlayersAction => true;
+        protected override string GetName() => nameof(AttackResultHandlerPlayer);
     }
 }

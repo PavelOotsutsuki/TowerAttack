@@ -17,6 +17,7 @@ namespace GameFields.Persons.LookCardMenues
         }
 
         public LookCardMenuSeatPanelRootActivateData LookCardMenuSeatPanelRootActivateData => new LookCardMenuSeatPanelRootActivateData(_cards);
+        public IEnumerable<Card> Cards => _cards;
         public LabelActivateData LabelActivateData => _labelActivateData;
     }
 }

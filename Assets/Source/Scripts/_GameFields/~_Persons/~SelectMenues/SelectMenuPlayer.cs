@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace GameFields.Persons.SelectMenues
 {
-    public class SelectMenuPlayer : SelectMenu, IInputLogicObject, IQPressHandler, IEnterPressHandler
+    public abstract class SelectMenuPlayer : SelectMenu, IInputLogicObject, IQPressHandler, IEnterPressHandler, IPlayerObject
     {
         [SerializeField] private SelectNumberPanelPlayer _selectNumberPanelPlayer;
         [SerializeField] private SelectButton _selectButton;

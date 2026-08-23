@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GameFields.Persons.SelectMenues;
 using ModestTree;
+using Servers;
 using Tools.Settings;
 
 namespace GameFields.Persons.ConfirmableNumbersView
@@ -13,14 +14,18 @@ namespace GameFields.Persons.ConfirmableNumbersView
         private readonly SelectNumbersList _choicedNumbers;
         private readonly SelectNumbersList _cursedNumbers;
 
+        //private readonly FightProcessDBManager _fightProcessDBManager;
+
         private readonly int[] _allNumbers;
 
-        public ConfirmableNumbers(SelectNumbersList attackedNumbers,
-            SelectNumbersList choicedNumbers, SelectNumbersList cursedNumbers)
+        public ConfirmableNumbers(SelectNumbersList attackedNumbers, SelectNumbersList choicedNumbers,
+            SelectNumbersList cursedNumbers)
         {
             _attackedNumbers = attackedNumbers;
             _choicedNumbers = choicedNumbers;
             _cursedNumbers = cursedNumbers;
+
+            //_fightProcessDBManager = fightProcessDBManager;
 
             _attackedNumbers.OnChanged += ActionOnChanged;
             _choicedNumbers.OnChanged += ActionOnChanged;
@@ -38,24 +43,32 @@ namespace GameFields.Persons.ConfirmableNumbersView
 
         public event Action OnChanged;
 
-        public IEnumerable<int> FreeNumbers => _allNumbers.Except(FullList.SelectedNumbersStates.Select(p => p.Key));
-        public IEnumerable<int> CheckedNumbers => FullList.SelectedNumbersStates.Select(p => p.Key);
+        public IEnumerable<int> FreeNumbers => _allNumbers.Except(FullList.Select(p => p.Key));
+        public IEnumerable<int> CheckedNumbers => FullList.Select(p => p.Key);
 
-        public SelectNumbersList FullList
+        public IReadOnlyDictionary<int, NumberAnimationType> FullList
         {
             get
             {
-                SelectNumbersList fullList = new SelectNumbersList();
+                //SelectNumbersList fullList = new SelectNumbersList(null, null);
 
-                AddRange(fullList, _attackedNumbers.SelectedNumbersStates);
-                AddRange(fullList, _cursedNumbers.SelectedNumbersStates);
-                AddRange(fullList, _choicedNumbers.SelectedNumbersStates);
+                //AddRange(fullList, _attackedNumbers.SelectedNumbersStates);
+                //AddRange(fullList, _cursedNumbers.SelectedNumbersStates);
+                //AddRange(fullList, _choicedNumbers.SelectedNumbersStates);
+
+                //return fullList;
+
+                Dictionary<int, NumberAnimationType> fullList = new Dictionary<int, NumberAnimationType>();
+
+                AddRange(fullList, _attackedNumbers.SelectedNumbersStates, _attackedNumbers.GetNumberAnimationType());
+                AddRange(fullList, _cursedNumbers.SelectedNumbersStates, _cursedNumbers.GetNumberAnimationType());
+                AddRange(fullList, _choicedNumbers.SelectedNumbersStates, _choicedNumbers.GetNumberAnimationType());
 
                 return fullList;
             }
         }
 
-        public int Count => FullList.SelectedNumbersStates.Count;
+        public int Count => FullList.Count;
 
         public void Clear()
         {
@@ -114,13 +127,13 @@ namespace GameFields.Persons.ConfirmableNumbersView
             return _choicedNumbers.Contains(selectedNumber) || _attackedNumbers.Contains(selectedNumber) || _cursedNumbers.Contains(selectedNumber);
         }
 
-        private void AddRange(SelectNumbersList addedList, IReadOnlyDictionary<int, NumberAnimationType> clonedList)
+        private void AddRange(Dictionary<int, NumberAnimationType> addedList, IReadOnlyList<int> clonedList, NumberAnimationType type)
         {
-            foreach (KeyValuePair<int, NumberAnimationType> number in clonedList)
+            foreach (int number in clonedList)
             {
-                if (addedList.Contains(number.Key) == false)
+                if (addedList.ContainsKey(number) == false)
                 {
-                    addedList.Add(number.Key, number.Value);
+                    addedList.Add(number, type);
                 }
             }
         }

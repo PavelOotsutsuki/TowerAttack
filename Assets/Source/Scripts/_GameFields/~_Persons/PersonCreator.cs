@@ -75,9 +75,9 @@ namespace GameFields.Persons
         private ForgingZone _forgingZone;
         private HandTransferZone _handTransferZone;
 
-        private SelectNumbersList _attackedNumbersPlayer = new SelectNumbersList();
-        private SelectNumbersList _choicedNumbersPlayer = new SelectNumbersList();
-        private SelectNumbersList _cursedNumbersPlayer = new SelectNumbersList();
+        private SelectNumbersList _attackedNumbersPlayer;// = new SelectNumbersList();
+        private SelectNumbersList _choicedNumbersPlayer;// = new SelectNumbersList();
+        private SelectNumbersList _cursedNumbersPlayer;// = new SelectNumbersList();
         private ConfirmableNumbers _confirmableNumbersPlayer;
         private LastSelectedNumbersWatcher _lastSelectedNumbersWatcherPlayer = new LastSelectedNumbersWatcher();
         private PersonEffectKeeper _playerEffectKeeper;
@@ -127,9 +127,9 @@ namespace GameFields.Persons
 
         //private ActiveEffectsList _enemyActiveEffectsList = new ActiveEffectsList();
 
-        private SelectNumbersList _attackedNumbersEnemy = new SelectNumbersList();
-        private SelectNumbersList _choicedNumbersEnemy = new SelectNumbersList();
-        private SelectNumbersList _cursedNumbersEnemyAI = new SelectNumbersList();
+        private SelectNumbersList _attackedNumbersEnemy;// = new SelectNumbersList();
+        private SelectNumbersList _choicedNumbersEnemy;// = new SelectNumbersList();
+        private SelectNumbersList _cursedNumbersEnemyAI;// = new SelectNumbersList();
         private ConfirmableNumbers _confirmableNumbersEnemyAI;
         private LastSelectedNumbersWatcher _lastSelectedNumbersWatcherEnemyAI = new LastSelectedNumbersWatcher();
         private PersonEffectKeeper _enemyEffectKeeper;
@@ -292,6 +292,14 @@ namespace GameFields.Persons
             _interactionActivator = new InteractionActivator(cardDragAndDropHandler, _towerActivator, tableActivator, endTurnButton,
                 cardDragAndDropLightController, _forgingZone, _handTransferZone, _inputRoot);
 
+            _attackedNumbersPlayer = new AttackedSelectNumbersList(_fightProcessDBManager, true);
+            _choicedNumbersPlayer = new ChoicedSelectNumbersList(_fightProcessDBManager, true);
+            _cursedNumbersPlayer = new CursedSelectNumbersList(_fightProcessDBManager, true);
+
+            _attackedNumbersEnemy = new AttackedSelectNumbersList(_fightProcessDBManager, false);
+            _choicedNumbersEnemy = new ChoicedSelectNumbersList(_fightProcessDBManager, false);
+            _cursedNumbersEnemyAI = new CursedSelectNumbersList(_fightProcessDBManager, false);
+
             _confirmableNumbersPlayer = new ConfirmableNumbers(_attackedNumbersPlayer, _choicedNumbersPlayer, _cursedNumbersPlayer);
             _confirmableNumbersEnemyAI = new ConfirmableNumbers(_attackedNumbersEnemy, _choicedNumbersEnemy, _cursedNumbersEnemyAI);
 
@@ -310,22 +318,24 @@ namespace GameFields.Persons
 
         public Player CreatePlayer()
         {
-            SlimeEffectHandler slimeEffectHandler = new SlimeEffectHandler(_playerHand, _playerTurnDrawnCards);
+            SlimeEffectHandler slimeEffectHandler = new SlimeEffectHandler(_playerHand, _playerTurnDrawnCards, _fightProcessDBManager, true);
             List<ICardFeatureRechangablePlace> cardFeatureRechangables = new List<ICardFeatureRechangablePlace>()
             {
                 _playerTower,
                 _playerHand
             };
-            GnomeEffectHandler gnomeEffectHandler = new GnomeEffectHandler(_playerRechangeFeatureRuleController, cardFeatureRechangables);
+            GnomeEffectHandler gnomeEffectHandler = new GnomeEffectHandler(_playerRechangeFeatureRuleController, cardFeatureRechangables,
+                 _fightProcessDBManager, true);
             CurseEffectHandlerPlayer curseEffectHandler = new CurseEffectHandlerPlayer(_playerTower, _informationLabel, _confirmableNumbersEnemyAI,
-                _cursedNumbersEnemyAI, _bus);
-            DoubleEffectHandler doubleEffectHandler = new DoubleEffectHandler();
+                _cursedNumbersEnemyAI, _bus, _fightProcessDBManager);
+            DoubleEffectHandler doubleEffectHandler = new DoubleEffectHandler(_fightProcessDBManager, true);
             JusticeBullEffectHandler justiceBullEffectHandler = new JusticeBullEffectHandler(_choicedNumbersPlayer, _enemyTower);
-            ScarecrowEffectHandler scarecrowEffectHandler = new ScarecrowEffectHandler(_discardManager);
-            WiseMonkEffectHandler wiseMonkEffectHandler = new WiseMonkEffectHandler();
+            ScarecrowEffectHandler scarecrowEffectHandler = new ScarecrowEffectHandler(_discardManager, _fightProcessDBManager, true);
+            WiseMonkEffectHandler wiseMonkEffectHandler = new WiseMonkEffectHandler(_fightProcessDBManager, true);
             FalsePrinceEffectHandler falsePrinceEffectHandler = new FalsePrinceEffectHandler(_playerTower, _deck, _fightToken);
             FallenGuardianEffectHandler fallenGuardianEffectHandler = new FallenGuardianEffectHandler(_choicedNumbersPlayer, _enemyTower);
-            _playerBrothersEffectHandler = new BrothersEffectHandler(_playerRechangeFeatureRuleController, cardFeatureRechangables);
+            _playerBrothersEffectHandler = new BrothersEffectHandler(_playerRechangeFeatureRuleController, cardFeatureRechangables,
+                 _fightProcessDBManager, true);
             _playerPersonEffectsHandler = new PersonEffectsHandler(gnomeEffectHandler, slimeEffectHandler, curseEffectHandler,
                 _fireEffectHandlerPlayer, doubleEffectHandler, _skipTurnEffectHandlerPlayer, _fateInevitabilityHandlerPlayer, justiceBullEffectHandler,
                 _playerBrothersEffectHandler, scarecrowEffectHandler, wiseMonkEffectHandler, falsePrinceEffectHandler,
@@ -352,22 +362,26 @@ namespace GameFields.Persons
 
         public EnemyAI CreateEnemyAI()
         {
-            SlimeEffectHandler slimeEffectHandler = new SlimeEffectHandler(_enemyHand, _enemyTurnDrawnCards);
+            SlimeEffectHandler slimeEffectHandler = new SlimeEffectHandler(_enemyHand, _enemyTurnDrawnCards, _fightProcessDBManager, false);
             List<ICardFeatureRechangablePlace> cardFeatureRechangables = new List<ICardFeatureRechangablePlace>()
             {
                 _enemyTower,
                 _enemyHand
             };
-            GnomeEffectHandler gnomeEffectHandler = new GnomeEffectHandler(_enemyRechangeFeatureRuleController, cardFeatureRechangables);
+            GnomeEffectHandler gnomeEffectHandler = new GnomeEffectHandler(_enemyRechangeFeatureRuleController, cardFeatureRechangables,
+                 _fightProcessDBManager, false);
             CurseEffectHandlerEnemyAI curseEffectHandler = new CurseEffectHandlerEnemyAI(_enemyTower, _informationLabel, _confirmableNumbersPlayer,
-                _cursedNumbersPlayer, _bus);
-            DoubleEffectHandler doubleEffectHandler = new DoubleEffectHandler();
-            SkipTurnEffectHandler skipTurnEffectHandler = new SkipTurnEffectHandler();
-            FateInevitabilityHandler fateInevitabilityHandler = new FateInevitabilityHandler(_enemyLoseActions, _enemyAttackMenu);
+                _cursedNumbersPlayer, _bus, _fightProcessDBManager);
+            DoubleEffectHandler doubleEffectHandler = new DoubleEffectHandler(_fightProcessDBManager, false);
+            SkipTurnEffectHandler skipTurnEffectHandler = new SkipTurnEffectHandler(_fightProcessDBManager, false);
+            FateInevitabilityHandler fateInevitabilityHandler = new FateInevitabilityHandler(_enemyLoseActions, _enemyAttackMenu,
+                 _fightProcessDBManager, false);
             JusticeBullEffectHandler justiceBullEffectHandler = new JusticeBullEffectHandler(_choicedNumbersEnemy, _playerTower);
-            _enemyBrothersEffectHandler = new BrothersEffectHandler(_enemyRechangeFeatureRuleController, cardFeatureRechangables);
-            ScarecrowEffectHandler scarecrowEffectHandler = new ScarecrowEffectHandler(_discardManager);
-            WiseMonkEffectHandler wiseMonkEffectHandler = new WiseMonkEffectHandler();
+            _enemyBrothersEffectHandler = new BrothersEffectHandler(_enemyRechangeFeatureRuleController, cardFeatureRechangables,
+                 _fightProcessDBManager, false);
+            ScarecrowEffectHandler scarecrowEffectHandler = new ScarecrowEffectHandler(_discardManager,
+                 _fightProcessDBManager, false);
+            WiseMonkEffectHandler wiseMonkEffectHandler = new WiseMonkEffectHandler(_fightProcessDBManager, false);
             FalsePrinceEffectHandler falsePrinceEffectHandler = new FalsePrinceEffectHandler(_enemyTower, _deck, _fightToken);
             FallenGuardianEffectHandler fallenGuardianEffectHandler = new FallenGuardianEffectHandler(_choicedNumbersEnemy, _playerTower);
             _enemyPersonEffectsHandler = new PersonEffectsHandler(gnomeEffectHandler, slimeEffectHandler, curseEffectHandler,
@@ -397,7 +411,7 @@ namespace GameFields.Persons
             _enemyHand.Init(_seatPool, _enemyRechangeFeatureRuleController, _enemyTurnDrawnCards, curseEffectHandler);
 
             //LookCardMenuEnemyAI lookCardMenuEnemyAI = new LookCardMenuEnemyAI(_informationLabel);
-            LookCardMenuEnemyAI lookCardMenuEnemyAI = new LookCardMenuEnemyAI(_fightToken);
+            LookCardMenuEnemyAI lookCardMenuEnemyAI = new LookCardMenuEnemyAI(_informationLabel, _fightToken, _fightProcessDBManager);
 
             return new EnemyAI(_interactionActivator, enemyDragAndDropImitationCreator, _enemyPlayingZone,
                 _enemyTower, _drawCardRootEnemy, _enemyDiscoverImitation, startTurnDrawCreator, _bus, _enemyHand, _enemyAttackMenu,
@@ -453,8 +467,9 @@ namespace GameFields.Persons
 
             //_playerLoseActions = new LoseActions(_playerTower ,_playerTower, _playerHand, _bus);
             AttackResultHandlerPlayer attackResultHandlerPlayer = new AttackResultHandlerPlayer(_discardPile, _enemyLoseActions,
-                _playerCardAttackZone, _attackResultHandlerPlayerData);
-            ChoiceResultHandlerPlayer choiceResultHandlerPlayer = new ChoiceResultHandlerPlayer(_informationLabel, _informationLabelDataPlayerChoice);
+                _playerCardAttackZone, _attackResultHandlerPlayerData, _fightProcessDBManager);
+            ChoiceResultHandlerPlayer choiceResultHandlerPlayer = new ChoiceResultHandlerPlayer(_informationLabel, _informationLabelDataPlayerChoice,
+                _fightProcessDBManager);
 
             _playerAttackMenu.Init(_enemyTower, attackResultHandlerPlayer, _cardNumbers, _attackedNumbersPlayer,
                 _confirmableNumbersPlayer, _inputRoot, _lastSelectedNumbersWatcherPlayer, _UIHelperDescription,
@@ -468,8 +483,9 @@ namespace GameFields.Persons
             _playerCardAttackZone.Init(_playerAttackMenu, _enemyTower, _bus, _historyRoot);
             //_playerCardAttackZone.Init(_playerChoiceMenu, _enemyTower);
 
-            _skipTurnEffectHandlerPlayer = new SkipTurnEffectHandler();
-            _fateInevitabilityHandlerPlayer = new FateInevitabilityHandler(_playerLoseActions, _playerAttackMenu);
+            _skipTurnEffectHandlerPlayer = new SkipTurnEffectHandler(_fightProcessDBManager, true);
+            _fateInevitabilityHandlerPlayer = new FateInevitabilityHandler(_playerLoseActions, _playerAttackMenu,
+                 _fightProcessDBManager, true);
             //_scarecrowEffectHandlerPlayer = new ScarecrowEffectHandler(_discardManager);
             //_wiseMonkEffectHandlerPlayer = new WiseMonkEffectHandler();
 
@@ -483,7 +499,7 @@ namespace GameFields.Persons
             DrawCardAnimationManager drawCardAnimationManager = new DrawCardAnimationManager(simpleDrawCardAnimation, fireDrawCardAnimation);
             _drawCardRootPlayer = new DrawCardRoot(drawCardAnimationManager, _deck);
 
-            _fireEffectHandlerPlayer = new FireEffectHandler(drawCardAnimationManager);
+            _fireEffectHandlerPlayer = new FireEffectHandler(drawCardAnimationManager, _fightProcessDBManager, true);
         }
 
         private void InitEnemyData()
@@ -504,8 +520,10 @@ namespace GameFields.Persons
             //TestBotLogic_ChoiceNumbers_TEST4(choicedNumbers);
             //_enemyLoseActions = new LoseActions(_enemyTower , _enemyTower, _playerHand, _bus); 
             AttackResultHandlerEnemyAI attackResultHandlerEnemyAI = new AttackResultHandlerEnemyAI(_discardPile, _playerLoseActions,
-                _enemyCardAttackZone, _attackResultHandlerEnemyAIData, _informationLabel, _informationLabelDataEnemyAIAttack);
-            ChoiceResultHandlerEnemyAI choiceResultHandlerEnemyAI = new ChoiceResultHandlerEnemyAI(_informationLabel, _informationLabelDataEnemyAIChoice);
+                _enemyCardAttackZone, _attackResultHandlerEnemyAIData, _informationLabel, _informationLabelDataEnemyAIAttack,
+                _fightProcessDBManager);
+            ChoiceResultHandlerEnemyAI choiceResultHandlerEnemyAI = new ChoiceResultHandlerEnemyAI(_informationLabel, _informationLabelDataEnemyAIChoice,
+                _fightProcessDBManager);
 
             _enemyAttackMenu.Init(_playerTower, attackResultHandlerEnemyAI, _cardNumbers, _attackedNumbersEnemy,
                 _confirmableNumbersEnemyAI, _lastSelectedNumbersWatcherEnemyAI, _fightToken);
@@ -526,7 +544,7 @@ namespace GameFields.Persons
             DrawCardAnimationManager drawCardAnimationManager = new DrawCardAnimationManager(simpleDrawCardAnimation, fireDrawCardAnimation);
             _drawCardRootEnemy = new DrawCardRoot(drawCardAnimationManager, _deck);
 
-            _fireEffectHandlerEnemy = new FireEffectHandler(drawCardAnimationManager);
+            _fireEffectHandlerEnemy = new FireEffectHandler(drawCardAnimationManager, _fightProcessDBManager, false);
         }
 
         private void DefineFire()
@@ -587,154 +605,154 @@ namespace GameFields.Persons
 
         #region TESTS
 
-        private void TestBotLogic_ChoiceNumbers_TEST5(SelectNumbersList choicedNumbers)
-        {
-            choicedNumbers.Add(2, NumberAnimationType.Choice);
-            choicedNumbers.Add(4, NumberAnimationType.Choice);
-        }
+        //private void TestBotLogic_ChoiceNumbers_TEST5(SelectNumbersList choicedNumbers)
+        //{
+        //    choicedNumbers.Add(2, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(4, NumberAnimationType.Choice);
+        //}
 
-        private void TestBotLogic_ChoiceNumbers_TEST4(SelectNumbersList choicedNumbers)
-        {
-            //choicedNumbers.Add(1, NumberAnimationType.Choice);
-            //choicedNumbers.Add(2, NumberAnimationType.Choice);
-            //choicedNumbers.Add(3, NumberAnimationType.Choice);
-            //choicedNumbers.Add(4, NumberAnimationType.Choice);
-            choicedNumbers.Add(5, NumberAnimationType.Choice);
-            choicedNumbers.Add(6, NumberAnimationType.Choice);
-            choicedNumbers.Add(7, NumberAnimationType.Choice);
-            choicedNumbers.Add(8, NumberAnimationType.Choice);
-            choicedNumbers.Add(9, NumberAnimationType.Choice);
-            choicedNumbers.Add(10, NumberAnimationType.Choice);
-            choicedNumbers.Add(11, NumberAnimationType.Choice);
-            choicedNumbers.Add(12, NumberAnimationType.Choice);
-            choicedNumbers.Add(13, NumberAnimationType.Choice);
-            choicedNumbers.Add(14, NumberAnimationType.Choice);
-            choicedNumbers.Add(15, NumberAnimationType.Choice);
-            choicedNumbers.Add(16, NumberAnimationType.Choice);
-            choicedNumbers.Add(17, NumberAnimationType.Choice);
-            choicedNumbers.Add(18, NumberAnimationType.Choice);
-            choicedNumbers.Add(19, NumberAnimationType.Choice);
-            choicedNumbers.Add(20, NumberAnimationType.Choice);
-            choicedNumbers.Add(21, NumberAnimationType.Choice);
-            choicedNumbers.Add(22, NumberAnimationType.Choice);
-            choicedNumbers.Add(23, NumberAnimationType.Choice);
-            choicedNumbers.Add(24, NumberAnimationType.Choice);
-            choicedNumbers.Add(25, NumberAnimationType.Choice);
-            choicedNumbers.Add(26, NumberAnimationType.Choice);
-            choicedNumbers.Add(27, NumberAnimationType.Choice);
-            choicedNumbers.Add(28, NumberAnimationType.Choice);
-            choicedNumbers.Add(29, NumberAnimationType.Choice);
-            choicedNumbers.Add(30, NumberAnimationType.Choice);
-            choicedNumbers.Add(31, NumberAnimationType.Choice);
-            choicedNumbers.Add(32, NumberAnimationType.Choice);
-            choicedNumbers.Add(33, NumberAnimationType.Choice);
-            choicedNumbers.Add(34, NumberAnimationType.Choice);
-            choicedNumbers.Add(35, NumberAnimationType.Choice);
-            choicedNumbers.Add(36, NumberAnimationType.Choice);
-            choicedNumbers.Add(37, NumberAnimationType.Choice);
-            choicedNumbers.Add(38, NumberAnimationType.Choice);
-            choicedNumbers.Add(39, NumberAnimationType.Choice);
-            choicedNumbers.Add(40, NumberAnimationType.Choice);
-            choicedNumbers.Add(41, NumberAnimationType.Choice);
-            choicedNumbers.Add(42, NumberAnimationType.Choice);
-            choicedNumbers.Add(43, NumberAnimationType.Choice);
-            choicedNumbers.Add(44, NumberAnimationType.Choice);
-            choicedNumbers.Add(45, NumberAnimationType.Choice);
-            //choicedNumbers.Add(46, NumberAnimationType.Choice);
-            choicedNumbers.Add(47, NumberAnimationType.Choice);
-            //choicedNumbers.Add(48, NumberAnimationType.Choice);
-            choicedNumbers.Add(49, NumberAnimationType.Choice);
-            choicedNumbers.Add(50, NumberAnimationType.Choice);
-        }
+        //private void TestBotLogic_ChoiceNumbers_TEST4(SelectNumbersList choicedNumbers)
+        //{
+        //    //choicedNumbers.Add(1, NumberAnimationType.Choice);
+        //    //choicedNumbers.Add(2, NumberAnimationType.Choice);
+        //    //choicedNumbers.Add(3, NumberAnimationType.Choice);
+        //    //choicedNumbers.Add(4, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(5, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(6, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(7, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(8, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(9, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(10, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(11, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(12, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(13, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(14, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(15, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(16, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(17, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(18, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(19, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(20, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(21, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(22, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(23, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(24, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(25, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(26, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(27, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(28, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(29, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(30, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(31, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(32, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(33, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(34, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(35, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(36, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(37, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(38, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(39, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(40, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(41, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(42, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(43, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(44, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(45, NumberAnimationType.Choice);
+        //    //choicedNumbers.Add(46, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(47, NumberAnimationType.Choice);
+        //    //choicedNumbers.Add(48, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(49, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(50, NumberAnimationType.Choice);
+        //}
 
-        private void TestBotLogic_ChoiceNumbers_TEST3(SelectNumbersList choicedNumbers)
-        {
-            choicedNumbers.Add(1, NumberAnimationType.Choice);
-            choicedNumbers.Add(2, NumberAnimationType.Choice);
-            choicedNumbers.Add(3, NumberAnimationType.Choice);
-            choicedNumbers.Add(4, NumberAnimationType.Choice);
-            choicedNumbers.Add(5, NumberAnimationType.Choice);
-            choicedNumbers.Add(6, NumberAnimationType.Choice);
-            choicedNumbers.Add(7, NumberAnimationType.Choice);
-            choicedNumbers.Add(10, NumberAnimationType.Choice);
-            choicedNumbers.Add(11, NumberAnimationType.Choice);
-            choicedNumbers.Add(12, NumberAnimationType.Choice);
-            choicedNumbers.Add(13, NumberAnimationType.Choice);
-            choicedNumbers.Add(14, NumberAnimationType.Choice);
-            choicedNumbers.Add(15, NumberAnimationType.Choice);
-            choicedNumbers.Add(16, NumberAnimationType.Choice);
-            choicedNumbers.Add(17, NumberAnimationType.Choice);
-            choicedNumbers.Add(18, NumberAnimationType.Choice);
-            choicedNumbers.Add(19, NumberAnimationType.Choice);
-            choicedNumbers.Add(20, NumberAnimationType.Choice);
-            choicedNumbers.Add(21, NumberAnimationType.Choice);
-            choicedNumbers.Add(22, NumberAnimationType.Choice);
-            choicedNumbers.Add(23, NumberAnimationType.Choice);
-            choicedNumbers.Add(24, NumberAnimationType.Choice);
-            choicedNumbers.Add(25, NumberAnimationType.Choice);
-            choicedNumbers.Add(26, NumberAnimationType.Choice);
-            choicedNumbers.Add(27, NumberAnimationType.Choice);
-            choicedNumbers.Add(28, NumberAnimationType.Choice);
-            choicedNumbers.Add(29, NumberAnimationType.Choice);
-            choicedNumbers.Add(30, NumberAnimationType.Choice);
-            choicedNumbers.Add(31, NumberAnimationType.Choice);
-            choicedNumbers.Add(32, NumberAnimationType.Choice);
-            choicedNumbers.Add(33, NumberAnimationType.Choice);
-            choicedNumbers.Add(34, NumberAnimationType.Choice);
-            choicedNumbers.Add(39, NumberAnimationType.Choice);
-            choicedNumbers.Add(40, NumberAnimationType.Choice);
-            choicedNumbers.Add(41, NumberAnimationType.Choice);
-            choicedNumbers.Add(42, NumberAnimationType.Choice);
-            choicedNumbers.Add(43, NumberAnimationType.Choice);
-            choicedNumbers.Add(44, NumberAnimationType.Choice);
-            choicedNumbers.Add(45, NumberAnimationType.Choice);
-            choicedNumbers.Add(47, NumberAnimationType.Choice);
-            choicedNumbers.Add(48, NumberAnimationType.Choice);
-            choicedNumbers.Add(49, NumberAnimationType.Choice);
-        }
+        //private void TestBotLogic_ChoiceNumbers_TEST3(SelectNumbersList choicedNumbers)
+        //{
+        //    choicedNumbers.Add(1, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(2, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(3, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(4, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(5, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(6, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(7, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(10, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(11, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(12, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(13, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(14, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(15, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(16, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(17, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(18, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(19, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(20, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(21, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(22, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(23, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(24, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(25, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(26, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(27, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(28, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(29, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(30, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(31, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(32, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(33, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(34, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(39, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(40, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(41, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(42, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(43, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(44, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(45, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(47, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(48, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(49, NumberAnimationType.Choice);
+        //}
 
-        private void TestBotLogic_ChoiceNumbers_TEST2(SelectNumbersList choicedNumbers)
-        {
-            choicedNumbers.Add(1, NumberAnimationType.Choice);
-            choicedNumbers.Add(2, NumberAnimationType.Choice);
-            choicedNumbers.Add(3, NumberAnimationType.Choice);
-            choicedNumbers.Add(4, NumberAnimationType.Choice);
-            choicedNumbers.Add(5, NumberAnimationType.Choice);
-            choicedNumbers.Add(6, NumberAnimationType.Choice);
-            choicedNumbers.Add(7, NumberAnimationType.Choice);
-            choicedNumbers.Add(46, NumberAnimationType.Choice);
-            choicedNumbers.Add(47, NumberAnimationType.Choice);
-            choicedNumbers.Add(48, NumberAnimationType.Choice);
-            choicedNumbers.Add(49, NumberAnimationType.Choice);
-        }
+        //private void TestBotLogic_ChoiceNumbers_TEST2(SelectNumbersList choicedNumbers)
+        //{
+        //    choicedNumbers.Add(1, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(2, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(3, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(4, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(5, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(6, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(7, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(46, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(47, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(48, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(49, NumberAnimationType.Choice);
+        //}
 
-        private void TestBotLogic_ChoiceNumbers_TEST1(SelectNumbersList choicedNumbers)
-        {
-            choicedNumbers.Add(1, NumberAnimationType.Choice);
-            choicedNumbers.Add(3, NumberAnimationType.Choice);
-            choicedNumbers.Add(5, NumberAnimationType.Choice);
-            choicedNumbers.Add(6, NumberAnimationType.Choice);
-            choicedNumbers.Add(7, NumberAnimationType.Choice);
-            choicedNumbers.Add(10, NumberAnimationType.Choice);
-            choicedNumbers.Add(11, NumberAnimationType.Choice);
-            choicedNumbers.Add(13, NumberAnimationType.Choice);
-            choicedNumbers.Add(14, NumberAnimationType.Choice);
-            choicedNumbers.Add(17, NumberAnimationType.Choice);
-            choicedNumbers.Add(19, NumberAnimationType.Choice);
-            choicedNumbers.Add(21, NumberAnimationType.Choice);
-            choicedNumbers.Add(22, NumberAnimationType.Choice);
-            choicedNumbers.Add(25, NumberAnimationType.Choice);
-            choicedNumbers.Add(28, NumberAnimationType.Choice);
-            choicedNumbers.Add(31, NumberAnimationType.Choice);
-            choicedNumbers.Add(34, NumberAnimationType.Choice);
-            choicedNumbers.Add(39, NumberAnimationType.Choice);
-            choicedNumbers.Add(41, NumberAnimationType.Choice);
-            choicedNumbers.Add(43, NumberAnimationType.Choice);
-            choicedNumbers.Add(45, NumberAnimationType.Choice);
-            choicedNumbers.Add(47, NumberAnimationType.Choice);
-            choicedNumbers.Add(48, NumberAnimationType.Choice);
-            choicedNumbers.Add(49, NumberAnimationType.Choice);
-        }
+        //private void TestBotLogic_ChoiceNumbers_TEST1(SelectNumbersList choicedNumbers)
+        //{
+        //    choicedNumbers.Add(1, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(3, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(5, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(6, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(7, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(10, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(11, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(13, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(14, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(17, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(19, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(21, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(22, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(25, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(28, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(31, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(34, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(39, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(41, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(43, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(45, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(47, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(48, NumberAnimationType.Choice);
+        //    choicedNumbers.Add(49, NumberAnimationType.Choice);
+        //}
         #endregion
     }
 }

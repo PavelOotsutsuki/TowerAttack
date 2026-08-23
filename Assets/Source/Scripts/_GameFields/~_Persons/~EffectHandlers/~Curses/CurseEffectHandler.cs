@@ -1,18 +1,16 @@
 using System.Collections.Generic;
 using Cards;
 using GameFields.InformationLabels;
-using GameFields.Persons;
 using GameFields.Persons.ConfirmableNumbersView;
 using GameFields.Persons.SelectMenues;
 using GameFields.Persons.Towers;
-using Tools;
+using Servers;
 using Tools.UI;
 using Tools.Utils;
-using UnityEngine;
 
 namespace GameFields.Persons.EffectHandlers.Curses
 {
-    public abstract class CurseEffectHandler: ILengthyEffectHandler
+    public abstract class CurseEffectHandler: EffectHandler, ILengthyEffectHandler
     {
         private readonly ICardNumberKeeper _tower;
         private readonly InformationLabel _informationLabel;
@@ -26,7 +24,8 @@ namespace GameFields.Persons.EffectHandlers.Curses
         private bool _deactivateMode = false;
 
         public CurseEffectHandler(ICardNumberKeeper tower, InformationLabel informationLabel, ConfirmableNumbers confirmableNumbers,
-            SelectNumbersList cursedList)
+            SelectNumbersList cursedList, FightProcessDBManager fightProcessDBManager, bool isPlayersObject) :
+            base(fightProcessDBManager, isPlayersObject)
         {
             _tower = tower;
             _informationLabel = informationLabel;
@@ -50,22 +49,28 @@ namespace GameFields.Persons.EffectHandlers.Curses
             //    return;
 
             _effectedCards.Add(card);
+            FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, card.ViewData.Number.ToString(), "ADD BY CARD", GetType().Name);
         }
 
         public void Activate(int countTurns)
         {
             _effectsWithoutCards.Add(new CurseEffectWithoutCard(countTurns));
+            FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, countTurns.ToString(), "ADD ON TURNS", GetType().Name);
         }
 
         public void SetDeactivateMode(bool isDeactivateMode)
         {
             _deactivateMode = isDeactivateMode;
+            FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, _deactivateMode ? "ACTIVATE" : "DEACTIVATE", "CURSE IMMUNITY", GetType().Name);
         }
 
         public void EndEffect(Card card)
         {
             while (_effectedCards.Contains(card))
+            {
                 _effectedCards.Remove(card);
+                FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, card.ViewData.Number.ToString(), "REMOVE BY CARD", GetType().Name);
+            }
         }
 
         public void OnStartTurn()
@@ -102,7 +107,8 @@ namespace GameFields.Persons.EffectHandlers.Curses
                 {
                     if (_confirmableNumbers.Contains(cardNumber) == false && _tower.Card.IsSuccessChoice(cardNumber) == false)
                     {
-                        _cursedList.Add(cardNumber, NumberAnimationType.Curse);
+                        //_cursedList.Add(cardNumber, NumberAnimationType.Curse);
+                        _cursedList.Add(cardNumber);
 
                         findedNumbers.Add(cardNumber);
 
@@ -117,7 +123,8 @@ namespace GameFields.Persons.EffectHandlers.Curses
                     {
                         if (findedNumbers.Contains(cardNumber) == false && _tower.Card.IsSuccessChoice(cardNumber) == false)
                         {
-                            _cursedList.Add(cardNumber, NumberAnimationType.Curse);
+                            //_cursedList.Add(cardNumber, NumberAnimationType.Curse);
+                            _cursedList.Add(cardNumber);
 
                             findedNumbers.Add(cardNumber);
                             break;

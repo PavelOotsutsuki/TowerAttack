@@ -6,6 +6,7 @@ namespace GameFields.Persons.SelectMenues
     public class SetSelectResultData : CancellationTokenData
     {
         private readonly ResultType _resultType;
+        //private readonly IEnumerable<ISelectNumber> _currentSelectedNumbers;
         private readonly string _message;
 
         public SetSelectResultData(ResultType resultType, string message, CancellationToken token) : base(token)

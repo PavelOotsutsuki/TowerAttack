@@ -1,15 +1,20 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Text.Json;
 using System.Threading;
+using Cards;
 using Cysharp.Threading.Tasks;
 using GameFields.InputSettings;
+using Servers;
 using Tools;
 using Tools.InputSettings;
 using Tools.UI;
 using Tools.Utils;
 using Tools.Utils.FillComponents;
 using UnityEngine;
+using Zenject;
 
 namespace GameFields.Persons.LookCardMenues
 {
@@ -22,6 +27,7 @@ namespace GameFields.Persons.LookCardMenues
         [SerializeField] private LookCardMenuLabel _lookCardMenuLabel;
         [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private LookCardMenuButton _lookCardMenuButton;
+        [Inject] private FightProcessDBManager _fightProcessDBManager;
         //[SerializeField] private float _offset = 400f;
         //[SerializeField] private float _positionY = 0f;
 
@@ -69,6 +75,8 @@ namespace GameFields.Persons.LookCardMenues
 
             IsActive = true;
 
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, true, GetSerializedCards(data.Cards), "START", "LOOK");
+
             Utils.DestroyCTS(ref _currentCTS);
             _currentCTS = CancellationTokenSource.CreateLinkedTokenSource(_fightToken);
 
@@ -100,6 +108,8 @@ namespace GameFields.Persons.LookCardMenues
                 return;
 
             IsActive = false;
+
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, true, null, "END", "LOOK");
 
             Utils.DestroyCTS(ref _currentCTS);
             _currentCTS = CancellationTokenSource.CreateLinkedTokenSource(_fightToken);
@@ -164,6 +174,11 @@ namespace GameFields.Persons.LookCardMenues
             {
                 Debug.Log($"ОТМЕНА ТОКЕНА: {MethodBase.GetCurrentMethod().DeclaringType.Name}: {GetType().Name}");
             }
+        }
+
+        private string GetSerializedCards(IEnumerable<Card> cards)
+        {
+            return JsonSerializer.Serialize(cards.Select(c => c.ViewData.Number));
         }
 
         //private void OnDisable()

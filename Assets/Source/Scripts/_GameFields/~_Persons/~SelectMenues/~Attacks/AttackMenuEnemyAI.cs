@@ -1,13 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using GameFields.Persons.SelectMenues;
-using GameFields.Persons.Towers;
-using Tools.Utils.FillComponents;
-using UnityEngine;
-
 namespace GameFields.Persons.SelectMenues.Attacks
 {
-    public class AttackMenuEnemyAI : SelectMenuImitation//AttackMenu
+    public class AttackMenuEnemyAI : SelectMenuImitation, IEnemyAIObject//AttackMenu
     {
         //[SerializeField] private SelectNumberPanelEnemyAI _selectNumberPanelEnemyAI;
         //[SerializeField] private SelectMenuImitationData _data;
@@ -60,6 +53,7 @@ namespace GameFields.Persons.SelectMenues.Attacks
         //{
         //    return AutomaticFillComponents.DefineComponent(this, ref _selectNumberPanelEnemyAI, ComponentLocationTypes.InChildren);
         //}
-        //#endregion 
+        //#endregion
+        protected override string GetSelectType() => "ATTACK";
     }
 }

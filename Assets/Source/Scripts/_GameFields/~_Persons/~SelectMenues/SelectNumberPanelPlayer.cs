@@ -5,20 +5,23 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using GameFields.Persons.ConfirmableNumbersView;
 using GameFields.Persons.Towers;
+using Servers;
 using Tools;
 using Tools.UI;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Zenject;
 
 namespace GameFields.Persons.SelectMenues
 {
     [RequireComponent(typeof(FadablePanel))]
-    public abstract class SelectNumberPanelPlayer : SelectNumberPanel, ISelectNumberActivator
+    public abstract class SelectNumberPanelPlayer : SelectNumberPanel, ISelectNumberActivator, IPlayerObject
     {
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private SelectNumber[] _selectNumbers;
         [SerializeField] private SelectNumberPanelPlayerData _data;
+        //[Inject] private FightProcessDBManager _fightProcessDBManager;
 
         protected List<SelectNumber> CurrentSelectedNumbers;
 
@@ -140,6 +143,7 @@ namespace GameFields.Persons.SelectMenues
                 if (CardNumberKeeper.Card.IsSuccessChoice(selectedNumber.Number))
                 {
                     //SetChoiceNumber(selectedNumber, ResultType.Success);
+                    //_fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, true, selectedNumber.Number.ToString(),"SUCCESS", GetName());
                     selectedNumber.SetChoice(ConvertResultTypeToNumberAnimationType(ResultType.Success), token);
 
                     resultType = ResultType.Success;
@@ -147,6 +151,7 @@ namespace GameFields.Persons.SelectMenues
                 else
                 {
                     //SetChoiceNumber(selectedNumber, ResultType.Falled);
+                    //_fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, true, selectedNumber.Number.ToString(), "FALLED", GetName());
                     selectedNumber.SetChoice(ConvertResultTypeToNumberAnimationType(ResultType.Falled), token);
                     //selectedNumber.SetChoice(this is ChoiceNumberPanelPlayer ? NumberAnimationType.Choice : NumberAnimationType.Error);
                 }
@@ -162,21 +167,34 @@ namespace GameFields.Persons.SelectMenues
             {
                 foreach (SelectNumber selectedNumber in CurrentSelectedNumbers)
                 {
-                    SelectedNumbers.Add(selectedNumber.Number, ConvertResultTypeToNumberAnimationType(resultType));
+                    //SelectedNumbers.Add(selectedNumber.Number, ConvertResultTypeToNumberAnimationType(resultType));
+                    SelectedNumbers.Add(selectedNumber.Number);
                 }
             }
             else
             {
-                foreach (SelectNumber selectedNumber in _selectNumbers)
+                if (SelectedNumbers.Type == SelectNumbersListType.Choice)
                 {
-                    if (CurrentSelectedNumbers.Contains(selectedNumber) == false)// && SelectedNumbers.Contains(selectedNumber.Number) == false)
+                    foreach (SelectNumber selectedNumber in _selectNumbers)
                     {
-                        SelectedNumbers.Add(selectedNumber.Number, ConvertResultTypeToNumberAnimationType(resultType));
+                        if (CurrentSelectedNumbers.Contains(selectedNumber) == false)// && SelectedNumbers.Contains(selectedNumber.Number) == false)
+                        {
+                            //SelectedNumbers.Add(selectedNumber.Number, ConvertResultTypeToNumberAnimationType(resultType));
+                            SelectedNumbers.Add(selectedNumber.Number);
 
-                        //SelectedNumbers.Add(selectNumber.Number, NumberAnimationType.Choice);
+                            //SelectedNumbers.Add(selectNumber.Number, NumberAnimationType.Choice);
+                        }
+
+                        //SelectedNumbers.Add(selectedNumber.Number, ConvertResultTypeToNumberAnimationType(resultType));
                     }
-
-                    //SelectedNumbers.Add(selectedNumber.Number, ConvertResultTypeToNumberAnimationType(resultType));
+                }
+                else if (SelectedNumbers.Type == SelectNumbersListType.Attack)
+                {
+                    foreach (SelectNumber selectedNumber in CurrentSelectedNumbers)
+                    {
+                        //SelectedNumbers.Add(selectedNumber.Number, ConvertResultTypeToNumberAnimationType(resultType));
+                        SelectedNumbers.Add(selectedNumber.Number);
+                    }
                 }
             }
 
@@ -208,6 +226,7 @@ namespace GameFields.Persons.SelectMenues
         //protected abstract void ActivateNumber(SelectNumber target);
         //protected abstract void SetChoiceNumber(SelectNumber target, ResultType resultType);
         protected abstract NumberAnimationType ConvertResultTypeToNumberAnimationType(ResultType resultType);
+        protected abstract string GetName();
 
         private NumberAnimationType? FindActivateType(SelectNumber selectNumber, bool isConfirmableActivate)
         {
@@ -215,11 +234,11 @@ namespace GameFields.Persons.SelectMenues
 
             if (isConfirmableActivate)
             {
-                SelectNumbersList fullList = ConfirmableNumbers.FullList;
+                IReadOnlyDictionary<int, NumberAnimationType> fullList = ConfirmableNumbers.FullList;
 
-                if (fullList.Contains(selectNumber.Number))
+                if (fullList.ContainsKey(selectNumber.Number))
                 {
-                    numberAnimationType = fullList.GetType(selectNumber.Number);
+                    numberAnimationType = fullList[selectNumber.Number];
                 }
             }
 

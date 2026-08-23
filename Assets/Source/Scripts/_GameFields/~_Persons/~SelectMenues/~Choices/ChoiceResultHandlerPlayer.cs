@@ -2,18 +2,20 @@ using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using GameFields.InformationLabels;
+using Servers;
 using Tools;
 using Tools.UI;
 
 namespace GameFields.Persons.SelectMenues.Choices
 {
-    public class ChoiceResultHandlerPlayer : ISelectResultHandler, ICompletable
+    public class ChoiceResultHandlerPlayer : ISelectResultHandler, ICompletable, IPlayerObject
     {
         private const string SuccessDefaultMessage = "\n\nВЕРНО: ";
         private const string FalledDefaultMessage = "\n\nНЕВЕРНО: ";
 
         private readonly InformationLabel _informationLabel;
         private readonly InformationLabelData _informationLabelData;
+        private readonly FightProcessDBManager _fightProcessDBManager;
         //private readonly string _defaultMessage;
 
         //private readonly List<string> _successMessages;
@@ -31,12 +33,14 @@ namespace GameFields.Persons.SelectMenues.Choices
         //    _defaultMessage = defaultMessage;
         //}
 
-        public ChoiceResultHandlerPlayer(InformationLabel informationLabel, InformationLabelData informationLabelData)
+        public ChoiceResultHandlerPlayer(InformationLabel informationLabel, InformationLabelData informationLabelData,
+            FightProcessDBManager fightProcessDBManager)
         {
             _isComplete = false;
 
             _informationLabel = informationLabel;
             _informationLabelData = informationLabelData;
+            _fightProcessDBManager = fightProcessDBManager;
 
             List<string> successMessages = new List<string>()
             {
@@ -75,6 +79,10 @@ namespace GameFields.Persons.SelectMenues.Choices
 
             //SetChoiceResultData extraData = data as SetChoiceResultData;
             _isComplete = false;
+
+            string selectResult = data.ResultType == ResultType.Success ? "SUCCESS" : data.ResultType == ResultType.Falled ? "FALLED" : throw new System.Exception("Unknown ResultType");
+
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, true, null, selectResult, nameof(ChoiceResultHandlerPlayer));
 
             string defaultMessage = _informationLabelData.DefaultInformationLabelText + _resultMessageData[data.ResultType].GetText();
 

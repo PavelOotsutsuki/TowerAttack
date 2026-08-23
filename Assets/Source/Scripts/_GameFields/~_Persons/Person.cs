@@ -156,9 +156,9 @@ namespace GameFields.Persons
             //_personEffectsHandler.OnEndTurn();
 
             //IReadOnlyList<Card> discardedCards = _playingZone.DiscardCards();
+            _playingZone.DiscardCards();
             _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, null, "END", "TURN");
 
-            _playingZone.DiscardCards();
 
             //if (discardedCards.Count > 0)
             //    Bus.Fire(new DiscardCardsSignal(discardedCards));

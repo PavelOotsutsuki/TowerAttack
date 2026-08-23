@@ -1,13 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
-using Cards;
 using Cards.Views;
-using GameFields.Persons;
-using UnityEngine;
+using Servers;
 
 namespace GameFields.Persons.EffectHandlers.Brothers
 {
-    public class BrothersEffectHandler
+    public class BrothersEffectHandler : EffectHandler
     {
         private const int StartCount = 0;
 
@@ -16,7 +13,8 @@ namespace GameFields.Persons.EffectHandlers.Brothers
 
         private int _extraCount;
 
-        public BrothersEffectHandler(RechangeFeatureRuleController ruleController, IEnumerable<ICardFeatureRechangablePlace> rechangables)
+        public BrothersEffectHandler(RechangeFeatureRuleController ruleController, IEnumerable<ICardFeatureRechangablePlace> rechangables,
+            FightProcessDBManager fightProcessDBManager, bool isPlayersObject) : base(fightProcessDBManager, isPlayersObject)
         {
             _ruleController = ruleController;
             _rechangables = rechangables;
@@ -52,6 +50,9 @@ namespace GameFields.Persons.EffectHandlers.Brothers
                     }
                 }
             }
+
+            FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, increaseValue.ToString(), "UPGRADE", GetType().Name);
+            FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, _extraCount.ToString(), "ALL _extraCount", GetType().Name);
         }
     }
 }

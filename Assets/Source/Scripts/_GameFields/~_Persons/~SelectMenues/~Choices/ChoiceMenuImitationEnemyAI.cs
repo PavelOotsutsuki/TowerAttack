@@ -1,7 +1,7 @@
-using GameFields.Persons.SelectMenues;
-
 namespace GameFields.Persons.SelectMenues.Choices
 {
-    public class ChoiceMenuImitationEnemyAI : SelectMenuImitation
-    { }
+    public class ChoiceMenuImitationEnemyAI : SelectMenuImitation, IEnemyAIObject
+    {
+        protected override string GetSelectType() => "CHOICE";
+    }
 }
