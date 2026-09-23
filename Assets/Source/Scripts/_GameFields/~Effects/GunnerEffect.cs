@@ -65,7 +65,7 @@ namespace GameFields.Effects
         {
             //_effectProcessSounds.Play();
 
-            await UniTask.WaitForSeconds(2f, cancellationToken: Token); // Ждем для большего ЭПИКА
+            await UniTask.WaitForSeconds(1.5f, cancellationToken: Token); // Ждем для большего ЭПИКА
             // Эффект 1. Взятие карты
             ActivateShotSound();
 

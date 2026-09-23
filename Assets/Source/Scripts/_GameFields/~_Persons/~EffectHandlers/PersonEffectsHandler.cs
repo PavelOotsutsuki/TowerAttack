@@ -117,6 +117,11 @@ namespace GameFields.Persons.EffectHandlers
             WaitingAllBeforeEndTurnActions(completables, callback, token).Forget();
         }
 
+        public bool IsActiveLengthyEffectCapableWinAlone()
+        {
+            return _fateInevitabilityHandler.IsActive;
+        }
+
         private async UniTask WaitingAllBeforeEndTurnActions(IEnumerable<ICompletable> completables, Action callback, CancellationToken token)
         {
             await UniTask.WaitUntil(() => completables.Any(c => c.IsComplete == false) == false, cancellationToken: token);

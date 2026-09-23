@@ -13,7 +13,7 @@ namespace GameFields.Persons.Tables
         [Inject] private FightProcessDBManager _fightProcessDBManager;
 
         private bool? _isPlayerObject;
-        private string _name;
+        //private string _name;
 
         private PersonEffect _personEffect;
 
@@ -29,29 +29,31 @@ namespace GameFields.Persons.Tables
 
         //    cardMovement.MoveLocalInstantly(Vector2.zero, Quaternion.identity.eulerAngles);
         //}
-        internal void Init(IPersonObject owner)
+        internal void Init(bool? isPlayersObject)
         {
-            switch (owner)
-            {
-                case IPlayerObject:
-                    _isPlayerObject = true;
-                    _name = nameof(TablePlayer);
-                    break;
-                case IEnemyAIObject:
-                    _isPlayerObject = false;
-                    _name = nameof(TableAI);
-                    break;
-                default:
-                    _isPlayerObject = null;
-                    _name = nameof(Table);
-                    break;
-            }
+            _isPlayerObject = isPlayersObject;
+
+            //switch (isPlayersObject)
+            //{
+            //    case true:
+            //        _isPlayerObject = true;
+            //        _name = nameof(TablePlayer);
+            //        break;
+            //    case false:
+            //        _isPlayerObject = false;
+            //        _name = nameof(TableAI);
+            //        break;
+            //    default:
+            //        _isPlayerObject = null;
+            //        _name = nameof(Table);
+            //        break;
+            //}
         }
 
         internal void SetCard(PersonEffect personEffect)
         {
             _personEffect = personEffect;
-            //_fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, _isPlayerObject, _personEffect.Card.ViewData.Number.ToString(), "PLAY", _name);
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, _isPlayerObject, _personEffect.Card.ViewData.Number.ToString(), "SET PERSONEFFECT", "TABLESEAT");
             _personEffect.Card.RORTransform.SetParent(_rectTransform);
 
             Movement cardMovement = _personEffect.Card.CardMovement;
@@ -61,7 +63,7 @@ namespace GameFields.Persons.Tables
 
         internal void Reset()
         {
-            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, _isPlayerObject, _personEffect.Card.ViewData.Number.ToString(), "DISCARD", _name);
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, _isPlayerObject, _personEffect.Card.ViewData.Number.ToString(), "RESET PERSONEFFECT", "TABLESEAT");
             _personEffect = null;
         }
 

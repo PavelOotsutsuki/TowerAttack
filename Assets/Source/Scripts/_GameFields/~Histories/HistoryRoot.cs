@@ -12,7 +12,7 @@ namespace GameFields.Histories
         private readonly int _maxCountHistoryPositions = 500;
 
         private readonly IHistoryInputType _historyInputType;
-        private readonly FightProcessDBManager _fightProcessDBManager;
+        private readonly FightProcessDBManager _fightProcessDBManager; // Сейчас не надо ,но пока оставлю. Мб захожу логировать историю
 
         public event Action<string> OnChangedByText;
         public event Action OnChangedWithoutText;
@@ -50,7 +50,7 @@ namespace GameFields.Histories
             if (IsDuplicate(historyData))
                 return;
 
-            _fightProcessDBManager.WriteFightProcessAction(historyData.TurnForDB, historyData.IsPlayersAction, historyData.FirstData.Number, historyData.Msg, null);
+            //_fightProcessDBManager.WriteFightProcessAction(historyData.TurnForDB, historyData.IsPlayersAction, historyData.FirstData.Number, historyData.Msg, null);
             // Проверяем должна ли входить в существующую
             if (IsExtra(historyData) == false)
             {

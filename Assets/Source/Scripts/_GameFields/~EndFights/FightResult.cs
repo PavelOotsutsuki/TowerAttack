@@ -13,6 +13,8 @@ namespace GameFields.EndFights
             _endFightResult = EndFightResults.Draw;
         }
 
+        public bool IsEmpty => _isEmpty;
+
         public EndFightResults Result
         {
             get

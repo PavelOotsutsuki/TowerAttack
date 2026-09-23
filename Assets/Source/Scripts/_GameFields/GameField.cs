@@ -20,6 +20,7 @@ namespace GameFields
         [SerializeField] private EndFight _endFight;
         //[SerializeField] private AudioClip _backgroundMusic;
         [Inject] private DBRoot _dBRoot;
+        [Inject] private FightProcessDBManager _fightProcessDBManager;
 
         private EffectFactory _effectFactory;
         private FightStepsController _fightStepsController;
@@ -27,14 +28,15 @@ namespace GameFields
         public void Init(PersonsState personsState, EnemyAI enemyAI, SignalBus bus, SeatPool seatPool,
             IActivatable soundRootActivatable, IActivatable fightButtonsActivator, Action onDestroyPrefab,
             CancellationToken gameFieldToken, CancellationToken fightToken, CancellationTokenSource fightCTS,
-            TurnToken turnToken)
+            TurnToken turnToken, FightDrawResultManager fightDrawResultManager)
         {
             _startFight.Init(enemyAI, gameFieldToken);
 
             FightResult fightResult = new FightResult();
-            Fight fight = new Fight(personsState, fightResult, bus, seatPool
-                , soundRootActivatable, fightButtonsActivator, fightToken, turnToken, _dBRoot);
-            _endFight.Init(fightResult, onDestroyPrefab, gameFieldToken, fightCTS);
+            Fight fight = new Fight(personsState, fightResult, bus, seatPool, soundRootActivatable, fightButtonsActivator,
+                fightToken, turnToken, _dBRoot, _fightProcessDBManager, fightDrawResultManager);
+
+            _endFight.Init(fightResult, onDestroyPrefab, gameFieldToken, fightCTS, _fightProcessDBManager);
             _fightStepsController = new FightStepsController(_startFight, fight, _endFight, gameFieldToken);
 
             //_fightStepsController.NextStep();

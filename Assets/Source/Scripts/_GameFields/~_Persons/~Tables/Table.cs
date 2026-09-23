@@ -1,23 +1,29 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using Cards;
 using GameFields.CardTransits;
 using GameFields.Persons;
+using Servers;
 using Tools.Utils;
 using Tools.Utils.FillComponents;
 using UnityEngine;
+using Zenject;
 
 namespace GameFields.Persons.Tables
 {
     public abstract class Table : MonoBehaviour, IDiscardManager, ICardView, IAutomaticFillComponents, IPersonObject
     {
         [SerializeField] private TableSeat[] _tableSeats;
+        [Inject] private FightProcessDBManager _fightProcessDBManager;
 
         private TableSeat[] _sortedSeats;
 
         public bool HasFreeSeat => _sortedSeats.Any(seat => seat.IsEmpty);
         public IEnumerable<Card> AllCards => _sortedSeats.Where(s => s.IsEmpty == false).Select(s => s.PersonEffect.Card);
+
+        private bool? IsPlayersAction => this is IPlayerObject ? true : this is IEnemyAIObject ? false : null;
 
         public void Init()
         {
@@ -126,6 +132,7 @@ namespace GameFields.Persons.Tables
 
             personEffect.Discard();
             tableSeat.Reset();
+            WriteFullListIntoDB();
         }
 
         public void TryDiscard(Card card)
@@ -141,6 +148,7 @@ namespace GameFields.Persons.Tables
             if (personEffect.TryDiscard())
             {
                 tableSeat.Reset();
+                WriteFullListIntoDB();
             }
 
             //personEffect.DecreaseCounter();
@@ -156,6 +164,7 @@ namespace GameFields.Persons.Tables
         {
             TableSeat freeCardSeat = GetFreeSeat();
             freeCardSeat.SetCard(personEffect);
+            WriteFullListIntoDB();
         }
 
         private TableSeat GetFreeSeat() => _sortedSeats.First(seat => seat.IsEmpty);
@@ -172,6 +181,17 @@ namespace GameFields.Persons.Tables
                 currentSeat.Init(this);
                 _sortedSeats[i] = currentSeat;
             }
+        }
+
+
+        private void WriteFullListIntoDB()
+        {
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, GetSerializedCards(), "FULLLIST", GetType().Name);
+        }
+
+        private string GetSerializedCards()
+        {
+            return JsonSerializer.Serialize(AllCards.Select(c => c.ViewData.Number));
         }
 
         private static int GetSortIndex(int inputIndex, int countSeats)

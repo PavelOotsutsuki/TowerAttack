@@ -98,6 +98,7 @@ namespace GameFields.Effects
 
         private async UniTask Playing()
         {
+            await UniTask.WaitForSeconds(0.1f, cancellationToken: Token);
             _effectDuration.SetDuration(_duration);
 
             await OnPlaying();

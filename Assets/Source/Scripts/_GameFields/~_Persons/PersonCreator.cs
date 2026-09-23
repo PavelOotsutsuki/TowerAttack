@@ -191,6 +191,7 @@ namespace GameFields.Persons
         private CancellationToken _fightToken;
         private TurnToken _turnToken;
 
+        private PersonEffectsHandlerRoot _personEffectsHandlerRoot;
 
         public DiscardManager DiscardManager => _discardManager;
 
@@ -273,9 +274,9 @@ namespace GameFields.Persons
             _inputRoot = new GameFieldInputRoot(_endTurnButton, _fightMenu, _fightMenu, _historyMenu);
 
             _enemyLoseActions = new LoseActions(_enemyTower, _enemyTower, _playerHand, _bus, _inputRoot, _fightMenu,
-                _fightButtonsActivator, soundController, _dbRoot);
+                _fightButtonsActivator, soundController, _dbRoot, _fightProcessDBManager);
             _playerLoseActions = new LoseActions(_playerTower, _playerTower, _playerHand, _bus, _inputRoot, _fightMenu,
-                _fightButtonsActivator, soundController, _dbRoot);
+                _fightButtonsActivator, soundController, _dbRoot, _fightProcessDBManager);
 
             _fightMenu.Init(_inputRoot, _playerLoseActions, cardSoundRoot, musicVolume, cardCapabilityDescription, fightToken);
             _fightMenuActivateButton.Init(_fightMenu, _UIHelperDescription, _gameFieldToken);
@@ -435,9 +436,12 @@ namespace GameFields.Persons
             return new BrothersEffectHandlerRoot(_playerBrothersEffectHandler, _enemyBrothersEffectHandler);
         }
 
-        public PersonEffectsHandlerRoot CreatePersonEffectsHandlerRoot()
+        public PersonEffectsHandlerRoot GetPersonEffectsHandlerRoot()
         {
-            return new PersonEffectsHandlerRoot(_enemyPersonEffectsHandler, _playerPersonEffectsHandler);
+            if (_personEffectsHandlerRoot == null)
+                _personEffectsHandlerRoot = new PersonEffectsHandlerRoot(_enemyPersonEffectsHandler, _playerPersonEffectsHandler);
+
+            return _personEffectsHandlerRoot;
         }
 
         public GameFieldInputRoot GetInputRoot()
@@ -448,6 +452,13 @@ namespace GameFields.Persons
         public LoseActionsRoot CreateLoseActionsRoot()
         {
             return new LoseActionsRoot(_playerLoseActions, _enemyLoseActions);
+        }
+
+        public FightDrawResultManager CreateFightDrawResultManager()
+        {
+            PersonEffectsHandlerRoot personEffectsHandlerRoot = GetPersonEffectsHandlerRoot();
+
+            return new FightDrawResultManager(_enemyHand, _playerHand, _deck, personEffectsHandlerRoot);
         }
 
         private void InitPlayersData()

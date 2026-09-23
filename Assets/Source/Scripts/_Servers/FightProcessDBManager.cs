@@ -30,7 +30,8 @@ namespace Servers
             StartProcess().Forget();
         }
 
-        public bool IsComplete => _queueFightProcessActions.Count == 0;
+        public bool IsComplete => _queueFightProcessActions.Count == 0 && _datasInProcess.Count == 0;
+        public int LogCounter => _logCounter;
 
         public void WriteFightProcessAction(int turnNumber, bool? isPlayersAction, string action_target, string action_type, string action_subtype)
         {
@@ -72,7 +73,7 @@ namespace Servers
         {
             try
             {
-                if (_datasInProcess.Count >= 10)
+                if (_datasInProcess.Count >= 1)
                 {
                     await WriteFightProcessAction(currentFightProcessAction, token);
                 }

@@ -54,7 +54,7 @@ namespace GameFields.Persons.EffectHandlers.Curses
 
         public void Activate(int countTurns)
         {
-            _effectsWithoutCards.Add(new CurseEffectWithoutCard(countTurns));
+            _effectsWithoutCards.Add(new CurseEffectWithoutCard(countTurns, FightProcessDBManager, IsPlayersObject));
             FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, countTurns.ToString(), "ADD ON TURNS", GetType().Name);
         }
 

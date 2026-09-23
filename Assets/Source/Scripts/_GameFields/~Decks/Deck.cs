@@ -36,7 +36,7 @@ namespace GameFields.Decks
 
         public IEnumerable<Card> AllCards => _seats.Select(s => s.Card);
 
-        public void Init(SeatPool seatPool, IEnumerable<Card> cards, CancellationToken fightToken)
+        public void Init(SeatPool seatPool, IEnumerable<Card> cards, CancellationToken fightToken, bool withShuffle)
         {
             _deckSeatPool = seatPool;
             _cardBackViewer.Init(_startCardAddPositionX, _startCardAddPositionY);
@@ -55,7 +55,8 @@ namespace GameFields.Decks
                 //BindCard(card.ReadOnlyRectTransform, card.CardMovement);
             }
 
-            ShuffleCards();
+            if (withShuffle)
+                ShuffleCards();
         }
 
         public bool IsHasCards(int count, IEnumerable<int> exceptions = null)

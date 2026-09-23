@@ -154,10 +154,11 @@ namespace Roots
             CardLocationViewRoot viewRoot = _personCreator.CreateCardLocationViewRoot();
             CardTransitManager cardTransitManager = _personCreator.CreateCardTransitManager();
             BrothersEffectHandlerRoot brothersEffectHandlerRoot = _personCreator.CreateBrothersEffectHandlerRoot();
-            PersonEffectsHandlerRoot personEffectsHandlerRoot = _personCreator.CreatePersonEffectsHandlerRoot();
+            PersonEffectsHandlerRoot personEffectsHandlerRoot = _personCreator.GetPersonEffectsHandlerRoot();
             DiscardManager discardManager = _personCreator.DiscardManager;
             _inputRoot = _personCreator.GetInputRoot();
             LoseActionsRoot loseActionsRoot = _personCreator.CreateLoseActionsRoot();
+            FightDrawResultManager fightDrawResultManager = _personCreator.CreateFightDrawResultManager();
 
             _lookCardMenu.Init(_inputRoot, fightSource.Token);
 
@@ -172,7 +173,7 @@ namespace Roots
 
             _cardRoot.Init(effectFactory, _bigCardRoot, cardDragAndDropHandler, _cardCapabilityDescription, _cardSoundRoot, base.FontSetter,
                 fightSource.Token);
-            _deck.Init(_seatPool, _cardRoot.Cards, fightSource.Token);
+            _deck.Init(_seatPool, _cardRoot.Cards, fightSource.Token, true);
 
 
 
@@ -182,7 +183,7 @@ namespace Roots
             //TestGCCount(GameFieldToken).Forget();
 
             _fightPVE.Init(_personsState, enemyAI, _bus, _seatPool, _soundRoot, _fightButtonsActivator,
-    onDestroyPrefab, GameFieldToken, fightSource.Token, fightSource, turnToken);
+    onDestroyPrefab, GameFieldToken, fightSource.Token, fightSource, turnToken, fightDrawResultManager);
             //_gameFieldRoot.Init(_personsState, enemyAI, _bus, _seatPool, _soundRoot, _fightButtonsActivator, onMainMenuSwitcher);
         }
 

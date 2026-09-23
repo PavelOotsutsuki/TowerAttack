@@ -18,5 +18,10 @@ namespace GameFields.Persons.EffectHandlers
             _enemyEffectsHandler.EndEffect(card);
             _playerEffectsHandler.EndEffect(card);
         }
+
+        public bool IsActiveLengthyEffectCapableWinAlone()
+        {
+            return _enemyEffectsHandler.IsActiveLengthyEffectCapableWinAlone() || _playerEffectsHandler.IsActiveLengthyEffectCapableWinAlone();
+        }
     }
 }

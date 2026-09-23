@@ -5,6 +5,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using Servers;
 using Tools;
+using Tools.Loads;
 using Tools.Utils;
 using Tools.Utils.FillComponents;
 using UnityEngine;
@@ -23,18 +24,20 @@ namespace GameFields.EndFights
         [SerializeField] private EndFightConfig _config;
 
         [Inject] private DBRoot _dBRoot;
+        [Inject] private LoadRoot _loadRoot;
 
         private IReadonlyFightResult _fightResult;
 
         private CancellationToken _gameFieldToken;
         private CancellationTokenSource _fightCTS;
+        private ICompletable _fightProcessDBManager;
 
         private int? _addedXp = null;
 
         private bool _isComplete;
 
         public void Init(IReadonlyFightResult fightResult, Action onDestroyPrefab, CancellationToken gameFieldToken,
-            CancellationTokenSource fightCTS)
+            CancellationTokenSource fightCTS, ICompletable fightProcessDBManager)
         {
             gameObject.SetActive(false);
             _isComplete = false;
@@ -43,6 +46,7 @@ namespace GameFields.EndFights
 
             _gameFieldToken = gameFieldToken;
             _fightCTS = fightCTS;
+            _fightProcessDBManager = fightProcessDBManager;
 
             _panel.Init();
             _endFightLabel.Init(_gameFieldToken);
@@ -93,7 +97,10 @@ namespace GameFields.EndFights
                 _addedExperienceLabel.Show(addedExperienceLabelActivateData);
 
                 await UniTask.WaitUntil(() => _addedExperienceLabel.IsComplete, cancellationToken: token);
-                await UniTask.WaitForSeconds(_config.DelayBeforeExitFightLabelShow, cancellationToken: token);
+
+                await WaitUntilLoadAllFightProcesses(token);
+
+                //await UniTask.WaitForSeconds(_config.DelayBeforeExitFightLabelShow, cancellationToken: token);
 
                 _exitFightLabel.Show(new CancellationTokenData(token));
 
@@ -105,6 +112,36 @@ namespace GameFields.EndFights
             catch (OperationCanceledException)
             {
                 Debug.Log($"ОТМЕНА ТОКЕНА: {MethodBase.GetCurrentMethod().DeclaringType.Name}: {GetType().Name}");
+            }
+        }
+
+        private async UniTask WaitUntilLoadAllFightProcesses(CancellationToken token)
+        {
+            DateTime before = DateTime.UtcNow;
+
+            LoadingIfNeeded(token, 1f).Forget();
+
+            await UniTask.WaitUntil(() => _fightProcessDBManager.IsComplete, cancellationToken: token);
+
+            int timeAfterMilliseconds = Convert.ToInt32((DateTime.UtcNow - before).TotalMilliseconds);
+
+            if ((_config.DelayBeforeExitFightLabelShow * 1000) - timeAfterMilliseconds > 0)
+                await UniTask.Delay(Convert.ToInt32((_config.DelayBeforeExitFightLabelShow * 1000) - timeAfterMilliseconds), cancellationToken: token);
+        }
+
+        private async UniTask LoadingIfNeeded(CancellationToken token, float delay)
+        {
+            await UniTask.WaitForSeconds(delay, cancellationToken: token);
+
+            if (_fightProcessDBManager.IsComplete == false)
+            {
+                LoadSession loadSession = new LoadSession();
+
+                _loadRoot.AddSession(loadSession);
+
+                await UniTask.WaitUntil(() => _fightProcessDBManager.IsComplete, cancellationToken: token);
+
+                loadSession.Complete();
             }
         }
 

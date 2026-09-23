@@ -28,12 +28,14 @@ namespace GameFields
         private readonly CancellationToken _fightToken;
         private readonly TurnToken _turnToken;
         private readonly DBRoot _dBRoot;
+        private readonly FightProcessDBManager _fightProcessDBManager;
+        private readonly FightDrawResultManager _fightDrawResultManager;
 
         private static int _turnNumber;
 
         public Fight(PersonsState personsState, FightResult fightResult, SignalBus bus, SeatPool seatPool,
             IActivatable soundRootActivatable, IActivatable fightButtonsActivator, CancellationToken fightToken,
-            TurnToken turnToken, DBRoot dBRoot)
+            TurnToken turnToken, DBRoot dBRoot, FightProcessDBManager fightProcessDBManager, FightDrawResultManager fightDrawResultManager)
         {
             _personsState = personsState;
             _fightResult = fightResult;
@@ -51,6 +53,8 @@ namespace GameFields
             _fightToken = fightToken;
             _turnToken = turnToken;
             _dBRoot = dBRoot;
+            _fightProcessDBManager = fightProcessDBManager;
+            _fightDrawResultManager = fightDrawResultManager;
         }
 
         ~Fight()
@@ -103,7 +107,7 @@ namespace GameFields
                 CancellationTokenSource turnCTS = CancellationTokenSource.CreateLinkedTokenSource(_fightToken);
                 _turnToken.SetTokenSource(turnCTS);
 
-                while (IsComplete == false)
+                while (_fightResult.IsEmpty)
                 {
                     ActivePerson.StartStep();
 
@@ -125,7 +129,7 @@ namespace GameFields
             ActivePerson.FinishTurn();
             _turnNumber++;
 
-            if (TurnsIsOut)
+            if (TurnsIsOut || _fightDrawResultManager.IsDrawResult)
             {
                 SettingDraw(_fightToken).Forget();
             }
@@ -148,9 +152,10 @@ namespace GameFields
 
         private async UniTask SettingDraw(CancellationToken token)
         {
-            await _dBRoot.FinishFightWithBot(null, token);
+            _fightResult.SetDraw(); // Сначала это чтобы было IsEmpty и ход не начался
+            //await UniTask.WaitUntil(() => _fightProcessDBManager.IsComplete, cancellationToken: token);
+            await _dBRoot.FinishFightWithBot(null, _fightProcessDBManager.LogCounter, token);
 
-            _fightResult.SetDraw();
             IsComplete = true;
         }
     }

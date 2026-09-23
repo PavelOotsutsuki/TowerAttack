@@ -372,7 +372,7 @@ namespace Servers
             }
         }
 
-        public async UniTask FinishFightWithBot(bool? isYouWinner, CancellationToken token)
+        public async UniTask FinishFightWithBot(bool? isYouWinner, int logCounter, CancellationToken token)
         {
             string currentUri = $"{FinishFightWithBot_Uri}";
             Guid id_Fight = _currentIdFight;
@@ -402,6 +402,7 @@ namespace Servers
             WWWForm WWWForm = new WWWForm();
             WWWForm.AddField("id_Fight", id_Fight.ToString());
             WWWForm.AddField("id_winner", id_winner.ToString());
+            WWWForm.AddField("logCounter", logCounter);
 
             using (UnityWebRequest request = UnityWebRequest.Post(currentUri, WWWForm))
             {

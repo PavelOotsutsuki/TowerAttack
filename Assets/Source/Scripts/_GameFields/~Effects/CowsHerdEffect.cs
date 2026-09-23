@@ -37,7 +37,7 @@ namespace GameFields.Effects
             int countAttack = DefaultValueAttack;
             int countCardsInTable = _viewRoot.GetAllCards(ViewType.TableAI).Count() + _viewRoot.GetAllCards(ViewType.TablePlayer).Count();
 
-            if (countCardsInTable > 0)
+            if (countCardsInTable > 1) // 1 - потому что эта карта уже разыграна и тоже видна на столе
                 countAttack += BonusByEffect;
 
             _activePerson.AttackActivate(countAttack, () => endPlayingAttack = true);

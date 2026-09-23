@@ -1,8 +1,6 @@
 using System;
 using System.Threading;
-using Cards.Effects;
 using Cysharp.Threading.Tasks;
-using GameFields.EndFights;
 using GameFields.Persons.Hands;
 using GameFields.Persons.Towers;
 using GameFields.Signals;
@@ -25,10 +23,11 @@ namespace GameFields.Persons
         private readonly IDeactivatable _fightButtonsActivator;
         private readonly ISoundController _soundController;
         private readonly DBRoot _dBRoot;
+        private readonly FightProcessDBManager _fightProcessDBManager;
 
         public LoseActions(IBoomTower boomedTower, IPersonObject loser, IHandBlockable handBlockable, SignalBus bus,
             IDeactivatable inputRoot, IDeactivatable fightMenu, IDeactivatable fightButtonsActivator, ISoundController soundController,
-            DBRoot dBRoot)
+            DBRoot dBRoot, FightProcessDBManager fightProcessDBManager)
         {
             _boomedTower = boomedTower;
             _loser = loser;
@@ -39,6 +38,7 @@ namespace GameFields.Persons
             _fightButtonsActivator = fightButtonsActivator;
             _soundController = soundController;
             _dBRoot = dBRoot;
+            _fightProcessDBManager = fightProcessDBManager;
 
             _isActive = false;
         }
@@ -69,7 +69,8 @@ namespace GameFields.Persons
                 IPlayerObject => false,
                 _ => null
             };
-            await _dBRoot.FinishFightWithBot(result, token);
+
+            await _dBRoot.FinishFightWithBot(result, _fightProcessDBManager.LogCounter, token);
 
             int timeAfterMilliseconds = Convert.ToInt32((DateTime.UtcNow - before).TotalMilliseconds);
 
