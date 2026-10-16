@@ -102,12 +102,12 @@ namespace Servers
         {
             _queueFightProcessActions.Enqueue(fightProcessDBActionData);
 
-            Log("Добавление ОЧЕРЕДИ");
+            //Log("Добавление ОЧЕРЕДИ");
         }
 
         private FightProcessDBActionData DequeueQueue()
         {
-            Log("Удаление ОЧЕРЕДИ");
+            //Log("Удаление ОЧЕРЕДИ");
 
             return _queueFightProcessActions.Dequeue();
         }
@@ -116,19 +116,19 @@ namespace Servers
         {
             _datasInProcess.Add(fightProcessDBActionData);
 
-            Log("Добавление LIST");
+            //Log("Добавление LIST");
         }
 
         private void RemoveList(FightProcessDBActionData fightProcessDBActionData)
         {
             _datasInProcess.Remove(fightProcessDBActionData);
 
-            Log("Удаление LIST");
+            //Log("Удаление LIST");
         }
 
-        private void Log(string startLogText)
-        {
-            Debug.Log($"{startLogText}. ОЧЕРЕДЬ: {_queueFightProcessActions.Count} LIST: {_datasInProcess.Count}");
-        }
+        //private void Log(string startLogText)
+        //{
+        //    Debug.Log($"{startLogText}. ОЧЕРЕДЬ: {_queueFightProcessActions.Count} LIST: {_datasInProcess.Count}");
+        //}
     }
 }

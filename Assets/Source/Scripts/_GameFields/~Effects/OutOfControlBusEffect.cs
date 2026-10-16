@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using GameFields.CardTransits;
 using GameFields.Persons;
 using Tools;
+using UnityEngine;
 
 namespace GameFields.Effects
 {
@@ -127,22 +128,26 @@ namespace GameFields.Effects
             foreach (Card firedCard in firedCards)
             {
                 int realIndex = firedCardIndexPair[firedCard] + indexOffset;
+                //Debug.LogWarning($"{nameof(OutOfControlBusEffect)}: {firedCard.CardName} index={firedCardIndexPair[firedCard]} realIndex={realIndex}");
 
                 if (lastPyromancersManuscript != null && firedCard == lastPyromancersManuscript)
                 {
                     lastPyromancersManuscriptFireCallback = new CallbackHandler();
-                    _transitManager.TransitCard(firedCard, handFrom, firePoolTo, () => lastPyromancersManuscriptFireCallback.Complete(), index: realIndex);
+                    //_transitManager.TransitCard(firedCard, handFrom, firePoolTo, () => lastPyromancersManuscriptFireCallback.Complete(), index: realIndex);
+                    _transitManager.TransitCard(firedCard, handFrom, firePoolTo, () => lastPyromancersManuscriptFireCallback.Complete());
                 }
                 else
                 {
                     if (firedCard == lastCard)
                     {
                         lastCardFireCallback = new CallbackHandler();
-                        _transitManager.TransitCard(firedCard, handFrom, firePoolTo, () => lastCardFireCallback.Complete(), index: realIndex);
+                        //_transitManager.TransitCard(firedCard, handFrom, firePoolTo, () => lastCardFireCallback.Complete(), index: realIndex);
+                        _transitManager.TransitCard(firedCard, handFrom, firePoolTo, () => lastCardFireCallback.Complete());
                     }
                     else
                     {
-                        _transitManager.TransitCard(firedCard, handFrom, firePoolTo, index: realIndex);
+                        //_transitManager.TransitCard(firedCard, handFrom, firePoolTo, index: realIndex);
+                        _transitManager.TransitCard(firedCard, handFrom, firePoolTo);
                     }
                 }
 

@@ -61,10 +61,11 @@ namespace GameFields.Effects
             //    transitToType = TransitToType.EnemyFirePool;
             //}
             Card firedCard = cards[0];
-            int index = 0; // Логично
+            //int index = 0; // Логично
 
             bool isTransit = false;
-            _transitManager.TransitCard(firedCard, handFrom, firePoolTo, () => isTransit = true, index);
+            //_transitManager.TransitCard(firedCard, handFrom, firePoolTo, () => isTransit = true, index);
+            _transitManager.TransitCard(firedCard, handFrom, firePoolTo, () => isTransit = true);
             //_activePerson.ActivateFateInevitability(_duration);
 
             await UniTask.WaitUntil(() => isTransit, cancellationToken: Token);

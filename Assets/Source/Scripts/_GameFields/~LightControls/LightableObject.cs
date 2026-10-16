@@ -19,7 +19,6 @@ namespace GameFields.LightControls
         private CancellationToken _fightToken;
 
         private CancellationTokenSource _currentCTS;
-        private Coroutine _currentCoroutine;
 
         public bool? IsShown { get; private set; } = null;
 
@@ -29,8 +28,6 @@ namespace GameFields.LightControls
 
             _defaultParent = _transform.parent;
             _lightParent = _lightObjectsParent.GetTransform();
-
-            _currentCoroutine = null;
 
             _lightFrame.Init();
         }

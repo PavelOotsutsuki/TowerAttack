@@ -85,10 +85,11 @@ namespace GameFields.Effects
             //TransitToType fireTo = _activePerson is Player ? TransitToType.EnemyFirePool : TransitToType.PlayerFirePool;
             TransitFromType fireHandFrom = handFrom;
             TransitToType firePoolTo = activePersonTypes.FirePool;
-            int index = _viewRoot.IndexOf(handView, cardToFire);
+            //int index = _viewRoot.IndexOf(handView, cardToFire);
             bool isFireComplete = false;
 
-            _transitManager.TransitCard(cardToFire, fireHandFrom, firePoolTo, () => isFireComplete = true, index);
+            //_transitManager.TransitCard(cardToFire, fireHandFrom, firePoolTo, () => isFireComplete = true, index);
+            _transitManager.TransitCard(cardToFire, fireHandFrom, firePoolTo, () => isFireComplete = true);
 
             await UniTask.WaitUntil(() => isFireComplete, cancellationToken: Token);
         }

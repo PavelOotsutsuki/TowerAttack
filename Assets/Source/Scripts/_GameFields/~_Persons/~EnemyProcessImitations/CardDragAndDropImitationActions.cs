@@ -11,6 +11,7 @@ using GameFields.Histories;
 using Cysharp.Threading.Tasks;
 using System.Threading;
 using Servers;
+using Tools.Settings;
 
 namespace GameFields.Persons.EnemyProcessImitations
 {
@@ -90,7 +91,7 @@ namespace GameFields.Persons.EnemyProcessImitations
 
         public void HandTransfer()
         {
-            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, false, _activeCard.ViewData.Number.ToString(), "TRANSFER", null);
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, false, _activeCard.ViewData.Number.ToString(), GameSettings.HandTransfer_DBLog, null);
             _hand.OnCardDrag(_activeCard);
             _hand.OnCardPlay();
 

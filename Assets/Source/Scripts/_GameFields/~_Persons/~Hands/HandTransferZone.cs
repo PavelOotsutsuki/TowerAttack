@@ -7,7 +7,7 @@ namespace GameFields.Persons.Hands
 {
     public class HandTransferZone : ExtraEffectZone, IHandTransferable
     {
-        protected override string GetDBManagerMsg() => "HAND_TRANSFER";
+        protected override string GetDBManagerMsg() => GameSettings.HandTransfer_DBLog;
         protected override string GetHistoryMsg() => "Передача: ";
 
         protected override void OnEndProcessing(CancellationToken token)

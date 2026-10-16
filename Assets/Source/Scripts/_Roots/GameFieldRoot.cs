@@ -151,7 +151,7 @@ namespace Roots
 
             Player player = _personCreator.CreatePlayer();
             EnemyAI enemyAI = _personCreator.CreateEnemyAI();
-            CardLocationViewRoot viewRoot = _personCreator.CreateCardLocationViewRoot();
+            CardLocationViewRoot viewRoot = _personCreator.GetCardLocationViewRoot();
             CardTransitManager cardTransitManager = _personCreator.CreateCardTransitManager();
             BrothersEffectHandlerRoot brothersEffectHandlerRoot = _personCreator.CreateBrothersEffectHandlerRoot();
             PersonEffectsHandlerRoot personEffectsHandlerRoot = _personCreator.GetPersonEffectsHandlerRoot();
@@ -159,6 +159,7 @@ namespace Roots
             _inputRoot = _personCreator.GetInputRoot();
             LoseActionsRoot loseActionsRoot = _personCreator.CreateLoseActionsRoot();
             FightDrawResultManager fightDrawResultManager = _personCreator.CreateFightDrawResultManager();
+            ViewTransitTypesRoot typesRoot = _personCreator.GetViewTransitTypesRoot();
 
             _lookCardMenu.Init(_inputRoot, fightSource.Token);
 
@@ -166,7 +167,6 @@ namespace Roots
 
             _personsState = new PersonsState(player, enemyAI);
             //fightMenu.
-            ViewTransitTypesRoot typesRoot = new ViewTransitTypesRoot();
             EffectFactory effectFactory = new EffectFactory(_personsState, viewRoot, _informationLabel, cardTransitManager,
                 _variantCardCreator, brothersEffectHandlerRoot, _bus, personEffectsHandlerRoot, discardManager, loseActionsRoot,
                 _cardSoundRoot, typesRoot, _historyRoot, fightSource.Token, _fightProcessDBManager);

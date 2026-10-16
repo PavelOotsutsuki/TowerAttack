@@ -32,11 +32,49 @@ namespace Cards
                 _startCardNames.Add(cardName);
             }
 
-            //for (int i = 1; i <= 25; i++)
+            #region Проверка лагов Curse
+            //for (int i = 1; i <= 10; i++)
             //{
-            //    CardName cardName = (CardName)(12);
+            //    CardName cardName = (CardName)(45);
             //    _startCardNames.Add(cardName);
             //}
+
+            //for (int i = 1; i <= 5; i++)
+            //{
+            //    CardName cardName = (CardName)(18);
+            //    _startCardNames.Add(cardName);
+            //}
+
+            //for (int i = 1; i <= 4; i++)
+            //{
+            //    CardName cardName = (CardName)(3);
+            //    _startCardNames.Add(cardName);
+            //}
+
+            //for (int i = 1; i <= 11; i++)
+            //{
+            //    CardName cardName = (CardName)(49);
+            //    _startCardNames.Add(cardName);
+            //}
+
+            //for (int i = 1; i <= 5; i++)
+            //{
+            //    CardName cardName = (CardName)(42);
+            //    _startCardNames.Add(cardName);
+            //}
+
+            //for (int i = 1; i <= 5; i++)
+            //{
+            //    CardName cardName = (CardName)(31);
+            //    _startCardNames.Add(cardName);
+            //}
+
+            //for (int i = 1; i <= 7; i++)
+            //{
+            //    CardName cardName = (CardName)(26);
+            //    _startCardNames.Add(cardName);
+            //}
+            #endregion
 
             //for (int i = 1; i <= 25; i++)
             //{

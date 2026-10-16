@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Tools;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,6 +11,8 @@ namespace Cards.Animations.Curses
     {
         [SerializeField] private Graphic[] _changedGraphics;
 
+        private readonly Dictionary<Graphic, Color> _changedGraphicsWithColor = new Dictionary<Graphic, Color>();
+
         private CurseAnimator _curseAnimator;
 
         public bool? IsActive { get; private set; } = null;
@@ -20,6 +23,19 @@ namespace Cards.Animations.Curses
                 throw new Exception("Ну и что ты собрался обновлять? Хоть один объект закинь");
 
             _curseAnimator = curseAnimator;
+
+            foreach (Graphic graphic in _changedGraphics)
+            {
+                _changedGraphicsWithColor.Add(graphic, graphic.color);
+            }
+        }
+
+        public void Reset()
+        {
+            foreach ((Graphic graphic, Color color) in _changedGraphicsWithColor)
+            {
+                graphic.color = color;
+            }
         }
 
         public void Activate()
@@ -29,7 +45,7 @@ namespace Cards.Animations.Curses
 
             IsActive = true;
 
-            _curseAnimator.AddCard(_changedGraphics);
+            _curseAnimator.AddCard(_changedGraphicsWithColor);
         }
 
         public void Deactivate()

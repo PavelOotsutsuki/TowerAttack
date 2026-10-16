@@ -26,9 +26,12 @@ namespace GameFields.CardTransits
         private readonly ICardTakable _fireRoot;
         private readonly IFirePoolSeatable _playerFirePool;
         private readonly IFirePoolSeatable _enemyFirePool;
+        private readonly CardLocationViewRoot _cardLocationViewRoot;
+        private readonly ViewTransitTypesRoot _typesRoot;
 
         public CardTransitManager(HandPlayer playerHand, HandAI enemyHand, Tower playerTower, Tower enemyTower, Deck deck,
-            DiscardPile discardPile, FireRoot fireRoot, FirePool playerFirePool, FirePool enemyFirePool)
+            DiscardPile discardPile, FireRoot fireRoot, FirePool playerFirePool, FirePool enemyFirePool, CardLocationViewRoot cardLocationViewRoot,
+            ViewTransitTypesRoot typesRoot)
         {
             _playerHand = playerHand;
             _playerTower = playerTower;
@@ -43,6 +46,9 @@ namespace GameFields.CardTransits
 
             _playerFirePool = playerFirePool;
             _enemyFirePool = enemyFirePool;
+
+            _cardLocationViewRoot = cardLocationViewRoot;
+            _typesRoot = typesRoot;
         }
 
         //public void InsertIntoDeck(Card card, int index, TransitFromType from)
@@ -97,8 +103,8 @@ namespace GameFields.CardTransits
 
             if (to == TransitToType.PlayerFirePool || to == TransitToType.EnemyFirePool)
             {
-                if (index == -1)
-                    throw new Exception("Не задан индекс сжигания. Задай индекс!");
+                if (index != -1)
+                    throw new Exception("Задан индекс сжигания. Не задавай индекс!");
 
                 CallbackHandler callbackHandler = new CallbackHandler();
                 //OnFireLogicActivateData onFireLogicActivateData = new OnFireLogicActivateData(0.1f, callbackHandler, token);
@@ -112,6 +118,9 @@ namespace GameFields.CardTransits
                     TransitToType.EnemyFirePool => _enemyFirePool,
                     _ => throw new Exception($"Ошибка нахождения {typeof(IFirePoolSeatable)} типа {typeof(TransitToType)}: {to}")
                 };
+
+                if (index == -1)
+                    index = _cardLocationViewRoot.IndexOf(_typesRoot.ConvertToViewType(from), card);
 
                 if (takable.TryTakeAwayCard(card) == false)
                     throw new Exception("Ошибка: не найдена карта в from");

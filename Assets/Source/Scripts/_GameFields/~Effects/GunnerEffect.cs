@@ -111,9 +111,10 @@ namespace GameFields.Effects
                 //}
 
                 Card firedCard = cards[randomCardIndex];
-                int index = _viewRoot.IndexOf(handViewType, firedCard);
+                //int index = _viewRoot.IndexOf(handViewType, firedCard);
 
-                _transitManager.TransitCard(cards[randomCardIndex], handFrom, firePoolTo, () => effectThreeComplete = true, index);
+                //_transitManager.TransitCard(cards[randomCardIndex], handFrom, firePoolTo, () => effectThreeComplete = true, index);
+                _transitManager.TransitCard(cards[randomCardIndex], handFrom, firePoolTo, () => effectThreeComplete = true);
                 await UniTask.WaitUntil(() => effectThreeComplete, cancellationToken: Token);
             }
 

@@ -191,7 +191,10 @@ namespace GameFields.Persons
         private CancellationToken _fightToken;
         private TurnToken _turnToken;
 
+        private readonly ViewTransitTypesRoot _typesRoot = new ViewTransitTypesRoot();
+
         private PersonEffectsHandlerRoot _personEffectsHandlerRoot;
+        private CardLocationViewRoot _cardLocationViewRoot;
 
         public DiscardManager DiscardManager => _discardManager;
 
@@ -421,14 +424,23 @@ namespace GameFields.Persons
                 _turnToken, _fightProcessDBManager);
         }
 
-        public CardLocationViewRoot CreateCardLocationViewRoot()
+        public CardLocationViewRoot GetCardLocationViewRoot()
         {
-            return new CardLocationViewRoot(_cardRoot, _deck, _playerHand, _enemyHand, _discardPile, _fireRoot, _playerTable, _enemyTable);
+            if (_cardLocationViewRoot == null)
+                _cardLocationViewRoot = new CardLocationViewRoot(_cardRoot, _deck, _playerHand, _enemyHand, _discardPile, _fireRoot, _playerTable, _enemyTable);
+
+            return _cardLocationViewRoot;
         }
 
         public CardTransitManager CreateCardTransitManager()
         {
-            return new CardTransitManager(_playerHand, _enemyHand, _playerTower, _enemyTower, _deck, _discardPile, _fireRoot, _playerFirePool, _enemyFirePool);
+            return new CardTransitManager(_playerHand, _enemyHand, _playerTower, _enemyTower, _deck, _discardPile, _fireRoot, _playerFirePool, _enemyFirePool,
+                GetCardLocationViewRoot(), _typesRoot);
+        }
+
+        public ViewTransitTypesRoot GetViewTransitTypesRoot()
+        {
+            return _typesRoot;
         }
 
         public BrothersEffectHandlerRoot CreateBrothersEffectHandlerRoot()

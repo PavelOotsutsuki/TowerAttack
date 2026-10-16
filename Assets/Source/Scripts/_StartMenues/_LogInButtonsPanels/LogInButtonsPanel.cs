@@ -94,6 +94,7 @@ namespace StartMenues.LogInButtonsPanels
             //_tokenSource?.Dispose();
             Utils.DestroyCTS(ref _tokenSource);
             _tokenSource = CancellationTokenSource.CreateLinkedTokenSource(_menuParentToken);
+            _tokenSource.CancelAfterSlim(TimeSpan.FromSeconds(15));
             CancellationToken token = _tokenSource.Token;
 
             LogInProcessing(token).Forget();

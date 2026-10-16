@@ -123,7 +123,10 @@ namespace Cards.Insides
 
             IsShown = true;
 
+            _cardSpriteManager.Reset();
+
             gameObject.SetActive(true);
+            _cardSpriteManager.Activate();
         }
 
         public void Hide()
@@ -134,6 +137,9 @@ namespace Cards.Insides
             IsShown = false;
 
             gameObject.SetActive(false);
+
+            _cardSpriteManager.Deactivate();
+            _cardSpriteManager.Reset();
         }
 
         #region AutomaticFillComponents

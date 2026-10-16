@@ -427,7 +427,7 @@ namespace Servers
         {
             try
             {
-                Debug.Log("Логируем событие!");
+                //Debug.Log("Логируем событие!");
                 string currentUri = WriteFightProcessAction_Uri;
 
                 Guid? person_id = null;

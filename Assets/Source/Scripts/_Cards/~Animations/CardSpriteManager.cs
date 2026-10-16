@@ -41,5 +41,10 @@ namespace Cards.Animations
 
             _cardCurseAnimation.Deactivate();
         }
+
+        public void Reset()
+        {
+            _cardCurseAnimation.Reset();
+        }
     }
 }
