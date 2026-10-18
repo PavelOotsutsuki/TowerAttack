@@ -33,7 +33,7 @@ namespace GameFields.Effects
             foreach (Card card in cards)
             {
                 card.SetCurseMode();
-                _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, card.ViewData.Number.ToString(), "BECOME CURSED", "CARD");
+                _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, card.LogID, "BECOME CURSED", "CARD");
             }
 
             await UniTask.WaitUntil(() => isContinue, cancellationToken: Token);

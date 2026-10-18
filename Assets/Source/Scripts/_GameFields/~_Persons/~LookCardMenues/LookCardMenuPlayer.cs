@@ -178,7 +178,7 @@ namespace GameFields.Persons.LookCardMenues
 
         private string GetSerializedCards(IEnumerable<Card> cards)
         {
-            return JsonSerializer.Serialize(cards.Select(c => c.ViewData.Number));
+            return JsonSerializer.Serialize(cards.Select(c => c.LogID));
         }
 
         //private void OnDisable()

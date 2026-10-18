@@ -63,7 +63,7 @@ namespace GameFields.Persons.Hands
         {
             IsComplete = false;
 
-            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, true, card.ViewData.Number.ToString(), GetDBManagerMsg(), null);
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, true, card.LogID, GetDBManagerMsg(), null);
             HistoryCardData historyCardData = new HistoryCardData(card);
             HistoryData historyData = new HistoryData(this, GetHistoryMsg(), historyCardData);
             _historyRoot.AddMsg(historyData);

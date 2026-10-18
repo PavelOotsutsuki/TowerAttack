@@ -91,7 +91,7 @@ namespace GameFields.Persons.EnemyProcessImitations
 
         public void HandTransfer()
         {
-            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, false, _activeCard.ViewData.Number.ToString(), GameSettings.HandTransfer_DBLog, null);
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, false, _activeCard.LogID, GameSettings.HandTransfer_DBLog, null);
             _hand.OnCardDrag(_activeCard);
             _hand.OnCardPlay();
 
@@ -105,7 +105,7 @@ namespace GameFields.Persons.EnemyProcessImitations
         public async UniTask Forging(CancellationToken token)
         {
             _isForging = false;
-            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, false, _activeCard.ViewData.Number.ToString(), "FORGING", null);
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, false, _activeCard.LogID, "FORGING", null);
 
             _hand.OnCardDrag(_activeCard);
             _hand.OnCardPlay();

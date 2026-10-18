@@ -38,7 +38,7 @@ namespace GameFields.Persons.EffectHandlers.FateInevitabilities
 
             FateInevitabilityHandlerEffect fateInevitabilityHandlerEffect = new FateInevitabilityHandlerEffect(card, countTurns);
             _activeEffects.Add(fateInevitabilityHandlerEffect);
-            FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, card.ViewData.Number.ToString(), "ADD", GetType().Name);
+            FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, card.LogID, "ADD", GetType().Name);
             FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, _activeEffects.Count.ToString(), "COUNT EFFECTS", GetType().Name);
         }
 
@@ -55,7 +55,7 @@ namespace GameFields.Persons.EffectHandlers.FateInevitabilities
             foreach (FateInevitabilityHandlerEffect removedEffect in removedEffects)
             {
                 _activeEffects.Remove(removedEffect);
-                FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, card.ViewData.Number.ToString(), "REMOVE", GetType().Name);
+                FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, card.LogID, "REMOVE", GetType().Name);
                 FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, _activeEffects.Count.ToString(), "COUNT EFFECTS", GetType().Name);
             }
 

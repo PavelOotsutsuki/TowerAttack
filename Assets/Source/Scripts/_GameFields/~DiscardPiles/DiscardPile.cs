@@ -232,7 +232,7 @@ namespace GameFields.DiscardPiles
 
         private string GetSerializedCards()
         {
-            return JsonSerializer.Serialize(AllCards.Select(c => c.ViewData.Number));
+            return JsonSerializer.Serialize(AllCards.Select(c => c.LogID));
         }
     }
 }

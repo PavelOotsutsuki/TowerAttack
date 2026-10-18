@@ -104,7 +104,7 @@ namespace GameFields.Persons.Towers
 
             _attackMenu.Activate(attackMenuActivateData);
 
-            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, card.ViewData.Number.ToString(), "ATTACKING TOWER", GetName());
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, card.LogID, "ATTACKING TOWER", GetName());
             HistoryCardData historyCardData = new HistoryCardData(card);
             HistoryData historyData = new HistoryData(this, "Атака: ", historyCardData);
             _historyRoot.AddMsg(historyData);

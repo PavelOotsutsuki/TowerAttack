@@ -53,7 +53,7 @@ namespace GameFields.Persons.Tables
         internal void SetCard(PersonEffect personEffect)
         {
             _personEffect = personEffect;
-            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, _isPlayerObject, _personEffect.Card.ViewData.Number.ToString(), "SET PERSONEFFECT", "TABLESEAT");
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, _isPlayerObject, _personEffect.Card.LogID, "SET PERSONEFFECT", "TABLESEAT");
             _personEffect.Card.RORTransform.SetParent(_rectTransform);
 
             Movement cardMovement = _personEffect.Card.CardMovement;
@@ -63,7 +63,7 @@ namespace GameFields.Persons.Tables
 
         internal void Reset()
         {
-            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, _isPlayerObject, _personEffect.Card.ViewData.Number.ToString(), "RESET PERSONEFFECT", "TABLESEAT");
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, _isPlayerObject, _personEffect.Card.LogID, "RESET PERSONEFFECT", "TABLESEAT");
             _personEffect = null;
         }
 

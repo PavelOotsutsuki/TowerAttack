@@ -73,7 +73,7 @@ namespace Cards
             createdCard.Init(_effectFactory, _cardViewService, _cardDragAndDropHandler, _curseAnimator,
                 _cardCapabilityDescription, _cardSoundRoot, _cardDescription, _fightToken);
 
-            _fightProcessDBManager.WriteFightProcessAction(-1, null, createdCard.ViewData.Number.ToString(), "CREATE", "CARD");
+            _fightProcessDBManager.WriteFightProcessAction(-1, null, createdCard.LogID, "CREATE", "CARD");
 
             TMP_Text[] cardTexts = createdCard.gameObject.GetComponentsInChildren<TMP_Text>(true);
             _fontSetter.SetFont(cardTexts);

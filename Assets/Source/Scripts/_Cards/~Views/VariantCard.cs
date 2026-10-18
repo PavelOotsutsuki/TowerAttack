@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Cards.Effects;
 using Tools;
@@ -12,14 +13,18 @@ namespace Cards.Views
         [SerializeField] private VariantCardConfig _config;
         [SerializeField] private RectTransform _rectTransform;
 
+        private Guid _variantCardGlobalGuid;
         private CardViewData _viewData;
 
         public ReadOnlyRectTransform RORTransform { get; private set; }
         public CardViewData ViewData => _viewData;
         public CardEffectConfig EffectConfig => _config.Effect;
+        public string LogID => _variantCardGlobalGuid.ToString();
 
-        public void Init()
+        public void Init(Guid? variantCardGlobalGuid = null)
         {
+            _variantCardGlobalGuid = variantCardGlobalGuid ?? Guid.NewGuid();
+
             RORTransform = new ReadOnlyRectTransform(_rectTransform);
             RORTransform.SetSize(GameSettings.CardSize);
 

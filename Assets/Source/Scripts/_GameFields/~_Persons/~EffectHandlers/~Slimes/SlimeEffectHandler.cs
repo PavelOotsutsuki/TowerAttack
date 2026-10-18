@@ -35,7 +35,7 @@ namespace GameFields.Persons.EffectHandlers.Slimes
             if (_effectedCards.Count == 1)
                 FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, null, "ACTIVATE", GetType().Name);
 
-            FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, card.ViewData.Number.ToString(), "ADD", GetType().Name);
+            FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, card.LogID, "ADD", GetType().Name);
         }
 
         public void EndEffect(Card card)
@@ -44,7 +44,7 @@ namespace GameFields.Persons.EffectHandlers.Slimes
                 return;
 
             _effectedCards.Remove(card);
-            FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, card.ViewData.Number.ToString(), "REMOVE", GetType().Name);
+            FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, card.LogID, "REMOVE", GetType().Name);
 
             if (_effectedCards.Count == 0)
             {

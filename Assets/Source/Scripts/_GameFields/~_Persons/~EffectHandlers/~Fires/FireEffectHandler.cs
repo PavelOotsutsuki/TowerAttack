@@ -27,7 +27,7 @@ namespace GameFields.Persons.EffectHandlers.Fires
 
             _effectedCards.Add(card);
 
-            FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, card.ViewData.Number.ToString(), "ADD", GetType().Name);
+            FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, card.LogID, "ADD", GetType().Name);
 
             if (_effectedCards.Count == 1)
                 FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, null, "ACTIVATE", GetType().Name);
@@ -41,7 +41,7 @@ namespace GameFields.Persons.EffectHandlers.Fires
                 return;
 
             _effectedCards.Remove(card);
-            FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, card.ViewData.Number.ToString(), "REMOVE", GetType().Name);
+            FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, card.LogID, "REMOVE", GetType().Name);
 
             if (_effectedCards.Count == 0)
             {

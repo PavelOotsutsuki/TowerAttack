@@ -183,7 +183,6 @@ namespace GameFields.Persons.Tables
             }
         }
 
-
         private void WriteFullListIntoDB()
         {
             _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, GetSerializedCards(), "FULLLIST", GetType().Name);
@@ -191,7 +190,7 @@ namespace GameFields.Persons.Tables
 
         private string GetSerializedCards()
         {
-            return JsonSerializer.Serialize(AllCards.Select(c => c.ViewData.Number));
+            return JsonSerializer.Serialize(AllCards.Select(c => c.LogID));
         }
 
         private static int GetSortIndex(int inputIndex, int countSeats)

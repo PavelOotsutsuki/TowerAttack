@@ -73,7 +73,7 @@ namespace GameFields.Persons.Fires
             _fireList.Remove(card);
 
             //string cardName = card.CurrentSide == SideType.Front ? card.Name.ToUpper() : "?";
-            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, card.ViewData.Number.ToString(), "RISE", GetName());
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, card.LogID, "RISE", GetName());
             WriteFullListIntoDB();
             HistoryData historyData = new HistoryData(this, "Восстановлена карта: ", new HistoryCardData(card));
             _historyRoot.AddMsg(historyData);
@@ -91,7 +91,7 @@ namespace GameFields.Persons.Fires
             card.RORTransform.SetParent(_parent);
             card.CardMovement.MoveLocalInstantly(FindCardSeatPosition(), FindCardSeatRotation());
             _fireList.Add(card);
-            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, card.ViewData.Number.ToString(), "FIRE", GetName());
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersAction, card.LogID, "FIRE", GetName());
             WriteFullListIntoDB();
         }
 
@@ -117,7 +117,7 @@ namespace GameFields.Persons.Fires
 
         private string GetSerializedCards()
         {
-            return JsonSerializer.Serialize(_fireList.Select(c => c.ViewData.Number));
+            return JsonSerializer.Serialize(_fireList.Select(c => c.LogID));
         }
 
         protected abstract string GetName();

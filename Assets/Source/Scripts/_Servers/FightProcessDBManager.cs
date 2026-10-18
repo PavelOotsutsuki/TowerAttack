@@ -73,6 +73,7 @@ namespace Servers
         {
             try
             {
+                // Тут цифарка - сколько процессов может идти параллельно максимум
                 if (_datasInProcess.Count >= 1)
                 {
                     await WriteFightProcessAction(currentFightProcessAction, token);

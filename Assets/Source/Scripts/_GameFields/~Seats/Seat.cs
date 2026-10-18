@@ -42,14 +42,14 @@ namespace GameFields.Seats
 
         public void Reset()
         {
-            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, _isPlayersAction, Card.ViewData.Number.ToString(), "REMOVE", _owner);
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, _isPlayersAction, Card.LogID, "REMOVE", _owner);
             Card = null;
         }
 
         public void SetCard(Card card, SideType sideType, float duration, CallbackHandler waitToMovement, CancellationToken token,  float scaleFactor = 1f)
         {
             Card = card;
-            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, _isPlayersAction, Card.ViewData.Number.ToString(), "SEAT", _owner);
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, _isPlayersAction, Card.LogID, "SEAT", _owner);
 
             MoveAfterCallbackComplete(sideType, duration, scaleFactor, waitToMovement, token).Forget();
         }
@@ -57,7 +57,7 @@ namespace GameFields.Seats
         public void SetCard(Card card, SideType sideType, float duration, float scaleFactor = 1f)
         {
             Card = card;
-            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, _isPlayersAction, Card.ViewData.Number.ToString(), "SEAT", _owner);
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, _isPlayersAction, Card.LogID, "SEAT", _owner);
 
             Move(sideType, duration, scaleFactor);
         }

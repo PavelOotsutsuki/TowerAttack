@@ -35,6 +35,7 @@ namespace Cards
         private CardViewData _viewData;
         private CardSpriteModeManager _cardSpriteModeManager;
         private CancellationTokenSource _cardCTS;
+        private Guid _cardGlobalGuid;
 
         private CardDescription _cardDescription;
 
@@ -57,13 +58,16 @@ namespace Cards
         public bool IsFired => _cardPaper.IsFired;
         public bool IsPyromancersManuscript => _config.Effect.Type == EffectType.PyromancersManuscript;
         public CancellationToken CardToken => _cardCTS.Token;
+        public Guid GUID => _cardGlobalGuid;
+        public string LogID => _cardGlobalGuid.ToString();
 
         internal void Init(IEffectFactory effectFactory, CardViewService cardViewService,
             ICardDragAndDropHandler cardDragAndDropHandler, CurseAnimator curseAnimator,
             CardCapabilityDescription cardCapabilityDescription, CardSoundRoot cardSoundRoot,
-            CardDescription cardDescription, CancellationToken fightToken)
+            CardDescription cardDescription, CancellationToken fightToken, Guid? cardGlobalGuid = null)
         {
             _cardCTS = CancellationTokenSource.CreateLinkedTokenSource(fightToken);
+            _cardGlobalGuid = cardGlobalGuid ?? Guid.NewGuid(); 
 
             RORTransform = new ReadOnlyRectTransform(_rectTransform);
             _cardDescription = cardDescription;

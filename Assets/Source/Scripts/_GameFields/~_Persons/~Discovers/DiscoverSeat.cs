@@ -41,7 +41,7 @@ namespace GameFields.Persons.Discovers
         public void SetCard(IDiscoverable card)
         {
             _card = card;
-            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, _isPlayersAction, _card.ViewData.Number.ToString(), "VIEW", "DISCOVER");
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, _isPlayersAction, _card.LogID, "VIEW", "DISCOVER");
             //DiscoverCardActivateData data = new DiscoverCardActivateData(_card.ReadOnlyRectTransform.GetSizeDelta(), _card.ViewData);
             DiscoverCardActivateData data = new DiscoverCardActivateData(GameSettings.CardSize, _card);
             _discoverCard.Activate(data);
@@ -49,7 +49,7 @@ namespace GameFields.Persons.Discovers
 
         public void StartClick()
         {
-            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, _isPlayersAction, _card.ViewData.Number.ToString(), "CHOICE", "DISCOVER");
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, _isPlayersAction, _card.LogID, "CHOICE", "DISCOVER");
             _discoverCard.StartClickActions();
         }
 

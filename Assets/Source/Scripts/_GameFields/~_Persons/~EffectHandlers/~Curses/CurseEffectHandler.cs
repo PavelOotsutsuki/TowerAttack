@@ -49,7 +49,7 @@ namespace GameFields.Persons.EffectHandlers.Curses
             //    return;
 
             _effectedCards.Add(card);
-            FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, card.ViewData.Number.ToString(), "ADD BY CARD", GetType().Name);
+            FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, card.LogID, "ADD BY CARD", GetType().Name);
         }
 
         public void Activate(int countTurns)
@@ -69,7 +69,7 @@ namespace GameFields.Persons.EffectHandlers.Curses
             while (_effectedCards.Contains(card))
             {
                 _effectedCards.Remove(card);
-                FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, card.ViewData.Number.ToString(), "REMOVE BY CARD", GetType().Name);
+                FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, card.LogID, "REMOVE BY CARD", GetType().Name);
             }
         }
 

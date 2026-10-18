@@ -31,14 +31,14 @@ namespace GameFields.Persons
         public void Discard()
         {
             _effectDuration.Discard();
-            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, _isPlayersEffect, Card.ViewData.Number.ToString(), "Forcibly Discard", GetType().Name);
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, _isPlayersEffect, Card.LogID, "Forcibly Discard", GetType().Name);
 
             TryDiscard();
         }
 
         public void DecreaseCounter()
         {
-            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, _isPlayersEffect, Card.ViewData.Number.ToString(), $"LEFT ({_effectDuration.Duration}) TURNS", GetType().Name);
+            _fightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, _isPlayersEffect, Card.LogID, $"LEFT ({_effectDuration.Duration}) TURNS", GetType().Name);
             _effectDuration.Decrease();
         }
 

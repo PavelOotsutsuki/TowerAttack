@@ -32,7 +32,7 @@ namespace GameFields.Persons.EffectHandlers.Scarecrows
             if (_effects.Any(e => e.Card == card) == false)
             {
                 _effects.Enqueue(new ScarecrowEffectData(card, countCards));
-                FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, card.ViewData.Number.ToString(), "ADD CARD", GetType().Name);
+                FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, card.LogID, "ADD CARD", GetType().Name);
                 FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, countCards.ToString(), "countCards", GetType().Name);
                 FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, _effects.Count.ToString(), "COUNT EFFECTS", GetType().Name);
             }
@@ -47,13 +47,13 @@ namespace GameFields.Persons.EffectHandlers.Scarecrows
 
             ScarecrowEffectData effect = _effects.Peek();
             effect.Use();
-            FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, effect.Card.ViewData.ToString(), "USE", GetType().Name);
+            FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, effect.Card.LogID, "USE", GetType().Name);
             FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, effect.Duration.ToString(), "LEFT ON THIS CARD", GetType().Name);
 
             if (effect.NeedDelete)
             {
                 _effects.Dequeue();
-                FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, effect.Card.ViewData.Number.ToString(), "REMOVE CARD", GetType().Name);
+                FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, effect.Card.LogID, "REMOVE CARD", GetType().Name);
 
                 Card card = effect.Card;
 
