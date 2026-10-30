@@ -11,7 +11,7 @@ namespace Cards.Views
         Curse = 1 << 3,
         GnomeForging = 1 << 4,
         GnomeChoice = 1 << 5,
-        Variants = 1 << 6,
+        Option = 1 << 6,
         BrothersBonds = 1 << 7,
         HandTransfer = 1 << 8
     }

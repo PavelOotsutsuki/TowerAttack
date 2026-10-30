@@ -4,19 +4,19 @@ using GameFields.Persons.SelectMenues;
 
 namespace GameFields.Effects
 {
-    public class CoolBookmakerEffect : Effect
+    public class CoolBookieEffect : Effect
     {
         private const int CountNumbers = 3;
         private readonly Person _activePerson;
 
-        public CoolBookmakerEffect(EffectData data) : base(data)
+        public CoolBookieEffect(EffectData data) : base(data)
         {
             _activePerson = data.ActivePerson;
 
             Play();
         }
 
-        protected override string GetName() => nameof(CoolBookmakerEffect);
+        protected override string GetName() => nameof(CoolBookieEffect);
 
         //public override void End()
         //{

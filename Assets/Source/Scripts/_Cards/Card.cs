@@ -48,6 +48,7 @@ namespace Cards
         public Image Background => _background;
         public SideType CurrentSide => _cardPaper.CurrentSide;
         public CardCapability CardCapability => _config.CardCapability;
+        public CardPersonType CardPersonType => _config.CardPersonType; // ДЛЯ ТЕСТА. В ИГРЕ НЕ НУЖНО ПОКА
         public CardName CardName => _config.CardName;
         public CardEffectConfig EffectConfig => _config.Effect;
         public bool IsVisibleByPlayer => _cardPaper.CurrentSide == SideType.Front || _currentState is CardCharacter;
@@ -64,10 +65,11 @@ namespace Cards
         internal void Init(IEffectFactory effectFactory, CardViewService cardViewService,
             ICardDragAndDropHandler cardDragAndDropHandler, CurseAnimator curseAnimator,
             CardCapabilityDescription cardCapabilityDescription, CardSoundRoot cardSoundRoot,
-            CardDescription cardDescription, CancellationToken fightToken, Guid? cardGlobalGuid = null)
+            CardDescription cardDescription, CancellationToken fightToken, Guid cardGlobalGuid,
+            DBRoot dBRoot)
         {
             _cardCTS = CancellationTokenSource.CreateLinkedTokenSource(fightToken);
-            _cardGlobalGuid = cardGlobalGuid ?? Guid.NewGuid(); 
+            _cardGlobalGuid = cardGlobalGuid;
 
             RORTransform = new ReadOnlyRectTransform(_rectTransform);
             _cardDescription = cardDescription;

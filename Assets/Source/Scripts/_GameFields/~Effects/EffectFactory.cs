@@ -160,7 +160,7 @@ namespace GameFields.Effects
                 EffectType.Zhyzha => new ZhyzhaEffect(_personsState.Deactive, effectData),
                 EffectType.Greedy => new GreedyEffect(_viewRoot, _cardTransitManager, effectData),
                 EffectType.Pyromancer => new PyromancerEffect(_personsState.Deactive, effectData),
-                EffectType.CoolBookmaker => new CoolBookmakerEffect(effectData),
+                EffectType.CoolBookie => new CoolBookieEffect(effectData),
                 EffectType.BlindOldMan => new BlindOldManEffect(effectData),
                 EffectType.DetectiveRhodes => new DetectiveRhodesEffect(_personsState.Deactive, _cardTransitManager,
                 _viewRoot, _informationLabel, _typesRoot, effectData),

@@ -181,7 +181,7 @@ namespace GameFields.Persons.EnemyProcessImitations
                     return GetGreedyCapability();
                 case EffectType.Pyromancer:
                     return GetPyromancerCapability();
-                case EffectType.CoolBookmaker:
+                case EffectType.CoolBookie:
                     return GetCoolBookmakerCapability();
                 case EffectType.BlindOldMan:
                     return GetBlindOldManCapability();

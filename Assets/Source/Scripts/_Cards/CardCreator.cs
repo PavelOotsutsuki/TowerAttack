@@ -8,7 +8,7 @@ namespace Cards
         [SerializeField] private Card _template_1_Zhyzha;
         [SerializeField] private Card _template_2_Greedy;
         [SerializeField] private Card _template_3_Pyromancer;
-        [SerializeField] private Card _template_4_CoolBookmaker;
+        [SerializeField] private Card _template_4_CoolBookie;
         [SerializeField] private Card _template_5_BlindOldMan;
         [SerializeField] private Card _template_6_DetectiveRhodes;
         [SerializeField] private Card _template_7_BlueGnome;
@@ -63,7 +63,7 @@ namespace Cards
             _createPairs.Add(CardName.Zhyzha, _template_1_Zhyzha);
             _createPairs.Add(CardName.Greedy, _template_2_Greedy);
             _createPairs.Add(CardName.Pyromancer, _template_3_Pyromancer);
-            _createPairs.Add(CardName.CoolBookmaker, _template_4_CoolBookmaker);
+            _createPairs.Add(CardName.CoolBookie, _template_4_CoolBookie);
             _createPairs.Add(CardName.BlindOldMan, _template_5_BlindOldMan);
             _createPairs.Add(CardName.DetectiveRhodes, _template_6_DetectiveRhodes);
             _createPairs.Add(CardName.BlueGnome, _template_7_BlueGnome);

@@ -5,7 +5,7 @@ namespace Cards
         Zhyzha = 1,
         Greedy = 2,
         Pyromancer = 3,
-        CoolBookmaker = 4,
+        CoolBookie = 4,
         BlindOldMan = 5,
         DetectiveRhodes = 6,
         BlueGnome = 7,

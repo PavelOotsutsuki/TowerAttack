@@ -1474,7 +1474,7 @@ MonoBehaviour:
   _template_1_Zhyzha: {fileID: 7470885784936292446, guid: 3888012a5904341458d911940fc0750b, type: 3}
   _template_2_Greedy: {fileID: 7777799050504670857, guid: 4a4c7b989dae24516a911a3202e70a21, type: 3}
   _template_3_Pyromancer: {fileID: 655499856962912830, guid: ddfa45683b0354c4597bba7a0a8b07a4, type: 3}
-  _template_4_CoolBookmaker: {fileID: 3430584159081748531, guid: f120653c5923943b0a2c783bca137906, type: 3}
+  _template_4_CoolBookie: {fileID: 3430584159081748531, guid: f120653c5923943b0a2c783bca137906, type: 3}
   _template_5_BlindOldMan: {fileID: 8315088401685439010, guid: 4ba11daf340ac4b27823e1371b90e30c, type: 3}
   _template_6_DetectiveRhodes: {fileID: 4269375210868738342, guid: 73daae0a54a824e91b9681f198851411, type: 3}
   _template_7_BlueGnome: {fileID: 589025246368917208, guid: 31f0e36e8b4cd41d88dc09a9ad48bd28, type: 3}
@@ -17671,7 +17671,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 456.629}
+  m_AnchoredPosition: {x: 0, y: 456.62842}
   m_SizeDelta: {x: 0, y: 363}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &8421528645989163639

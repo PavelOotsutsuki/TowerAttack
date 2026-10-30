@@ -52,7 +52,7 @@ namespace Cards.Views.BigCardViews.Capabilities
                 GnomeForgingColorTag);
             _cardCapabilityLookUp.Add(CardCapability.GnomeChoice, "CAP_6", "Гномичей выбор", GnomeChoiceDescription,
                 GnomeChoiceColorTag);
-            _cardCapabilityLookUp.Add(CardCapability.Variants, "CAP_7", "Вариант", VariantsDescription, VariantsColorTag);
+            _cardCapabilityLookUp.Add(CardCapability.Option, "CAP_7", "Вариант", VariantsDescription, VariantsColorTag);
             _cardCapabilityLookUp.Add(CardCapability.BrothersBonds, "CAP_8", "Братские узы", BrothersBondsDescription,
                 BrothersBondsColorTag);
             _cardCapabilityLookUp.Add(CardCapability.HandTransfer, "CAP_9", "Передача", HandTransferDescription,

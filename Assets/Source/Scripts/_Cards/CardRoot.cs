@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using Cards.Animations.Curses;
@@ -24,6 +25,7 @@ namespace Cards
         [SerializeField] private StartCardsType _startCardsType;
         [SerializeField] private CardDescription _cardDescription;
         [Inject] private FightProcessDBManager _fightProcessDBManager;
+        [Inject] private DBRoot _dBRoot;
 
         private readonly List<Card> _allCards = new List<Card>();
 
@@ -38,6 +40,8 @@ namespace Cards
         private CancellationToken _fightToken;
 
         public IReadOnlyList<Card> Cards => _allCards;
+
+        private string _allcardsMsg = "";
 
         public void Init(IEffectFactory effectFactory, BigCardRoot bigCardRoot, ICardDragAndDropHandler cardDragAndDropHandler,
             CardCapabilityDescription cardCapabilityDescription, CardSoundRoot cardSoundRoot, IFontSetter fontSetter,
@@ -65,14 +69,17 @@ namespace Cards
             {
                 CreateCard(cardName, transform);
             }
+
+            Debug.Log(_allcardsMsg);
         }
 
         public Card CreateCard(CardName cardName, Transform parent)
         {
             Card createdCard = _cardCreator.CreateInstantly(cardName, parent);
             createdCard.Init(_effectFactory, _cardViewService, _cardDragAndDropHandler, _curseAnimator,
-                _cardCapabilityDescription, _cardSoundRoot, _cardDescription, _fightToken);
+                _cardCapabilityDescription, _cardSoundRoot, _cardDescription, _fightToken, Guid.NewGuid(), _dBRoot);
 
+            _allcardsMsg += $"{createdCard.ViewData.Number}: {(int)createdCard.CardPersonType}\n";
             _fightProcessDBManager.WriteFightProcessAction(-1, null, createdCard.LogID, "CREATE", "CARD");
 
             TMP_Text[] cardTexts = createdCard.gameObject.GetComponentsInChildren<TMP_Text>(true);
