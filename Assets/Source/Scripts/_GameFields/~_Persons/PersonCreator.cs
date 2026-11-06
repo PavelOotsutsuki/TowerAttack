@@ -31,7 +31,7 @@ using GameFields.Persons.EffectHandlers.Scarecrows;
 using GameFields.InputSettings;
 using GameFields.FightMenues;
 using Cards.Views.BigCardViews.Capabilities;
-using GameFields.Persons.EffectHandlers.FateInevitabilities;
+using GameFields.Persons.EffectHandlers.FatesInevitabilities;
 using Cards.Sounds;
 using Cards.Views;
 using GameFields.CardTransits;
@@ -89,7 +89,7 @@ namespace GameFields.Persons
         private StartPlayerTurnLabel _startPlayerTurnLabel;
 
         private SkipTurnEffectHandler _skipTurnEffectHandlerPlayer;
-        private FateInevitabilityHandler _fateInevitabilityHandlerPlayer;
+        private FatesInevitabilityHandler _fatesInevitabilityHandlerPlayer;
         //private ScarecrowEffectHandler _scarecrowEffectHandlerPlayer;
         //private WiseMonkEffectHandler _wiseMonkEffectHandlerPlayer;
 
@@ -341,7 +341,7 @@ namespace GameFields.Persons
             _playerBrothersEffectHandler = new BrothersEffectHandler(_playerRechangeFeatureRuleController, cardFeatureRechangables,
                  _fightProcessDBManager, true);
             _playerPersonEffectsHandler = new PersonEffectsHandler(gnomeEffectHandler, slimeEffectHandler, curseEffectHandler,
-                _fireEffectHandlerPlayer, doubleEffectHandler, _skipTurnEffectHandlerPlayer, _fateInevitabilityHandlerPlayer, justiceBullEffectHandler,
+                _fireEffectHandlerPlayer, doubleEffectHandler, _skipTurnEffectHandlerPlayer, _fatesInevitabilityHandlerPlayer, justiceBullEffectHandler,
                 _playerBrothersEffectHandler, scarecrowEffectHandler, wiseMonkEffectHandler, falsePrinceEffectHandler,
                 fallenGuardianEffectHandler);
 
@@ -378,7 +378,7 @@ namespace GameFields.Persons
                 _cursedNumbersPlayer, _bus, _fightProcessDBManager);
             DoubleEffectHandler doubleEffectHandler = new DoubleEffectHandler(_fightProcessDBManager, false);
             SkipTurnEffectHandler skipTurnEffectHandler = new SkipTurnEffectHandler(_fightProcessDBManager, false);
-            FateInevitabilityHandler fateInevitabilityHandler = new FateInevitabilityHandler(_enemyLoseActions, _enemyAttackMenu,
+            FatesInevitabilityHandler fatesInevitabilityHandler = new FatesInevitabilityHandler(_enemyLoseActions, _enemyAttackMenu,
                  _fightProcessDBManager, false);
             JusticeBullEffectHandler justiceBullEffectHandler = new JusticeBullEffectHandler(_choicedNumbersEnemy, _playerTower);
             _enemyBrothersEffectHandler = new BrothersEffectHandler(_enemyRechangeFeatureRuleController, cardFeatureRechangables,
@@ -389,7 +389,7 @@ namespace GameFields.Persons
             FalsePrinceEffectHandler falsePrinceEffectHandler = new FalsePrinceEffectHandler(_enemyTower, _deck, _fightToken);
             FallenGuardianEffectHandler fallenGuardianEffectHandler = new FallenGuardianEffectHandler(_choicedNumbersEnemy, _playerTower);
             _enemyPersonEffectsHandler = new PersonEffectsHandler(gnomeEffectHandler, slimeEffectHandler, curseEffectHandler,
-                _fireEffectHandlerEnemy, doubleEffectHandler, skipTurnEffectHandler, fateInevitabilityHandler, justiceBullEffectHandler,
+                _fireEffectHandlerEnemy, doubleEffectHandler, skipTurnEffectHandler, fatesInevitabilityHandler, justiceBullEffectHandler,
                 _enemyBrothersEffectHandler, scarecrowEffectHandler, wiseMonkEffectHandler, falsePrinceEffectHandler,
                 fallenGuardianEffectHandler);
 
@@ -405,7 +405,7 @@ namespace GameFields.Persons
             //    _enemyPlayingZone, _enemyHand, fireEffectHandler, _discardPile, _fireRoot);
             VeryHardAIThinkLogic hardAIThinkLogic = new VeryHardAIThinkLogic(_cardRoot, _deck, _confirmableNumbersEnemyAI, gnomeEffectHandler,
                 _enemyPlayingZone, _enemyHand, _fireEffectHandlerEnemy, _discardPile, _fireRoot, _playerHand, _playerEffectKeeper, _confirmableNumbersPlayer,
-                _enemyBrothersEffectHandler, _enemyTable, _playerTable, _skipTurnEffectHandlerPlayer, _fateInevitabilityHandlerPlayer, _fireEffectHandlerPlayer,
+                _enemyBrothersEffectHandler, _enemyTable, _playerTable, _skipTurnEffectHandlerPlayer, _fatesInevitabilityHandlerPlayer, _fireEffectHandlerPlayer,
                 wiseMonkEffectHandler, scarecrowEffectHandler);
 
             EnemyDragAndDropImitationCreator enemyDragAndDropImitationCreator = new EnemyDragAndDropImitationCreator(cardDragAndDropImitationActions,
@@ -507,7 +507,7 @@ namespace GameFields.Persons
             //_playerCardAttackZone.Init(_playerChoiceMenu, _enemyTower);
 
             _skipTurnEffectHandlerPlayer = new SkipTurnEffectHandler(_fightProcessDBManager, true);
-            _fateInevitabilityHandlerPlayer = new FateInevitabilityHandler(_playerLoseActions, _playerAttackMenu,
+            _fatesInevitabilityHandlerPlayer = new FatesInevitabilityHandler(_playerLoseActions, _playerAttackMenu,
                  _fightProcessDBManager, true);
             //_scarecrowEffectHandlerPlayer = new ScarecrowEffectHandler(_discardManager);
             //_wiseMonkEffectHandlerPlayer = new WiseMonkEffectHandler();

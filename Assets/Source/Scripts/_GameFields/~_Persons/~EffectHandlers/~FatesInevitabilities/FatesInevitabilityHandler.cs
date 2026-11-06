@@ -7,21 +7,21 @@ using GameFields.Persons.SelectMenues;
 using Servers;
 using Tools;
 
-namespace GameFields.Persons.EffectHandlers.FateInevitabilities
+namespace GameFields.Persons.EffectHandlers.FatesInevitabilities
 {
-    public class FateInevitabilityHandler : EffectHandler, IEffectHandlerActiveWatcher, ILengthyEffectHandler
+    public class FatesInevitabilityHandler : EffectHandler, IEffectHandlerActiveWatcher, ILengthyEffectHandler
     {
         private readonly LoseActions _loseActions;
         private readonly ISelectMenuActivator _attackMenu;
-        private readonly List<FateInevitabilityHandlerEffect> _activeEffects;
+        private readonly List<FatesInevitabilityHandlerEffect> _activeEffects;
 
-        public FateInevitabilityHandler(LoseActions loseActions, ISelectMenuActivator attackMenu,
+        public FatesInevitabilityHandler(LoseActions loseActions, ISelectMenuActivator attackMenu,
             FightProcessDBManager fightProcessDBManager, bool isPlayersObject) : base(fightProcessDBManager, isPlayersObject)
         {
             _loseActions = loseActions;
             _attackMenu = attackMenu;
 
-            _activeEffects = new List<FateInevitabilityHandlerEffect>();
+            _activeEffects = new List<FatesInevitabilityHandlerEffect>();
         }
 
         public bool IsActive => _activeEffects.Count > 0;
@@ -36,23 +36,23 @@ namespace GameFields.Persons.EffectHandlers.FateInevitabilities
             //if (_activeEffects.Any(e => e.Card == card))
             //    return;
 
-            FateInevitabilityHandlerEffect fateInevitabilityHandlerEffect = new FateInevitabilityHandlerEffect(card, countTurns);
-            _activeEffects.Add(fateInevitabilityHandlerEffect);
+            FatesInevitabilityHandlerEffect fatesInevitabilityHandlerEffect = new FatesInevitabilityHandlerEffect(card, countTurns);
+            _activeEffects.Add(fatesInevitabilityHandlerEffect);
             FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, card.LogID, "ADD", GetType().Name);
             FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, _activeEffects.Count.ToString(), "COUNT EFFECTS", GetType().Name);
         }
 
         public void EndEffect(Card card)
         {
-            IEnumerable<FateInevitabilityHandlerEffect> findedEffects = _activeEffects.Where(e => e.Card == card);
-            List<FateInevitabilityHandlerEffect> removedEffects = new List<FateInevitabilityHandlerEffect>();
+            IEnumerable<FatesInevitabilityHandlerEffect> findedEffects = _activeEffects.Where(e => e.Card == card);
+            List<FatesInevitabilityHandlerEffect> removedEffects = new List<FatesInevitabilityHandlerEffect>();
 
-            foreach (FateInevitabilityHandlerEffect findedEffect in findedEffects)
+            foreach (FatesInevitabilityHandlerEffect findedEffect in findedEffects)
             {
                 removedEffects.Add(findedEffect);
             }
 
-            foreach (FateInevitabilityHandlerEffect removedEffect in removedEffects)
+            foreach (FatesInevitabilityHandlerEffect removedEffect in removedEffects)
             {
                 _activeEffects.Remove(removedEffect);
                 FightProcessDBManager.WriteFightProcessAction(Fight.TurnNumber, IsPlayersObject, card.LogID, "REMOVE", GetType().Name);

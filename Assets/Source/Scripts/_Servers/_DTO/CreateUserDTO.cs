@@ -5,7 +5,7 @@ namespace Servers.DTO
     [Serializable]
     public class CreateUserDTO
     {
-        public string username;
-        public string password;
+        public string id_user;
+        public string notice;
     }
 }

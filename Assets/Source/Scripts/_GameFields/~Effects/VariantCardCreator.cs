@@ -11,7 +11,7 @@ namespace GameFields.Effects
         [Header("22: FateMistress")]
 
         [SerializeField] private VariantCard _fateMistress_FatefulAttack_template;
-        [SerializeField] private VariantCard _fateMistress_FateInevitability_template;
+        [SerializeField] private VariantCard _fateMistress_FatesInevitability_template;
 
         [Space]
         [Header("----------------------------")]
@@ -57,7 +57,7 @@ namespace GameFields.Effects
                 new VariantCard[2]
                 {
                     _fateMistress_FatefulAttack_template,
-                    _fateMistress_FateInevitability_template
+                    _fateMistress_FatesInevitability_template
                 });
 
             _effectsVariantsTemplates.Add(EffectType.JusticeBull,

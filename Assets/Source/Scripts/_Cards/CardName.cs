@@ -24,7 +24,7 @@ namespace Cards
         RobinGood = 20,
         General = 21,
         FateMistress = 22,
-        DumbMonk = 23,
+        FoolishMonk = 23,
         LeftEyedSister = 24,
         JusticeBull = 25,
         PatriarchCorall = 26,

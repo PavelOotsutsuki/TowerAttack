@@ -1493,7 +1493,7 @@ MonoBehaviour:
   _template_20_RobinGood: {fileID: 1627013175492922350, guid: 8f6fd42c66d244a86b79406c62882d5b, type: 3}
   _template_21_General: {fileID: 3020868804588686156, guid: f7b34cf03635f4fce9f3edef326eb27f, type: 3}
   _template_22_FateMistress: {fileID: 1540312026714717812, guid: 043aaddff67794461b473458e147510b, type: 3}
-  _template_23_DumbMonk: {fileID: 8294089144562741609, guid: 375974656b9a240d1b384ee390e39ce9, type: 3}
+  _template_23_FoolishMonk: {fileID: 8294089144562741609, guid: 375974656b9a240d1b384ee390e39ce9, type: 3}
   _template_24_LeftEyedSister: {fileID: 2200427110963069214, guid: a783bb850765244fdb91f6c838c1f879, type: 3}
   _template_25_JusticeBull: {fileID: 1871258948043079442, guid: d9c75e23be14e4f68a79180c062164a4, type: 3}
   _template_26_PatriarchCorall: {fileID: 622661678552419410, guid: e6e5e2db847f14425bb10adb38f44587, type: 3}
@@ -1674,6 +1674,7 @@ MonoBehaviour:
   - {fileID: 6970487657763465998}
   - {fileID: 7209258198395755593}
   - {fileID: 5995602763836442463}
+  - {fileID: 2564606966784549480}
   - {fileID: 6841522798051743842}
   - {fileID: 7654093274379744270}
   - {fileID: 1609960749972910042}
@@ -16354,7 +16355,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fateMistress_FatefulAttack_template: {fileID: 286543228898277696, guid: 1819578e17b844273a750498513bbe57, type: 3}
-  _fateMistress_FateInevitability_template: {fileID: 5575023163802926095, guid: 83b73ae50ab6445f6922703fcc39b6cc, type: 3}
+  _fateMistress_FatesInevitability_template: {fileID: 5575023163802926095, guid: 83b73ae50ab6445f6922703fcc39b6cc, type: 3}
   _justiceBull_SmallerOnesArmy_template: {fileID: 223665474623300071, guid: 813423f70a83949eeb7110622c2cfae7, type: 3}
   _justiceBull_BigOnesArmy_template: {fileID: 4514499634071048553, guid: e1b586a4936654ff0a51d03da02efe67, type: 3}
   _hungryOgre_SilentSearch_template: {fileID: 6555479657126270278, guid: 696804bc0e65c4d3da034c8d9157e8b3, type: 3}
@@ -17671,7 +17672,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 456.62842}
+  m_AnchoredPosition: {x: 0, y: 456.62802}
   m_SizeDelta: {x: 0, y: 363}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &8421528645989163639

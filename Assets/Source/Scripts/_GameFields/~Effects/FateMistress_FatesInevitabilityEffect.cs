@@ -4,13 +4,13 @@ using GameFields.Persons;
 
 namespace GameFields.Effects
 {
-    public class FateMistress_FateInevitabilityEffect : Effect
+    public class FateMistress_FatesInevitabilityEffect : Effect
     {
         private readonly Person _activePerson;
         private readonly int _duration;
         private readonly Card _card;
 
-        public FateMistress_FateInevitabilityEffect(EffectData data) : base(data)
+        public FateMistress_FatesInevitabilityEffect(EffectData data) : base(data)
         {
             _activePerson = data.ActivePerson;
             _duration = data.CardEffectData.Duration;
@@ -19,7 +19,7 @@ namespace GameFields.Effects
             Play();
         }
 
-        protected override string GetName() => nameof(FateMistress_FateInevitabilityEffect);
+        protected override string GetName() => nameof(FateMistress_FatesInevitabilityEffect);
 
         //public override void End()
         //{
@@ -30,7 +30,7 @@ namespace GameFields.Effects
 
         protected override UniTask OnPlaying()
         {
-            _activePerson.ActivateFateInevitability(_card, _duration);
+            _activePerson.ActivateFatesInevitability(_card, _duration);
             return UniTask.CompletedTask;
         }
     }

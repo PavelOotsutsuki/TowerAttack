@@ -7,14 +7,14 @@ using GameFields.Persons;
 
 namespace GameFields.Effects
 {
-    public class DumbMonkEffect : Effect
+    public class FoolishMonkEffect : Effect
     {
         private readonly Person _activePerson;
         private readonly CardLocationViewRoot _viewRoot;
         private readonly CardTransitManager _transitManager;
         private readonly ViewTransitTypesRoot _typesRoot;
 
-        public DumbMonkEffect(CardLocationViewRoot viewRoot, CardTransitManager transitManager,
+        public FoolishMonkEffect(CardLocationViewRoot viewRoot, CardTransitManager transitManager,
             ViewTransitTypesRoot typesRoot, EffectData data) : base(data)
         {
             _activePerson = data.ActivePerson;
@@ -25,7 +25,7 @@ namespace GameFields.Effects
             Play();
         }
 
-        protected override string GetName() => nameof(DumbMonkEffect);
+        protected override string GetName() => nameof(FoolishMonkEffect);
 
         //public override void End()
         //{

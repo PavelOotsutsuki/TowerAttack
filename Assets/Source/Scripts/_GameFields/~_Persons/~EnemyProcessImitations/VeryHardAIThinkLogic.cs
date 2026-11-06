@@ -17,7 +17,7 @@ using Tools.Settings;
 using Tools.Utils;
 using UnityEngine;
 using Random = UnityEngine.Random;
-using GameFields.Persons.EffectHandlers.FateInevitabilities;
+using GameFields.Persons.EffectHandlers.FatesInevitabilities;
 using GameFields.Persons.EffectHandlers.Scarecrows;
 
 namespace GameFields.Persons.EnemyProcessImitations
@@ -52,7 +52,7 @@ namespace GameFields.Persons.EnemyProcessImitations
             GnomeEffectHandler gnomeEffectHandler, ICardDropPlace cardPlayingZone, ICardView handEnemy, FireEffectHandler fireEffectHandlerEnemy,
             ICardView discardPile, ICardView fireRoot, ICardView handPlayer, IReadOnlyPersonEffectKeeper playerPersonEffectKeeper,
             ConfirmableNumbers confirmableNumbersPlayer, BrothersEffectHandler brothersEffectHandlerEnemy, Table tableEnemy,
-            Table tablePlayer, SkipTurnEffectHandler skipTurnEffectHandlerPlayer, FateInevitabilityHandler fateInevitabilityHandlerPlayer,
+            Table tablePlayer, SkipTurnEffectHandler skipTurnEffectHandlerPlayer, FatesInevitabilityHandler fateInevitabilityHandlerPlayer,
             FireEffectHandler fireEffectHandlerPlayer, WiseMonkEffectHandler wiseMonkEffectHandlerEnemy, ScarecrowEffectHandler scarecrowEffectHandlerEnemy)
         {
             _cardWatcher = cardWatcher;
@@ -221,7 +221,7 @@ namespace GameFields.Persons.EnemyProcessImitations
                     return GetGeneralCapability();
                 case EffectType.FateMistress:
                     return GetFateMistressCapability();
-                case EffectType.DumbMonk:
+                case EffectType.FoolishMonk:
                     return GetDumbMonkCapability();
                 case EffectType.LeftEyedSister:
                     return GetLeftEyedSisterCapability();
@@ -868,7 +868,7 @@ namespace GameFields.Persons.EnemyProcessImitations
             if (firstCardName == CardName.CursedMark || firstCardName == CardName.PyromancersManuscript)
                 return GetDefaultCapability(80);
 
-            if (firstCardName == CardName.DumbMonk)
+            if (firstCardName == CardName.FoolishMonk)
                 if (handCards[1].CardName == CardName.CursedMark || handCards[1].CardName == CardName.PyromancersManuscript)
                     return GetDefaultCapability(80);
 

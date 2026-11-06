@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a56921f2bd449dc9206de2d76eb1d0c, type: 3}
-  m_Name: DumbMonkEffect
+  m_Script: {fileID: 11500000, guid: 3c4b2932e79594ca3b81752d00725eda, type: 3}
+  m_Name: FoolishMonkSoundConfig
   m_EditorClassIdentifier: 
-  <Type>k__BackingField: 23
-  <Duration>k__BackingField: 0
+  <Sounds>k__BackingField:
+  - {fileID: 8300000, guid: e6ae87925a1ec48dca4a41d77b6a5377, type: 3}

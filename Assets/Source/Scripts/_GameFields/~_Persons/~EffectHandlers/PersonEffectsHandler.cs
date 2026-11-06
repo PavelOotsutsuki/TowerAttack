@@ -11,7 +11,7 @@ using Cysharp.Threading.Tasks;
 using GameFields.Persons.EffectHandlers.Brothers;
 using GameFields.Persons.EffectHandlers.Scarecrows;
 using Cards;
-using GameFields.Persons.EffectHandlers.FateInevitabilities;
+using GameFields.Persons.EffectHandlers.FatesInevitabilities;
 using System.Threading;
 
 namespace GameFields.Persons.EffectHandlers
@@ -24,7 +24,7 @@ namespace GameFields.Persons.EffectHandlers
         private readonly FireEffectHandler _fireEffectHandler;
         private readonly DoubleEffectHandler _doubleEffectHandler;
         private readonly SkipTurnEffectHandler _skipTurnEffectHandler;
-        private readonly FateInevitabilityHandler _fateInevitabilityHandler;
+        private readonly FatesInevitabilityHandler _fatesInevitabilityHandler;
         private readonly JusticeBullEffectHandler _justiceBullEffectHandler;
         private readonly BrothersEffectHandler _brothersEffectHandler;
         private readonly ScarecrowEffectHandler _scarecrowEffectHandler;
@@ -36,7 +36,7 @@ namespace GameFields.Persons.EffectHandlers
 
         public PersonEffectsHandler(GnomeEffectHandler gnomeEffectHandler, SlimeEffectHandler slimeEffectHandler,
             CurseEffectHandler curseEffectHandler, FireEffectHandler fireEffectHandler, DoubleEffectHandler doubleEffectHandler,
-            SkipTurnEffectHandler skipTurnEffectHandler, FateInevitabilityHandler fateInevitabilityHandler,
+            SkipTurnEffectHandler skipTurnEffectHandler, FatesInevitabilityHandler fatesInevitabilityHandler,
             JusticeBullEffectHandler justiceBullEffectHandler, BrothersEffectHandler brothersEffectHandler,
             ScarecrowEffectHandler scarecrowEffectHandler, WiseMonkEffectHandler wiseMonkEffectHandler,
             FalsePrinceEffectHandler falsePrinceEffectHandler, FallenGuardianEffectHandler fallenGuardianEffectHandler)
@@ -47,7 +47,7 @@ namespace GameFields.Persons.EffectHandlers
             _fireEffectHandler = fireEffectHandler;
             _doubleEffectHandler = doubleEffectHandler;
             _skipTurnEffectHandler = skipTurnEffectHandler;
-            _fateInevitabilityHandler = fateInevitabilityHandler;
+            _fatesInevitabilityHandler = fatesInevitabilityHandler;
             _justiceBullEffectHandler = justiceBullEffectHandler;
             _brothersEffectHandler = brothersEffectHandler;
             _scarecrowEffectHandler = scarecrowEffectHandler;
@@ -62,7 +62,7 @@ namespace GameFields.Persons.EffectHandlers
                 _fireEffectHandler,
                 _doubleEffectHandler,
                 _skipTurnEffectHandler,
-                _fateInevitabilityHandler,
+                _fatesInevitabilityHandler,
                 _wiseMonkEffectHandler
             };
         }
@@ -73,7 +73,7 @@ namespace GameFields.Persons.EffectHandlers
         public FireEffectHandler FireEffectHandler => _fireEffectHandler;
         public DoubleEffectHandler DoubleEffectHandler => _doubleEffectHandler;
         public SkipTurnEffectHandler SkipTurnEffectHandler => _skipTurnEffectHandler;
-        public FateInevitabilityHandler FateInevitabilityHandler => _fateInevitabilityHandler;
+        public FatesInevitabilityHandler FatesInevitabilityHandler => _fatesInevitabilityHandler;
         public JusticeBullEffectHandler JusticeBullEffectHandler => _justiceBullEffectHandler;
         public BrothersEffectHandler BrothersEffectHandler => _brothersEffectHandler;
         public ScarecrowEffectHandler ScarecrowEffectHandler => _scarecrowEffectHandler;
@@ -107,19 +107,19 @@ namespace GameFields.Persons.EffectHandlers
             //callback.Invoke();
             //return;
 
-            CallbackHandler fateInevitabilityHandlerCallbackHandler = new CallbackHandler();
-            _fateInevitabilityHandler.BeforeEndTurn(fateInevitabilityHandlerCallbackHandler, token);
+            CallbackHandler fatesInevitabilityHandlerCallbackHandler = new CallbackHandler();
+            _fatesInevitabilityHandler.BeforeEndTurn(fatesInevitabilityHandlerCallbackHandler, token);
 
             List<ICompletable> completables = new List<ICompletable>();
 
-            completables.Add(fateInevitabilityHandlerCallbackHandler);
+            completables.Add(fatesInevitabilityHandlerCallbackHandler);
 
             WaitingAllBeforeEndTurnActions(completables, callback, token).Forget();
         }
 
         public bool IsActiveLengthyEffectCapableWinAlone()
         {
-            return _fateInevitabilityHandler.IsActive;
+            return _fatesInevitabilityHandler.IsActive;
         }
 
         private async UniTask WaitingAllBeforeEndTurnActions(IEnumerable<ICompletable> completables, Action callback, CancellationToken token)

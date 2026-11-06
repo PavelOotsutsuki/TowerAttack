@@ -27,7 +27,7 @@ namespace Cards
         [SerializeField] private Card _template_20_RobinGood;
         [SerializeField] private Card _template_21_General;
         [SerializeField] private Card _template_22_FateMistress;
-        [SerializeField] private Card _template_23_DumbMonk;
+        [SerializeField] private Card _template_23_FoolishMonk;
         [SerializeField] private Card _template_24_LeftEyedSister;
         [SerializeField] private Card _template_25_JusticeBull;
         [SerializeField] private Card _template_26_PatriarchCorall;
@@ -82,7 +82,7 @@ namespace Cards
             _createPairs.Add(CardName.RobinGood, _template_20_RobinGood);
             _createPairs.Add(CardName.General, _template_21_General);
             _createPairs.Add(CardName.FateMistress, _template_22_FateMistress);
-            _createPairs.Add(CardName.DumbMonk, _template_23_DumbMonk);
+            _createPairs.Add(CardName.FoolishMonk, _template_23_FoolishMonk);
             _createPairs.Add(CardName.LeftEyedSister, _template_24_LeftEyedSister);
             _createPairs.Add(CardName.JusticeBull, _template_25_JusticeBull);
             _createPairs.Add(CardName.PatriarchCorall, _template_26_PatriarchCorall);

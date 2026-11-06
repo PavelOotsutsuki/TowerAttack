@@ -418,9 +418,9 @@ namespace GameFields.Persons
             _personEffectsHandler.FireEffectHandler.Activate(card);
         }
 
-        public void ActivateFateInevitability(Card card, int countTurns)
+        public void ActivateFatesInevitability(Card card, int countTurns)
         {
-            _personEffectsHandler.FateInevitabilityHandler.Activate(card, countTurns);
+            _personEffectsHandler.FatesInevitabilityHandler.Activate(card, countTurns);
         }
 
         public void ActivateScarecrowEffect(int countTurns, Card card)

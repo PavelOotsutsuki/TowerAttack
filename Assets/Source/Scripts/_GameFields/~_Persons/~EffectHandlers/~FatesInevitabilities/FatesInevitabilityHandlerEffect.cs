@@ -1,15 +1,15 @@
 using Cards;
 
-namespace GameFields.Persons.EffectHandlers.FateInevitabilities
+namespace GameFields.Persons.EffectHandlers.FatesInevitabilities
 {
-    public class FateInevitabilityHandlerEffect
+    public class FatesInevitabilityHandlerEffect
     {
         private readonly int _startTurns;
         private readonly Card _card;
 
         private int _restTurns;
 
-        public FateInevitabilityHandlerEffect(Card card, int countTurns)
+        public FatesInevitabilityHandlerEffect(Card card, int countTurns)
         {
             _startTurns = countTurns;
             _card = card;

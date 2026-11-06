@@ -104,8 +104,17 @@ namespace Servers
                         //    Level = data.items[0].Level,
                         //    LastLogin = data.items[0].LastLogin
                         //};
-                        _currentIdUser = Guid.Parse(request.downloadHandler.text.Trim('"'));
+                        //GetUserDTO userDTO = await GetUserData(token);
+                        CreateUserDTO createUserDTO = JsonUtility.FromJson<CreateUserDTO>(request.downloadHandler.text);
+                        string notice = createUserDTO.notice;
+                        _currentIdUser = Guid.Parse(createUserDTO.id_user);
                         _lastLogInDate = DateTime.Now;
+
+                        if (string.IsNullOrWhiteSpace(notice) == false)
+                            Debug.Log(notice);
+
+                        //_currentIdUser = Guid.Parse(request.downloadHandler.text.Trim('"'));
+                        //_lastLogInDate = DateTime.Now;
                         //GetUserDTO userDTO = await GetUserData(token);
 
                         Debug.Log(_currentIdUser);
