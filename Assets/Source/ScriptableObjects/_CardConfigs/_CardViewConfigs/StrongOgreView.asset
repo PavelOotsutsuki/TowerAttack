@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 459cc77b26cd24f4683e531279bba082, type: 3}
+  m_Name: StrongOgreView
+  m_EditorClassIdentifier: 
+  <Number>k__BackingField: 43
+  <Icon>k__BackingField: {fileID: 21300000, guid: 52f0054da7c9645ce86ad51d80b92284, type: 3}
+  <Description>k__BackingField: "\u041F\u043E \u0440\u0430\u0437\u0434\u0435\u043B\u044C\u043D\u043E\u0441\u0442\u0438
+    \u043E\u043D\u0438 \u0441\u0438\u043B\u044C\u043D\u0435\u0435"
+  <Feature>k__BackingField: "<CAP_7>\u0412\u0430\u0440\u0438\u0430\u043D\u0442:</CAP_7>
+    \u0412\u044B <CAP_1>\u0410\u0442\u0430\u043A\u0443\u0435\u0442\u0435</CAP_1>
+    1 \u0440\u0430\u0437, \u0430 \u043F\u0440\u043E\u0442\u0438\u0432\u043D\u0438\u043A
+    \u0431\u0435\u0440\u0435\u0442 1 \u043A\u0430\u0440\u0442\u0443, <CAP_7>\u043B\u0438\u0431\u043E:</CAP_7>
+    \u0432\u044B <CAP_1>\u0410\u0442\u0430\u043A\u0443\u0435\u0442\u0435</CAP_1>
+    4 \u0440\u0430\u0437\u0430, \u0430 \u043F\u0440\u043E\u0442\u0438\u0432\u043D\u0438\u043A
+    \u0431\u0435\u0440\u0435\u0442 4 \u043A\u0430\u0440\u0442\u044B"
+  <Name>k__BackingField: "\u0421\u0438\u043B\u044C\u043D\u044B\u0439 \u043E\u0433\u0440"
