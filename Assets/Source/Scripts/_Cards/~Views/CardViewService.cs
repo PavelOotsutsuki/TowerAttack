@@ -29,8 +29,8 @@ namespace Cards.Views
             _currentCardFrame = cardFrame;
 
             _bigCardRoot.Activate(bigCardRootActivateData);
-            _currentCard.Hide();
-            _currentCardFrame.Hide();
+            _currentCard?.Hide();
+            _currentCardFrame?.Hide();
         }
 
         public void SetDefaultView()

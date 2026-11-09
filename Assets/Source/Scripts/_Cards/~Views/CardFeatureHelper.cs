@@ -1,5 +1,7 @@
 using System;
 using System.Threading;
+using Cards.Views.BigCardViews;
+using Cards.Views.BigCardViews.BigCards;
 using Cards.Views.BigCardViews.CardDescriptions;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -8,31 +10,81 @@ namespace Cards.Views
 {
     public class CardFeatureHelper : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
+        ////private readonly Color _descriptionActivateColor = new Color32(236, 146, 146, 255); // Розовый 1
+        ////private readonly Color _descriptionActivateColor = new Color32(91, 82, 82, 255); 
+        //private readonly Color _descriptionActivateColor = new Color32(150, 138, 138, 255);
+        ////private readonly Color _descriptionActivateColor = Color.red;
+        //private bool _isActive;
+
+        //private CardDescription _cardDescription;
+        //private Func<string> _textDescriptionGetter;
+        //private CancellationToken _cardToken;
+
+        //public void Init(CardDescription cardDescription, Func<string> textDescriptionGetter, CancellationToken cardToken)
+        //{
+        //    _cardDescription = cardDescription;
+        //    _textDescriptionGetter = textDescriptionGetter;
+        //    _cardToken = cardToken;
+        //    _isActive = false;
+        //}
+
+        //public void OnPointerEnter(PointerEventData eventData)
+        //{
+        //    CardDescriptionActivateData activateData = new CardDescriptionActivateData(_textDescriptionGetter.Invoke(),
+        //        _cardToken, _descriptionActivateColor, true);
+        //    _cardDescription.Show(activateData);
+
+        //    _isActive = true;
+        //}
+
+        //public void OnPointerExit(PointerEventData eventData)
+        //{
+        //    if (_isActive == false)
+        //        return;
+
+        //    _cardDescription.Hide();
+        //    _isActive = false;
+        //}
+
         //private readonly Color _descriptionActivateColor = new Color32(236, 146, 146, 255); // Розовый 1
         //private readonly Color _descriptionActivateColor = new Color32(91, 82, 82, 255); 
-        private readonly Color _descriptionActivateColor = new Color32(150, 138, 138, 255);
+        //private readonly Color _descriptionActivateColor = new Color32(150, 138, 138, 255);
         //private readonly Color _descriptionActivateColor = Color.red;
         private bool _isActive;
 
-        private CardDescription _cardDescription;
-        private Func<string> _textDescriptionGetter;
+        private CardViewService _cardViewService;
+        private Func<BigCardShowData> _bigCardShowDataGetter;
         private CancellationToken _cardToken;
+        private Func<bool> _isDelayTimeAfterActivateIsOverCallback;
 
-        public void Init(CardDescription cardDescription, Func<string> textDescriptionGetter, CancellationToken cardToken)
+        private bool _isFirstTryActivate;
+
+        internal void Init(CardViewService cardViewService, Func<BigCardShowData> bigCardShowDataGetter, CancellationToken cardToken,
+            Func<bool> isDelayTimeAfterActivateIsOverCallback)
         {
-            _cardDescription = cardDescription;
-            _textDescriptionGetter = textDescriptionGetter;
+            _cardViewService = cardViewService;
+            _bigCardShowDataGetter = bigCardShowDataGetter;
             _cardToken = cardToken;
+            _isDelayTimeAfterActivateIsOverCallback = isDelayTimeAfterActivateIsOverCallback;
             _isActive = false;
+            _isFirstTryActivate = true;
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            CardDescriptionActivateData activateData = new CardDescriptionActivateData(_textDescriptionGetter.Invoke(),
-                _cardToken, _descriptionActivateColor, true);
-            _cardDescription.Show(activateData);
+            if (_isDelayTimeAfterActivateIsOverCallback.Invoke() == false && _isFirstTryActivate == true)
+            {
+                _isFirstTryActivate = false;
+                return;
+            }
+
+            BigCardShowData bigCardShowData = _bigCardShowDataGetter.Invoke();
+            BigCardRootActivateData bigCardRootActivateData = new BigCardRootActivateData(bigCardShowData);
+
+            _cardViewService.SetOverview(null, bigCardRootActivateData, null);
 
             _isActive = true;
+            _isFirstTryActivate = false;
         }
 
         public void OnPointerExit(PointerEventData eventData)
@@ -40,8 +92,9 @@ namespace Cards.Views
             if (_isActive == false)
                 return;
 
-            _cardDescription.Hide();
+            _cardViewService.SetDefaultView();
             _isActive = false;
+            _isFirstTryActivate = true;
         }
     }
 }

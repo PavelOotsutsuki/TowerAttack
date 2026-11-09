@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using Cards.Views;
+using Cards.Views.BigCardViews.BigCards;
 using Cards.Views.BigCardViews.CardDescriptions;
+using Tools;
 using Tools.Utils.FillComponents;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -16,15 +19,30 @@ namespace Cards.Insides
 
         public bool? IsShown { get; private set; } = null;
 
-        public void Init(Sprite icon, CardDescription cardDescription, IFeatureWatcher featureWatcher, CancellationToken cardToken)
+        //public void Init(Sprite icon, CardDescription cardDescription, IFeatureWatcher featureWatcher, CancellationToken cardToken)
+        //{
+        //    _iconImage.sprite = icon;
+        //    transform.localPosition = Vector2.zero;
+        //    _cardFeatureHelper.Init(cardDescription, () => featureWatcher.Feature, cardToken);
+
+        //    IsShown = true;
+        //    Hide();
+        //}
+
+        private DateTime? _lastActivate = null;
+
+        public void Init(Sprite icon, CardViewService cardViewService, Vector2 cardSize, ReadOnlyRectTransform RORTransform, CardViewData cardViewData,
+            CancellationToken cardToken)
         {
             _iconImage.sprite = icon;
             transform.localPosition = Vector2.zero;
-            _cardFeatureHelper.Init(cardDescription, () => featureWatcher.Feature, cardToken);
+            _cardFeatureHelper.Init(cardViewService, () => new BigCardShowData(cardSize, RORTransform, cardViewData, true), cardToken, IsDelayTimeAfterActivateIsOver);
 
             IsShown = true;
             Hide();
         }
+
+        //private bool IsDelayTimeAfterActivateIsOver => _lastActivate == null ? true : (DateTime.Now - _lastActivate.Value).Milliseconds > 100;
 
         public void Show()
         {
@@ -32,6 +50,7 @@ namespace Cards.Insides
                 return;
 
             IsShown = true;
+            _lastActivate = DateTime.Now;
 
             gameObject.SetActive(true);
         }
@@ -45,6 +64,15 @@ namespace Cards.Insides
 
             _cardFeatureHelper.OnPointerExit(new PointerEventData(EventSystem.current));
             gameObject.SetActive(false);
+        }
+
+        private bool IsDelayTimeAfterActivateIsOver()
+        {
+            DateTime now = DateTime.Now;
+
+            Debug.Log("(DateTime.Now - _lastActivate.Value).Milliseconds: " + (DateTime.Now - _lastActivate.Value).TotalMilliseconds);
+
+            return _lastActivate == null ? true : (DateTime.Now - _lastActivate.Value).TotalMilliseconds > 200;
         }
 
         #region AutomaticFillComponents

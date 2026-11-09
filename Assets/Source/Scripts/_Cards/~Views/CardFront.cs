@@ -51,7 +51,7 @@ namespace Cards.Views
         {
             _cardView.FillData(cardViewData);
 
-            BigCardShowData bigCardShowData = new BigCardShowData(_cardSize, _RORCardTransform, cardViewData);
+            BigCardShowData bigCardShowData = new BigCardShowData(_cardSize, _RORCardTransform, cardViewData, false);
             CardDescriptionActivateData cardDescriptionActivateData = new CardDescriptionActivateData(cardViewData.Description, _cardToken);
             CapabilityDescriptionActivateData capabilityDescriptionActivateData = new CapabilityDescriptionActivateData(cardViewData.CardCapability, _cardToken);
 

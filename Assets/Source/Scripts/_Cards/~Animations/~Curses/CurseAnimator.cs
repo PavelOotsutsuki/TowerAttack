@@ -58,8 +58,8 @@ namespace Cards.Animations.Curses
 
         private async UniTask LogProcess(CancellationToken token)
         {
-            Debug.Log("Начало LogProcess-а");
-            Dictionary<string, string> colors = new Dictionary<string, string>();
+            //Debug.Log("Начало LogProcess-а");
+            //Dictionary<string, string> colors = new Dictionary<string, string>();
             Dictionary<Graphic, Color> colorsCurrent = new Dictionary<Graphic, Color>();
 
             try
@@ -67,7 +67,7 @@ namespace Cards.Animations.Curses
                 while (true)
                 {
                     await UniTask.WaitForSeconds(3.4f, cancellationToken: token);
-                    colors.Clear();
+                    //colors.Clear();
 
                     //foreach ((Graphic g, Color c)  in _allGraphics)
                     //{
@@ -86,24 +86,24 @@ namespace Cards.Animations.Curses
                         colorsCurrent.Add(g, g.color);
                     }
 
-                    foreach ((Graphic g, Color c) in colorsCurrent)
-                    {
-                        if (colors.ContainsKey(c.ToString()) == false)
-                        {
-                            colors.Add(c.ToString(), g.gameObject.GetInstanceID().ToString());
-                        }
-                        else
-                        {
-                            colors[c.ToString()] += $", {g.gameObject.GetInstanceID().ToString()}";
-                        }
-                    }
+                    //foreach ((Graphic g, Color c) in colorsCurrent)
+                    //{
+                    //    if (colors.ContainsKey(c.ToString()) == false)
+                    //    {
+                    //        colors.Add(c.ToString(), g.gameObject.GetInstanceID().ToString());
+                    //    }
+                    //    else
+                    //    {
+                    //        colors[c.ToString()] += $", {g.gameObject.GetInstanceID().ToString()}";
+                    //    }
+                    //}
 
-                    int counter = 0;
-                    foreach ((string k, string v) in colors)
-                    {
-                        counter++;
-                        Debug.Log($"{counter}. {k} ::: {v}");
-                    }
+                    //int counter = 0;
+                    //foreach ((string k, string v) in colors)
+                    //{
+                    //    counter++;
+                    //    Debug.Log($"{counter}. {k} ::: {v}");
+                    //}
                 }
             }
             catch

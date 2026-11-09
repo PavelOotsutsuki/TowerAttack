@@ -46,7 +46,6 @@ namespace Cards.Views.BigCardViews
             if (IsActive == false)
                 return;
 
-
             IsActive = false;
 
             if (_bigCard.IsShown == true)

@@ -12,6 +12,7 @@ using Cards.Views.BigCardViews.Capabilities;
 using Cards.Views.BigCardViews.CardDescriptions;
 using Servers;
 using Tools;
+using Tools.Settings;
 using Tools.Utils;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Movements;
@@ -37,7 +38,8 @@ namespace Cards
         private CancellationTokenSource _cardCTS;
         private Guid _cardGlobalGuid;
 
-        private CardDescription _cardDescription;
+        //private CardDescription _cardDescription;
+        private CardViewService _cardViewService;
 
         private ICardState _currentState;
 
@@ -72,7 +74,8 @@ namespace Cards
             _cardGlobalGuid = cardGlobalGuid;
 
             RORTransform = new ReadOnlyRectTransform(_rectTransform);
-            _cardDescription = cardDescription;
+            //_cardDescription = cardDescription;
+            _cardViewService = cardViewService;
             _cardSoundLogic.Init(_config.SoundConfig.Sounds);
             _cardEffectManager = new CardEffectManager(_config.Effect, effectFactory, _cardSoundLogic);
             _viewData = new CardViewData(_config.CardViewConfig, _config.CardCapability);
@@ -238,7 +241,8 @@ namespace Cards
         {
             _character = Instantiate(_config.CardCharacter, _rectTransform);
             //_character.Init(_config.SoundConfig, _cardSoundVolume);
-            _character.Init(_config.CardViewConfig.Icon, _cardDescription, _cardPaper, CardToken);
+            //_character.Init(_config.CardViewConfig.Icon, _cardDescription, _cardPaper, CardToken);
+            _character.Init(_config.CardViewConfig.Icon, _cardViewService, GameSettings.CardSize, RORTransform, _viewData, CardToken);
         }
 
         private void CheckStateByNull()
