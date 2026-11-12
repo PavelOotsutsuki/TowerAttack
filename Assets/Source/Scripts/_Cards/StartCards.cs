@@ -26,11 +26,11 @@ namespace Cards
         private void CreateDefaultFiftyCards()
         {
 
-            for (int i = 1; i <= 50; i++)
-            {
-                CardName cardName = (CardName)i;
-                _startCardNames.Add(cardName);
-            }
+            //for (int i = 1; i <= 50; i++)
+            //{
+            //    CardName cardName = (CardName)i;
+            //    _startCardNames.Add(cardName);
+            //}
 
             #region Проверка лагов Curse
             //for (int i = 1; i <= 10; i++)
@@ -76,11 +76,23 @@ namespace Cards
             //}
             #endregion
 
-            //for (int i = 1; i <= 25; i++)
-            //{
-            //    CardName cardName = (CardName)(9);
-            //    _startCardNames.Add(cardName);
-            //}
+            for (int i = 1; i <= 25; i++)
+            {
+                CardName cardName = (CardName)(44);
+                _startCardNames.Add(cardName);
+            }
+
+            for (int i = 1; i <= 10; i++)
+            {
+                CardName cardName = (CardName)(18);
+                _startCardNames.Add(cardName);
+            }
+
+            for (int i = 1; i <= 50; i++)
+            {
+                CardName cardName = (CardName)(28);
+                _startCardNames.Add(cardName);
+            }
 
             //for (int i = 1; i <= 10; i++)
             //{

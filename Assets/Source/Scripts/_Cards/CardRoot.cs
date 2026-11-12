@@ -23,13 +23,13 @@ namespace Cards
         [SerializeField] private CurseAnimator _curseAnimator;
         [SerializeField] private CardCreator _cardCreator;
         [SerializeField] private StartCardsType _startCardsType;
-        [SerializeField] private CardDescription _cardDescription;
+        //[SerializeField] private CardDescription _cardDescription;
         [Inject] private FightProcessDBManager _fightProcessDBManager;
         [Inject] private DBRoot _dBRoot;
 
         private readonly List<Card> _allCards = new List<Card>();
 
-        private BigCardRoot _bigCardRoot;
+        //private BigCardRoot _bigCardRoot;
         private CardViewService _cardViewService;
 
         private IEffectFactory _effectFactory;
@@ -38,23 +38,24 @@ namespace Cards
         private CardSoundRoot _cardSoundRoot;
         private IFontSetter _fontSetter;
         private CancellationToken _fightToken;
+        private CardDescription _cardDescription;
 
         public IReadOnlyList<Card> Cards => _allCards;
 
         private string _allcardsMsg = "";
 
-        public void Init(IEffectFactory effectFactory, BigCardRoot bigCardRoot, ICardDragAndDropHandler cardDragAndDropHandler,
+        public void Init(IEffectFactory effectFactory, ICardDragAndDropHandler cardDragAndDropHandler,
             CardCapabilityDescription cardCapabilityDescription, CardSoundRoot cardSoundRoot, IFontSetter fontSetter,
-            CancellationToken fightToken)
+            CancellationToken fightToken, CardViewService cardViewService, CardDescription cardDescription)
         {
             _fightToken = fightToken;
+            _cardDescription = cardDescription;
 
             _curseAnimator.Init(_fightToken);
             _cardCreator.Init();
 
-            _bigCardRoot = bigCardRoot;
-            _cardDescription.Init();
-            _bigCardRoot.Init(cardCapabilityDescription, _cardDescription);
+            //_bigCardRoot = bigCardRoot;
+            //_bigCardRoot.Init(cardCapabilityDescription, _cardDescription);
 
             _effectFactory = effectFactory;
             _cardDragAndDropHandler = cardDragAndDropHandler;
@@ -62,7 +63,8 @@ namespace Cards
             _cardSoundRoot = cardSoundRoot;
             _fontSetter = fontSetter;
 
-            _cardViewService = new CardViewService(_bigCardRoot);
+            //_cardViewService = new CardViewService(_bigCardRoot);
+            _cardViewService = cardViewService;
             StartCards startCards = new StartCards(_startCardsType);
 
             foreach (CardName cardName in startCards.StartCardNames)
@@ -98,7 +100,7 @@ namespace Cards
             {
                 //DefineBigCardRoot(),
                 DefineCardCreator(),
-                DefineCardDescription()
+                //DefineCardDescription()
             };
 
             return list;
@@ -116,11 +118,11 @@ namespace Cards
             return AutomaticFillComponents.DefineComponent(this, ref _cardCreator, ComponentLocationTypes.InThis);
         }
 
-        [ContextMenu(nameof(DefineCardDescription))]
-        private ComponentAttachInfo DefineCardDescription()
-        {
-            return AutomaticFillComponents.DefineComponent(this, ref _cardDescription, ComponentLocationTypes.InScene);
-        }
+        //[ContextMenu(nameof(DefineCardDescription))]
+        //private ComponentAttachInfo DefineCardDescription()
+        //{
+        //    return AutomaticFillComponents.DefineComponent(this, ref _cardDescription, ComponentLocationTypes.InScene);
+        //}
         #endregion 
     }
 }

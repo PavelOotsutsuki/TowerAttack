@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using Servers;
+using Cards.Views;
 
 namespace GameFields.Histories
 {
-    public class HistoryRoot
+    public class HistoryRoot : IHistoryCardLinkHandler
     {
         private readonly List<HistoryData> _historyMsg = new List<HistoryData>();
         private readonly int _maxCountHistoryPositions = 500;
@@ -23,6 +24,19 @@ namespace GameFields.Histories
             _fightProcessDBManager = fightProcessDBManager;
         }
 
+        CardViewData IHistoryCardLinkHandler.GetDataByLink(string link)
+        {
+            string[] linkData = link.Split('|');
+
+            if (linkData.Length != 2)
+                throw new Exception("Ошибка ссылки на данные карты");
+
+            int historyDataIndex = Convert.ToInt32(linkData[0]);
+            int historyCardDataIndex = Convert.ToInt32(linkData[1]);
+
+            return _historyMsg[historyDataIndex].GetCardViewData(historyCardDataIndex);
+        }
+
         public string GetHistoryList(bool cardAsNumber)
         {
             if (_historyMsg.Count == 0)
@@ -35,7 +49,7 @@ namespace GameFields.Histories
                 if (i != _historyMsg.Count - 1)
                     historyList.Append("\n--------------\n");
 
-                historyList.Append(_historyMsg[i].GetFullMsg(cardAsNumber));
+                historyList.Append(_historyMsg[i].GetFullMsg(cardAsNumber, i));
             }
 
             return historyList.ToString();
@@ -68,7 +82,7 @@ namespace GameFields.Histories
 
         private bool IsDuplicate(HistoryData historyData)
         {
-            HistoryData findedData = _historyMsg.Where(d => d.GetFullMsg(false) == historyData.GetFullMsg(false)).FirstOrDefault();
+            HistoryData findedData = _historyMsg.Where(d => d.GetFullMsg(false, -1) == historyData.GetFullMsg(false, -1)).FirstOrDefault();
 
             if (findedData != null)
             {

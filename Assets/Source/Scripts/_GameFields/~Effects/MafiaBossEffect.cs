@@ -76,6 +76,7 @@ namespace GameFields.Effects
                 else
                 {
                     cardToFire = cardsHand[i];
+                    cardToFire.SetVisibleForPlayerExtra();
                 }
             }
 

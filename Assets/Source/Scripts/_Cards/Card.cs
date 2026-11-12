@@ -37,6 +37,7 @@ namespace Cards
         private CardSpriteModeManager _cardSpriteModeManager;
         private CancellationTokenSource _cardCTS;
         private Guid _cardGlobalGuid;
+        private bool _isVisibleForPlayerExtra;
 
         //private CardDescription _cardDescription;
         private CardViewService _cardViewService;
@@ -53,7 +54,19 @@ namespace Cards
         public CardPersonType CardPersonType => _config.CardPersonType; // ДЛЯ ТЕСТА. В ИГРЕ НЕ НУЖНО ПОКА
         public CardName CardName => _config.CardName;
         public CardEffectConfig EffectConfig => _config.Effect;
-        public bool IsVisibleByPlayer => _cardPaper.CurrentSide == SideType.Front || _currentState is CardCharacter;
+        public bool IsVisibleByPlayer
+        {
+            get
+            {
+                if (_isVisibleForPlayerExtra == true)
+                {
+                    _isVisibleForPlayerExtra = false;
+                    return true;
+                }
+
+                return _cardPaper.CurrentSide == SideType.Front || _currentState is CardCharacter;
+            }
+        }
         //public string Name => _config.CardViewConfig.Name;
 
         public bool IsCurse => _cardSpriteModeManager.IsCurse;
@@ -73,6 +86,7 @@ namespace Cards
             _cardCTS = CancellationTokenSource.CreateLinkedTokenSource(fightToken);
             _cardGlobalGuid = cardGlobalGuid;
 
+            _isVisibleForPlayerExtra = false;
             RORTransform = new ReadOnlyRectTransform(_rectTransform);
             //_cardDescription = cardDescription;
             _cardViewService = cardViewService;
@@ -130,6 +144,11 @@ namespace Cards
         //    //    return;
         //    //}
         //}
+
+        public void SetVisibleForPlayerExtra()
+        {
+            _isVisibleForPlayerExtra = true;
+        }
 
         public void SetCurseMode()
         {

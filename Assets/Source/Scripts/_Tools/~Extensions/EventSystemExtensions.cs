@@ -23,5 +23,24 @@ namespace Tools.Extensions
 
             return false;
         }
+
+        public static bool TryGetFirstComponentInRaycasts<T>(this EventSystem system, PointerEventData eventData, out T findedComponent)
+        {
+            List<RaycastResult> raycastResults = new List<RaycastResult>();
+
+            system.RaycastAll(eventData, raycastResults);
+            findedComponent = default;
+
+            if (raycastResults.Count > 0)
+            { 
+                if (raycastResults[0].gameObject.TryGetComponent(out T component))
+                {
+                    findedComponent = component;
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

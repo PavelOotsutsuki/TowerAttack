@@ -3,7 +3,7 @@ using Tools;
 
 namespace Cards.Views
 {
-    internal class CardViewService
+    public class CardViewService
     {
         private readonly BigCardRoot _bigCardRoot;
 

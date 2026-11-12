@@ -36,7 +36,7 @@ namespace Cards.Insides
         {
             _iconImage.sprite = icon;
             transform.localPosition = Vector2.zero;
-            _cardFeatureHelper.Init(cardViewService, () => new BigCardShowData(cardSize, RORTransform, cardViewData, true), cardToken, IsDelayTimeAfterActivateIsOver);
+            _cardFeatureHelper.Init(cardViewService, () => new BigCardShowData(cardSize, RORTransform, cardViewData, BigCardPositionType.RightUp), cardToken, IsDelayTimeAfterActivateIsOver);
 
             IsShown = true;
             Hide();
@@ -70,9 +70,9 @@ namespace Cards.Insides
         {
             DateTime now = DateTime.Now;
 
-            Debug.Log("(DateTime.Now - _lastActivate.Value).Milliseconds: " + (DateTime.Now - _lastActivate.Value).TotalMilliseconds);
+            Debug.Log("(DateTime.Now - _lastActivate.Value).Milliseconds: " + (now - _lastActivate.Value).TotalMilliseconds);
 
-            return _lastActivate == null ? true : (DateTime.Now - _lastActivate.Value).TotalMilliseconds > 200;
+            return _lastActivate == null ? true : (now - _lastActivate.Value).TotalMilliseconds > 200;
         }
 
         #region AutomaticFillComponents

@@ -17,7 +17,7 @@ namespace Cards.Views.BigCardViews
         
         public bool? IsActive { get; private set; } = false;
 
-        internal void Init(CardCapabilityDescription cardCapabilityDescription, CardDescription cardDescription)
+        public void Init(CardCapabilityDescription cardCapabilityDescription, CardDescription cardDescription)
         {
             _bigCard.Init(cardCapabilityDescription);
             _capabilityDescription.Init(cardCapabilityDescription);

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cards.Views;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using Tools;
@@ -13,12 +14,15 @@ namespace GameFields.Histories
         //[SerializeField] private FightMenuLabel _fightMenuLabel;
         //[SerializeField] private FightMenuPanel _fightMenuPanel;
         //[SerializeField] private FightMenuButtonsPanelRoot _fightMenuButtonsPanelRoot;
+        [SerializeField] private RectTransform _rectTransform;
+        [SerializeField] private HistoryCardWatcher _historyCardWatcher;
         [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private TMP_Text _label;
         [SerializeField] private ScrollRect _scrollRect;
         [SerializeField] private bool _isCardAsNumber = false;
 
         private HistoryRoot _historyRoot;
+        private ReadOnlyRectTransform _RORectTransform;
         //private CancellationToken _fightToken;
 
         //private InputRoot _inputRoot;
@@ -35,7 +39,7 @@ namespace GameFields.Histories
         //public void Init(InputRoot inputRoot, LoseActions playerLoseActions, IVolume cardVolume, IVolume musicVolume,
         //    CardCapabilityDescription cardCapabilityDescription)
         //public void Init(HistoryRoot historyRoot, CancellationToken fightToken)
-        public void Init(HistoryRoot historyRoot)
+        public void Init(HistoryRoot historyRoot, CardViewService cardViewService)
         {
             gameObject.SetActive(false);
             _isComplete = true;
@@ -44,6 +48,10 @@ namespace GameFields.Histories
 
             //_fightToken = fightToken;
             _historyRoot = historyRoot;
+
+            _RORectTransform = new ReadOnlyRectTransform(_rectTransform);
+
+            _historyCardWatcher.Init(cardViewService, _RORectTransform, _historyRoot);
 
             //_inputRoot = inputRoot;
 
@@ -63,7 +71,6 @@ namespace GameFields.Histories
         {
             _label.text = msg;
         }
-
 
         public void OnDestroy()
         {
@@ -171,6 +178,8 @@ namespace GameFields.Histories
 
             //yield return new WaitUntil(() => _fightMenuLabel.IsComplete && _fightMenuPanel.IsComplete && _fightMenuButtonsPanelRoot.IsComplete);
 
+            _historyCardWatcher.DeactivateOverview();
+
             gameObject.SetActive(false);
             //_inputRoot.DeactivateFightMenu();
 
@@ -206,6 +215,8 @@ namespace GameFields.Histories
                 //DefineFightMenuLabel(),
                 //DefineFightMenuPanel(),
                 //DefineFightMenuButtonsPanel(),
+                DefineRectTransform(),
+                DefineHistoryCardWatcher(),
                 DefineCanvasGroup(),
                 DefineTMP_Text(),
                 DefineScrollRect()
@@ -231,6 +242,18 @@ namespace GameFields.Histories
         //{
         //    return AutomaticFillComponents.DefineComponent(this, ref _fightMenuButtonsPanelRoot, ComponentLocationTypes.InChildren);
         //}
+
+        [ContextMenu(nameof(DefineRectTransform))]
+        private ComponentAttachInfo DefineRectTransform()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
+        }
+
+        [ContextMenu(nameof(DefineHistoryCardWatcher))]
+        private ComponentAttachInfo DefineHistoryCardWatcher()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _historyCardWatcher, ComponentLocationTypes.InChildren);
+        }
 
         [ContextMenu(nameof(DefineCanvasGroup))]
         private ComponentAttachInfo DefineCanvasGroup()

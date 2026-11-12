@@ -4,6 +4,7 @@ using Tools;
 using System.Collections.Generic;
 using Tools.Utils.Screens;
 using Cards.Views.BigCardViews.Capabilities;
+using System;
 
 namespace Cards.Views.BigCardViews.BigCards
 {
@@ -51,32 +52,19 @@ namespace Cards.Views.BigCardViews.BigCards
 
             _cardView.FillData(data.CardViewData);
 
-            if (data.IsFixedPosition) // Фиксированная позиция - на правом верхнем краю
+            switch (data.PositionType)
             {
-                _rectTransform.anchorMin = new Vector2(1f, 1f);
-                _rectTransform.anchorMax = new Vector2(1f, 1f);
-
-                _rectTransform.pivot = new Vector2(1f, 1f);
-                _rectTransform.anchoredPosition = Vector2.zero;
-
-                //_rectTransform.localPosition = new Vector2(((ScreenView.X() / 2f) - (_bigWidth / 2f)), ((ScreenView.Y() / 2f) - (_bigHeight / 2f)));
-            }
-            else
-            {
-                _rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
-                _rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
-
-                _rectTransform.pivot = new Vector2(0.5f, 0.5f);
-
-                _sizeFactor = data.CardSize.x / data.CardSize.y;
-                _bigHeight = _canvasHeight / _scaleFactor;
-                _bigWidth = _bigHeight * _sizeFactor;
-                _screenFactorHeight = Screen.height / _canvasHeight;
-                //_screenFactorWidth = Screen.width / ScreenView.X();
-                _rectTransform.sizeDelta = new Vector2(_bigWidth, _bigHeight);
-
-
-                _rectTransform.position = new Vector2(data.PositionX, (_bigHeight / 2f + _canvasHeight / 10f) * _screenFactorHeight);
+                case BigCardPositionType.RightUp:
+                    ShowOnRightUp();
+                    break;
+                case BigCardPositionType.InsteadOfTarget:
+                    ShowOnInsteadOfTarget(data.CardSize.x, data.CardSize.y, data.PositionX);
+                    break;
+                case BigCardPositionType.LeftOfTarget:
+                    ShowOnLeftOfTarget(data);
+                    break;
+                default:
+                    throw new NotImplementedException($"Неизвестный {nameof(BigCardPositionType)}: {data.PositionType}");
             }
 
             #region DEBUG
@@ -92,6 +80,55 @@ namespace Cards.Views.BigCardViews.BigCards
             #endregion
 
             gameObject.SetActive(true);
+        }
+
+        private void ShowOnRightUp()
+        {
+            _rectTransform.anchorMin = new Vector2(1f, 1f);
+            _rectTransform.anchorMax = new Vector2(1f, 1f);
+
+            _rectTransform.pivot = new Vector2(1f, 1f);
+            _rectTransform.anchoredPosition = Vector2.zero;
+        }
+
+        private void ShowOnInsteadOfTarget(float cardSizeX, float cardSizeY, float positionX)
+        {
+            _rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+            _rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+
+            _rectTransform.pivot = new Vector2(0.5f, 0.5f);
+
+            _sizeFactor = cardSizeX / cardSizeY;
+            _bigHeight = _canvasHeight / _scaleFactor;
+            _bigWidth = _bigHeight * _sizeFactor;
+            _screenFactorHeight = Screen.height / _canvasHeight;
+            //_screenFactorWidth = Screen.width / ScreenView.X();
+            _rectTransform.sizeDelta = new Vector2(_bigWidth, _bigHeight);
+
+            _rectTransform.position = new Vector2(positionX, (_bigHeight / 2f + _canvasHeight / 10f) * _screenFactorHeight);
+        }
+
+        private void ShowOnLeftOfTarget(BigCardShowData data)
+        {
+            _rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+            _rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+
+            _rectTransform.pivot = new Vector2(0.5f, 0.5f);
+
+            float positionX = data.PositionX;
+            float positionY = data.PositionY;
+            float width = data.Width;
+
+            _sizeFactor = data.CardSize.x / data.CardSize.y;
+            _bigHeight = _canvasHeight / _scaleFactor;
+            _bigWidth = _bigHeight * _sizeFactor;
+            _screenFactorWidth = Screen.width / ScreenView.X();
+
+
+            _rectTransform.position = new Vector2(positionX - width - (_bigWidth /2f), positionY);
+
+
+
         }
 
         #region AutomaticFillComponents

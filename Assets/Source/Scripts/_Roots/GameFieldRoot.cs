@@ -30,6 +30,8 @@ using Tools.UI.UIHelpers;
 using Cysharp.Threading.Tasks;
 using Tools.Utils;
 using Servers;
+using Cards.Views.BigCardViews.CardDescriptions;
+using Cards.Views;
 
 namespace Roots
 {
@@ -41,6 +43,7 @@ namespace Roots
         [SerializeField] private ObjectsLightControlsCreator _lightControlsCreator;
         [SerializeField] private SpeedUpButtonSortOrder _speedUpButtonSortOrder;
         [SerializeField] private GameField _fightPVE;
+        [SerializeField] private CardDescription _cardDescription;
 
         private PersonsState _personsState;
 
@@ -116,6 +119,10 @@ namespace Roots
 
             GameFieldGC.GCOFF(GameFieldToken);
 
+            _cardDescription.Init();
+            _bigCardRoot.Init(_cardCapabilityDescription, _cardDescription);
+            CardViewService cardViewService = new CardViewService(_bigCardRoot);
+
             _UIHelperDescription.Init(GameFieldToken);
 
             CancellationTokenSource fightSource = CancellationTokenSource.CreateLinkedTokenSource(GameFieldToken);
@@ -147,7 +154,7 @@ namespace Roots
 
             _personCreator.Init(_bus, _deck, _endTurnButton, _seatPool, cardDragAndDropHandler, cardDragAndDropLightController,
                 _informationLabel, _cardRoot, _cardSoundRoot, _soundRoot, _cardCapabilityDescription, _historyRoot, _soundRoot,
-                GameFieldToken, fightSource.Token, turnToken);
+                GameFieldToken, fightSource.Token, turnToken, cardViewService);
 
             Player player = _personCreator.CreatePlayer();
             EnemyAI enemyAI = _personCreator.CreateEnemyAI();
@@ -171,8 +178,8 @@ namespace Roots
                 _variantCardCreator, brothersEffectHandlerRoot, _bus, personEffectsHandlerRoot, discardManager, loseActionsRoot,
                 _cardSoundRoot, typesRoot, _historyRoot, fightSource.Token, _fightProcessDBManager);
 
-            _cardRoot.Init(effectFactory, _bigCardRoot, cardDragAndDropHandler, _cardCapabilityDescription, _cardSoundRoot, base.FontSetter,
-                fightSource.Token);
+            _cardRoot.Init(effectFactory, cardDragAndDropHandler, _cardCapabilityDescription, _cardSoundRoot, base.FontSetter,
+                fightSource.Token, cardViewService, _cardDescription);
             _deck.Init(_seatPool, _cardRoot.Cards, fightSource.Token, true);
 
 
@@ -289,7 +296,8 @@ namespace Roots
                 DefineCardRoot(),
                 DefinePersonCreator(),
                 DefineObjectsLightControlsCreator(),
-                DefineFightPVE()
+                DefineFightPVE(),
+                DefineCardDescription()
             };
 
             list.AddRange(base.DefineAllComponents());
@@ -325,6 +333,12 @@ namespace Roots
         private ComponentAttachInfo DefineFightPVE()
         {
             return AutomaticFillComponents.DefineComponent(this, ref _fightPVE, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineCardDescription))]
+        private ComponentAttachInfo DefineCardDescription()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _cardDescription, ComponentLocationTypes.InScene);
         }
         #endregion
     }

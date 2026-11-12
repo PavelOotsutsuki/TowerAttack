@@ -30,6 +30,7 @@ namespace GameFields.Histories
         public bool CanView => _canView;
         public string Name => _cardViewData is null ? "?" : _cardViewData.Name;
         public string Number => _cardViewData is null ? "?" : _cardViewData.Number.ToString();
+        public CardViewData CardViewData => _cardViewData;
         //public string NumberForDB => _cardViewData.Number.ToString(); // УБРАТЬ!!!
     }
 }

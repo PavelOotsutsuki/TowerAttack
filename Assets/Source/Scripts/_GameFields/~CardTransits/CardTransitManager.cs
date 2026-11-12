@@ -7,6 +7,7 @@ using Cysharp.Threading.Tasks;
 using GameFields.CommonAnimations;
 using GameFields.Decks;
 using GameFields.DiscardPiles;
+using GameFields.Histories;
 using GameFields.Persons;
 using GameFields.Persons.Fires;
 using GameFields.Persons.Hands;
@@ -28,10 +29,14 @@ namespace GameFields.CardTransits
         private readonly IFirePoolSeatable _enemyFirePool;
         private readonly CardLocationViewRoot _cardLocationViewRoot;
         private readonly ViewTransitTypesRoot _typesRoot;
+        private readonly HistoryRoot _historyRoot;
+
+        private readonly IPlayerObject _playerObject;
+        private readonly IEnemyAIObject _enemyObject;
 
         public CardTransitManager(HandPlayer playerHand, HandAI enemyHand, Tower playerTower, Tower enemyTower, Deck deck,
             DiscardPile discardPile, FireRoot fireRoot, FirePool playerFirePool, FirePool enemyFirePool, CardLocationViewRoot cardLocationViewRoot,
-            ViewTransitTypesRoot typesRoot)
+            ViewTransitTypesRoot typesRoot, HistoryRoot historyRoot)
         {
             _playerHand = playerHand;
             _playerTower = playerTower;
@@ -49,6 +54,11 @@ namespace GameFields.CardTransits
 
             _cardLocationViewRoot = cardLocationViewRoot;
             _typesRoot = typesRoot;
+
+            _historyRoot = historyRoot;
+
+            _playerObject = playerHand;
+            _enemyObject  = enemyHand;
         }
 
         //public void InsertIntoDeck(Card card, int index, TransitFromType from)
@@ -139,6 +149,7 @@ namespace GameFields.CardTransits
                 await UniTask.WaitUntil(() => callbackHandlerSeatInFirePool.IsComplete, cancellationToken: token);
 
                 callback?.Invoke();
+
                 return;
             }
 
@@ -152,6 +163,19 @@ namespace GameFields.CardTransits
             else
             {
                 seatable.SeatCard(card, index);
+
+                // Если была передача из руки в руку, значит карту украли
+                if (from == TransitFromType.HandEnemy && to == TransitToType.HandPlayer)
+                {
+                    HistoryData historyData = new HistoryData(_playerObject, "Вербовка", new HistoryCardData(card));
+                    _historyRoot.AddMsg(historyData);
+                }
+                else if (from == TransitFromType.HandPlayer && to == TransitToType.HandEnemy)
+                {
+                    card.SetVisibleForPlayerExtra();
+                    HistoryData historyData = new HistoryData(_enemyObject, "Вербовка", new HistoryCardData(card));
+                    _historyRoot.AddMsg(historyData);
+                }
                 callback?.Invoke();
             }
         }

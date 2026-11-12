@@ -64,6 +64,11 @@ namespace GameFields.Histories
             return isFind;
         }
 
+        public CardViewData GetCardViewData(int index)
+        {
+            return _historyCardDatas[index].CardViewData;
+        }
+
         public void AddCard(HistoryCardData historyCardData)
         {
             _historyCardDatas.Add(historyCardData);
@@ -76,11 +81,11 @@ namespace GameFields.Histories
             return $"<color=#{_color}> Ход {_turn}: {_msg} </color>";
         }
 
-        public string GetFullMsg(bool cardAsNumber)
+        public string GetFullMsg(bool cardAsNumber, int indexOfList)
         {
-            Func<string> nameGetter = cardAsNumber ? GetNameByNumber : GetNameByName;
+            Func<int, string> nameGetter = cardAsNumber ? GetNameByNumber : GetNameByName;
 
-            return $"<color=#{_color}> Ход {_turn}: {_msg} </color><b>{nameGetter.Invoke()}</b>";
+            return $"<color=#{_color}> Ход {_turn}: {_msg} </color><b>{nameGetter.Invoke(indexOfList)}</b>";
         }
 
         //public string GetFullConcatMsg(bool cardAsNumber, string lastConcatData)
@@ -90,7 +95,7 @@ namespace GameFields.Histories
         //    return $"<color=#{_color}> Ход {_turn}: {_msg} <b>{lastConcatData},{nameGetter.Invoke()}</b></color>";
         //}
 
-        private string GetNameByNumber()
+        private string GetNameByNumber(int indexOfList)
         {
             StringBuilder stringBuilder = new StringBuilder();
 
@@ -99,13 +104,14 @@ namespace GameFields.Histories
                 if (i != 0)
                     stringBuilder.Append(", ");
 
-                stringBuilder.Append(_historyCardDatas[i].Number);
+                stringBuilder.Append($"<link=\"{indexOfList}|{i}\">{_historyCardDatas[i].Number}</link>");
+                //stringBuilder.Append(_historyCardDatas[i].Number);
             }
 
             return stringBuilder.ToString();
         }
 
-        private string GetNameByName()
+        private string GetNameByName(int indexOfList)
         {
             StringBuilder stringBuilder = new StringBuilder();
 

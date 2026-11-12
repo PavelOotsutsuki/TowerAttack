@@ -1412,6 +1412,7 @@ MonoBehaviour:
   _lightControlsCreator: {fileID: 7484531735989112017}
   _speedUpButtonSortOrder: {fileID: 4729916998590484661}
   _fightPVE: {fileID: 1096962212225317911}
+  _cardDescription: {fileID: 1644309915632457671}
 --- !u!114 &8291408689434793309
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1432,7 +1433,6 @@ MonoBehaviour:
     _delayOut: 1
   _cardCreator: {fileID: 1379943374972121541}
   _startCardsType: 0
-  _cardDescription: {fileID: 1644309915632457671}
 --- !u!114 &6950195793345557426
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4957,7 +4957,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -6120,6 +6120,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aea5d70b7f91a4facbc6f2da70502864, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rectTransform: {fileID: 7745151501857423622}
+  _historyCardWatcher: {fileID: 3080628975778564148}
   _canvasGroup: {fileID: 7036350624518971690}
   _label: {fileID: 829092025208028180}
   _scrollRect: {fileID: 8370838934988248615}
@@ -12961,7 +12963,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8307414563391076822}
   m_HandleRect: {fileID: 2735894278148120600}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -13418,6 +13420,7 @@ GameObject:
   - component: {fileID: 3127356725659083738}
   - component: {fileID: 3729605237743964789}
   - component: {fileID: 829092025208028180}
+  - component: {fileID: 3080628975778564148}
   m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -13541,6 +13544,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &3080628975778564148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6158393067311428506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20b76f1a326bb4a85bb4c12c6ac257ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _historyText: {fileID: 829092025208028180}
 --- !u!1 &6222588120784512121
 GameObject:
   m_ObjectHideFlags: 0
@@ -17672,7 +17688,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 456.629}
+  m_AnchoredPosition: {x: 0, y: 456.62903}
   m_SizeDelta: {x: 0, y: 363}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &8421528645989163639

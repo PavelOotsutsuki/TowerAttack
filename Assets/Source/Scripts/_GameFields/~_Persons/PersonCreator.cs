@@ -258,7 +258,7 @@ namespace GameFields.Persons
             CardDragAndDropHandler cardDragAndDropHandler, CardDragAndDropLightController cardDragAndDropLightController,
             InformationLabel informationLabel, CardRoot cardRoot, CardSoundRoot cardSoundRoot, IVolume musicVolume,
             CardCapabilityDescription cardCapabilityDescription, HistoryRoot historyRoot, ISoundController soundController,
-            CancellationToken gameFieldToken, CancellationToken fightToken, TurnToken turnToken)
+            CancellationToken gameFieldToken, CancellationToken fightToken, TurnToken turnToken, CardViewService cardViewService)
         {
             _bus = bus;
             _deck = deck;
@@ -284,7 +284,7 @@ namespace GameFields.Persons
             _fightMenu.Init(_inputRoot, _playerLoseActions, cardSoundRoot, musicVolume, cardCapabilityDescription, fightToken);
             _fightMenuActivateButton.Init(_fightMenu, _UIHelperDescription, _gameFieldToken);
 
-            _historyMenu.Init(historyRoot);
+            _historyMenu.Init(historyRoot, cardViewService);
             _historyMenuActivateButton.Init(_historyMenu, _UIHelperDescription, _gameFieldToken);
 
             DefineFire();
@@ -435,7 +435,7 @@ namespace GameFields.Persons
         public CardTransitManager CreateCardTransitManager()
         {
             return new CardTransitManager(_playerHand, _enemyHand, _playerTower, _enemyTower, _deck, _discardPile, _fireRoot, _playerFirePool, _enemyFirePool,
-                GetCardLocationViewRoot(), _typesRoot);
+                GetCardLocationViewRoot(), _typesRoot, _historyRoot);
         }
 
         public ViewTransitTypesRoot GetViewTransitTypesRoot()
