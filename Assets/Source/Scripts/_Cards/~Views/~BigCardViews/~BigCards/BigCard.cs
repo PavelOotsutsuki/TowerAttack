@@ -52,13 +52,19 @@ namespace Cards.Views.BigCardViews.BigCards
 
             _cardView.FillData(data.CardViewData);
 
+            _sizeFactor = data.CardSize.x / data.CardSize.y;
+            _bigHeight = _canvasHeight / _scaleFactor;
+            _bigWidth = _bigHeight * _sizeFactor;
+
+            _rectTransform.sizeDelta = new Vector2(_bigWidth, _bigHeight);
+
             switch (data.PositionType)
             {
                 case BigCardPositionType.RightUp:
                     ShowOnRightUp();
                     break;
                 case BigCardPositionType.InsteadOfTarget:
-                    ShowOnInsteadOfTarget(data.CardSize.x, data.CardSize.y, data.PositionX);
+                    ShowOnInsteadOfTarget(data.PositionX);
                     break;
                 case BigCardPositionType.LeftOfTarget:
                     ShowOnLeftOfTarget(data);
@@ -89,21 +95,19 @@ namespace Cards.Views.BigCardViews.BigCards
 
             _rectTransform.pivot = new Vector2(1f, 1f);
             _rectTransform.anchoredPosition = Vector2.zero;
+
+            //_rectTransform.localPosition = new Vector2(ScreenView.X() / 2f - _bigWidth / 2f, ScreenView.Y() / 2f - _bigHeight / 2f);
         }
 
-        private void ShowOnInsteadOfTarget(float cardSizeX, float cardSizeY, float positionX)
+        private void ShowOnInsteadOfTarget(float positionX)
         {
             _rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
             _rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
 
             _rectTransform.pivot = new Vector2(0.5f, 0.5f);
 
-            _sizeFactor = cardSizeX / cardSizeY;
-            _bigHeight = _canvasHeight / _scaleFactor;
-            _bigWidth = _bigHeight * _sizeFactor;
             _screenFactorHeight = Screen.height / _canvasHeight;
             //_screenFactorWidth = Screen.width / ScreenView.X();
-            _rectTransform.sizeDelta = new Vector2(_bigWidth, _bigHeight);
 
             _rectTransform.position = new Vector2(positionX, (_bigHeight / 2f + _canvasHeight / 10f) * _screenFactorHeight);
         }
@@ -115,17 +119,34 @@ namespace Cards.Views.BigCardViews.BigCards
 
             _rectTransform.pivot = new Vector2(0.5f, 0.5f);
 
-            float positionX = data.PositionX;
-            float positionY = data.PositionY;
+            Vector2 targetPosition = data.LocalPosition;
             float width = data.Width;
+            //Debug.Log($"targetPosition: {targetPosition}");
+            //Debug.Log($"width: {width}");
+            //Debug.Log($"data.CardSize.x: {data.CardSize.x}");
+            //Debug.Log($"new Vector2(targetPosition.x - width / 2f - data.CardSize.x / 2f - 40f, targetPosition.y);: {new Vector2(targetPosition.x - width / 2f - data.CardSize.x / 2f + 32f, targetPosition.y)}");
 
-            _sizeFactor = data.CardSize.x / data.CardSize.y;
-            _bigHeight = _canvasHeight / _scaleFactor;
-            _bigWidth = _bigHeight * _sizeFactor;
-            _screenFactorWidth = Screen.width / ScreenView.X();
+            //_sizeFactor = data.CardSize.x / data.CardSize.y;
+            //_bigHeight = _canvasHeight / _scaleFactor;
+            //_bigWidth = _bigHeight * _sizeFactor;
+
+            _rectTransform.localPosition = new Vector2(targetPosition.x - width / 2f - _bigWidth / 2f + 32f, targetPosition.y);
+            //Debug.Log($" _rectTransform.localPosition: {_rectTransform.localPosition}");
 
 
-            _rectTransform.position = new Vector2(positionX - width - (_bigWidth /2f), positionY);
+            //float positionX = data.PositionX;
+            //float positionY = data.PositionY;
+
+            //Vector3 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.current, new Vector2(positionX, positionY));
+
+            //Vector2 localPoint = RectTransformUtility.ScreenPointToLocalPointInRectangle(parent)
+
+
+            //_screenFactorWidth = Screen.width / ScreenView.X();
+
+            //_rectTransform.sizeDelta = new Vector2(_bigWidth, _bigHeight);
+
+            //_rectTransform.position = new Vector2((positionX - width - (_bigWidth /2f)), positionY);
 
 
 

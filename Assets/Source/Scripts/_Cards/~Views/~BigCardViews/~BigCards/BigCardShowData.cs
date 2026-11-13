@@ -22,6 +22,7 @@ namespace Cards.Views.BigCardViews.BigCards
 
         public float PositionX => _RORTransform.GetPositionX();
         public float PositionY => _RORTransform.GetPositionY();
+        public Vector3 LocalPosition => _RORTransform.GetLocalPosition();
         public float Width => _RORTransform.GetWidth();
     }
 }

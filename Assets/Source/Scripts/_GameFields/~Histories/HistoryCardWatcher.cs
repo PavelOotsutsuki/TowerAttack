@@ -104,7 +104,7 @@ namespace GameFields.Histories
         private void CheckOverview()
         {
             // Важно: для UI используйте null в качестве камеры
-            Debug.Log($"eventData.position: {_lastPosition}");
+            //Debug.Log($"eventData.position: {_lastPosition}");
 
             int linkIndex = TMP_TextUtilities.FindIntersectingLink(_historyText, _lastPosition, null);
 
