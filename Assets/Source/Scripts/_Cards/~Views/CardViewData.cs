@@ -13,13 +13,13 @@ namespace Cards.Views
         private CardCapability _cardCapability;
         private string _feature;
 
-        internal CardViewData(CardViewConfig config, CardCapability cardCapability)
+        internal CardViewData(ICardViewConfig viewConfig, CardCapability cardCapability)
         {
-            _icon = config.Icon;
-            _number = config.Number;
-            _name = config.Name;
-            _description = config.Description;
-            _feature = config.Feature;
+            _icon = viewConfig.Icon;
+            _number = viewConfig.Number;
+            _name = viewConfig.Name;
+            _description = viewConfig.Description;
+            _feature = viewConfig.Feature;
             _cardCapability = cardCapability;
         }
 

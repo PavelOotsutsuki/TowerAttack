@@ -1,14 +1,26 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Cards.Views
 {
     [CreateAssetMenu(fileName = "CardViewConfig", menuName = "Cards/CardViewConfig", order = 51)]
-    internal class CardViewConfig : ScriptableObject
+    internal class CardViewConfig : ScriptableObject, ICardViewConfig
     {
-        [field: SerializeField] public int Number { get; private set; }
-        [field: SerializeField] public Sprite Icon { get; private set; }
-        [field: SerializeField] public string Description { get; private set; }
-        [field: SerializeField] public string Feature { get; private set; }
-        [field: SerializeField] public string Name { get; private set; }
+        [FormerlySerializedAs("<Number>k__BackingField")]
+        [SerializeField] private int _number;
+        [FormerlySerializedAs("<Icon>k__BackingField")]
+        [SerializeField] private Sprite _icon;
+        [FormerlySerializedAs("<Description>k__BackingField")]
+        [SerializeField] private string _description;
+        [FormerlySerializedAs("<Feature>k__BackingField")]
+        [SerializeField] private string _feature;
+        [FormerlySerializedAs("<Name>k__BackingField")]
+        [SerializeField] private string _name;
+
+        public int Number => _number;
+        public Sprite Icon => _icon;
+        public string Description => _description;
+        public string Feature => _feature;
+        public string Name => _name;
     }
 }

@@ -17,6 +17,7 @@ using Tools.Utils;
 using Tools.Utils.FillComponents;
 using Tools.Utils.Movements;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Cards
@@ -25,7 +26,10 @@ namespace Cards
     {
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private CardPaper _cardPaper;
-        [SerializeField] private CardConfig _config;
+
+        [FormerlySerializedAs("_config")]
+        [SerializeField] private CardConfig _configSO;
+
         [SerializeField] private Image _background;
         [SerializeField] private CardSoundLogic _cardSoundLogic;
 
@@ -41,6 +45,7 @@ namespace Cards
 
         //private CardDescription _cardDescription;
         private CardViewService _cardViewService;
+        private ICardConfig _config;
 
         private ICardState _currentState;
 
@@ -85,6 +90,8 @@ namespace Cards
         {
             _cardCTS = CancellationTokenSource.CreateLinkedTokenSource(fightToken);
             _cardGlobalGuid = cardGlobalGuid;
+
+            _config = _configSO;
 
             _isVisibleForPlayerExtra = false;
             RORTransform = new ReadOnlyRectTransform(_rectTransform);
