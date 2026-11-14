@@ -1,0 +1,65 @@
+using System.Threading;
+using Cards.Views.BigCardViews.Capabilities;
+using GameFields.Signals;
+using Servers;
+using Sounds;
+using Tools.Loads;
+using Tools.Utils.Screens;
+using UnityEngine;
+using Zenject;
+
+namespace Roots
+{
+    public class GameInstaller : MonoInstaller
+    {
+        [Header("Sounds:")]
+
+        [SerializeField] private ForegroundSoundConfig _foregroundSoundConfig;
+        [SerializeField] private BackgroundSoundConfig _backgroundSoundConfig;
+
+        [Header("Loads:")]
+
+        [SerializeField] private LoadRoot _loadRoot;
+
+        private CancellationTokenSource _gameRootCTS;
+
+        private DBRoot _dBRoot;
+        private ScreenRoot _screenRoot;
+        private CardCapabilityDescription _cardCapabilityDescription;
+        private GameRootCTSHolder _gameRootCTSHolder;
+
+        public override void InstallBindings()
+        {
+            _gameRootCTS = new CancellationTokenSource();
+
+            DeclareSignals();
+
+            Container.Bind<BackgroundSoundConfig>().FromScriptableObject(_backgroundSoundConfig).AsSingle();
+            Container.Bind<ForegroundSoundConfig>().FromScriptableObject(_foregroundSoundConfig).AsSingle();
+
+            Container.Bind<LoadRoot>().FromInstance(_loadRoot).AsSingle();
+
+            _dBRoot = new DBRoot(_loadRoot);
+            Container.Bind<DBRoot>().FromInstance(_dBRoot).AsSingle();
+
+            _screenRoot = new ScreenRoot(_gameRootCTS.Token);
+            Container.Bind<ScreenRoot>().FromInstance(_screenRoot).AsSingle();
+
+            _cardCapabilityDescription = new CardCapabilityDescription();
+            Container.Bind<CardCapabilityDescription>().FromInstance(_cardCapabilityDescription).AsSingle();
+
+            _gameRootCTSHolder = new GameRootCTSHolder(_gameRootCTS);
+            Container.Bind<GameRootCTSHolder>().FromInstance(_gameRootCTSHolder).AsSingle();
+        }
+
+        private void DeclareSignals()
+        {
+            SignalBusInstaller.Install(Container);
+
+            Container.DeclareSignal<DiscardCardsSignal>();
+            Container.DeclareSignal<PushStepSignalPlayer>(); 
+            Container.DeclareSignal<PushStepSignalEnemyAI>();
+            Container.DeclareSignal<PersonWinSignal>();
+        }
+    }
+}

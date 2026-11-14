@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7465c289317d843598acc156c84e4215, type: 3}
+  m_Name: CursedMailman_41
+  m_EditorClassIdentifier: 
+  <CardViewConfig>k__BackingField: {fileID: 11400000, guid: fd4af064c95c54bf98c8a4b69d01772f, type: 2}
+  <CardCharacter>k__BackingField: {fileID: 8390222927803056865, guid: 0ad6cf2d99d1f4cb9919a87f2ce10b17, type: 3}
+  <SoundConfig>k__BackingField: {fileID: 11400000, guid: b6dc638eba773472a9dfb536dfcd99be, type: 2}
+  <Effect>k__BackingField: {fileID: 11400000, guid: f7e7f179bd3034fb8a2bfe0ec777479c, type: 2}
+  <CardCapability>k__BackingField: 11
+  <CardPersonType>k__BackingField: 16
+  <CardName>k__BackingField: 41

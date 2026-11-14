@@ -1,0 +1,345 @@
+using System.Collections.Generic;
+using Cards;
+using GameFields;
+using GameFields.Decks;
+using GameFields.Effects;
+using GameFields.EndTurnButtons;
+using GameFields.LightControls;
+using GameFields.Persons;
+using GameFields.Persons.Hands;
+using GameFields.Seats;
+using Tools.Utils.FillComponents;
+using UnityEngine;
+using Zenject;
+using CanvasSortOrders;
+using GameFields.InformationLabels;
+using GameFields.Persons.LookCardMenues;
+using GameFields.Persons.EffectHandlers.Brothers;
+using GameFields.Persons.EffectHandlers;
+using GameFields.InputSettings;
+using Cards.Views.BigCardViews.Capabilities;
+using Cards.Views.BigCardViews;
+using Cards.Sounds;
+using GameFields.CardTransits;
+using GameFields.Histories;
+using Sounds;
+using System;
+using GameFields.Backgrounds;
+using System.Threading;
+using Tools.UI.UIHelpers;
+using Cysharp.Threading.Tasks;
+using Tools.Utils;
+using Servers;
+using Cards.Views.BigCardViews.CardDescriptions;
+using Cards.Views;
+
+namespace Roots
+{
+    public class GameFieldRoot : LocalRoot
+    {
+        [SerializeField] private EndTurnButton _endTurnButton;
+        [SerializeField] private CardRoot _cardRoot;
+        [SerializeField] private PersonCreator _personCreator;
+        [SerializeField] private ObjectsLightControlsCreator _lightControlsCreator;
+        [SerializeField] private SpeedUpButtonSortOrder _speedUpButtonSortOrder;
+        [SerializeField] private GameField _fightPVE;
+        [SerializeField] private CardDescription _cardDescription;
+
+        private PersonsState _personsState;
+
+        //private void Start()
+        //{
+        //    SceneContext sceneContext = FindObjectOfType<SceneContext>();
+        //    sceneContext.Container.InjectGameObject(gameObject);
+
+        //    Debug.Log("GameRoot: START");
+        //}
+
+        private SignalBus _bus;
+        private Deck _deck;
+        private SeatPool _seatPool;
+        private BigCardRoot _bigCardRoot;
+        private HandPlayer _handPlayer;
+        private InformationLabel _informationLabel;
+        private LookCardMenuPlayer _lookCardMenu;
+        private VariantCardCreator _variantCardCreator;
+        private SoundRoot _soundRoot;
+        private CardSoundRoot _cardSoundRoot;
+        private FightButtonsActivator _fightButtonsActivator;
+        private CardCapabilityDescription _cardCapabilityDescription;
+        private HistoryRoot _historyRoot;
+        private BackgroundSoundConfig _backgroundSoundConfig;
+        private BackgroundRoot _backgroundRoot;
+        private UIHelperDescription _UIHelperDescription;
+        private FightProcessDBManager _fightProcessDBManager;
+
+        private GameFieldInputRoot _inputRoot;
+
+        //private FontRoot _fontRoot;
+        //private CanvasController _canvasController;
+        private CancellationToken GameFieldToken => Token;
+
+        [Inject]
+        private void Construct(SignalBus bus, Deck deck, SeatPool seatPool, BigCardRoot bigCardRoot, HandPlayer handPlayer,
+            InformationLabel informationLabel, LookCardMenuPlayer lookCardMenu, VariantCardCreator variantCardCreator,
+            SoundRoot soundRoot, CardSoundRoot cardSoundRoot, FightButtonsActivator fightButtonsActivator,
+            CardCapabilityDescription cardCapabilityDescription, HistoryRoot historyRoot, BackgroundSoundConfig backgroundSoundConfig,
+            BackgroundRoot backgroundRoot, UIHelperDescription UIHelperDescription, GameFieldCTSHolder gameFieldCTSHolder,
+            FightProcessDBManager fightProcessDBManager)
+        {
+            //StartCoroutine(Initing(bus, deck, seatPool, cardDescription, handPlayer, informationLabel, lookCardMenu, variantCardCreator, soundRoot,
+            //    cardSoundVolume, fightMenuActivateButton, screenRoot));
+
+            _bus = bus;
+            _deck = deck;
+            _seatPool = seatPool;
+            _bigCardRoot = bigCardRoot;
+            _handPlayer = handPlayer;
+            _informationLabel = informationLabel;
+            _lookCardMenu = lookCardMenu;
+            _variantCardCreator = variantCardCreator;
+            _soundRoot = soundRoot;
+            _cardSoundRoot = cardSoundRoot;
+            _fightButtonsActivator = fightButtonsActivator;
+            _cardCapabilityDescription = cardCapabilityDescription;
+            _historyRoot = historyRoot;
+            _backgroundSoundConfig = backgroundSoundConfig;
+            _backgroundRoot = backgroundRoot;
+            _UIHelperDescription = UIHelperDescription;
+            _fightProcessDBManager = fightProcessDBManager;
+
+            SetToken(gameFieldCTSHolder);
+        }
+
+        //public void Init(bool isPVE)
+        public void Init(Action onDestroyPrefab)
+        {
+            //Debug.Log("GameFieldRoot: " + gameRootToken.GetHashCode());
+            base.Init();
+
+            GameFieldGC.GCOFF(GameFieldToken);
+
+            _cardDescription.Init();
+            _bigCardRoot.Init(_cardCapabilityDescription, _cardDescription);
+            CardViewService cardViewService = new CardViewService(_bigCardRoot);
+
+            _UIHelperDescription.Init(GameFieldToken);
+
+            CancellationTokenSource fightSource = CancellationTokenSource.CreateLinkedTokenSource(GameFieldToken);
+            TurnToken turnToken = new TurnToken();
+
+            _backgroundRoot.Init(fightSource.Token);
+            _backgroundRoot.Activate();
+
+            _informationLabel.Init(fightSource.Token);
+
+            //TMP_Text[] objectTexts = gameObject.GetComponentsInChildren<TMP_Text>(true);
+            //_fontRoot.SetFont(objectTexts);
+
+            _seatPool.Init();
+            _endTurnButton.Init(fightSource.Token);
+
+            _lightControlsCreator.Init(fightSource.Token);
+            _speedUpButtonSortOrder.Init();
+
+            _variantCardCreator.Init();
+            _soundRoot.Init(_backgroundSoundConfig, GameFieldToken);
+
+            CardDragAndDropLightController cardDragAndDropLightController = _lightControlsCreator.CreateCardDragAndDropLightController();
+
+            //Destroy(_lightControlsCreator.gameObject);
+
+            CardDragAndDropHandler cardDragAndDropHandler = new CardDragAndDropHandler(_handPlayer, _handPlayer,
+                cardDragAndDropLightController, _speedUpButtonSortOrder);
+
+            _personCreator.Init(_bus, _deck, _endTurnButton, _seatPool, cardDragAndDropHandler, cardDragAndDropLightController,
+                _informationLabel, _cardRoot, _cardSoundRoot, _soundRoot, _cardCapabilityDescription, _historyRoot, _soundRoot,
+                GameFieldToken, fightSource.Token, turnToken, cardViewService);
+
+            Player player = _personCreator.CreatePlayer();
+            EnemyAI enemyAI = _personCreator.CreateEnemyAI();
+            CardLocationViewRoot viewRoot = _personCreator.GetCardLocationViewRoot();
+            CardTransitManager cardTransitManager = _personCreator.CreateCardTransitManager();
+            BrothersEffectHandlerRoot brothersEffectHandlerRoot = _personCreator.CreateBrothersEffectHandlerRoot();
+            PersonEffectsHandlerRoot personEffectsHandlerRoot = _personCreator.GetPersonEffectsHandlerRoot();
+            DiscardManager discardManager = _personCreator.DiscardManager;
+            _inputRoot = _personCreator.GetInputRoot();
+            LoseActionsRoot loseActionsRoot = _personCreator.CreateLoseActionsRoot();
+            FightDrawResultManager fightDrawResultManager = _personCreator.CreateFightDrawResultManager();
+            ViewTransitTypesRoot typesRoot = _personCreator.GetViewTransitTypesRoot();
+
+            _lookCardMenu.Init(_inputRoot, fightSource.Token);
+
+            Destroy(_personCreator.gameObject);
+
+            _personsState = new PersonsState(player, enemyAI);
+            //fightMenu.
+            EffectFactory effectFactory = new EffectFactory(_personsState, viewRoot, _informationLabel, cardTransitManager,
+                _variantCardCreator, brothersEffectHandlerRoot, _bus, personEffectsHandlerRoot, discardManager, loseActionsRoot,
+                _cardSoundRoot, typesRoot, _historyRoot, fightSource.Token, _fightProcessDBManager);
+
+            _cardRoot.Init(effectFactory, cardDragAndDropHandler, _cardCapabilityDescription, _cardSoundRoot, base.FontSetter,
+                fightSource.Token, cardViewService, _cardDescription);
+            _deck.Init(_seatPool, _cardRoot.Cards, fightSource.Token, true);
+
+
+
+            //IDeactivatable onMainMenuSwitcher = FindObjectOfType(typeof(Creator), true) as IDeactivatable;
+            //IDeactivatable onMainMenuSwitcher = new TestFightRootDestroyer(() => Destroy(gameObject));
+
+            //TestGCCount(GameFieldToken).Forget();
+
+            _fightPVE.Init(_personsState, enemyAI, _bus, _seatPool, _soundRoot, _fightButtonsActivator,
+    onDestroyPrefab, GameFieldToken, fightSource.Token, fightSource, turnToken, fightDrawResultManager);
+            //_gameFieldRoot.Init(_personsState, enemyAI, _bus, _seatPool, _soundRoot, _fightButtonsActivator, onMainMenuSwitcher);
+        }
+
+        public override void Activate()
+        {
+            _fightPVE.Activate();
+        }
+
+        public override void ActivateInputSystem()
+        {
+            _inputRoot.Activate();
+        }
+
+        private async UniTask TestGCCount(CancellationToken token)
+        {
+            try
+            {
+                while (true)
+                {
+                    Utils.PrintGCInfo();
+
+                    await UniTask.WaitForSeconds(60f, cancellationToken: token);
+                }
+            }
+            catch
+            {
+                Debug.Log("Конец теста");
+            }
+        }
+
+
+        //private IEnumerator Initing(SignalBus bus, Deck deck, SeatPool seatPool, CardDescription cardDescription, HandPlayer handPlayer,
+        //    InformationLabel informationLabel, LookCardMenuPlayer lookCardMenu, VariantC ardCreator variantCardCreator,
+        //    SoundRoot soundRoot, CardSoundVolume cardSoundVolume, FightMenuActivateButton fightMenuActivateButton,
+        //    ScreenRoot screenRoot)
+        //{
+        //    yield return new WaitForSeconds(0.1f); // Дадим сцене все прогрузить
+
+        //    GameFieldGC.GCOFF();
+
+        //    screenRoot.Init();
+        //    informationLabel.Init();
+        //    _fontRoot.Init();
+
+        //    seatPool.Init();
+        //    _endTurnButton.Init();
+
+        //    _lightControlsCreator.Init();
+        //    _speedUpButtonSortOrder.Init();
+
+        //    variantCardCreator.Init();
+        //    soundRoot.Init();
+
+        //    CardDragAndDropLightController cardDragAndDropLightController = _lightControlsCreator.CreateCardDragAndDropLightController();
+
+        //    //Destroy(_lightControlsCreator.gameObject);
+
+        //    CardDragAndDropHandler cardDragAndDropHandler = new CardDragAndDropHandler(handPlayer, handPlayer,
+        //        cardDragAndDropLightController, _speedUpButtonSortOrder);
+
+        //    _personCreator.Init(bus, deck, _endTurnButton, seatPool, cardDragAndDropHandler, cardDragAndDropLightController,
+        //        informationLabel, _cardRoot, cardSoundVolume, soundRoot);
+
+        //    Player player = _personCreator.CreatePlayer();
+        //    EnemyAI enemyAI = _personCreator.CreateEnemyAI();
+        //    CardLocationViewRoot viewRoot = _personCreator.CreateCardLocationViewRoot();
+        //    CardTransitManager cardTransitManager = _personCreator.CreateCardTransitManager();
+        //    BrothersEffectHandlerRoot brothersEffectHandlerRoot = _personCreator.CreateBrothersEffectHandlerRoot();
+        //    PersonEffectsHandlerRoot personEffectsHandlerRoot = _personCreator.CreatePersonEffectsHandlerRoot();
+        //    DiscardManager discardManager = _personCreator.DiscardManager;
+        //    InputRoot inputRoot = _personCreator.GetInputRoot();
+        //    LoseActionsRoot loseActionsRoot = _personCreator.CreateLoseActionsRoot();
+
+        //    lookCardMenu.Init(inputRoot);
+
+        //    Destroy(_personCreator.gameObject);
+
+        //    _personsState = new PersonsState(player, enemyAI);
+        //    //fightMenu.
+
+        //    EffectFactory effectFactory = new EffectFactory(_personsState, viewRoot, informationLabel, cardTransitManager,
+        //        variantCardCreator, brothersEffectHandlerRoot, bus, personEffectsHandlerRoot, discardManager, loseActionsRoot);
+
+        //    _cardRoot.Init(effectFactory, cardDescription, cardDragAndDropHandler, cardSoundVolume);
+        //    deck.Init(seatPool, _cardRoot.Cards);
+
+        //    _gameFieldRoot.Init(_personsState, enemyAI, bus, seatPool, soundRoot, fightMenuActivateButton);
+        //}
+        public new void OnDestroy()
+        {
+            base.OnDestroy();
+            //Debug.Log("GameFieldRoot.OnDestroy()");
+            GameFieldGC.GCON();
+        }
+
+        #region AutomaticFillComponents
+        [ContextMenu(nameof(DefineAllComponents) + nameof(GameFieldRoot))]
+        public override List<ComponentAttachInfo> DefineAllComponents()
+        {
+            List<ComponentAttachInfo> list = new List<ComponentAttachInfo>
+            {
+                DefineEndTurnButton(),
+                DefineCardRoot(),
+                DefinePersonCreator(),
+                DefineObjectsLightControlsCreator(),
+                DefineFightPVE(),
+                DefineCardDescription()
+            };
+
+            list.AddRange(base.DefineAllComponents());
+
+            return list;
+        }
+
+        [ContextMenu(nameof(DefineEndTurnButton))]
+        private ComponentAttachInfo DefineEndTurnButton()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _endTurnButton, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineCardRoot))]
+        private ComponentAttachInfo DefineCardRoot()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _cardRoot, ComponentLocationTypes.InThis);
+        }
+
+        [ContextMenu(nameof(DefinePersonCreator))]
+        private ComponentAttachInfo DefinePersonCreator()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _personCreator, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineObjectsLightControlsCreator))]
+        private ComponentAttachInfo DefineObjectsLightControlsCreator()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _lightControlsCreator, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineFightPVE))]
+        private ComponentAttachInfo DefineFightPVE()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _fightPVE, ComponentLocationTypes.InChildren);
+        }
+
+        [ContextMenu(nameof(DefineCardDescription))]
+        private ComponentAttachInfo DefineCardDescription()
+        {
+            return AutomaticFillComponents.DefineComponent(this, ref _cardDescription, ComponentLocationTypes.InScene);
+        }
+        #endregion
+    }
+}
