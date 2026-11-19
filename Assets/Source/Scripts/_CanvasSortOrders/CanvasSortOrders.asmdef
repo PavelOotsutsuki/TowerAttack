@@ -1,0 +1,16 @@
+{
+    "name": "CanvasSortOrders",
+    "rootNamespace": "CanvasSortOrders",
+    "references": [
+        "GUID:802f65728030c443591527c69c93fe23"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
