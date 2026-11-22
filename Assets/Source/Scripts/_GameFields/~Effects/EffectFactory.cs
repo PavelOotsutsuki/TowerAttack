@@ -83,7 +83,7 @@ namespace GameFields.Effects
             _awakeSoundReproducer.Play(currentCardSoundLogic);
 
             bool isRememberEffect = true;
-            CardEffectConfig currentEffectConfig = cardEffectConfigPair.CardEffectConfig;
+            ICardEffectConfig currentEffectConfig = cardEffectConfigPair.CardEffectConfig;
             Effect effect;
 
             if (currentEffectConfig.Type == EffectType.TimeLord)

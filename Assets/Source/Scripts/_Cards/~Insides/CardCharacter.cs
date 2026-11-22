@@ -12,7 +12,7 @@ using UnityEngine.UI;
 
 namespace Cards.Insides
 {
-    internal class CardCharacter : MonoBehaviour, ICardState
+    public class CardCharacter : MonoBehaviour, ICardState
     {
         [SerializeField] private Image _iconImage;
         [SerializeField] private CardFeatureHelper _cardFeatureHelper;

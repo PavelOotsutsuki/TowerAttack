@@ -2,6 +2,7 @@ using System.Threading;
 using Cards.Views.BigCardViews.Capabilities;
 using GameFields.Signals;
 using Servers;
+using Servers.Loaders;
 using Sounds;
 using Tools.Loads;
 using Tools.Utils.Screens;
@@ -27,6 +28,8 @@ namespace Roots
         private ScreenRoot _screenRoot;
         private CardCapabilityDescription _cardCapabilityDescription;
         private GameRootCTSHolder _gameRootCTSHolder;
+        private AudioLoader _audioLoader;
+        private ImageLoader _imageLoader;
 
         public override void InstallBindings()
         {
@@ -38,6 +41,12 @@ namespace Roots
             Container.Bind<ForegroundSoundConfig>().FromScriptableObject(_foregroundSoundConfig).AsSingle();
 
             Container.Bind<LoadRoot>().FromInstance(_loadRoot).AsSingle();
+
+            _audioLoader = new AudioLoader();
+            Container.Bind<AudioLoader>().FromInstance(_audioLoader).AsSingle();
+
+            _imageLoader = new ImageLoader();
+            Container.Bind<ImageLoader>().FromInstance(_imageLoader).AsSingle();
 
             _dBRoot = new DBRoot(_loadRoot);
             Container.Bind<DBRoot>().FromInstance(_dBRoot).AsSingle();
@@ -57,7 +66,7 @@ namespace Roots
             SignalBusInstaller.Install(Container);
 
             Container.DeclareSignal<DiscardCardsSignal>();
-            Container.DeclareSignal<PushStepSignalPlayer>(); 
+            Container.DeclareSignal<PushStepSignalPlayer>();
             Container.DeclareSignal<PushStepSignalEnemyAI>();
             Container.DeclareSignal<PersonWinSignal>();
         }

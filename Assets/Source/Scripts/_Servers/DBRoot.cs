@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Servers.DTO;
 using Tools.Loads;
@@ -12,6 +14,7 @@ namespace Servers
     public class DBRoot
     {
         private const string RootUri = "https://localhost:7206/api/Players";
+        // private const string WarehouseUri = "https://localhost:7206";
 
         private const string CreateUser_UriFeature = "CreateUser";
         private const string GetMainMenuUserData_UriFeature = "GetMainMenuUserData";
@@ -20,6 +23,8 @@ namespace Servers
         private const string FinishFightWithBot_UriFeature = "FinishFightWithBot";
         private const string GetLastAddedExp_UriFeature = "GetLastAddedExp";
         private const string WriteFightProcessAction_UriFeature = "WriteFightProcessAction";
+        private const string WriteFightProcessActionBatch_UriFeature = "WriteFightProcessActionBatch";
+        private const string GetStartCardSoundsUrls_UriFeature = "GetStartCardSoundsUrls";
 
         private const string CreateUser_Uri = RootUri + "/" + CreateUser_UriFeature;
         private const string GetMainMenuUserData_Uri = RootUri + "/" + GetMainMenuUserData_UriFeature;
@@ -28,6 +33,8 @@ namespace Servers
         private const string FinishFightWithBot_Uri = RootUri + "/" + FinishFightWithBot_UriFeature;
         private const string GetLastAddedExp_Uri = RootUri + "/" + GetLastAddedExp_UriFeature;
         private const string WriteFightProcessAction_Uri = RootUri + "/" + WriteFightProcessAction_UriFeature;
+        private const string WriteFightProcessActionBatch_Uri = RootUri + "/" + WriteFightProcessActionBatch_UriFeature;
+        private const string GetStartCardSoundsUrls_Uri = RootUri + "/" + GetStartCardSoundsUrls_UriFeature;
 
         private readonly LoadRoot _loadRoot;
 
@@ -220,7 +227,7 @@ namespace Servers
 
             }
         }
-    
+
 
         //private async UniTaskVoid GetUserID(string name, string password, CancellationToken token)
         //{
@@ -478,6 +485,69 @@ namespace Servers
             }
         }
 
+        public async UniTask WriteFightProcessActionBatch(List<FightProcessDBActionData> batchList, CancellationToken token)
+        {
+            try
+            {
+                List<FightProcessDBActionDTO> dtoBatchList = new List<FightProcessDBActionDTO>();
+
+                foreach (FightProcessDBActionData fightProcessDBActionData in batchList)
+                {
+                    dtoBatchList.Add(new FightProcessDBActionDTO()
+                    {
+                        counter = fightProcessDBActionData.Counter.ToString(),
+                        id_fight = _currentIdFight.ToString(),
+                        turn = fightProcessDBActionData.TurnNumber.ToString(),
+                        person_id = fightProcessDBActionData.IsPlayersAction == null ? Guid.Empty.ToString() 
+                        : fightProcessDBActionData.IsPlayersAction.Value == true ? _currentIdUser.ToString() 
+                        : _currentEnemyIdUser.ToString(),
+                        action_target = fightProcessDBActionData.Action_target,
+                        action_type = fightProcessDBActionData.Action_type,
+                        action_subtype = fightProcessDBActionData.Action_subtype
+                    });
+                }
+
+                FightProcessDBActionBatchDTO fightProcessDBActionBatchDTO = new FightProcessDBActionBatchDTO() { batchList = dtoBatchList };
+
+                string currentUri = WriteFightProcessActionBatch_Uri;
+                // string batchList_JSON = JsonSerializer.Serialize(fightProcessDBActionBatchDTO.batchList);
+                string batchList_JSON = JsonUtility.ToJson(fightProcessDBActionBatchDTO);
+
+                Debug.Log($"batchList_JSON: {batchList_JSON}");
+
+                WWWForm WWWForm = new WWWForm();
+                WWWForm.AddField("batchList_JSON", batchList_JSON);
+                // WWWForm.AddField("id_Fight", _currentIdFight.ToString());
+                // WWWForm.AddField("turn", turnNumber.ToString());
+                // WWWForm.AddField("person_id", person_id?.ToString() ?? "");
+                // WWWForm.AddField("action_target", action_target?.ToString() ?? "");
+                // WWWForm.AddField("action_type", action_type?.ToString() ?? "");
+                // WWWForm.AddField("action_subtype", action_subtype?.ToString() ?? "");
+
+                using (UnityWebRequest request = UnityWebRequest.Post(currentUri, WWWForm))
+                {
+                    request.certificateHandler = new BypassCertificate();
+                    await request.SendWebRequest().ToUniTask(cancellationToken: token);
+
+                    //if (request.result == UnityWebRequest.Result.Success)
+                    //{
+                    //    _currentIdFight = Guid.Empty;
+                    //    _currentEnemyIdUser = Guid.Empty;
+                    //}
+                    //else
+                    //{
+                    //    Debug.LogError(request.error);
+                    //    throw new Exception();
+                    //}
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Ошибка {nameof(DBRoot)}-->{nameof(WriteFightProcessActionBatch)}: {ex.Message}");
+                return;
+            }
+        }
+
         public async UniTask<int> GetLastAddedExp(CancellationToken token)
         {
             try
@@ -500,7 +570,7 @@ namespace Servers
                         Debug.Log(request.downloadHandler.text);
 
                         int result = Convert.ToInt32(request.downloadHandler.text);
-  
+
                         return result;
                     }
                     else
@@ -514,6 +584,56 @@ namespace Servers
             {
                 Debug.LogError($"Ошибка {nameof(DBRoot)}-->{nameof(GetMainMenuUserData)}: {ex.Message}");
                 return -1;
+            }
+        }
+
+        public async UniTask<StringIntPair[]> GetStartCardSoundsUrls(CancellationToken token)
+        {
+            try
+            {
+                // Guid id_user = _currentIdUser;
+                // Guid id_fight = _currentIdFight;
+
+                //_currentEnemyIdUser = Guid.Empty;
+                //_currentIdFight = Guid.Empty;
+
+                string currentUri = $"{GetStartCardSoundsUrls_Uri}";
+
+                using (UnityWebRequest request = UnityWebRequest.Get(currentUri))
+                {
+                    request.certificateHandler = new BypassCertificate();
+                    await request.SendWebRequest().ToUniTask(cancellationToken: token);
+
+                    if (request.result == UnityWebRequest.Result.Success)
+                    {
+                        Debug.Log(request.downloadHandler.text);
+
+                        string jsonRequestResult = request.downloadHandler.text;
+                        StringIntPairListWrapper wrapper = JsonUtility.FromJson<StringIntPairListWrapper>(jsonRequestResult);
+                        StringIntPair[] dbData = wrapper.items;
+                        // StringIntPair[] realData = new StringIntPair[dbData.Length];
+                        // string newUrl;
+
+                        // for (int i = 0; i < dbData.Length; i++)
+                        // {
+                        //     newUrl = WarehouseUri + "/currentCards/" + dbData[i].key + "/";
+                        //     realData[i] = new StringIntPair() {key = newUrl, value =  dbData[i].value};
+                        // }
+
+                        // return realData;
+                        return dbData;
+                    }
+                    else
+                    {
+                        Debug.LogError(request.error);
+                        throw new Exception();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Ошибка {nameof(DBRoot)}-->{nameof(GetStartCardSoundsUrls)}: {ex.Message}");
+                return null;
             }
         }
     }

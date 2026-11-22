@@ -2,6 +2,7 @@ namespace Cards
 {
     public enum StartCardsType
     {
-        DefaultFiftyCards
+        DefaultFiftyCards,
+        DB
     }
 }

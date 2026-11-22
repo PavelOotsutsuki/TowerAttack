@@ -34,6 +34,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &9094668728695627669
 SpriteRenderer:
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -49,6 +50,11 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -70,9 +76,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 6b0bf4a7972624718b95a36be963c4ec, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -82,8 +90,8 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
 --- !u!1 &140575009256435279
 GameObject:
   m_ObjectHideFlags: 0
@@ -981,20 +989,23 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000u
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -2664,6 +2675,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -2841,6 +2853,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -3252,20 +3265,23 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000u
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -3745,20 +3761,23 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000u
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -3879,20 +3898,23 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -4580,20 +4602,23 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000u
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -4865,20 +4890,23 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000u
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -5304,20 +5332,23 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000u
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -5588,20 +5619,23 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -5924,20 +5958,23 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000u
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -6368,6 +6405,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -6516,20 +6554,23 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -6605,6 +6646,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -6934,20 +6976,23 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000u
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -7136,6 +7181,7 @@ MonoBehaviour:
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
+  m_ScrollDeltaPerTick: 6
 --- !u!1 &3474686062286634317
 GameObject:
   m_ObjectHideFlags: 0
@@ -7306,6 +7352,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -7684,20 +7731,23 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000u
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -7987,20 +8037,23 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000u
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -8540,20 +8593,23 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000u
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -9312,20 +9368,23 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000u
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -9807,7 +9866,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 9111013035952905202}
   m_Direction: 0
   m_Value: 0
-  m_Size: 0.9999998
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -10026,8 +10085,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u041D\u0430\u0436\u043C\u0438\u0442\u0435 \u043B\u044E\u0431\u0443\u044E
-    \u043A\u043D\u043E\u043F\u043A\u0443..."
+  m_text: "\u041D\u0430\u0436\u043C\u0438\u0442\u0435 \u043B\u044E\u0431\u0443\u044E \u043A\u043D\u043E\u043F\u043A\u0443..."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: e73a58f6e2794ae7b1b7e50b7fb811b0, type: 2}
@@ -10065,20 +10123,23 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000u
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -10156,8 +10217,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _text: {fileID: 5995602763836442463}
   _data:
-    <StartText>k__BackingField: "\u041D\u0430\u0436\u043C\u0438\u0442\u0435 \u043B\u044E\u0431\u0443\u044E
-      \u043A\u043D\u043E\u043F\u043A\u0443......"
+    <StartText>k__BackingField: "\u041D\u0430\u0436\u043C\u0438\u0442\u0435 \u043B\u044E\u0431\u0443\u044E \u043A\u043D\u043E\u043F\u043A\u0443......"
 --- !u!1 &4857554692918567412
 GameObject:
   m_ObjectHideFlags: 0
@@ -10485,20 +10545,23 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000u
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -10898,20 +10961,23 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000u
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -11366,6 +11432,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -11582,6 +11649,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -12210,20 +12278,23 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -12381,20 +12452,23 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -12648,20 +12722,23 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000u
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -12964,7 +13041,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2735894278148120600}
   m_Direction: 2
   m_Value: 1
-  m_Size: 1
+  m_Size: 0.9999818
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -13513,20 +13590,23 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -14318,6 +14398,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -14681,20 +14762,23 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000u
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -14803,6 +14887,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -15156,6 +15241,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -15546,20 +15632,23 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000u
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -15657,11 +15746,9 @@ MonoBehaviour:
       <StartSide>k__BackingField: 0
     <DelayBeforeStartingEndFightActions>k__BackingField: 5
   _informationLabelDataEnemyAIAttack:
-    <DefaultInformationLabelText>k__BackingField: "\u041F\u0440\u043E\u0442\u0438\u0432\u043D\u0438\u043A
-      \u0432\u044B\u0431\u0440\u0430\u043B \u043D\u043E\u043C\u0435\u0440: "
+    <DefaultInformationLabelText>k__BackingField: "\u041F\u0440\u043E\u0442\u0438\u0432\u043D\u0438\u043A \u0432\u044B\u0431\u0440\u0430\u043B \u043D\u043E\u043C\u0435\u0440: "
   _informationLabelDataEnemyAIChoice:
-    <DefaultInformationLabelText>k__BackingField: "\u041F\u0440\u043E\u0442\u0438\u0432\u043D\u0438\u043A
-      \u0432\u044B\u0431\u0440\u0430\u043B \u043D\u043E\u043C\u0435\u0440: "
+    <DefaultInformationLabelText>k__BackingField: "\u041F\u0440\u043E\u0442\u0438\u0432\u043D\u0438\u043A \u0432\u044B\u0431\u0440\u0430\u043B \u043D\u043E\u043C\u0435\u0440: "
   _enemyCountStartDrawCards: 1
   _towerActivator: {fileID: 8743457579056323211}
   _playerSimpleDrawCardAnimationData:
@@ -16263,6 +16350,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -16449,6 +16537,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2126309964444517201
 SpriteRenderer:
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -16464,6 +16553,11 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -16485,9 +16579,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -16497,8 +16593,8 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
 --- !u!1 &7688727670258115048
 GameObject:
   m_ObjectHideFlags: 0
@@ -16767,20 +16863,23 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000u
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -16997,6 +17096,7 @@ MonoBehaviour:
   m_ItemText: {fileID: 4668399228543662751}
   m_ItemImage: {fileID: 0}
   m_Value: 0
+  m_MultiSelect: 0
   m_Options:
     m_Options: []
   m_OnValueChanged:
@@ -17256,20 +17356,23 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000u
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -17439,6 +17542,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 0.1
   m_Pitch: 1
@@ -17688,7 +17792,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 456.62872}
+  m_AnchoredPosition: {x: 0, y: 456.62854}
   m_SizeDelta: {x: 0, y: 363}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &8421528645989163639
@@ -17926,20 +18030,23 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000u
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -18060,20 +18167,23 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000u
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -18194,20 +18304,23 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -18374,9 +18487,7 @@ MonoBehaviour:
     <DrawCardsDuration>k__BackingField: 1.5
     <DrawCardsScaleFactor>k__BackingField: 3
     <WaitDurationBetweenDrawCards>k__BackingField: 1
-    <LabelMessage>k__BackingField: "\u0412\u044B\u0431\u0435\u0440\u0435\u0442\u0435,
-      \u043A\u0430\u043A\u0430\u044F \u043A\u0430\u0440\u0442\u0430 \u0431\u0443\u0434\u0435\u0442
-      \u0432 \u0437\u0430\u043C\u043A\u0435"
+    <LabelMessage>k__BackingField: "\u0412\u044B\u0431\u0435\u0440\u0435\u0442\u0435, \u043A\u0430\u043A\u0430\u044F \u043A\u0430\u0440\u0442\u0430 \u0431\u0443\u0434\u0435\u0442 \u0432 \u0437\u0430\u043C\u043A\u0435"
     <DelayAfterCardChoiceDone>k__BackingField: 0.5
     <InvertCardAnimationData>k__BackingField:
       <InvertCardFrontDuration>k__BackingField: 0.5
@@ -18570,20 +18681,23 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000u
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -18765,20 +18879,23 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000u
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -19357,6 +19474,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -19491,10 +19609,11 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 9999
+  m_SortingOrder: 9990
   m_TargetDisplay: 0
 --- !u!114 &934360144819351927
 MonoBehaviour:
@@ -20739,11 +20858,11 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7618030168768946742, guid: ce469e9a2005d4176a420699ea699af7, type: 3}
-      propertyPath: Seats.Array.data[0]
+      propertyPath: 'Seats.Array.data[0]'
       value: 
       objectReference: {fileID: 7873971364275129018}
     - target: {fileID: 7618030168768946742, guid: ce469e9a2005d4176a420699ea699af7, type: 3}
-      propertyPath: Seats.Array.data[2]
+      propertyPath: 'Seats.Array.data[2]'
       value: 
       objectReference: {fileID: 8903252610929644115}
     m_RemovedComponents: []
@@ -22169,6 +22288,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3134037831045057170, guid: 84b69fcca1e3d411e9ee7cfdbc678433, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     - target: {fileID: 3211981783987094505, guid: 84b69fcca1e3d411e9ee7cfdbc678433, type: 3}
       propertyPath: m_Name
       value: BigCardTowerView
@@ -22193,6 +22316,14 @@ PrefabInstance:
       propertyPath: _cardView._feature
       value: 
       objectReference: {fileID: 5434918134101881404}
+    - target: {fileID: 8209054175797678945, guid: 84b69fcca1e3d411e9ee7cfdbc678433, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
+    - target: {fileID: 8767364943072465314, guid: 84b69fcca1e3d411e9ee7cfdbc678433, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6340829241078968924, guid: 84b69fcca1e3d411e9ee7cfdbc678433, type: 3}
     m_RemovedGameObjects: []
@@ -22267,6 +22398,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 914445829667521839}
     m_Modifications:
+    - target: {fileID: 620491575533207409, guid: 6b57dd7e4c038467191e21d0c426f979, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
+    - target: {fileID: 653279783144416064, guid: 6b57dd7e4c038467191e21d0c426f979, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     - target: {fileID: 861536486467568002, guid: 6b57dd7e4c038467191e21d0c426f979, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -22354,6 +22493,10 @@ PrefabInstance:
     - target: {fileID: 3906712596106125165, guid: 6b57dd7e4c038467191e21d0c426f979, type: 3}
       propertyPath: _scaleFactor
       value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5409254634717959927, guid: 6b57dd7e4c038467191e21d0c426f979, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
       objectReference: {fileID: 0}
     - target: {fileID: 8904206795759155246, guid: 6b57dd7e4c038467191e21d0c426f979, type: 3}
       propertyPath: m_Name
@@ -23556,95 +23699,95 @@ PrefabInstance:
       value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 6945050975539224431, guid: 26655d9d557b34e418f9d04fbb7b4e22, type: 3}
-      propertyPath: _stones.Array.data[0]
+      propertyPath: '_stones.Array.data[0]'
       value: 
       objectReference: {fileID: 5424270308299690952}
     - target: {fileID: 6945050975539224431, guid: 26655d9d557b34e418f9d04fbb7b4e22, type: 3}
-      propertyPath: _stones.Array.data[1]
+      propertyPath: '_stones.Array.data[1]'
       value: 
       objectReference: {fileID: 1898150070100171346}
     - target: {fileID: 6945050975539224431, guid: 26655d9d557b34e418f9d04fbb7b4e22, type: 3}
-      propertyPath: _stones.Array.data[2]
+      propertyPath: '_stones.Array.data[2]'
       value: 
       objectReference: {fileID: 2250313131191892589}
     - target: {fileID: 6945050975539224431, guid: 26655d9d557b34e418f9d04fbb7b4e22, type: 3}
-      propertyPath: _stones.Array.data[3]
+      propertyPath: '_stones.Array.data[3]'
       value: 
       objectReference: {fileID: 7136230419697174543}
     - target: {fileID: 6945050975539224431, guid: 26655d9d557b34e418f9d04fbb7b4e22, type: 3}
-      propertyPath: _stones.Array.data[4]
+      propertyPath: '_stones.Array.data[4]'
       value: 
       objectReference: {fileID: 3200326366925330138}
     - target: {fileID: 6945050975539224431, guid: 26655d9d557b34e418f9d04fbb7b4e22, type: 3}
-      propertyPath: _stones.Array.data[5]
+      propertyPath: '_stones.Array.data[5]'
       value: 
       objectReference: {fileID: 5391000829248792547}
     - target: {fileID: 6945050975539224431, guid: 26655d9d557b34e418f9d04fbb7b4e22, type: 3}
-      propertyPath: _stones.Array.data[6]
+      propertyPath: '_stones.Array.data[6]'
       value: 
       objectReference: {fileID: 7369049046213068339}
     - target: {fileID: 6945050975539224431, guid: 26655d9d557b34e418f9d04fbb7b4e22, type: 3}
-      propertyPath: _stones.Array.data[7]
+      propertyPath: '_stones.Array.data[7]'
       value: 
       objectReference: {fileID: 4852792150305368767}
     - target: {fileID: 6945050975539224431, guid: 26655d9d557b34e418f9d04fbb7b4e22, type: 3}
-      propertyPath: _stones.Array.data[8]
+      propertyPath: '_stones.Array.data[8]'
       value: 
       objectReference: {fileID: 2197566046527556536}
     - target: {fileID: 6945050975539224431, guid: 26655d9d557b34e418f9d04fbb7b4e22, type: 3}
-      propertyPath: _stones.Array.data[9]
+      propertyPath: '_stones.Array.data[9]'
       value: 
       objectReference: {fileID: 1549969146165174099}
     - target: {fileID: 6945050975539224431, guid: 26655d9d557b34e418f9d04fbb7b4e22, type: 3}
-      propertyPath: _stones.Array.data[10]
+      propertyPath: '_stones.Array.data[10]'
       value: 
       objectReference: {fileID: 1348636353937304268}
     - target: {fileID: 6945050975539224431, guid: 26655d9d557b34e418f9d04fbb7b4e22, type: 3}
-      propertyPath: _stones.Array.data[11]
+      propertyPath: '_stones.Array.data[11]'
       value: 
       objectReference: {fileID: 5881269778315439779}
     - target: {fileID: 6945050975539224431, guid: 26655d9d557b34e418f9d04fbb7b4e22, type: 3}
-      propertyPath: _stones.Array.data[12]
+      propertyPath: '_stones.Array.data[12]'
       value: 
       objectReference: {fileID: 6047467260949111458}
     - target: {fileID: 6945050975539224431, guid: 26655d9d557b34e418f9d04fbb7b4e22, type: 3}
-      propertyPath: _stones.Array.data[13]
+      propertyPath: '_stones.Array.data[13]'
       value: 
       objectReference: {fileID: 8280136669902815633}
     - target: {fileID: 6945050975539224431, guid: 26655d9d557b34e418f9d04fbb7b4e22, type: 3}
-      propertyPath: _stones.Array.data[14]
+      propertyPath: '_stones.Array.data[14]'
       value: 
       objectReference: {fileID: 6267147723544261278}
     - target: {fileID: 6945050975539224431, guid: 26655d9d557b34e418f9d04fbb7b4e22, type: 3}
-      propertyPath: _stones.Array.data[15]
+      propertyPath: '_stones.Array.data[15]'
       value: 
       objectReference: {fileID: 7708533125778822009}
     - target: {fileID: 6945050975539224431, guid: 26655d9d557b34e418f9d04fbb7b4e22, type: 3}
-      propertyPath: _stones.Array.data[16]
+      propertyPath: '_stones.Array.data[16]'
       value: 
       objectReference: {fileID: 6326852997548159061}
     - target: {fileID: 6945050975539224431, guid: 26655d9d557b34e418f9d04fbb7b4e22, type: 3}
-      propertyPath: _stones.Array.data[17]
+      propertyPath: '_stones.Array.data[17]'
       value: 
       objectReference: {fileID: 345672542213894356}
     - target: {fileID: 6945050975539224431, guid: 26655d9d557b34e418f9d04fbb7b4e22, type: 3}
-      propertyPath: _stones.Array.data[18]
+      propertyPath: '_stones.Array.data[18]'
       value: 
       objectReference: {fileID: 4939480503829489522}
     - target: {fileID: 6945050975539224431, guid: 26655d9d557b34e418f9d04fbb7b4e22, type: 3}
-      propertyPath: _stones.Array.data[19]
+      propertyPath: '_stones.Array.data[19]'
       value: 
       objectReference: {fileID: 7408388589418276865}
     - target: {fileID: 6945050975539224431, guid: 26655d9d557b34e418f9d04fbb7b4e22, type: 3}
-      propertyPath: _stones.Array.data[20]
+      propertyPath: '_stones.Array.data[20]'
       value: 
       objectReference: {fileID: 1281220977852988282}
     - target: {fileID: 6945050975539224431, guid: 26655d9d557b34e418f9d04fbb7b4e22, type: 3}
-      propertyPath: _stones.Array.data[21]
+      propertyPath: '_stones.Array.data[21]'
       value: 
       objectReference: {fileID: 8194231871375190616}
     - target: {fileID: 6945050975539224431, guid: 26655d9d557b34e418f9d04fbb7b4e22, type: 3}
-      propertyPath: _stones.Array.data[22]
+      propertyPath: '_stones.Array.data[22]'
       value: 
       objectReference: {fileID: 8381555500731026878}
     - target: {fileID: 6945050975539224431, guid: 26655d9d557b34e418f9d04fbb7b4e22, type: 3}
@@ -25238,95 +25381,95 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5101304109544493415}
     - target: {fileID: 6742648668901085939, guid: 96b6035ccb2634526b97688d28a35abe, type: 3}
-      propertyPath: _stones.Array.data[0]
+      propertyPath: '_stones.Array.data[0]'
       value: 
       objectReference: {fileID: 2197912342173984874}
     - target: {fileID: 6742648668901085939, guid: 96b6035ccb2634526b97688d28a35abe, type: 3}
-      propertyPath: _stones.Array.data[1]
+      propertyPath: '_stones.Array.data[1]'
       value: 
       objectReference: {fileID: 5733638493774078448}
     - target: {fileID: 6742648668901085939, guid: 96b6035ccb2634526b97688d28a35abe, type: 3}
-      propertyPath: _stones.Array.data[2]
+      propertyPath: '_stones.Array.data[2]'
       value: 
       objectReference: {fileID: 5403434878354719183}
     - target: {fileID: 6742648668901085939, guid: 96b6035ccb2634526b97688d28a35abe, type: 3}
-      propertyPath: _stones.Array.data[3]
+      propertyPath: '_stones.Array.data[3]'
       value: 
       objectReference: {fileID: 3949260480073167789}
     - target: {fileID: 6742648668901085939, guid: 96b6035ccb2634526b97688d28a35abe, type: 3}
-      propertyPath: _stones.Array.data[4]
+      propertyPath: '_stones.Array.data[4]'
       value: 
       objectReference: {fileID: 8768433044139437432}
     - target: {fileID: 6742648668901085939, guid: 96b6035ccb2634526b97688d28a35abe, type: 3}
-      propertyPath: _stones.Array.data[5]
+      propertyPath: '_stones.Array.data[5]'
       value: 
       objectReference: {fileID: 2240191218949102657}
     - target: {fileID: 6742648668901085939, guid: 96b6035ccb2634526b97688d28a35abe, type: 3}
-      propertyPath: _stones.Array.data[6]
+      propertyPath: '_stones.Array.data[6]'
       value: 
       objectReference: {fileID: 3711656220691201425}
     - target: {fileID: 6742648668901085939, guid: 96b6035ccb2634526b97688d28a35abe, type: 3}
-      propertyPath: _stones.Array.data[7]
+      propertyPath: '_stones.Array.data[7]'
       value: 
       objectReference: {fileID: 1630012818577002781}
     - target: {fileID: 6742648668901085939, guid: 96b6035ccb2634526b97688d28a35abe, type: 3}
-      propertyPath: _stones.Array.data[8]
+      propertyPath: '_stones.Array.data[8]'
       value: 
       objectReference: {fileID: 5456460694136352794}
     - target: {fileID: 6742648668901085939, guid: 96b6035ccb2634526b97688d28a35abe, type: 3}
-      propertyPath: _stones.Array.data[9]
+      propertyPath: '_stones.Array.data[9]'
       value: 
       objectReference: {fileID: 4631094613126505713}
     - target: {fileID: 6742648668901085939, guid: 96b6035ccb2634526b97688d28a35abe, type: 3}
-      propertyPath: _stones.Array.data[10]
+      propertyPath: '_stones.Array.data[10]'
       value: 
       objectReference: {fileID: 5147963074942112110}
     - target: {fileID: 6742648668901085939, guid: 96b6035ccb2634526b97688d28a35abe, type: 3}
-      propertyPath: _stones.Array.data[11]
+      propertyPath: '_stones.Array.data[11]'
       value: 
       objectReference: {fileID: 313029902085887233}
     - target: {fileID: 6742648668901085939, guid: 96b6035ccb2634526b97688d28a35abe, type: 3}
-      propertyPath: _stones.Array.data[12]
+      propertyPath: '_stones.Array.data[12]'
       value: 
       objectReference: {fileID: 444316861055752448}
     - target: {fileID: 6742648668901085939, guid: 96b6035ccb2634526b97688d28a35abe, type: 3}
-      propertyPath: _stones.Array.data[13]
+      propertyPath: '_stones.Array.data[13]'
       value: 
       objectReference: {fileID: 2823362052916165171}
     - target: {fileID: 6742648668901085939, guid: 96b6035ccb2634526b97688d28a35abe, type: 3}
-      propertyPath: _stones.Array.data[14]
+      propertyPath: '_stones.Array.data[14]'
       value: 
       objectReference: {fileID: 233920120389110076}
     - target: {fileID: 6742648668901085939, guid: 96b6035ccb2634526b97688d28a35abe, type: 3}
-      propertyPath: _stones.Array.data[15]
+      propertyPath: '_stones.Array.data[15]'
       value: 
       objectReference: {fileID: 4556616648445667547}
     - target: {fileID: 6742648668901085939, guid: 96b6035ccb2634526b97688d28a35abe, type: 3}
-      propertyPath: _stones.Array.data[16]
+      propertyPath: '_stones.Array.data[16]'
       value: 
       objectReference: {fileID: 147233393684630519}
     - target: {fileID: 6742648668901085939, guid: 96b6035ccb2634526b97688d28a35abe, type: 3}
-      propertyPath: _stones.Array.data[17]
+      propertyPath: '_stones.Array.data[17]'
       value: 
       objectReference: {fileID: 5839620475849739126}
     - target: {fileID: 6742648668901085939, guid: 96b6035ccb2634526b97688d28a35abe, type: 3}
-      propertyPath: _stones.Array.data[18]
+      propertyPath: '_stones.Array.data[18]'
       value: 
       objectReference: {fileID: 1246058812845432016}
     - target: {fileID: 6742648668901085939, guid: 96b6035ccb2634526b97688d28a35abe, type: 3}
-      propertyPath: _stones.Array.data[19]
+      propertyPath: '_stones.Array.data[19]'
       value: 
       objectReference: {fileID: 3677627327888069539}
     - target: {fileID: 6742648668901085939, guid: 96b6035ccb2634526b97688d28a35abe, type: 3}
-      propertyPath: _stones.Array.data[20]
+      propertyPath: '_stones.Array.data[20]'
       value: 
       objectReference: {fileID: 4900377135164178648}
     - target: {fileID: 6742648668901085939, guid: 96b6035ccb2634526b97688d28a35abe, type: 3}
-      propertyPath: _stones.Array.data[21]
+      propertyPath: '_stones.Array.data[21]'
       value: 
       objectReference: {fileID: 2626072209031713274}
     - target: {fileID: 6742648668901085939, guid: 96b6035ccb2634526b97688d28a35abe, type: 3}
-      propertyPath: _stones.Array.data[22]
+      propertyPath: '_stones.Array.data[22]'
       value: 
       objectReference: {fileID: 2420448303362061852}
     - target: {fileID: 6742648668901085939, guid: 96b6035ccb2634526b97688d28a35abe, type: 3}

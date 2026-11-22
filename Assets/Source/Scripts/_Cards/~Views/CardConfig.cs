@@ -1,3 +1,4 @@
+using System;
 using Cards.Effects;
 using Cards.Insides;
 using Cards.Sounds;
@@ -8,7 +9,7 @@ using UnityEngine.Serialization;
 namespace Cards.Views
 {
     [CreateAssetMenu(fileName = "CardConfig", menuName = "Cards/CardConfig", order = 51)]
-    internal class CardConfig : ScriptableObject, IData, ICardConfig
+    internal class CardConfig : ScriptableObject, ICardConfig
     {
         [FormerlySerializedAs("<CardViewConfig>k__BackingField")]
         [SerializeField] private CardViewConfig _cardViewConfig;
@@ -25,12 +26,44 @@ namespace Cards.Views
         [FormerlySerializedAs("<CardName>k__BackingField")]
         [SerializeField] private CardName _cardName;
 
-        public ICardViewConfig CardViewConfig => _cardViewConfig;
+        public void SetSoundConfig(CardSoundConfigDB cardSoundConfigDB)
+        {
+            if (cardSoundConfigDB != null)
+            {
+                _cardSoundConfigDB = cardSoundConfigDB;
+            }
+            else
+            {
+                _cardSoundConfigDB = _soundConfig;
+            }
+        }
+
+        public void SetViewConfig(CardViewConfigDB cardViewConfigDB)
+        {
+            if (cardViewConfigDB != null)
+            {
+                _cardViewConfigDB = cardViewConfigDB;
+            }
+            else
+            {
+                _cardViewConfigDB = _cardViewConfig;
+            }
+        }
+
+        private ICardViewConfig _cardViewConfigDB;
+        private ICardSoundConfig _cardSoundConfigDB;
+
+        private Guid _cardGlobalGuid = Guid.NewGuid();
+
+        public ICardViewConfig CardViewConfig => _cardViewConfigDB;
         public CardCharacter CardCharacter => _cardCharacter;
-        public CardSoundConfig SoundConfig => _soundConfig;
-        public CardEffectConfig Effect => _effect;
+        public ICardSoundConfig SoundConfig => _cardSoundConfigDB;
+        // public ICardSoundConfig SoundConfig => _soundConfig;
+        public ICardEffectConfig Effect => _effect;
         public CardCapability CardCapability => _cardCapability;
         public CardPersonType CardPersonType => _cardPersonType;
         public CardName CardName => _cardName;
+
+        public Guid CardGlobalGuid => _cardGlobalGuid;
     }
 }

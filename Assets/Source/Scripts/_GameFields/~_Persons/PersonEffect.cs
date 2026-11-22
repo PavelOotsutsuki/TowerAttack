@@ -25,7 +25,7 @@ namespace GameFields.Persons
         }
 
         public Card Card => _cardEffectConfigPair.Card;
-        public CardEffectConfig CardEffectConfig => _cardEffectConfigPair.CardEffectConfig;
+        public ICardEffectConfig CardEffectConfig => _cardEffectConfigPair.CardEffectConfig;
         public Effect Effect => _effect;
 
         public void Discard()

@@ -9,7 +9,10 @@ using Cards.Views;
 using Cards.Views.BigCardViews;
 using Cards.Views.BigCardViews.Capabilities;
 using Cards.Views.BigCardViews.CardDescriptions;
+using Cysharp.Threading.Tasks;
 using Servers;
+using Servers.DTO;
+using Servers.Loaders;
 using TMPro;
 using Tools;
 using Tools.Utils.FillComponents;
@@ -26,6 +29,8 @@ namespace Cards
         //[SerializeField] private CardDescription _cardDescription;
         [Inject] private FightProcessDBManager _fightProcessDBManager;
         [Inject] private DBRoot _dBRoot;
+        [Inject] private AudioLoader _audioLoader;
+        [Inject] private ImageLoader _imageLoader;
 
         private readonly List<Card> _allCards = new List<Card>();
 
@@ -44,7 +49,7 @@ namespace Cards
 
         private string _allcardsMsg = "";
 
-        public void Init(IEffectFactory effectFactory, ICardDragAndDropHandler cardDragAndDropHandler,
+        public async UniTask Init(IEffectFactory effectFactory, ICardDragAndDropHandler cardDragAndDropHandler,
             CardCapabilityDescription cardCapabilityDescription, CardSoundRoot cardSoundRoot, IFontSetter fontSetter,
             CancellationToken fightToken, CardViewService cardViewService, CardDescription cardDescription)
         {
@@ -65,27 +70,68 @@ namespace Cards
 
             //_cardViewService = new CardViewService(_bigCardRoot);
             _cardViewService = cardViewService;
-            StartCards startCards = new StartCards(_startCardsType);
 
-            foreach (CardName cardName in startCards.StartCardNames)
+            if (_startCardsType != StartCardsType.DB)
             {
-                CreateCard(cardName, transform);
-            }
+                StartCards startCards = new StartCards(_startCardsType);
 
-            Debug.Log(_allcardsMsg);
+                foreach (CardName cardName in startCards.StartCardNames)
+                {
+                    await CreateCard(cardName, transform, _fightToken);
+                }
+
+                Debug.Log(_allcardsMsg);
+            }
+            else
+            {
+
+            }
         }
 
         public Card CreateCard(CardName cardName, Transform parent)
         {
             Card createdCard = _cardCreator.CreateInstantly(cardName, parent);
             createdCard.Init(_effectFactory, _cardViewService, _cardDragAndDropHandler, _curseAnimator,
-                _cardCapabilityDescription, _cardSoundRoot, _cardDescription, _fightToken, Guid.NewGuid(), _dBRoot);
+                _cardCapabilityDescription, _cardSoundRoot, _cardDescription, _fightToken, _dBRoot, null, null);
 
             _allcardsMsg += $"{createdCard.ViewData.Number}: {(int)createdCard.CardPersonType}\n";
             _fightProcessDBManager.WriteFightProcessAction(-1, null, createdCard.LogID, "CREATE", "CARD");
 
             TMP_Text[] cardTexts = createdCard.gameObject.GetComponentsInChildren<TMP_Text>(true);
             _fontSetter.SetFont(cardTexts);
+
+            _allCards.Add(createdCard);
+
+            return createdCard;
+        }
+
+        public async UniTask<Card> CreateCard(CardName cardName, Transform parent, CancellationToken token)
+        {
+            Card createdCard = _cardCreator.CreateInstantly(cardName, parent);
+
+            try
+            {
+                string baseUrl = _cardCreator.GetAudioUrl(cardName);
+
+                AudioClip[] clips = await _audioLoader.GetClipsAsync(new StringIntPair {key = baseUrl, value = -1}, token);
+                Sprite icon = await _imageLoader.GetImageAsync(baseUrl, token);  
+
+                CardSoundConfigDB cardSoundConfigDB = new CardSoundConfigDB(clips);
+                CardViewConfigDB cardViewConfigDB = new CardViewConfigDB(icon);
+
+                createdCard.Init(_effectFactory, _cardViewService, _cardDragAndDropHandler, _curseAnimator,
+                    _cardCapabilityDescription, _cardSoundRoot, _cardDescription, _fightToken, _dBRoot, cardSoundConfigDB, cardViewConfigDB);
+
+                _allcardsMsg += $"{createdCard.ViewData.Number}: {(int)createdCard.CardPersonType}\n";
+                _fightProcessDBManager.WriteFightProcessAction(-1, null, createdCard.LogID, "CREATE", "CARD");
+
+                TMP_Text[] cardTexts = createdCard.gameObject.GetComponentsInChildren<TMP_Text>(true);
+                _fontSetter.SetFont(cardTexts);
+            }
+            catch (Exception ex)
+            {
+                Debug.Log($"Exception {nameof(CreateCard)}: {ex.Message}");
+            }
 
             _allCards.Add(createdCard);
 
@@ -123,6 +169,6 @@ namespace Cards
         //{
         //    return AutomaticFillComponents.DefineComponent(this, ref _cardDescription, ComponentLocationTypes.InScene);
         //}
-        #endregion 
+        #endregion
     }
 }

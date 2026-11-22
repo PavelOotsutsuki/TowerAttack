@@ -13,7 +13,7 @@ namespace GameFields.Persons
         }
 
         public IReadOnlyPersonEffect PersonEffect => _lastPersonEffect;
-        public CardEffectConfig LastEffect => _lastPersonEffect == null ? ScriptableObject.CreateInstance<CardEffectConfig>() : _lastPersonEffect.CardEffectConfig;
+        public ICardEffectConfig LastEffect => _lastPersonEffect == null ? ScriptableObject.CreateInstance<CardEffectConfig>() : _lastPersonEffect.CardEffectConfig;
 
         public void SetLastPersonEffect(PersonEffect personEffect)
         {

@@ -32,6 +32,7 @@ using Tools.Utils;
 using Servers;
 using Cards.Views.BigCardViews.CardDescriptions;
 using Cards.Views;
+using Servers.Loaders;
 
 namespace Roots
 {
@@ -72,6 +73,8 @@ namespace Roots
         private BackgroundRoot _backgroundRoot;
         private UIHelperDescription _UIHelperDescription;
         private FightProcessDBManager _fightProcessDBManager;
+        private AudioLoader _audioLoader;
+        private DBRoot _dBRoot;
 
         private GameFieldInputRoot _inputRoot;
 
@@ -79,13 +82,17 @@ namespace Roots
         //private CanvasController _canvasController;
         private CancellationToken GameFieldToken => Token;
 
+        private bool _isInit = false;
+
+        public bool IsInit => _isInit;
+
         [Inject]
         private void Construct(SignalBus bus, Deck deck, SeatPool seatPool, BigCardRoot bigCardRoot, HandPlayer handPlayer,
             InformationLabel informationLabel, LookCardMenuPlayer lookCardMenu, VariantCardCreator variantCardCreator,
             SoundRoot soundRoot, CardSoundRoot cardSoundRoot, FightButtonsActivator fightButtonsActivator,
             CardCapabilityDescription cardCapabilityDescription, HistoryRoot historyRoot, BackgroundSoundConfig backgroundSoundConfig,
             BackgroundRoot backgroundRoot, UIHelperDescription UIHelperDescription, GameFieldCTSHolder gameFieldCTSHolder,
-            FightProcessDBManager fightProcessDBManager)
+            FightProcessDBManager fightProcessDBManager, AudioLoader audioLoader, DBRoot dBRoot)
         {
             //StartCoroutine(Initing(bus, deck, seatPool, cardDescription, handPlayer, informationLabel, lookCardMenu, variantCardCreator, soundRoot,
             //    cardSoundVolume, fightMenuActivateButton, screenRoot));
@@ -107,6 +114,8 @@ namespace Roots
             _backgroundRoot = backgroundRoot;
             _UIHelperDescription = UIHelperDescription;
             _fightProcessDBManager = fightProcessDBManager;
+            _audioLoader = audioLoader;
+            _dBRoot = dBRoot;
 
             SetToken(gameFieldCTSHolder);
         }
@@ -117,6 +126,90 @@ namespace Roots
             //Debug.Log("GameFieldRoot: " + gameRootToken.GetHashCode());
             base.Init();
 
+            AsyncInit(onDestroyPrefab).Forget();
+
+
+            //         GameFieldGC.GCOFF(GameFieldToken);
+
+            //         _cardDescription.Init();
+            //         _bigCardRoot.Init(_cardCapabilityDescription, _cardDescription);
+            //         CardViewService cardViewService = new CardViewService(_bigCardRoot);
+
+            //         _UIHelperDescription.Init(GameFieldToken);
+
+            //         CancellationTokenSource fightSource = CancellationTokenSource.CreateLinkedTokenSource(GameFieldToken);
+            //         TurnToken turnToken = new TurnToken();
+
+            //         _backgroundRoot.Init(fightSource.Token);
+            //         _backgroundRoot.Activate();
+
+            //         _informationLabel.Init(fightSource.Token);
+
+            //         //TMP_Text[] objectTexts = gameObject.GetComponentsInChildren<TMP_Text>(true);
+            //         //_fontRoot.SetFont(objectTexts);
+
+            //         _seatPool.Init();
+            //         _endTurnButton.Init(fightSource.Token);
+
+            //         _lightControlsCreator.Init(fightSource.Token);
+            //         _speedUpButtonSortOrder.Init();
+
+            //         _variantCardCreator.Init();
+            //         _soundRoot.Init(_backgroundSoundConfig, GameFieldToken);
+
+            //         CardDragAndDropLightController cardDragAndDropLightController = _lightControlsCreator.CreateCardDragAndDropLightController();
+
+            //         //Destroy(_lightControlsCreator.gameObject);
+
+            //         CardDragAndDropHandler cardDragAndDropHandler = new CardDragAndDropHandler(_handPlayer, _handPlayer,
+            //             cardDragAndDropLightController, _speedUpButtonSortOrder);
+
+            //         _personCreator.Init(_bus, _deck, _endTurnButton, _seatPool, cardDragAndDropHandler, cardDragAndDropLightController,
+            //             _informationLabel, _cardRoot, _cardSoundRoot, _soundRoot, _cardCapabilityDescription, _historyRoot, _soundRoot,
+            //             GameFieldToken, fightSource.Token, turnToken, cardViewService);
+
+            //         Player player = _personCreator.CreatePlayer();
+            //         EnemyAI enemyAI = _personCreator.CreateEnemyAI();
+            //         CardLocationViewRoot viewRoot = _personCreator.GetCardLocationViewRoot();
+            //         CardTransitManager cardTransitManager = _personCreator.CreateCardTransitManager();
+            //         BrothersEffectHandlerRoot brothersEffectHandlerRoot = _personCreator.CreateBrothersEffectHandlerRoot();
+            //         PersonEffectsHandlerRoot personEffectsHandlerRoot = _personCreator.GetPersonEffectsHandlerRoot();
+            //         DiscardManager discardManager = _personCreator.DiscardManager;
+            //         _inputRoot = _personCreator.GetInputRoot();
+            //         LoseActionsRoot loseActionsRoot = _personCreator.CreateLoseActionsRoot();
+            //         FightDrawResultManager fightDrawResultManager = _personCreator.CreateFightDrawResultManager();
+            //         ViewTransitTypesRoot typesRoot = _personCreator.GetViewTransitTypesRoot();
+
+            //         _lookCardMenu.Init(_inputRoot, fightSource.Token);
+
+            //         Destroy(_personCreator.gameObject);
+
+            //         _personsState = new PersonsState(player, enemyAI);
+            //         //fightMenu.
+            //         EffectFactory effectFactory = new EffectFactory(_personsState, viewRoot, _informationLabel, cardTransitManager,
+            //             _variantCardCreator, brothersEffectHandlerRoot, _bus, personEffectsHandlerRoot, discardManager, loseActionsRoot,
+            //             _cardSoundRoot, typesRoot, _historyRoot, fightSource.Token, _fightProcessDBManager);
+
+            //         _cardRoot.Init(effectFactory, cardDragAndDropHandler, _cardCapabilityDescription, _cardSoundRoot, base.FontSetter,
+            //             fightSource.Token, cardViewService, _cardDescription);
+            //         _deck.Init(_seatPool, _cardRoot.Cards, fightSource.Token, true);
+
+
+
+            //         //IDeactivatable onMainMenuSwitcher = FindObjectOfType(typeof(Creator), true) as IDeactivatable;
+            //         //IDeactivatable onMainMenuSwitcher = new TestFightRootDestroyer(() => Destroy(gameObject));
+
+            //         //TestGCCount(GameFieldToken).Forget();
+            //         // StartCardSoundLoad(GameFieldToken).Forget();
+
+            //         _fightPVE.Init(_personsState, enemyAI, _bus, _seatPool, _soundRoot, _fightButtonsActivator,
+            // onDestroyPrefab, GameFieldToken, fightSource.Token, fightSource, turnToken, fightDrawResultManager);
+            //         //_gameFieldRoot.Init(_personsState, enemyAI, _bus, _seatPool, _soundRoot, _fightButtonsActivator, onMainMenuSwitcher);
+
+        }
+
+        private async UniTask AsyncInit(Action onDestroyPrefab)
+        {
             GameFieldGC.GCOFF(GameFieldToken);
 
             _cardDescription.Init();
@@ -178,7 +271,7 @@ namespace Roots
                 _variantCardCreator, brothersEffectHandlerRoot, _bus, personEffectsHandlerRoot, discardManager, loseActionsRoot,
                 _cardSoundRoot, typesRoot, _historyRoot, fightSource.Token, _fightProcessDBManager);
 
-            _cardRoot.Init(effectFactory, cardDragAndDropHandler, _cardCapabilityDescription, _cardSoundRoot, base.FontSetter,
+            await _cardRoot.Init(effectFactory, cardDragAndDropHandler, _cardCapabilityDescription, _cardSoundRoot, base.FontSetter,
                 fightSource.Token, cardViewService, _cardDescription);
             _deck.Init(_seatPool, _cardRoot.Cards, fightSource.Token, true);
 
@@ -188,14 +281,23 @@ namespace Roots
             //IDeactivatable onMainMenuSwitcher = new TestFightRootDestroyer(() => Destroy(gameObject));
 
             //TestGCCount(GameFieldToken).Forget();
+            // StartCardSoundLoad(GameFieldToken).Forget();
 
             _fightPVE.Init(_personsState, enemyAI, _bus, _seatPool, _soundRoot, _fightButtonsActivator,
     onDestroyPrefab, GameFieldToken, fightSource.Token, fightSource, turnToken, fightDrawResultManager);
             //_gameFieldRoot.Init(_personsState, enemyAI, _bus, _seatPool, _soundRoot, _fightButtonsActivator, onMainMenuSwitcher);
+            _isInit = true;
         }
 
         public override void Activate()
         {
+            Activating().Forget();
+        }
+
+        private async UniTask Activating()
+        {
+            await UniTask.WaitUntil(() => _isInit, cancellationToken: GameFieldToken);
+
             _fightPVE.Activate();
         }
 
@@ -203,6 +305,38 @@ namespace Roots
         {
             _inputRoot.Activate();
         }
+
+        // private async UniTask StartCardSoundLoad(CancellationToken token)
+        // {
+        //     string[] urls = await _dBRoot.GetStartCardSoundsUrls(token);
+
+        //     foreach (string url in urls)
+        //     {
+        //         int counter = -1;
+        //         string currentUrl = "";
+
+        //         try
+        //         {
+        //             counter = 1;
+
+        //             while (true)
+        //             {
+        //                 currentUrl = $"{url}sound{counter}.wav";
+        //                 await _audioLoader.GetClipAsync(currentUrl, token);
+        //                 // AudioClip clip = await _audioLoader.GetClipAsync(currentUrl, token);
+        //                 // AudioSource.PlayClipAtPoint(clip, Vector3.zero, 1f);
+
+
+        //                 Debug.Log($"НАЙДЕН И СКАЧЕН: {currentUrl}");
+        //                 counter++;
+        //             }
+        //         }
+        //         catch
+        //         {
+        //             Debug.Log($"NOT FOUND: {currentUrl}");
+        //         }
+        //     }
+        // }
 
         private async UniTask TestGCCount(CancellationToken token)
         {

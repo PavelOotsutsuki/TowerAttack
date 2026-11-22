@@ -17,7 +17,7 @@ namespace Roots
         [SerializeField] private AudioSource _audioSource;
         [SerializeField] private AudioClip[] _backgroundSounds;
         [SerializeField] private float _delay = 3f;
-        [SerializeField, Range(0,1)] private float _maxVolume = 0.1f;
+        [SerializeField, Range(0, 1)] private float _maxVolume = 0.1f;
         [SerializeField] private float _pausingDuration = 0.5f;
 
         private IVolume _soundConfig;
@@ -28,7 +28,7 @@ namespace Roots
 
         private bool _isPaused;
 
-        public float Percent => _soundConfig.Percent; 
+        public float Percent => _soundConfig.Percent;
 
         public void Init(IVolume soundConfig, CancellationToken gameFieldToken)
         {
@@ -42,6 +42,8 @@ namespace Roots
 
             SetVolumePercent(Percent);
             _isPaused = false;
+
+            PreloadBackgroundSounds(_gameFieldToken).Forget();
         }
 
         public void SetVolumePercent(float percent)
@@ -73,6 +75,21 @@ namespace Roots
                 return;
 
             Unpause();
+        }
+
+        private async UniTask PreloadBackgroundSounds(CancellationToken token)
+        {
+            foreach (AudioClip clip in _backgroundSounds)
+            {
+                if (clip.loadState == AudioDataLoadState.Loaded)
+                    return; // уже загружен
+
+                clip.LoadAudioData();
+                await UniTask.WaitUntil(
+                    () => clip.loadState == AudioDataLoadState.Loaded
+                    || clip.loadState == AudioDataLoadState.Failed,
+                    cancellationToken: token);
+            }
         }
 
         private async UniTask Processing(CancellationToken token)

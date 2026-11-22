@@ -57,6 +57,7 @@ namespace Cards
         [SerializeField] private Card _template_50_FallenGuardian;
 
         private readonly Dictionary<CardName, Card> _createPairs = new Dictionary<CardName, Card>();
+        private readonly Dictionary<CardName, string> _audioUrls = new Dictionary<CardName, string>();
 
         public void Init()
         {
@@ -110,6 +111,108 @@ namespace Cards
             _createPairs.Add(CardName.BigBrother, _template_48_BigBrother);
             _createPairs.Add(CardName.LastChance, _template_49_LastChance);
             _createPairs.Add(CardName.FallenGuardian, _template_50_FallenGuardian);
+
+//             "1/Zhyzha_1"
+// "2/Greedy_2"
+// "3/Pyromancer_3"
+// "4/CoolBookie_4"
+// "5/BlindOldMan_5"
+// "6/DetectiveRhodes_6"
+// "7/BlueGnome_7"
+// "8/TimeLord_8"
+// "9/ThreeGuys_9"
+// "10/TimeMistress_10"
+// "11/SharpSnake_11"
+// "12/ImpArmy_12"
+// "13/CursedMark_13"
+// "14/RushingMailman_14"
+// "15/Schemer_15"
+// "16/Mime_16"
+// "17/RedGnome_17"
+// "18/TimeChild_18"
+// "19/Undergrounder_19"
+// "20/RobinGood_20"
+// "21/General_21"
+// "22/FateMistress_22"
+// "23/FoolishMonk_23"
+// "24/LeftEyedSister_24"
+// "25/JusticeBull_25"
+// "26/PatriarchCorall_26"
+// "27/GreenGnome_27"
+// "28/LittleBrother_28"
+// "29/BrothersMother_29"
+// "30/Scarecrow_30"
+// "31/LuckyHorseshoe_31"
+// "32/WiseMonk_32"
+// "33/CowsHerd_33"
+// "34/HungryOgre_34"
+// "35/Sharper_35"
+// "36/Gunner_36"
+// "37/WhiteGnome_37"
+// "38/MiddleBrother_38"
+// "39/DeadOgre_39"
+// "40/OutOfControlBus_40"
+// "41/CursedMailman_41"
+// "42/RightEyedSister_42"
+// "43/StrongOgre_43"
+// "44/MafiaBoss_44"
+// "45/PyromancersManuscript_45"
+// "46/FalsePrince_46"
+// "47/BlackGnome_47"
+// "48/BigBrother_48"
+// "49/LastChance_49"
+// "50/FallenGuardian_50"
+
+            _audioUrls.Add(CardName.Zhyzha, "1/Zhyzha_1");
+            _audioUrls.Add(CardName.Greedy, "2/Greedy_2");
+            _audioUrls.Add(CardName.Pyromancer, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.CoolBookie, "4/CoolBookie_4");
+            _audioUrls.Add(CardName.BlindOldMan, "5/BlindOldMan_5");
+            _audioUrls.Add(CardName.DetectiveRhodes, "6/DetectiveRhodes_6");
+            _audioUrls.Add(CardName.BlueGnome, "7/BlueGnome_7");
+            _audioUrls.Add(CardName.TimeLord, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.ThreeGuys, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.TimeMistress, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.SharpSnake, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.ImpArmy, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.CursedMark, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.RushingMailman, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.Schemer, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.Mime, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.RedGnome, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.TimeChild, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.Undergrounder, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.RobinGood, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.General, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.FateMistress, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.FoolishMonk, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.LeftEyedSister, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.JusticeBull, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.PatriarchCorall, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.GreenGnome, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.LittleBrother, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.BrothersMother, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.Scarecrow, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.LuckyHorseshoe, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.WiseMonk, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.CowsHerd, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.HungryOgre, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.Sharper, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.Gunner, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.WhiteGnome, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.MiddleBrother, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.DeadOgre, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.OutOfControlBus, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.CursedMailman, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.RightEyedSister, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.StrongOgre, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.MafiaBoss, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.PyromancersManuscript, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.FalsePrince, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.BlackGnome, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.BigBrother, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.LastChance, "3/Pyromancer_3");
+            _audioUrls.Add(CardName.FallenGuardian, "3/Pyromancer_3");
         }
 
         public Card CreateInstantly(CardName cardName, Transform parent)
@@ -119,6 +222,11 @@ namespace Cards
             Card createdCard = Instantiate(template, parent);
 
             return createdCard;
+        }
+
+        public string GetAudioUrl(CardName cardName)
+        {
+            return _audioUrls[cardName];
         }
 
         public Card CreateInstantly(CardName cardName)

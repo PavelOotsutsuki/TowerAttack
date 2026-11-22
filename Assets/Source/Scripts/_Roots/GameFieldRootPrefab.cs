@@ -5,12 +5,14 @@ using UnityEngine;
 using Zenject;
 using Cysharp.Threading.Tasks;
 using System.Threading;
+using Tools.Loads;
 
 namespace Roots
 {
     public class GameFieldRootPrefab : RootPrefab, IAutomaticFillComponents
     {
         [SerializeField] private GameFieldRootContainer _gameFieldRootContainer;
+        [Inject] private LoadRoot _loadRoot;
 
         private GameFieldRoot _currentGameFieldRoot;
         private Action _onDestroyPrefab;
@@ -43,6 +45,15 @@ namespace Roots
         private async UniTask WaitingToComplete(CancellationToken token)
         {
             await UniTask.Delay(500, cancellationToken: token);
+
+            if (_currentGameFieldRoot.IsInit == false)
+            {
+                LoadSession loadSession = new LoadSession();
+                _loadRoot.AddSession(loadSession);
+
+                await UniTask.WaitUntil(() => _currentGameFieldRoot.IsInit, cancellationToken: token);
+                loadSession.Complete();
+            }
 
             IsComplete = true;
         }

@@ -32,8 +32,9 @@ namespace Cards
 
         [SerializeField] private Image _background;
         [SerializeField] private CardSoundLogic _cardSoundLogic;
+        [SerializeField] private CardCharacter _cardCharacterTemplate;
 
-        private readonly Vector3 _defaultScaleVector = new Vector3(1f,1f,1f);
+        private readonly Vector3 _defaultScaleVector = new Vector3(1f, 1f, 1f);
 
         private CardCharacter _character;
         private CardEffectManager _cardEffectManager;
@@ -58,7 +59,7 @@ namespace Cards
         public CardCapability CardCapability => _config.CardCapability;
         public CardPersonType CardPersonType => _config.CardPersonType; // ДЛЯ ТЕСТА. В ИГРЕ НЕ НУЖНО ПОКА
         public CardName CardName => _config.CardName;
-        public CardEffectConfig EffectConfig => _config.Effect;
+        public ICardEffectConfig EffectConfig => _config.Effect;
         public bool IsVisibleByPlayer
         {
             get
@@ -85,13 +86,28 @@ namespace Cards
         internal void Init(IEffectFactory effectFactory, CardViewService cardViewService,
             ICardDragAndDropHandler cardDragAndDropHandler, CurseAnimator curseAnimator,
             CardCapabilityDescription cardCapabilityDescription, CardSoundRoot cardSoundRoot,
-            CardDescription cardDescription, CancellationToken fightToken, Guid cardGlobalGuid,
-            DBRoot dBRoot)
+            CardDescription cardDescription, CancellationToken fightToken, DBRoot dBRoot, CardSoundConfigDB cardSoundConfigDB,
+            CardViewConfigDB cardViewConfigDB
+            //CardConfigDB cardConfigDB
+            )
         {
             _cardCTS = CancellationTokenSource.CreateLinkedTokenSource(fightToken);
-            _cardGlobalGuid = cardGlobalGuid;
+
+            // if (cardConfigDB == null)
+            // {
+            //     _config = _configSO;
+            // }
+            // else
+            // {
+            //     _config = cardConfigDB;
+            // }
+            _configSO.SetSoundConfig(cardSoundConfigDB);
+            _configSO.SetViewConfig(cardViewConfigDB);
 
             _config = _configSO;
+
+
+            _cardGlobalGuid = _config.CardGlobalGuid;
 
             _isVisibleForPlayerExtra = false;
             RORTransform = new ReadOnlyRectTransform(_rectTransform);
@@ -261,11 +277,13 @@ namespace Cards
             gameObject.SetActive(true);
             _rectTransform.localScale = _defaultScaleVector;
             _cardPaper.RiseFromTheAshes(new CancellationTokenData(CardToken));
+
         }
 
         private void CreateCardCharacter()
         {
-            _character = Instantiate(_config.CardCharacter, _rectTransform);
+            // _character = Instantiate(_config.CardCharacter, _rectTransform);
+            _character = Instantiate(_cardCharacterTemplate, _rectTransform);
             //_character.Init(_config.SoundConfig, _cardSoundVolume);
             //_character.Init(_config.CardViewConfig.Icon, _cardDescription, _cardPaper, CardToken);
             _character.Init(_config.CardViewConfig.Icon, _cardViewService, GameSettings.CardSize, RORTransform, _viewData, CardToken);
@@ -306,13 +324,13 @@ namespace Cards
         [ContextMenu(nameof(DefineRectTransform))]
         private ComponentAttachInfo DefineRectTransform()
         {
-           return AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
+            return AutomaticFillComponents.DefineComponent(this, ref _rectTransform, ComponentLocationTypes.InThis);
         }
 
         [ContextMenu(nameof(DefineCardPaper))]
         private ComponentAttachInfo DefineCardPaper()
         {
-           return AutomaticFillComponents.DefineComponent(this, ref _cardPaper, ComponentLocationTypes.InChildren);
+            return AutomaticFillComponents.DefineComponent(this, ref _cardPaper, ComponentLocationTypes.InChildren);
         }
 
         [ContextMenu(nameof(DefineCardSoundLogic))]

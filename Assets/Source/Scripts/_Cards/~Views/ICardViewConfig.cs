@@ -1,8 +1,9 @@
+using Tools;
 using UnityEngine;
 
 namespace Cards.Views
 {
-    internal interface ICardViewConfig
+    public interface ICardViewConfig : IData
     {
         public int Number { get; }
         public Sprite Icon { get; }

@@ -1,3 +1,4 @@
+using Servers.DTO;
 using Tools;
 
 namespace Servers
@@ -21,6 +22,19 @@ namespace Servers
             _action_subtype = action_subtype;
             _counter = counter;
         }
+
+        // public FightProcessDBActionDTO ConvertToFightProcessDBActionDTO()
+        // {
+        //     return new FightProcessDBActionDTO()
+        //     {
+        //         turn = _turnNumber.ToString(),
+        //         person_id = _isPlayersAction == null ? "-1" : _isPlayersAction.Value == true ? "1" : "0",
+        //         action_target = _action_target,
+        //         action_type = _action_type,
+        //         action_subtype = _action_subtype,
+        //         counter = _counter.ToString()
+        //     };
+        // }
 
         public int TurnNumber => _turnNumber;
         public bool? IsPlayersAction => _isPlayersAction;

@@ -99,7 +99,7 @@ namespace GameFields.Persons
             //Bus.Unsubscribe<StartEffectSignal>(SetCardEffectProcess);
         }
 
-        public CardEffectConfig LastEffect => _personEffectKeeper.LastEffect;
+        public ICardEffectConfig LastEffect => _personEffectKeeper.LastEffect;
         //public IReadOnlyPersonEffect LastPersonEffect { get; private set; }
         public bool IsComplete { get; private set; }
         //public PersonEffectsHandler PersonEffectsHandler => _personEffectsHandler;
